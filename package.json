@@ -1,0 +1,31 @@
+{
+  "name": "g2-mobile",
+  "version": "2.0.0",
+  "description": "The mobile version of g2",
+  "keywords": [
+    "g2",
+    "g2-mobile"
+  ],
+  "homepage": "https://github.com/antvis/g2-mobile",
+  "author": "daisy <331992396@qq.com>",
+  "contributors": [
+    "dxq613 <dxq613@gmail.com>",
+    "simaQ <sima.zhang1990@gmail.com>",
+    "dori <418466938@qq.com>",
+    "kaiailu <hankaiai@126.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/g2-mobile.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/g2-mobile/issues"
+  },
+  "licenses": "GPL",
+  "files": [
+    "LICENSE",
+    "HISTORY.md",
+    "index.js",
+    "README.md"
+  ]
+}
