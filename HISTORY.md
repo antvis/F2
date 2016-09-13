@@ -1,10 +1,18 @@
+# History
+
+---
+
+## 2.0.1
+* guide 新增html对齐功能，支持9点对齐方式：tr、tc、tl、br、bc、bl、lc、rc、cc
+* geom 添加getSnapRecords方法，提供根据画布坐标获取数据的功能
+
 ## 2.0.0
 * 集成g2-core，并统一API与G2一致
 * guide 拓展
-  * line
-  * arc
-  * text
-  * html
+* line
+* arc
+* text
+* html
 
 ## 1.0.7
 
