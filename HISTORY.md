@@ -2,6 +2,12 @@
 
 ---
 
+## 2.1.0
+* 新增动画功能，支持水平方向的平铺(waveh)、x轴上的缩放(scalex)、y轴上的缩放(scaley)、x和y轴同时缩放(scalexy)
+* 修复shape接口
+* 给line的shape新增dash方法
+* 将getSnapRecords方法在chart中抛出
+
 ## 2.0.1
 * guide 新增html对齐功能，支持9点对齐方式：tr、tc、tl、br、bc、bl、lc、rc、cc
 * geom 添加getSnapRecords方法，提供根据画布坐标获取数据的功能
