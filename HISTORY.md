@@ -2,6 +2,13 @@
 
 ---
 
+## 2.1.3
+
+* 添加 `fillOpacity` 和 `strokeOpacity` 两个图形绘图属性；
+* geom 对象开放 `getAllShapeData()` 接口，返回 geom 上所有 shape 的绘制数据；
+* 修复参与映射的数据属性的数据值全为 undefined 导致栈溢出的问题；
+* 添加环形平铺动画方法｀wavec()｀；
+* 修复辅助html文本结构混乱问题。
 
 ## 2.1.2
 * 在数据结构frame中添加源数据，供用户在扩展接口上使用
