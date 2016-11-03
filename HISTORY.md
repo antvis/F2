@@ -2,6 +2,9 @@
 
 ---
 
+## 2.1.4
+* 优化getSnapRecord方法
+
 ## 2.1.3
 
 * 添加 `fillOpacity` 和 `strokeOpacity` 两个图形绘图属性；
