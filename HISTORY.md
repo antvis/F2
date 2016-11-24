@@ -2,6 +2,12 @@
 
 ---
 
+## 2.1.6
+* 修复guide的clear方法没有清空html的dom元素问题
+
+## 2.1.5
+* 添加window变量保护
+
 ## 2.1.4
 * 优化getSnapRecord方法
 
