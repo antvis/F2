@@ -2,6 +2,10 @@
 
 ---
 
+## 2.1.18
+
+* 修复 timeCat 类型的 getSnapRecords 方法返回空值的问题
+
 ## 2.1.17
 * 支持外部传入 context 对象
 
