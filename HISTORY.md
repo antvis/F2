@@ -6,6 +6,7 @@
 
 * 增加 interval dodge 功能
 * 修复 数据为空时，列定义设置了 0 时出现的死循环问题
+* 修复 interval dodge 后 get snap 的问题
 
 ## 2.1.19
 
