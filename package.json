@@ -1,0 +1,68 @@
+{
+  "name": "@ali/f2",
+  "version": "2.2.0",
+  "description": "A canvas library which providing 2d draw for G2.",
+  "keywords": [
+    "canvas",
+    "G2",
+    "2d draw"
+  ],
+  "main": "index.js",
+  "homepage": "http://gitlab.alibaba-inc.com/datavis/f2",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:datavis/f2.git"
+  },
+  "bugs": {
+    "url": "http://gitlab.alibaba-inc.com/datavis/f2/issues"
+  },
+  "devDependencies": {
+    "@lite-js/torch": "^0.2.0-beta2",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-stage-0": "^6.24.0",
+    "chai": "^4.0.1",
+    "electron": "~1.6.11",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-egg": "^4.2.0",
+    "event-simulate": "^1.0.0",
+    "istanbul": "^0.4.5",
+    "jquery": "~2.1.4",
+    "pre-commit": "^1.2.2",
+    "shelljs": "^0.7.8",
+    "spm-sinon": "^1.6.0",
+    "uglify-js": "^3.0.15",
+    "webpack": "^3.4.1"
+  },
+  "scripts": {
+    "build": "webpack",
+    "ci": "tnpm run lint && tnpm run test",
+    "compress": "uglifyjs --compress --mangle --output dist/g-$npm_package_version.min.js -- build/g.js",
+    "coverage": "npm run coverage-generator && npm run coverage-viewer",
+    "coverage-viewer": "torch-coverage",
+    "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
+    "dev": "webpack --config webpack-dev.config.js",
+    "dist": "rm -rf dist && mkdir dist && npm run build && npm run compress",
+    "lint": "eslint ./",
+    "lint-fix": "eslint --fix ./",
+    "test": "torch --compile --renderer --recursive ./test/unit",
+    "test-live": "torch --compile --renderer --interactive --recursive ./test/unit"
+  },
+  "pre-commit": {
+    "run": [
+      "lint",
+      "test"
+    ],
+    "silent": false
+  },
+  "dependencies": {
+    
+  },
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
+  }
+}
