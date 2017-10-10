@@ -50,7 +50,7 @@
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --renderer --interactive --recursive ./test/unit"
+    "test-live": "torch --compile --renderer --interactive --recursive ./test/unit/"
   },
   "pre-commit": {
     "run": [
@@ -60,7 +60,7 @@
     "silent": false
   },
   "dependencies": {
-    
+    "fecha": "^2.3.1"
   },
   "publishConfig": {
     "registry": "http://registry.npm.alibaba-inc.com"
