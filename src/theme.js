@@ -74,6 +74,26 @@ const Theme = {
       }
     }),
     radius: Util.deepMix({}, defaultAxis, {})
+  },
+  guide: {
+    line: {
+      strokeStyle: '#000',
+      lineWidth: 1
+    },
+    text: {
+      fill: '#000',
+      textAlign: 'center'
+    },
+    rect: {
+      fillStyle: '#fafafa'
+    },
+    arc: {
+      strokeStyle: '#CCC'
+    },
+    html: {
+      offset: [ 0, 0 ],
+      align: 'cc'
+    }
   }
 };
 
