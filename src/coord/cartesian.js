@@ -19,15 +19,17 @@ class Cartesian extends Base {
   init() {
     const self = this;
     const plot = self.get('plot');
+    const start = plot ? plot.get('bl') : self.get('start');
+    const end = plot ? plot.get('tr') : self.get('end');
 
     const x = {
-      start: plot.get('bl').x,
-      end: plot.get('br').x
+      start: start.x,
+      end: end.x
     };
 
     const y = {
-      start: plot.get('bl').y,
-      end: plot.get('tl').y
+      start: start.y,
+      end: end.y
     };
     self.set('x', x);
     self.set('y', y);
