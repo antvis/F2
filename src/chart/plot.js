@@ -4,16 +4,23 @@
  */
 
 const Util = require('../util');
-const Base = require('../base');
 
 /**
  * 画布绘制图表的区域
  * @class Plot
  */
-class Plot extends Base {
+class Plot {
+
+  get(name) {
+    return this[name];
+  }
+
+  set(name, value) {
+    this[name] = value;
+  }
 
   constructor(cfg) {
-    super(cfg);
+    Util.mix(this, cfg);
     this.__init();
   }
 

@@ -16,11 +16,14 @@ tnpm install @ali/f2
 * id
 * el
 * context
+* width
+* height
+* pixelRatio
 
 #### method
 
 * source
-* scale
+* render
 * clear
 * destroy
 * axis
@@ -28,6 +31,9 @@ tnpm install @ali/f2
 * coord
 * geometry
 * animate
+* getPosition
+* getRecord
+* getSnapRecords
 
 ### Geometry
 
@@ -35,6 +41,8 @@ tnpm install @ali/f2
 * color
 * size
 * shape
+* style
+* adjust
 
 
 ### F2.Shape
@@ -72,6 +80,12 @@ tnpm install @ali/f2
 * drawFan(points, center, canvas, cfg)
 * drawSmooth(points, canvas, cfg)
 
+
+### Change
+
+* animate
+* padding
+* intevalStack,intervalDodge,areaStack
 
 ## Contributing
 

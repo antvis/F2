@@ -46,6 +46,11 @@ function isNull(o) {
   return o === undefined || o === null;
 }
 
+function upperFirst(s) {
+  s += '';
+  return s.charAt(0).toUpperCase() + s.substring(1);
+}
+
 /**
  * @class Util
  * @singleton
@@ -57,10 +62,8 @@ Util = {
    * @param  {String} s 字符串
    * @return {String} 首字母大写后的字符串
    */
-  ucfirst(s) {
-    s += '';
-    return s.charAt(0).toUpperCase() + s.substring(1);
-  },
+  ucfirst: upperFirst,
+  upperFirst,
   lowerFirst(s) {
     s += '';
     return s.charAt(0).toLowerCase() + s.substring(1);
@@ -185,7 +188,9 @@ Util = {
     }
     return dist;
   },
-
+  indexOf(arr, element) {
+    return arr.indexOf(element);
+  },
   /**
    * 遍历数组或者对象
    * @param {Object|Array} elements 数组中的元素或者对象的值
@@ -195,20 +200,20 @@ Util = {
     if (!elements) {
       return;
     }
-    if (Util.isObject(elements)) {
+    if (elements.length) {
+      for (let i = 0; i < elements.length; i++) {
+        const rst = func(elements[i], i);
+        if (rst === false) {
+          break;
+        }
+      }
+    } else {
       for (const k in elements) {
         if (elements.hasOwnProperty(k)) {
           const rst = func(elements[k], k);
           if (rst === false) {
             break;
           }
-        }
-      }
-    } else if (elements.length) {
-      for (let i = 0; i < elements.length; i++) {
-        const rst = func(elements[i], i);
-        if (rst === false) {
-          break;
         }
       }
     }
@@ -237,6 +242,99 @@ Util = {
       return clearTimeout(id);
     };
     return method(id);
+  }
+};
+
+Util.Array = {
+  merge(dataArray) {
+    let rst = [];
+    for (let i = 0; i < dataArray.length; i++) {
+      rst = rst.concat(dataArray[i]);
+    }
+    return rst;
+  },
+  values(data, name) {
+    const rst = [];
+    const tmpMap = {};
+    for (let i = 0; i < data.length; i++) {
+      const obj = data[i];
+      let value = obj[name];
+      if (!Util.isNil(value)) {
+        if (!Util.isArray(value)) {
+          value = [ value ];
+        }
+        Util.each(value, val => {
+          if (!tmpMap[val]) {
+            rst.push(val);
+            tmpMap[val] = true;
+          }
+        });
+      }
+    }
+    return rst;
+  },
+  firstValue(data, name) {
+    let rst = null;
+    for (let i = 0; i < data.length; i++) {
+      const obj = data[i];
+      const value = obj[name];
+      if (!Util.isNil(value)) {
+        if (Util.isArray(value)) {
+          rst = value[0];
+        } else {
+          rst = value;
+        }
+        break;
+      }
+    }
+    return rst;
+  },
+  group(data, condition) {
+    if (!condition) {
+      return [ data ];
+    }
+    const groups = Util.Array.groupToMap(data, condition);
+    const array = [];
+    for (const i in groups) {
+      array.push(groups[i]);
+    }
+    return array;
+  },
+  groupToMap(data, condition) {
+    if (!condition) {
+      return {
+        0: data
+      };
+    }
+    if (!Util.isFunction(condition)) {
+      const paramsCondition = Util.isArray(condition) ? condition : condition.replace(/\s+/g, '').split('*');
+      condition = function(row) {
+        let unique = '_'; // 避免出现数字作为Key的情况，会进行按照数字的排序
+        for (let i = 0, l = paramsCondition.length; i < l; i++) {
+          unique += row[paramsCondition[i]] && row[paramsCondition[i]].toString();
+        }
+        return unique;
+      };
+    }
+
+    const groups = {};
+    for (let i = 0; i < data.length; i++) {
+      const row = data[i];
+      const key = condition(row);
+      if (groups[key]) {
+        groups[key].push(row);
+      } else {
+        groups[key] = [ row ];
+      }
+    }
+
+    return groups;
+  },
+  remove(arr, obj) {
+    const index = Util.indexOf(arr, obj);
+    if (index !== -1) {
+      arr.splice(index, 1);
+    }
   }
 };
 

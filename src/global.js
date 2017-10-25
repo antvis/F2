@@ -10,11 +10,6 @@ const Util = require('./util');
  * @class 全局配置项
  */
 const Global = {
-  // 大小
-  sizes: {
-    min: 1,
-    max: 10
-  },
   // 预先定义的度量
   scales: {
     nice: true
@@ -23,7 +18,8 @@ const Global = {
   widthRatio: { // 宽度所占的分类的比例
     column: 1 / 2, // 一般的柱状图占比 1/2
     rose: 0.999999,
-    multiplePie: 3 / 4
+    multiplePie: 3 / 4,
+    dodgeMargin: 1 / 2
   },
   // 动画降频倍数
   animateReduceMultiple: 1,

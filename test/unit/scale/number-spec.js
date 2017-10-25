@@ -102,7 +102,8 @@ describe('scale not nice', () => {
 
   const scale = Scale.linear({
     min: 3,
-    max: 97
+    max: 97,
+    nice: false
   });
 
   it('cfg', () => {

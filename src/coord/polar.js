@@ -14,6 +14,7 @@ class Polar extends Base {
       startAngle: -Math.PI / 2,
       endAngle: Math.PI * 3 / 2,
       inner: 0,
+      innerRadius: 0, // alias
       isPolar: true,
       transposed: false,
       center: null,
@@ -24,20 +25,25 @@ class Polar extends Base {
   init() {
     const self = this;
     const plot = self.get('plot');
-    const inner = self.get('inner');
+    const start = plot ? plot.get('bl') : self.get('start');
+    const end = plot ? plot.get('tr') : self.get('end');
+    const inner = self.get('inner') || self.get('innerRadius');
+    const width = Math.abs(end.x - start.x);
+    const height = Math.abs(end.y - start.y);
+
     let radius;
     let center;
     if (self.get('startAngle') === -Math.PI && self.get('endAngle') === 0) {
-      radius = Math.min(plot.get('width') / 2, plot.get('height'));
+      radius = Math.min(width / 2, height);
       center = {
-        x: (plot.get('bl').x + plot.get('br').x) / 2,
-        y: plot.get('bl').y
+        x: (start.x + end.x) / 2,
+        y: start.y
       };
     } else {
-      radius = Math.min(plot.get('width'), plot.get('height')) / 2;
+      radius = Math.min(width, height) / 2;
       center = {
-        x: (plot.get('bl').x + plot.get('br').x) / 2,
-        y: (plot.get('tl').y + plot.get('bl').y) / 2
+        x: (start.x + end.x) / 2,
+        y: (start.y + end.y) / 2
       };
     }
 

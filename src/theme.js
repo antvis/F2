@@ -34,8 +34,14 @@ const defaultFont = {
 const Theme = {
   defaultFont,
   pixelRatio: 1,
-  margin: [ 40, 40, 40, 40 ],
+  padding: [ 40, 40, 40, 40 ],
   colors: [ '#4E7CCC', '#36B3C3', '#4ECDA5', '#94E08A', '#E2F194', '#EDCC72', '#F8AB60', '#F9815C', '#EB4456', '#C82B3D' ],
+  shapes: {
+    line: [ 'line', 'dash' ],
+    point: [ 'circle', 'hollowCircle' ]
+  },
+  opacities: [ 0.1, 0.9 ],
+  sizes: [ 4, 10 ],
   axis: {
     bottom: Util.deepMix({}, defaultAxis, {
       line: {

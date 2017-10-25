@@ -62,12 +62,12 @@ function getCandlePoints(x, y, width) {
 Shape.registerShape('schema', 'candle', {
   // 获取构建k线图的点
   getPoints(cfg) {
-    const points = getCandlePoints(cfg.x, cfg.y, cfg.width);
+    const points = getCandlePoints(cfg.x, cfg.y, cfg.size);
     return points;
   },
   // 绘制k线图
   draw(cfg, canvas) {
-    const points = cfg.points;
+    const points = this.parsePoints(cfg.points);
     const style = Util.mix({
       strokeStyle: cfg.color,
       fillStyle: cfg.color

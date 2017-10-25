@@ -41,7 +41,7 @@
   "scripts": {
     "build": "webpack",
     "ci": "tnpm run lint && tnpm run test",
-    "compress": "uglifyjs --compress --mangle --output dist/g-$npm_package_version.min.js -- build/g.js",
+    "compress": "uglifyjs --compress --mangle --output dist/index.min.js -- build/index.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-viewer": "torch-coverage",
     "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
@@ -50,7 +50,7 @@
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --renderer --interactive --recursive ./test/unit/guide/assist*.js"
+    "test-live": "torch --compile --interactive --recursive ./test/unit"
   },
   "pre-commit": {
     "run": [

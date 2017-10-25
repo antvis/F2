@@ -5,7 +5,8 @@ const {
 
 module.exports = {
   entry: {
-    g: './index.js'
+    index: './index.js',
+    core: './core.js'
   },
   output: {
     filename: '[name].js',

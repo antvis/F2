@@ -22,8 +22,8 @@ function getPointsCfg(cfg) {
     size: cfg.size || DEFAULT_SIZE,
     style: Util.mix({
       lineWidth: 0,
-      strokeStyle: cfg.color,
-      fillStyle: cfg.color
+      stroke: cfg.color,
+      fill: cfg.color
     }, cfg.style)
   };
 }
@@ -34,6 +34,25 @@ Shape.registerShape('point', 'circle', {
     const pointCfg = getPointsCfg(cfg);
     const size = pointCfg.size;
     const style = pointCfg.style;
+    const x = cfg.x;
+    let y = cfg.y;
+    if (!Util.isArray(y)) {
+      y = [ y ];
+    }
+    for (let i = 0; i < y.length; i++) {
+      G.drawCircle({ x, y: y[i] }, size, canvas, style);
+    }
+  }
+});
+
+Shape.registerShape('point', 'hollowCircle', {
+  draw(cfg, canvas) {
+    if (cfg.size === 0) return;
+    const pointCfg = getPointsCfg(cfg);
+    const size = pointCfg.size;
+    const style = pointCfg.style;
+    style.lineWidth = 1;
+    style.fill = null;
     const x = cfg.x;
     let y = cfg.y;
     if (!Util.isArray(y)) {

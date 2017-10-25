@@ -53,7 +53,7 @@ class Linear extends Base {
        * @type {Boolean}
        * @default false
        */
-      nice: false,
+      nice: true,
 
       /**
        * 自动生成标记时的个数
