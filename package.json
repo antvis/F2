@@ -1,13 +1,15 @@
 {
-  "name": "@ali/f2",
-  "version": "3.0.0",
+  "name": "@antv/f2",
+  "version": "3.0.0-rc1",
   "description": "A canvas library which providing 2d draw for G2.",
   "keywords": [
     "canvas",
     "G2",
     "2d draw"
   ],
-  "main": "index.js",
+  "main": "build/g2.js",
+  "browser": "build/g2.js",
+  "module": "index.js",
   "homepage": "http://gitlab.alibaba-inc.com/datavis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
@@ -18,7 +20,7 @@
     "url": "http://gitlab.alibaba-inc.com/datavis/f2/issues"
   },
   "devDependencies": {
-    "@lite-js/torch": "^0.2.0-beta2",
+    "@lite-js/torch": "^0.2.6",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
@@ -41,7 +43,7 @@
   "scripts": {
     "build": "webpack",
     "ci": "tnpm run lint && tnpm run test",
-    "compress": "uglifyjs --compress --mangle --output dist/index.min.js -- build/index.js",
+    "compress": "uglifyjs --compress --mangle --output dist/f2-$npm_package_version.min.js -- build/f2.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-viewer": "torch-coverage",
     "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
