@@ -1,14 +1,14 @@
 {
   "name": "@antv/f2",
-  "version": "3.0.0-rc1",
+  "version": "3.0.0-rc1.1",
   "description": "A canvas library which providing 2d draw for G2.",
   "keywords": [
     "canvas",
     "G2",
     "2d draw"
   ],
-  "main": "build/g2.js",
-  "browser": "build/g2.js",
+  "main": "build/f2.js",
+  "browser": "build/f2.js",
   "module": "index.js",
   "homepage": "http://gitlab.alibaba-inc.com/datavis/f2",
   "author": "https://github.com/orgs/antvis/people",
