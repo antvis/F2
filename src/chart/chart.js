@@ -306,8 +306,10 @@ class Chart extends Base {
       canvas.height = height * ratio;
       DomUtil.modiCSS(canvas, { height: height + 'px' });
       DomUtil.modiCSS(canvas, { width: width + 'px' });
-      const ctx = canvas.getContext('2d');
-      ctx.scale(ratio, ratio);
+      if (ratio !== 1) {
+        const ctx = canvas.getContext('2d');
+        ctx.scale(ratio, ratio);
+      }
     }
 
     self._initLayout();

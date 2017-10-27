@@ -109,14 +109,16 @@ class Geom extends Base {
   // 分组数据
   _groupData(data) {
     const self = this;
-    const names = [];
     const groupScales = self._getGroupScales();
+    if (groupScales.length) {
+      const names = [];
+      Util.each(groupScales, function(scale) {
+        names.push(scale.field);
+      });
+      return Util.Array.group(data, names);
+    }
+    return [ data ];
 
-    Util.each(groupScales, function(scale) {
-      names.push(scale.field);
-    });
-
-    return Util.Array.group(data, names);
   }
 
   // 设置属性配置信息
@@ -210,7 +212,9 @@ class Geom extends Base {
     for (let i = 0; i < groupedArray.length; i++) {
       const subData = groupedArray[i];
       const tempData = self._saveOrigin(subData);
-      self._numberic(tempData);
+      if (this.hasAdjust('dodge')) {
+        self._numberic(tempData);
+      }
       dataArray.push(tempData);
     }
     return dataArray;
@@ -301,7 +305,7 @@ class Geom extends Base {
     const xField = xScale.field;
     Util.each(mappedArray, itemArr => {
       itemArr.sort((obj1, obj2) => {
-        return obj1[FIELD_ORIGIN][xField] - obj2[FIELD_ORIGIN][xField];
+        return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
       });
     });
 
@@ -321,12 +325,7 @@ class Geom extends Base {
       mappedArray.push(data);
       self.draw(data, shapeFactory);
     }
-
-    if (!self.get('sortable')) {
-      self._sort(mappedArray); // 便于数据的查找，需要对数据进行排序，用于 geom.findPoint()
-    } else {
-      self.set('dataArray', mappedArray);
-    }
+    self.set('dataArray', mappedArray);
   }
 
   /**
@@ -632,6 +631,10 @@ class Geom extends Base {
     return result;
   }
 
+  hasSorted() {
+    return this.get('hasSorted') || this.get('sortable');
+  }
+
   /**
    * 根据画布坐标获取切割线对应数据集
    * @param  {Object} point 画布坐标的x,y的值
@@ -649,6 +652,11 @@ class Geom extends Base {
 
     const invertPoint = coord.invertPoint(point);
     const dataArray = self.get('dataArray');
+    if (!this.hasSorted()) { // 未排序
+      this._sort(dataArray);
+      this.set('hasSorted', true);
+    }
+
     const rst = [];
 
     if (field === yfield) {

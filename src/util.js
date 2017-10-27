@@ -258,17 +258,21 @@ Util.Array = {
     const tmpMap = {};
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
-      let value = obj[name];
+      const value = obj[name];
       if (!Util.isNil(value)) {
         if (!Util.isArray(value)) {
-          value = [ value ];
-        }
-        Util.each(value, val => {
-          if (!tmpMap[val]) {
-            rst.push(val);
-            tmpMap[val] = true;
+          if (!tmpMap[value]) {
+            rst.push(value);
+            tmpMap[value] = true;
           }
-        });
+        } else {
+          Util.each(value, val => {
+            if (!tmpMap[val]) {
+              rst.push(val);
+              tmpMap[val] = true;
+            }
+          });
+        }
       }
     }
     return rst;
