@@ -53,13 +53,16 @@ Util.mix(GuideAssist.prototype, {
   },
   clear(parent) {
     this.guides = [];
+    this.reset(parent);
+    return this;
+  },
+  reset(parent) {
     if (parent) {
       const guideWrpper = parent.getElementsByClassName('guideWapper')[0];
       if (guideWrpper) {
         parent.removeChild(guideWrpper);
       }
     }
-    return this;
   }
 });
 

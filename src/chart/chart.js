@@ -399,19 +399,34 @@ class Chart extends Base {
     }
   }
 
+  _clearGeoms() {
+    const self = this;
+    const geoms = self.get('geoms');
+    for (let i = 0; i < geoms.length; i++) {
+      const geom = geoms[i];
+      geom.clear();
+    }
+  }
+
   /**
    * 清空图表上面的图层
    * @chainable
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    const parent = this.get('canvas').parentNode;
-    this.get('guideAssist').clear(parent);
-    this.get('animateAssist').stop();
+    this.get('guideAssist').clear();
     this._removeGeoms();
-    this.set('scales', {});
-    this._clearCanvas();
+    this._clearInner();
     return this;
+  }
+
+  _clearInner() {
+    this.get('animateAssist').stop();
+    this.set('scales', {});
+    this._clearGeoms();
+    this._clearCanvas();
+    const parent = this.get('canvas').parentNode;
+    this.get('guideAssist').reset(parent);
   }
 
   destroy() {
@@ -502,19 +517,27 @@ class Chart extends Base {
     self.beforeDrawGeom();
 
     if (animateAssist.animate) {
-      Util.requestAnimationFrame(function() {
-        self.set('bgImageData', self.getImageData());
-        self._clearCanvas();
-        self.drawGeom(geoms);
-        self.set('imageData', self.getImageData());
-        self._clearCanvas();
-        self._renderAnimate(self._renderFrontGuide.bind(self));
-      });
+      self.set('bgImageData', self.getImageData());
+      self._clearCanvas();
+      self.drawGeom(geoms);
+      self.set('imageData', self.getImageData());
+      self._clearCanvas();
+      self._renderAnimate(self._renderFrontGuide.bind(self));
     } else {
       self.drawGeom(geoms);
       self._renderFrontGuide();
     }
     return self;
+  }
+
+  repaint() {
+    this._clearInner();
+    this.render();
+  }
+
+  changeData(data) {
+    this.set('data', data);
+    this.repaint();
   }
 
   drawGeom(geoms) {

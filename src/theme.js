@@ -83,7 +83,7 @@ const Theme = {
   },
   guide: {
     line: {
-      strokeStyle: '#000',
+      stroke: '#000',
       lineWidth: 1
     },
     text: {
@@ -94,7 +94,7 @@ const Theme = {
       fillStyle: '#fafafa'
     },
     arc: {
-      strokeStyle: '#CCC'
+      stroke: '#CCC'
     },
     html: {
       offset: [ 0, 0 ],

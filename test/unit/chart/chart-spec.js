@@ -173,6 +173,18 @@ describe('chart test', () => {
       expect(xScale.range).eqls([ 0.25, 0.75 ]);
     });
 
+    it('repaint', function() {
+      chart.guide().text([ '1', 3 ], '这是测试文本');
+      chart.repaint();
+    });
+
+    it('change data', function() {
+      chart.changeData([
+        { a: '1', b: 5 },
+        { a: '2', b: 2 }
+      ]);
+    });
+
     it('destroy', function(done) {
       setTimeout(function() {
         chart.destroy();
