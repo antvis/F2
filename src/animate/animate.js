@@ -5,6 +5,7 @@
 
 const Util = require('../util');
 const AnimateUtil = require('./util');
+const DomUtil = require('../dom-util');
 
 class Animate {
 
@@ -42,7 +43,7 @@ class Animate {
     const width = canvas.width;
     const height = canvas.height;
     // 获取精度
-    const ratio = width / parseInt(canvas.style.width, 10);
+    const ratio = width / DomUtil.getWidth(canvas);
     self.ratio = ratio;
     // 生成虚拟canvas
     const virtualCanvas = document.createElement('canvas');
