@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.0.0-rc1.3",
+  "version": "3.0.0-rc1.4",
   "description": "A canvas library which providing 2d draw for G2.",
   "keywords": [
     "canvas",

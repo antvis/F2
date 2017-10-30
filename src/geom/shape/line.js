@@ -26,8 +26,9 @@ function getStyle(cfg) {
   return style;
 }
 
-function drawLines(cfg, canvas, style) {
+function drawLines(cfg, canvas, style, isSmooth) {
   const points = cfg.points;
+  const method = isSmooth ? 'drawSmooth' : 'drawLines';
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
@@ -38,13 +39,13 @@ function drawLines(cfg, canvas, style) {
       topPoints.push(tmp[1]);
     }
     if (cfg.isStack) {
-      G.drawLines(topPoints, canvas, style);
+      G[method](topPoints, canvas, style);
     } else {
-      G.drawLines(topPoints, canvas, style);
-      G.drawLines(bottomPoints, canvas, style);
+      G[method](topPoints, canvas, style);
+      G[method](bottomPoints, canvas, style);
     }
   } else {
-    G.drawLines(points, canvas, style);
+    G[method](points, canvas, style);
   }
 }
 
@@ -59,9 +60,8 @@ Shape.registerShape('line', 'line', {
 // draw smooth line shape
 Shape.registerShape('line', 'smooth', {
   draw(cfg, canvas) {
-    const points = cfg.points;
     const style = getStyle(cfg);
-    G.drawSmooth(points, canvas, style);
+    drawLines(cfg, canvas, style, true);
   }
 });
 

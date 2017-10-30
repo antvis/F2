@@ -37,6 +37,11 @@ const ScaleRed = Scale.identity({
   value: 'red'
 });
 
+const ScaleSmooth = Scale.identity({
+  field: 'smooth',
+  value: 'smooth'
+});
+
 const ScaleTen = Scale.identity({
   field: '10',
   value: 10
@@ -359,7 +364,7 @@ describe('test geom line', function() {
     data,
     coord,
     container: canvas,
-    scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed }
+    scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, smooth: ScaleSmooth }
   });
 
   it('draw line', function() {
@@ -404,6 +409,25 @@ describe('test geom line', function() {
     geom.reset();
     geom.set('data', data);
     geom.position('a*b').color('c').adjust('stack');
+    geom.init();
+    geom.paint();
+  });
+
+  it('stack smooth line', function() {
+    clearCanvas(canvas);
+    const data = [
+      { a: 1, b: 3, c: '1' },
+      { a: 2, b: 1, c: '1' },
+      { a: 3, b: 2, c: '1' },
+      { a: 1, b: 2, c: '2' },
+      { a: 2, b: 2, c: '2' },
+      { a: 3, b: 3, c: '2' }
+    ];
+    geom.reset();
+    geom.set('data', data);
+    geom.position('a*b').color('c')
+      .adjust('stack')
+      .shape('smooth');
     geom.init();
     geom.paint();
   });
