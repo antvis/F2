@@ -105,7 +105,7 @@ module.exports = {
     const ctx = before(canvas, cfg);
     let minX = points[0].x;
     let minY = points[0].y;
-    let maxX = points[2].x;
+    let maxX = points[1].x;
     let maxY = points[1].y;
     points.forEach(function(point) {
       if (point.x > maxX) {
