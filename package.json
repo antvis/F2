@@ -43,7 +43,7 @@
   "scripts": {
     "build": "webpack",
     "ci": "tnpm run lint && tnpm run test",
-    "compress": "uglifyjs --compress --mangle --output dist/f2-$npm_package_version.min.js -- build/f2.js",
+    "compress": "uglifyjs --compress --mangle --output dist/f2.js -- build/f2.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-viewer": "torch-coverage",
     "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
