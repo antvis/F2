@@ -4,6 +4,7 @@
  */
 
 const Geom = require('./base');
+require('./shape/point');
 
 class Point extends Geom {
   getDefaultCfg() {

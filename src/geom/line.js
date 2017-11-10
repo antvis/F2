@@ -6,6 +6,8 @@
 const Path = require('./path');
 const Geom = require('./base');
 
+require('./shape/line');
+
 class Line extends Path {
   /**
    * 获取默认的配置属性

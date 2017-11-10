@@ -5,6 +5,7 @@
 
 const Geom = require('./base');
 const Util = require('../util');
+require('./shape/polygon');
 
 class Polygon extends Geom {
   /**
