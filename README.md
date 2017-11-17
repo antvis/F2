@@ -3,11 +3,15 @@
 ## Installing
 
 ```
-tnpm install @ali/f2
+npm install @antv/f2
 
 ```
 
-## Documents
+## 简介
+
+F2 是面向移动端的一套基于可视化图形语法的图表库，具有精简、高性能、易扩展的特性。适用于对性能、大小、扩展性要求很高的场景。[站点](https://antv.alipay.com/zh-cn/f2/3.x/index.html)
+
+## API
 
 ### Chart
 
@@ -297,26 +301,6 @@ Shape.registerShape('interval', 'polygon', {
 });
 ```
 
-
-### F2.Util
-
-* ucfirst
-* isString
-* isNumber
-* isNumeric
-* isBoolean
-* isFunction
-* isArray
-* isDate
-* isNull
-* isObject
-* toArray
-* mix
-* deepMix
-* each
-* requestAnimationFrame
-* cancelAnimationFrame
-
 ### F2.Graphic
 
 * drawLine(start, end, canvas, cfg)
@@ -329,15 +313,4 @@ Shape.registerShape('interval', 'polygon', {
 * drawFan(points, center, canvas, cfg)
 * drawSmooth(points, canvas, cfg)
 
-
-### Change
-
-* animate
-* padding
-* intevalStack,intervalDodge,areaStack
-
-## Contributing
-
-- project structure
-- core style guide
-- work flow
+更详细的 API，参考 [API详情](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
