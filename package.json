@@ -4,20 +4,20 @@
   "description": "A canvas library which providing 2d draw for G2.",
   "keywords": [
     "canvas",
-    "G2",
+    "f2",
     "2d draw"
   ],
   "main": "build/f2.js",
   "browser": "build/f2.js",
   "module": "index.js",
-  "homepage": "http://gitlab.alibaba-inc.com/datavis/f2",
+  "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.alibaba-inc.com:datavis/f2.git"
+    "url": "https://github.com/antvis/f2.git"
   },
   "bugs": {
-    "url": "http://gitlab.alibaba-inc.com/datavis/f2/issues"
+    "url": "https://github.com/antvis/f2/issues"
   },
   "devDependencies": {
     "@lite-js/torch": "^0.2.6",
