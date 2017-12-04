@@ -52,6 +52,13 @@ describe('polar', () => {
       .color('c')
       .adjust('stack');
     chart.render();
+
+    canvas.onclick = function(ev) {
+      const point = chart.getPointByClient(ev.clientX, ev.clientY);
+      const records = chart.getSnapRecords(point, 'b');
+      console.log(records);
+    };
+
   });
 
   describe('nest', () => {
@@ -82,6 +89,11 @@ describe('polar', () => {
       .color('c')
       .adjust('stack');
     chart.render();
+    canvas.onclick = function(ev) {
+      const point = chart.getPointByClient(ev.clientX, ev.clientY);
+      const records = chart.getSnapRecords(point, 'b');
+      console.log(records);
+    };
   });
 
   describe('rose', () => {

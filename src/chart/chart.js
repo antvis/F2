@@ -209,6 +209,21 @@ class Chart extends Base {
   }
 
   /**
+   * 根据clientX, clientY获取画布上坐标
+   * @param  {Number} clientX 事件获取的窗口坐标 x
+   * @param  {Number} clientY 事件获取的窗口坐标 y
+   * @return {Object} 对应的坐标
+   */
+  getPointByClient(clientX, clientY) {
+    const canvas = this.get('canvas');
+    const bbox = canvas.getBoundingClientRect();
+    return {
+      x: clientX - bbox.left,
+      y: clientY - bbox.top
+    };
+  }
+
+  /**
    * 获取画布上坐标对应的数据值
    * @param  {Object} point 画布坐标的x,y的值
    * @return {Object} 当前坐标系的数据值
