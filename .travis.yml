@@ -1,16 +1,24 @@
 language: node_js
 
 node_js:
-  - "0.10"
+  - "8"
+
+env:
+  matrix:
+    - TEST_TYPE=ci
+
+addons:
+  apt:
+    packages:
+      - xvfb
 
 install:
-  - npm install spm coveralls
-
-before_script:
-  - node_modules/spm/bin/spm-install
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - npm install
 
 script:
-  - node_modules/spm/bin/spm-test
-
-after_success:
-  - node_modules/spm/bin/spm-test --coveralls | node_modules/.bin/coveralls
+  - |
+    if [ "$TEST_TYPE" = ci ]; then
+      npm run ci
+    fi
