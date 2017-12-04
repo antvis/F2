@@ -1,5 +1,9 @@
 # F2: a canvas library which providing 2d draw for mobile
 
+[![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
+![](https://img.shields.io/badge/language-javascript-red.svg)
+![](https://img.shields.io/badge/license-MIT-000000.svg)
+
 [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2)
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
