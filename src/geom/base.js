@@ -7,6 +7,7 @@ const Util = require('../util');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
+const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
 const Shape = require('./shape/shape');
@@ -347,12 +348,15 @@ class Geom extends Base {
   _mapping(data) {
     const self = this;
     const attrs = self.get('attrs');
+    const yField = self.getYScale().field;
     const mappedData = [];
     for (let i = 0; i < data.length; i++) {
       const record = data[i];
       const newRecord = {};
       newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
       newRecord.points = record.points;
+      // 避免
+      newRecord[FIELD_ORIGIN_Y] = record[yField];
       for (const k in attrs) {
         if (attrs.hasOwnProperty(k)) {
           const attr = attrs[k];
@@ -584,17 +588,14 @@ class Geom extends Base {
     return this.get('adjust') === adjust;
   }
 
-  _getSnap(scale, item) {
+  _getSnap(scale, item, arr) {
     let i = 0;
     let values;
     const yField = this.getYScale().field; // 叠加的维度
     if (this.hasAdjust('stack') && scale.field === yField) {
-      const dataArray = this.get('dataArray');
       values = [];
-      dataArray.forEach(function(subArray) {
-        subArray.forEach(function(obj) {
-          values.push(obj[scale.field]);
-        });
+      arr.forEach(function(obj) {
+        values.push(obj[FIELD_ORIGIN_Y]);
       });
 
       for (; i < values.length; i++) {
@@ -638,17 +639,16 @@ class Geom extends Base {
   /**
    * 根据画布坐标获取切割线对应数据集
    * @param  {Object} point 画布坐标的x,y的值
-   * @param {String} [field] 指定逼近的字段
    * @return {Array} 切割交点对应数据集
   **/
-  getSnapRecords(point, field) {
+  getSnapRecords(point) {
     const self = this;
     const coord = self.get('coord');
     const xScale = self.getXScale();
     const yScale = self.getYScale();
 
     const xfield = xScale.field;
-    const yfield = yScale.field;
+    // const yfield = yScale.field;
 
     const invertPoint = coord.invertPoint(point);
     const dataArray = self.get('dataArray');
@@ -657,34 +657,34 @@ class Geom extends Base {
       this.set('hasSorted', true);
     }
 
-    const rst = [];
+    let rst = [];
+    const tmp = [];
+    let xValue = xScale.invert(invertPoint.x);
+    if (!xScale.isCategory) {
+      xValue = self._getSnap(xScale, xValue);
+    }
+    dataArray.forEach(function(data) {
+      data.forEach(function(obj) {
+        const originValue = Util.isNull(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        if (self._isEqual(originValue, xValue, xScale)) {
+          tmp.push(obj);
+        }
+      });
+    });
 
-    if (field === yfield) {
-      let yData = yScale.invert(invertPoint.y);
-      if (!yScale.isCategory) {
-        yData = self._getSnap(yScale, yData);
-      }
-      dataArray.forEach(function(data) {
-        data.forEach(function(obj) {
-          if (Util.isArray(yData) ? Util.equalsArray(obj[yfield], yData) : obj[yfield] === yData) {
-            rst.push(obj);
-          }
-        });
+    // 特别针对饼图做处理
+    if (this.hasAdjust('stack') && coord.isPolar && coord.transposed && xScale.values.length === 1) {
+      let yValue = yScale.invert(invertPoint.y);
+      yValue = self._getSnap(yScale, yValue, tmp);
+      tmp.forEach(function(obj) {
+        if (Util.isArray(yValue) ? Util.Array.equals(obj[FIELD_ORIGIN_Y], yValue) : obj[FIELD_ORIGIN_Y] === yValue) {
+          rst.push(obj);
+        }
       });
     } else {
-      let xData = xScale.invert(invertPoint.x);
-      if (!xScale.isCategory) {
-        xData = self._getSnap(xScale, xData);
-      }
-      dataArray.forEach(function(data) {
-        data.forEach(function(obj) {
-          const originValue = Util.isNull(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
-          if (self._isEqual(originValue, xData, xScale)) {
-            rst.push(obj);
-          }
-        });
-      });
+      rst = tmp;
     }
+
     return rst;
   }
 
