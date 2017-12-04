@@ -35,6 +35,7 @@ describe('interval', () => {
     });
     chart.interval().position('city*tem').color('city');
     chart.render();
+
   });
 
   describe('range', () => {
@@ -139,6 +140,12 @@ describe('interval', () => {
       .color('city')
       .adjust('stack');
     chart.render();
+
+    canvas.onclick = function(ev) {
+      const point = chart.getPointByClient(ev.clientX, ev.clientY);
+      const records = chart.getSnapRecords(point, 'b');
+      console.log(records);
+    };
   });
 
   describe('interval dodge', () => {
