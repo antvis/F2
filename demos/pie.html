@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Normal Area Plot</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
+  const canvas = document.createElement('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const data = [
+    {a: '1', b: 0.3, c: '1'},
+    {a: '1', b: 0.3, c: '2'},
+    {a: '1', b: 0.4, c: '3'}
+  ];
+  const chart = new F2.Chart({
+    el: canvas
+  });
+  chart.source(data);
+  chart.coord('polar', {
+    transposed: true
+  });
+  chart.axis(false);
+  chart.interval().position('a*b')
+    .color('c')
+    .adjust('stack');
+  chart.render();
+</script>
+</body>
+</html>
