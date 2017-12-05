@@ -432,6 +432,16 @@ describe('test geom line', function() {
     geom.paint();
   });
 
+  it('first null line', function() {
+    clearCanvas(canvas);
+    const data = [{ a: 1, b: null, c: '1' }, { a: 4, b: null, c: '1' }, { a: 2, b: 2, c: '2' }, { a: 3, b: 4, c: '1' }, { a: 2.5, b: 3.5, c: '1' }];
+    geom.reset();
+    geom.set('data', data);
+    geom.position('a*b');
+    geom.init();
+    geom.paint();
+  });
+
   it('destroy & reset', function() {
     geom.destroy();
     expect(geom.destroyed).equal(true);
