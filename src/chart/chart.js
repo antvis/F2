@@ -289,15 +289,21 @@ class Chart extends Base {
     const el = self.get('el');
     const context = self.get('context');
     let canvas;
-    if (el) {
+
+    if (context) { // CanvasRenderingContext2D
+      canvas = context.canvas;
+    } else if (el) { // HTMLElement
       canvas = el;
-    } else {
+    } else if (id) { // dom id
       canvas = document.getElementById(id);
-      if (!canvas) {
-        throw new Error('Please specify the id or el of the chart!');
-      }
     }
+
+    if (!canvas) {
+      throw new Error('Please specify the id or el of the chart!');
+    }
+
     self.set('canvas', canvas);
+
     if (context && canvas && !canvas.getContext) {
       canvas.getContext = function() {
         return context;
@@ -306,25 +312,24 @@ class Chart extends Base {
     let width = self.get('width');
     let height = self.get('height');
     const ratio = self._getRatio();
+
     if (!width) {
-      width = DomUtil.getWidth(canvas);
+      width = canvas.width || DomUtil.getWidth(canvas);
       self.set('width', width);
     }
 
     if (!height) {
-      height = DomUtil.getHeight(canvas);
+      height = canvas.height || DomUtil.getHeight(canvas);
       self.set('height', height);
     }
 
-    if (ratio) {
+    if (ratio > 1) {
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       DomUtil.modiCSS(canvas, { height: height + 'px' });
       DomUtil.modiCSS(canvas, { width: width + 'px' });
-      if (ratio !== 1) {
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
+      const ctx = canvas.getContext('2d');
+      ctx.scale(ratio, ratio);
     }
 
     self._initLayout();
