@@ -314,22 +314,24 @@ class Chart extends Base {
     const ratio = self._getRatio();
 
     if (!width) {
-      width = canvas.width || DomUtil.getWidth(canvas);
+      width = DomUtil.getWidth(canvas);
       self.set('width', width);
     }
 
     if (!height) {
-      height = canvas.height || DomUtil.getHeight(canvas);
+      height = DomUtil.getHeight(canvas);
       self.set('height', height);
     }
 
-    if (ratio > 1) {
+    if (ratio) {
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       DomUtil.modiCSS(canvas, { height: height + 'px' });
       DomUtil.modiCSS(canvas, { width: width + 'px' });
-      const ctx = canvas.getContext('2d');
-      ctx.scale(ratio, ratio);
+      if (ratio !== 1) {
+        const ctx = canvas.getContext('2d');
+        ctx.scale(ratio, ratio);
+      }
     }
 
     self._initLayout();
