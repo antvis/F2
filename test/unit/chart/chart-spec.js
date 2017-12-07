@@ -23,8 +23,8 @@ describe('chart test', () => {
       expect(chart.get('width')).equal(500);
       expect(chart.get('height')).equal(500);
       expect(canvas.width).equal(500);
-      expect(canvas.style.width).equal('');
-      expect(canvas.style.height).equal('');
+      expect(canvas.style.width).equal('500px');
+      expect(canvas.style.height).equal('500px');
     });
 
     it('destroy', function() {
@@ -64,30 +64,30 @@ describe('chart test', () => {
     });
 
     it('init with context', function() {
-      // canvas width 800, canvas height 600
+      // canvas width 400, canvas height 600
       chart = new Chart({
         context: canvas.getContext('2d')
       });
 
-      expect(chart.get('width')).equal(800);
-      expect(chart.get('height')).equal(1200);
-      expect(canvas.width).equal(800);
+      expect(chart.get('width')).equal(400);
+      expect(chart.get('height')).equal(600);
+      expect(canvas.width).equal(400);
       expect(canvas.style.width).equal('400px');
       chart.destroy();
     });
 
     it('init with context, and with pixelRatio > 1', function() {
-      // canvas width 800, canvas height 600
+      // canvas width 400, canvas height 600
       chart = new Chart({
         context: canvas.getContext('2d'),
         pixelRatio: 4
       });
 
-      expect(chart.get('width')).equal(800);
-      expect(chart.get('height')).equal(1200);
-      expect(canvas.width).equal(3200);
-      expect(canvas.height).equal(4800);
-      expect(canvas.style.width).equal('800px');
+      expect(chart.get('width')).equal(400);
+      expect(chart.get('height')).equal(600);
+      expect(canvas.width).equal(1600);
+      expect(canvas.height).equal(2400);
+      expect(canvas.style.width).equal('400px');
       chart.destroy();
     });
 
