@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Line Plot</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
+  'use strict';
+
+  //初始化Canvas
+  const F2 = window.F2;
+  const canvas = document.createElement('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+
+  //使用F2内建方法进行绘图
+  const Graphic = F2.Graphic;
+
+  //注册自定义形状
+  const hybridDefine = {
+    draw(cfg, canvas) {
+      const style = Object.assign({
+        strokeStyle: cfg.color,
+        lineWidth: cfg.size || 4,
+        z: cfg.isInCircle
+      }, cfg.style);
+
+      const points = cfg.points;
+      const dashDim = cfg.style.dashDim || null;
+
+      if (points.length < 2) return;
+
+      if (dashDim) {
+        const lines = this.splitLines(points, dashDim);
+        let i = 0, l = lines.length;
+        for (; i < l; i++) {
+          let line = lines[i];
+          if (line.isDash) {
+            Graphic.drawLines(line, canvas, Object.assign({
+              lineDash: [style.lineWidth * 2, style.lineWidth * 2]
+            }, style));
+          } else {
+            Graphic.drawLines(line, canvas, style);
+          }
+        }
+      } else {
+        Graphic.drawLines(points, canvas, style);
+      }
+    },
+
+    //将一整条线按实线虚线分为多条
+    splitLines(ps, dim) {
+      let lines = [];
+      let i = 0, cur = [], last = null;
+      last = cur.isDash = ps[0]._origin[dim] === true;
+      cur.start = ps[0];
+
+      //分线
+      while (i < ps.length) {
+        const p = ps[i];
+        const isDash = p._origin[dim] === true;
+        if (last !== isDash) {
+          cur.end = p;
+          lines.push(cur);
+
+          cur = [p];
+          cur.start = ps[i - 1];
+          cur.isDash = isDash;
+        } else {
+          cur.push(p);
+        }
+
+        if (i >= ps.length - 1) {
+          cur.end = p;
+          lines.push(cur);
+        }
+        last = isDash;
+        i++;
+      }
+
+      //计算绘制点
+      lines = lines.map(ps => {
+        let i = 0, l = ps.length, line = [];
+        line.isDash = ps.isDash;
+        line.push(this.getMid(ps.start, ps[0]));
+        for (; i < l; i++) {
+          line.push(ps[i]);
+        }
+        line.push(this.getMid(ps[l - 1], ps.end));
+        return line;
+      });
+
+      return lines;
+    },
+
+    //计算两个点的中点
+    getMid(p1, p2) {
+      return {
+        x: (p1.x + p2.x) / 2,
+        y: (p1.y + p2.y) / 2,
+      }
+    }
+  };
+  F2.Shape.registerShape('line', 'hybrid', hybridDefine);
+
+  const random = (a, b) => a + Math.random() * (b - a);
+  const data = [
+    {type: 'a', x: 1, y: random(2, 1.2)},
+    {type: 'a', x: 2, y: random(2, 1.6)},
+    {type: 'a', x: 3, y: random(2, 2.0)},
+    {type: 'a', x: 4, y: random(2, 2.4)},
+    {type: 'a', x: 5, y: random(2, 2.8)},
+    {type: 'a', x: 6, y: random(2, 3.2), dash: true},
+    {type: 'a', x: 7, y: random(2, 3.6), dash: true},
+    {type: 'a', x: 8, y: random(2, 4.0), dash: false},
+    {type: 'a', x: 9, y: random(2, 4.4)},
+
+    {type: 'b', x: 1, y: random(3, 3.2), dash: true},
+    {type: 'b', x: 2, y: random(3, 3.6), dash: true},
+
+    {type: 'c', x: 1, y: random(0, 1.2)},
+    {type: 'c', x: 2, y: random(0, 1.2), dash: true},
+    {type: 'c', x: 3, y: random(0, 1.6), dash: true},
+
+    {type: 'd', x: 5, y: random(1, 1.2), dash: true},
+    {type: 'd', x: 6, y: random(1, 1.2), dash: true},
+    {type: 'd', x: 7, y: random(1, 1.6)},
+  ];
+  const chart = new F2.Chart({
+    el: canvas
+  });
+  // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
+  chart.axis('x', {
+    label: {
+      fontSize: 14
+    }
+  });
+  chart.axis('y', {
+    label: {
+      fontSize: 14
+    }
+  });
+
+  chart.source(data);
+  chart.line()
+    .shape('hybrid')
+    .position('x*y')
+    .size(2)
+    .color('type')
+    .style({dashDim: 'dash'});
+  chart.render();
+</script>
+</body>
+</html>
