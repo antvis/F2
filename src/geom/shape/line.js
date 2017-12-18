@@ -4,7 +4,7 @@
  */
 
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Shape = require('./shape');
 const ShapeUtil = require('./util');
 

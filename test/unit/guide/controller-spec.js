@@ -1,5 +1,5 @@
 const Guide = require('../../../src/guide/');
-const GuideAssist = require('../../../src/chart/assist/guide');
+const GuideController = require('../../../src/chart/controller/guide');
 const Scale = require('../../../src/scale/');
 const Coord = require('../../../src/coord/');
 const Plot = require('../../../src/chart/plot');
@@ -37,9 +37,9 @@ const yScale = new Scale.linear({
   max: 1200
 });
 
-describe('guide assist', function() {
+describe('guide controller', function() {
 
-  it('assist method:arc(start, end, cfg)', function() {
+  it('controller method:arc(start, end, cfg)', function() {
     const cfg = {
       strokeStyle: 'red',
       lineWidth: 2
@@ -47,27 +47,27 @@ describe('guide assist', function() {
 
     const start = [ 0, 1200 ];
     const end = [ 2.999, 1200 ];
-    const assist = new GuideAssist({});
+    const controller = new GuideController({});
 
-    assist.setScale(xScale, yScale);
-    assist.arc(start, end, cfg);
-    assist.paint(coordCircle, canvas);
+    controller.setScale(xScale, yScale);
+    controller.arc(start, end, cfg);
+    controller.paint(coordCircle, canvas);
   });
 
-  it('assist method:line(from,to,cfg)', function() {
+  it('controller method:line(from,to,cfg)', function() {
     const cfg = {
       strokeStyle: 'red',
       lineWidth: 2
     };
     const from = [ '一月', 200 ];
     const to = [ '五月', 1000 ];
-    const assist = new GuideAssist({});
+    const controller = new GuideController({});
 
-    assist.setScale(xScale, yScale);
-    assist.line(from, to, cfg);
-    assist.paint(coord, canvas);
+    controller.setScale(xScale, yScale);
+    controller.line(from, to, cfg);
+    controller.paint(coord, canvas);
   });
-  it('assist method:text(position,text,cfg)', function() {
+  it('controller method:text(position,text,cfg)', function() {
     const cfg = {
       strokeStyle: 'red',
       lineWidth: 2
@@ -75,34 +75,34 @@ describe('guide assist', function() {
     const position = [ '五月', 1000 ];
     const text = '(五月,1000)';
 
-    const assist = new GuideAssist({});
+    const controller = new GuideController({});
 
-    assist.setScale(xScale, yScale);
-    assist.text(position, text, cfg);
-    assist.paint(coord, canvas);
+    controller.setScale(xScale, yScale);
+    controller.text(position, text, cfg);
+    controller.paint(coord, canvas);
   });
-  it('assist method:html(poinf,html,cfg)', function() {
+  it('controller method:html(poinf,html,cfg)', function() {
     const point = [ '一月', 200 ];
     const cfg = {
       align: 'tc'
     };
-    const assist = new GuideAssist({});
+    const controller = new GuideController({});
     const html = '<button>a</button>';
-    assist.setScale(xScale, yScale);
-    assist.html(point, html, cfg);
-    assist.paint(coord, canvas);
+    controller.setScale(xScale, yScale);
+    controller.html(point, html, cfg);
+    controller.paint(coord, canvas);
   });
-  it('assist method:rect(start,end,cfg)', function() {
+  it('controller method:rect(start,end,cfg)', function() {
     const start = [ '一月', 200 ];
     const end = [ '二月', 400 ];
     const cfg = {
       fillStyle: '#fafafa'
     };
-    const assist = new GuideAssist({
+    const controller = new GuideController({
       guide: new Guide()
     });
-    assist.setScale(xScale, yScale);
-    assist.rect(start, end, cfg);
-    assist.paint(coord, canvas);
+    controller.setScale(xScale, yScale);
+    controller.rect(start, end, cfg);
+    controller.paint(coord, canvas);
   });
 });

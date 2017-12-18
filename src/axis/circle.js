@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../util');
+const Util = require('../util/common');
 const Abstract = require('./abstract');
 const G = require('../graphic/g');
 const Vector2 = require('../graphic/vector2');

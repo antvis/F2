@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../util');
+const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
@@ -748,18 +748,6 @@ class Geom extends Base {
     const type = this.get('type');
     const shapes = Global.shapes[type] || [];
     this._createAttrOption('shape', field, values, shapes);
-    return this;
-  }
-
-  /**
-   * 透明度属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @param  {Array|Function} values 透明度的数组或者回调函数
-   * @return {Geom} geom 当前几何标记
-   */
-  opacity(field, values) {
-    this._createAttrOption('opacity', field, values, Global.opacities);
     return this;
   }
 

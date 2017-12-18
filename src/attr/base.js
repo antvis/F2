@@ -1,9 +1,4 @@
-/**
- * @fileOverview the Attribute base class
- * @author huangtonger@aliyun.com
- */
-
-const Util = require('../util');
+const Util = require('../util/common');
 
 function toScaleString(scale, value) {
   if (Util.isString(value)) {

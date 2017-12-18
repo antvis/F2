@@ -5,7 +5,7 @@
 
 const Geom = require('./base');
 const ShapeUtil = require('./shape/util');
-const Util = require('../util');
+const Util = require('../util/common');
 require('./shape/area');
 
 class Area extends Geom {

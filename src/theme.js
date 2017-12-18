@@ -2,11 +2,9 @@
  * @fileOverview 默认皮肤
  * @author dxq613@gail.com
  */
-
-
 const axisLineColor = '#999999';
 const lineColor = '#E9E9E9';
-const Util = require('./util');
+const Util = require('./util/common');
 const defaultAxis = {
   label: {
     fillStyle: '#979797',

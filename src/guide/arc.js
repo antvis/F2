@@ -4,7 +4,7 @@
  */
 
 
-const Util = require('../util');
+const Util = require('../util/common');
 const Guide = require('./guide');
 const Vector2 = require('../graphic/vector2');
 const G = require('../graphic/g');

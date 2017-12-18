@@ -1,4 +1,4 @@
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Shape = require('./shape');
 const G = require('../../graphic/g');
 
