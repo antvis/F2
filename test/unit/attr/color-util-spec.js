@@ -1,6 +1,6 @@
 
 const expect = require('chai').expect;
-const ColorUtil = require('../../../src/attr/color-util');
+const ColorUtil = require('../../../src/util/color');
 
 describe('color util test', function() {
   it('color to rgb', () => {

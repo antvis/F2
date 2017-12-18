@@ -2,13 +2,11 @@
  * @fileOverview animate assist to g2-mobile
  * @ignore
  */
-
-
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Global = require('../../global');
 const Animate = require('../../animate/index');
 
-class AnimateAssist {
+class AnimateController {
   constructor(cfg) {
     this.animate = false;
     Util.mix(this, cfg);
@@ -70,4 +68,4 @@ class AnimateAssist {
   }
 }
 
-module.exports = AnimateAssist;
+module.exports = AnimateController;

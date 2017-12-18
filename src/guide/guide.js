@@ -3,7 +3,7 @@
  * @author 旻诺<audrey.tm@alibaba-inc.com>
  */
 
-const Util = require('../util');
+const Util = require('../util/common');
 const KEYWORDS_PERCENT = {
   min: 0,
   medium: 0.5,

@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Global = require('../../global');
 const Scale = require('../../scale/');
 const TYPES = {
@@ -27,7 +27,7 @@ function getRange(values) {
   };
 }
 
-class ScaleAssist {
+class ScaleController {
   constructor(cfg) {
     // defs 列定义
     this.defs = {};
@@ -122,4 +122,4 @@ class ScaleAssist {
   }
 }
 
-module.exports = ScaleAssist;
+module.exports = ScaleController;

@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Util = require('../../src/util');
+const Util = require('../../src/util/common');
 
 
 describe('test basic util', function() {

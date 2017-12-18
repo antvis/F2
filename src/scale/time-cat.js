@@ -4,7 +4,7 @@
  */
 
 const Category = require('./category');
-const Util = require('../util');
+const Util = require('../util/common');
 const fecha = require('fecha');
 const catAuto = require('./auto/cat');
 const TimeUtil = require('./time-util');

@@ -1,6 +1,6 @@
-const Scalex = require('../../../src/animate/scalex.js');
-const Scaley = require('../../../src/animate/scaley.js');
-const Scalexy = require('../../../src/animate/scalexy.js');
+const Scalex = require('../../../src/animate/scale-x.js');
+const Scaley = require('../../../src/animate/scale-y.js');
+const Scalexy = require('../../../src/animate/scale-xy.js');
 
 const $ = require('jquery');
 

@@ -1,9 +1,9 @@
 
 const Animate = require('./animate');
-Animate.Scalex = require('./scalex');
-Animate.Scaley = require('./scaley');
-Animate.Scalexy = require('./scalexy');
-Animate.Waveh = require('./waveh');
-Animate.Wavec = require('./wavec');
+Animate.Scalex = require('./scale-x');
+Animate.Scaley = require('./scale-y');
+Animate.Scalexy = require('./scale-xy');
+Animate.Waveh = require('./wave-h');
+Animate.Wavec = require('./wave-c');
 
 module.exports = Animate;
