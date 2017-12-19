@@ -1,11 +1,6 @@
-/**
- * @fileOverview G2-mobile 的动画
- * @author 旻诺<audrey.tm@alibaba-inc.com> , dxq613@gmail.com
- */
-
-const Util = require('../util');
+const Util = require('../util/common');
 const AnimateUtil = require('./util');
-const DomUtil = require('../dom-util');
+const DomUtil = require('../util/dom');
 
 class Animate {
 

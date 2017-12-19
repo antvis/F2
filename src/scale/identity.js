@@ -4,7 +4,7 @@
  */
 
 const Base = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 
 class Identity extends Base {
 

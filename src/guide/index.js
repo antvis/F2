@@ -4,7 +4,7 @@
  */
 
 
-const Util = require('../util');
+const Util = require('../util/common');
 const Guide = require('./guide');
 Guide.Text = require('./text');
 Guide.Line = require('./line');
@@ -12,9 +12,9 @@ Guide.Arc = require('./arc');
 Guide.Html = require('./html');
 Guide.Rect = require('./rect');
 
-const GuideAssist = require('../chart/assist/guide');
+const GuideController = require('../chart/controller/guide');
 
-Util.mix(GuideAssist.prototype, {
+Util.mix(GuideController.prototype, {
   _getDefault() {
     return {
       xScale: this.xScale,
@@ -27,7 +27,7 @@ Util.mix(GuideAssist.prototype, {
    * @param  {Array} start 起始点
    * @param  {Array} end   结束点
    * @param  {Object} cfg  配置项
-   * @return {Object} guideAssist 对象
+   * @return {Object} guideController 对象
    */
   line(start, end, cfg) {
     const config = {
@@ -47,7 +47,7 @@ Util.mix(GuideAssist.prototype, {
    * @param  {Array} position 文本位置
    * @param  {String} text   文本
    * @param  {Object} cfg  配置项
-   * @return {Object} guideAssist 对象
+   * @return {Object} guideController 对象
    */
   text(position, text, cfg) {
     const config = {
@@ -68,7 +68,7 @@ Util.mix(GuideAssist.prototype, {
    * @param  {Array} start 弧线开始点
    * @param  {Array} end 弧线结束点
    * @param  {Object} cfg  配置项
-   * @return {Object} guideAssist 对象
+   * @return {Object} guideController 对象
    */
   arc(start, end, cfg) {
     const config = {
@@ -89,7 +89,7 @@ Util.mix(GuideAssist.prototype, {
    * @param  {Array} position 位置
    * @param  {String} html html文本
    * @param  {Object} cfg  配置项
-   * @return {Object} guideAssist 对象
+   * @return {Object} guideController 对象
    */
   html(position, html, cfg) {
     const config = {

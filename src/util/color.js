@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../util');
+const Util = require('./common');
 const RGB_REG = /rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
 
 // 创建辅助 tag 取颜色

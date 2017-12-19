@@ -4,7 +4,7 @@
  */
 
 const Shape = require('./shape');
-const Util = require('../../util');
+const Util = require('../../util/common');
 const G = require('../../graphic/g');
 
 const Polygon = Shape.registerFactory('polygon', {

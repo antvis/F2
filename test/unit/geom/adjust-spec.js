@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const Adjust = require('../../../src/geom/adjust/index');
-const Util = require('../../../src/util');
+const Util = require('../../../src/util/common');
 
 describe('stack adjust', function() {
 

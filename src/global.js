@@ -4,7 +4,7 @@
  */
 
 const Theme = require('./theme');
-const Util = require('./util');
+const Util = require('./util/common');
 
 /**
  * @class 全局配置项

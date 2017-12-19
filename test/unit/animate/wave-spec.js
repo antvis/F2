@@ -1,5 +1,5 @@
-const Wavah = require('../../../src/animate/waveh.js');
-const Wavac = require('../../../src/animate/wavec.js');
+const Wavah = require('../../../src/animate/wave-h.js');
+const Wavac = require('../../../src/animate/wave-c.js');
 
 const $ = require('jquery');
 

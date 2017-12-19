@@ -5,7 +5,7 @@
  */
 
 const Global = require('../../global');
-const Util = require('../../util');
+const Util = require('../../util/common');
 
 // 已经排序后的数据查找距离最小的
 function findMinDistance(arr, scale) {

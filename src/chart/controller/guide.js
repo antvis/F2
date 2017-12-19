@@ -3,14 +3,14 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 
-const GuideAssist = function(cfg) {
+const GuideController = function(cfg) {
   Util.mix(this, cfg);
   this.guides = [];
 };
 
-Util.mix(GuideAssist.prototype, {
+Util.mix(GuideController.prototype, {
   guides: null,
   xScale: null,
   yScale: null,
@@ -66,4 +66,4 @@ Util.mix(GuideAssist.prototype, {
   }
 });
 
-module.exports = GuideAssist;
+module.exports = GuideController;

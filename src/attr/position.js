@@ -1,10 +1,4 @@
-/**
- * @fileOverview the position attribute of core
- * @author huangtonger@aliyun.com
- */
-
-
-const Util = require('../util');
+const Util = require('../util/common');
 const Base = require('./base');
 
 class Position extends Base {

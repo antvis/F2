@@ -1,8 +1,3 @@
-/**
- * @fileOverview 横向缩放
- * @author dxq613@gmail.com
- */
-
 const Animate = require('./animate');
 
 class Scalex extends Animate {
