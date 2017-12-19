@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const MAX_COUNT = 8;
 
 function getSimpleArray(data) {

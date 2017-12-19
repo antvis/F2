@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Axis = require('../../axis/index');
 const Global = require('../../global');
 
@@ -27,7 +27,7 @@ function formatTicks(ticks) {
   return tmp;
 }
 
-class AxisAssist {
+class AxisController {
 
   constructor(cfg) {
     this.axisCfg = {};
@@ -229,4 +229,4 @@ class AxisAssist {
 
 }
 
-module.exports = AxisAssist;
+module.exports = AxisController;

@@ -1,8 +1,3 @@
-/**
- * @fileOverview the size attribute of core
- * @author huangtonger@aliyun.com
- */
-
 const Base = require('./base');
 
 /**

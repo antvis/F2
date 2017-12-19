@@ -4,7 +4,7 @@
  */
 
 
-const DomUtil = require('../dom-util');
+const DomUtil = require('../util/dom');
 const Guide = require('./guide');
 const Global = require('../global');
 

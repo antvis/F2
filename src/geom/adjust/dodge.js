@@ -4,7 +4,7 @@
  */
 
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Adjust = require('./base');
 const Global = require('../../global');
 

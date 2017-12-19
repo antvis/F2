@@ -1,4 +1,4 @@
-const Util = require('../util');
+const Util = require('../util/common');
 
 let U_ID = 0;
 const HANDLERS = {};

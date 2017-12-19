@@ -5,7 +5,7 @@
 
 
 const Base = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 const catAuto = require('./auto/cat');
 
 /**

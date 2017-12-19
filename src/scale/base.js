@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../util');
+const Util = require('../util/common');
 
 /**
  * 度量的构造函数

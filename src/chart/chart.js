@@ -5,15 +5,15 @@
 
 const Base = require('../base');
 const Plot = require('./plot');
-const Util = require('../util');
+const Util = require('../util/common');
 const Coord = require('../coord/index');
 const Geom = require('../geom/base');
-const ScaleAssist = require('./assist/scale');
-const AxisAssist = require('./assist/axis');
-const GuideAssist = require('./assist/guide');
+const ScaleController = require('./controller/scale');
+const AxisController = require('./controller/axis');
+const GuideController = require('./controller/guide');
 const Global = require('../global');
-const DomUtil = require('../dom-util');
-const AnimateAssist = require('./assist/animate');
+const DomUtil = require('../util/dom');
+const AnimateController = require('./controller/animate');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -126,12 +126,12 @@ class Chart extends Base {
    */
   axis(field, cfg) {
     const self = this;
-    const axisAssist = self.get('axisAssist');
+    const axisController = self.get('axisController');
     if (!field) {
-      axisAssist.axisCfg = null;
+      axisController.axisCfg = null;
     } else {
-      axisAssist.axisCfg = axisAssist.axisCfg || {};
-      axisAssist.axisCfg[field] = cfg;
+      axisController.axisCfg = axisController.axisCfg || {};
+      axisController.axisCfg[field] = cfg;
     }
     return self;
   }
@@ -157,8 +157,8 @@ class Chart extends Base {
     const self = this;
     const coord = self.get('coord');
     const inCircle = coord.isPolar;
-    const scaleAssist = self.get('scaleAssist');
-    return scaleAssist.createScale(field, data, inCircle);
+    const scaleController = self.get('scaleController');
+    return scaleController.createScale(field, data, inCircle);
   }
 
   /**
@@ -257,12 +257,12 @@ class Chart extends Base {
     self._initCanvas();
     self.set('layers', []);
     self.set('geoms', []);
-    self.set('scaleAssist', new ScaleAssist());
-    self.set('axisAssist', new AxisAssist({
+    self.set('scaleController', new ScaleController());
+    self.set('axisController', new AxisController({
       canvas: self.get('canvas')
     }));
-    self.set('guideAssist', new GuideAssist());
-    self.set('animateAssist', new AnimateAssist());
+    self.set('guideController', new GuideController());
+    self.set('animateController', new AnimateController());
     self._initData(self.get('data'));
   }
 
@@ -273,8 +273,8 @@ class Chart extends Base {
     }
     const colDefs = this.get('colDefs');
     if (colDefs) {
-      const scaleAssist = this.get('scaleAssist');
-      scaleAssist.defs = colDefs;
+      const scaleController = this.get('scaleController');
+      scaleController.defs = colDefs;
     }
   }
 
@@ -436,19 +436,19 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    this.get('guideAssist').clear();
+    this.get('guideController').clear();
     this._removeGeoms();
     this._clearInner();
     return this;
   }
 
   _clearInner() {
-    this.get('animateAssist').stop();
+    this.get('animateController').stop();
     this.set('scales', {});
     this._clearGeoms();
     this._clearCanvas();
     const parent = this.get('canvas').parentNode;
-    this.get('guideAssist').reset(parent);
+    this.get('guideController').reset(parent);
   }
 
   destroy() {
@@ -464,11 +464,11 @@ class Chart extends Base {
   }
 
   _beforeRenderGuide() {
-    const guideAssist = this.get('guideAssist');
-    if (guideAssist.guides.length) {
+    const guideController = this.get('guideController');
+    if (guideController.guides.length) {
       const xScale = this._getXScale();
       const yScale = this._getYScales()[0];
-      guideAssist.setScale(xScale, yScale);
+      guideController.setScale(xScale, yScale);
     }
   }
 
@@ -476,20 +476,20 @@ class Chart extends Base {
   _renderBackGuide() {
     const self = this;
     const canvas = self.get('canvas');
-    const guideAssist = self.get('guideAssist');
-    if (guideAssist.guides.length) {
+    const guideController = self.get('guideController');
+    if (guideController.guides.length) {
       const coord = self.get('coord');
-      guideAssist.paintBack(coord, canvas);
+      guideController.paintBack(coord, canvas);
     }
   }
 
   _renderFrontGuide() {
     const self = this;
     const canvas = self.get('canvas');
-    const guideAssist = self.get('guideAssist');
-    if (guideAssist && guideAssist.guides.length) {
+    const guideController = self.get('guideController');
+    if (guideController && guideController.guides.length) {
       const coord = self.get('coord');
-      guideAssist.paintFront(coord, canvas);
+      guideController.paintFront(coord, canvas);
     }
   }
 
@@ -497,7 +497,7 @@ class Chart extends Base {
     const self = this;
     const imageData = self.get('imageData');
     const bgImageData = self.get('bgImageData');
-    const animateAssist = self.get('animateAssist');
+    const animateController = self.get('animateController');
     const canvas = self.get('canvas');
     const coord = self.get('coord');
     const center = coord.get('center');
@@ -511,16 +511,16 @@ class Chart extends Base {
       y: yScale.scale(yMin)
     });
 
-    if (animateAssist.animate) {
-      animateAssist.setOptions({
+    if (animateController.animate) {
+      animateController.setOptions({
         imageData,
         bgImageData,
         startPoint,
         center,
         radius
       });
-      animateAssist.setCallBack(callback);
-      animateAssist.paint(canvas);
+      animateController.setCallBack(callback);
+      animateController.paint(canvas);
     }
   }
 
@@ -533,12 +533,12 @@ class Chart extends Base {
     const self = this;
     self._initCoord();
     const geoms = self.get('geoms');
-    const animateAssist = self.get('animateAssist');
+    const animateController = self.get('animateController');
     self._initGeoms(geoms);
     this._adjustScale();
     self.beforeDrawGeom();
 
-    if (animateAssist.animate) {
+    if (animateController.animate) {
       self.set('bgImageData', self.getImageData());
       self._clearCanvas();
       self.drawGeom(geoms);
@@ -612,8 +612,8 @@ class Chart extends Base {
     xScale && scales.push(xScale);
     scales = scales.concat(yScales);
     const inFullCircle = coord.isPolar && isFullCircle(coord);
-    const scaleAssist = self.get('scaleAssist');
-    const colDefs = scaleAssist.defs;
+    const scaleController = self.get('scaleController');
+    const colDefs = scaleController.defs;
     Util.each(scales, function(scale) {
       if ((scale.isCategory || scale.isIdentity) && scale.values && !(colDefs[scale.field] && colDefs[scale.field].range)) {
         const count = scale.values.length;
@@ -667,24 +667,24 @@ class Chart extends Base {
   // 绘制坐标轴
   _renderAxis() {
     const self = this;
-    const axisAssist = self.get('axisAssist');
+    const axisController = self.get('axisController');
     const xScale = self._getXScale();
     const yScales = self._getYScales();
     const coord = self.get('coord');
-    axisAssist.createAxis(coord, xScale, yScales);
+    axisController.createAxis(coord, xScale, yScales);
   }
 
   /**
    * 添加辅助信息
-   * @return {GuideAssist} Guide辅助类
+   * @return {GuideController} Guide辅助类
    */
   guide() {
-    return this.get('guideAssist');
+    return this.get('guideController');
   }
 
   animate(cfg) {
-    const animateAssist = this.get('animateAssist');
-    animateAssist.setAnimate(cfg);
+    const animateController = this.get('animateController');
+    animateController.setAnimate(cfg);
     return self;
   }
 }

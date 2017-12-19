@@ -91,7 +91,7 @@ describe('attr test color', () => {
 
 });
 
-describe('attr test size & opacity', () => {
+describe('attr test size', () => {
   const scaleCat = Scale.cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
@@ -133,17 +133,6 @@ describe('attr test size & opacity', () => {
     expect(size.mapping('a')[0]).equal(0);
     expect(size.mapping('b')[0]).equal(10);
     expect(size.mapping('c')[0]).equal(100);
-  });
-
-  it('mapping opacity', () => {
-    const opactiy = new Attr.Opacity({
-      scales: [ scaleLinear ],
-      values: [ 0, 1 ]
-    });
-    expect(opactiy.type).equal('opacity');
-    expect(opactiy.mapping(0)[0]).equal(0);
-    expect(opactiy.mapping(10)[0]).equal(1);
-    expect(opactiy.mapping(5)[0]).equal(0.5);
   });
 });
 

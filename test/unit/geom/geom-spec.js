@@ -108,17 +108,14 @@ describe('test geoms', function() {
           .shape('a', [ 'circle', 'rect' ])
           .size('b', function() {
 
-          })
-          .opacity(0.8);
+          });
       const attrOptions = geom.get('attrOptions');
       // debugger;
       expect(attrOptions.color.field).eqls('red');
       expect(attrOptions.color.values).eqls(Global.colors);
-      // expect(attrOptions.color.values).to.be.undefined;
       expect(attrOptions.shape).eqls({ field: 'a', values: [ 'circle', 'rect' ] });
       expect(attrOptions.size.field).equal('b');
       expect(attrOptions.size.callback).to.be.a('function');
-      expect(attrOptions.opacity.field).equal(0.8);
     });
 
   });

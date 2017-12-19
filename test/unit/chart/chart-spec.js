@@ -92,17 +92,17 @@ describe('chart test', () => {
     });
 
 
-    it('test assist', function() {
+    it('test controller', function() {
       chart = new Chart({
         el: canvas,
         width: 400,
         height: 600,
         padding: 50
       });
-      expect(chart.get('scaleAssist')).not.equal(undefined);
-      expect(chart.get('guideAssist')).not.equal(undefined);
-      expect(chart.get('axisAssist')).not.equal(undefined);
-      expect(chart.get('animateAssist')).not.equal(undefined);
+      expect(chart.get('scaleController')).not.equal(undefined);
+      expect(chart.get('guideController')).not.equal(undefined);
+      expect(chart.get('axisController')).not.equal(undefined);
+      expect(chart.get('animateController')).not.equal(undefined);
     });
 
     it('test coord', function() {
@@ -112,7 +112,7 @@ describe('chart test', () => {
 
     it('test methods', function() {
       chart.axis('field', { test: true });
-      expect(chart.get('axisAssist').axisCfg.field).eqls({ test: true });
+      expect(chart.get('axisController').axisCfg.field).eqls({ test: true });
     });
   });
 
@@ -170,7 +170,7 @@ describe('chart test', () => {
     it('guide', function() {
       expect(chart.guide().text).not.equal(undefined);
       chart.guide().text([ 2.5, 3 ], 'test');
-      expect(chart.get('guideAssist').guides.length).equal(1);
+      expect(chart.get('guideController').guides.length).equal(1);
     });
 
     it('geom methods', function() {
