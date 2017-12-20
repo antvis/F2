@@ -20,7 +20,6 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "devDependencies": {
-    "@lite-js/torch": "^0.2.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
@@ -47,6 +46,7 @@
     "pre-commit": "^1.2.2",
     "serve-static": "^1.12.4",
     "shelljs": "^0.7.8",
+    "torchjs": "^1.0.3",
     "uglify-js": "^3.0.15",
     "webpack": "^3.4.1"
   },
@@ -66,7 +66,7 @@
     "prepublishOnly": "npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit/g/element-spec.js",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
