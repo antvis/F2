@@ -31,7 +31,7 @@ class AxisController {
 
   constructor(cfg) {
     this.axisCfg = {};
-    this.canvas = null;
+    this.container = null;
     Util.mix(this, cfg);
   }
 
@@ -146,7 +146,7 @@ class AxisController {
     const ticks = scale.getTicks();
     const cfg = Util.deepMix({
       ticks,
-      canvas: this.canvas
+      container: this.container
     }, defaultCfg, axisCfg[scale.field]);
 
     // 计算栅格

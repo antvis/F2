@@ -1,14 +1,8 @@
-/**
- * @fileOverview point shape
- * @author dxq613@gmail.com
- */
-
-
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const ShapeUtil = require('./util');
 
-const G = require('../../graphic/g');
+// const G = require('../../graphic/g');
 const DEFAULT_SIZE = 4; // 线的默认宽度
 const Global = require('../../global');
 
@@ -20,15 +14,15 @@ const Line = Shape.registerFactory('line', {
 function getStyle(cfg) {
   const style = Util.mix({
     strokeStyle: cfg.color,
-    lineWidth: cfg.size || DEFAULT_SIZE,
-    z: cfg.isInCircle
+    lineWidth: cfg.size || DEFAULT_SIZE
   }, cfg.style);
   return style;
 }
 
-function drawLines(cfg, canvas, style, isSmooth) {
+function drawLines(cfg, container, style, isSmooth) {
   const points = cfg.points;
-  const method = isSmooth ? 'drawSmooth' : 'drawLines';
+  const shapeType = isSmooth ? 'SmoothLine' : 'Polyline';
+  // let lineShape;
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
@@ -38,39 +32,66 @@ function drawLines(cfg, canvas, style, isSmooth) {
       bottomPoints.push(tmp[0]);
       topPoints.push(tmp[1]);
     }
+    if (cfg.isInCircle) {
+      topPoints.push(topPoints[0]);
+      bottomPoints.push(bottomPoints[0]);
+    }
     if (cfg.isStack) {
-      G[method](topPoints, canvas, style);
+      container.addShape(shapeType, {
+        className: 'line',
+        attrs: Util.mix({
+          points: topPoints
+        }, style)
+      });
     } else {
-      G[method](topPoints, canvas, style);
-      G[method](bottomPoints, canvas, style);
+      container.addShape(shapeType, {
+        className: 'line',
+        attrs: Util.mix({
+          points: topPoints
+        }, style)
+      });
+      container.addShape(shapeType, {
+        className: 'line',
+        attrs: Util.mix({
+          points: bottomPoints
+        }, style)
+      });
     }
   } else {
-    G[method](points, canvas, style);
+    if (cfg.isInCircle) {
+      points.push(points[0]);
+    }
+    container.addShape(shapeType, {
+      className: 'line',
+      attrs: Util.mix({
+        points
+      }, style)
+    });
   }
 }
 
 // draw line shape
 Shape.registerShape('line', 'line', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
-    drawLines(cfg, canvas, style);
+    drawLines(cfg, container, style);
   }
 });
 
 // draw smooth line shape
 Shape.registerShape('line', 'smooth', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
-    drawLines(cfg, canvas, style, true);
+    drawLines(cfg, container, style, true);
   }
 });
 
 // draw dash line shape
 Shape.registerShape('line', 'dash', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
     style.lineDash = Global.lineDash;
-    drawLines(cfg, canvas, style);
+    drawLines(cfg, container, style);
   }
 });
 

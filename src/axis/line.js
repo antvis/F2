@@ -4,8 +4,9 @@
  */
 
 const Abstract = require('./abstract');
-const G = require('../graphic/g');
+// const G = require('../graphic/g');
 const Vector2 = require('../graphic/vector2');
+const Util = require('../util/common');
 
 class AxisLine extends Abstract {
 
@@ -38,10 +39,19 @@ class AxisLine extends Abstract {
 
   drawLine(lineCfg) {
     const self = this;
-    const canvas = self.get('canvas');
+    const container = self.get('container');
     const start = self.get('start');
     const end = self.get('end');
-    G.drawLine(start, end, canvas, lineCfg);
+    // G.drawLine(start, end, container, lineCfg);
+    container.addShape('line', {
+      className: 'axis-line',
+      attrs: Util.mix({
+        x1: start.x,
+        y1: start.y,
+        x2: end.x,
+        y2: end.y
+      }, lineCfg)
+    });
   }
 }
 

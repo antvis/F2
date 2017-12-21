@@ -1,8 +1,7 @@
 const Util = require('../util/common');
 const Base = require('../base');
 const Container = require('./container');
-const Group = require('./Group');
-
+const Group = require('./group');
 
 const helpers = {
   getPixelRatio() {

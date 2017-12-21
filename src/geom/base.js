@@ -1,8 +1,3 @@
-/**
- * @fileOverview geometry 的基类
- * @author dxq613@gmail.com
- */
-
 const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
