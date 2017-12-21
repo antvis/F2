@@ -1,8 +1,8 @@
+// done
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const ShapeUtil = require('./util');
 
-// const G = require('../../graphic/g');
 const DEFAULT_SIZE = 4; // 线的默认宽度
 const Global = require('../../global');
 
@@ -22,7 +22,6 @@ function getStyle(cfg) {
 function drawLines(cfg, container, style, isSmooth) {
   const points = cfg.points;
   const shapeType = isSmooth ? 'SmoothLine' : 'Polyline';
-  // let lineShape;
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
