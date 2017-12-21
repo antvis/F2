@@ -46,7 +46,7 @@
     "pre-commit": "^1.2.2",
     "serve-static": "^1.12.4",
     "shelljs": "^0.7.8",
-    "torchjs": "^1.0.3",
+    "torchjs": "^1.0.4",
     "uglify-js": "^3.0.15",
     "webpack": "^3.4.1"
   },
@@ -66,7 +66,7 @@
     "prepublishOnly": "npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit/g/element-spec.js",
+    "test-live": "torch --compile --interactive --recursive ./test/unit/g/",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
