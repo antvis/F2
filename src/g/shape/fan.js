@@ -39,6 +39,8 @@ class Fan extends Shape {
 
     const startAngle = v.angleTo(v1);
     const endAngle = v.angleTo(v2);
+    context.beginPath();
+
     if (startAngle > endAngle && startAngle - endAngle < 0.0001) {
       context.moveTo(cx + radius, cy);
       context.arc(cx, cy, radius, 0, Math.PI);
