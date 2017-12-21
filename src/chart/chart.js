@@ -240,7 +240,8 @@ class Chart extends Base {
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      container: self.get('backPlot')
+      frontPlot: self.get('frontPlot'),
+      backPlot: self.get('backPlot')
     }));
     self.set('guideController', new GuideController());
     self.set('animateController', new AnimateController());

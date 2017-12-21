@@ -6,23 +6,24 @@
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
+  <canvas id="canvas"></canvas>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const canvas = document.createElement('canvas');
+  const canvas = $('#canvas')[0];
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
+
   const data = [
-    {time: '2016-08-08 00:00:00', tem: 10},
-    {time: '2016-08-08 00:10:00', tem: 22},
-    {time: '2016-08-08 00:30:00', tem: 20},
-    {time: '2016-08-09 00:35:00', tem: 26},
-    {time: '2016-08-09 01:00:00', tem: 20},
-    {time: '2016-08-09 01:20:00', tem: 26},
-    {time: '2016-08-10 01:40:00', tem: 28},
-    {time: '2016-08-10 02:00:00', tem: 20},
-    {time: '2016-08-10 02:20:00', tem: 28}
+    { time: '2016-08-08 00:00:00', tem: 10 },
+    { time: '2016-08-08 00:10:00', tem: 22 },
+    { time: '2016-08-08 00:30:00', tem: 20 },
+    { time: '2016-08-09 00:35:00', tem: 26 },
+    { time: '2016-08-09 01:00:00', tem: 20 },
+    { time: '2016-08-09 01:20:00', tem: 26 },
+    { time: '2016-08-10 01:40:00', tem: 28 },
+    { time: '2016-08-10 02:00:00', tem: 20 },
+    { time: '2016-08-10 02:20:00', tem: 28 }
   ];
   const chart = new F2.Chart({
     el: canvas
@@ -32,7 +33,7 @@
       type: 'timeCat',
       mask: 'MM/DD',
       tickCount: 3,
-      range: [0, 1]
+      range: [ 0, 1 ]
     },
     tem: {
       tickCount: 5,
@@ -41,8 +42,14 @@
   };
   // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
   chart.axis('tem', {
+    labelOffset: 0,
     label: {
-      fontSize: 14
+      fontSize: 20,
+      top: true,
+      textAlign: 'start',
+      textBaseline: 'bottom',
+      fill: '#000',
+      fontWeight: 'bold'
     }
   });
   chart.axis('time', {
@@ -52,7 +59,7 @@
   });
   chart.source(data, defs);
   // chart.coord('polar');
-  chart.line().position('time*tem')//.shape('smooth');
+  chart.line().position('time*tem').size(10)//.shape('smooth');
   chart.render();
 </script>
 </body>
