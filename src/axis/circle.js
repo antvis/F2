@@ -5,7 +5,7 @@
 
 const Util = require('../util/common');
 const Abstract = require('./abstract');
-const G = require('../graphic/g');
+// const G = require('../graphic/g');
 const Vector2 = require('../graphic/vector2');
 
 class AxisCircle extends Abstract {
@@ -94,10 +94,20 @@ class AxisCircle extends Abstract {
     const self = this;
     const center = self.get('center');
     const radius = self.get('radius');
-    const canvas = self.get('canvas');
+    const container = self.get('container');
     const startAngle = self.get('startAngle');
     const endAngle = self.get('endAngle');
-    G.drawArc(center, radius, startAngle, endAngle, canvas, lineCfg);
+    // G.drawArc(center, radius, startAngle, endAngle, container, lineCfg);
+    container.addShape('arc', {
+      className: 'axis-line',
+      attrs: Util.mix({
+        x: center.x,
+        y: center.y,
+        r: radius,
+        startAngle,
+        endAngle
+      }, lineCfg)
+    });
   }
 }
 

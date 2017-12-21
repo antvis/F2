@@ -5,7 +5,7 @@
 
 const Util = require('../util/common');
 const Base = require('../base');
-const G = require('../graphic/g');
+// const G = require('../graphic/g');
 const Vector2 = require('../graphic/vector2');
 
 /**
@@ -32,9 +32,9 @@ class Abastract extends Base {
       offsetFactor: 1,
       /**
        * 画布
-       * @type {Canvas}
+       * @type {container}
        */
-      canvas: null,
+      container: null,
       /**
        * 绘制栅格的点
        * @type {Array}
@@ -77,7 +77,7 @@ class Abastract extends Base {
     if (!grid) {
       return;
     }
-    const canvas = self.get('canvas');
+    const container = self.get('container');
     const gridPoints = self.get('gridPoints');
     const ticks = self.get('ticks');
     let gridCfg;
@@ -91,7 +91,14 @@ class Abastract extends Base {
         gridCfg = grid;
       }
       if (gridCfg) {
-        G.drawLines(subPoints, canvas, gridCfg);
+        // G.drawLines(subPoints, container, gridCfg);
+        container.addShape('Polyline', {
+          className: 'axis-grid',
+          attrs: Util.mix({
+            points: subPoints
+          }, gridCfg)
+        });
+
       }
     });
   }
@@ -128,11 +135,20 @@ class Abastract extends Base {
     const self = this;
     const ticks = self.get('ticks');
     const length = tickCfg.value;
-    const canvas = self.get('canvas');
+    const container = self.get('container');
     Util.each(ticks, function(tick) {
       const start = self.getOffsetPoint(tick.value);
       const end = self.getSidePoint(start, length);
-      G.drawLine(start, end, canvas, tickCfg);
+      // G.drawLine(start, end, container, tickCfg);
+      container.addShape('line', {
+        className: 'axis-tick',
+        attrs: Util.mix({
+          x1: start.x,
+          y1: start.y,
+          x2: end.x,
+          y2: end.y
+        }, tickCfg)
+      });
     });
   }
 
@@ -165,7 +181,7 @@ class Abastract extends Base {
   drawLabels(label) {
     const self = this;
     const ticks = self.get('ticks');
-    const canvas = self.get('canvas');
+    const container = self.get('container');
     let labelCfg;
     const count = ticks.length;
     Util.each(ticks, function(tick, index) {
@@ -179,7 +195,15 @@ class Abastract extends Base {
         const start = self.getOffsetPoint(tick.value);
         const end = self.getSidePoint(start, offset);
         const cfg = Util.mix({}, self.getTextAlignInfo(start, offset), labelCfg);
-        G.drawText(cfg.text || tick.text, end, canvas, cfg);
+        // G.drawText(cfg.text || tick.text, end, container, cfg);
+        container.addShape('text', {
+          className: 'axis-text',
+          attrs: Util.mix({
+            x: end.x,
+            y: end.y,
+            text: cfg.text || tick.text
+          }, cfg)
+        });
       }
     });
   }

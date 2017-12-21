@@ -51,7 +51,8 @@
     }
   });
   chart.source(data, defs);
-  chart.line().position('time*tem');
+  // chart.coord('polar');
+  chart.line().position('time*tem')//.shape('smooth');
   chart.render();
 </script>
 </body>

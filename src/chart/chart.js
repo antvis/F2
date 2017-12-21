@@ -1,8 +1,3 @@
-/**
- * @fileOverview chart
- * @author dxq613@gail.com
- */
-
 const Base = require('../base');
 const Plot = require('./plot');
 const Util = require('../util/common');
@@ -12,7 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const GuideController = require('./controller/guide');
 const Global = require('../global');
-const DomUtil = require('../util/dom');
+const { Canvas } = require('../g/index');
 const AnimateController = require('./controller/animate');
 
 function isFullCircle(coord) {
@@ -209,21 +204,6 @@ class Chart extends Base {
   }
 
   /**
-   * 根据clientX, clientY获取画布上坐标
-   * @param  {Number} clientX 事件获取的窗口坐标 x
-   * @param  {Number} clientY 事件获取的窗口坐标 y
-   * @return {Object} 对应的坐标
-   */
-  getPointByClient(clientX, clientY) {
-    const canvas = this.get('canvas');
-    const bbox = canvas.getBoundingClientRect();
-    return {
-      x: clientX - bbox.left,
-      y: clientY - bbox.top
-    };
-  }
-
-  /**
    * 获取画布上坐标对应的数据值
    * @param  {Object} point 画布坐标的x,y的值
    * @return {Object} 当前坐标系的数据值
@@ -255,11 +235,12 @@ class Chart extends Base {
   _init() {
     const self = this;
     self._initCanvas();
-    self.set('layers', []);
+    self._initLayers();
+    // self.set('layers', []);
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      canvas: self.get('canvas')
+      container: self.get('backPlot')
     }));
     self.set('guideController', new GuideController());
     self.set('animateController', new AnimateController());
@@ -285,56 +266,38 @@ class Chart extends Base {
   // 初始化画布
   _initCanvas() {
     const self = this;
-    const id = self.get('id');
-    const el = self.get('el');
-    const context = self.get('context');
-    let canvas;
-
-    if (context) { // CanvasRenderingContext2D
-      canvas = context.canvas;
-    } else if (el) { // HTMLElement
-      canvas = el;
-    } else if (id) { // dom id
-      canvas = document.getElementById(id);
+    try {
+      const canvas = new Canvas({
+        domId: self.get('id'),
+        el: self.get('el'),
+        context: self.get('context'),
+        pixelRatio: self.get('pixelRatio'),
+        width: self.get('width'),
+        height: self.get('height')
+      });
+      self.set('canvas', canvas);
+    } catch (info) { // 绘制时异常，中断重绘
+      console.warn('error in init canvas');
+      console.warn(info);
     }
-
-    if (!canvas) {
-      throw new Error('Please specify the id or el of the chart!');
-    }
-
-    self.set('canvas', canvas);
-
-    if (context && canvas && !canvas.getContext) {
-      canvas.getContext = function() {
-        return context;
-      };
-    }
-    let width = self.get('width');
-    let height = self.get('height');
-    const ratio = self._getRatio();
-
-    if (!width) {
-      width = DomUtil.getWidth(canvas);
-      self.set('width', width);
-    }
-
-    if (!height) {
-      height = DomUtil.getHeight(canvas);
-      self.set('height', height);
-    }
-
-    if (ratio) {
-      canvas.width = width * ratio;
-      canvas.height = height * ratio;
-      DomUtil.modiCSS(canvas, { height: height + 'px' });
-      DomUtil.modiCSS(canvas, { width: width + 'px' });
-      if (ratio !== 1) {
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
-    }
-
     self._initLayout();
+  }
+
+  _initLayers() {
+    const canvas = this.get('canvas');
+    const backPlot = canvas.addGroup({
+      zIndex: 1
+    }); // 图表最后面的容器
+    const middlePlot = canvas.addGroup({
+      zIndex: 2
+    }); // 图表所在的容器
+    const frontPlot = canvas.addGroup({
+      zIndex: 3
+    }); // 图表前面的容器
+
+    this.set('backPlot', backPlot);
+    this.set('middlePlot', middlePlot);
+    this.set('frontPlot', frontPlot);
   }
 
   // 初始化布局
@@ -342,8 +305,9 @@ class Chart extends Base {
     const self = this;
     // 兼容margin 的写法
     const padding = self.get('margin') || self.get('padding');
-    const width = self.get('width');
-    const height = self.get('height');
+    const canvas = self.get('canvas');
+    const width = canvas.get('width'); // TODO 很容易混淆
+    const height = canvas.get('height'); // TODO 很容易混淆
     let top;
     let left;
     let right;
@@ -398,7 +362,7 @@ class Chart extends Base {
     const geoms = self.get('geoms');
     geoms.push(geom);
     geom.set('chart', self);
-    geom.set('container', self.get('canvas'));
+    geom.set('container', self.get('middlePlot'));
   }
 
   /**
@@ -456,6 +420,7 @@ class Chart extends Base {
     super.destroy();
   }
 
+  // TODO
   _clearCanvas() {
     const canvas = this.get('canvas');
     const ctx = canvas.getContext('2d');
@@ -475,24 +440,25 @@ class Chart extends Base {
   // 渲染辅助元素
   _renderBackGuide() {
     const self = this;
-    const canvas = self.get('canvas');
+    const backPlot = self.get('backPlot');
     const guideController = self.get('guideController');
     if (guideController.guides.length) {
       const coord = self.get('coord');
-      guideController.paintBack(coord, canvas);
+      guideController.paintBack(coord, backPlot);
     }
   }
 
   _renderFrontGuide() {
     const self = this;
-    const canvas = self.get('canvas');
+    const frontPlot = self.get('frontPlot');
     const guideController = self.get('guideController');
     if (guideController && guideController.guides.length) {
       const coord = self.get('coord');
-      guideController.paintFront(coord, canvas);
+      guideController.paintFront(coord, frontPlot);
     }
   }
 
+  // TODO
   _renderAnimate(callback) {
     const self = this;
     const imageData = self.get('imageData');
@@ -531,6 +497,7 @@ class Chart extends Base {
    */
   render() {
     const self = this;
+    const canvas = self.get('canvas');
     self._initCoord();
     const geoms = self.get('geoms');
     const animateController = self.get('animateController');
@@ -548,6 +515,7 @@ class Chart extends Base {
     } else {
       self.drawGeom(geoms);
       self._renderFrontGuide();
+      canvas.draw();
     }
     return self;
   }

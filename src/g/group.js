@@ -1,6 +1,6 @@
 const Util = require('../util/common');
 const Element = require('./element');
-const Container = require('./Container');
+const Container = require('./container');
 
 class Group extends Element {
   getDefaultCfg() {

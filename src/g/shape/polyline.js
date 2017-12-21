@@ -29,11 +29,11 @@ class Polyline extends Shape {
     }
     context = context || self.get('context');
     context.beginPath();
-    context.moveTo(points[0][0], points[0][1]);
+    context.moveTo(points[0].x, points[0].y);
     for (i = 1, l = points.length - 1; i < l; i++) {
-      context.lineTo(points[i][0], points[i][1]);
+      context.lineTo(points[i].x, points[i].y);
     }
-    context.lineTo(points[l][0], points[l][1]);
+    context.lineTo(points[l].x, points[l].y);
   }
 }
 
