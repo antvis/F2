@@ -6,6 +6,7 @@ class Polyline extends Shape {
     const cfg = super.getDefaultCfg();
     return Util.mix({}, cfg, {
       canStroke: true,
+      canFill: true,
       type: 'polyline'
     });
   }

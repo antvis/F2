@@ -1,9 +1,6 @@
-// done
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const ShapeUtil = require('./util');
-
-const DEFAULT_SIZE = 4; // 线的默认宽度
 const Global = require('../../global');
 
 // regist line geom
@@ -12,11 +9,15 @@ const Line = Shape.registerFactory('line', {
 });
 
 function getStyle(cfg) {
-  const style = Util.mix({
-    strokeStyle: cfg.color,
-    lineWidth: cfg.size || DEFAULT_SIZE
-  }, cfg.style);
-  return style;
+  const style = {
+    strokeStyle: cfg.color
+  };
+  if (cfg.size) {
+    style.lineWidth = cfg.size;
+  }
+  Util.mix(style, cfg.style);
+
+  return Util.mix({}, Global.shape.line, style);
 }
 
 function drawLines(cfg, container, style, isSmooth) {

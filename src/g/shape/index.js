@@ -7,7 +7,8 @@ const Shape = {
   Arc: require('./arc'),
   Fan: require('./fan'),
   SmoothLine: require('./smooth-line'),
-  Text: require('./text')
+  Text: require('./text'),
+  Custom: require('./custom')
 };
 
 module.exports = Shape;
