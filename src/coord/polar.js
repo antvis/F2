@@ -4,7 +4,7 @@
  */
 
 const Base = require('./base');
-const Vector2 = require('../graphic/vector2');
+const Vector2 = require('../g/util/vector2');
 
 class Polar extends Base {
 

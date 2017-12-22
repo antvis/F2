@@ -33,6 +33,27 @@ function getRectPoints(cfg) {
   ];
 }
 
+function getRectRange(points) {
+  const xValues = [];
+  const yValues = [];
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    xValues.push(point.x);
+    yValues.push(point.y);
+  }
+  const xMin = Math.min.apply(null, xValues);
+  const yMin = Math.min.apply(null, yValues);
+  const xMax = Math.max.apply(null, xValues);
+  const yMax = Math.max.apply(null, yValues);
+
+  return {
+    x: xMin,
+    y: yMin,
+    width: xMax - xMin,
+    height: yMax - yMin
+  };
+}
+
 const Interval = Shape.registerFactory('interval', {
   defaultShapeType: 'rect',
   getDefaultPoints(cfg) {
@@ -61,24 +82,11 @@ Shape.registerShape('interval', 'rect', {
         }, style)
       });
     } else {
-      let x = points[1].x;
-      let y = points[1].y;
-      let width = Math.abs(points[2].x - points[1].x);
-      let height = Math.abs(points[0].y - points[1].y);
-      if (this._coord.transposed) {
-        x = points[3].x;
-        y = points[3].y;
-        width = Math.abs(points[1].x - points[0].x);
-        height = Math.abs(points[2].y - points[1].y);
-      }
+      const rectCfg = getRectRange(points);
+
       container.addShape('rect', {
         className: 'interval',
-        attrs: Util.mix({
-          x,
-          y,
-          width,
-          height
-        }, style)
+        attrs: Util.mix(rectCfg, style)
       });
     }
   }

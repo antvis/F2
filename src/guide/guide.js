@@ -1,12 +1,7 @@
-/**
- * @fileOverview G2 图表的辅助元素
- * @author 旻诺<audrey.tm@alibaba-inc.com>
- */
-
 const Util = require('../util/common');
 const KEYWORDS_PERCENT = {
   min: 0,
-  medium: 0.5,
+  median: 0.5,
   max: 1
 };
 
@@ -25,7 +20,6 @@ function toPercent(scale, value) {
  * @class Guilde
  */
 class Guide {
-
   /**
    * 获取默认的配置属性
    * @protected

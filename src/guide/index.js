@@ -1,9 +1,3 @@
-/**
- * @fileOverview guide assist to g2
- * @ignore
- */
-
-
 const Util = require('../util/common');
 const Guide = require('./guide');
 Guide.Text = require('./text');
@@ -72,7 +66,6 @@ Util.mix(GuideController.prototype, {
    */
   arc(start, end, cfg) {
     const config = {
-      type: 'arc',
       start,
       end,
       cfg: Util.mix({}, cfg)
@@ -93,7 +86,6 @@ Util.mix(GuideController.prototype, {
    */
   html(position, html, cfg) {
     const config = {
-      type: 'html',
       position,
       html,
       cfg: Util.mix({}, cfg)
@@ -107,7 +99,6 @@ Util.mix(GuideController.prototype, {
 
   rect(start, end, cfg) {
     const config = {
-      type: 'rect',
       start,
       end,
       cfg: Util.mix({}, cfg)

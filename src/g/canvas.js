@@ -1,32 +1,8 @@
 const Util = require('../util/common');
+const DOMUtil = require('../util/dom');
 const Base = require('../base');
 const Container = require('./container');
 const Group = require('./group');
-
-const helpers = {
-  getPixelRatio() {
-    return window && window.devicePixelRatio || 1;
-  },
-  getStyle(el, property) {
-    return el.currentStyle ?
-      el.currentStyle[property] :
-      document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
-  },
-  getWidth(el) {
-    let width = this.getStyle(el, 'width');
-    if (width === 'auto') {
-      width = el.offsetWidth;
-    }
-    return parseFloat(width);
-  },
-  getHeight(el) {
-    let height = this.getStyle(el, 'height');
-    if (height === 'auto') {
-      height = el.offsetHeight;
-    }
-    return parseFloat(height);
-  }
-};
 
 class Canvas extends Base {
   getDefaultCfg() {
@@ -53,14 +29,14 @@ class Canvas extends Base {
   _initPixelRatio() {
     const pixelRatio = this.get('pixelRatio');
     if (!pixelRatio) {
-      this.set('pixelRatio', helpers.getPixelRatio());
+      this.set('pixelRatio', DOMUtil.getPixelRatio());
     }
   }
 
   _beforeDraw() {
     const context = this.get('context');
-    const canvas = this.get('canvas');
-    context && context.clearRect(0, 0, canvas.width, canvas.height);
+    const el = this.get('el');
+    context && context.clearRect(0, 0, el.width, el.height);
   }
 
   _initCanvas() {
@@ -90,13 +66,13 @@ class Canvas extends Base {
 
     let width = self.get('width');
     if (!width) {
-      width = helpers.getWidth(canvas);
+      width = DOMUtil.getWidth(canvas);
       self.set('width', width);
     }
 
     let height = self.get('height');
     if (!height) {
-      height = helpers.getHeight(canvas);
+      height = DOMUtil.getHeight(canvas);
       self.set('height', height);
     }
 
@@ -104,8 +80,6 @@ class Canvas extends Base {
     if (ratio) {
       canvas.width = width * ratio;
       canvas.height = height * ratio;
-      // DomUtil.modiCSS(canvas, { height: height + 'px' });
-      // DomUtil.modiCSS(canvas, { width: width + 'px' });
       canvas.style.height = height + 'px';
       canvas.style.width = width + 'px';
       if (ratio !== 1) {
