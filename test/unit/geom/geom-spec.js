@@ -1,18 +1,23 @@
 const expect = require('chai').expect;
 const Geom = require('../../../src/geom/index');
-// const Global = require('../../../src/global');
 const Scale = require('../../../src/scale/index');
 const Coord = require('../../../src/coord/index');
 const Global = require('../../../src/global');
+const { Canvas } = require('../../../src/g/index');
 
 require('../../../src/geom/adjust/index');
-
 require('../../../src/geom/shape/index');
 
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-document.body.appendChild(canvas);
+const dom = document.createElement('canvas');
+dom.width = 500;
+dom.height = 500;
+document.body.appendChild(dom);
+
+const canvas = new Canvas({
+  el: dom,
+  width: 500,
+  height: 500
+});
 
 let scaleA = Scale.linear({
   field: 'a',
@@ -264,7 +269,7 @@ describe('test geoms', function() {
 });
 
 function clearCanvas(canvas) {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.get('context');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 

@@ -272,6 +272,8 @@ class Chart extends Base {
         height: self.get('height')
       });
       self.set('canvas', canvas);
+      self.set('width', canvas.get('width'));
+      self.set('height', canvas.get('height'));
     } catch (info) { // 绘制时异常，中断重绘
       console.warn('error in init canvas');
       console.warn(info);
