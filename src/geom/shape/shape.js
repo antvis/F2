@@ -1,9 +1,3 @@
-/**
- * @fileOverview shape 基类
- * @author huangtonger@aliyun.com
- */
-
-
 const Util = require('../../util/common');
 const Global = require('../../global');
 

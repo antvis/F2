@@ -1,10 +1,4 @@
-/**
- * @fileOverview guide line
- * @author 旻诺<audrey.tm@alibaba-inc.com>
- */
-
-
-const DomUtil = require('../util/dom');
+const DOMUtil = require('../util/dom');
 const Guide = require('./guide');
 const Global = require('../global');
 
@@ -50,12 +44,7 @@ function getOffsetFromAlign(align, width, height) {
   return result;
 }
 
-/**
- * 辅助html
- * @class  Guide.Html
- */
 class Html extends Guide {
-
   getDefaultCfg() {
     return {
       type: 'html',
@@ -67,19 +56,19 @@ class Html extends Guide {
   }
 
   // override paint
-  paint(coord, canvas) {
+  paint(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
-    let myNode = DomUtil.createDom(self.html);
-    myNode = DomUtil.modiCSS(myNode, {
+    let myNode = DOMUtil.createDom(self.html);
+    myNode = DOMUtil.modifyCSS(myNode, {
       position: 'absolute',
       top: Math.floor(position.y) + 'px',
       left: Math.floor(position.x) + 'px',
       visibility: 'hidden'
     });
 
-    let parentNode = canvas.parentNode;
-    parentNode = DomUtil.modiCSS(parentNode, {
+    let parentNode = container.get('canvas').get('el').parentNode;
+    parentNode = DOMUtil.modifyCSS(parentNode, {
       position: 'relative'
     });
     // 创建html guide 的容器
@@ -87,8 +76,8 @@ class Html extends Guide {
     if (parentNode.getElementsByClassName('guideWapper').length > 0) {
       wrapperNode = parentNode.getElementsByClassName('guideWapper')[0];
     } else {
-      wrapperNode = DomUtil.createDom('<div class="guideWapper"></div>');
-      wrapperNode = DomUtil.modiCSS(wrapperNode, {
+      wrapperNode = DOMUtil.createDom('<div class="guideWapper"></div>');
+      wrapperNode = DOMUtil.modifyCSS(wrapperNode, {
         position: 'absolute',
         top: 0,
         left: 0
@@ -101,8 +90,8 @@ class Html extends Guide {
     // 对齐
     if (cfg.align) {
       const align = cfg.align;
-      const width = DomUtil.getWidth(myNode);
-      const height = DomUtil.getHeight(myNode);
+      const width = DOMUtil.getWidth(myNode);
+      const height = DOMUtil.getHeight(myNode);
       const newOffset = getOffsetFromAlign(align, width, height);
       position.x = position.x + newOffset[0];
       position.y = position.y + newOffset[1];
@@ -115,7 +104,7 @@ class Html extends Guide {
       position.y = position.y + offset[1];
     }
 
-    DomUtil.modiCSS(myNode, {
+    DOMUtil.modifyCSS(myNode, {
       top: Math.floor(position.y) + 'px',
       left: Math.floor(position.x) + 'px',
       visibility: 'visible'

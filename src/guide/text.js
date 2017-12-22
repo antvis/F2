@@ -1,10 +1,5 @@
-/**
- * @fileOverview guide text
- * @author 旻诺<audrey.tm@alibaba-inc.com>
- */
-
+const Util = require('../util/common');
 const Guide = require('./guide');
-const G = require('../graphic/g');
 const Global = require('../global');
 
 /**
@@ -12,7 +7,6 @@ const Global = require('../global');
  * @class Guide.Text
  */
 class Text extends Guide {
-
   getDefaultCfg() {
     return {
       type: 'text',
@@ -22,14 +16,26 @@ class Text extends Guide {
       cfg: Global.guide.text
     };
   }
-  // override
-  paint(coord, canvas) {
-    const self = this;
-    const position = self.position;
-    const point = self.parsePoint(coord, position);
-    const cfg = self.cfg;
-    const text = self.text;
-    G.drawText(text, point, canvas, cfg);
+
+  paint(coord, container) {
+    const position = this.position;
+    const point = this.parsePoint(coord, position);
+    const cfg = this.cfg;
+    const text = this.text;
+
+    if (cfg.offset) {
+      point.x += cfg.offset[0];
+      point.y += cfg.offset[1];
+    }
+
+    container.addShape('text', {
+      className: 'guide-text',
+      attrs: Util.mix({
+        x: point.x,
+        y: point.y,
+        text
+      }, cfg)
+    });
   }
 }
 

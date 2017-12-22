@@ -1,8 +1,3 @@
-/**
- * @fileOverview geometry 的基类
- * @author dxq613@gmail.com
- */
-
 const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
@@ -782,6 +777,8 @@ class Geom extends Base {
   }
 
   clearInner() {
+    const container = this.get('container');
+    container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);
     this.set('shapeDatas', []);
@@ -795,6 +792,8 @@ class Geom extends Base {
 
   destroy() {
     this.clear();
+    // const container = this.get('container');
+    // container && container.remove();
     super.destroy();
   }
 

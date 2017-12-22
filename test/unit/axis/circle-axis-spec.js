@@ -3,11 +3,7 @@ const AxisCircle = require('../../../src/axis/circle');
 const Scale = require('../../../src/scale/index');
 const axisGlobal = require('../../../src/global').axis;
 const Util = require('../../../src/util/common');
-
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-document.body.appendChild(canvas);
+const { Group } = require('../../../src/g/index');
 
 const cat = Scale.cat({
   domain: [ 'a', 'b', 'c' ],
@@ -15,15 +11,21 @@ const cat = Scale.cat({
 });
 
 const gridPoints = [[{ x: 250, y: 50 }, { x: 250, y: 250 }], [{ x: 450, y: 250 }, { x: 250, y: 250 }]];
-
+const frontContainer = new Group({
+  zIndex: 2
+});
+const backContainer = new Group({
+  zIndex: 1
+});
 function equal(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;
 }
-describe('circle axis', function() {
 
+describe('circle axis', function() {
   describe('full circle', function() {
     const cfg = Util.mix({
-      canvas,
+      frontContainer,
+      backContainer,
       radius: 200,
       center: {
         x: 250,
@@ -36,8 +38,9 @@ describe('circle axis', function() {
     let axis;
     it('init', function() {
       axis = new AxisCircle(cfg);
-      axis.draw();
-      expect(axis.get('ticks').length).equal(cat.getTicks().length);
+      // axis.draw();
+      expect(axis.ticks.length).equal(cat.getTicks().length);
+      expect(backContainer.get('children').length).to.equal(3);
     });
 
     it('test point', function() {

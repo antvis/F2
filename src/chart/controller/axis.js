@@ -1,8 +1,3 @@
-/**
- * @fileOverview axis assist
- * @author dxq613@gmail.com
- */
-
 const Util = require('../../util/common');
 const Axis = require('../../axis/index');
 const Global = require('../../global');
@@ -28,10 +23,11 @@ function formatTicks(ticks) {
 }
 
 class AxisController {
-
   constructor(cfg) {
     this.axisCfg = {};
-    this.canvas = null;
+    this.frontPlot = null;
+    this.backPlot = null;
+    this.axes = [];
     Util.mix(this, cfg);
   }
 
@@ -146,7 +142,9 @@ class AxisController {
     const ticks = scale.getTicks();
     const cfg = Util.deepMix({
       ticks,
-      canvas: this.canvas
+      // container: this.container
+      frontContainer: this.frontPlot,
+      backContainer: this.backPlot
     }, defaultCfg, axisCfg[scale.field]);
 
     // 计算栅格
@@ -198,7 +196,7 @@ class AxisController {
     let cfg = self._getAxisCfg(coord, scale, verticalScale, dimType, defaultCfg); // 坐标轴的配置项
     cfg = Util.mix({}, cfg, appendCfg);
     const axis = new C(cfg);
-    axis.drawGrid();
+    this.axes.push(axis);
     return axis;
   }
 
@@ -210,23 +208,15 @@ class AxisController {
    */
   createAxis(coord, xScale, yScales) {
     const self = this;
-    const arr = [];
     if (xScale && !self._isHide(xScale.field)) {
-      const xAxis = self._createAxis(coord, xScale, yScales[0], 'x'); // 绘制 x 轴
-      arr.push(xAxis);
+      self._createAxis(coord, xScale, yScales[0], 'x'); // 绘制 x 轴
     }
     Util.each(yScales, function(yScale, index) {
       if (!self._isHide(yScale.field)) {
-        const axis = self._createAxis(coord, yScale, xScale, 'y', index);
-        arr.push(axis);
+        self._createAxis(coord, yScale, xScale, 'y', index);
       }
     });
-
-    Util.each(arr, function(axis) {
-      axis.draw();
-    });
   }
-
 }
 
 module.exports = AxisController;

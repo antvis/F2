@@ -1,4 +1,3 @@
-
 const Geom = require('./base');
 
 require('./point');
