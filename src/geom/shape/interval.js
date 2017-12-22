@@ -1,4 +1,3 @@
-// done
 const Util = require('../../util/common');
 const Shape = require('./shape');
 

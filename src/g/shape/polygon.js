@@ -31,9 +31,9 @@ class Polygon extends Shape {
     for (let i = 0; i < points.length; i++) {
       const point = points[i];
       if (i === 0) {
-        context.moveTo(point[0], point[1]);
+        context.moveTo(point.x, point.y);
       } else {
-        context.lineTo(point[0], point[1]);
+        context.lineTo(point.x, point.y);
       }
     }
     context.closePath();

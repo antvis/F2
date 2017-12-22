@@ -98,6 +98,15 @@ const Theme = {
       offset: [ 0, 0 ],
       align: 'cc'
     }
+  },
+  shape: {
+    line: {
+      lineWidth: 4 // 线的默认宽度
+    },
+    point: {
+      lineWidth: 0,
+      size: 5 // 圆的默认半径
+    }
   }
 };
 

@@ -1,8 +1,3 @@
-/**
- * @fileOverview Geometry Point
- * @author dxq613@gmail.com
- */
-
 const Geom = require('./base');
 require('./shape/point');
 
