@@ -777,6 +777,8 @@ class Geom extends Base {
   }
 
   clearInner() {
+    const container = this.get('container');
+    container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);
     this.set('shapeDatas', []);
@@ -790,6 +792,8 @@ class Geom extends Base {
 
   destroy() {
     this.clear();
+    // const container = this.get('container');
+    // container && container.remove();
     super.destroy();
   }
 

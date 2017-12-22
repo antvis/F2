@@ -1,55 +1,26 @@
-/**
- * @fileOverview DOM 的工具类
- * @author dxq613@gmail.com
- */
-
 const DomUtil = {
-
-  /**
-   * 修改CSS
-   * @param  {Object} DOM DOM元素
-   * @param  {Object} CSS 键值对
-   * @return {Object} DOM
-   */
-  modiCSS(DOM, CSS) {
-    let key;
-
-    for (key in CSS) {
-      if (CSS.hasOwnProperty(key) === true) {
+  modifyCSS(DOM, CSS) {
+    for (const key in CSS) {
+      if (CSS.hasOwnProperty(key)) {
         DOM.style[key] = CSS[key];
       }
     }
     return DOM;
   },
-
-  /**
-   * 创建DOM 节点
-   * @param  {String} str Dom 字符串
-   * @return {HTMLElement}  DOM 节点
-   */
   createDom(str) {
     const container = document.createElement('div');
     str = str.replace(/(^\s*)|(\s*$)/g, '');
     container.innerHTML = '' + str;
     return container.childNodes[0];
   },
-   /**
-   * 获取样式
-   * @param  {HTMLElement} el  dom节点
-   * @param  {String} name 样式名
-   * @return {String} 属性值
-   */
-  getStyle(el, name) {
-    if (window.getComputedStyle) {
-      return window.getComputedStyle(el, null)[name];
-    }
-    return el.currentStyle[name];
+  getPixelRatio() {
+    return window && window.devicePixelRatio || 1;
   },
-  /**
-   * 获取宽度
-   * @param  {HTMLElement} el  dom节点
-   * @return {Number} 宽度
-   */
+  getStyle(el, property) {
+    return el.currentStyle ?
+      el.currentStyle[property] :
+      document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+  },
   getWidth(el) {
     let width = this.getStyle(el, 'width');
     if (width === 'auto') {
@@ -57,11 +28,6 @@ const DomUtil = {
     }
     return parseFloat(width);
   },
-  /**
-   * 获取高度
-   * @param  {HTMLElement} el  dom节点
-   * @return {Number} 高度
-   */
   getHeight(el) {
     let height = this.getStyle(el, 'height');
     if (height === 'auto') {

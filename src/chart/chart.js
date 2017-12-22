@@ -8,7 +8,6 @@ const AxisController = require('./controller/axis');
 const GuideController = require('./controller/guide');
 const Global = require('../global');
 const { Canvas } = require('../g/index');
-const AnimateController = require('./controller/animate');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -28,11 +27,6 @@ Util.each(Geom, function(geomConstructor, className) {
     return geom;
   };
 });
-
-/**
- * @class Chart
- * 图表的入口
- */
 
 class Chart extends Base {
   getDefaultCfg() {
@@ -236,15 +230,16 @@ class Chart extends Base {
     const self = this;
     self._initCanvas();
     self._initLayers();
-    // self.set('layers', []);
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
       frontPlot: self.get('frontPlot'),
       backPlot: self.get('backPlot')
     }));
-    self.set('guideController', new GuideController());
-    self.set('animateController', new AnimateController());
+    self.set('guideController', new GuideController({
+      frontPlot: self.get('frontPlot'),
+      backPlot: self.get('backPlot')
+    }));
     self._initData(self.get('data'));
   }
 
@@ -404,91 +399,28 @@ class Chart extends Base {
     this.get('guideController').clear();
     this._removeGeoms();
     this._clearInner();
+
+    const canvas = this.get('canvas');
+    canvas.draw();
     return this;
   }
 
   _clearInner() {
-    this.get('animateController').stop();
     this.set('scales', {});
     this._clearGeoms();
-    this._clearCanvas();
+    const frontPlot = this.get('frontPlot');
+    const backPlot = this.get('backPlot');
+    frontPlot && frontPlot.clear();
+    backPlot && backPlot.clear();
     const parent = this.get('canvas').parentNode;
     this.get('guideController').reset(parent);
   }
 
   destroy() {
     this.clear();
-    super.destroy();
-  }
-
-  // TODO
-  _clearCanvas() {
     const canvas = this.get('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    return this;
-  }
-
-  _beforeRenderGuide() {
-    const guideController = this.get('guideController');
-    if (guideController.guides.length) {
-      const xScale = this._getXScale();
-      const yScale = this._getYScales()[0];
-      guideController.setScale(xScale, yScale);
-    }
-  }
-
-  // 渲染辅助元素
-  _renderBackGuide() {
-    const self = this;
-    const backPlot = self.get('backPlot');
-    const guideController = self.get('guideController');
-    if (guideController.guides.length) {
-      const coord = self.get('coord');
-      guideController.paintBack(coord, backPlot);
-    }
-  }
-
-  _renderFrontGuide() {
-    const self = this;
-    const frontPlot = self.get('frontPlot');
-    const guideController = self.get('guideController');
-    if (guideController && guideController.guides.length) {
-      const coord = self.get('coord');
-      guideController.paintFront(coord, frontPlot);
-    }
-  }
-
-  // TODO
-  _renderAnimate(callback) {
-    const self = this;
-    const imageData = self.get('imageData');
-    const bgImageData = self.get('bgImageData');
-    const animateController = self.get('animateController');
-    const canvas = self.get('canvas');
-    const coord = self.get('coord');
-    const center = coord.get('center');
-    const radius = coord.get('radius');
-    const geom = self.get('geoms')[0];
-    const yScale = geom.getYScale();
-    const yMin = geom.getYMinValue();
-
-    const startPoint = coord.convertPoint({
-      x: 0,
-      y: yScale.scale(yMin)
-    });
-
-    if (animateController.animate) {
-      animateController.setOptions({
-        imageData,
-        bgImageData,
-        startPoint,
-        center,
-        radius
-      });
-      animateController.setCallBack(callback);
-      animateController.paint(canvas);
-    }
+    canvas.destroy();
+    super.destroy();
   }
 
   /**
@@ -501,23 +433,13 @@ class Chart extends Base {
     const canvas = self.get('canvas');
     self._initCoord();
     const geoms = self.get('geoms');
-    const animateController = self.get('animateController');
     self._initGeoms(geoms);
     this._adjustScale();
     self.beforeDrawGeom();
 
-    if (animateController.animate) {
-      self.set('bgImageData', self.getImageData());
-      self._clearCanvas();
-      self.drawGeom(geoms);
-      self.set('imageData', self.getImageData());
-      self._clearCanvas();
-      self._renderAnimate(self._renderFrontGuide.bind(self));
-    } else {
-      self.drawGeom(geoms);
-      self._renderFrontGuide();
-      canvas.draw();
-    }
+    self.drawGeom(geoms);
+
+    canvas.draw();
     return self;
   }
 
@@ -541,18 +463,7 @@ class Chart extends Base {
   beforeDrawGeom() {
     const self = this;
     self._renderAxis();
-    self._beforeRenderGuide();
-    self._renderBackGuide();
-  }
-
-  getImageData() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const ctx = canvas.getContext('2d');
-    const width = self.get('width');
-    const height = self.get('height');
-    const ratio = self._getRatio();
-    return ctx.getImageData(0, 0, width * ratio, height * ratio);
+    self._renderGuide();
   }
 
   _initGeoms(geoms) {
@@ -643,6 +554,18 @@ class Chart extends Base {
     axisController.createAxis(coord, xScale, yScales);
   }
 
+  _renderGuide() {
+    const self = this;
+    const guideController = self.get('guideController');
+    if (guideController.guides.length) {
+      const xScale = self._getXScale();
+      const yScale = self._getYScales()[0];
+      const coord = self.get('coord');
+      guideController.setScale(xScale, yScale);
+      guideController.paint(coord);
+    }
+  }
+
   /**
    * 添加辅助信息
    * @return {GuideController} Guide辅助类
@@ -651,11 +574,11 @@ class Chart extends Base {
     return this.get('guideController');
   }
 
-  animate(cfg) {
-    const animateController = this.get('animateController');
-    animateController.setAnimate(cfg);
-    return self;
-  }
+  // animate(cfg) {
+  //   const animateController = this.get('animateController');
+  //   animateController.setAnimate(cfg);
+  //   return self;
+  // }
 }
 
 module.exports = Chart;

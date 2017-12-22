@@ -56,9 +56,9 @@
     }
   });
   // y轴方向的缩放动画
-  chart.animate({
+/*  chart.animate({
     type: 'scaley'
-  });
+  });*/
   // 辅助元素
   data.forEach(function (obj, index) {
     // 文字部分
@@ -69,9 +69,11 @@
     });
     // 背景部分
     const offset = 0.25;
-    chart.guide().rect([index - offset, 'max'], [index + offset, 'min'], {fill: '#f8f8f8'});
+    chart.guide().rect([index - offset, 'max'], [index + offset, 'min'], { fill: '#f8f8f8' });
   });
   chart.render();
+    console.log(chart.get('canvas'))
+
 </script>
 </body>
 </html>
