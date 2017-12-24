@@ -23,33 +23,33 @@ describe('plot', function() {
   });
 
   it('width', function() {
-    expect(plot.get('width')).to.be.equal(400);
+    expect(plot.width).to.be.equal(400);
   });
 
   it('height', function() {
-    expect(plot.get('height')).to.be.equal(400);
+    expect(plot.height).to.be.equal(400);
   });
 
   it('tl', function() {
-    const tl = plot.get('tl');
+    const tl = plot.tl;
     expect(tl.x).to.be.equal(0);
     expect(tl.y).to.be.equal(0);
   });
 
   it('tr', function() {
-    const tr = plot.get('tr');
+    const tr = plot.tr;
     expect(tr.x).to.be.equal(400);
     expect(tr.y).to.be.equal(0);
   });
 
   it('bl', function() {
-    const bl = plot.get('bl');
+    const bl = plot.bl;
     expect(bl.x).to.be.equal(0);
     expect(bl.y).to.be.equal(400);
   });
 
   it('br', function() {
-    const br = plot.get('br');
+    const br = plot.br;
     expect(br.x).to.be.equal(400);
     expect(br.y).to.be.equal(400);
   });
@@ -66,7 +66,7 @@ describe('plot', function() {
       }
     );
 
-    expect(plot.get('width')).to.be.equal(300);
-    expect(plot.get('height')).to.be.equal(200);
+    expect(plot.width).to.be.equal(300);
+    expect(plot.height).to.be.equal(200);
   });
 });
