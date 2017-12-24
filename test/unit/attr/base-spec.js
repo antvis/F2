@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Attr = require('../../../src/attr/');
+const Attr = require('../../../src/attr/base');
 const Scale = require('../../../src/scale/');
 
 describe('attr base test', function() {

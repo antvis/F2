@@ -339,7 +339,7 @@ class Chart extends Base {
   // 初始化坐标系
   _initCoord() {
     const self = this;
-    const plot = self.get('plot');
+    const plot = self.get('plot'); // TODO 由谁来创建？ coord 还是 chart
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
       plot
     });
