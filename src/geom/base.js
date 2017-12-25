@@ -457,7 +457,7 @@ class Geom extends Base {
       cfg.points = obj.points;
     }
     if (isInCircle) {
-      cfg.center = self.get('coord').get('center');
+      cfg.center = self.get('coord').center;
     }
     return cfg;
   }

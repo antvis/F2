@@ -28,7 +28,7 @@ class Arc extends Guide {
     const self = this;
     const start = self.parsePoint(coord, self.start);
     const end = self.parsePoint(coord, self.end);
-    const coordCenter = coord.get('center');
+    const coordCenter = coord.center;
     const radius = Math.sqrt((start.x - coordCenter.x) * (start.x - coordCenter.x)
       + (start.y - coordCenter.y) * (start.y - coordCenter.y));
     const startAngle = Math.atan2(start.y - coordCenter.y, start.x - coordCenter.x);

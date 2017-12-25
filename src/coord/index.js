@@ -1,4 +1,3 @@
-
 const Cartesian = require('./cartesian');
 const Polar = require('./polar');
 

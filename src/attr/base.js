@@ -6,10 +6,8 @@ function toScaleString(scale, value) {
   }
   return scale.invert(scale.scale(value));
 }
-/**
- * 所有视觉通道属性的基类
- * @class Attr
- */
+
+
 class AttributeBase {
 
   constructor(cfg) {
