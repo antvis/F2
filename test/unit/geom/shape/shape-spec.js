@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const Shape = require('../../../../src/geom/shape/index');
 const Coord = require('../../../../src/coord/');
+const { Canvas } = require('../../../../src/g/index');
 
 describe('shape register', () => {
   const coord = new Coord.Rect({
@@ -131,10 +132,16 @@ describe('shape register', () => {
 });
 
 describe('geom shapes', function() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 500;
-  canvas.height = 500;
-  document.body.appendChild(canvas);
+  const dom = document.createElement('canvas');
+  dom.width = 500;
+  dom.height = 500;
+  document.body.appendChild(dom);
+
+  const canvas = new Canvas({
+    el: dom,
+    width: 500,
+    height: 500
+  });
 
   const coord = new Coord.Rect({
     start: {

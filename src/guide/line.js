@@ -1,18 +1,8 @@
-/**
- * @fileOverview guide line
- * @author 旻诺<audrey.tm@alibaba-inc.com>
- */
-
+const Util = require('../util/common');
 const Guide = require('./guide');
-const G = require('../graphic/g');
 const Global = require('../global');
 
-/**
- * 辅助线
- * @class  Guide.Line
- */
 class Line extends Guide {
-
   getDefaultCfg() {
     return {
       type: 'line',
@@ -22,14 +12,19 @@ class Line extends Guide {
     };
   }
 
-  // override paint
-  paint(coord, canvas) {
-    const self = this;
+  paint(coord, container) {
     const points = [];
-    points[0] = self.parsePoint(coord, self.start);
-    points[1] = self.parsePoint(coord, self.end);
-    const cfg = self.cfg;
-    G.drawLines(points, canvas, cfg);
+    points[0] = this.parsePoint(coord, this.start);
+    points[1] = this.parsePoint(coord, this.end);
+    container.addShape('Line', {
+      className: 'guide-line',
+      attrs: Util.mix({
+        x1: points[0].x,
+        y1: points[0].y,
+        x2: points[1].x,
+        y2: points[1].y
+      }, this.cfg)
+    });
   }
 }
 

@@ -1,18 +1,7 @@
-/**
- * @fileOverview 坐标轴的抽象类
- * @author dxq613@gmail.com
- */
-
 const Util = require('../util/common');
-const Base = require('../base');
-const G = require('../graphic/g');
-const Vector2 = require('../graphic/vector2');
+const Vector2 = require('../g/util/vector2');
 
-/**
- * Axis.Abastract
- * 坐标轴的抽象类
- */
-class Abastract extends Base {
+class Abastract {
   getDefaultCfg() {
     return {
       /**
@@ -31,10 +20,15 @@ class Abastract extends Base {
        */
       offsetFactor: 1,
       /**
-       * 画布
-       * @type {Canvas}
+       * 上层图层
+       * @type {container}
        */
-      canvas: null,
+      frontContainer: null,
+      /**
+       * 下层图层
+       * @type {[type]}
+       */
+      backContainer: null,
       /**
        * 绘制栅格的点
        * @type {Array}
@@ -44,72 +38,104 @@ class Abastract extends Base {
   }
 
   constructor(cfg) {
-    super(cfg);
-    this.init();
-  }
-
-  init() {
-
+    const defaultCfg = this.getDefaultCfg();
+    Util.mix(this, defaultCfg, cfg);
+    this.draw();
   }
 
   draw() {
-    const self = this;
-    const line = self.get('line');
-    const tickLine = self.get('tickLine');
-    const label = self.get('label');
+    const { line, tickLine, label, grid } = this;
 
-    if (line) {
-      self.drawLine(line);
-    }
-    if (tickLine) {
-      self.drawTicks(tickLine);
-    }
-
-    if (label) {
-      self.drawLabels(label);
-    }
+    line && this.drawLine(line);
+    tickLine && this.drawTicks(tickLine);
+    label && this.drawLabels(label);
+    grid && this.drawGrid(grid);
   }
 
-  // 绘制栅格
-  drawGrid() {
+  drawTicks(tickCfg) {
     const self = this;
-    const grid = self.get('grid');
-    if (!grid) {
-      return;
-    }
-    const canvas = self.get('canvas');
-    const gridPoints = self.get('gridPoints');
-    const ticks = self.get('ticks');
-    let gridCfg;
+    const ticks = self.ticks;
+    const length = tickCfg.length; // Change: value 改为 length， 同 G2 统一
+    const container = self.getContainer(tickCfg.top);
+    Util.each(ticks, function(tick) {
+      const start = self.getOffsetPoint(tick.value);
+      const end = self.getSidePoint(start, length);
+      container.addShape('line', {
+        className: 'axis-tick',
+        attrs: Util.mix({
+          x1: start.x,
+          y1: start.y,
+          x2: end.x,
+          y2: end.y
+        }, tickCfg)
+      });
+    });
+  }
+
+  drawLabels(label) {
+    const self = this;
+    const { ticks, labelOffset } = self;
+    let labelCfg = label;
+    const count = ticks.length;
+    Util.each(ticks, function(tick, index) {
+      if (Util.isFunction(label)) { // 文本的配置项动态可配置
+        labelCfg = label(tick.text, index, count);
+      }
+      if (labelCfg) {
+        const container = self.getContainer(labelCfg.top);
+        const start = self.getOffsetPoint(tick.value);
+        const { x, y } = self.getSidePoint(start, labelOffset);
+        const cfg = Util.mix({}, self.getTextAlignInfo(start, labelOffset), labelCfg);
+        container.addShape('text', {
+          className: 'axis-label',
+          attrs: Util.mix({
+            x,
+            y,
+            text: cfg.text || tick.text
+          }, cfg)
+        });
+      }
+    });
+  }
+
+  drawLine() {}
+
+  drawGrid(grid) {
+    const self = this;
+    const { gridPoints, ticks } = self;
+    let gridCfg = grid;
     const count = gridPoints.length;
 
     Util.each(gridPoints, function(subPoints, index) {
       if (Util.isFunction(grid)) {
         const tick = ticks[index] || {};
         gridCfg = grid(tick.text, index, count);
-      } else {
-        gridCfg = grid;
       }
+
       if (gridCfg) {
-        G.drawLines(subPoints, canvas, gridCfg);
+        const container = self.getContainer(gridCfg.top);
+        container.addShape('Polyline', {
+          className: 'axis-grid',
+          attrs: Util.mix({
+            points: subPoints
+          }, gridCfg)
+        });
       }
     });
   }
 
   // 获取坐标轴上的点
-  getOffsetPoint() {
-  }
+  getOffsetPoint() {}
 
   // 获取坐标轴上点的向量，极坐标下覆盖此方法
-  getAxisVector() {
-  }
+  getAxisVector() {}
 
   // 获取偏移位置的向量
   getOffsetVector(point, offset) {
     const self = this;
     const axisVector = self.getAxisVector(point);
     const normal = axisVector.normalize();
-    const factor = self.get('offsetFactor');
+    const factor = self.offsetFactor;
     const verticalVector = new Vector2(normal.y * -1 * factor, normal.x * factor);
     return verticalVector.multiply(offset);
   }
@@ -122,18 +148,6 @@ class Abastract extends Base {
       x: point.x + offsetVector.x,
       y: point.y + offsetVector.y
     };
-  }
-
-  drawTicks(tickCfg) {
-    const self = this;
-    const ticks = self.get('ticks');
-    const length = tickCfg.value;
-    const canvas = self.get('canvas');
-    Util.each(ticks, function(tick) {
-      const start = self.getOffsetPoint(tick.value);
-      const end = self.getSidePoint(start, length);
-      G.drawLine(start, end, canvas, tickCfg);
-    });
   }
 
   // 获取文本，水平和垂直方向的对齐方式
@@ -162,30 +176,10 @@ class Abastract extends Base {
     };
   }
 
-  drawLabels(label) {
-    const self = this;
-    const ticks = self.get('ticks');
-    const canvas = self.get('canvas');
-    let labelCfg;
-    const count = ticks.length;
-    Util.each(ticks, function(tick, index) {
-      if (Util.isFunction(label)) { // 文本的配置项动态可配置
-        labelCfg = label(tick.text, index, count);
-      } else {
-        labelCfg = label;
-      }
-      if (labelCfg) {
-        const offset = self.get('labelOffset');
-        const start = self.getOffsetPoint(tick.value);
-        const end = self.getSidePoint(start, offset);
-        const cfg = Util.mix({}, self.getTextAlignInfo(start, offset), labelCfg);
-        G.drawText(cfg.text || tick.text, end, canvas, cfg);
-      }
-    });
+  getContainer(isTop) {
+    const { frontContainer, backContainer } = this;
+    return isTop ? frontContainer : backContainer;
   }
-
-  drawLine() {}
-
 }
 
 module.exports = Abastract;

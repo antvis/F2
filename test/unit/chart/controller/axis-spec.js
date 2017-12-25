@@ -33,12 +33,12 @@ const linear = new Scale.Linear({
   tickCount: 5
 });
 
-const otherLinear = new Scale.Linear({
-  min: 0,
-  max: 100,
-  field: 'c',
-  tickCount: 5
-});
+// const otherLinear = new Scale.Linear({
+//   min: 0,
+//   max: 100,
+//   field: 'c',
+//   tickCount: 5
+// });
 
 const cat = Scale.cat({
   field: 'a',
@@ -119,10 +119,10 @@ describe('axis controller', function() {
     expect(positin).equal('right');
   });
 
-  it('createAxis', function() {
-    controller.createAxis(rect, cat, [ linear ]);
+  // it('createAxis', function() {
+  //   controller.createAxis(rect, cat, [ linear ]);
+  // });
 
-  });
   it('clear', function() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,9 +162,9 @@ describe('axis controller rect transposed', function() {
 
   });
 
-  it('createAxis', function() {
-    controller.createAxis(rect, cat, [ linear ]);
-  });
+  // it('createAxis', function() {
+  //   controller.createAxis(rect, cat, [ linear ]);
+  // });
 
   xit('clear', function() {
     const ctx = canvas.getContext('2d');
@@ -205,9 +205,9 @@ describe('axis controller circle', function() {
     expect(cfg.offsetFactor).equal(-1);
   });
 
-  it('createAxis', function() {
-    controller.createAxis(circle, cat, [ linear ]);
-  });
+  // it('createAxis', function() {
+  //   controller.createAxis(circle, cat, [ linear ]);
+  // });
 
   it('clear', function() {
     const ctx = canvas.getContext('2d');
@@ -259,7 +259,7 @@ describe('axis controller circle transposed', function() {
     expect(cfg.offsetFactor).equal(-1);
   });
 
-  it('createAxis', function() {
-    controller.createAxis(circle, cat, [ linear, otherLinear ]);
-  });
+  // it('createAxis', function() {
+  //   controller.createAxis(circle, cat, [ linear, otherLinear ]);
+  // });
 });

@@ -1,36 +1,33 @@
-/**
- * @fileOverview 多边形
- * @author dxq613@gmail.com
- */
-
 const Shape = require('./shape');
 const Util = require('../../util/common');
-const G = require('../../graphic/g');
 
 const Polygon = Shape.registerFactory('polygon', {
   defaultShapeType: 'polygon',
   getDefaultPoints(pointInfo) {
     const points = [];
-    Util.each(pointInfo.x, function(subX, idx) {
-      const subY = pointInfo.y[idx];
+    const { x, y } = pointInfo;
+    for (let i = 0; i < x.length; i++) {
       points.push({
-        x: subX,
-        y: subY
+        x: x[i],
+        y: y[i]
       });
-    });
+    }
     return points;
   }
 });
 
 Shape.registerShape('polygon', 'polygon', {
-
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
     const style = Util.mix({
       fill: cfg.color,
-      z: true // 需要闭合
+      points
     }, cfg.style);
-    G.drawLines(points, canvas, style);
+    // G.drawLines(points, canvas, style);
+    container.addShape('Polygon', {
+      className: 'polygon',
+      attrs: style
+    });
   }
 });
 

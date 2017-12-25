@@ -1,13 +1,5 @@
-/**
- * @fileOverview guide arc
- * @author 旻诺<audrey.tm@alibaba-inc.com>
- */
-
-
 const Util = require('../util/common');
 const Guide = require('./guide');
-const Vector2 = require('../graphic/vector2');
-const G = require('../graphic/g');
 const Global = require('../global');
 
 /**
@@ -15,7 +7,6 @@ const Global = require('../global');
  * @class Guide.Arc
  */
 class Arc extends Guide {
-
   getDefaultCfg() {
     return {
       type: 'arc',
@@ -33,36 +24,25 @@ class Arc extends Guide {
     };
   }
 
-  // 获取弧线的path
-  getCfg(coord) {
+  paint(coord, container) {
     const self = this;
     const start = self.parsePoint(coord, self.start);
     const end = self.parsePoint(coord, self.end);
-    const center = coord.get('center');
-    const v = new Vector2(1, 0); // 单位向量
-    const sv = Vector2.sub(start, center);
-    const ev = Vector2.sub(end, center);
-    const radius = sv.length();
-
-    const rst = {
-      radius,
-      startAngle: 2 * Math.PI - sv.angleTo(v, true),
-      endAngle: 2 * Math.PI - ev.angleTo(v, true)
-    };
-    return rst;
-  }
-
-  paint(coord, canvas) {
-    const angle = this.getCfg(coord);
-    const cfg = Util.mix({
-      z: false
-    }, this.cfg, angle);
-    const center = coord.get('center');
-    const radius = angle.radius;
-    const startAngle = angle.startAngle;
-    const endAngle = angle.endAngle;
-
-    G.drawArc(center, radius, startAngle, endAngle, canvas, cfg);
+    const coordCenter = coord.get('center');
+    const radius = Math.sqrt((start.x - coordCenter.x) * (start.x - coordCenter.x)
+      + (start.y - coordCenter.y) * (start.y - coordCenter.y));
+    const startAngle = Math.atan2(start.y - coordCenter.y, start.x - coordCenter.x);
+    const endAngle = Math.atan2(end.y - coordCenter.y, end.x - coordCenter.x);
+    container.addShape('arc', {
+      className: 'guide-arc',
+      attrs: Util.mix({
+        x: coordCenter.x,
+        y: coordCenter.y,
+        r: radius,
+        startAngle,
+        endAngle
+      }, self.cfg)
+    });
   }
 }
 

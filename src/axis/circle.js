@@ -1,58 +1,46 @@
-/**
- * @fileOverview 圆形坐标轴
- * @author dxq613@gmail.com
- */
-
 const Util = require('../util/common');
 const Abstract = require('./abstract');
-const G = require('../graphic/g');
-const Vector2 = require('../graphic/vector2');
+const Vector2 = require('../g/util/vector2');
 
 class AxisCircle extends Abstract {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
-    Util.mix(cfg, {
+    return Util.mix({}, cfg, {
       /**
-       * 起始角度
+       * 起始角度，弧度
        * @type {Number}
        */
       startAngle: -Math.PI / 2,
-
       /**
-       * 结束角度
+       * 结束角度，弧度
        * @type {Number}
        */
       endAngle: Math.PI * 3 / 2,
-
       /**
        * 半径
        * @type {Number}
        */
       radius: null,
-
       /**
        * 圆心
        * @type {Object}
        */
       center: null
     });
-    return cfg;
   }
 
   // 获取坐标轴上的点
   getOffsetPoint(value) {
-    const self = this;
-    const startAngle = self.get('startAngle');
-    const endAngle = self.get('endAngle');
+    const { startAngle, endAngle } = this;
     const angle = startAngle + (endAngle - startAngle) * value;
-    return self._getCirclePoint(angle);
+    return this._getCirclePoint(angle);
   }
 
   // 获取圆上的点
   _getCirclePoint(angle, radius) {
     const self = this;
-    const center = self.get('center');
-    radius = radius || self.get('radius');
+    const center = self.center;
+    radius = radius || self.radius;
     return {
       x: center.x + Math.cos(angle) * radius,
       y: center.y + Math.sin(angle) * radius
@@ -84,20 +72,24 @@ class AxisCircle extends Abstract {
 
   // 获取坐标轴上点的向量，极坐标下覆盖此方法
   getAxisVector(point) {
-    const self = this;
-    const center = self.get('center');
-    const factor = self.get('offsetFactor');
+    const center = this.center;
+    const factor = this.offsetFactor;
     return new Vector2((point.y - center.y) * factor, (point.x - center.x) * -1 * factor);
   }
 
   drawLine(lineCfg) {
-    const self = this;
-    const center = self.get('center');
-    const radius = self.get('radius');
-    const canvas = self.get('canvas');
-    const startAngle = self.get('startAngle');
-    const endAngle = self.get('endAngle');
-    G.drawArc(center, radius, startAngle, endAngle, canvas, lineCfg);
+    const { center, radius, startAngle, endAngle } = this;
+    const container = this.getContainer(lineCfg.top);
+    container.addShape('arc', {
+      className: 'axis-line',
+      attrs: Util.mix({
+        x: center.x,
+        y: center.y,
+        r: radius,
+        startAngle,
+        endAngle
+      }, lineCfg)
+    });
   }
 }
 
