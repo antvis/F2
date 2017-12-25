@@ -5,7 +5,7 @@ const Coord = require('./coord/index');
 const Geom = require('./geom/base');
 const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
-const GuideController = require('./controller/guide');
+// const GuideController = require('./controller/guide');
 const Global = require('./global');
 const { Canvas } = require('./graphic/index');
 
@@ -29,6 +29,105 @@ Util.each(Geom, function(geomConstructor, className) {
 });
 
 class Chart extends Base {
+  static initPlugins() {
+    return {
+      _plugins: [],
+      _cacheId: 0,
+      register(plugins) {
+        const p = this._plugins;
+        ([]).concat(plugins).forEach(function(plugin) {
+          if (p.indexOf(plugin) === -1) {
+            p.push(plugin);
+          }
+        });
+
+        this._cacheId++;
+      },
+      unregister(plugins) {
+        const p = this._plugins;
+        ([]).concat(plugins).forEach(function(plugin) {
+          const idx = p.indexOf(plugin);
+          if (idx !== -1) {
+            p.splice(idx, 1);
+          }
+        });
+
+        this._cacheId++;
+      },
+      clear() {
+        this._plugins = [];
+        this._cacheId++;
+      },
+      count() {
+        return this._plugins.length;
+      },
+      getAll() {
+        return this._plugins;
+      },
+      notify(chart, hook, args) {
+        const descriptors = this.descriptors(chart);
+        const ilen = descriptors.length;
+        let i;
+        let descriptor;
+        let plugin;
+        let params;
+        let method;
+
+        for (i = 0; i < ilen; ++i) {
+          descriptor = descriptors[i];
+          plugin = descriptor.plugin;
+          method = plugin[hook];
+          if (typeof method === 'function') {
+            params = [ chart ].concat(args || []);
+            // params.push(descriptor.options);
+            if (method.apply(plugin, params) === false) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      },
+      descriptors(chart) {
+        const cache = chart._plugins || (chart._plugins = {});
+        if (cache.id === this._cacheId) {
+          return cache.descriptors;
+        }
+
+        const plugins = [];
+        const descriptors = [];
+        // const config = (chart && chart.get('plugins'));
+
+        this._plugins.concat((chart && chart.get('plugins')) || []).forEach(function(plugin) {
+          const idx = plugins.indexOf(plugin);
+          if (idx !== -1) {
+            return;
+          }
+
+          // const id = plugin.id;
+          // let opts = options[id];
+          // if (opts === false) {
+          //   return;
+          // }
+
+          // if (opts === true) {
+          //   opts = Util.mix({}, defaults.global.plugins[id]);
+          //   // opts = helpers.clone(defaults.global.plugins[id]);
+          // }
+
+          plugins.push(plugin);
+          descriptors.push({
+            plugin
+          });
+        });
+
+        cache.descriptors = descriptors;
+        cache.id = this._cacheId;
+        return descriptors;
+      }
+    };
+  }
+
   getDefaultCfg() {
     return {
       /**
@@ -236,11 +335,13 @@ class Chart extends Base {
       frontPlot: self.get('frontPlot'),
       backPlot: self.get('backPlot')
     }));
-    self.set('guideController', new GuideController({
-      frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
-    }));
+    // self.set('guideController', new GuideController({
+    //   frontPlot: self.get('frontPlot'),
+    //   backPlot: self.get('backPlot')
+    // }));
     self._initData(self.get('data'));
+    // console
+    Chart.plugins.notify(this, 'afterInit');
   }
 
   // 初始化数据
@@ -582,5 +683,7 @@ class Chart extends Base {
   //   return self;
   // }
 }
+
+Chart.plugins = Chart.initPlugins();
 
 module.exports = Chart;

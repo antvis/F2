@@ -78,8 +78,11 @@
     .style({
       opacity: 0.6
     });
+  chart.guide().text([ 'median', 'median' ], '我在测试');
+
   chart.render();
 
+console.log(chart);
   canvas.onclick = function(ev) {
     const point = chart.getPointByClient(ev.clientX, ev.clientY);
     const records = chart.getSnapRecords(point, 'b');

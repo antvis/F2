@@ -1,6 +1,6 @@
-const Util = require('../util/common');
+const Util = require('../../util/common');
 const Guide = require('./guide');
-const Global = require('../global');
+const Global = require('../../global');
 
 /**
  * 辅助弧线

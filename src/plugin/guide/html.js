@@ -1,6 +1,6 @@
-const DOMUtil = require('../util/dom');
+const DOMUtil = require('../../util/dom');
 const Guide = require('./guide');
-const Global = require('../global');
+const Global = require('../../global');
 
 function getOffsetFromAlign(align, width, height) {
   const result = [];
