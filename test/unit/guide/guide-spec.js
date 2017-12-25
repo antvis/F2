@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const Guide = require('../../../src/guide/index');
-const { Canvas } = require('../../../src/g/index');
+const { Canvas } = require('../../../src/graphic/index');
 
 const Scale = require('../../../src/scale/');
 const Coord = require('../../../src/coord/');
-const Plot = require('../../../src/chart/plot');
+const Plot = require('../../../src/plot');
 const $ = require('jquery');
 
 const plot = new Plot({

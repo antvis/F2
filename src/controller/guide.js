@@ -1,4 +1,4 @@
-const Util = require('../../util/common');
+const Util = require('../util/common');
 
 class GuideController {
   constructor(cfg) {

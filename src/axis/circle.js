@@ -1,6 +1,6 @@
 const Util = require('../util/common');
 const Abstract = require('./abstract');
-const Vector2 = require('../g/util/vector2');
+const Vector2 = require('../graphic/util/vector2');
 
 class AxisCircle extends Abstract {
   getDefaultCfg() {

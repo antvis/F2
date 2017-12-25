@@ -1,5 +1,5 @@
 const Util = require('../util/common');
-const Vector2 = require('../g/util/vector2');
+const Vector2 = require('../graphic/util/vector2');
 
 class Abastract {
   getDefaultCfg() {

@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Plot = require('../../../src/chart/plot');
+const Plot = require('../../src/plot');
 
 describe('plot', function() {
   const plot = new Plot({

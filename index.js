@@ -1,5 +1,4 @@
 
-require('./src/animate/');
 require('./src/geom/');
 require('./src/geom/adjust/');
 require('./src/guide/');

@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const Shape = require('../../../../src/geom/shape/index');
 const Coord = require('../../../../src/coord/');
-const { Canvas } = require('../../../../src/g/index');
+const { Canvas } = require('../../../../src/graphic/index');
 
 describe('shape register', () => {
   const coord = new Coord.Rect({

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Fan = require('../../../../src/g/shape/fan');
-const Canvas = require('../../../../src/g/canvas');
+const Fan = require('../../../../src/graphic/shape/fan');
+const Canvas = require('../../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-fan';

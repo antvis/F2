@@ -1,8 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
 
-const STYLES = [ 'fontSize', 'fontFamily', 'fontStyle', 'fontWeight', 'fontVariant' ];
-
 class Text extends Shape {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
@@ -35,9 +33,9 @@ class Text extends Shape {
     const fontSize = attrs.fontSize;
     if (fontSize && +fontSize < 12) { // 小于 12 像素的文本进行 scale 处理
       this.transform([
-        [ 't', -1 * attrs.x, -1 * attrs.y ],
+        [ 't', attrs.x, attrs.y ],
         [ 's', +fontSize / 12, +fontSize / 12 ],
-        [ 't', attrs.x, attrs.y ]
+        [ 't', -attrs.x, -attrs.y ]
       ]);
     }
   }
@@ -45,18 +43,14 @@ class Text extends Shape {
   _getFontStyle() {
     const attrs = this.get('attrs');
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = attrs;
-    attrs.font = [ fontStyle, fontVariant, fontWeight, fontSize + 'px', fontFamily ].join(' ');
+    return [ fontStyle, fontVariant, fontWeight, fontSize + 'px', fontFamily ].join(' ');
   }
 
-  _setAttr(name, value) {
-    super._setAttr(name, value);
+  _afterAttrsSet() {
+    const attrs = this.get('attrs');
+    attrs.font = this._getFontStyle();
 
-    if (STYLES.indexOf(name) > -1) {
-      this._getFontStyle();
-    }
-
-    if (name === 'text') {
-      const attrs = this.get('attrs');
+    if (attrs.text) {
       const text = attrs.text;
       let textArr;
       if (Util.isString(text) && (text.indexOf('\n') !== -1)) {
@@ -66,6 +60,7 @@ class Text extends Shape {
         attrs.textArr = textArr;
       }
     }
+    this.set('attrs', attrs);
   }
 
   _getTextHeight() {
@@ -105,7 +100,7 @@ class Text extends Shape {
     }
     let subY;
 
-    context.beginPath();
+    // context.beginPath();
     if (self.hasFill()) {
       const fillOpacity = attrs.fillOpacity;
       if (!Util.isNil(fillOpacity) && fillOpacity !== 1) {

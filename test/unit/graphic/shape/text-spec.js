@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Text = require('../../../../src/g/shape/text');
-const Canvas = require('../../../../src/g/canvas');
+const Text = require('../../../../src/graphic/shape/text');
+const Canvas = require('../../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-text';

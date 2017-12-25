@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const Scale = require('../../../../src/scale/');
-const Controller = require('../../../../src/chart/controller/axis');
+const Controller = require('../../../../src/controller/axis');
 const Plot = require('../../../../src/chart/plot');
 const Coord = require('../../../../src/coord/index');
 

@@ -94,6 +94,8 @@ class Element extends Base {
     return this.get('attrs')[name];
   }
 
+  _afterAttrsSet() {}
+
   constructor(cfg) {
     super(cfg);
     const attrs = cfg && cfg.attrs || {};
@@ -115,10 +117,16 @@ class Element extends Base {
       for (const k in name) {
         self._setAttr(k, name[k]); // TODO clip 的问题处理
       }
+      if (self._afterAttrsSet) {
+        self._afterAttrsSet();
+      }
       return self;
     }
     if (arguments.length === 2) {
       self._setAttr(name, value);
+      if (self._afterAttrsSet) {
+        self._afterAttrsSet();
+      }
       return self;
     }
     return self._getAttr(name);

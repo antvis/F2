@@ -1,11 +1,6 @@
-/**
- * @fileOverview 度量的控制器
- * @author dxq613@gmail.com
- */
-
-const Util = require('../../util/common');
-const Global = require('../../global');
-const Scale = require('../../scale/');
+const Util = require('../util/common');
+const Global = require('../global');
+const Scale = require('../scale/');
 const TYPES = {
   LINEAR: 'linear',
   CAT: 'cat'

@@ -1,9 +1,9 @@
 const Guide = require('../../../src/guide/');
-const GuideController = require('../../../src/chart/controller/guide');
+const GuideController = require('../../../src/controller/guide');
 const Scale = require('../../../src/scale/');
 const Coord = require('../../../src/coord/');
-const Plot = require('../../../src/chart/plot');
-const { Canvas } = require('../../../src/g/index');
+const Plot = require('../../../src/plot');
+const { Canvas } = require('../../../src/graphic/index');
 
 const plot = new Plot({
   start: {

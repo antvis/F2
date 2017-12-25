@@ -1,11 +1,11 @@
 const expect = require('chai').expect;
-require('../../../src/geom/index');
+require('../../src/geom/index');
 
-const Chart = require('../../../src/chart/chart');
+const Chart = require('../../src/chart');
 
-require('../../../src/guide/index');
-require('../../../src/geom/shape/index');
-require('../../../src/geom/adjust/index');
+require('../../src/guide/index');
+require('../../src/geom/shape/index');
+require('../../src/geom/adjust/index');
 
 
 describe('chart test', () => {

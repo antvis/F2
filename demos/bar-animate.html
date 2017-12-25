@@ -9,7 +9,7 @@
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const div = document.createElement('div');
+ const div = document.createElement('div');
   document.body.appendChild(div);
   const canvas = document.createElement('canvas');
   canvas.width = window.innerWidth;
@@ -63,17 +63,12 @@
   data.forEach(function (obj, index) {
     // 文字部分
     const offsetY = obj.tem > 0 ? -16 : 14;
-    chart.guide().html([obj.month, obj.tem], `<div style='color: #999999;'><span>${obj.tem}</span></div>`, {
-      align: 'cc',
+    chart.guide().text([obj.month, obj.tem], obj.tem, {
+
       offset: [0, offsetY]
     });
-    // 背景部分
-    const offset = 0.25;
-    chart.guide().rect([index - offset, 'max'], [index + offset, 'min'], { fill: '#f8f8f8' });
   });
   chart.render();
-    console.log(chart.get('canvas'))
-
 </script>
 </body>
 </html>

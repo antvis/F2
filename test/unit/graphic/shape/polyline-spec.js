@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Polyline = require('../../../../src/g/shape/polyline');
-const Canvas = require('../../../../src/g/canvas');
+const Polyline = require('../../../../src/graphic/shape/polyline');
+const Canvas = require('../../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-polyline';
