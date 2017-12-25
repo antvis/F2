@@ -1,20 +1,59 @@
 const Util = require('../util/common');
 const Guide = require('./guide');
-Guide.Text = require('./text');
-Guide.Line = require('./line');
-Guide.Arc = require('./arc');
-Guide.Html = require('./html');
-Guide.Rect = require('./rect');
 
-const GuideController = require('../controller/guide');
+class GuideController {
+  constructor(cfg) {
+    this.guides = [];
+    this.xScale = null;
+    this.yScale = null;
+    Util.mix(this, cfg);
+  }
 
-Util.mix(GuideController.prototype, {
   _getDefault() {
     return {
       xScale: this.xScale,
       yScale: this.yScale
     };
-  },
+  }
+
+  addGuide(guide) {
+    this.guides.push(guide);
+  }
+
+  setScale(xScale, yScale) {
+    const guides = this.guides;
+    this.xScale = xScale;
+    this.yScale = yScale;
+    Util.each(guides, function(guide) {
+      guide.xScale = xScale;
+      guide.yScale = yScale;
+    });
+  }
+
+  paint(coord) {
+    const self = this;
+    const guides = self.guides;
+    Util.each(guides, function(guide) {
+      const container = guide.top ? self.frontPlot : self.backPlot;
+      guide.paint(coord, container);
+    });
+  }
+
+  clear(parent) {
+    this.guides = [];
+    this.reset(parent);
+    return this;
+  }
+
+  reset(parent) {
+    if (parent) {
+      const guideWrpper = parent.getElementsByClassName('guideWapper')[0];
+      if (guideWrpper) {
+        parent.removeChild(guideWrpper);
+      }
+    }
+  }
+
   /**
    * 添加辅助线
    * @chainable
@@ -34,7 +73,7 @@ Util.mix(GuideController.prototype, {
     const guide = new Guide.Line(config);
     this.addGuide(guide);
     return this;
-  },
+  }
   /**
    * 添加辅助文本
    * @chainable
@@ -54,7 +93,7 @@ Util.mix(GuideController.prototype, {
     const guide = new Guide.Text(config);
     this.addGuide(guide);
     return this;
-  },
+  }
 
   /**
    * 添加辅助弧线
@@ -75,7 +114,7 @@ Util.mix(GuideController.prototype, {
     const guide = new Guide.Arc(config);
     this.addGuide(guide);
     return this;
-  },
+  }
   /**
    * 添加辅助html
    * @chainable
@@ -95,7 +134,7 @@ Util.mix(GuideController.prototype, {
     const guide = new Guide.Html(config);
     this.addGuide(guide);
     return this;
-  },
+  }
 
   rect(start, end, cfg) {
     const config = {
@@ -109,6 +148,6 @@ Util.mix(GuideController.prototype, {
     this.addGuide(guide);
     return this;
   }
-});
+}
 
-module.exports = Guide;
+module.exports = GuideController;

@@ -1,4 +1,4 @@
-const Util = require('../util/common');
+const Util = require('../../util/common');
 const KEYWORDS_PERCENT = {
   min: 0,
   median: 0.5,
