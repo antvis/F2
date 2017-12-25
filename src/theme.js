@@ -86,7 +86,8 @@ const Theme = {
     },
     text: {
       fill: '#000',
-      textAlign: 'center'
+      textAlign: 'center',
+      offset: [ 0, 0 ]
     },
     rect: {
       fillStyle: '#fafafa'
@@ -97,6 +98,15 @@ const Theme = {
     html: {
       offset: [ 0, 0 ],
       align: 'cc'
+    }
+  },
+  shape: {
+    line: {
+      lineWidth: 4 // 线的默认宽度
+    },
+    point: {
+      lineWidth: 0,
+      size: 5 // 圆的默认半径
     }
   }
 };

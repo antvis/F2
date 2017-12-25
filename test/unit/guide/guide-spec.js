@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 const Guide = require('../../../src/guide/index');
+const { Canvas } = require('../../../src/g/index');
 
 const Scale = require('../../../src/scale/');
 const Coord = require('../../../src/coord/');
@@ -28,10 +29,18 @@ const circleCoord = new Coord.Circle({
 const div = document.createElement('div');
 document.body.appendChild(div);
 
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-div.appendChild(canvas);
+const dom = document.createElement('canvas');
+dom.width = 500;
+dom.height = 500;
+div.appendChild(dom);
+
+const canvas = new Canvas({
+  el: dom,
+  width: 500,
+  height: 500
+});
+
+const container = canvas.addGroup();
 
 const xScale = new Scale.cat({
   values: [ '一月', '二月', '三月', '四月', '五月' ]
@@ -69,10 +78,10 @@ describe('guide test', function() {
       text: '(一月，200)',
       position: [ '一月', 200 ]
     });
-    text.paint(coord, canvas);
+    text.paint(coord, container);
     text.position = [ '五月', 1000 ];
     text.text = '(五月,1000)';
-    text.paint(coord, canvas);
+    text.paint(coord, container);
   });
 
   it('guide rect', function() {
@@ -86,7 +95,7 @@ describe('guide test', function() {
         opacity: 0.2
       }
     });
-    rect.paint(coord, canvas);
+    rect.paint(coord, container);
   });
 
   it('guide line', function() {
@@ -100,7 +109,7 @@ describe('guide test', function() {
         lineWidth: 1
       }
     });
-    line.paint(coord, canvas);
+    line.paint(coord, container);
   });
 
   it('arc', function() {
@@ -114,7 +123,7 @@ describe('guide test', function() {
         lineWidth: 10
       }
     });
-    arc.paint(circleCoord, canvas);
+    arc.paint(circleCoord, container);
   });
 
   it('arc, yScale is undefined.', function() {
@@ -128,7 +137,7 @@ describe('guide test', function() {
       }
     });
 
-    arc.paint(circleCoord, canvas);
+    arc.paint(circleCoord, container);
 
   });
 
@@ -142,11 +151,11 @@ describe('guide test', function() {
       }
     });
 
-    arc.paint(circleCoord, canvas);
+    arc.paint(circleCoord, container);
   });
 
   it('clear', function() {
-    canvas.getContext('2d').clearRect(0, 0, 500, 500);
+    canvas.get('context').clearRect(0, 0, 500, 500);
   });
 
   it('min,max,medium', function() {
@@ -155,39 +164,39 @@ describe('guide test', function() {
       yScale,
       text: 'min-min',
       position: [ 'min', 'min' ]
-    }).paint(coord, canvas);
+    }).paint(coord, container);
 
     new Guide.Text({
       xScale,
       yScale,
       text: 'min-max',
       position: [ 'min', 'max' ]
-    }).paint(coord, canvas);
+    }).paint(coord, container);
 
     new Guide.Text({
       xScale,
       yScale,
       text: 'max-max',
       position: [ 'max', 'max' ]
-    }).paint(coord, canvas);
+    }).paint(coord, container);
 
     new Guide.Text({
       xScale,
       yScale,
       text: 'medium-max',
       position: [ 'medium', 'max' ]
-    }).paint(coord, canvas);
+    }).paint(coord, container);
 
     new Guide.Text({
       xScale,
       yScale,
       text: 'max-min',
       position: [ 'max', 'min' ]
-    }).paint(coord, canvas);
+    }).paint(coord, container);
   });
 
   it('clear', function() {
-    canvas.getContext('2d').clearRect(0, 0, 500, 500);
+    canvas.get('context').clearRect(0, 0, 500, 500);
   });
 });
 
@@ -203,7 +212,7 @@ describe('guide html test', function() {
         lineWidth: 1
       }
     });
-    line.paint(coord, canvas);
+    line.paint(coord, container);
   });
 
   it('offset', function() {
@@ -216,7 +225,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;border-radius:10px;'></div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '五月', 500 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -230,7 +239,7 @@ describe('guide html test', function() {
       position: [ '九月', 900 ],
       html: "<div style='background-color:red;width:20px;height:20px;border-radius:10px;'></div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '九月', 900 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -247,7 +256,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>rc</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '八月', 800 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -264,7 +273,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>lc</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '六月', 600 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -281,7 +290,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bc</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '四月', 400 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -298,7 +307,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tc</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '二月', 200 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -315,7 +324,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tl</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '一月', 100 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -332,7 +341,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tr</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '三月', 300 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -349,7 +358,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bl</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '五月', 500 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
@@ -366,7 +375,7 @@ describe('guide html test', function() {
       },
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>br</div>"
     });
-    Html.paint(coord, canvas);
+    Html.paint(coord, container);
     const position = Html.parsePoint(coord, [ '七月', 700 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);

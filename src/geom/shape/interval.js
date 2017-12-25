@@ -1,19 +1,8 @@
-/**
- * @fileOverview interval shapes
- * @author dxq613@gmail.com
- */
-
-
 const Util = require('../../util/common');
 const Shape = require('./shape');
-const G = require('../../graphic/g');
 
-// 获取柱状图的几个点
 function getRectPoints(cfg) {
-  const x = cfg.x;
-  const y = cfg.y;
-  const y0 = cfg.y0; // 0 点的位置
-  const width = cfg.size;
+  const { x, y, y0, size } = cfg;
 
   // 有3种情况，
   // 1. y，x都不是数组
@@ -32,27 +21,37 @@ function getRectPoints(cfg) {
     xmin = x[0];
     xmax = x[1];
   } else {
-    xmin = x - width / 2;
-    xmax = x + width / 2;
+    xmin = x - size / 2;
+    xmax = x + size / 2;
   }
 
-  const points = [];
+  return [
+    { x: xmin, y: ymin },
+    { x: xmin, y: ymax },
+    { x: xmax, y: ymax },
+    { x: xmax, y: ymin }
+  ];
+}
 
-  points.push({
-    x: xmin,
-    y: ymin
-  }, {
-    x: xmin,
-    y: ymax
-  }, {
-    x: xmax,
-    y: ymax
-  }, {
-    x: xmax,
-    y: ymin
-  });
+function getRectRange(points) {
+  const xValues = [];
+  const yValues = [];
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    xValues.push(point.x);
+    yValues.push(point.y);
+  }
+  const xMin = Math.min.apply(null, xValues);
+  const yMin = Math.min.apply(null, yValues);
+  const xMax = Math.max.apply(null, xValues);
+  const yMax = Math.max.apply(null, yValues);
 
-  return points;
+  return {
+    x: xMin,
+    y: yMin,
+    width: xMax - xMin,
+    height: yMax - yMin
+  };
 }
 
 const Interval = Shape.registerFactory('interval', {
@@ -63,20 +62,32 @@ const Interval = Shape.registerFactory('interval', {
 });
 
 Shape.registerShape('interval', 'rect', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
     const style = Util.mix({
-      fill: cfg.color,
-      z: true // 需要闭合
+      fill: cfg.color
     }, cfg.style);
     if (cfg.isInCircle) {
       let newPoints = points.slice(0);
       if (this._coord.transposed) {
         newPoints = [ points[0], points[3], points[2], points[1] ];
       }
-      G.drawFan(newPoints, cfg.center, canvas, style);
+
+      container.addShape('Fan', {
+        className: 'interval',
+        attrs: Util.mix({
+          points: newPoints,
+          cx: cfg.center.x,
+          cy: cfg.center.y
+        }, style)
+      });
     } else {
-      G.drawRect(points, canvas, style);
+      const rectCfg = getRectRange(points);
+
+      container.addShape('rect', {
+        className: 'interval',
+        attrs: Util.mix(rectCfg, style)
+      });
     }
   }
 });

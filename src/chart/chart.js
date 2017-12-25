@@ -1,8 +1,3 @@
-/**
- * @fileOverview chart
- * @author dxq613@gail.com
- */
-
 const Base = require('../base');
 const Plot = require('./plot');
 const Util = require('../util/common');
@@ -12,8 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const GuideController = require('./controller/guide');
 const Global = require('../global');
-const DomUtil = require('../util/dom');
-const AnimateController = require('./controller/animate');
+const { Canvas } = require('../g/index');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -33,11 +27,6 @@ Util.each(Geom, function(geomConstructor, className) {
     return geom;
   };
 });
-
-/**
- * @class Chart
- * 图表的入口
- */
 
 class Chart extends Base {
   getDefaultCfg() {
@@ -209,21 +198,6 @@ class Chart extends Base {
   }
 
   /**
-   * 根据clientX, clientY获取画布上坐标
-   * @param  {Number} clientX 事件获取的窗口坐标 x
-   * @param  {Number} clientY 事件获取的窗口坐标 y
-   * @return {Object} 对应的坐标
-   */
-  getPointByClient(clientX, clientY) {
-    const canvas = this.get('canvas');
-    const bbox = canvas.getBoundingClientRect();
-    return {
-      x: clientX - bbox.left,
-      y: clientY - bbox.top
-    };
-  }
-
-  /**
    * 获取画布上坐标对应的数据值
    * @param  {Object} point 画布坐标的x,y的值
    * @return {Object} 当前坐标系的数据值
@@ -255,14 +229,17 @@ class Chart extends Base {
   _init() {
     const self = this;
     self._initCanvas();
-    self.set('layers', []);
+    self._initLayers();
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      canvas: self.get('canvas')
+      frontPlot: self.get('frontPlot'),
+      backPlot: self.get('backPlot')
     }));
-    self.set('guideController', new GuideController());
-    self.set('animateController', new AnimateController());
+    self.set('guideController', new GuideController({
+      frontPlot: self.get('frontPlot'),
+      backPlot: self.get('backPlot')
+    }));
     self._initData(self.get('data'));
   }
 
@@ -285,56 +262,40 @@ class Chart extends Base {
   // 初始化画布
   _initCanvas() {
     const self = this;
-    const id = self.get('id');
-    const el = self.get('el');
-    const context = self.get('context');
-    let canvas;
-
-    if (context) { // CanvasRenderingContext2D
-      canvas = context.canvas;
-    } else if (el) { // HTMLElement
-      canvas = el;
-    } else if (id) { // dom id
-      canvas = document.getElementById(id);
+    try {
+      const canvas = new Canvas({
+        domId: self.get('id'),
+        el: self.get('el'),
+        context: self.get('context'),
+        pixelRatio: self.get('pixelRatio'),
+        width: self.get('width'),
+        height: self.get('height')
+      });
+      self.set('canvas', canvas);
+      self.set('width', canvas.get('width'));
+      self.set('height', canvas.get('height'));
+    } catch (info) { // 绘制时异常，中断重绘
+      console.warn('error in init canvas');
+      console.warn(info);
     }
-
-    if (!canvas) {
-      throw new Error('Please specify the id or el of the chart!');
-    }
-
-    self.set('canvas', canvas);
-
-    if (context && canvas && !canvas.getContext) {
-      canvas.getContext = function() {
-        return context;
-      };
-    }
-    let width = self.get('width');
-    let height = self.get('height');
-    const ratio = self._getRatio();
-
-    if (!width) {
-      width = DomUtil.getWidth(canvas);
-      self.set('width', width);
-    }
-
-    if (!height) {
-      height = DomUtil.getHeight(canvas);
-      self.set('height', height);
-    }
-
-    if (ratio) {
-      canvas.width = width * ratio;
-      canvas.height = height * ratio;
-      DomUtil.modiCSS(canvas, { height: height + 'px' });
-      DomUtil.modiCSS(canvas, { width: width + 'px' });
-      if (ratio !== 1) {
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
-    }
-
     self._initLayout();
+  }
+
+  _initLayers() {
+    const canvas = this.get('canvas');
+    const backPlot = canvas.addGroup({
+      zIndex: 1
+    }); // 图表最后面的容器
+    const middlePlot = canvas.addGroup({
+      zIndex: 2
+    }); // 图表所在的容器
+    const frontPlot = canvas.addGroup({
+      zIndex: 3
+    }); // 图表前面的容器
+
+    this.set('backPlot', backPlot);
+    this.set('middlePlot', middlePlot);
+    this.set('frontPlot', frontPlot);
   }
 
   // 初始化布局
@@ -342,8 +303,9 @@ class Chart extends Base {
     const self = this;
     // 兼容margin 的写法
     const padding = self.get('margin') || self.get('padding');
-    const width = self.get('width');
-    const height = self.get('height');
+    const canvas = self.get('canvas');
+    const width = canvas.get('width'); // TODO 很容易混淆
+    const height = canvas.get('height'); // TODO 很容易混淆
     let top;
     let left;
     let right;
@@ -377,7 +339,7 @@ class Chart extends Base {
   // 初始化坐标系
   _initCoord() {
     const self = this;
-    const plot = self.get('plot');
+    const plot = self.get('plot'); // TODO 由谁来创建？ coord 还是 chart
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
       plot
     });
@@ -398,7 +360,7 @@ class Chart extends Base {
     const geoms = self.get('geoms');
     geoms.push(geom);
     geom.set('chart', self);
-    geom.set('container', self.get('canvas'));
+    geom.set('container', self.get('middlePlot'));
   }
 
   /**
@@ -439,89 +401,28 @@ class Chart extends Base {
     this.get('guideController').clear();
     this._removeGeoms();
     this._clearInner();
+
+    const canvas = this.get('canvas');
+    canvas.draw();
     return this;
   }
 
   _clearInner() {
-    this.get('animateController').stop();
     this.set('scales', {});
     this._clearGeoms();
-    this._clearCanvas();
+    const frontPlot = this.get('frontPlot');
+    const backPlot = this.get('backPlot');
+    frontPlot && frontPlot.clear();
+    backPlot && backPlot.clear();
     const parent = this.get('canvas').parentNode;
     this.get('guideController').reset(parent);
   }
 
   destroy() {
     this.clear();
-    super.destroy();
-  }
-
-  _clearCanvas() {
     const canvas = this.get('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    return this;
-  }
-
-  _beforeRenderGuide() {
-    const guideController = this.get('guideController');
-    if (guideController.guides.length) {
-      const xScale = this._getXScale();
-      const yScale = this._getYScales()[0];
-      guideController.setScale(xScale, yScale);
-    }
-  }
-
-  // 渲染辅助元素
-  _renderBackGuide() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const guideController = self.get('guideController');
-    if (guideController.guides.length) {
-      const coord = self.get('coord');
-      guideController.paintBack(coord, canvas);
-    }
-  }
-
-  _renderFrontGuide() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const guideController = self.get('guideController');
-    if (guideController && guideController.guides.length) {
-      const coord = self.get('coord');
-      guideController.paintFront(coord, canvas);
-    }
-  }
-
-  _renderAnimate(callback) {
-    const self = this;
-    const imageData = self.get('imageData');
-    const bgImageData = self.get('bgImageData');
-    const animateController = self.get('animateController');
-    const canvas = self.get('canvas');
-    const coord = self.get('coord');
-    const center = coord.get('center');
-    const radius = coord.get('radius');
-    const geom = self.get('geoms')[0];
-    const yScale = geom.getYScale();
-    const yMin = geom.getYMinValue();
-
-    const startPoint = coord.convertPoint({
-      x: 0,
-      y: yScale.scale(yMin)
-    });
-
-    if (animateController.animate) {
-      animateController.setOptions({
-        imageData,
-        bgImageData,
-        startPoint,
-        center,
-        radius
-      });
-      animateController.setCallBack(callback);
-      animateController.paint(canvas);
-    }
+    canvas.destroy();
+    super.destroy();
   }
 
   /**
@@ -531,24 +432,16 @@ class Chart extends Base {
    */
   render() {
     const self = this;
+    const canvas = self.get('canvas');
     self._initCoord();
     const geoms = self.get('geoms');
-    const animateController = self.get('animateController');
     self._initGeoms(geoms);
     this._adjustScale();
     self.beforeDrawGeom();
 
-    if (animateController.animate) {
-      self.set('bgImageData', self.getImageData());
-      self._clearCanvas();
-      self.drawGeom(geoms);
-      self.set('imageData', self.getImageData());
-      self._clearCanvas();
-      self._renderAnimate(self._renderFrontGuide.bind(self));
-    } else {
-      self.drawGeom(geoms);
-      self._renderFrontGuide();
-    }
+    self.drawGeom(geoms);
+
+    canvas.draw();
     return self;
   }
 
@@ -572,18 +465,7 @@ class Chart extends Base {
   beforeDrawGeom() {
     const self = this;
     self._renderAxis();
-    self._beforeRenderGuide();
-    self._renderBackGuide();
-  }
-
-  getImageData() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const ctx = canvas.getContext('2d');
-    const width = self.get('width');
-    const height = self.get('height');
-    const ratio = self._getRatio();
-    return ctx.getImageData(0, 0, width * ratio, height * ratio);
+    self._renderGuide();
   }
 
   _initGeoms(geoms) {
@@ -674,6 +556,18 @@ class Chart extends Base {
     axisController.createAxis(coord, xScale, yScales);
   }
 
+  _renderGuide() {
+    const self = this;
+    const guideController = self.get('guideController');
+    if (guideController.guides.length) {
+      const xScale = self._getXScale();
+      const yScale = self._getYScales()[0];
+      const coord = self.get('coord');
+      guideController.setScale(xScale, yScale);
+      guideController.paint(coord);
+    }
+  }
+
   /**
    * 添加辅助信息
    * @return {GuideController} Guide辅助类
@@ -682,11 +576,11 @@ class Chart extends Base {
     return this.get('guideController');
   }
 
-  animate(cfg) {
-    const animateController = this.get('animateController');
-    animateController.setAnimate(cfg);
-    return self;
-  }
+  // animate(cfg) {
+  //   const animateController = this.get('animateController');
+  //   animateController.setAnimate(cfg);
+  //   return self;
+  // }
 }
 
 module.exports = Chart;
