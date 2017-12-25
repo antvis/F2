@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Shape = require('../../../src/g/shape');
+const Shape = require('../../../src/graphic/shape');
 
 describe('Shape', function() {
   it('constructor', function() {

@@ -36,7 +36,7 @@ class Guide {
 
   constructor(cfg) {
     const defaultCfg = this.getDefaultCfg();
-    Util.mix(this, defaultCfg, cfg);
+    Util.deepMix(this, defaultCfg, cfg);
   }
 
   /**

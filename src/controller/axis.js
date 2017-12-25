@@ -1,6 +1,6 @@
-const Util = require('../../util/common');
-const Axis = require('../../axis/index');
-const Global = require('../../global');
+const Util = require('../util/common');
+const Axis = require('../axis/index');
+const Global = require('../global');
 
 function formatTicks(ticks) {
   const tmp = ticks.slice(0);

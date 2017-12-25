@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Element = require('../../../src/g/element');
+const Element = require('../../../src/graphic/element');
 
 describe('Element', function() {
   let e;

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Arc = require('../../../../src/g/shape/arc');
-const Canvas = require('../../../../src/g/canvas');
+const Arc = require('../../../../src/graphic/shape/arc');
+const Canvas = require('../../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-arc';

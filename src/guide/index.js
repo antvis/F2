@@ -6,7 +6,7 @@ Guide.Arc = require('./arc');
 Guide.Html = require('./html');
 Guide.Rect = require('./rect');
 
-const GuideController = require('../chart/controller/guide');
+const GuideController = require('../controller/guide');
 
 Util.mix(GuideController.prototype, {
   _getDefault() {

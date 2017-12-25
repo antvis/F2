@@ -1,29 +1,24 @@
 const expect = require('chai').expect;
-const Line = require('../../../../src/g/shape/smooth-line');
-const Canvas = require('../../../../src/g/canvas');
+const Line = require('../../../../src/graphic/shape/line');
+const Canvas = require('../../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
-dom.id = 'canvas-smooth';
+dom.id = 'canvas-line';
 document.body.appendChild(dom);
 
-describe('Smooth Line', function() {
+describe('Line', function() {
   const canvas = new Canvas({
-    domId: 'canvas-smooth',
+    domId: 'canvas-line',
     width: 200,
     height: 200
   });
   const line = new Line({
     attrs: {
-      points: [
-        { x: 10, y: 100 },
-        { x: 42, y: 98 },
-        { x: 55, y: 103 },
-        { x: 56, y: 110 },
-        { x: 60, y: 89 },
-        { x: 83, y: 99 },
-        { x: 100, y: 120 }
-      ],
-      lineWidth: 4,
+      x1: 0,
+      y1: 0,
+      x2: 200,
+      y2: 200,
+      lineWidth: 40,
       strokeStyle: '#223273',
       lineCap: 'round'
     }

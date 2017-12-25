@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Group = require('../../../src/g/group');
-const Shape = require('../../../src/g/shape/index');
+const Group = require('../../../src/graphic/group');
+const Shape = require('../../../src/graphic/shape/index');
 
 describe('Group', function() {
   it('constructor', function() {

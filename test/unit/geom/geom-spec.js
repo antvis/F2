@@ -3,7 +3,7 @@ const Geom = require('../../../src/geom/index');
 const Scale = require('../../../src/scale/index');
 const Coord = require('../../../src/coord/index');
 const Global = require('../../../src/global');
-const { Canvas } = require('../../../src/g/index');
+const { Canvas } = require('../../../src/graphic/index');
 
 require('../../../src/geom/adjust/index');
 require('../../../src/geom/shape/index');

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Group = require('../../../src/g/group');
-const Canvas = require('../../../src/g/canvas');
+const Group = require('../../../src/graphic/group');
+const Canvas = require('../../../src/graphic/canvas');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';

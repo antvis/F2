@@ -3,7 +3,7 @@ const AxisLine = require('../../../src/axis/line');
 const Scale = require('../../../src/scale/');
 const axisGlobal = require('../../../src/global').axis;
 const Util = require('../../../src/util/common');
-const { Group } = require('../../../src/g/index');
+const { Group } = require('../../../src/graphic/index');
 
 const linear = new Scale.Linear({
   min: 0,

@@ -1,13 +1,13 @@
-const Base = require('../base');
+const Base = require('./base');
 const Plot = require('./plot');
-const Util = require('../util/common');
-const Coord = require('../coord/index');
-const Geom = require('../geom/base');
+const Util = require('./util/common');
+const Coord = require('./coord/index');
+const Geom = require('./geom/base');
 const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const GuideController = require('./controller/guide');
-const Global = require('../global');
-const { Canvas } = require('../g/index');
+const Global = require('./global');
+const { Canvas } = require('./graphic/index');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
