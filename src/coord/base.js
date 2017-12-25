@@ -1,12 +1,6 @@
-/**
- * @fileOverview basic class of coordination
- * @author dxq613@gmail.com
- */
-
 const Util = require('../util/common');
 
 class Base {
-
   getDefaultCfg() {
     return {};
   }
@@ -17,18 +11,7 @@ class Base {
     this.init();
   }
 
-  get(name) {
-    return this[name];
-  }
-
-  set(name, value) {
-    this[name] = value;
-    return this;
-  }
-
-  init() {
-
-  }
+  init() {}
 
   convertPoint(point) {
     return point;

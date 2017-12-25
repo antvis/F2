@@ -1,13 +1,7 @@
-/**
- * @fileOverview 极坐标系
- * @author dxq613@gmail.com
- */
-
 const Base = require('./base');
 const Vector2 = require('../g/util/vector2');
 
 class Polar extends Base {
-
   getDefaultCfg() {
     return {
       type: 'polar',
@@ -24,16 +18,16 @@ class Polar extends Base {
 
   init() {
     const self = this;
-    const plot = self.get('plot');
-    const start = plot ? plot.bl : self.get('start');
-    const end = plot ? plot.tr : self.get('end');
-    const inner = self.get('inner') || self.get('innerRadius');
+    const plot = self.plot;
+    const start = plot ? plot.bl : self.start;
+    const end = plot ? plot.tr : self.end;
+    const inner = self.inner || self.innerRadius;
     const width = Math.abs(end.x - start.x);
     const height = Math.abs(end.y - start.y);
 
     let radius;
     let center;
-    if (self.get('startAngle') === -Math.PI && self.get('endAngle') === 0) {
+    if (self.startAngle === -Math.PI && self.endAngle === 0) {
       radius = Math.min(width / 2, height);
       center = {
         x: (start.x + end.x) / 2,
@@ -47,30 +41,28 @@ class Polar extends Base {
       };
     }
 
-    const x = {
-      start: self.get('startAngle'),
-      end: self.get('endAngle')
+    this.x = {
+      start: self.startAngle,
+      end: self.endAngle
     };
 
-    const y = {
+    this.y = {
       start: radius * inner,
       end: radius
     };
-    self.set('center', center);
-    self.set('radius', radius);
-    self.set('x', x);
-    self.set('y', y);
+    this.center = center;
+    this.radius = radius;
   }
 
   convertPoint(point) {
     const self = this;
-    const center = self.get('center');
-    const transposed = self.get('transposed');
+    const center = self.center;
+    const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
 
-    const x = self.get('x');
-    const y = self.get('y');
+    const x = self.x;
+    const y = self.y;
 
     const angle = x.start + (x.end - x.start) * point[xDim];
     const radius = y.start + (y.end - y.start) * point[yDim];
@@ -83,15 +75,14 @@ class Polar extends Base {
 
   invertPoint(point) {
     const self = this;
-    const center = self.get('center');
-    const transposed = self.get('transposed');
+    const center = self.center;
+    const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
-    const x = self.get('x');
-    const y = self.get('y');
+    const x = self.x;
+    const y = self.y;
 
     const startv = new Vector2(1, 0);
-
     const pointv = new Vector2(point.x - center.x, point.y - center.y);
 
     if (pointv.zero()) {

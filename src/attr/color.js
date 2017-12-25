@@ -2,10 +2,6 @@ const ColorUtil = require('../util/color');
 const Base = require('./base');
 const Util = require('../util/common');
 
-/**
- * 视觉通道 color
- * @class Attr.Color
- */
 class Color extends Base {
 
   constructor(cfg) {
