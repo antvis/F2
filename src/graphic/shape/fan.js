@@ -2,6 +2,7 @@ const Util = require('../../util/common');
 const Shape = require('../shape');
 const Vector2 = require('../util/vector2');
 
+// TODO
 class Fan extends Shape {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
