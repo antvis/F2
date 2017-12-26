@@ -40,15 +40,6 @@ function _mix(dist, obj) {
   }
 }
 
-function isNull(o) {
-  return o === undefined || o === null;
-}
-
-function upperFirst(s) {
-  s += '';
-  return s.charAt(0).toUpperCase() + s.substring(1);
-}
-
 /**
  * @class Util
  * @singleton
@@ -60,8 +51,10 @@ Util = {
    * @param  {String} s 字符串
    * @return {String} 首字母大写后的字符串
    */
-  ucfirst: upperFirst,
-  upperFirst,
+  upperFirst(s) {
+    s += '';
+    return s.charAt(0).toUpperCase() + s.substring(1);
+  },
   lowerFirst(s) {
     s += '';
     return s.charAt(0).toLowerCase() + s.substring(1);
@@ -123,14 +116,9 @@ Util = {
   isDate(value) {
     return toString.call(value) === '[object Date]';
   },
-  /**
-   * 对象是否为空
-   * @param  {*}  o 对象
-   * @return {Boolean}  是否不存在
-   */
-  isNull,
-  // 别名
-  isNil: isNull,
+  isNil(o) {
+    return o === undefined || o === null;
+  },
   /**
    * 是否是javascript对象
    * @param {Object} value The value to test
