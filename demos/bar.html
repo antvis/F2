@@ -19,24 +19,26 @@
     {tem: 3, city: 'berlin'}
   ];
   const chart = new F2.Chart({
-    el: canvas
+    el: canvas,
+    pixelRatio: 2
   });
   chart.source(data);
-  chart.coord({
-    transposed: true
-  });
+  // chart.coord({
+  //   transposed: true
+  // });
   // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
   chart.axis('city', {
     label: {
-      fontSize: 14
+      fontSize: 10,
+      top: true
     },
     grid: null
   });
-  chart.axis('tem', {
-    label: {
-      fontSize: 14
-    }
-  });
+  // chart.axis('tem', {
+  //   label: {
+  //     fontSize: 10
+  //   }
+  // });
   chart.interval().position('city*tem').color('city');
   chart.render();
 </script>

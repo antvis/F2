@@ -2,11 +2,11 @@ const expect = require('chai').expect;
 require('../../../src/geom/index');
 
 const Chart = require('../../../src/chart/chart');
-
-require('../../../src/guide/index');
+const { Guide } = require('../../../src/plugin/index');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
 
+Chart.plugins.register(Guide);
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');

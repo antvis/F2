@@ -457,7 +457,7 @@ class Geom extends Base {
       cfg.points = obj.points;
     }
     if (isInCircle) {
-      cfg.center = self.get('coord').get('center');
+      cfg.center = self.get('coord').center;
     }
     return cfg;
   }
@@ -660,7 +660,7 @@ class Geom extends Base {
     }
     dataArray.forEach(function(data) {
       data.forEach(function(obj) {
-        const originValue = Util.isNull(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
         if (self._isEqual(originValue, xValue, xScale)) {
           tmp.push(obj);
         }

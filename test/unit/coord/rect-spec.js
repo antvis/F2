@@ -18,7 +18,7 @@ describe('coord rect', function() {
   });
 
   it('constructor', function() {
-    expect(rect.get('type')).to.be.equal('cartesian');
+    expect(rect.type).to.be.equal('cartesian');
   });
 
   it('convertPoint', function() {
@@ -113,5 +113,4 @@ describe('coord rect', function() {
     expect(p.x).to.be.equal(0.3);
     expect(p.y).to.be.equal(0.7);
   });
-
 });

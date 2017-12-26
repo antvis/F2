@@ -1,8 +1,6 @@
 /**
- * @fileOverview 颜色计算的辅助方法
- * @author dxq613@gmail.com
+ * TODO: 优化，最好去除 document
  */
-
 const Util = require('./common');
 const RGB_REG = /rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
 

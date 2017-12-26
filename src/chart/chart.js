@@ -5,9 +5,8 @@ const Coord = require('../coord/index');
 const Geom = require('../geom/base');
 const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
-const GuideController = require('./controller/guide');
 const Global = require('../global');
-const { Canvas } = require('../g/index');
+const { Canvas } = require('../graphic/index');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -29,6 +28,105 @@ Util.each(Geom, function(geomConstructor, className) {
 });
 
 class Chart extends Base {
+  static initPlugins() {
+    return {
+      _plugins: [],
+      _cacheId: 0,
+      register(plugins) {
+        const p = this._plugins;
+        ([]).concat(plugins).forEach(function(plugin) {
+          if (p.indexOf(plugin) === -1) {
+            p.push(plugin);
+          }
+        });
+
+        this._cacheId++;
+      },
+      unregister(plugins) {
+        const p = this._plugins;
+        ([]).concat(plugins).forEach(function(plugin) {
+          const idx = p.indexOf(plugin);
+          if (idx !== -1) {
+            p.splice(idx, 1);
+          }
+        });
+
+        this._cacheId++;
+      },
+      clear() {
+        this._plugins = [];
+        this._cacheId++;
+      },
+      count() {
+        return this._plugins.length;
+      },
+      getAll() {
+        return this._plugins;
+      },
+      notify(chart, hook, args) {
+        const descriptors = this.descriptors(chart);
+        const ilen = descriptors.length;
+        let i;
+        let descriptor;
+        let plugin;
+        let params;
+        let method;
+
+        for (i = 0; i < ilen; ++i) {
+          descriptor = descriptors[i];
+          plugin = descriptor.plugin;
+          method = plugin[hook];
+          if (typeof method === 'function') {
+            params = [ chart ].concat(args || []);
+            // params.push(descriptor.options);
+            if (method.apply(plugin, params) === false) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      },
+      descriptors(chart) {
+        const cache = chart._plugins || (chart._plugins = {});
+        if (cache.id === this._cacheId) {
+          return cache.descriptors;
+        }
+
+        const plugins = [];
+        const descriptors = [];
+        // const config = (chart && chart.get('plugins'));
+
+        this._plugins.concat((chart && chart.get('plugins')) || []).forEach(function(plugin) {
+          const idx = plugins.indexOf(plugin);
+          if (idx !== -1) {
+            return;
+          }
+
+          // const id = plugin.id;
+          // let opts = options[id];
+          // if (opts === false) {
+          //   return;
+          // }
+
+          // if (opts === true) {
+          //   opts = Util.mix({}, defaults.global.plugins[id]);
+          //   // opts = helpers.clone(defaults.global.plugins[id]);
+          // }
+
+          plugins.push(plugin);
+          descriptors.push({
+            plugin
+          });
+        });
+
+        cache.descriptors = descriptors;
+        cache.id = this._cacheId;
+        return descriptors;
+      }
+    };
+  }
+
   getDefaultCfg() {
     return {
       /**
@@ -85,8 +183,7 @@ class Chart extends Base {
 
   constructor(cfg) {
     super(cfg);
-    // 附加各种 geometry 对应的方法
-    Util.mix(this, ViewGeoms);
+    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
     this._init();
   }
 
@@ -196,7 +293,6 @@ class Chart extends Base {
       y
     });
   }
-
   /**
    * 获取画布上坐标对应的数据值
    * @param  {Object} point 画布坐标的x,y的值
@@ -236,11 +332,8 @@ class Chart extends Base {
       frontPlot: self.get('frontPlot'),
       backPlot: self.get('backPlot')
     }));
-    self.set('guideController', new GuideController({
-      frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
-    }));
     self._initData(self.get('data'));
+    Chart.plugins.notify(self, 'init');
   }
 
   // 初始化数据
@@ -316,9 +409,9 @@ class Chart extends Base {
       left = right = padding;
     } else if (Util.isArray(padding)) {
       top = padding[0];
-      right = !Util.isNull(padding[1]) ? padding[1] : padding[0];
-      bottom = !Util.isNull(padding[2]) ? padding[2] : padding[0];
-      left = !Util.isNull(padding[3]) ? padding[3] : right;
+      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
+      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
+      left = !Util.isNil(padding[3]) ? padding[3] : right;
     }
 
     bottom = height - bottom;
@@ -339,12 +432,12 @@ class Chart extends Base {
   // 初始化坐标系
   _initCoord() {
     const self = this;
-    const plot = self.get('plot'); // TODO 由谁来创建？ coord 还是 chart
+    const plot = self.get('plot');
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
       plot
     });
     const type = coordCfg.type;
-    const C = Coord[Util.ucfirst(type)] || Coord.Cartesian;
+    const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
     const coord = new C(coordCfg);
 
     self.set('coord', coord);
@@ -361,6 +454,10 @@ class Chart extends Base {
     geoms.push(geom);
     geom.set('chart', self);
     geom.set('container', self.get('middlePlot'));
+  }
+
+  guide() {
+    return this.get('guideController');
   }
 
   /**
@@ -398,7 +495,8 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    this.get('guideController').clear();
+    Chart.plugins.notify(this, 'clear');
+
     this._removeGeoms();
     this._clearInner();
 
@@ -414,8 +512,6 @@ class Chart extends Base {
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
     backPlot && backPlot.clear();
-    const parent = this.get('canvas').parentNode;
-    this.get('guideController').reset(parent);
   }
 
   destroy() {
@@ -433,19 +529,27 @@ class Chart extends Base {
   render() {
     const self = this;
     const canvas = self.get('canvas');
-    self._initCoord();
     const geoms = self.get('geoms');
-    self._initGeoms(geoms);
-    this._adjustScale();
-    self.beforeDrawGeom();
 
+    // Chart.plugins.notify(self, 'beforeRender');
+
+    self._initCoord();
+    self._initGeoms(geoms);
+    self._adjustScale();
+
+    Chart.plugins.notify(self, 'beforeGeomDraw');
+
+    self._renderAxis();
     self.drawGeom(geoms);
+
+    Chart.plugins.notify(self, 'afterGeomDraw');
 
     canvas.draw();
     return self;
   }
 
   repaint() {
+    Chart.plugins.notify(this, 'repaint');
     this._clearInner();
     this.render();
   }
@@ -460,12 +564,6 @@ class Chart extends Base {
       const geom = geoms[i];
       geom.paint();
     }
-  }
-
-  beforeDrawGeom() {
-    const self = this;
-    self._renderAxis();
-    self._renderGuide();
   }
 
   _initGeoms(geoms) {
@@ -555,32 +653,8 @@ class Chart extends Base {
     const coord = self.get('coord');
     axisController.createAxis(coord, xScale, yScales);
   }
-
-  _renderGuide() {
-    const self = this;
-    const guideController = self.get('guideController');
-    if (guideController.guides.length) {
-      const xScale = self._getXScale();
-      const yScale = self._getYScales()[0];
-      const coord = self.get('coord');
-      guideController.setScale(xScale, yScale);
-      guideController.paint(coord);
-    }
-  }
-
-  /**
-   * 添加辅助信息
-   * @return {GuideController} Guide辅助类
-   */
-  guide() {
-    return this.get('guideController');
-  }
-
-  // animate(cfg) {
-  //   const animateController = this.get('animateController');
-  //   animateController.setAnimate(cfg);
-  //   return self;
-  // }
 }
+
+Chart.plugins = Chart.initPlugins();
 
 module.exports = Chart;

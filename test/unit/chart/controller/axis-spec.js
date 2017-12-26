@@ -194,8 +194,8 @@ describe('axis controller circle', function() {
 
   it('get line x axis cfg', function() {
     const cfg = controller._getCircleCfg(circle);
-    expect(cfg.startAngle).equal(circle.get('startAngle'));
-    expect(cfg.center).equal(circle.get('center'));
+    expect(cfg.startAngle).equal(circle.startAngle);
+    expect(cfg.center).equal(circle.center);
   });
 
   it('get line y axis cfg', function() {
@@ -248,8 +248,8 @@ describe('axis controller circle transposed', function() {
   });
   it('get line x axis cfg', function() {
     const cfg = controller._getCircleCfg(circle);
-    expect(cfg.startAngle).equal(circle.get('startAngle'));
-    expect(cfg.center).equal(circle.get('center'));
+    expect(cfg.startAngle).equal(circle.startAngle);
+    expect(cfg.center).equal(circle.center);
   });
 
   it('get line y axis cfg', function() {

@@ -21,21 +21,21 @@ describe('coord circle', function() {
   describe('with inner circle', () => {
     const circle = new Coord.Polar({
       plot,
-      inner: 0.5
+      innerRadius: 0.5
     });
 
     it('constructor', function() {
-      expect(circle.get('type')).to.be.equal('polar');
+      expect(circle.type).to.be.equal('polar');
     });
 
     it('center', function() {
-      const center = circle.get('center');
+      const center = circle.center;
       expect(center.x).to.be.equal(200);
       expect(center.y).to.be.equal(200);
     });
 
     it('radius', function() {
-      expect(circle.get('radius')).to.be.equal(200);
+      expect(circle.radius).to.be.equal(200);
     });
 
     it('convertPoint', function() {
@@ -116,7 +116,7 @@ describe('coord circle', function() {
       endAngle: 0
     });
     it('init', function() {
-      expect(circle.get('radius')).equal(200);
+      expect(circle.radius).equal(200);
     });
     it('convert point', function() {
       const p = circle.convertPoint({

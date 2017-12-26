@@ -2,7 +2,6 @@ const Util = require('../util/common');
 const Base = require('./base');
 
 class Position extends Base {
-
   constructor(cfg) {
     super(cfg);
     this.names = [ 'x', 'y' ];
