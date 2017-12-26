@@ -1,12 +1,8 @@
 const Util = require('../../util/common');
-const Guide = require('./guide');
+const GuideBase = require('./base');
 const Global = require('../../global');
 
-/**
- * 辅助弧线
- * @class Guide.Arc
- */
-class Arc extends Guide {
+class Arc extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'arc',
@@ -24,7 +20,7 @@ class Arc extends Guide {
     };
   }
 
-  paint(coord, container) {
+  render(coord, container) {
     const self = this;
     const start = self.parsePoint(coord, self.start);
     const end = self.parsePoint(coord, self.end);

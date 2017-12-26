@@ -1,12 +1,12 @@
 const expect = require('chai').expect;
-require('../../src/geom/index');
+require('../../../src/geom/index');
 
-const Chart = require('../../src/chart');
+const Chart = require('../../../src/chart/chart');
+const { Guide } = require('../../../src/plugin/index');
+require('../../../src/geom/shape/index');
+require('../../../src/geom/adjust/index');
 
-require('../../src/guide/index');
-require('../../src/geom/shape/index');
-require('../../src/geom/adjust/index');
-
+Chart.plugins.register(Guide);
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');

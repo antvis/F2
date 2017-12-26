@@ -1,8 +1,8 @@
 const Util = require('../../util/common');
-const Guide = require('./guide');
+const GuideBase = require('./base');
 const Global = require('../../global');
 
-class Line extends Guide {
+class Line extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'line',
@@ -12,7 +12,7 @@ class Line extends Guide {
     };
   }
 
-  paint(coord, container) {
+  render(coord, container) {
     const points = [];
     points[0] = this.parsePoint(coord, this.start);
     points[1] = this.parsePoint(coord, this.end);

@@ -1,5 +1,5 @@
 const DOMUtil = require('../../util/dom');
-const Guide = require('./guide');
+const GuideBase = require('./base');
 const Global = require('../../global');
 
 function getOffsetFromAlign(align, width, height) {
@@ -44,7 +44,7 @@ function getOffsetFromAlign(align, width, height) {
   return result;
 }
 
-class Html extends Guide {
+class Html extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'html',
@@ -56,7 +56,7 @@ class Html extends Guide {
   }
 
   // override paint
-  paint(coord, container) {
+  render(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
     let myNode = DOMUtil.createDom(self.html);

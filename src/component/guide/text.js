@@ -1,12 +1,8 @@
 const Util = require('../../util/common');
-const Guide = require('./guide');
+const GuideBase = require('./base');
 const Global = require('../../global');
 
-/**
- * 辅助文本
- * @class Guide.Text
- */
-class Text extends Guide {
+class Text extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'text',
@@ -17,7 +13,7 @@ class Text extends Guide {
     };
   }
 
-  paint(coord, container) {
+  render(coord, container) {
     const position = this.position;
     const point = this.parsePoint(coord, position);
     const cfg = this.cfg;

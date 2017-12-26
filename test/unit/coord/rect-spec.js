@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Plot = require('../../../src/plot');
+const Plot = require('../../../src/chart/plot');
 const Coord = require('../../../src/coord/index');
 
 describe('coord rect', function() {

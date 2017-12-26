@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const AxisLine = require('../../../src/axis/line');
+const AxisLine = require('../../../src/component/axis/line');
 const Scale = require('../../../src/scale/');
 const axisGlobal = require('../../../src/global').axis;
 const Util = require('../../../src/util/common');

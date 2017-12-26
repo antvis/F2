@@ -1,8 +1,8 @@
 const Util = require('../../util/common');
-const Guide = require('./guide');
+const GuideBase = require('./base');
 const Global = require('../../global');
 
-class Rect extends Guide {
+class Rect extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'rect',
@@ -12,7 +12,7 @@ class Rect extends Guide {
     };
   }
 
-  paint(coord, container) {
+  render(coord, container) {
     const start = this.parsePoint(coord, this.start);
     const end = this.parsePoint(coord, this.end);
     container.addShape('rect', {
