@@ -409,9 +409,9 @@ class Chart extends Base {
       left = right = padding;
     } else if (Util.isArray(padding)) {
       top = padding[0];
-      right = !Util.isNull(padding[1]) ? padding[1] : padding[0];
-      bottom = !Util.isNull(padding[2]) ? padding[2] : padding[0];
-      left = !Util.isNull(padding[3]) ? padding[3] : right;
+      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
+      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
+      left = !Util.isNil(padding[3]) ? padding[3] : right;
     }
 
     bottom = height - bottom;
@@ -437,7 +437,7 @@ class Chart extends Base {
       plot
     });
     const type = coordCfg.type;
-    const C = Coord[Util.ucfirst(type)] || Coord.Cartesian;
+    const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
     const coord = new C(coordCfg);
 
     self.set('coord', coord);
