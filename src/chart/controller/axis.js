@@ -1,5 +1,5 @@
 const Util = require('../../util/common');
-const Axis = require('../../axis/index');
+const { Axis } = require('../../component/index');
 const Global = require('../../global');
 
 function formatTicks(ticks) {
@@ -100,10 +100,10 @@ class AxisController {
 
   _getCircleCfg(coord) {
     return {
-      startAngle: coord.get('startAngle'),
-      endAngle: coord.get('endAngle'),
-      center: coord.get('center'),
-      radius: coord.get('radius')
+      startAngle: coord.startAngle,
+      endAngle: coord.endAngle,
+      center: coord.center,
+      radius: coord.radius
     };
   }
 
@@ -172,7 +172,7 @@ class AxisController {
 
   _createAxis(coord, scale, verticalScale, dimType, index) {
     const self = this;
-    const coordType = coord.get('type');
+    const coordType = coord.type;
     const transposed = coord.transposed;
     let C;
     let defaultCfg;

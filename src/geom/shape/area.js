@@ -1,6 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('./shape');
-const Smooth = require('../../g/util/smooth');
+const Smooth = require('../../graphic/util/smooth');
 
 // 是否相等
 function equals(v1, v2) {
