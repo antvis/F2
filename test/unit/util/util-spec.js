@@ -2,9 +2,9 @@ const expect = require('chai').expect;
 const Util = require('../../../src/util/common');
 
 describe('test basic util', function() {
-  it('test ucfirst', function() {
+  it('test upperFirst', function() {
     const str = 'abc';
-    expect(Util.ucfirst(str)).to.be.equal('Abc');
+    expect(Util.upperFirst(str)).to.be.equal('Abc');
   });
 
   it('type', function() {
@@ -27,9 +27,9 @@ describe('test basic util', function() {
 
     expect(Util.isDate(new Date())).to.be.equal(true);
 
-    expect(Util.isNull(null)).to.be.equal(true);
-    expect(Util.isNull(undefined)).to.be.equal(true);
-    expect(Util.isNull(1)).to.be.equal(false);
+    expect(Util.isNil(null)).to.be.equal(true);
+    expect(Util.isNil(undefined)).to.be.equal(true);
+    expect(Util.isNil(1)).to.be.equal(false);
   });
 
   it('isNumeric', function() {

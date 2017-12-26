@@ -71,7 +71,8 @@
   },
   "pre-commit": {
     "run": [
-      "lint"
+      "lint",
+      "test"
     ],
     "silent": false
   },
