@@ -1,13 +1,12 @@
-const Base = require('./base');
+const Base = require('../base');
 const Plot = require('./plot');
-const Util = require('./util/common');
-const Coord = require('./coord/index');
-const Geom = require('./geom/base');
+const Util = require('../util/common');
+const Coord = require('../coord/index');
+const Geom = require('../geom/base');
 const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
-// const GuideController = require('./controller/guide');
-const Global = require('./global');
-const { Canvas } = require('./graphic/index');
+const Global = require('../global');
+const { Canvas } = require('../graphic/index');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -184,8 +183,7 @@ class Chart extends Base {
 
   constructor(cfg) {
     super(cfg);
-    // 附加各种 geometry 对应的方法
-    Util.mix(this, ViewGeoms);
+    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
     this._init();
   }
 
@@ -295,7 +293,6 @@ class Chart extends Base {
       y
     });
   }
-
   /**
    * 获取画布上坐标对应的数据值
    * @param  {Object} point 画布坐标的x,y的值
@@ -335,13 +332,8 @@ class Chart extends Base {
       frontPlot: self.get('frontPlot'),
       backPlot: self.get('backPlot')
     }));
-    // self.set('guideController', new GuideController({
-    //   frontPlot: self.get('frontPlot'),
-    //   backPlot: self.get('backPlot')
-    // }));
     self._initData(self.get('data'));
-    // console
-    Chart.plugins.notify(this, 'afterInit');
+    Chart.plugins.notify(self, 'init');
   }
 
   // 初始化数据
@@ -440,7 +432,7 @@ class Chart extends Base {
   // 初始化坐标系
   _initCoord() {
     const self = this;
-    const plot = self.get('plot'); // TODO 由谁来创建？ coord 还是 chart
+    const plot = self.get('plot');
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
       plot
     });
@@ -462,6 +454,10 @@ class Chart extends Base {
     geoms.push(geom);
     geom.set('chart', self);
     geom.set('container', self.get('middlePlot'));
+  }
+
+  guide() {
+    return this.get('guideController');
   }
 
   /**
@@ -499,7 +495,8 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    this.get('guideController').clear();
+    Chart.plugins.notify(this, 'clear');
+
     this._removeGeoms();
     this._clearInner();
 
@@ -515,8 +512,6 @@ class Chart extends Base {
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
     backPlot && backPlot.clear();
-    const parent = this.get('canvas').parentNode;
-    this.get('guideController').reset(parent);
   }
 
   destroy() {
@@ -534,19 +529,27 @@ class Chart extends Base {
   render() {
     const self = this;
     const canvas = self.get('canvas');
-    self._initCoord();
     const geoms = self.get('geoms');
-    self._initGeoms(geoms);
-    this._adjustScale();
-    self.beforeDrawGeom();
 
+    // Chart.plugins.notify(self, 'beforeRender');
+
+    self._initCoord();
+    self._initGeoms(geoms);
+    self._adjustScale();
+
+    Chart.plugins.notify(self, 'beforeGeomDraw');
+
+    self._renderAxis();
     self.drawGeom(geoms);
+
+    Chart.plugins.notify(self, 'afterGeomDraw');
 
     canvas.draw();
     return self;
   }
 
   repaint() {
+    Chart.plugins.notify(this, 'repaint');
     this._clearInner();
     this.render();
   }
@@ -561,12 +564,6 @@ class Chart extends Base {
       const geom = geoms[i];
       geom.paint();
     }
-  }
-
-  beforeDrawGeom() {
-    const self = this;
-    self._renderAxis();
-    self._renderGuide();
   }
 
   _initGeoms(geoms) {
@@ -656,32 +653,6 @@ class Chart extends Base {
     const coord = self.get('coord');
     axisController.createAxis(coord, xScale, yScales);
   }
-
-  _renderGuide() {
-    const self = this;
-    const guideController = self.get('guideController');
-    if (guideController.guides.length) {
-      const xScale = self._getXScale();
-      const yScale = self._getYScales()[0];
-      const coord = self.get('coord');
-      guideController.setScale(xScale, yScale);
-      guideController.paint(coord);
-    }
-  }
-
-  /**
-   * 添加辅助信息
-   * @return {GuideController} Guide辅助类
-   */
-  guide() {
-    return this.get('guideController');
-  }
-
-  // animate(cfg) {
-  //   const animateController = this.get('animateController');
-  //   animateController.setAnimate(cfg);
-  //   return self;
-  // }
 }
 
 Chart.plugins = Chart.initPlugins();

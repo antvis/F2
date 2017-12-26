@@ -1,4 +1,4 @@
-const Util = require('./util/common');
+const Util = require('../util/common');
 class Plot {
   constructor(cfg) {
     Util.mix(this, cfg);

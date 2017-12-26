@@ -17,9 +17,9 @@ function toPercent(scale, value) {
 
 /**
  * 图表的辅助元素
- * @class Guilde
+ * @class Guide
  */
-class Guide {
+class GuideBase {
   /**
    * 获取默认的配置属性
    * @protected
@@ -75,7 +75,7 @@ class Guide {
    * @param  {Coord} coord  坐标系
    * @param  {Canvas.Group} group 绘制到的容器
    */
-  paint(/* coord,group */) {}
+  render(/* coord,group */) {}
 }
 
-module.exports = Guide;
+module.exports = GuideBase;

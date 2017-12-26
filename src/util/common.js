@@ -13,8 +13,8 @@ function deepMix(dst, src, level) {
   for (const k in src) {
     if (src.hasOwnProperty(k)) {
       const value = src[k];
-      if (value !== null && Util.isObject(value)) {
-        if (!Util.isObject(dst[k])) {
+      if (value !== null && Util.isPlainObject(value)) {
+        if (!Util.isPlainObject(dst[k])) {
           dst[k] = {};
         }
         if (level < MAX_LEVEL) {
@@ -23,9 +23,7 @@ function deepMix(dst, src, level) {
           dst[k] = src[k];
         }
       } else if (Util.isArray(value)) {
-        // if(!Util.isArray(dst[k])){
         dst[k] = [];
-        // }
         dst[k] = dst[k].concat(value);
       } else if (value !== undefined) {
         dst[k] = src[k];
@@ -145,11 +143,22 @@ Util = {
     } : function(value) {
       return toString.call(value) === '[object Object]';
     },
+  isPlainObject(o) {
+    if (!Util.isObject(o)) return false;
+    if (Object.getPrototypeOf(o) === null) {
+      return true;
+    }
+    let proto = o;
+    while (Object.getPrototypeOf(proto) !== null) {
+      proto = Object.getPrototypeOf(proto);
+    }
+    return Object.getPrototypeOf(o) === proto;
+  },
   /**
-   * 转换成数组
-   * @param  {*} value 需要转换的对象
-   * @return {Array}  数组
-   */
+     * 转换成数组
+     * @param  {*} value 需要转换的对象
+     * @return {Array}  数组
+     */
   toArray(value) {
     if (!value || !value.length) {
       return [];
@@ -174,7 +183,6 @@ Util = {
    * @return {Object} 将数据合并到第一个
    */
   mix(dist, obj1, obj2, obj3) {
-
     if (obj1) {
       _mix(dist, obj1);
     }
