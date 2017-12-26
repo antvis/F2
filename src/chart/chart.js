@@ -64,6 +64,7 @@ class Chart extends Base {
         return this._plugins;
       },
       notify(chart, hook, args) {
+        // TODO 优化
         const descriptors = this.descriptors(chart);
         const ilen = descriptors.length;
         let i;
@@ -88,6 +89,7 @@ class Chart extends Base {
         return true;
       },
       descriptors(chart) {
+        // TODO 优化
         const cache = chart._plugins || (chart._plugins = {});
         if (cache.id === this._cacheId) {
           return cache.descriptors;
