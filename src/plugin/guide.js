@@ -34,7 +34,7 @@ class GuideController {
     const self = this;
     const guides = self.guides;
     Util.each(guides, function(guide) {
-      const container = guide.top ? self.frontPlot : self.backPlot;
+      const container = (guide.cfg && guide.cfg.top) ? self.frontPlot : self.backPlot;
       guide.render(coord, container);
     });
   }

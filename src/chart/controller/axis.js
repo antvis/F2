@@ -142,7 +142,6 @@ class AxisController {
     const ticks = scale.getTicks();
     const cfg = Util.deepMix({
       ticks,
-      // container: this.container
       frontContainer: this.frontPlot,
       backContainer: this.backPlot
     }, defaultCfg, axisCfg[scale.field]);

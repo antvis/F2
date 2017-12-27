@@ -82,18 +82,22 @@ const Theme = {
   guide: {
     line: {
       stroke: '#000',
-      lineWidth: 1
+      lineWidth: 1,
+      top: true
     },
     text: {
       fill: '#000',
       textAlign: 'center',
-      offset: [ 0, 0 ]
+      offset: [ 0, 0 ],
+      top: true
     },
     rect: {
-      fillStyle: '#fafafa'
+      fillStyle: '#fafafa',
+      top: false
     },
     arc: {
-      stroke: '#CCC'
+      stroke: '#CCC',
+      top: true
     },
     html: {
       offset: [ 0, 0 ],
