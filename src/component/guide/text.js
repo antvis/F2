@@ -6,7 +6,6 @@ class Text extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'text',
-      top: true, // 默认显示在上面
       position: [],
       text: '',
       cfg: Global.guide.text

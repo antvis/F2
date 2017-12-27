@@ -29,7 +29,6 @@ class GuideBase {
     return {
       xScale: null,
       yScale: null,
-      top: false,
       cfg: {}
     };
   }

@@ -49,7 +49,6 @@ class Html extends GuideBase {
     return {
       type: 'html',
       position: [],
-      top: true, // 默认在上面显示
       html: '',
       cfg: Global.guide.html
     };
