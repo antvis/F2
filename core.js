@@ -5,5 +5,6 @@ F2.Global = require('./src/global');
 F2.Chart = require('./src/chart/chart');
 F2.Shape = require('./src/geom/shape/shape');
 F2.Graphic = require('./src/graphic/g');
+F2.Util = require('./src/util');
 
 module.exports = F2;
