@@ -29,6 +29,12 @@ class Text extends Guide {
     const point = self.parsePoint(coord, position);
     const cfg = self.cfg;
     const text = self.text;
+
+    if (cfg.offset) { // support offset
+      point.x += cfg.offset[0];
+      point.y += cfg.offset[1];
+    }
+
     G.drawText(text, point, canvas, cfg);
   }
 }

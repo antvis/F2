@@ -88,7 +88,8 @@ const Theme = {
     },
     text: {
       fill: '#000',
-      textAlign: 'center'
+      textAlign: 'center',
+      offset: [ 0, 0 ]
     },
     rect: {
       fillStyle: '#fafafa'
