@@ -55,6 +55,18 @@ describe('Text', function() {
 
     text.attr('text', 'italic');
     canvas.add(text);
+    // bbox
+    const bbox = text.getBBox();
+    canvas.addShape('Rect', {
+      attrs: {
+        x: bbox.x,
+        y: bbox.y,
+        width: bbox.width,
+        height: bbox.height,
+        stroke: 'red',
+        lineWidth: 1
+      }
+    });
     canvas.draw();
   });
 
@@ -73,6 +85,19 @@ describe('Text', function() {
     expect(text1.attr('fill')).to.equal('rgb(255, 0, 255)');
     expect(text1.attr('strokeStyle')).to.equal('#8543E0');
     canvas.add(text1);
+    // bbox
+    const bbox = text1.getBBox();
+    canvas.addShape('Rect', {
+      attrs: {
+        x: bbox.x,
+        y: bbox.y,
+        width: bbox.width,
+        height: bbox.height,
+        stroke: 'red',
+        lineWidth: 1
+      }
+    });
+
     canvas.draw();
   });
 
@@ -89,6 +114,19 @@ describe('Text', function() {
     expect(text1.attr('fontSize')).to.equal(20);
     expect(text1.attr('font')).to.equal('normal normal normal 20px sans-serif');
     canvas.add(text1);
+     // bbox
+    const bbox = text1.getBBox();
+    canvas.addShape('Rect', {
+      attrs: {
+        x: bbox.x,
+        y: bbox.y,
+        width: bbox.width,
+        height: bbox.height,
+        stroke: 'red',
+        lineWidth: 1
+      }
+    });
+
     canvas.draw();
   });
 
@@ -106,6 +144,19 @@ describe('Text', function() {
     expect(text.attr('font')).to.equal('normal normal normal 10px sans-serif');
     expect(text.getMatrix()).not.eql([ 1, 0, 0, 1, 0, 0 ]);
     canvas.add(text);
+    // bbox
+    const bbox = text.getBBox();
+    canvas.addShape('Rect', {
+      attrs: {
+        x: bbox.x,
+        y: bbox.y,
+        width: bbox.width,
+        height: bbox.height,
+        stroke: 'red',
+        lineWidth: 1
+      }
+    });
+
     canvas.draw();
   });
 
@@ -114,17 +165,30 @@ describe('Text', function() {
       attrs: {
         x: 100,
         y: 50,
-        text: '你好\nHello\nworkd',
+        text: '你好\nHello\nworld',
         fill: 'black',
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 12,
-        lineHeight: 18
+        lineHeight: 18,
+        textAlign: 'center'
       }
     });
     expect(text.attr('textArr').length).to.equal(3);
     expect(text._getTextHeight()).to.equal(48);
     canvas.add(text);
+// bbox
+    const bbox = text.getBBox();
+    canvas.addShape('Rect', {
+      attrs: {
+        x: bbox.x,
+        y: bbox.y,
+        width: bbox.width,
+        height: bbox.height,
+        stroke: 'red',
+        lineWidth: 1
+      }
+    });
     canvas.draw();
   });
 });

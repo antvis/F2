@@ -32,6 +32,19 @@ class Ring extends Shape {
     context.arc(x, y, r0, 0, Math.PI * 2, true);
     context.closePath();
   }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x, y, r, lineWidth } = attrs;
+    const halfLineWidth = lineWidth / 2 || 0;
+
+    return {
+      minX: x - r - halfLineWidth,
+      maxX: x + r + halfLineWidth,
+      minY: y - r - halfLineWidth,
+      maxY: y + r + halfLineWidth
+    };
+  }
 }
 
 module.exports = Ring;

@@ -44,6 +44,18 @@ class Rect extends Shape {
       context.closePath();
     }
   }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x, y, width, height, lineWidth } = attrs;
+    const halfLineWidth = lineWidth / 2;
+    return {
+      minX: x - halfLineWidth,
+      minY: y - halfLineWidth,
+      maxX: x + width + halfLineWidth,
+      maxY: y + height + halfLineWidth
+    };
+  }
 }
 
 module.exports = Rect;

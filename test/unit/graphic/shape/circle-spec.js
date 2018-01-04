@@ -31,7 +31,7 @@ describe('Circle', function() {
       x: 100,
       y: 100,
       r: 25,
-      lineWidth: 2,
+      lineWidth: 4,
       stroke: '#f80',
       strokeOpacity: 0.4
     });
@@ -39,7 +39,7 @@ describe('Circle', function() {
     expect(circle.attr('x')).to.equal(100);
     expect(circle.attr('y')).to.equal(100);
     expect(circle.attr('r')).to.equal(25);
-    expect(circle.attr('lineWidth')).to.equal(2);
+    expect(circle.attr('lineWidth')).to.equal(4);
     expect(circle.attr('strokeOpacity')).to.equal(0.4);
     expect(circle.attr('stroke')).to.equal('#f80');
   });
@@ -49,6 +49,14 @@ describe('Circle', function() {
     canvas.add(circle);
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+  });
+
+  it('getBBox', function() {
+    const bbox = circle.getBBox();
+    expect(bbox.x).to.equal(73);
+    expect(bbox.y).to.equal(73);
+    expect(bbox.width).to.equal(54);
+    expect(bbox.height).to.equal(54);
   });
 
   it('destroy', function() {

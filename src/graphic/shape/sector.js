@@ -1,5 +1,7 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const bbox = require('../util/bbox');
+
 
 class Sector extends Shape {
   getDefaultCfg() {
@@ -40,6 +42,19 @@ class Sector extends Shape {
       context.arc(x, y, r0, endAngle, startAngle, !clockwise);
     }
     context.closePath();
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x, y, r, r0, startAngle, endAngle, clockwise, lineWidth } = attrs;
+    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise, lineWidth);
+    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, clockwise, lineWidth);
+    return {
+      minX: Math.min(outerBBox.minX, innerBBox.minX),
+      minY: Math.min(outerBBox.minY, innerBBox.minY),
+      maxX: Math.max(outerBBox.maxX, innerBBox.maxX),
+      maxY: Math.max(outerBBox.maxY, innerBBox.maxY)
+    };
   }
 }
 

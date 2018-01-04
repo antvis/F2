@@ -39,20 +39,16 @@ describe('Arc', function() {
 
   it('draw', function() {
     canvas.add(arc);
-
-    // const bbox = arc.getBBox();
-    // canvas.addShape('rect', {
-    //   attrs: {
-    //     x: bbox.x,
-    //     y: bbox.y,
-    //     width: bbox.width,
-    //     height: bbox.height,
-    //     stroke: 'red',
-    //     lineWidth: 1
-    //   }
-    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+  });
+
+  it('getBBox', function() {
+    const bbox = arc.getBBox();
+    expect(parseInt(bbox.x)).to.equal(19);
+    expect(parseInt(bbox.y)).to.equal(19);
+    expect(bbox.width).to.equal(52);
+    expect(bbox.height).to.equal(52);
   });
 
   it('destroy', function() {
