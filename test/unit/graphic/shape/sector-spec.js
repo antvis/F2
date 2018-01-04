@@ -33,8 +33,27 @@ describe('Sector', function() {
 
   it('draw', function() {
     canvas.add(sector);
+    // const bbox = sector.getBBox();
+    // canvas.addShape('Rect', {
+    //   attrs: {
+    //     x: bbox.x,
+    //     y: bbox.y,
+    //     width: bbox.width,
+    //     height: bbox.height,
+    //     stroke: 'red',
+    //     lineWidth: 1
+    //   }
+    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+  });
+
+  it('getBBox', function() {
+    const bbox = sector.getBBox();
+    expect(bbox.x).to.equal(100);
+    expect(bbox.y).to.equal(106.69872981077808);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(93.30127018922192);
   });
 
   it('destroy', function() {

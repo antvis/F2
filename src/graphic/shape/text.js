@@ -141,6 +141,85 @@ class Text extends Shape {
       }
     }
   }
+
+  // TODO
+  calculateBox() {
+    const self = this;
+    const attrs = self.get('attrs');
+    const x = attrs.x;
+    const y = attrs.y;
+    const width = self.measureText(); // attrs.width
+    if (!width) {
+      // 如果width不存在，四点共其实点
+      return {
+        minX: x,
+        minY: y,
+        maxX: x,
+        maxY: y
+      };
+    }
+    const height = self._getTextHeight(); // attrs.height
+    const textAlign = attrs.textAlign;
+    const textBaseline = attrs.textBaseline;
+    const lineWidth = attrs.lineWidth;
+    const point = {
+      x,
+      y: y - height
+    };
+
+    if (textAlign) {
+      if (textAlign === 'end' || textAlign === 'right') {
+        point.x -= width;
+      } else if (textAlign === 'center') {
+        point.x -= width / 2;
+      }
+    }
+
+    if (textBaseline) {
+      if (textBaseline === 'top') {
+        point.y += height;
+      } else if (textBaseline === 'middle') {
+        point.y += height / 2;
+      }
+    }
+
+    // this.set('startPoint', point);
+    const halfWidth = lineWidth / 2;
+    return {
+      minX: point.x - halfWidth,
+      minY: point.y - halfWidth,
+      maxX: point.x + width + halfWidth,
+      maxY: point.y + height + halfWidth
+    };
+  }
+
+  measureText() {
+    const self = this;
+    const attrs = self.get('attrs');
+    const text = attrs.text;
+    const font = attrs.font;
+    const textArr = attrs.textArr;
+    let measureWidth;
+    let width = 0;
+
+    if (Util.isNil(text)) return undefined;
+    const context = document.createElement('canvas').getContext('2d');
+    context.save();
+    context.font = font;
+    if (textArr) {
+      Util.each(textArr, function(subText) {
+        measureWidth = context.measureText(subText).width;
+        if (width < measureWidth) {
+          width = measureWidth;
+        }
+        context.restore();
+      });
+    } else {
+      width = context.measureText(text).width;
+      context.restore();
+    }
+    return width;
+  }
 }
 
 module.exports = Text;

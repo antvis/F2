@@ -40,6 +40,14 @@ describe('Rect', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = rect.getBBox();
+    expect(bbox.x).to.equal(49.5);
+    expect(bbox.y).to.equal(49.5);
+    expect(bbox.width).to.equal(81);
+    expect(bbox.height).to.equal(21);
+  });
+
   it('destroy', function() {
     rect.destroy();
     expect(canvas.get('children').length).to.equal(0);

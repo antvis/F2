@@ -1,6 +1,7 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
 const Smooth = require('../util/smooth');
+const bbox = require('../util/bbox');
 
 class Polyline extends Shape {
   getDefaultCfg() {
@@ -49,6 +50,31 @@ class Polyline extends Shape {
       }
       context.lineTo(points[l].x, points[l].y);
     }
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { points, lineWidth, smooth } = attrs;
+
+    if (smooth) {
+      const newPoints = [];
+      const constaint = [
+        [ 0, 0 ],
+        [ 1, 1 ]
+      ];
+      const sps = Smooth.smooth(points, false, constaint);
+      for (let i = 0, n = sps.length; i < n; i++) {
+        const sp = sps[i];
+        if (i === 0) {
+          newPoints.push([ points[0].x, points[0].y, sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
+        } else {
+          const lastPoint = sps[ i - 1 ];
+          newPoints.push([ lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
+        }
+      }
+      return bbox.getBBoxFromBezierGroup(newPoints, lineWidth);
+    }
+    return bbox.getBBoxFromPoints(points, lineWidth);
   }
 }
 

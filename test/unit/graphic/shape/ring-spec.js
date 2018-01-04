@@ -18,21 +18,30 @@ describe('Sector', function() {
       y: 150,
       r: 50,
       r0: 30,
-      lineWidth: 0,
-      fill: '#223273'
+      lineWidth: 6,
+      fill: '#223273',
+      stroke: '#bfbfbf'
     }
   });
 
   it('init attr', function() {
-    expect(ring.attr('lineWidth')).to.equal(0);
-    expect(ring.attr('stroke')).to.be.undefined;
+    expect(ring.attr('lineWidth')).to.equal(6);
     expect(ring.attr('fill')).to.equal('#223273');
+    expect(ring.attr('stroke')).to.equal('#bfbfbf');
   });
 
   it('draw', function() {
     canvas.add(ring);
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+  });
+
+  it('getBBox', function() {
+    const bbox = ring.getBBox();
+    expect(bbox.x).to.equal(47);
+    expect(bbox.y).to.equal(97);
+    expect(bbox.width).to.equal(106);
+    expect(bbox.height).to.equal(106);
   });
 
   it('destroy', function() {

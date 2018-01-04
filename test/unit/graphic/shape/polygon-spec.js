@@ -15,11 +15,11 @@ describe('Polygon', function() {
   const polygon = new Polygon({
     attrs: {
       points: [
-        [ 10, 10 ],
-        [ 20, 45 ],
-        [ 40, 80 ],
-        [ 123, 70 ],
-        [ 80, 32 ]
+        { x: 10, y: 10 },
+        { x: 20, y: 45 },
+        { x: 40, y: 80 },
+        { x: 123, y: 70 },
+        { x: 80, y: 32 }
       ],
       lineWidth: 1,
       fill: 'red'
@@ -34,8 +34,27 @@ describe('Polygon', function() {
 
   it('draw', function() {
     canvas.add(polygon);
+    // const bbox = polygon.getBBox();
+    // canvas.addShape('Rect', {
+    //   attrs: {
+    //     x: bbox.x,
+    //     y: bbox.y,
+    //     width: bbox.width,
+    //     height: bbox.height,
+    //     stroke: 'red',
+    //     lineWidth: 1
+    //   }
+    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+  });
+
+  it('getBBox', function() {
+    const bbox = polygon.getBBox();
+    expect(bbox.x).to.equal(9.5);
+    expect(bbox.y).to.equal(9.5);
+    expect(bbox.width).to.equal(114);
+    expect(bbox.height).to.equal(71);
   });
 
   it('destroy', function() {

@@ -67,32 +67,35 @@ module.exports = {
   /**
    * 从顶点数组中计算最小包围盒
    * @param  {Array} points 顶点数组
+   * @param  {Number} lineWidth 线宽
    * @return {Object}        最小包围盒的范围
    */
-  getBBoxFromPoints(points) {
+  getBBoxFromPoints(points, lineWidth = 0) {
     if (points.length === 0) {
       return;
     }
     let p = points[0];
-    let left = p[0];
-    let right = p[0];
-    let top = p[1];
-    let bottom = p[1];
+    let left = p.x;
+    let right = p.x;
+    let top = p.y;
+    let bottom = p.y;
     const len = points.length;
 
     for (let i = 1; i < len; i++) {
       p = points[i];
-      left = Math.min(left, p[0]);
-      right = Math.max(right, p[0]);
-      top = Math.min(top, p[1]);
-      bottom = Math.max(bottom, p[1]);
+      left = Math.min(left, p.x);
+      right = Math.max(right, p.x);
+      top = Math.min(top, p.y);
+      bottom = Math.max(bottom, p.y);
     }
 
+    const halfLineWidth = lineWidth / 2;
+
     return {
-      minX: left,
-      minY: top,
-      maxX: right,
-      maxY: bottom
+      minX: left - halfLineWidth,
+      minY: top - halfLineWidth,
+      maxX: right + halfLineWidth,
+      maxY: bottom + halfLineWidth
     };
   },
   /**
@@ -101,17 +104,18 @@ module.exports = {
    * @param  {Number} y0 线段的起点 y
    * @param  {Number} x1 线段的终点 x
    * @param  {Number} y1 线段的终点 y
+   * @param  {Number} lineWidth 线宽
    * @return {Object}    线段的最小包围盒
    */
-  getBBoxFromLine(x0, y0, x1, y1) {
+  getBBoxFromLine(x0, y0, x1, y1, lineWidth = 0) {
     return {
-      minX: Math.min(x0, x1),
-      minY: Math.min(y0, y1),
-      maxX: Math.max(x0, x1),
-      maxY: Math.max(y0, y1)
+      minX: Math.min(x0, x1) - lineWidth / 2,
+      minY: Math.min(y0, y1) - lineWidth / 2,
+      maxX: Math.max(x0, x1) + lineWidth / 2,
+      maxY: Math.max(y0, y1) + lineWidth / 2
     };
   },
-  getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise, lineWidth) {
+  getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise, lineWidth = 0) {
     const diff = Math.abs(startAngle - endAngle);
     if (diff % Math.PI * 2 < 1e-4 && diff > 1e-4) {
       // Is a circle
@@ -146,8 +150,7 @@ module.exports = {
 
     if (startAngle > endAngle && !anticlockwise) {
       endAngle += Math.PI * 2;
-    }
-    else if (startAngle < endAngle && anticlockwise) {
+    } else if (startAngle < endAngle && anticlockwise) {
       startAngle += Math.PI * 2;
     }
     if (anticlockwise) {
@@ -175,7 +178,7 @@ module.exports = {
       maxY: max[1] + halfLineWidth
     };
   },
-  getBBoxFromBezierGroup(points) {
+  getBBoxFromBezierGroup(points, lineWidth = 0) {
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
@@ -195,11 +198,14 @@ module.exports = {
         maxY = bbox.maxY;
       }
     }
-    return ({
-      minX,
-      minY,
-      maxX,
-      maxY
-    });
+
+    const halfLineWidth = lineWidth / 2;
+
+    return {
+      minX: minX - halfLineWidth,
+      minY: minY - halfLineWidth,
+      maxX: maxX + halfLineWidth,
+      maxY: maxY + halfLineWidth
+    };
   }
 };
