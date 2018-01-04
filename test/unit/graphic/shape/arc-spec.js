@@ -39,6 +39,18 @@ describe('Arc', function() {
 
   it('draw', function() {
     canvas.add(arc);
+
+    // const bbox = arc.getBBox();
+    // canvas.addShape('rect', {
+    //   attrs: {
+    //     x: bbox.x,
+    //     y: bbox.y,
+    //     width: bbox.width,
+    //     height: bbox.height,
+    //     stroke: 'red',
+    //     lineWidth: 1
+    //   }
+    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
   });
