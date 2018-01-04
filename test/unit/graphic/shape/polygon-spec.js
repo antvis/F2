@@ -40,7 +40,7 @@ describe('Polygon', function() {
 
   it('destroy', function() {
     polygon.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

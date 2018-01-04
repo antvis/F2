@@ -82,21 +82,21 @@ class Polar extends Base {
     const x = self.x;
     const y = self.y;
 
-    const startv = new Vector2(1, 0);
-    const pointv = new Vector2(point.x - center.x, point.y - center.y);
+    const startV = [ 1, 0 ];
+    const pointV = [ point.x - center.x, point.y - center.y ];
 
-    if (pointv.zero()) {
+    if (Vector2.zero(pointV)) {
       return {
         x: 0,
         y: 0
       };
     }
 
-    let theta = startv.angleTo(pointv);
+    let theta = Vector2.angleTo(startV, pointV);
     while (theta > x.end) {
       theta = theta - 2 * Math.PI;
     }
-    const l = pointv.length();
+    const l = Vector2.length(pointV);
     const percentX = (theta - x.start) / (x.end - x.start);
     const percentY = (l - y.start) / (y.end - y.start);
     const rst = {};

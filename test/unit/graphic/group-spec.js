@@ -167,7 +167,7 @@ describe('Group', function() {
     expect(e1.get('destroyed')).to.be.true;
     e2.remove();
     expect(g1.get('children').length).to.equal(3);
-    expect(e2.get('destroyed')).to.be.true;
+    expect(e2.get('destroyed')).to.be.false;
     e3.remove(false);
     expect(g1.get('children').length).to.equal(2);
     expect(e3.get('destroyed')).to.be.false;
@@ -175,7 +175,7 @@ describe('Group', function() {
     expect(g2.get('children').length).to.equal(1);
     g1.remove();
     expect(g2.get('children').length).to.equal(0);
-    expect(g1.get('destroyed')).to.be.true;
+    expect(g1.get('destroyed')).to.be.false;
   });
 
   it('clear', function() {

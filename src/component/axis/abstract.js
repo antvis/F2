@@ -134,10 +134,10 @@ class Abastract {
   getOffsetVector(point, offset) {
     const self = this;
     const axisVector = self.getAxisVector(point);
-    const normal = axisVector.normalize();
+    const normal = Vector2.normalize([], axisVector);
     const factor = self.offsetFactor;
-    const verticalVector = new Vector2(normal.y * -1 * factor, normal.x * factor);
-    return verticalVector.multiply(offset);
+    const verticalVector = [ normal[1] * -1 * factor, normal[0] * factor ];
+    return Vector2.scale([], verticalVector, offset);
   }
 
   // 获取坐标轴边上的点
@@ -145,8 +145,8 @@ class Abastract {
     const self = this;
     const offsetVector = self.getOffsetVector(point, offset);
     return {
-      x: point.x + offsetVector.x,
-      y: point.y + offsetVector.y
+      x: point.x + offsetVector[0],
+      y: point.y + offsetVector[1]
     };
   }
 
@@ -156,16 +156,16 @@ class Abastract {
     const offsetVector = self.getOffsetVector(point, offset);
     let align;
     let baseLine;
-    if (offsetVector.x > 0) {
+    if (offsetVector[0] > 0) {
       align = 'left';
-    } else if (offsetVector.x < 0) {
+    } else if (offsetVector[0] < 0) {
       align = 'right';
     } else {
       align = 'center';
     }
-    if (offsetVector.y > 0) {
+    if (offsetVector[1] > 0) {
       baseLine = 'top';
-    } else if (offsetVector.y < 0) {
+    } else if (offsetVector[1] < 0) {
       baseLine = 'bottom';
     } else {
       baseLine = 'middle';

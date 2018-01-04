@@ -53,7 +53,7 @@ describe('Circle', function() {
 
   it('destroy', function() {
     circle.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

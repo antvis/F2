@@ -20,7 +20,6 @@ function equalsCenter(points, center) {
 }
 
 function drawCircleArea(topPoints, bottomPoints, container, style, isSmooth) {
-  // const shapeName = isSmooth ? 'SmoothLine' : 'Polyline';
   container.addShape('Polyline', {
     className: 'area',
     attrs: Util.mix({
