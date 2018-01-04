@@ -45,6 +45,9 @@ describe('Arc', function() {
 
   it('destroy', function() {
     arc.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
+    expect(arc.get('destroyed')).to.equal(true);
+    canvas.clear();
+    canvas.draw();
   });
 });

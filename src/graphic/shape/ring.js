@@ -1,12 +1,13 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
 
-class Arc extends Shape {
+class Ring extends Shape {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
     return Util.mix({}, cfg, {
+      canFill: true,
       canStroke: true,
-      type: 'arc'
+      type: 'ring'
     });
   }
 
@@ -15,21 +16,23 @@ class Arc extends Shape {
       x: 0,
       y: 0,
       r: 0,
-      startAngle: 0,
-      endAngle: Math.PI * 2,
-      clockwise: false,
-      lineWidth: 1
+      r0: 0
     };
   }
 
   createPath(context) {
     const attrs = this.get('attrs');
-    const { x, y, r, startAngle, endAngle, clockwise } = attrs;
-
+    const { x, y, r, r0 } = attrs;
     context = context || this.get('context');
+
     context.beginPath();
-    context.arc(x, y, r, startAngle, endAngle, clockwise);
+    context.moveTo(x + r, y);
+    context.arc(x, y, r, 0, Math.PI * 2, false);
+    context.moveTo(x + r0, y);
+    context.arc(x, y, r0, 0, Math.PI * 2, true);
+    context.closePath();
   }
 }
 
-module.exports = Arc;
+module.exports = Ring;
+

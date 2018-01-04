@@ -201,17 +201,22 @@ class Element extends Base {
     return this;
   }
 
-  remove(destroy) {
-    if (Util.isNil(destroy)) {
-      destroy = true;
-    }
+  _removeFromParent() {
     const parent = this.get('parent');
     if (parent) {
       const children = parent.get('children');
       Util.Array.remove(children, this);
     }
-    destroy && this.destroy();
+
     return this;
+  }
+
+  remove(destroy) {
+    if (destroy) {
+      this.destroy();
+    } else {
+      this._removeFromParent();
+    }
   }
 
   destroy() {
@@ -220,6 +225,9 @@ class Element extends Base {
     if (destroyed) {
       return;
     }
+
+    this._removeFromParent();
+
     this._attrs = {};
     this.set('destroyed', true);
   }

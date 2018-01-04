@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const Smooth = require('../util/smooth');
 
 class Polyline extends Shape {
   getDefaultCfg() {
@@ -14,16 +15,15 @@ class Polyline extends Shape {
   getDefaultAttrs() {
     return {
       points: null,
-      lineWidth: 1
+      lineWidth: 1,
+      smooth: false
     };
   }
 
   createPath(context) {
     const self = this;
     const attrs = self.get('attrs');
-    const points = attrs.points;
-    let l;
-    let i;
+    const { points, smooth } = attrs;
 
     if (points.length < 2) {
       return;
@@ -31,10 +31,24 @@ class Polyline extends Shape {
     context = context || self.get('context');
     context.beginPath();
     context.moveTo(points[0].x, points[0].y);
-    for (i = 1, l = points.length - 1; i < l; i++) {
-      context.lineTo(points[i].x, points[i].y);
+    if (smooth) {
+      const constaint = [
+        [ 0, 0 ],
+        [ 1, 1 ]
+      ];
+      const sps = Smooth.smooth(points, false, constaint);
+      for (let i = 0, n = sps.length; i < n; i++) {
+        const sp = sps[i];
+        context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+      }
+    } else {
+      let i;
+      let l;
+      for (i = 1, l = points.length - 1; i < l; i++) {
+        context.lineTo(points[i].x, points[i].y);
+      }
+      context.lineTo(points[l].x, points[l].y);
     }
-    context.lineTo(points[l].x, points[l].y);
   }
 }
 
