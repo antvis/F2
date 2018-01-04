@@ -42,7 +42,7 @@ describe('Rect', function() {
 
   it('destroy', function() {
     rect.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

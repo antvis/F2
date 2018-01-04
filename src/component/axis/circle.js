@@ -1,6 +1,5 @@
 const Util = require('../../util/common');
 const Abstract = require('./abstract');
-const Vector2 = require('../../graphic/util/vector2');
 
 class AxisCircle extends Abstract {
   getDefaultCfg() {
@@ -52,15 +51,15 @@ class AxisCircle extends Abstract {
     const offsetVector = self.getOffsetVector(point, offset);
     let align;
     let baseLine = 'middle';
-    if (offsetVector.x > 0) {
+    if (offsetVector[0] > 0) {
       align = 'left';
-    } else if (offsetVector.x < 0) {
+    } else if (offsetVector[0] < 0) {
       align = 'right';
     } else {
       align = 'center';
-      if (offsetVector.y > 0) {
+      if (offsetVector[1] > 0) {
         baseLine = 'top';
-      } else if (offsetVector.y < 0) {
+      } else if (offsetVector[1] < 0) {
         baseLine = 'bottom';
       }
     }
@@ -74,7 +73,7 @@ class AxisCircle extends Abstract {
   getAxisVector(point) {
     const center = this.center;
     const factor = this.offsetFactor;
-    return new Vector2((point.y - center.y) * factor, (point.x - center.x) * -1 * factor);
+    return [ (point.y - center.y) * factor, (point.x - center.x) * -1 * factor ];
   }
 
   drawLine(lineCfg) {

@@ -37,6 +37,31 @@ class Shape extends Element {
     }
   }
 
+  getBBox() {
+    let bbox = this._attrs.bbox;
+    // 延迟计算
+    if (!bbox) {
+      bbox = this.calculateBox();
+      if (bbox) {
+        bbox.x = bbox.minX;
+        bbox.y = bbox.minY;
+        bbox.width = bbox.maxX - bbox.minX;
+        bbox.height = bbox.maxY - bbox.minY;
+      }
+      this._attrs.bbox = bbox;
+    }
+    return bbox;
+  }
+
+  /**
+   * @protected
+   * 计算包围盒
+   * @return {Object} 包围盒
+   */
+  calculateBox() {
+    return null;
+  }
+
   /**
    * TODO: 节点是否在图形中
    * @param  {Number}  x x 坐标

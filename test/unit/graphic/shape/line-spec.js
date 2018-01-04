@@ -36,7 +36,7 @@ describe('Line', function() {
 
   it('destroy', function() {
     line.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

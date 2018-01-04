@@ -20,9 +20,8 @@ function getStyle(cfg) {
   return Util.mix({}, Global.shape.line, style);
 }
 
-function drawLines(cfg, container, style, isSmooth) {
+function drawLines(cfg, container, style, smooth) {
   const points = cfg.points;
-  const shapeType = isSmooth ? 'SmoothLine' : 'Polyline';
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
@@ -37,23 +36,26 @@ function drawLines(cfg, container, style, isSmooth) {
       bottomPoints.push(bottomPoints[0]);
     }
     if (cfg.isStack) {
-      container.addShape(shapeType, {
+      container.addShape('Polyline', {
         className: 'line',
         attrs: Util.mix({
-          points: topPoints
+          points: topPoints,
+          smooth
         }, style)
       });
     } else {
-      container.addShape(shapeType, {
+      container.addShape('Polyline', {
         className: 'line',
         attrs: Util.mix({
-          points: topPoints
+          points: topPoints,
+          smooth
         }, style)
       });
-      container.addShape(shapeType, {
+      container.addShape('Polyline', {
         className: 'line',
         attrs: Util.mix({
-          points: bottomPoints
+          points: bottomPoints,
+          smooth
         }, style)
       });
     }
@@ -61,10 +63,11 @@ function drawLines(cfg, container, style, isSmooth) {
     if (cfg.isInCircle) {
       points.push(points[0]);
     }
-    container.addShape(shapeType, {
+    container.addShape('Polyline', {
       className: 'line',
       attrs: Util.mix({
-        points
+        points,
+        smooth
       }, style)
     });
   }

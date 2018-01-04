@@ -232,6 +232,15 @@ class Element extends Base {
     this.set('destroyed', true);
   }
 
+  getBBox() {
+    return {
+      minX: 0,
+      maxX: 0,
+      minY: 0,
+      maxY: 0
+    };
+  }
+
   // TODO: 矩阵变换
   initTransform() {
     this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];

@@ -75,17 +75,17 @@ Shape.registerShape('interval', 'rect', {
       }
 
       const { x, y } = cfg.center;
-      const v = new Vector2(1, 0);
-      const v0 = new Vector2(newPoints[0].x - x, newPoints[0].y - y);
-      const v1 = new Vector2(newPoints[1].x - x, newPoints[1].y - y);
-      const v2 = new Vector2(newPoints[2].x - x, newPoints[2].y - y);
+      const v = [ 1, 0 ];
+      const v0 = [ newPoints[0].x - x, newPoints[0].y - y ];
+      const v1 = [ newPoints[1].x - x, newPoints[1].y - y ];
+      const v2 = [ newPoints[2].x - x, newPoints[2].y - y ];
 
-      const startAngle = v.angleTo(v1);
-      const endAngle = v.angleTo(v2);
-      const r0 = v0.length();
-      const r = v1.length();
+      const startAngle = Vector2.angleTo(v, v1);
+      const endAngle = Vector2.angleTo(v, v2);
+      const r0 = Vector2.length(v0);
+      const r = Vector2.length(v1);
 
-      if (startAngle > endAngle && startAngle - endAngle < 0.0001) { // Ring
+      if (startAngle > endAngle && startAngle - endAngle < 0.0001) { // Ring TODO 0.0001 替换
         container.addShape('Ring', {
           className: 'interval',
           attrs: Util.mix({
