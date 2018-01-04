@@ -5,8 +5,8 @@ const Shape = {
   Polygon: require('./polygon'),
   Polyline: require('./polyline'),
   Arc: require('./arc'),
-  Fan: require('./fan'),
-  SmoothLine: require('./smooth-line'),
+  Sector: require('./sector'),
+  Ring: require('./ring'),
   Text: require('./text'),
   Custom: require('./custom')
 };
