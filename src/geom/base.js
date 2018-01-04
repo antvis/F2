@@ -75,7 +75,13 @@ class Geom extends Base {
 
       attrOptions: {},
 
-      sortable: false
+      sortable: false,
+      /**
+       * 图形的底边是否从 0 开始，默认为 0，即从 0 开始，
+       * 否则从最小值开始
+       * @type {Boolean}
+       */
+      startOnZero: true
     };
   }
 
@@ -529,18 +535,19 @@ class Geom extends Base {
 
   /**
    * @protected
-   * 如果y轴的最小值小于0则返回0，否则返回最小值
    * @return {Number} y轴上的最小值
    */
   getYMinValue() {
     const yScale = this.getYScale();
     const min = yScale.min;
     let value;
-    if (min >= 0) {
-      value = min;
+
+    if (this.get('startOnZero')) {
+      value = min >= 0 ? min : 0;
     } else {
-      value = 0;
+      value = min;
     }
+
     return value;
   }
 
