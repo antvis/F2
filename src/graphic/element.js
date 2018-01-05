@@ -319,6 +319,19 @@ class Element extends Base {
   }
 
   /**
+   * 移动的到位置
+   * @param  {Number} x 移动到x
+   * @param  {Number} y 移动到y
+   */
+  moveTo(x, y) {
+    const cx = this._attrs.x || 0; // 当前的x
+    const cy = this._attrs.y || 0; // 当前的y
+    this.translate(x - cx, y - cy);
+    this.set('x', x);
+    this.set('y', y);
+  }
+
+  /**
    * 应用到当前元素上的总的矩阵
    * @return {Matrix} 矩阵
    */

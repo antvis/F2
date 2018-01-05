@@ -74,7 +74,7 @@ class Shape extends Element {
 
   clearTotalMatrix() {
     this._attrs.totalMatrix = null;
-    this._attrs.region = null;
+    // this._attrs.region = null;
   }
 
   createPath() {}

@@ -1,8 +1,3 @@
-/**
- * TODO: 分类图例
- */
-class Legend {
-
-}
-
-module.exports = Legend;
+module.exports = {
+  Category: require('./category')
+};
