@@ -31,6 +31,7 @@ const defaultFont = {
 
 const Theme = {
   defaultFont,
+  defaultColor: '#4E7CCC',
   pixelRatio: 1,
   padding: [ 40, 40, 40, 40 ],
   colors: [ '#4E7CCC', '#36B3C3', '#4ECDA5', '#94E08A', '#E2F194', '#EDCC72', '#F8AB60', '#F9815C', '#EB4456', '#C82B3D' ],
@@ -111,6 +112,64 @@ const Theme = {
     point: {
       lineWidth: 0,
       size: 5 // 圆的默认半径
+    }
+  },
+  legend: {
+    right: {
+      position: 'right',
+      layout: 'vertical',
+      itemMarginBottom: 8, // layout 为 vertical 时各个图例项的间距
+      title: null,
+      textStyle: {
+        fill: '#8C8C8C',
+        fontSize: 12,
+        textAlign: 'start',
+        textBaseline: 'middle',
+        lineHeight: 20
+      }, // 图例项文本的样式
+      unCheckColor: '#bfbfbf'
+    },
+    left: {
+      position: 'left',
+      layout: 'vertical',
+      itemMarginBottom: 8,
+      title: null,
+      textStyle: {
+        fill: '#8C8C8C',
+        fontSize: 12,
+        textAlign: 'start',
+        textBaseline: 'middle',
+        lineHeight: 20
+      }, // 图例项文本的样式
+      unCheckColor: '#bfbfbf'
+    },
+    top: {
+      position: 'top',
+      layout: 'horizontal',
+      title: null,
+      itemGap: 10,
+      textStyle: {
+        fill: '#8C8C8C',
+        fontSize: 12,
+        textAlign: 'start',
+        textBaseline: 'middle',
+        lineHeight: 20
+      }, // 图例项文本的样式
+      unCheckColor: '#bfbfbf'
+    },
+    bottom: {
+      position: 'bottom',
+      layout: 'horizontal',
+      title: null,
+      itemGap: 24,
+      textStyle: {
+        fill: '#8C8C8C',
+        fontSize: 12,
+        textAlign: 'start',
+        textBaseline: 'middle',
+        lineHeight: 20
+      }, // 图例项文本的样式
+      unCheckColor: '#bfbfbf'
     }
   }
 };

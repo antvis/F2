@@ -223,6 +223,36 @@ class Chart extends Base {
   }
 
   /**
+   * [legend description]
+   * @param  {[type]} field [description]
+   * @param  {[type]} cfg   [description]
+   * @return {[type]}       [description]
+   */
+  legend(field, cfg) {
+    const self = this;
+    const legendController = self.get('legendController');
+    if (!legendController) {
+      return self;
+    }
+
+    let legendCfg = legendController.legendCfg;
+    // legendController.enable = true;
+
+    if (Util.isBoolean(field)) { // 支持 chart.legend(true | false)
+      legendController.enable = field;
+    } else if (Util.isObject(field)) { // 默认的 legend 配置属性
+      legendCfg = field;
+      legendController.position = legendCfg.position || 'top';
+    } else {
+      legendCfg[field] = cfg; // 配置某一个 field 对应的图例
+    }
+
+    legendController.legendCfg = legendCfg;
+
+    return self;
+  }
+
+  /**
    * 创建度量
    * @param  {String} field 度量对应的名称
    * @param  {Array} data 数据集合
