@@ -7,8 +7,6 @@ const Group = require('./group');
 class Canvas extends Base {
   getDefaultCfg() {
     return {
-      // isBrowser: typeof window !== 'undefined' &&
-      //   ({}.toString.call(window) === '[object Window]' || {}.toString.call(window) === '[object global]'),
       width: null,
       height: null,
       el: null,
@@ -51,7 +49,7 @@ class Canvas extends Base {
     } else if (el) { // HTMLElement
       canvas = el;
     } else if (id) { // dom id
-      canvas = document.getElementById(id);
+      canvas = DOMUtil.getDomById(id);
     }
 
     if (!canvas) {

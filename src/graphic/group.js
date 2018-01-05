@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const Element = require('./element');
 const Container = require('./container');
+const Vector2 = require('./util/vector2');
 
 class Group extends Element {
   getDefaultCfg() {
@@ -33,62 +34,48 @@ class Group extends Element {
   }
 
   getBBox() {
-    // const self = this;
-    // let minX = Infinity;
-    // let maxX = -Infinity;
-    // let minY = Infinity;
-    // let maxY = -Infinity;
-    // const children = self.get('children');
+    const self = this;
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    const children = self.get('children');
     // Util.each(children, function(child) {
-    //   if (child.get('visible')) {
-    //     const box = child.getBBox();
-    //     if (!box) {
-    //       return true;
-    //     }
+    for (let i = 0, length = children.length; i < length; i++) {
+      const child = children[i];
+      if (child.get('visible')) {
+        const box = child.getBBox();
+        if (!box) {
+          continue;
+        }
 
-    //     const leftTop = [ box.minX, box.minY, 1 ];
-    //     const leftBottom = [ box.minX, box.maxY, 1 ];
-    //     const rightTop = [ box.maxX, box.minY, 1 ];
-    //     const rightBottom = [ box.maxX, box.maxY, 1 ];
+        const leftTop = [ box.minX, box.minY ];
+        const leftBottom = [ box.minX, box.maxY ];
+        const rightTop = [ box.maxX, box.minY ];
+        const rightBottom = [ box.maxX, box.maxY ];
 
-    //     child.apply(leftTop);
-    //     child.apply(leftBottom);
-    //     child.apply(rightTop);
-    //     child.apply(rightBottom);
+        Vector2.transformMat2d(leftTop, leftTop, child.get('matrix'));
+        Vector2.transformMat2d(leftBottom, leftBottom, child.get('matrix'));
+        Vector2.transformMat2d(rightTop, rightTop, child.get('matrix'));
+        Vector2.transformMat2d(rightBottom, rightBottom, child.get('matrix'));
 
-    //     const boxMinX = Math.min(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0]);
-    //     const boxMaxX = Math.max(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0]);
-    //     const boxMinY = Math.min(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1]);
-    //     const boxMaxY = Math.max(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1]);
+        minX = Math.min(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], minX);
+        maxX = Math.max(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], maxX);
+        minY = Math.min(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], minY);
+        maxY = Math.max(leftTop[1], leftBottom[1], rightTop[1], rightBottom[1], maxY);
+      }
+    }
 
-    //     if (boxMinX < minX) {
-    //       minX = boxMinX;
-    //     }
-
-    //     if (boxMaxX > maxX) {
-    //       maxX = boxMaxX;
-    //     }
-
-    //     if (boxMinY < minY) {
-    //       minY = boxMinY;
-    //     }
-
-    //     if (boxMaxY > maxY) {
-    //       maxY = boxMaxY;
-    //     }
-    //   }
-    // });
-    // const box = {
-    //   minX,
-    //   minY,
-    //   maxX,
-    //   maxY
-    // };
-    // box.x = box.minX;
-    // box.y = box.minY;
-    // box.width = box.maxX - box.minX;
-    // box.height = box.maxY - box.minY;
-    // return box;
+    return {
+      minX,
+      minY,
+      maxX,
+      maxY,
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
   }
 
   destroy() {

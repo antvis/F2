@@ -34,6 +34,15 @@ const DomUtil = {
       height = el.offsetHeight;
     }
     return parseFloat(height);
+  },
+  getDomById(id) {
+    if (!id) {
+      return null;
+    }
+    return document.getElementById(id);
+  },
+  createCanvas() {
+    return document.createElement('canvas');
   }
 };
 
