@@ -1,5 +1,11 @@
 const Util = require('../../util/common');
+const DOMUtil = require('../../util/dom');
 const Shape = require('../shape');
+
+let dummyContext;
+let textWidthCacheCounter = 0;
+let textWidthCache = {};
+const TEXT_CACHE_MAX = 5000;
 
 class Text extends Shape {
   getDefaultCfg() {
@@ -142,13 +148,11 @@ class Text extends Shape {
     }
   }
 
-  // TODO
   calculateBox() {
     const self = this;
     const attrs = self.get('attrs');
-    const x = attrs.x;
-    const y = attrs.y;
-    const width = self.measureText(); // attrs.width
+    const { x, y, textAlign, textBaseline, lineWidth } = attrs;
+    const width = self._getTextWidth(); // attrs.width
     if (!width) {
       // 如果width不存在，四点共其实点
       return {
@@ -159,13 +163,10 @@ class Text extends Shape {
       };
     }
     const height = self._getTextHeight(); // attrs.height
-    const textAlign = attrs.textAlign;
-    const textBaseline = attrs.textBaseline;
-    const lineWidth = attrs.lineWidth;
     const point = {
       x,
       y: y - height
-    };
+    }; // default textAlign: start, textBaseline: bottom
 
     if (textAlign) {
       if (textAlign === 'end' || textAlign === 'right') {
@@ -183,7 +184,6 @@ class Text extends Shape {
       }
     }
 
-    // this.set('startPoint', point);
     const halfWidth = lineWidth / 2;
     return {
       minX: point.x - halfWidth,
@@ -193,31 +193,45 @@ class Text extends Shape {
     };
   }
 
-  measureText() {
+  _getDummyContext() {
+    if (dummyContext) {
+      return dummyContext;
+    }
+    dummyContext = DOMUtil.createCanvas().getContext('2d');
+    return dummyContext;
+  }
+
+  _getTextWidth() {
     const self = this;
     const attrs = self.get('attrs');
-    const text = attrs.text;
-    const font = attrs.font;
-    const textArr = attrs.textArr;
-    let measureWidth;
-    let width = 0;
+    const { text, font, textArr } = attrs;
 
     if (Util.isNil(text)) return undefined;
-    const context = document.createElement('canvas').getContext('2d');
-    context.save();
+
+    const key = text + '' + font;
+    if (textWidthCache[key]) {
+      return textWidthCache[key];
+    }
+
+    let width = 0;
+    const context = self._getDummyContext();
     context.font = font;
     if (textArr) {
-      Util.each(textArr, function(subText) {
-        measureWidth = context.measureText(subText).width;
-        if (width < measureWidth) {
-          width = measureWidth;
-        }
-        context.restore();
-      });
+      for (let i = 0, length = textArr.length; i < length; i++) {
+        const subText = textArr[i];
+        width = Math.max(width, context.measureText(subText).width);
+      }
     } else {
       width = context.measureText(text).width;
-      context.restore();
     }
+
+    if (textWidthCacheCounter > TEXT_CACHE_MAX) {
+      textWidthCacheCounter = 0;
+      textWidthCache = {};
+    }
+    textWidthCacheCounter++;
+    textWidthCache[key] = width;
+
     return width;
   }
 }

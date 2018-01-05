@@ -56,18 +56,12 @@ describe('Text', function() {
     text.attr('text', 'italic');
     canvas.add(text);
     // bbox
-    const bbox = text.getBBox();
-    canvas.addShape('Rect', {
-      attrs: {
-        x: bbox.x,
-        y: bbox.y,
-        width: bbox.width,
-        height: bbox.height,
-        stroke: 'red',
-        lineWidth: 1
-      }
-    });
     canvas.draw();
+    const bbox = text.getBBox();
+    expect(bbox.x).to.equal(29.5);
+    expect(bbox.y).to.equal(17.5);
+    expect(bbox.width).to.equal(27.23046875);
+    expect(bbox.height).to.equal(13);
   });
 
   it('fill', function() {
@@ -87,16 +81,10 @@ describe('Text', function() {
     canvas.add(text1);
     // bbox
     const bbox = text1.getBBox();
-    canvas.addShape('Rect', {
-      attrs: {
-        x: bbox.x,
-        y: bbox.y,
-        width: bbox.width,
-        height: bbox.height,
-        stroke: 'red',
-        lineWidth: 1
-      }
-    });
+    expect(bbox.x).to.equal(29.5);
+    expect(bbox.y).to.equal(77.5);
+    expect(bbox.width).to.equal(49);
+    expect(bbox.height).to.equal(13);
 
     canvas.draw();
   });
@@ -116,16 +104,10 @@ describe('Text', function() {
     canvas.add(text1);
      // bbox
     const bbox = text1.getBBox();
-    canvas.addShape('Rect', {
-      attrs: {
-        x: bbox.x,
-        y: bbox.y,
-        width: bbox.width,
-        height: bbox.height,
-        stroke: 'red',
-        lineWidth: 1
-      }
-    });
+    expect(bbox.x).to.equal(9.5);
+    expect(bbox.y).to.equal(39.5);
+    expect(bbox.width).to.equal(81);
+    expect(bbox.height).to.equal(21);
 
     canvas.draw();
   });
@@ -170,25 +152,18 @@ describe('Text', function() {
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 12,
-        lineHeight: 18,
-        textAlign: 'center'
+        lineHeight: 18
       }
     });
     expect(text.attr('textArr').length).to.equal(3);
     expect(text._getTextHeight()).to.equal(48);
     canvas.add(text);
-// bbox
+    // bbox
     const bbox = text.getBBox();
-    canvas.addShape('Rect', {
-      attrs: {
-        x: bbox.x,
-        y: bbox.y,
-        width: bbox.width,
-        height: bbox.height,
-        stroke: 'red',
-        lineWidth: 1
-      }
-    });
+    expect(bbox.x).to.equal(99.5);
+    expect(bbox.y).to.equal(49.5);
+    expect(bbox.width).to.equal(29.67578125);
+    expect(bbox.height).to.equal(49);
     canvas.draw();
   });
 });
