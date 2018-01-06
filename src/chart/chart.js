@@ -242,7 +242,6 @@ class Chart extends Base {
       legendController.enable = field;
     } else if (Util.isObject(field)) { // 默认的 legend 配置属性
       legendCfg = field;
-      legendController.position = legendCfg.position || 'top';
     } else {
       legendCfg[field] = cfg; // 配置某一个 field 对应的图例
     }
