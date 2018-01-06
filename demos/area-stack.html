@@ -52,7 +52,8 @@
     { month: 11, tem: 1, city: 'berlin' }
   ];
   const chart = new F2.Chart({
-    el: canvas
+    el: canvas,
+    padding: [ 40, 100, 40 ]
   });
   chart.source(data, {
     month: {
@@ -73,6 +74,61 @@
       fontSize: 14
     }
   });
+  // chart.legend({
+  //   position: 'right',
+  //   marker: 'square',
+  //   title: true,
+  //   itemFormatter: val => {
+  //      return '$' + val;
+  //   }
+  // });
+  chart.legend('city', {
+    position: 'right',
+    marker(x, y, r, ctx) {
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = ctx.fillStyle;
+      ctx.moveTo(x - r - 3, y);
+      ctx.lineTo(x + r + 3, y);
+      ctx.stroke();
+      ctx.arc(x, y, r - 1, 0, Math.PI * 2, false);
+      ctx.fill();
+    },
+    title: true,
+    itemFormatter: val => {
+       return '$' + val;
+    }
+  });
+  // chart.legend(false);
+  // === 自定义图例 ===
+  // chart.legend('city', {
+  //   custom: true,
+  //   position: 'left',
+  //   items: [
+  //     { value: 'a1', marker: 'triangle', fill: 'red'},
+  //     { value: 'a2', marker: 'triangle', fill: 'blue'},
+  //     { value: 'a3', marker: 'triangle', fill: 'green'}
+  //   ]
+  // });
+  // chart.legend('city', {
+  //   custom: true,
+  //   position: 'left',
+  //   items: [
+  //     { value: 'a1', marker: { symbol: 'triangle', stroke: 'red', radius: 8 }},
+  //     { value: 'a2', marker: { symbol: 'triangle', stroke: 'green', radius: 8 }},
+  //     { value: 'a3', marker: { symbol: 'triangle', stroke: 'blue', radius: 8 }}
+  //   ]
+  // });
+  // chart.legend({
+  //   custom: true,
+  //   position: 'left',
+  //   items: [
+  //     { value: 'a1', marker: 'triangle', fill: 'red'},
+  //     { value: 'a2', marker: 'triangle', fill: 'blue'},
+  //     { value: 'a3', marker: 'triangle', fill: 'green'}
+  //   ]
+  // });
+  // === 自定义图例 ===
+
   chart.area().position('month*tem').color('city')
     .shape('smooth')
     .style({

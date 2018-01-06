@@ -132,18 +132,12 @@ class CategoryLegend extends Legend {
           markerAttrs.stroke = unCheckColor;
         }
       }
-      // let symbol = item.marker.symbol;
-      // symbol = Util.isFunction(symbol) ? symbol : Marker[symbol];
+
       const markerShape = new Marker({
         className: 'legeng-marker',
         attrs: markerAttrs
       });
       itemGroup.add(markerShape);
-      // const markerShape = itemGroup.addShape('Marker', {
-      //   className: 'legeng-marker',
-      //   attrs: markerAttrs,
-      //   createPath: symbol
-      // });
       startX += markerShape.getBBox().width + wordSpace;
     }
 

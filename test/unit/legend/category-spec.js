@@ -140,7 +140,7 @@ describe('分类图例', function() {
 
     const legendContainer = legend.container;
     const itemsGroup = legend.itemsGroup;
-    const titleShape = legend.titleShape;
+    // const titleShape = legend.titleShape;
     canvas.add(legendContainer);
     canvas.draw();
     const legendBBox = legendContainer.getBBox();
@@ -176,7 +176,7 @@ describe('分类图例', function() {
     });
     const legendContainer = legend.container;
     const itemsGroup = legend.itemsGroup;
-    const titleShape = legend.titleShape;
+    // const titleShape = legend.titleShape;
     canvas.add(legendContainer);
     canvas.draw();
     const legendBBox = legendContainer.getBBox();
@@ -211,8 +211,8 @@ describe('分类图例', function() {
       maxLength: 200
     });
     const legendContainer = legend.container;
-    const itemsGroup = legend.itemsGroup;
-    const titleShape = legend.titleShape;
+    // const itemsGroup = legend.itemsGroup;
+    // const titleShape = legend.titleShape;
     canvas.add(legendContainer);
     canvas.draw();
     legendContainer.moveTo(0, 20);
@@ -253,8 +253,8 @@ describe('分类图例', function() {
     });
 
     const legendContainer = legend.container;
-    const itemsGroup = legend.itemsGroup;
-    const titleShape = legend.titleShape;
+    // const itemsGroup = legend.itemsGroup;
+    // const titleShape = legend.titleShape;
     canvas.add(legendContainer);
     canvas.draw();
     const legendBBox = legendContainer.getBBox();
