@@ -1,5 +1,33 @@
 const Util = require('../util/common');
 const { Guide } = require('../component/index');
+const Global = require('../global');
+
+// register the default configuration for Guide
+Global.guide = Util.deepMix(Global.guide || {}, {
+  line: {
+    stroke: '#000',
+    lineWidth: 1,
+    top: true
+  },
+  text: {
+    fill: '#000',
+    textAlign: 'center',
+    offset: [ 0, 0 ],
+    top: true
+  },
+  rect: {
+    fillStyle: '#fafafa',
+    top: false
+  },
+  arc: {
+    stroke: '#CCC',
+    top: true
+  },
+  html: {
+    offset: [ 0, 0 ],
+    align: 'cc'
+  }
+});
 
 class GuideController {
   constructor(cfg) {
@@ -161,9 +189,6 @@ module.exports = {
       backPlot: chart.get('backPlot')
     });
     chart.set('guideController', guideController);
-    // chart.__proto__.guide = function() {
-    //   return guideController;
-    // };
   },
   beforeGeomDraw(chart) {
     const guideController = chart.get('guideController');

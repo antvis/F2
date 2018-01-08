@@ -56,7 +56,6 @@ class Legend {
   }
 
   clear() {
-    // TODO 需要测试
     const container = this.container;
     container.clear();
     container.remove();

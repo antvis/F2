@@ -1,19 +1,78 @@
 /**
  * TODO: 图例插件
- * 1. 清理
- * 2. 排版策略
+ * ~~1. 清理~~
+ * ~~2. 排版策略~~
  * 3. 事件
  * 4. 过滤
- * 5. Theme 迁移至此
+ * ~~5. Theme 迁移至此~~
  */
 const Util = require('../util/common');
 const { Legend } = require('../component/index');
 const Global = require('../global');
-// const FIELD_ORIGIN = '_origin';
 const LEGEND_OFFSET = 24;
 const LEGEND_GAP = 24;
 const MARKER_SIZE = 4.5;
 const GROUP_ATTRS = [ 'size', 'shape', 'color' ];
+
+// Register the default configuration for Legend
+Global.legend = Util.deepMix(Global.Legend || {}, {
+  right: {
+    position: 'right',
+    layout: 'vertical',
+    itemMarginBottom: 8,
+    title: null,
+    textStyle: {
+      fill: '#8C8C8C',
+      fontSize: 12,
+      textAlign: 'start',
+      textBaseline: 'middle',
+      lineHeight: 20
+    }, // 图例项文本的样式
+    unCheckColor: '#bfbfbf'
+  },
+  left: {
+    position: 'left',
+    layout: 'vertical',
+    itemMarginBottom: 8,
+    title: null,
+    textStyle: {
+      fill: '#8C8C8C',
+      fontSize: 12,
+      textAlign: 'start',
+      textBaseline: 'middle',
+      lineHeight: 20
+    }, // 图例项文本的样式
+    unCheckColor: '#bfbfbf'
+  },
+  top: {
+    position: 'top',
+    layout: 'horizontal',
+    title: null,
+    itemGap: 10,
+    textStyle: {
+      fill: '#8C8C8C',
+      fontSize: 12,
+      textAlign: 'start',
+      textBaseline: 'middle',
+      lineHeight: 20
+    }, // 图例项文本的样式
+    unCheckColor: '#bfbfbf'
+  },
+  bottom: {
+    position: 'bottom',
+    layout: 'horizontal',
+    title: null,
+    itemGap: 24,
+    textStyle: {
+      fill: '#8C8C8C',
+      fontSize: 12,
+      textAlign: 'start',
+      textBaseline: 'middle',
+      lineHeight: 20
+    }, // 图例项文本的样式
+    unCheckColor: '#bfbfbf'
+  }
+});
 
 function getLegendAttr(geom) {
   const attrs = geom.get('attrs');
@@ -210,7 +269,7 @@ class LegendController {
       }
     } else { // position 为 top、bottom，图例整体居左对齐
       x = plotRange.tl.x;
-      y = (position === 'top') ? LEGEND_OFFSET : (plotRange.bl.y + LEGEND_OFFSET);
+      y = (position === 'top') ? LEGEND_OFFSET : (plotRange.bl.y + LEGEND_OFFSET * 2); // TODO
 
       if (pre) {
         const preWidth = pre.getWidth();
@@ -268,6 +327,9 @@ module.exports = {
     }
 
     legendController.alignLegends(); // adjust position
+  },
+  clearInner(chart) {
+    const legendController = chart.get('legendController');
+    legendController.clear();
   }
-
 };
