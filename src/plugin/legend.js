@@ -111,7 +111,7 @@ class LegendController {
     this.clear();
   }
 
-  addLegend(scale, attr, geom) {
+  addLegend(scale, attr, geom, filterVals) {
     const self = this;
     const legendCfg = self.legendCfg;
     const field = scale.field;
@@ -129,7 +129,7 @@ class LegendController {
         position = fieldCfg.position;
       }
       if (scale.isCategory) { // 目前只支持分类
-        self._addCategroyLegend(scale, attr, geom, position);
+        self._addCategroyLegend(scale, attr, geom, position, filterVals);
       }
     }
   }
@@ -187,12 +187,24 @@ class LegendController {
     this.legends = {};
   }
 
+  _isFiltered(scale, values, value) {
+    let rst = false;
+    value = scale.invert(value);
+    Util.each(values, val => {
+      rst = rst || scale.getText(val) === scale.getText(value);
+      if (rst) {
+        return false;
+      }
+    });
+    return rst;
+  }
+
   _getMaxLength(position) {
     const plotRange = this.plotRange;
     return (position === 'right' || position === 'left') ? plotRange.bl.y - plotRange.tr.y : plotRange.br.x - plotRange.bl.x;
   }
 
-  _addCategroyLegend(scale, attr, geom, position) {
+  _addCategroyLegend(scale, attr, geom, position, filterVals) {
     const self = this;
     const { legendCfg, legends, container } = self;
     const items = [];
@@ -228,7 +240,7 @@ class LegendController {
       items.push({
         value: name, // 图例项显示文本的内容
         dataValue: value, // 图例项对应原始数据中的数值
-        checked: true,
+        checked: filterVals ? self._isFiltered(scale, filterVals, scaleValue) : true,
         marker
       });
     });
@@ -249,7 +261,7 @@ class LegendController {
     container.add(legend.container);
 
     // TODO: 如果需要支持图例交互，就在这里
-    self.bindEvents(legend, scale, lastCfg);
+    self.bindEvents(legend, scale, lastCfg, filterVals);
     legends[position].push(legend);
     return legend;
   }
@@ -297,49 +309,55 @@ class LegendController {
     return self;
   }
 
-  bindEvents(legend, scale, legendCfg) {
+  bindEvents(legend, scale, legendCfg, filterVals) {
     const self = this;
     const chart = self.chart;
-    // const field = scale.field;
-    // const selectedMode = legendCfg.selectedMode;
+    const field = scale.field;
+    // const filterVals = scale.values;
 
     function findItem(x, y, legend) {
+      let result = null;
+
       const { itemsGroup, legendHitBoxes } = legend;
       const children = itemsGroup.get('children');
-      const legendPosX = legend.x;
-      const legendPosY = legend.y;
-      let result = null;
-      Util.each(legendHitBoxes, (box, index) => {
-        if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
-          result = children[index];
-          return true;
-        }
-      });
-
+      if (children.length) {
+        const legendPosX = legend.x;
+        const legendPosY = legend.y;
+        Util.each(legendHitBoxes, (box, index) => {
+          if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
+            result = children[index];
+            return true;
+          }
+        });
+      }
       return result;
     }
 
     // TODO: 触发的事件需要用户自己定义
     DomUtil.addEventListener(chart, 'mousedown', function(ev) {
-       // const legendHitBoxes = legend.legendHitBoxes;
-// debugger
       if (legendCfg.onClick) {
         legendCfg.onClick(ev); // TODO
       } else {
-        // console.log(ev);
         const { x, y } = ev;
         const clickedItem = findItem(x, y, legend);
         if (clickedItem) {
           const checked = clickedItem.get('checked');
           const value = clickedItem.get('dataValue');
-          console.log(checked, value);
+          if (!checked) {
+            filterVals.push(value);
+          } else {
+            Util.Array.remove(filterVals, value);
+          }
+          chart.filter(field, val => {
+            return filterVals.indexOf(val) !== -1;
+          });
+          chart.repaint();
         }
       }
     });
   }
 }
 module.exports = {
-
   init(chart) {
     const legendController = new LegendController({
       container: chart.get('backPlot'),
@@ -366,7 +384,17 @@ module.exports = {
           const scale = attr.getScale(type);
           if (scale.type !== 'identity' && !_isScaleExist(scales, scale)) {
             scales.push(scale);
-            legendController.addLegend(scale, attr, geom);
+
+            // Get filtered values
+            const { field, values } = scale;
+            const filters = chart.get('filters');
+            let filterVals;
+            if (filters && filters[field]) {
+              filterVals = values.filter(filters[field]);
+            } else {
+              filterVals = values.slice(0);
+            }
+            legendController.addLegend(scale, attr, geom, filterVals);
           }
         });
       });

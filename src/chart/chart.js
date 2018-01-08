@@ -290,7 +290,6 @@ class Chart extends Base {
     return fields;
   }
 
-
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
