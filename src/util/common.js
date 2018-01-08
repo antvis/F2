@@ -226,19 +226,12 @@ Util = {
     }
     return parseFloat(v.toFixed(length));
   },
-  requestAnimationFrame(fn) {
-    const method = window.requestAnimationFrame || window.webkitRequestAnimationFrame || function(fn) {
-      return setTimeout(fn, 16);
+  uid: (function() {
+    let id = 0;
+    return function() {
+      return id++;
     };
-
-    return method(fn);
-  },
-  cancelAnimationFrame(id) {
-    const method = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || function(id) {
-      return clearTimeout(id);
-    };
-    return method(id);
-  }
+  }())
 };
 
 Util.Array = {

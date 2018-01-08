@@ -2,12 +2,10 @@ const Util = require('../../util/common');
 const Legend = require('./legend');
 const Marker = require('../marker');
 
-// TODOList:
-// 2. 事件支持
-
 class CategoryLegend extends Legend {
   getDefaultCfg() {
-    return {
+    const cfg = super.getDefaultCfg();
+    return Util.mix({}, cfg, {
       /**
        * 图例的标题，默认不展示
        * @type {?Object}
@@ -84,7 +82,7 @@ class CategoryLegend extends Legend {
        * @type {Boolean}
        */
       autoWrap: true
-    };
+    });
   }
 
   renderItems() {
@@ -102,7 +100,7 @@ class CategoryLegend extends Legend {
     this.autoWrap && this._adjustItems(); // 默认自动换行，并按照图例项的最大宽度对齐
   }
 
-  _addItem(item) {
+  _addItem(item, index) {
     const itemsGroup = this.itemsGroup;
     const x = this._getNextX();
     const y = this._getNextY();
@@ -110,7 +108,8 @@ class CategoryLegend extends Legend {
     const itemGroup = itemsGroup.addGroup({
       x,
       y,
-      value: item.value,
+      text: item.value, // 显示的内容
+      dataValue: item.dataValue, // 图例项对应原始数据中的数值
       checked: item.checked
     });
 
@@ -173,6 +172,7 @@ class CategoryLegend extends Legend {
     });
     itemGroup.set('width', itemWidth || bbox.width); // 缓存每个图例项的宽度
     itemGroup.set('height', bbox.height); // 缓存每个图例项的高度
+    this.legendHitBoxes[index] = bbox;
     return itemGroup;
   }
 
