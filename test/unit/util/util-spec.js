@@ -97,7 +97,7 @@ describe('test basic util', function() {
     Util.mix(b, a);
     expect(b.c).to.be.equal(undefined);
   });
-
+/*
   it('frame', function(done) {
     let called = false;
     const callback = function() {
@@ -125,7 +125,7 @@ describe('test basic util', function() {
       done();
     }, 20);
   });
-
+*/
 
   it('each obj', function() {
     const a = {

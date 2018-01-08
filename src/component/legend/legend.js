@@ -3,7 +3,20 @@ const Util = require('../../util/common');
 const { Group } = require('../../graphic/index');
 
 class Legend {
-  getDefaultCfg() {}
+  getDefaultCfg() {
+    return {
+      /**
+       * 图例在画布上的位置
+       * @type {[type]}
+       */
+      x: 0,
+      /**
+       * 图例在画布上的位置
+       * @type {[type]}
+       */
+      y: 0
+    };
+  }
 
   constructor(cfg) {
     Util.deepMix(this, this.getDefaultCfg(), cfg); // TODO textStyle
@@ -21,6 +34,8 @@ class Legend {
       className: 'itemsGroup'
     });
     this.itemsGroup = itemsGroup;
+    // Contains hit boxes for each legend item
+    this.legendHitBoxes = [];
   }
 
   renderTitle() {
@@ -59,6 +74,14 @@ class Legend {
     const container = this.container;
     container.clear();
     container.remove();
+  }
+
+  moveTo(x, y) {
+    this.x = x;
+    this.y = y;
+    const container = this.container;
+    container && container.moveTo(x, y);
+    return this;
   }
 }
 

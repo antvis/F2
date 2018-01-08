@@ -7,6 +7,7 @@
  * ~~5. Theme 迁移至此~~
  */
 const Util = require('../util/common');
+const DomUtil = require('../util/dom');
 const { Legend } = require('../component/index');
 const Global = require('../global');
 const LEGEND_OFFSET = 24;
@@ -182,6 +183,7 @@ class LegendController {
         legend.clear();
       });
     });
+
     this.legends = {};
   }
 
@@ -247,6 +249,7 @@ class LegendController {
     container.add(legend.container);
 
     // TODO: 如果需要支持图例交互，就在这里
+    self.bindEvents(legend, scale, lastCfg);
     legends[position].push(legend);
     return legend;
   }
@@ -277,7 +280,8 @@ class LegendController {
       }
     }
 
-    legend.container.moveTo(x + offsetX, y + offsetY);
+    // legend.container.moveTo(x + offsetX, y + offsetY);
+    legend.moveTo(x + offsetX, y + offsetY);
   }
 
   alignLegends() {
@@ -292,13 +296,55 @@ class LegendController {
 
     return self;
   }
+
+  bindEvents(legend, scale, legendCfg) {
+    const self = this;
+    const chart = self.chart;
+    // const field = scale.field;
+    // const selectedMode = legendCfg.selectedMode;
+
+    function findItem(x, y, legend) {
+      const { itemsGroup, legendHitBoxes } = legend;
+      const children = itemsGroup.get('children');
+      const legendPosX = legend.x;
+      const legendPosY = legend.y;
+      let result = null;
+      Util.each(legendHitBoxes, (box, index) => {
+        if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
+          result = children[index];
+          return true;
+        }
+      });
+
+      return result;
+    }
+
+    // TODO: 触发的事件需要用户自己定义
+    DomUtil.addEventListener(chart, 'mousedown', function(ev) {
+       // const legendHitBoxes = legend.legendHitBoxes;
+// debugger
+      if (legendCfg.onClick) {
+        legendCfg.onClick(ev); // TODO
+      } else {
+        // console.log(ev);
+        const { x, y } = ev;
+        const clickedItem = findItem(x, y, legend);
+        if (clickedItem) {
+          const checked = clickedItem.get('checked');
+          const value = clickedItem.get('dataValue');
+          console.log(checked, value);
+        }
+      }
+    });
+  }
 }
 module.exports = {
 
   init(chart) {
     const legendController = new LegendController({
       container: chart.get('backPlot'),
-      plotRange: chart.get('plot')
+      plotRange: chart.get('plot'),
+      chart
     });
     chart.set('legendController', legendController);
   },

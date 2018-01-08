@@ -15,7 +15,7 @@
   document.body.appendChild(canvas);
   F2.Global.pixelRatio = window.devicePixelRatio;
 
-  const data = [
+   const data = [
     { month: 12, tem: 7, city: 'tokyo' },
     { month: 1, tem: 6.9, city: 'tokyo' },
     { month: 2, tem: 9.5, city: 'tokyo' },
@@ -95,10 +95,10 @@
       ctx.arc(x, y, r - 1, 0, Math.PI * 2, false);
       ctx.fill();
     },
-    title: true,
-    itemFormatter: val => {
-       return '$' + val;
-    }
+    title: true
+  });
+  chart.filter('city', val => {
+    return val !== 'tokyo';
   });
   // chart.legend(false);
   // === 自定义图例 ===
@@ -138,22 +138,22 @@
     })
     .adjust('stack');
   chart.render();
-  function getPoint(canvas, x, y) {
-    const bbox = canvas.getBoundingClientRect();
-    return {
-      x: x - bbox.left,
-      y: y - bbox.top
-    };
-  }
-  canvas.onclick = function(e) {
-    const point = getPoint(e.target, e.clientX, e.clientY);
-    const data = chart.getSnapRecords(point);
-    // let html = '';
-    // data.forEach(function(item) {
-    //   html += 'city:' + item._origin.city + ',tem:' + item._origin.tem + ',month:' + item._origin.month + '\b\n';
-    // });
-    console.log(data);
-  };
+  // function getPoint(canvas, x, y) {
+  //   const bbox = canvas.getBoundingClientRect();
+  //   return {
+  //     x: x - bbox.left,
+  //     y: y - bbox.top
+  //   };
+  // }
+  // canvas.onclick = function(e) {
+  //   const point = getPoint(e.target, e.clientX, e.clientY);
+  //   const data = chart.getSnapRecords(point);
+  //   // let html = '';
+  //   // data.forEach(function(item) {
+  //   //   html += 'city:' + item._origin.city + ',tem:' + item._origin.tem + ',month:' + item._origin.month + '\b\n';
+  //   // });
+  //   console.log(data);
+  // };
 </script>
 </body>
 </html>

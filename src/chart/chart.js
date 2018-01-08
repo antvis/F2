@@ -1,12 +1,15 @@
 const Base = require('../base');
 const Plot = require('./plot');
 const Util = require('../util/common');
+// const DomUtil = require('../util/dom');
 const Coord = require('../coord/index');
 const Geom = require('../geom/base');
 const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
+const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
+
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -134,7 +137,11 @@ class Chart extends Base {
        * @type {String}
        */
       id: null,
-
+      /**
+       * 每个 chart 实例的唯一 id
+       * @type {[type]}
+       */
+      chartId: Util.uid(),
       /**
        * 画布中绘制图形的边距
        * @type {Array|Number}
@@ -177,7 +184,12 @@ class Chart extends Base {
        * @type {Object}
        */
       colDefs: null,
-      pixelRatio: Global.pixelRatio
+      pixelRatio: Global.pixelRatio,
+      /**
+       * 过滤设置
+       * @type {Object}
+       */
+      filters: {}
     };
   }
 
@@ -251,6 +263,34 @@ class Chart extends Base {
     return self;
   }
 
+  filter(field, condition) {
+    const filters = this.get('filters');
+    filters[field] = condition;
+  }
+
+  _getFieldsForLegend() {
+    const fields = [];
+    const geoms = this.get('geoms');
+    Util.each(geoms, geom => {
+      const attrOptions = geom.get('attrOptions');
+      Util.each(GROUP_ATTRS, attrName => {
+        const attrCfg = attrOptions[attrName];
+        if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
+          const arr = attrCfg.field.split('*');
+          arr.map(item => {
+            if (fields.indexOf(item) === -1) {
+              fields.push(item);
+            }
+            return item;
+          });
+          // fields = fields.concat(attrCfg.field.split('*'));
+        }
+      });
+    });
+    return fields;
+  }
+
+
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
@@ -259,7 +299,18 @@ class Chart extends Base {
    */
   createScale(field, data) {
     const self = this;
-    data = data || self.get('data');
+    // data = data || self.get('data');
+    if (!data) {
+      const filteredData = self.get('filteredData');
+      const legendFields = this._getFieldsForLegend();
+      // 过滤导致数据为空时，需要使用全局数据
+      // 参与过滤的字段的度量也根据全局数据来生成
+      if (filteredData.length && legendFields.indexOf(field) === -1) {
+        data = filteredData;
+      } else {
+        data = this.get('data');
+      }
+    }
     const scales = self.get('scales');
     if (!scales[field]) {
       scales[field] = self._createScale(field, data);
@@ -527,6 +578,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'clear'); // TODO
     this._removeGeoms();
     this._clearInner();
+    this.set('filters', {});
 
     const canvas = this.get('canvas');
     canvas.draw();
@@ -535,6 +587,7 @@ class Chart extends Base {
 
   _clearInner() {
     this.set('scales', {});
+    this.set('_listeners', {});
     this._clearGeoms();
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
@@ -562,7 +615,9 @@ class Chart extends Base {
     const geoms = self.get('geoms');
 
     // Chart.plugins.notify(self, 'beforeRender');
-
+    const data = this.get('data') || [];
+    const filteredData = this.execFilter(data);
+    this.set('filteredData', filteredData);
     self._initCoord();
     self._initGeoms(geoms);
     self._adjustScale();
@@ -599,7 +654,7 @@ class Chart extends Base {
   _initGeoms(geoms) {
     const self = this;
     const coord = self.get('coord');
-    const data = self.get('data');
+    const data = self.get('filteredData');
     for (let i = 0; i < geoms.length; i++) {
       const geom = geoms[i];
       geom.set('data', data);
@@ -651,6 +706,26 @@ class Chart extends Base {
     });
   }
 
+  execFilter(data) {
+    const self = this;
+    const filters = self.get('filters');
+    if (filters) {
+      data = data.filter(function(obj) {
+        let rst = true;
+        Util.each(filters, function(fn, k) {
+          if (fn) {
+            rst = fn(obj[k], obj);
+            if (!rst) {
+              return false;
+            }
+          }
+        });
+        return rst;
+      });
+    }
+    return data;
+  }
+
   // 获取x轴对应的度量
   _getXScale() {
     const self = this;
@@ -683,6 +758,41 @@ class Chart extends Base {
     const coord = self.get('coord');
     axisController.createAxis(coord, xScale, yScales);
   }
+/*
+  eventHandler(e) {
+    const self = this;
+    if (Chart.plugins.notify(self, 'beforeEvent', [ e ]) === false) {
+      return;
+    }
+    self.handleEvent(e);
+    Chart.plugins.notify(self, 'afterEvent', [ e ]);
+    return self;
+  }
+  bindEvents() {
+    const self = this;
+    const listeners = self.get('_listeners');
+    const listener = function() {
+      self.eventHandler.apply(self, arguments);
+    };
+
+    Util.each(self.options.events, function(type) {
+      DomUtil.addEventListener(self, type, listener);
+      listeners[type] = listener;
+    });
+  }
+  unbindEvents() {
+    const self = this;
+    const listeners = self.get('_listeners');
+    if (!listeners) {
+      return;
+    }
+
+    // delete self._attrs._listeners;
+    self.set('_listeners', {});
+    Util.each(listeners, (listener, type) => {
+      DomUtil.removeEventListener(self, type, listener);
+    });
+  }*/
 }
 
 Chart.plugins = Chart.initPlugins();
