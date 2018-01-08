@@ -10,8 +10,8 @@ const Util = require('../util/common');
 const { Legend } = require('../component/index');
 const Global = require('../global');
 // const FIELD_ORIGIN = '_origin';
-const MARGIN = 24;
-const MARGIN_LEGEND = 24;
+const LEGEND_OFFSET = 24;
+const LEGEND_GAP = 24;
 const MARKER_SIZE = 4.5;
 const GROUP_ATTRS = [ 'size', 'shape', 'color' ];
 
@@ -49,9 +49,6 @@ class LegendController {
     this.position = 'top';
     Util.mix(this, cfg);
     this.clear();
-    const chart = this.chart;
-    this.container = chart.get('backPlot');
-    this.plotRange = chart.get('plot');
   }
 
   addLegend(scale, attr, geom) {
@@ -71,8 +68,9 @@ class LegendController {
       if (fieldCfg && fieldCfg.position) { // 如果对某个图例单独设置 position，则以该 position 为准
         position = fieldCfg.position;
       }
-
-      self._addCategroyLegend(scale, attr, geom, position);
+      if (scale.isCategory) { // 目前只支持分类
+        self._addCategroyLegend(scale, attr, geom, position);
+      }
     }
   }
 
@@ -130,24 +128,7 @@ class LegendController {
 
   _getMaxLength(position) {
     const plotRange = this.plotRange;
-    const chart = this.chart;
-    const canvas = chart.get('canvas');
-    return (position === 'right' || position === 'left') ? plotRange.bl.y - plotRange.tr.y : canvas.get('width');
-  }
-
-  _isFiltered(scale, values, value) {
-    if (!scale.isCategory) {
-      return true;
-    }
-    let rst = false;
-    value = scale.invert(value);
-    Util.each(values, val => {
-      rst = rst || scale.getText(val) === scale.getText(value);
-      if (rst) {
-        return false;
-      }
-    });
-    return rst;
+    return (position === 'right' || position === 'left') ? plotRange.bl.y - plotRange.tr.y : plotRange.br.x - plotRange.bl.x;
   }
 
   _addCategroyLegend(scale, attr, geom, position) {
@@ -211,65 +192,42 @@ class LegendController {
     return legend;
   }
 
-  // TODO: 布局策略需要优化
-  _alignLegend(legend, pre, region, position) {
+  _alignLegend(legend, pre, position) {
     const self = this;
-    const container = self.container;
-    const canvas = container.get('canvas');
-    const width = canvas.get('width');
-    let height = canvas.get('height');
     const plotRange = self.plotRange;
-    // const offsetX = legend.get('offsetX') || 0;
-    // const offsetY = legend.get('offsetY') || 0;
-    const offset = MARGIN;
-    const legendHeight = legend.getHeight();
+    const offsetX = legend.offsetX || 0;
+    const offsetY = legend.offsetY || 0;
 
     let x = 0;
     let y = 0;
-
-    if (position === 'left' || position === 'right') { // 垂直
-      height = plotRange.br.y;
-      x = position === 'left' ? offset : plotRange.br.x + offset;
-      y = height - legendHeight;
-
+    if (position === 'left' || position === 'right') { // position 为 left、right，图例整体居中对齐
+      const legendHeight = legend.getHeight();
+      const height = Math.abs(plotRange.tl.y - plotRange.bl.y);
+      x = (position === 'left') ? LEGEND_OFFSET : (plotRange.br.x + LEGEND_OFFSET);
+      y = (height - legendHeight) / 2 + plotRange.tl.y;
       if (pre) {
-        y = pre.get('y') - legendHeight - MARGIN_LEGEND;
+        y = pre.get('y') - legendHeight - LEGEND_GAP;
       }
-    } else {
-      x = (width - region.totalWidth) / 2;
-      y = (position === 'top') ? offset : (plotRange.bl.y + offset);
+    } else { // position 为 top、bottom，图例整体居左对齐
+      x = plotRange.tl.x;
+      y = (position === 'top') ? LEGEND_OFFSET : (plotRange.bl.y + LEGEND_OFFSET);
 
       if (pre) {
         const preWidth = pre.getWidth();
-        x = pre.get('x') + preWidth + MARGIN_LEGEND;
+        x = pre.x + preWidth + LEGEND_GAP;
       }
     }
 
-    legend.container.moveTo(x, y);
-  }
-
-  _getRegion(legends) {
-    let maxWidth = 0;
-    let totalWidth = 0;
-    Util.each(legends, function(legend) {
-      const width = Math.max(legend.getWidth(), maxWidth);
-      maxWidth = width;
-      totalWidth += width;
-    });
-    return {
-      maxWidth,
-      totalWidth
-    };
+    legend.container.moveTo(x + offsetX, y + offsetY);
   }
 
   alignLegends() {
     const self = this;
     const legends = self.legends;
     Util.each(legends, (legendItems, position) => {
-      const region = self._getRegion(legendItems);
       Util.each(legendItems, (legend, index) => {
         const pre = legendItems[index - 1];
-        self._alignLegend(legend, pre, region, position);
+        self._alignLegend(legend, pre, position);
       });
     });
 
@@ -280,7 +238,8 @@ module.exports = {
 
   init(chart) {
     const legendController = new LegendController({
-      chart
+      container: chart.get('backPlot'),
+      plotRange: chart.get('plot')
     });
     chart.set('legendController', legendController);
   },
