@@ -99,7 +99,7 @@ class CategoryLegend extends Legend {
       self._addItem(item, index);
     });
 
-    this.autoWrap && this._adjustItems(); // 默认自动换行
+    this.autoWrap && this._adjustItems(); // 默认自动换行，并按照图例项的最大宽度对齐
   }
 
   _addItem(item) {
@@ -171,6 +171,8 @@ class CategoryLegend extends Legend {
         height: bbox.height
       }
     });
+    itemGroup.set('width', itemWidth || bbox.width); // 缓存每个图例项的宽度
+    itemGroup.set('height', bbox.height); // 缓存每个图例项的高度
     return itemGroup;
   }
 
@@ -181,7 +183,7 @@ class CategoryLegend extends Legend {
     if (layout === 'horizontal') { // 水平布局
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
-        nextX += (itemWidth ? itemWidth : child.getBBox().width) + itemGap;
+        nextX += (itemWidth ? itemWidth : child.get('width')) + itemGap;
       }
     }
     return nextX;
@@ -200,7 +202,7 @@ class CategoryLegend extends Legend {
     if (layout === 'vertical') { // 竖直布局
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
-        nextY += child.getBBox().height + itemMarginBottom;
+        nextY += child.get('height') + itemMarginBottom;
       }
     }
     return nextY;
@@ -212,6 +214,20 @@ class CategoryLegend extends Legend {
       value = formatter.call(this, value);
     }
     return value;
+  }
+
+  _getMaxItemWidth() {
+    if (this.maxItemWidth) {
+      return this.maxItemWidth;
+    }
+    const itemsGroup = this.itemsGroup;
+    const children = itemsGroup.get('children');
+    let maxItemWidth = 0;
+    for (let i = 0, length = children.length; i < length; i++) {
+      maxItemWidth = Math.max(maxItemWidth, children[i].get('width'));
+    }
+    this.maxItemWidth = maxItemWidth;
+    return maxItemWidth;
   }
 
   _adjustHorizontal() {
@@ -233,14 +249,12 @@ class CategoryLegend extends Legend {
     let rowLength = 0;
     let width;
     let height;
-    let box;
-    const itemWidth = this.itemWidth;
+    const itemWidth = this.itemWidth || this._getMaxItemWidth();
     if (itemsGroup.getBBox().width > maxLength) {
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
-        box = child.getBBox();
-        width = itemWidth || box.width;
-        height = box.height + itemMarginBottom;
+        width = itemWidth || child.get('width');
+        height = child.get('height') + itemMarginBottom;
 
         if (maxLength - rowLength < width) {
           row++;
@@ -270,15 +284,14 @@ class CategoryLegend extends Legend {
     let colLength = titleHeight;
     let width;
     let height;
-    let box;
     let maxItemWidth = 0;
     let totalLength = 0;
 
     if (itemsGroup.getBBox().height > maxLength) {
-      Util.each(children, function(v) {
-        box = v.getBBox();
-        width = box.width;
-        height = box.height;
+      for (let i = 0, length = children.length; i < length; i++) {
+        const child = children[i];
+        width = child.get('width');
+        height = child.get('height');
 
         if (itemWidth) {
           maxItemWidth = itemWidth + itemGap;
@@ -289,13 +302,13 @@ class CategoryLegend extends Legend {
         if (maxLength - colLength < height) {
           colLength = titleHeight;
           totalLength += maxItemWidth;
-          v.moveTo(totalLength, titleHeight);
+          child.moveTo(totalLength, titleHeight);
         } else {
-          v.moveTo(totalLength, colLength);
+          child.moveTo(totalLength, colLength);
         }
 
         colLength += height + itemMarginBottom;
-      });
+      }
     }
     return;
   }
