@@ -9,6 +9,8 @@
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
+  F2.Global.pixelRatio = window.devicePixelRatio;
+
   $.getJSON('./data/candle.json', function (data) {
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth;

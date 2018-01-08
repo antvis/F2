@@ -13,6 +13,8 @@
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   document.body.appendChild(canvas);
+  F2.Global.pixelRatio = window.devicePixelRatio;
+
   const data = [
     { time: '2016-08-08 00:00:00', tem: 10, city: 'beijing' },
     { time: '2016-08-08 00:10:00', tem: 22, city: 'beijing' },
@@ -34,7 +36,8 @@
     { time: '2016-08-10 02:20:00', tem: 22, city: 'newYork' }
   ];
   const chart = new F2.Chart({
-    el: canvas
+    el: canvas,
+    padding: [ 40, 120, 40 ]
   });
   chart.source(data, {
     time: {
@@ -71,6 +74,9 @@
       }
       return cfg;
     }
+  });
+  chart.legend({
+    position: 'right'
   });
   chart.area().position('time*tem')
     .color('city')
