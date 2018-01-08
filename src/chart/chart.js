@@ -524,8 +524,7 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    Chart.plugins.notify(this, 'clear');
-
+    Chart.plugins.notify(this, 'clear'); // TODO
     this._removeGeoms();
     this._clearInner();
 
@@ -537,6 +536,8 @@ class Chart extends Base {
   _clearInner() {
     this.set('scales', {});
     this._clearGeoms();
+
+    Chart.plugins.notify(this, 'clearInner'); // TODO
     const frontPlot = this.get('frontPlot');
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
