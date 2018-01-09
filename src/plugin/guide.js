@@ -12,6 +12,7 @@ Global.guide = Util.deepMix(Global.guide || {}, {
   text: {
     fill: '#000',
     textAlign: 'center',
+    textBaseline: 'middle',
     offset: [ 0, 0 ],
     top: true
   },
