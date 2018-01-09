@@ -1,7 +1,6 @@
 const Base = require('../base');
 const Plot = require('./plot');
 const Util = require('../util/common');
-// const DomUtil = require('../util/dom');
 const Coord = require('../coord/index');
 const Geom = require('../geom/base');
 const ScaleController = require('./controller/scale');
@@ -586,7 +585,6 @@ class Chart extends Base {
 
   _clearInner() {
     this.set('scales', {});
-    this.set('_listeners', {});
     this._clearGeoms();
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
@@ -757,41 +755,6 @@ class Chart extends Base {
     const coord = self.get('coord');
     axisController.createAxis(coord, xScale, yScales);
   }
-/*
-  eventHandler(e) {
-    const self = this;
-    if (Chart.plugins.notify(self, 'beforeEvent', [ e ]) === false) {
-      return;
-    }
-    self.handleEvent(e);
-    Chart.plugins.notify(self, 'afterEvent', [ e ]);
-    return self;
-  }
-  bindEvents() {
-    const self = this;
-    const listeners = self.get('_listeners');
-    const listener = function() {
-      self.eventHandler.apply(self, arguments);
-    };
-
-    Util.each(self.options.events, function(type) {
-      DomUtil.addEventListener(self, type, listener);
-      listeners[type] = listener;
-    });
-  }
-  unbindEvents() {
-    const self = this;
-    const listeners = self.get('_listeners');
-    if (!listeners) {
-      return;
-    }
-
-    // delete self._attrs._listeners;
-    self.set('_listeners', {});
-    Util.each(listeners, (listener, type) => {
-      DomUtil.removeEventListener(self, type, listener);
-    });
-  }*/
 }
 
 Chart.plugins = Chart.initPlugins();

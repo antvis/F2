@@ -8,7 +8,9 @@
  */
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
-const { Legend } = require('../component/index');
+const {
+  Legend
+} = require('../component/index');
 const Global = require('../global');
 const LEGEND_OFFSET = 24;
 const LEGEND_GAP = 24;
@@ -173,7 +175,6 @@ class LegendController {
     }));
     container.add(legend.container);
     legends[position].push(legend);
-    // TODO: here to bind events
   }
 
   clear() {
@@ -206,7 +207,11 @@ class LegendController {
 
   _addCategroyLegend(scale, attr, geom, position, filterVals) {
     const self = this;
-    const { legendCfg, legends, container } = self;
+    const {
+      legendCfg,
+      legends,
+      container
+    } = self;
     const items = [];
     const field = scale.field;
     const ticks = scale.getTicks();
@@ -247,7 +252,9 @@ class LegendController {
 
     const lastCfg = Util.deepMix({}, Global.legend[position], legendCfg[field] || legendCfg, {
       maxLength: self._getMaxLength(position),
-      items
+      items,
+      field,
+      filterVals
     });
     if (lastCfg.title) {
       Util.deepMix(lastCfg, {
@@ -259,9 +266,6 @@ class LegendController {
 
     const legend = new Legend.Category(lastCfg);
     container.add(legend.container);
-
-    // TODO: 如果需要支持图例交互，就在这里
-    self.bindEvents(legend, scale, lastCfg, filterVals);
     legends[position].push(legend);
     return legend;
   }
@@ -291,8 +295,6 @@ class LegendController {
         x = pre.x + preWidth + LEGEND_GAP;
       }
     }
-
-    // legend.container.moveTo(x + offsetX, y + offsetY);
     legend.moveTo(x + offsetX, y + offsetY);
   }
 
@@ -309,52 +311,113 @@ class LegendController {
     return self;
   }
 
-  bindEvents(legend, scale, legendCfg, filterVals) {
+  findItem(x, y) {
+    let result = null;
+    // let clickedLegend;
+    const legends = self.legends;
+
+    Util.each(legends, legendItems => {
+      Util.each(legendItems, legend => {
+        const {
+          itemsGroup,
+          legendHitBoxes
+        } = legend;
+        const children = itemsGroup.get('children');
+        if (children.length) {
+          const legendPosX = legend.x;
+          const legendPosY = legend.y;
+          Util.each(legendHitBoxes, (box, index) => {
+            if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
+              result = {
+                clickedItem: children[index],
+                clickedLegend: legend
+              };
+              return true;
+            }
+          });
+        }
+      });
+    });
+    return result;
+  }
+
+  handleEvent(ev) {
     const self = this;
-    const chart = self.chart;
-    const field = scale.field;
-    // const filterVals = scale.values;
 
-    function findItem(x, y, legend) {
+    function findItem(x, y) {
       let result = null;
+      // let clickedLegend;
+      const legends = self.legends;
 
-      const { itemsGroup, legendHitBoxes } = legend;
-      const children = itemsGroup.get('children');
-      if (children.length) {
-        const legendPosX = legend.x;
-        const legendPosY = legend.y;
-        Util.each(legendHitBoxes, (box, index) => {
-          if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
-            result = children[index];
-            return true;
+      Util.each(legends, legendItems => {
+        Util.each(legendItems, legend => {
+          const {
+            itemsGroup,
+            legendHitBoxes
+          } = legend;
+          const children = itemsGroup.get('children');
+          if (children.length) {
+            const legendPosX = legend.x;
+            const legendPosY = legend.y;
+            Util.each(legendHitBoxes, (box, index) => {
+              if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
+                result = {
+                  clickedItem: children[index],
+                  clickedLegend: legend
+                };
+                return true;
+              }
+            });
           }
         });
-      }
+      });
       return result;
     }
 
-    // TODO: 触发的事件需要用户自己定义
-    DomUtil.addEventListener(chart, 'mousedown', function(ev) {
-      if (legendCfg.onClick) {
-        legendCfg.onClick(ev); // TODO
+    const chart = self.chart;
+    const {
+      x,
+      y
+    } = DomUtil.createEvent(ev, chart);
+    const clicked = findItem(x, y);
+    if (clicked && clicked.clickedLegend.clickable !== false) {
+      const {
+        clickedItem,
+        clickedLegend
+      } = clicked;
+      if (clickedLegend.onClick) {
+        ev.clickedItem = clickedItem;
+        clickedLegend.onClick(ev);
       } else {
-        const { x, y } = ev;
-        const clickedItem = findItem(x, y, legend);
-        if (clickedItem) {
-          const checked = clickedItem.get('checked');
-          const value = clickedItem.get('dataValue');
-          if (!checked) {
-            filterVals.push(value);
-          } else {
-            Util.Array.remove(filterVals, value);
-          }
-          chart.filter(field, val => {
-            return filterVals.indexOf(val) !== -1;
-          });
-          chart.repaint();
+        const filterVals = clickedLegend.filterVals;
+        const field = clickedLegend.field;
+        const checked = clickedItem.get('checked');
+        const value = clickedItem.get('dataValue');
+        if (!checked) {
+          filterVals.push(value);
+        } else {
+          Util.Array.remove(filterVals, value);
         }
+        chart.filter(field, val => {
+          return filterVals.indexOf(val) !== -1;
+        });
+        chart.repaint();
       }
-    });
+    }
+  }
+
+  bindEvents() {
+    const self = this;
+    const {
+      legendCfg, chart
+    } = self;
+
+    if (legendCfg.clickable === false) {
+      return;
+    }
+
+    // TODO: 触发的事件需要用户自己定义
+    DomUtil.addEventListener(chart, 'mousedown', DomUtil.wrapBehavior(self, 'handleEvent'));
   }
 }
 module.exports = {
@@ -386,7 +449,10 @@ module.exports = {
             scales.push(scale);
 
             // Get filtered values
-            const { field, values } = scale;
+            const {
+              field,
+              values
+            } = scale;
             const filters = chart.get('filters');
             let filterVals;
             if (filters && filters[field]) {
@@ -401,6 +467,7 @@ module.exports = {
     }
 
     legendController.alignLegends(); // adjust position
+    legendController.bindEvents();
   },
   clearInner(chart) {
     const legendController = chart.get('legendController');
