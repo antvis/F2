@@ -7,8 +7,6 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
-const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
-
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -272,19 +270,16 @@ class Chart extends Base {
     const geoms = this.get('geoms');
     Util.each(geoms, geom => {
       const attrOptions = geom.get('attrOptions');
-      Util.each(GROUP_ATTRS, attrName => {
-        const attrCfg = attrOptions[attrName];
-        if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
-          const arr = attrCfg.field.split('*');
-          arr.map(item => {
-            if (fields.indexOf(item) === -1) {
-              fields.push(item);
-            }
-            return item;
-          });
-          // fields = fields.concat(attrCfg.field.split('*'));
-        }
-      });
+      const attrCfg = attrOptions.color;
+      if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
+        const arr = attrCfg.field.split('*');
+        arr.map(item => {
+          if (fields.indexOf(item) === -1) {
+            fields.push(item);
+          }
+          return item;
+        });
+      }
     });
     return fields;
   }
