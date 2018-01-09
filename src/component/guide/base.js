@@ -1,19 +1,10 @@
 const Util = require('../../util/common');
+
 const KEYWORDS_PERCENT = {
   min: 0,
   median: 0.5,
   max: 1
 };
-
-function toPercent(scale, value) {
-  let rst;
-  if (Util.isNil(KEYWORDS_PERCENT[value])) {
-    rst = scale.scale(value);
-  } else {
-    rst = KEYWORDS_PERCENT[value];
-  }
-  return rst;
-}
 
 /**
  * 图表的辅助元素
@@ -28,14 +19,43 @@ class GuideBase {
   getDefaultCfg() {
     return {
       xScale: null,
-      yScale: null,
-      cfg: {}
+      yScale: null
     };
   }
 
   constructor(cfg) {
     const defaultCfg = this.getDefaultCfg();
     Util.deepMix(this, defaultCfg, cfg);
+  }
+
+  /**
+   * 将原始数值归一化
+   * @param  {string | number} val   原始值
+   * @param  {Scale} scale 度量对象
+   * @return {Number}       返回归一化后的数值
+   */
+  _getNormalizedValue(val, scale) {
+    let rst;
+    if (Util.isNil(KEYWORDS_PERCENT[val])) {
+      rst = scale.scale(val);
+    } else {
+      rst = KEYWORDS_PERCENT[val];
+    }
+    return rst;
+  }
+
+  // 如果传入的值是百分比的格式，根据坐标系的起始点和宽高计算
+  parsePercentPoint(coord, position) {
+    const xPercent = parseFloat(position[0]) / 100;
+    const yPercent = parseFloat(position[1]) / 100;
+    const plot = coord.plot;
+    const { tl, width, height } = plot;
+    const x = width * xPercent + tl.x;
+    const y = height * yPercent + tl.y;
+    return {
+      x,
+      y
+    };
   }
 
   /**
@@ -49,23 +69,21 @@ class GuideBase {
     const self = this;
     const xScale = self.xScale;
     const yScale = self.yScale;
-    const x = position[0];
-    const y = position[1];
-    let rstX;
-    let rstY;
-    if (xScale) {
-      rstX = toPercent(xScale, x);
-    } else {
-      rstX = 0;
+    if (Util.isFunction(position)) {
+      position = position(xScale, yScale); // position 必须是对象
     }
-    if (yScale) {
-      rstY = toPercent(yScale, y);
-    } else {
-      rstY = 1;
+
+    // 如果数据格式是 ['50%', '50%'] 的格式
+    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1) {
+      return this.parsePercentPoint(coord, position);
     }
+
+    const x = self._getNormalizedValue(position[0], xScale);
+    const y = self._getNormalizedValue(position[1], yScale);
+
     return coord.convertPoint({
-      x: rstX,
-      y: rstY
+      x,
+      y
     });
   }
 
