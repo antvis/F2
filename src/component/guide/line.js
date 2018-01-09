@@ -1,6 +1,5 @@
 const Util = require('../../util/common');
 const GuideBase = require('./base');
-const Global = require('../../global');
 
 class Line extends GuideBase {
   getDefaultCfg() {
@@ -8,7 +7,10 @@ class Line extends GuideBase {
       type: 'line',
       start: [],
       end: [],
-      cfg: Global.guide.line
+      style: {
+        stroke: '#000',
+        lineWidth: 1
+      }
     };
   }
 
@@ -23,7 +25,7 @@ class Line extends GuideBase {
         y1: points[0].y,
         x2: points[1].x,
         y2: points[1].y
-      }, this.cfg)
+      }, this.style)
     });
   }
 }

@@ -14,7 +14,8 @@ describe('coord rect', function() {
     }
   });
   const rect = new Coord.Cartesian({
-    plot
+    start: plot.bl,
+    end: plot.tr
   });
 
   it('constructor', function() {
@@ -66,7 +67,8 @@ describe('coord rect', function() {
   });
 
   const rect1 = new Coord.Cartesian({
-    plot,
+    start: plot.bl,
+    end: plot.tr,
     transposed: true
   });
   it('transposed convertPoint', function() {

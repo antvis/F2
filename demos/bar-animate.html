@@ -65,9 +65,11 @@
   data.forEach(function (obj, index) {
     // 文字部分
     const offsetY = obj.tem > 0 ? -16 : 14;
-    chart.guide().text([obj.month, obj.tem], obj.tem, {
-
-      offset: [0, offsetY]
+    chart.guide().text({
+      position: [obj.month, obj.tem],
+      content: obj.tem,
+      offsetX: 0,
+      offsetY
     });
   });
   chart.render();

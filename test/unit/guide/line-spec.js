@@ -35,7 +35,7 @@ describe('Guide.Line', function() {
       yScale,
       start: [ '一月', 200 ],
       end: [ '五月', 200 ],
-      cfg: {
+      style: {
         stroke: '#999',
         lineWidth: 2,
         lineDash: [ 2, 2 ]
@@ -57,7 +57,7 @@ describe('Guide.Line', function() {
       yScale,
       start: [ 'min', 'median' ],
       end: [ 'median', 'max' ],
-      cfg: {
+      style: {
         stroke: '#999',
         lineWidth: 1
       }

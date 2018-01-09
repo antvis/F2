@@ -169,7 +169,10 @@ describe('chart test', () => {
 
     it('guide', function() {
       expect(chart.guide().text).not.equal(undefined);
-      chart.guide().text([ 2.5, 3 ], 'test');
+      chart.guide().text({
+        position: [ 2.5, 3 ],
+        content: 'test'
+      });
       expect(chart.get('guideController').guides.length).equal(1);
     });
 
@@ -218,7 +221,10 @@ describe('chart test', () => {
     });
 
     it('repaint', function() {
-      chart.guide().text([ '1', 3 ], '这是测试文本');
+      chart.guide().text({
+        position: [ '1', 3 ],
+        content: '这是测试文本'
+      });
       chart.repaint();
     });
 
