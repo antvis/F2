@@ -2,7 +2,6 @@
  * TODO: 这个会抽离至 platfrom，在 html5 环境下使用这个
  */
 let DomUtil;
-const EXPANDO_KEY = '$f2chart';
 /**
  * Detects support for options object argument in addEventListener.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
@@ -27,14 +26,6 @@ const supportsEventListenerOptions = (function() {
 // https://github.com/chartjs/Chart.js/issues/4287
 const eventListenerOptions = supportsEventListenerOptions ? { passive: true } : false;
 
-function addEventListener(node, type, listener) {
-  node.addEventListener(type, listener, eventListenerOptions);
-}
-
-function removeEventListener(node, type, listener) {
-  node.removeEventListener(type, listener, eventListenerOptions);
-}
-
 function createEvent(type, chart, x, y, nativeEvent) {
   return {
     type,
@@ -45,7 +36,7 @@ function createEvent(type, chart, x, y, nativeEvent) {
   };
 }
 
-function fromNativeEvent(event, chart) {
+function fromNativeEvent(event, chart) { // TODO: chart 改成 dom
   const type = event.type;
 
   const point = {};
@@ -135,40 +126,42 @@ DomUtil = {
     return document.createElement('canvas');
   },
   /**
-   * Registers the specified listener on the given chart.
-   * @param {Chart} chart - Chart from which to listen for event
-   * @param {String} type - The ({@link IEvent}) type to listen for
-   * @param {Function} listener - Receives a notification (an object that implements
-   * the {@link IEvent} interface) when an event of the specified type occurs.
+   * 封装事件，便于使用上下文this,和便于解除事件时使用
+   * @protected
+   * @param  {Object} obj   对象
+   * @param  {String} action 事件名称
+   * @return {Function}        返回事件处理函数
    */
-  addEventListener(chart, type, listener) {
-    const canvas = chart.get('canvas').get('el');
-
-    const expando = listener[EXPANDO_KEY] || (listener[EXPANDO_KEY] = {});
-    const proxies = expando.proxies || (expando.proxies = {});
-    const proxy = proxies[chart.get('chartId') + '_' + type] = event => {
-      listener(fromNativeEvent(event, chart));
+  wrapBehavior(obj, action) {
+    if (obj['_wrap_' + action]) {
+      return obj['_wrap_' + action];
+    }
+    const method = e => {
+      obj[action](e);
     };
-
-    addEventListener(canvas, type, proxy);
+    obj['_wrap_' + action] = method;
+    return method;
   },
   /**
-   * Removes the specified listener previously registered with addEventListener.
-   * @param {Chart} chart -Chart from which to remove the listener
-   * @param {String} type - The ({@link IEvent}) type to remove
-   * @param {Function} listener - The listener function to remove from the event target.
+   * 获取封装的事件
+   * @protected
+   * @param  {Object} obj   对象
+   * @param  {String} action 事件名称
+   * @return {Function}        返回事件处理函数
    */
+  getWrapBehavior(obj, action) {
+    return obj['_wrap_' + action];
+  },
+  addEventListener(chart, type, listener) {
+    const canvas = chart.get('canvas').get('el');
+    canvas.addEventListener(type, listener, eventListenerOptions);
+  },
   removeEventListener(chart, type, listener) {
     const canvas = chart.get('canvas').get('el');
-
-    const expando = listener[EXPANDO_KEY] || {};
-    const proxies = expando.proxies || {};
-    const proxy = proxies[chart.get('chartId') + '_' + type];
-    if (!proxy) {
-      return;
-    }
-
-    removeEventListener(canvas, type, proxy);
+    canvas.removeEventListener(type, listener, eventListenerOptions);
+  },
+  createEvent(event, chart) {
+    return fromNativeEvent(event, chart);
   }
 };
 
