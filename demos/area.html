@@ -84,7 +84,12 @@
     .style({
       opacity: 0.6
     });
-  chart.guide().text([ 'median', 'median' ], '我在测试');
+  chart.guide().text({
+    position: [ 'median', 'median' ],
+    content: '我在测试',
+    top: false
+  });
+
 
   chart.render();
 

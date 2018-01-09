@@ -25,7 +25,8 @@ class GuideBase {
 
   constructor(cfg) {
     const defaultCfg = this.getDefaultCfg();
-    Util.deepMix(this, defaultCfg, cfg);
+    cfg = Util.deepMix({}, defaultCfg, cfg);
+    Util.mix(this, cfg);
   }
 
   /**
@@ -48,10 +49,12 @@ class GuideBase {
   parsePercentPoint(coord, position) {
     const xPercent = parseFloat(position[0]) / 100;
     const yPercent = parseFloat(position[1]) / 100;
-    const plot = coord.plot;
-    const { tl, width, height } = plot;
-    const x = width * xPercent + tl.x;
-    const y = height * yPercent + tl.y;
+    const start = coord.start;
+    const end = coord.end;
+    const width = Math.abs(start.x - end.x);
+    const height = Math.abs(start.y - end.y);
+    const x = width * xPercent + Math.min(start.x, end.x);
+    const y = height * yPercent + Math.min(start.y, end.y);
     return {
       x,
       y

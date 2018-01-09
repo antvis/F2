@@ -20,10 +20,12 @@ const plot = new Plot({
   }
 });
 const circle = new Coord.Polar({
-  plot
+  start: plot.bl,
+  end: plot.tr
 });
 const rect = new Coord.Cartesian({
-  plot
+  start: plot.bl,
+  end: plot.tr
 });
 
 const linear = new Scale.Linear({
@@ -136,7 +138,8 @@ describe('axis controller rect transposed', function() {
   });
 
   const rect = new Coord.Cartesian({
-    plot
+    start: plot.bl,
+    end: plot.tr
   });
   rect.transposed = true;
 
@@ -226,7 +229,8 @@ describe('axis controller circle transposed', function() {
   });
 
   const circle = new Coord.Polar({
-    plot
+    start: plot.bl,
+    end: plot.tr
   });
   circle.transposed = true;
 

@@ -50,7 +50,10 @@
   chart.interval().position('a*proportion')
     .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0' ])
     .adjust('stack');
-  chart.guide().text([ '50%', '50%' ], '40% \n 芳华')
+  chart.guide().text({
+    position: [ '50%', '50%' ],
+    content: '40% \n 芳华'
+  });
 
   chart.render();
 

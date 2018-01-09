@@ -18,9 +18,7 @@ class Polar extends Base {
 
   init() {
     const self = this;
-    const plot = self.plot;
-    const start = plot ? plot.bl : self.start;
-    const end = plot ? plot.tr : self.end;
+    const { start, end } = self;
     const inner = self.inner || self.innerRadius;
     const width = Math.abs(end.x - start.x);
     const height = Math.abs(end.y - start.y);

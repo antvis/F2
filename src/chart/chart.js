@@ -507,7 +507,8 @@ class Chart extends Base {
     const self = this;
     const plot = self.get('plot');
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
-      plot
+      start: plot.bl,
+      end: plot.tr
     });
     const type = coordCfg.type;
     const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;

@@ -25,18 +25,7 @@
     {tem: 690, city: '7月'},
     {tem: 346, city: '8月'}
   ];
-  const drawShape = function (points, canvas, cfg) {
-    const ctx = canvas.getContext('2d');
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    if (points.length > 1) {
-      for (let i = 1; i <= points.length - 1; i++) {
-        ctx.lineTo(points[i].x, points[i].y);
-      }
-    }
-    ctx.fillStyle = cfg.fill;
-    ctx.fill();
-  };
+
   // 自定义绘制数据的的形状
   const Shape = F2.Shape;
   Shape.registerShape('interval', 'polygon', {
@@ -51,11 +40,17 @@
         {x: x + width / 2, y: y0}
       ];
     },
-    draw(cfg, canvas) {
+    draw(cfg, container) {
       const points = this.parsePoints(cfg.points);
       const style = cfg.style || {};
       style.fill = cfg.color;
-      drawShape(points, canvas, style);
+      container.addShape('Polygon', {
+        className: 'interval',
+        attrs: {
+          points,
+          fill: style.fill
+        }
+      });
     }
   });
   const chart = new F2.Chart({
@@ -95,9 +90,13 @@
   // 绘制数据
   data.forEach(function (obj) {
     const offsetY = obj.tem > 0 ? -14 : 14;
-    chart.guide().html([obj.city, obj.tem], `<div style='color: #999999;'><span>${obj.tem}</span></div>`, {
-      align: 'cc',
-      offset: [0, offsetY]
+    chart.guide().html({
+      position: [obj.city, obj.tem],
+      html: `<div style='color: #999999;'><span>${obj.tem}</span></div>`,
+      alignX: 'middle',
+      alignY: 'middle',
+      offsetX: 0,
+      offsetY
     });
   });
   chart.render();

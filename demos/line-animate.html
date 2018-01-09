@@ -80,8 +80,14 @@
   });
   // 添加辅助元素
   const point = ['2016-08-10 02:20:00', 12];
-  chart.guide().html(point, "<div style='border-radius: 12px;border: none;width: 22px;height: 22px;background-color: rgba(102, 182, 241, 0.5);'></div>", {align: 'cc'});
-  chart.guide().html(point, "<div style='border-radius: 7px;border: none;width: 12px;height: 12px;background-color: rgb(15, 141, 232);'></div>", {align: 'cc'});
+  chart.guide().html({
+    position: point,
+    html: "<div style='border-radius: 12px;border: none;width: 22px;height: 22px;background-color: rgba(102, 182, 241, 0.5);'></div>"
+  });
+  chart.guide().html({
+    position: point,
+    html: "<div style='border-radius: 7px;border: none;width: 12px;height: 12px;background-color: rgb(15, 141, 232);'></div>"
+  });
   chart.line().position('time*tem')
     .color('city')
     .size(3)

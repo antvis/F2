@@ -82,10 +82,25 @@
       '</div>';
   const changePointHtml = "<div style='border-radius: 8px;border: none;width: 6px;height: 6px;background-color: #0f8de8;'></div>";
   chart.source(data, defs);
-  chart.guide().html(endPoint, pointHtml1, { align: 'cc' });
-  chart.guide().html(endPoint, pointHtml2, { align: 'cc' });
-  chart.guide().html(changePoint, tooltipHtml, { align: 'br', offset: [ -17, 0 ] });
-  chart.guide().html(changePoint, changePointHtml, { align: 'cc' });
+  chart.guide().html({
+    position: endPoint,
+    html: pointHtml1
+  });
+  chart.guide().html({
+    position: endPoint,
+    html: pointHtml2
+  });
+  chart.guide().html({
+    position: changePoint,
+    html: tooltipHtml,
+    alignX: 'right',
+    alignY: 'bottom',
+    offsetX: -17
+  });
+  chart.guide().html({
+    position: changePoint,
+    html: changePointHtml
+  });
   const canvas = document.getElementById('mountNode');
   const linear_gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 500);
   linear_gradient.addColorStop(0.5, '#fff');

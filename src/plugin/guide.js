@@ -5,28 +5,39 @@ const Global = require('../global');
 // register the default configuration for Guide
 Global.guide = Util.deepMix(Global.guide || {}, {
   line: {
-    stroke: '#000',
-    lineWidth: 1,
+    style: {
+      stroke: '#000',
+      lineWidth: 1
+    },
     top: true
   },
   text: {
-    fill: '#000',
-    textAlign: 'center',
-    textBaseline: 'middle',
-    offset: [ 0, 0 ],
+    style: {
+      fill: '#000',
+      textAlign: 'center',
+      textBaseline: 'middle'
+    },
+    offsetX: 0,
+    offsetY: 0,
     top: true
   },
-  rect: {
-    fillStyle: '#fafafa',
+  region: {
+    style: {
+      fillStyle: '#fafafa'
+    },
     top: false
   },
   arc: {
-    stroke: '#CCC',
+    style: {
+      stroke: '#CCC'
+    },
     top: true
   },
   html: {
-    offset: [ 0, 0 ],
-    align: 'cc'
+    offsetX: 0,
+    offsetY: 0,
+    alignX: 'middle',
+    alignY: 'middle'
   }
 });
 
@@ -36,17 +47,6 @@ class GuideController {
     this.xScale = null;
     this.yScale = null;
     Util.mix(this, cfg);
-  }
-
-  _getScale() {
-    return {
-      xScale: this.xScale,
-      yScale: this.yScale
-    };
-  }
-
-  addGuide(guide) {
-    this.guides.push(guide);
   }
 
   setScale(xScale, yScale) {
@@ -63,7 +63,7 @@ class GuideController {
     const self = this;
     const guides = self.guides;
     Util.each(guides, function(guide) {
-      const container = (guide.cfg && guide.cfg.top) ? self.frontPlot : self.backPlot;
+      const container = guide.top ? self.frontPlot : self.backPlot;
       guide.render(coord, container);
     });
   }
@@ -82,104 +82,35 @@ class GuideController {
       }
     }
   }
-  /**
-   * 添加辅助线
-   * @chainable
-   * @param  {Array} start 起始点
-   * @param  {Array} end   结束点
-   * @param  {Object} cfg  配置项
-   * @return {Object} guideController 对象
-   */
-  line(start, end, cfg) {
-    const config = {
-      start,
-      end,
-      cfg: Util.mix({}, cfg)
-    };
 
-    Util.mix(config, this._getScale());
-    const guide = new Guide.Line(config);
-    this.addGuide(guide);
+  _createGuide(type, cfg) {
+    const ClassName = Util.upperFirst(type);
+    const guide = new Guide[ClassName](Util.deepMix({
+      xScale: this.xScale,
+      yScale: this.yScale
+    }, Global.guide[type], cfg));
+    this.guides.push(guide);
     return this;
   }
-  /**
-   * 添加辅助文本
-   * @chainable
-   * @param  {Array} position 文本位置
-   * @param  {String} text   文本
-   * @param  {Object} cfg  配置项
-   * @return {Object} guideController 对象
-   */
-  text(position, text, cfg) {
-    const config = {
-      position,
-      text,
-      cfg: Util.mix({}, cfg)
-    };
 
-    Util.mix(config, this._getScale());
-    const guide = new Guide.Text(config);
-    this.addGuide(guide);
-    return this;
+  line(cfg = {}) {
+    return this._createGuide('line', cfg);
   }
-  /**
-   * 添加辅助弧线
-   * @chainable
-   * @param  {Array} start 弧线开始点
-   * @param  {Array} end 弧线结束点
-   * @param  {Object} cfg  配置项
-   * @return {Object} guideController 对象
-   */
-  arc(start, end, cfg) {
-    const config = {
-      start,
-      end,
-      cfg: Util.mix({}, cfg)
-    };
 
-    Util.mix(config, this._getScale());
-    const guide = new Guide.Arc(config);
-    this.addGuide(guide);
-    return this;
+  text(cfg = {}) {
+    return this._createGuide('text', cfg);
   }
-  /**
-   * 添加辅助
-   * @chainable
-   * @param  {Array} position 位置
-   * @param  {String} html html文本
-   * @param  {Object} cfg  配置项
-   * @return {Object} guideController 对象
-   */
-  html(position, html, cfg) {
-    const config = {
-      position,
-      html,
-      cfg: Util.mix({}, cfg)
-    };
 
-    Util.mix(config, this._getScale());
-    const guide = new Guide.Html(config);
-    this.addGuide(guide);
-    return this;
+  arc(cfg = {}) {
+    return this._createGuide('arc', cfg);
   }
-  /**
-   * 添加辅助框
-   * @param  {Array} start 辅助框起点，左上角
-   * @param  {Array} end   辅助框终点，右下角
-   * @param  {Object} cfg   配置项
-   * @return {Object}       guideController 对象
-   */
-  rect(start, end, cfg) {
-    const config = {
-      start,
-      end,
-      cfg: Util.mix({}, cfg)
-    };
 
-    Util.mix(config, this._getScale());
-    const guide = new Guide.Rect(config);
-    this.addGuide(guide);
-    return this;
+  html(cfg = {}) {
+    return this._createGuide('html', cfg);
+  }
+
+  region(cfg = {}) {
+    return this._createGuide('region', cfg);
   }
 }
 
@@ -204,10 +135,13 @@ module.exports = {
   },
   clear(chart) {
     const guideController = chart.get('guideController');
-    guideController.clear();
+    const canvas = chart.get('canvas');
+    const parentNode = canvas.get('el').parentNode;
+    guideController.clear(parentNode);
   },
   repaint(chart) {
-    const parent = chart.get('canvas').parentNode;
-    chart.get('guideController').reset(parent);
+    const canvas = chart.get('canvas');
+    const parentNode = canvas.get('el').parentNode;
+    chart.get('guideController').reset(parentNode);
   }
 };
