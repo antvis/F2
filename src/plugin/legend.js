@@ -8,14 +8,11 @@
  */
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
-const {
-  Legend
-} = require('../component/index');
+const { Legend } = require('../component/index');
 const Global = require('../global');
 const LEGEND_OFFSET = 24;
 const LEGEND_GAP = 24;
 const MARKER_SIZE = 4.5;
-const GROUP_ATTRS = [ 'size', 'shape', 'color' ];
 
 // Register the default configuration for Legend
 Global.legend = Util.deepMix(Global.Legend || {}, {
@@ -77,19 +74,6 @@ Global.legend = Util.deepMix(Global.Legend || {}, {
   }
 });
 
-function getLegendAttr(geom) {
-  const attrs = geom.get('attrs');
-  const rst = [];
-
-  Util.each(attrs, attr => {
-    if (Util.indexOf(GROUP_ATTRS, attr.type) !== -1) {
-      rst.push(attr);
-    }
-  });
-
-  return rst;
-}
-
 function _isScaleExist(scales, compareScale) {
   let flag = false;
   Util.each(scales, scale => {
@@ -113,7 +97,7 @@ class LegendController {
     this.clear();
   }
 
-  addLegend(scale, attr, geom, filterVals) {
+  addLegend(scale, attr, filterVals) {
     const self = this;
     const legendCfg = self.legendCfg;
     const field = scale.field;
@@ -131,7 +115,7 @@ class LegendController {
         position = fieldCfg.position;
       }
       if (scale.isCategory) { // 目前只支持分类
-        self._addCategroyLegend(scale, attr, geom, position, filterVals);
+        self._addCategroyLegend(scale, attr, position, filterVals);
       }
     }
   }
@@ -153,9 +137,7 @@ class LegendController {
     }
 
     const container = self.container;
-    // const geoms = chart.get('geoms');
     Util.each(items, item => {
-      // const geom = findGeom(geoms, item.value);
       if (!Util.isObject(item.marker)) {
         item.marker = {
           symbol: item.marker || 'circle',
@@ -166,7 +148,6 @@ class LegendController {
         item.marker.radius = item.marker.radius || MARKER_SIZE;
       }
       item.checked = Util.isNil(item.checked) ? true : item.checked;
-      // item.geom = geom;
     });
 
     const legend = new Legend.Category(Util.deepMix({}, Global.legend[position], legendCfg, {
@@ -205,13 +186,9 @@ class LegendController {
     return (position === 'right' || position === 'left') ? plotRange.bl.y - plotRange.tr.y : plotRange.br.x - plotRange.bl.x;
   }
 
-  _addCategroyLegend(scale, attr, geom, position, filterVals) {
+  _addCategroyLegend(scale, attr, position, filterVals) {
     const self = this;
-    const {
-      legendCfg,
-      legends,
-      container
-    } = self;
+    const { legendCfg, legends, container } = self;
     const items = [];
     const field = scale.field;
     const ticks = scale.getTicks();
@@ -229,12 +206,7 @@ class LegendController {
       const name = text;
       const scaleValue = tick.value;
       const value = scale.invert(scaleValue);
-
-      let color = Global.defaultColor;
-      const colorAttr = geom.getAttr('color');
-      if (colorAttr) { // 存在颜色映射
-        color = colorAttr.mapping(value).join('');
-      }
+      const color = attr.mapping(value).join('') || Global.defaultColor;
 
       const marker = {
         symbol,
@@ -311,50 +283,15 @@ class LegendController {
     return self;
   }
 
-  findItem(x, y) {
-    let result = null;
-    // let clickedLegend;
-    const legends = self.legends;
-
-    Util.each(legends, legendItems => {
-      Util.each(legendItems, legend => {
-        const {
-          itemsGroup,
-          legendHitBoxes
-        } = legend;
-        const children = itemsGroup.get('children');
-        if (children.length) {
-          const legendPosX = legend.x;
-          const legendPosY = legend.y;
-          Util.each(legendHitBoxes, (box, index) => {
-            if (x >= (box.x + legendPosX) && x <= (box.x + box.width + legendPosX) && y >= (box.y + legendPosY) && y <= (box.height + box.y + legendPosY)) { // inbox
-              result = {
-                clickedItem: children[index],
-                clickedLegend: legend
-              };
-              return true;
-            }
-          });
-        }
-      });
-    });
-    return result;
-  }
-
   handleEvent(ev) {
     const self = this;
 
     function findItem(x, y) {
       let result = null;
-      // let clickedLegend;
       const legends = self.legends;
-
       Util.each(legends, legendItems => {
         Util.each(legendItems, legend => {
-          const {
-            itemsGroup,
-            legendHitBoxes
-          } = legend;
+          const { itemsGroup, legendHitBoxes } = legend;
           const children = itemsGroup.get('children');
           if (children.length) {
             const legendPosX = legend.x;
@@ -365,7 +302,7 @@ class LegendController {
                   clickedItem: children[index],
                   clickedLegend: legend
                 };
-                return true;
+                return false;
               }
             });
           }
@@ -375,20 +312,14 @@ class LegendController {
     }
 
     const chart = self.chart;
-    const {
-      x,
-      y
-    } = DomUtil.createEvent(ev, chart);
+    const { x, y } = DomUtil.createEvent(ev, chart);
     const clicked = findItem(x, y);
     if (clicked && clicked.clickedLegend.clickable !== false) {
-      const {
-        clickedItem,
-        clickedLegend
-      } = clicked;
+      const { clickedItem, clickedLegend } = clicked;
       if (clickedLegend.onClick) {
         ev.clickedItem = clickedItem;
         clickedLegend.onClick(ev);
-      } else {
+      } else if (!clickedLegend.custom) {
         const filterVals = clickedLegend.filterVals;
         const field = clickedLegend.field;
         const checked = clickedItem.get('checked');
@@ -407,17 +338,10 @@ class LegendController {
   }
 
   bindEvents() {
-    const self = this;
-    const {
-      legendCfg, chart
-    } = self;
-
-    if (legendCfg.clickable === false) {
-      return;
-    }
-
-    // TODO: 触发的事件需要用户自己定义
-    DomUtil.addEventListener(chart, 'mousedown', DomUtil.wrapBehavior(self, 'handleEvent'));
+    const chart = this.chart;
+    const legendCfg = this.legendCfg;
+    const eventType = legendCfg.triggerEvent || 'click';
+    DomUtil.addEventListener(chart, eventType, DomUtil.wrapBehavior(this, 'handleEvent'));
   }
 }
 module.exports = {
@@ -441,18 +365,14 @@ module.exports = {
       legendController.addCustomLegend();
     } else {
       Util.each(geoms, geom => {
-        const attrs = getLegendAttr(geom);
-        Util.each(attrs, function(attr) {
-          const type = attr.type;
-          const scale = attr.getScale(type);
+        const colorAttr = geom.getAttr('color');
+        if (colorAttr) {
+          const type = colorAttr.type;
+          const scale = colorAttr.getScale(type);
           if (scale.type !== 'identity' && !_isScaleExist(scales, scale)) {
             scales.push(scale);
-
             // Get filtered values
-            const {
-              field,
-              values
-            } = scale;
+            const { field, values } = scale;
             const filters = chart.get('filters');
             let filterVals;
             if (filters && filters[field]) {
@@ -460,14 +380,17 @@ module.exports = {
             } else {
               filterVals = values.slice(0);
             }
-            legendController.addLegend(scale, attr, geom, filterVals);
+            legendController.addLegend(scale, colorAttr, filterVals);
           }
-        });
+        }
       });
     }
 
     legendController.alignLegends(); // adjust position
-    legendController.bindEvents();
+
+    if (legendCfg && legendCfg.clickable !== false) {
+      legendController.bindEvents();
+    }
   },
   clearInner(chart) {
     const legendController = chart.get('legendController');
