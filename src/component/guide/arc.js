@@ -35,7 +35,7 @@ class Arc extends GuideBase {
       + (start.y - coordCenter.y) * (start.y - coordCenter.y));
     const startAngle = Math.atan2(start.y - coordCenter.y, start.x - coordCenter.x);
     const endAngle = Math.atan2(end.y - coordCenter.y, end.x - coordCenter.x);
-    container.addShape('arc', {
+    const shape = container.addShape('arc', {
       className: 'guide-arc',
       attrs: Util.mix({
         x: coordCenter.x,
@@ -45,6 +45,7 @@ class Arc extends GuideBase {
         endAngle
       }, self.style)
     });
+    self.element = shape;
   }
 }
 

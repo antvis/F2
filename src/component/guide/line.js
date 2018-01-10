@@ -18,7 +18,7 @@ class Line extends GuideBase {
     const points = [];
     points[0] = this.parsePoint(coord, this.start);
     points[1] = this.parsePoint(coord, this.end);
-    container.addShape('Line', {
+    const shape = container.addShape('Line', {
       className: 'guide-line',
       attrs: Util.mix({
         x1: points[0].x,
@@ -27,6 +27,7 @@ class Line extends GuideBase {
         y2: points[1].y
       }, this.style)
     });
+    this.element = shape;
   }
 }
 

@@ -1,11 +1,3 @@
-/**
- * TODO: 图例插件
- * ~~1. 清理~~
- * ~~2. 排版策略~~
- * 3. 事件
- * 4. 过滤
- * ~~5. Theme 迁移至此~~
- */
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
 const { Legend } = require('../component/index');
