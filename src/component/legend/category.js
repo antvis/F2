@@ -1,6 +1,7 @@
 const Util = require('../../util/common');
 const Legend = require('./legend');
 const Marker = require('../marker');
+const Mixin = require('../mixin');
 
 class CategoryLegend extends Legend {
   getDefaultCfg() {
@@ -32,11 +33,6 @@ class CategoryLegend extends Legend {
        */
       itemMarginBottom: 12,
       /**
-       * 各个图例项上方留白的间距
-       * @type {Number}
-       */
-      itemMarginTop: 0,
-      /**
        * 图例项被取消选中的颜色
        * @type {String}
        */
@@ -46,21 +42,6 @@ class CategoryLegend extends Legend {
        * @type {[type]}
        */
       itemFormatter: null,
-      /**
-       * 图例项是否可点击
-       * @type {Boolean}
-       */
-      clickable: true,
-      /**
-       * 图例项的选择模式，可设置值为 single（单选） 和 multiple（多选，默认值）
-       * @type {String}
-       */
-      selectedMode: 'multiple',
-      /**
-       * 图例的点击逻辑
-       * @type {?Function}
-       */
-      onClick: null,
       /**
        * 图例项文本样式
        * @type {Object}
@@ -88,6 +69,10 @@ class CategoryLegend extends Legend {
   renderItems() {
     const self = this;
     const { items, reversed } = self;
+
+    if (!items) {
+      return;
+    }
 
     if (reversed) {
       items.reverse();
@@ -176,37 +161,37 @@ class CategoryLegend extends Legend {
     return itemGroup;
   }
 
-  _getNextX() {
-    const { layout, itemGap, itemsGroup, itemWidth } = this;
-    const children = itemsGroup.get('children');
-    let nextX = 0;
-    if (layout === 'horizontal') { // 水平布局
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        nextX += (itemWidth ? itemWidth : child.get('width')) + itemGap;
-      }
-    }
-    return nextX;
-  }
+  // _getNextX() {
+  //   const { layout, itemGap, itemsGroup, itemWidth } = this;
+  //   const children = itemsGroup.get('children');
+  //   let nextX = 0;
+  //   if (layout === 'horizontal') { // 水平布局
+  //     for (let i = 0, len = children.length; i < len; i++) {
+  //       const child = children[i];
+  //       nextX += (itemWidth ? itemWidth : child.get('width')) + itemGap;
+  //     }
+  //   }
+  //   return nextX;
+  // }
 
-  _getNextY() {
-    const { itemMarginBottom, layout, itemsGroup, titleShape } = this;
-    const titleGap = titleShape ? this.titleGap : 0;
-    const children = itemsGroup.get('children');
+  // _getNextY() {
+  //   const { itemMarginBottom, layout, itemsGroup, titleShape } = this;
+  //   const titleGap = titleShape ? this.titleGap : 0;
+  //   const children = itemsGroup.get('children');
 
-    let nextY = titleGap;
-    if (titleShape) {
-      nextY += titleShape.getBBox().height;
-    }
+  //   let nextY = titleGap;
+  //   if (titleShape) {
+  //     nextY += titleShape.getBBox().height;
+  //   }
 
-    if (layout === 'vertical') { // 竖直布局
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        nextY += child.get('height') + itemMarginBottom;
-      }
-    }
-    return nextY;
-  }
+  //   if (layout === 'vertical') { // 竖直布局
+  //     for (let i = 0, len = children.length; i < len; i++) {
+  //       const child = children[i];
+  //       nextY += child.get('height') + itemMarginBottom;
+  //     }
+  //   }
+  //   return nextY;
+  // }
 
   _formatItemValue(value) {
     const formatter = this.itemFormatter;
@@ -216,111 +201,113 @@ class CategoryLegend extends Legend {
     return value;
   }
 
-  _getMaxItemWidth() {
-    if (this.maxItemWidth) {
-      return this.maxItemWidth;
-    }
-    const itemsGroup = this.itemsGroup;
-    const children = itemsGroup.get('children');
-    let maxItemWidth = 0;
-    for (let i = 0, length = children.length; i < length; i++) {
-      maxItemWidth = Math.max(maxItemWidth, children[i].get('width'));
-    }
-    this.maxItemWidth = maxItemWidth;
-    return maxItemWidth;
-  }
+  // _getMaxItemWidth() {
+  //   if (this.maxItemWidth) {
+  //     return this.maxItemWidth;
+  //   }
+  //   const itemsGroup = this.itemsGroup;
+  //   const children = itemsGroup.get('children');
+  //   let maxItemWidth = 0;
+  //   for (let i = 0, length = children.length; i < length; i++) {
+  //     maxItemWidth = Math.max(maxItemWidth, children[i].get('width'));
+  //   }
+  //   this.maxItemWidth = maxItemWidth;
+  //   return maxItemWidth;
+  // }
 
-  _adjustHorizontal() {
-    const maxLength = this.maxLength;
-    if (Util.isNil(maxLength)) {
-      return;
-    }
-    const itemsGroup = this.itemsGroup;
-    const children = itemsGroup.get('children');
-    const itemGap = this.itemGap;
-    const itemMarginBottom = this.itemMarginBottom;
-    const titleShape = this.titleShape;
-    let titleGap = 0;
-    if (titleShape) {
-      titleGap = titleShape.getBBox().height + this.titleGap;
-    }
+  // _adjustHorizontal() {
+  //   const maxLength = this.maxLength;
+  //   if (Util.isNil(maxLength)) {
+  //     return;
+  //   }
+  //   const itemsGroup = this.itemsGroup;
+  //   const children = itemsGroup.get('children');
+  //   const itemGap = this.itemGap;
+  //   const itemMarginBottom = this.itemMarginBottom;
+  //   const titleShape = this.titleShape;
+  //   let titleGap = 0;
+  //   if (titleShape) {
+  //     titleGap = titleShape.getBBox().height + this.titleGap;
+  //   }
 
-    let row = 0;
-    let rowLength = 0;
-    let width;
-    let height;
-    const itemWidth = this.itemWidth || this._getMaxItemWidth();
-    if (itemsGroup.getBBox().width > maxLength) {
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        width = itemWidth || child.get('width');
-        height = child.get('height') + itemMarginBottom;
+  //   let row = 0;
+  //   let rowLength = 0;
+  //   let width;
+  //   let height;
+  //   const itemWidth = this.itemWidth || this._getMaxItemWidth();
+  //   if (itemsGroup.getBBox().width > maxLength) {
+  //     for (let i = 0, len = children.length; i < len; i++) {
+  //       const child = children[i];
+  //       width = itemWidth || child.get('width');
+  //       height = child.get('height') + itemMarginBottom;
 
-        if (maxLength - rowLength < width) {
-          row++;
-          rowLength = 0;
-        }
+  //       if (maxLength - rowLength < width) {
+  //         row++;
+  //         rowLength = 0;
+  //       }
 
-        child.moveTo(rowLength, row * height + titleGap);
-        rowLength += width + itemGap;
-      }
-    }
-    return;
-  }
+  //       child.moveTo(rowLength, row * height + titleGap);
+  //       rowLength += width + itemGap;
+  //     }
+  //   }
+  //   return;
+  // }
 
-  _adjustVertical() {
-    const maxLength = this.maxLength; // 垂直布局，则 maxLength 代表容器的高度
-    if (Util.isNil(maxLength)) {
-      return;
-    }
-    const itemsGroup = this.itemsGroup;
-    const titleShape = this.titleShape;
-    const children = itemsGroup.get('children');
-    const itemGap = this.itemGap;
-    const itemMarginBottom = this.itemMarginBottom;
-    const titleGap = this.titleGap;
-    const titleHeight = titleShape ? titleShape.getBBox().height + titleGap : 0;
-    const itemWidth = this.itemWidth;
-    let colLength = titleHeight;
-    let width;
-    let height;
-    let maxItemWidth = 0;
-    let totalLength = 0;
+  // _adjustVertical() {
+  //   const maxLength = this.maxLength; // 垂直布局，则 maxLength 代表容器的高度
+  //   if (Util.isNil(maxLength)) {
+  //     return;
+  //   }
+  //   const itemsGroup = this.itemsGroup;
+  //   const titleShape = this.titleShape;
+  //   const children = itemsGroup.get('children');
+  //   const itemGap = this.itemGap;
+  //   const itemMarginBottom = this.itemMarginBottom;
+  //   const titleGap = this.titleGap;
+  //   const titleHeight = titleShape ? titleShape.getBBox().height + titleGap : 0;
+  //   const itemWidth = this.itemWidth;
+  //   let colLength = titleHeight;
+  //   let width;
+  //   let height;
+  //   let maxItemWidth = 0;
+  //   let totalLength = 0;
 
-    if (itemsGroup.getBBox().height > maxLength) {
-      for (let i = 0, length = children.length; i < length; i++) {
-        const child = children[i];
-        width = child.get('width');
-        height = child.get('height');
+  //   if (itemsGroup.getBBox().height > maxLength) {
+  //     for (let i = 0, length = children.length; i < length; i++) {
+  //       const child = children[i];
+  //       width = child.get('width');
+  //       height = child.get('height');
 
-        if (itemWidth) {
-          maxItemWidth = itemWidth + itemGap;
-        } else if (width > maxItemWidth) {
-          maxItemWidth = width + itemGap;
-        }
+  //       if (itemWidth) {
+  //         maxItemWidth = itemWidth + itemGap;
+  //       } else if (width > maxItemWidth) {
+  //         maxItemWidth = width + itemGap;
+  //       }
 
-        if (maxLength - colLength < height) {
-          colLength = titleHeight;
-          totalLength += maxItemWidth;
-          child.moveTo(totalLength, titleHeight);
-        } else {
-          child.moveTo(totalLength, colLength);
-        }
+  //       if (maxLength - colLength < height) {
+  //         colLength = titleHeight;
+  //         totalLength += maxItemWidth;
+  //         child.moveTo(totalLength, titleHeight);
+  //       } else {
+  //         child.moveTo(totalLength, colLength);
+  //       }
 
-        colLength += height + itemMarginBottom;
-      }
-    }
-    return;
-  }
+  //       colLength += height + itemMarginBottom;
+  //     }
+  //   }
+  //   return;
+  // }
 
-  _adjustItems() {
-    const layout = this.layout;
-    if (layout === 'horizontal') {
-      this._adjustHorizontal();
-    } else {
-      this._adjustVertical();
-    }
-  }
+  // _adjustItems() {
+  //   const layout = this.layout;
+  //   if (layout === 'horizontal') {
+  //     this._adjustHorizontal();
+  //   } else {
+  //     this._adjustVertical();
+  //   }
+  // }
 }
+
+Util.mix(CategoryLegend.prototype, Mixin);
 
 module.exports = CategoryLegend;
