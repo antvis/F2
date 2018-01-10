@@ -66,7 +66,7 @@
     "prepublishOnly": "npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit/guide/html-spec.js",
+    "test-live": "torch --compile --interactive --recursive ./test/unit/tooltip/tooltip-spec.js",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {

@@ -284,6 +284,24 @@ class Chart extends Base {
     return fields;
   }
 
+  // /**
+  //  * TODO legends 拍平
+  //  * [getLegendItems description]
+  //  * @return {[type]} [description]
+  //  */
+  // getLegendItems() {
+  //   let result = {};
+  //   const legendController = this.get('legendController');
+  //   if (legendController) {
+  //     const legends = legendController.legends;
+  //     Util.each(legends, legendItems => {
+  //       Util.each(legendItems, legend => {
+  //         console.log(legend)
+  //       });
+  //     });
+  //   }
+  // }
+
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
