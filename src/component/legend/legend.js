@@ -42,6 +42,7 @@ class Legend {
     const title = this.title;
     if (title && title.text) {
       const legendContainer = this.container;
+      // TODO: 默认样式，标题是否提供？？？
       const titleShape = legendContainer.addShape('text', {
         className: 'legend-title',
         attrs: Util.mix({
