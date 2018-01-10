@@ -124,6 +124,12 @@ class Html extends GuideBase {
       left: Math.floor(position.x) + 'px',
       visibility: 'visible'
     });
+    self.element = wrapperNode;
+  }
+
+  remove() {
+    const element = this.element;
+    element && element.remove();
   }
 }
 

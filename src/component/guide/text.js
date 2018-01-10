@@ -48,7 +48,7 @@ class Text extends GuideBase {
       point.y += offsetY;
     }
 
-    container.addShape('text', {
+    const shape = container.addShape('text', {
       className: 'guide-text',
       attrs: Util.mix({
         x: point.x,
@@ -56,6 +56,7 @@ class Text extends GuideBase {
         text: content
       }, style)
     });
+    this.element = shape;
   }
 }
 

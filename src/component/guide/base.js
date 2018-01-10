@@ -6,20 +6,12 @@ const KEYWORDS_PERCENT = {
   max: 1
 };
 
-/**
- * 图表的辅助元素
- * @class Guide
- */
 class GuideBase {
-  /**
-   * 获取默认的配置属性
-   * @protected
-   * @return {Object} 默认属性
-   */
   getDefaultCfg() {
     return {
       xScale: null,
-      yScale: null
+      yScale: null,
+      element: null
     };
   }
 
@@ -29,12 +21,6 @@ class GuideBase {
     Util.mix(this, cfg);
   }
 
-  /**
-   * 将原始数值归一化
-   * @param  {string | number} val   原始值
-   * @param  {Scale} scale 度量对象
-   * @return {Number}       返回归一化后的数值
-   */
   _getNormalizedValue(val, scale) {
     let rst;
     if (Util.isNil(KEYWORDS_PERCENT[val])) {
@@ -45,7 +31,6 @@ class GuideBase {
     return rst;
   }
 
-  // 如果传入的值是百分比的格式，根据坐标系的起始点和宽高计算
   parsePercentPoint(coord, position) {
     const xPercent = parseFloat(position[0]) / 100;
     const yPercent = parseFloat(position[1]) / 100;
@@ -61,13 +46,6 @@ class GuideBase {
     };
   }
 
-  /**
-   * @protected
-   * 转换成坐标系上的点
-   * @param  {Coord} coord  坐标系
-   * @param  {Array} position 点的数组 [x,y]
-   * @return {Object} 转换成坐标系上的点
-   */
   parsePoint(coord, position) {
     const self = this;
     const xScale = self.xScale;
@@ -96,6 +74,13 @@ class GuideBase {
    * @param  {Canvas.Group} group 绘制到的容器
    */
   render(/* coord,group */) {}
+
+  remove() {
+    const { element } = this;
+    if (element) {
+      element.remove();
+    }
+  }
 }
 
 module.exports = GuideBase;

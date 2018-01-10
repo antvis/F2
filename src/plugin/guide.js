@@ -68,21 +68,19 @@ class GuideController {
     });
   }
 
-  clear(parent) {
+  clear() {
+    this.reset();
     this.guides = [];
-    this.reset(parent);
     return this;
   }
 
-  reset(parent) {
-    if (parent) {
-      const guideWrpper = parent.getElementsByClassName('guideWapper')[0];
-      if (guideWrpper) {
-        parent.removeChild(guideWrpper);
-      }
-    }
+  reset() {
+    const guides = this.guides;
+    guides.map(guide => {
+      guide.remove();
+      return guide;
+    });
   }
-
   _createGuide(type, cfg) {
     const ClassName = Util.upperFirst(type);
     const guide = new Guide[ClassName](Util.deepMix({
@@ -134,14 +132,9 @@ module.exports = {
     guideController.paint(coord);
   },
   clear(chart) {
-    const guideController = chart.get('guideController');
-    const canvas = chart.get('canvas');
-    const parentNode = canvas.get('el').parentNode;
-    guideController.clear(parentNode);
+    chart.get('guideController').clear();
   },
   repaint(chart) {
-    const canvas = chart.get('canvas');
-    const parentNode = canvas.get('el').parentNode;
-    chart.get('guideController').reset(parentNode);
+    chart.get('guideController').reset();
   }
 };

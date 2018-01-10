@@ -245,10 +245,10 @@ class Chart extends Base {
     }
 
     let legendCfg = legendController.legendCfg;
-    // legendController.enable = true;
 
     if (Util.isBoolean(field)) { // 支持 chart.legend(true | false)
       legendController.enable = field;
+      legendCfg = cfg; // chart.legend(true, cfg);
     } else if (Util.isObject(field)) { // 默认的 legend 配置属性
       legendCfg = field;
     } else {
