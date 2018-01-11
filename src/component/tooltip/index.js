@@ -176,7 +176,8 @@ class Tooltip {
         x: MARKER_RADIUS + x,
         y,
         fill: color,
-        symbol: marker
+        symbol: marker,
+        radius: MARKER_RADIUS
       };
 
       const markerShape = new Marker({

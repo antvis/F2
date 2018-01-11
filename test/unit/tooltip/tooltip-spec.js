@@ -27,6 +27,7 @@ describe('tooltip', function() {
     }
     const tooltip = new Tooltip({
       // items,
+      showTitle: true,
       titleGap: 20,
       itemMarginBottom: 8,
       titleStyle: {
@@ -38,7 +39,9 @@ describe('tooltip', function() {
       },
       textStyle: {
         fill: 'green',
-        fontSize: 12
+        fontSize: 12,
+        textAlign: 'start',
+        textBaseline: 'middle'
       },
     });
     tooltip.setContent('test', items);
