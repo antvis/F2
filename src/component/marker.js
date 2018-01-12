@@ -58,7 +58,7 @@ class Marker extends Shape {
     return {
       x: 0,
       y: 0,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 

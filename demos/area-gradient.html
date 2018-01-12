@@ -28,19 +28,6 @@
     {month: 9, tem: 18.3, city: 'tokyo'},
     {month: 10, tem: 13.9, city: 'tokyo'},
     {month: 11, tem: 9.6, city: 'tokyo'}
-    /* { month: 12, tem: 0, city: 'newYork' },
-    { month: 1, tem: 0.8, city: 'newYork' },
-    { month: 2, tem: 5.7, city: 'newYork' },
-    { month: 3, tem: 11.3, city: 'newYork' },
-    { month: 4, tem: 17, city: 'newYork' },
-    { month: 5, tem: 22, city: 'newYork' },
-    { month: 6, tem: 24.8, city: 'newYork' },
-    { month: 7, tem: 24.1, city: 'newYork' },
-    { month: 8, tem: 20.1, city: 'newYork' },
-    { month: 9, tem: 14.1, city: 'newYork' },
-    { month: 10, tem: 8.6, city: 'newYork' },
-    { month: 11, tem: 2.5, city: 'newYork' }
-    */
   ];
   const chart = new F2.Chart({
     el: canvas
@@ -64,6 +51,13 @@
       fontSize: 14
     }
   });
+  chart.tooltip({
+    showItemMarker: false,
+    background: {
+      fill: '#1890FF',
+      radius: 5
+    }
+  })
   const linear_gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 500);
   linear_gradient.addColorStop(1, '#fff');
   linear_gradient.addColorStop(0, 'rgb(15, 141, 232)');

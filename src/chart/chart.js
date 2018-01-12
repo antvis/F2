@@ -135,11 +135,6 @@ class Chart extends Base {
        */
       id: null,
       /**
-       * 每个 chart 实例的唯一 id
-       * @type {[type]}
-       */
-      chartId: Util.uid(),
-      /**
        * 画布中绘制图形的边距
        * @type {Array|Number}
        */
@@ -263,6 +258,27 @@ class Chart extends Base {
   filter(field, condition) {
     const filters = this.get('filters');
     filters[field] = condition;
+  }
+
+  /**
+   * 配置 tooltip
+   * @param  {boolean|object} enable 为布尔值表示是否开启tooltip，对象则表示配置项
+   * @param  {object} cfg 配置项
+   * @return {Chart} 返回 Chart 实例
+   */
+  tooltip(enable, cfg) {
+    const tooltipController = this.get('tooltipController');
+    if (!tooltipController) {
+      return this;
+    }
+    if (Util.isObject(enable)) { // chart.tooltip({})
+      cfg = enable;
+      enable = true;
+    }
+    tooltipController.enable = enable;
+    tooltipController.cfg = cfg;
+
+    return this;
   }
 
   _getFieldsForLegend() {

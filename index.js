@@ -5,7 +5,7 @@ require('./src/plugin/');
 const F2 = require('./core');
 
 // 测试
-const { Legend, Guide } = require('./src/plugin/');
-F2.Chart.plugins.register([ Legend, Guide ]);
+const { Legend, Guide, Tooltip } = require('./src/plugin/');
+F2.Chart.plugins.register([ Legend, Guide, Tooltip ]);
 
 module.exports = F2;

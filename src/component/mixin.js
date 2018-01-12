@@ -45,15 +45,13 @@ module.exports = {
     return maxItemWidth;
   },
   _adjustHorizontal() {
-    const maxLength = this.maxLength;
-    if (Util.isNil(maxLength)) {
+    const { maxLength, itemsGroup } = this;
+    if (Util.isNil(maxLength) || itemsGroup.getBBox().width <= maxLength) {
       return;
     }
-    const itemsGroup = this.itemsGroup;
+
     const children = itemsGroup.get('children');
-    const itemGap = this.itemGap;
-    const itemMarginBottom = this.itemMarginBottom;
-    const titleShape = this.titleShape;
+    const { itemGap, itemMarginBottom, titleShape } = this;
     let titleGap = 0;
     if (titleShape) {
       titleGap = titleShape.getBBox().height + this.titleGap;
@@ -64,64 +62,58 @@ module.exports = {
     let width;
     let height;
     const itemWidth = this.itemWidth || this._getMaxItemWidth();
-    if (itemsGroup.getBBox().width > maxLength) {
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        width = itemWidth || child.get('width');
-        height = child.get('height') + itemMarginBottom;
+    for (let i = 0, len = children.length; i < len; i++) {
+      const child = children[i];
+      width = itemWidth || child.get('width');
+      height = child.get('height') + itemMarginBottom;
 
-        if (maxLength - rowLength < width) {
-          row++;
-          rowLength = 0;
-        }
-
-        child.moveTo(rowLength, row * height + titleGap);
-        rowLength += width + itemGap;
+      if (maxLength - rowLength < width) {
+        row++;
+        rowLength = 0;
       }
+
+      child.moveTo(rowLength, row * height + titleGap);
+      rowLength += width + itemGap;
     }
     return;
   },
   _adjustVertical() {
-    const maxLength = this.maxLength; // 垂直布局，则 maxLength 代表容器的高度
-    if (Util.isNil(maxLength)) {
+    const { maxLength, itemsGroup } = this; // 垂直布局，则 maxLength 代表容器的高度
+
+    if (Util.isNil(maxLength) || itemsGroup.getBBox().height <= maxLength) {
       return;
     }
-    const itemsGroup = this.itemsGroup;
-    const titleShape = this.titleShape;
+
+    const { titleShape, itemGap, itemMarginBottom, titleGap, itemWidth } = this;
+    const titleHeight = titleShape ? (titleShape.getBBox().height + titleGap) : 0;
     const children = itemsGroup.get('children');
-    const itemGap = this.itemGap;
-    const itemMarginBottom = this.itemMarginBottom;
-    const titleGap = this.titleGap;
-    const titleHeight = titleShape ? titleShape.getBBox().height + titleGap : 0;
-    const itemWidth = this.itemWidth;
+
     let colLength = titleHeight;
     let width;
     let height;
     let maxItemWidth = 0;
     let totalLength = 0;
 
-    if (itemsGroup.getBBox().height > maxLength) {
-      for (let i = 0, length = children.length; i < length; i++) {
-        const child = children[i];
-        width = child.get('width');
-        height = child.get('height');
+    for (let i = 0, length = children.length; i < length; i++) {
+      const child = children[i];
+      width = child.get('width');
+      height = child.get('height');
 
-        if (itemWidth) {
-          maxItemWidth = itemWidth + itemGap;
-        } else if (width > maxItemWidth) {
-          maxItemWidth = width + itemGap;
-        }
-
-        if (maxLength - colLength < height) {
-          colLength = titleHeight;
-          totalLength += maxItemWidth;
-          child.moveTo(totalLength, titleHeight);
-        } else {
-          child.moveTo(totalLength, colLength);
-        }
-
-        colLength += height + itemMarginBottom;
+      if (itemWidth) {
+        maxItemWidth = itemWidth + itemGap;
+      } else if (width > maxItemWidth) {
+        maxItemWidth = width + itemGap;
       }
+
+      if (maxLength - colLength < height) {
+        colLength = titleHeight;
+        totalLength += maxItemWidth;
+        child.moveTo(totalLength, titleHeight);
+      } else {
+        child.moveTo(totalLength, colLength);
+      }
+
+      colLength += height + itemMarginBottom;
     }
     return;
   },

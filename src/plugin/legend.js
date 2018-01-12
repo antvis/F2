@@ -159,6 +159,7 @@ class LegendController {
     });
 
     this.legends = {};
+    this.unBindEvents();
   }
 
   _isFiltered(scale, values, value) {
@@ -332,8 +333,25 @@ class LegendController {
   bindEvents() {
     const chart = this.chart;
     const legendCfg = this.legendCfg;
-    const eventType = legendCfg.triggerEvent || 'click';
-    DomUtil.addEventListener(chart, eventType, DomUtil.wrapBehavior(this, 'handleEvent'));
+    const triggerOn = legendCfg.triggerOn || 'click';
+    const method = Util.wrapBehavior(this, 'handleEvent');
+    if (Util.isFunction(triggerOn)) {
+      triggerOn(method, 'bind');
+    } else {
+      DomUtil.addEventListener(chart, triggerOn, method);
+    }
+  }
+
+  unBindEvents() {
+    const chart = this.chart;
+    const legendCfg = this.legendCfg;
+    const triggerOn = legendCfg.triggerOn || 'click';
+    const method = Util.getWrapBehavior(this, 'handleEvent');
+    if (Util.isFunction(triggerOn)) {
+      triggerOn(method, 'unBind');
+    } else {
+      DomUtil.removeEventListener(chart, triggerOn, method);
+    }
   }
 }
 module.exports = {
