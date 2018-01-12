@@ -76,6 +76,10 @@
       fontSize: 14
     }
   });
+  chart.legend(false);
+  chart.tooltip({
+    showTitle: true
+  });
   // chart.legend({
   //   position: 'right',
   //   marker: 'square',
@@ -84,19 +88,19 @@
   //      return '$' + val;
   //   }
   // });
-  chart.legend('city', {
-    position: 'right',
-    marker(x, y, r, ctx) {
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = ctx.fillStyle;
-      ctx.moveTo(x - r - 3, y);
-      ctx.lineTo(x + r + 3, y);
-      ctx.stroke();
-      ctx.arc(x, y, r - 1, 0, Math.PI * 2, false);
-      ctx.fill();
-    },
-    title: true
-  });
+  // chart.legend('city', {
+  //   position: 'right',
+  //   marker(x, y, r, ctx) {
+  //     ctx.lineWidth = 2;
+  //     ctx.strokeStyle = ctx.fillStyle;
+  //     ctx.moveTo(x - r - 3, y);
+  //     ctx.lineTo(x + r + 3, y);
+  //     ctx.stroke();
+  //     ctx.arc(x, y, r - 1, 0, Math.PI * 2, false);
+  //     ctx.fill();
+  //   },
+  //   title: true
+  // });
   // chart.filter('city', val => {
   //   return val !== 'tokyo';
   // });

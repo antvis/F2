@@ -25,9 +25,9 @@
     pixelRatio: 2
   });
   chart.source(data);
-  // chart.coord({
-  //   transposed: true
-  // });
+  chart.coord({
+    transposed: true
+  });
   // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
   chart.axis('city', {
     label: {

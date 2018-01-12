@@ -169,7 +169,7 @@ class Element extends Base {
       for (const k in elAttrs) {
         if (SHAPE_ATTRS.indexOf(k) > -1) { // 非canvas属性不附加
           const v = elAttrs[k];
-          if (k === 'lineDash' && context.setLineDash) {
+          if (k === 'lineDash' && context.setLineDash && v) {
             context.setLineDash(v);
           } else {
             context[k] = v;
