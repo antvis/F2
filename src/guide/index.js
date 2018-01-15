@@ -11,6 +11,7 @@ Guide.Line = require('./line');
 Guide.Arc = require('./arc');
 Guide.Html = require('./html');
 Guide.Rect = require('./rect');
+Guide.Tag = require('./tag');
 
 const GuideAssist = require('../chart/assist/guide');
 
@@ -117,7 +118,28 @@ Util.mix(GuideAssist.prototype, {
     const guide = new Guide.Rect(config);
     this.addGuide(guide);
     return this;
+  },
+  /**
+   * 添加辅助html
+   * @chainable
+   * @param  {Array} point 位置
+   * @param  {String} text 文字内容
+   * @param  {Object} cfg  配置项
+   * @return {Object} guideAssist 对象
+   */
+  tag(point, text, cfg) {
+    const config = {
+      type: 'tag',
+      point,
+      text,
+      cfg: Util.mix({}, cfg)
+    };
+    Util.mix(config, this._getDefault());
+    const guide = new Guide.Tag(config);
+    this.addGuide(guide);
+    return this;
   }
+
 });
 
 module.exports = Guide;
