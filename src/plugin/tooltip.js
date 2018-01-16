@@ -1,12 +1,8 @@
-/**
- * TODO: tooltipcallback 回调和 custom 回调
- */
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
 const Global = require('../global');
 const { Tooltip } = require('../component/index');
 
-// TODO: 细化
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   triggerOn: 'mousemove',
@@ -14,24 +10,34 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   showCrosshairs: false,
   crosshairsStyle: {
     stroke: 'rgba(0, 0, 0, 0.25)',
-    lineWidth: 1
+    lineWidth: 2
   },
   showTooltipMarker: true,
   // tooltipMarkerStyle: {} tooltipMarker 样式
   background: {
-    // TODO 背景颜色
+    radius: 4,
+    fill: 'rgba(0, 0, 0, 0.4)',
+    padding: [ 2, 2, 2, 2 ]
   },
-  textStyle: {
-    fontSize: 12,
-    fill: '#000',
+  nameStyle: {
+    fontSize: 14,
+    fill: '#808080',
+    textAlign: 'start',
+    textBaseline: 'middle'
+  },
+  valueStyle: {
+    fontSize: 14,
+    fill: '#2E2E2E',
     textAlign: 'start',
     textBaseline: 'middle'
   },
   showItemMarker: true,
   itemMarkerStyle: {
-    radius: 5,
+    radius: 6,
     symbol: 'circle'
-  }
+  },
+  follow: true, // 默认跟着鼠标运动
+  layout: 'horizontal' // 内容水平布局
 });
 
 function _getTooltipValueScale(geom) {
@@ -115,18 +121,18 @@ function isEqual(arr1, arr2) {
 class TooltipController {
   constructor(cfg) {
     this.enable = true;
-    this.cfg = null;
+    this.cfg = {};
     this.tooltip = null;
     this.chart = null;
     this.timeStamp = 0;
     Util.mix(this, cfg);
   }
 
-  _setTooltipCrosshairs() {
+  _setCrosshairsCfg() {
     const self = this;
     const chart = self.chart;
     const defaultCfg = Util.mix({}, Global.tooltip);
-    const geoms = this.chart.get('geoms');
+    const geoms = chart.get('geoms');
     const shapes = [];
     geoms.map(geom => {
       const type = geom.get('type');
@@ -146,9 +152,15 @@ class TooltipController {
     return defaultCfg;
   }
 
+  _getMaxLength(cfg = {}) {
+    const { layout, plotRange } = cfg;
+    return (layout === 'horizontal') ? plotRange.br.x - plotRange.bl.x : plotRange.bl.y - plotRange.tr.y;
+  }
+
   render() {
     const self = this;
-    if (self.tooltip) {
+
+    if (self.tooltip || !self.enable) {
       return;
     }
 
@@ -156,16 +168,17 @@ class TooltipController {
     const canvas = chart.get('canvas');
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    const chartPlot = chart.get('plot');
+    const plotRange = chart.get('plot');
 
-    const defaultCfg = self._setTooltipCrosshairs();
+    const defaultCfg = self._setCrosshairsCfg();
     let cfg = self.cfg;
-    cfg = Util.mix({
-      chartPlot,
+    cfg = Util.deepMix({
+      plotRange,
       frontPlot,
       backPlot,
       canvas
     }, defaultCfg, cfg);
+    cfg.maxLength = self._getMaxLength(cfg);
     this.cfg = cfg;
     const tooltip = new Tooltip(cfg);
     self.tooltip = tooltip;
@@ -225,9 +238,22 @@ class TooltipController {
     return cfg;
   }
 
-  _setTooltip(items, tooltipMarkerCfg = {}) {
+  _setTooltip(point, items, tooltipMarkerCfg = {}) {
     const lastActive = this._lastActive;
+    const first = items[0];
+    const title = first.title || first.name;
+    const tooltip = this.tooltip;
+    const cfg = this.cfg;
 
+    if (cfg.onShow) { // tooltip 展示
+      cfg.onShow({
+        x: point.x,
+        y: point.y,
+        tooltip,
+        items,
+        tooltipMarkerCfg
+      });
+    }
     if (isEqual(lastActive, items)) {
       return;
     }
@@ -235,11 +261,28 @@ class TooltipController {
     items = _uniqItems(items);
     this._lastActive = items;
 
-    const first = items[0];
-    const title = first.title || first.name;
-    const tooltip = this.tooltip;
-    const cfg = this.cfg;
-    tooltip.setContent(title, items);
+    if (cfg.onChange) {
+      cfg.onChange({
+        x: point.x,
+        y: point.y,
+        tooltip,
+        items,
+        tooltipMarkerCfg
+      });
+    }
+
+    if (cfg.custom) { // 用户自定义 tooltip
+      cfg.custom({
+        x: point.x,
+        y: point.y,
+        title,
+        items,
+        tooltipMarkerCfg
+      });
+    } else {
+      tooltip.setContent(title, items);
+    }
+    tooltip.setPosition(items[0].x);
 
     const markerItems = tooltipMarkerCfg.items;
     if (cfg.showTooltipMarker && markerItems.length) {
@@ -248,9 +291,7 @@ class TooltipController {
     } else {
       tooltip.clearMarkers();
     }
-    // const { x, y } = items[0];
-    // tooltip.setPosition(x, y);
-    tooltip.setPosition(items[0].x);
+
     tooltip.show();
   }
 
@@ -278,12 +319,16 @@ class TooltipController {
           x,
           y: Util.isArray(y) ? y[1] : y,
           color: color || Global.defaultColor,
-          marker,
           origin: _origin,
           name: getTooltipName(geom, _origin),
           value: getTooltipValue(geom, _origin),
           title: getTooltipTitle(geom, _origin)
         };
+        if (marker) {
+          tooltipItem.marker = Util.mix({
+            fill: color || Global.defaultColor
+          }, marker);
+        }
         items.push(tooltipItem);
 
         if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
@@ -305,16 +350,22 @@ class TooltipController {
         items: tooltipMarkerItems,
         type: tooltipMarkerType
       };
-      self._setTooltip(items, tooltipMarkerCfg);
+      self._setTooltip(point, items, tooltipMarkerCfg);
     } else {
       self.hideTooltip();
     }
   }
 
   hideTooltip() {
+    const cfg = this.cfg;
     const tooltip = this.tooltip;
     this._lastActive = [];
     tooltip.hide();
+    if (cfg.onHide) {
+      cfg.onHide({
+        tooltip
+      });
+    }
   }
 
   handleEvent(ev) {

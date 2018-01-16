@@ -266,7 +266,7 @@ class Chart extends Base {
    * @param  {object} cfg 配置项
    * @return {Chart} 返回 Chart 实例
    */
-  tooltip(enable, cfg) {
+  tooltip(enable, cfg = {}) {
     const tooltipController = this.get('tooltipController');
     if (!tooltipController) {
       return this;
@@ -300,23 +300,25 @@ class Chart extends Base {
     return fields;
   }
 
-  // /**
-  //  * TODO legends 拍平
-  //  * [getLegendItems description]
-  //  * @return {[type]} [description]
-  //  */
-  // getLegendItems() {
-  //   let result = {};
-  //   const legendController = this.get('legendController');
-  //   if (legendController) {
-  //     const legends = legendController.legends;
-  //     Util.each(legends, legendItems => {
-  //       Util.each(legendItems, legend => {
-  //         console.log(legend)
-  //       });
-  //     });
-  //   }
-  // }
+  /**
+   * TODO legends 拍平
+   * [getLegendItems description]
+   * @return {[type]} [description]
+   */
+  getLegendItems() {
+    const result = {};
+    const legendController = this.get('legendController');
+    if (legendController) {
+      const legends = legendController.legends;
+      Util.each(legends, legendItems => {
+        Util.each(legendItems, legend => {
+          const { field, items } = legend;
+          result[field] = items;
+        });
+      });
+    }
+    return result;
+  }
 
   /**
    * 创建度量
@@ -655,7 +657,7 @@ class Chart extends Base {
     self.drawGeom(geoms);
 
     Chart.plugins.notify(self, 'afterGeomDraw');
-
+    canvas.sort();
     canvas.draw();
     return self;
   }

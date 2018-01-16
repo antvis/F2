@@ -6,15 +6,13 @@
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
+  <div style="text-align: center;">
+    <canvas id="c1"></canvas>
+  </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  F2.Global.pixelRatio = window.devicePixelRatio;
 
-  const canvas = document.createElement('canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
   const data = [
     {time: '周一', tem: 10, city: 'beijing'},
     {time: '周二', tem: 22, city: 'beijing'},
@@ -29,10 +27,20 @@
     {time: '周四', tem: 20, city: 'newYork'},
     {time: '周五', tem: 28, city: 'newYork'},
     {time: '周六', tem: 26, city: 'newYork'},
-    {time: '周日', tem: 20, city: 'newYork'}
+    {time: '周日', tem: 20, city: 'newYork'},
+    {time: '周一', tem: 15, city: 'Tyoko'},
+    {time: '周二', tem: 22, city: 'Tyoko'},
+    {time: '周三', tem: 36, city: 'Tyoko'},
+    {time: '周四', tem: 30, city: 'Tyoko'},
+    {time: '周五', tem: 38, city: 'Tyoko'},
+    {time: '周六', tem: 36, city: 'Tyoko'},
+    {time: '周日', tem: 30, city: 'Tyoko'}
   ];
   const chart = new F2.Chart({
-    el: canvas
+    id: 'c1',
+    width: 500,
+    height: 375,
+    pixelRatio: window.devicePixelRatio
   });
   const defs = {
     time: {
@@ -70,10 +78,25 @@
     }
   });
   chart.source(data, defs);
+  chart.tooltip({
+    custom(obj) {
+      const legend = chart.get('legendController').legends.top[0];
+      console.log(legend)
+      legend.setItems(obj.items);
+    },
+    onHide(tooltip) {
+      const legend = chart.get('legendController').legends.top[0];
+      legend.setItems(chart.getLegendItems().city);
+      // console.log(chart.getLegendItems());
+    }
+  });
+  // chart.legend(false);
   chart.line().position('time*tem')
     .color('city')
     .shape('smooth');
   chart.render();
+  // chart.destroy();
+  // console.log(chart.getLegendItems());
 </script>
 </body>
 </html>

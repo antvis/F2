@@ -1,68 +1,68 @@
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
-const { Legend } = require('../component/index');
+const { List } = require('../component');
 const Global = require('../global');
-const LEGEND_OFFSET = 24;
+const LEGEND_OFFSET = 30;
 const LEGEND_GAP = 24;
-const MARKER_SIZE = 4.5;
+const MARKER_SIZE = 6;
 
 // Register the default configuration for Legend
 Global.legend = Util.deepMix(Global.Legend || {}, {
   right: {
     position: 'right',
     layout: 'vertical',
-    itemMarginBottom: 8,
+    itemMarginBottom: 24,
     title: null,
-    textStyle: {
-      fill: '#8C8C8C',
-      fontSize: 12,
+    valueStyle: {
+      fill: 'rgba(0, 0, 0, .85)',
+      fontSize: 14,
       textAlign: 'start',
-      textBaseline: 'middle',
-      lineHeight: 20
+      textBaseline: 'middle'
     }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf'
+    unCheckColor: '#bfbfbf',
+    itemWidth: 'auto'
   },
   left: {
     position: 'left',
     layout: 'vertical',
-    itemMarginBottom: 8,
+    itemMarginBottom: 24,
     title: null,
-    textStyle: {
-      fill: '#8C8C8C',
-      fontSize: 12,
+    valueStyle: {
+      fill: 'rgba(0, 0, 0, .85)',
+      fontSize: 14,
       textAlign: 'start',
-      textBaseline: 'middle',
-      lineHeight: 20
+      textBaseline: 'middle'
     }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf'
+    unCheckColor: '#bfbfbf',
+    itemWidth: 'auto'
   },
   top: {
     position: 'top',
     layout: 'horizontal',
     title: null,
-    itemGap: 10,
-    textStyle: {
-      fill: '#8C8C8C',
-      fontSize: 12,
+    itemGap: 20,
+    valueStyle: {
+      fill: 'rgba(0, 0, 0, .85)',
+      fontSize: 14,
       textAlign: 'start',
-      textBaseline: 'middle',
-      lineHeight: 20
+      textBaseline: 'middle'
     }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf'
+    unCheckColor: '#bfbfbf',
+    itemWidth: 'auto'
   },
   bottom: {
     position: 'bottom',
     layout: 'horizontal',
     title: null,
-    itemGap: 24,
-    textStyle: {
-      fill: '#8C8C8C',
-      fontSize: 12,
+    itemGap: 20,
+    valueStyle: {
+      fill: 'rgba(0, 0, 0, .85)',
+      fontSize: 14,
       textAlign: 'start',
-      textBaseline: 'middle',
-      lineHeight: 20
+      textBaseline: 'middle'
     }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf'
+    unCheckColor: '#bfbfbf',
+    itemWidth: 'auto'
   }
 });
 
@@ -142,7 +142,7 @@ class LegendController {
       item.checked = Util.isNil(item.checked) ? true : item.checked;
     });
 
-    const legend = new Legend.Category(Util.deepMix({}, Global.legend[position], legendCfg, {
+    const legend = new List(Util.deepMix({}, Global.legend[position], legendCfg, {
       maxLength: self._getMaxLength(position),
       items
     }));
@@ -204,7 +204,7 @@ class LegendController {
       const marker = {
         symbol,
         fill: color,
-        radius: 5
+        radius: MARKER_SIZE
       };
 
       items.push({
@@ -229,7 +229,7 @@ class LegendController {
       });
     }
 
-    const legend = new Legend.Category(lastCfg);
+    const legend = new List(lastCfg);
     container.add(legend.container);
     legends[position].push(legend);
     return legend;
@@ -279,6 +279,7 @@ class LegendController {
   handleEvent(ev) {
     const self = this;
 
+    // TODO: 此处又 BUG
     function findItem(x, y) {
       let result = null;
       const legends = self.legends;
