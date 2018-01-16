@@ -33,7 +33,7 @@ const Theme = {
   defaultFont,
   defaultColor: '#4E7CCC',
   pixelRatio: 1,
-  padding: [ 40, 40, 40, 40 ],
+  padding: [ 100, 40, 40, 40 ],
   colors: [ '#4E7CCC', '#36B3C3', '#4ECDA5', '#94E08A', '#E2F194', '#EDCC72', '#F8AB60', '#F9815C', '#EB4456', '#C82B3D' ],
   shapes: {
     line: [ 'line', 'dash' ],

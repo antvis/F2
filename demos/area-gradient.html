@@ -6,15 +6,14 @@
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
+  <div style="text-align: center;">
+    <canvas id="c1"></canvas>
+  </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const canvas = document.createElement('canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
-  F2.Global.pixelRatio = window.devicePixelRatio;
-
+  const canvas = $('#c1')[0];
+  const context = canvas.getContext('2d');
   const data = [
     {month: 12, tem: 7, city: 'tokyo'},
     {month: 1, tem: 6.9, city: 'tokyo'},
@@ -30,7 +29,11 @@
     {month: 11, tem: 9.6, city: 'tokyo'}
   ];
   const chart = new F2.Chart({
-    el: canvas
+    id: 'c1',
+    width: 500,
+    height: 375,
+    pixelRatio: window.devicePixelRatio,
+    padding: [ 40, 10 ]
   });
   chart.source(data, {
     month: {
@@ -58,7 +61,7 @@
       radius: 5
     }
   })
-  const linear_gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 500);
+  const linear_gradient = context.createLinearGradient(0, 0, 0, 500);
   linear_gradient.addColorStop(1, '#fff');
   linear_gradient.addColorStop(0, 'rgb(15, 141, 232)');
   chart.area().position('month*tem').color(linear_gradient)
