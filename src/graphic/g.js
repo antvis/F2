@@ -101,6 +101,13 @@ module.exports = {
     ctx.arcTo(x, y + h, x, y, r);
     ctx.arcTo(x, y, x + w, y, r);
   },
+  radiusRectArray(x, y, w, h, r, assignRadius, ctx) {
+    ctx.moveTo(x + r, y);
+    ctx[assignRadius[0] ? 'arcTo' : 'lineTo'](x + w, y, x + w, y + h, r);
+    ctx[assignRadius[1] ? 'arcTo' : 'lineTo'](x + w, y + h, x, y + h, r);
+    ctx[assignRadius[2] ? 'arcTo' : 'lineTo'](x, y + h, x, y, r);
+    ctx[assignRadius[3] ? 'arcTo' : 'lineTo'](x, y, x + w, y, r);
+  },
   drawRect(points, canvas, cfg) {
     const ctx = before(canvas, cfg);
     let minX = points[0].x;
@@ -127,7 +134,12 @@ module.exports = {
     const height = maxY - minY;
     if (cfg.radius) {
       const radius = Math.min(cfg.radius, width / 2, height / 2);
-      this.radiusRect(x, y, width, height, radius, ctx);
+      // 指定边渲染渲染
+      if (cfg.assignRadius) {
+        this.radiusRectArray(x, y, width, height, radius, cfg.assignRadius, ctx);
+      } else {
+        this.radiusRect(x, y, width, height, radius, ctx);
+      }
     } else {
       ctx.rect(x, y, width, height);
     }
