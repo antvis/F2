@@ -114,6 +114,7 @@ class Element extends Base {
     }
 
     if (Util.isObject(name)) {
+      this._attrs.bbox = null; // attr 改变了有可能会导致 bbox 改变，故在此清除
       for (const k in name) {
         self._setAttr(k, name[k]); // TODO clip 的问题处理
       }
@@ -123,6 +124,7 @@ class Element extends Base {
       return self;
     }
     if (arguments.length === 2) {
+      this._attrs.bbox = null;
       self._setAttr(name, value);
       if (self._afterAttrsSet) {
         self._afterAttrsSet();

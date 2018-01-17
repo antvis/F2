@@ -15,9 +15,9 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   showTooltipMarker: true,
   // tooltipMarkerStyle: {} tooltipMarker 样式
   background: {
-    radius: 4,
-    fill: 'rgba(0, 0, 0, 0.4)',
-    padding: [ 2, 2, 2, 2 ]
+    radius: 2,
+    fill: '#1890FF',
+    padding: [ 6, 10 ]
   },
   nameStyle: {
     fontSize: 14,
@@ -36,7 +36,6 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
     radius: 6,
     symbol: 'circle'
   },
-  follow: true, // 默认跟着鼠标运动
   layout: 'horizontal' // 内容水平布局
 });
 
@@ -142,7 +141,7 @@ class TooltipController {
       return geom;
     });
     if (geoms.length && chart.get('coord').type === 'cartesian') {
-      if (shapes.length === 1 && [ 'line', 'area', 'path' ].indexOf(shapes[0]) !== -1) {
+      if (shapes.length === 1 && [ 'line', 'area', 'path', 'point' ].indexOf(shapes[0]) !== -1) {
         Util.mix(defaultCfg, {
           showCrosshairs: true
         });
@@ -169,6 +168,7 @@ class TooltipController {
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
     const plotRange = chart.get('plot');
+    const coord = chart.get('coord');
 
     const defaultCfg = self._setCrosshairsCfg();
     let cfg = self.cfg;
@@ -176,7 +176,8 @@ class TooltipController {
       plotRange,
       frontPlot,
       backPlot,
-      canvas
+      canvas,
+      fixed: coord.transposed || coord.isPolar
     }, defaultCfg, cfg);
     cfg.maxLength = self._getMaxLength(cfg);
     this.cfg = cfg;
@@ -282,7 +283,7 @@ class TooltipController {
     } else {
       tooltip.setContent(title, items);
     }
-    tooltip.setPosition(items[0].x);
+    tooltip.setPosition(items);
 
     const markerItems = tooltipMarkerCfg.items;
     if (cfg.showTooltipMarker && markerItems.length) {

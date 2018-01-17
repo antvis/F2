@@ -21,7 +21,7 @@ describe('Circle', function() {
   });
 
   it('init attr', function() {
-    expect(circle.attr('lineWidth')).to.equal(1);
+    expect(circle.attr('lineWidth')).to.equal(0);
     expect(circle.attr('stroke')).to.be.undefined;
     expect(circle.attr('fill')).to.be.undefined;
   });

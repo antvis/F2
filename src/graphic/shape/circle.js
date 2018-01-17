@@ -16,7 +16,7 @@ class Circle extends Shape {
       x: 0,
       y: 0,
       r: 0,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 

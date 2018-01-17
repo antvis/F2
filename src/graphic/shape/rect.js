@@ -18,7 +18,7 @@ class Rect extends Shape {
       width: 0,
       height: 0,
       radius: 0,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 

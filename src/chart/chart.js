@@ -504,35 +504,19 @@ class Chart extends Base {
   _initLayout() {
     const self = this;
     // 兼容margin 的写法
-    const padding = self.get('margin') || self.get('padding');
+    let padding = self.get('margin') || self.get('padding');
     const canvas = self.get('canvas');
     const width = canvas.get('width'); // TODO 很容易混淆
     const height = canvas.get('height'); // TODO 很容易混淆
-    let top;
-    let left;
-    let right;
-    let bottom;
-
-    if (Util.isNumber(padding)) {
-      top = bottom = padding;
-      left = right = padding;
-    } else if (Util.isArray(padding)) {
-      top = padding[0];
-      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
-      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
-      left = !Util.isNil(padding[3]) ? padding[3] : right;
-    }
-
-    bottom = height - bottom;
-    right = width - right;
+    padding = Util.parsePadding(padding);
     const plot = new Plot({
       start: {
-        x: left,
-        y: top
+        x: padding[3],
+        y: padding[0]
       },
       end: {
-        x: right,
-        y: bottom
+        x: width - padding[1],
+        y: height - padding[2]
       }
     });
     self.set('plot', plot);

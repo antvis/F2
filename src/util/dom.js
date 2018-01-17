@@ -40,7 +40,7 @@ function fromNativeEvent(event, chart) { // TODO: chart 改成 dom
   const type = event.type;
 
   const point = {};
-  const touches = event.touches;
+  const touches = event.targetTouches;
   if (touches && touches.length > 0) {
     point.x = touches[0].clientX;
     point.y = touches[0].clientY;

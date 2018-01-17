@@ -15,7 +15,7 @@ class Polygon extends Shape {
   getDefaultAttrs() {
     return {
       points: null,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 

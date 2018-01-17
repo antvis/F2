@@ -143,7 +143,8 @@ class List {
       const container = this.container;
       const itemsGroup = this.itemsGroup;
       const { minX, minY, width, height } = itemsGroup.getBBox();
-      const padding = background.padding || [ 0, 0, 0, 0 ];
+      let padding = background.padding || [ 0, 0, 0, 0 ];
+      padding = Util.parsePadding(padding);
       const attrs = Util.mix({
         x: minX - padding[3],
         y: minY - padding[0],
@@ -239,10 +240,6 @@ class List {
   }
 
   _getMaxItemWidth() {
-    if (this.maxItemWidth) {
-      return this.maxItemWidth;
-    }
-
     const itemsGroup = this.itemsGroup;
     const children = itemsGroup.get('children');
     let maxItemWidth = 0;
@@ -421,33 +418,15 @@ class List {
   }
 
   getWidth() {
-    // const container = this.container;
-    // const bbox = container.getBBox();
-    // return bbox.width;
-
-    const { container, background } = this;
+    const container = this.container;
     const bbox = container.getBBox();
-    let width = bbox.width;
-    if (background && background.padding) {
-      width += background.padding[1] + background.padding[3];
-    }
-
-    return width;
+    return bbox.width;
   }
 
   getHeight() {
-    // const container = this.container;
-    // const bbox = container.getBBox();
-    // return bbox.height;
-
-    const { container, background } = this;
+    const container = this.container;
     const bbox = container.getBBox();
-    let height = bbox.height;
-    if (background && background.padding) {
-      height += background.padding[0] + background.padding[2];
-    }
-
-    return height;
+    return bbox.height;
   }
 
   show() {

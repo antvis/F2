@@ -17,7 +17,7 @@ class Sector extends Shape {
     return {
       x: 0,
       y: 0,
-      lineWidth: 1,
+      lineWidth: 0,
       r: 0,
       r0: 0,
       startAngle: 0,
