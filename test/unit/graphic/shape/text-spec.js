@@ -20,7 +20,8 @@ describe('Text', function() {
         x: 30,
         y: 30,
         fontFamily: 'Arial',
-        fill: 'red'
+        fill: 'red',
+        lineWidth: 1
       }
     });
 
@@ -96,7 +97,8 @@ describe('Text', function() {
         text: '字体大小',
         x: 10,
         y: 60,
-        stroke: '#000'
+        stroke: '#000',
+        lineWidth: 1
       }
     });
     expect(text1.attr('fontSize')).to.equal(20);
@@ -152,7 +154,8 @@ describe('Text', function() {
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 12,
-        lineHeight: 18
+        lineHeight: 18,
+        lineWidth: 1
       }
     });
     expect(text.attr('textArr').length).to.equal(3);

@@ -252,6 +252,24 @@ Util = {
    */
   getWrapBehavior(obj, action) {
     return obj['_wrap_' + action];
+  },
+  parsePadding(padding) {
+    let top;
+    let right;
+    let bottom;
+    let left;
+
+    if (Util.isNumber(padding)) {
+      top = bottom = padding;
+      left = right = padding;
+    } else if (Util.isArray(padding)) {
+      top = padding[0];
+      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
+      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
+      left = !Util.isNil(padding[3]) ? padding[3] : right;
+    }
+
+    return [ top, right, bottom, left ];
   }
 };
 

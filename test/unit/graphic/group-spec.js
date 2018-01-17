@@ -274,7 +274,8 @@ describe('Group', function() {
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 8,
-        lineHeight: 18
+        lineHeight: 18,
+        lineWidth: 1
       }
     });
     const group = canvas.addGroup();
