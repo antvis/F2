@@ -1,3 +1,10 @@
+#### 3.0.2 (2018-01-18)
+
+##### New Features
+
+* add guide-tag ([1e0aba0f](https://github.com/antvis/f2/commit/1e0aba0fc9292eea409f2e5820d4aeb7dc86b81a))
+* add startOnZero property for geom. ([2c78f9fc](https://github.com/antvis/f2/commit/2c78f9fc74de2a811cbed44f863d43b6c960c14e))
+
 #### 3.0.1 (2017-12-27)
 
 ##### Chores
