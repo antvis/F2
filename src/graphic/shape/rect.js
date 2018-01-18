@@ -47,13 +47,12 @@ class Rect extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, width, height, lineWidth } = attrs;
-    const halfLineWidth = lineWidth / 2;
+    const { x, y, width, height } = attrs;
     return {
-      minX: x - halfLineWidth,
-      minY: y - halfLineWidth,
-      maxX: x + width + halfLineWidth,
-      maxY: y + height + halfLineWidth
+      minX: x,
+      minY: y,
+      maxX: x + width,
+      maxY: y + height
     };
   }
 }

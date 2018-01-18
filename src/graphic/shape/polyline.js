@@ -54,7 +54,7 @@ class Polyline extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { points, lineWidth, smooth } = attrs;
+    const { points, smooth } = attrs;
 
     if (smooth) {
       const newPoints = [];
@@ -72,9 +72,9 @@ class Polyline extends Shape {
           newPoints.push([ lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
         }
       }
-      return bbox.getBBoxFromBezierGroup(newPoints, lineWidth);
+      return bbox.getBBoxFromBezierGroup(newPoints);
     }
-    return bbox.getBBoxFromPoints(points, lineWidth);
+    return bbox.getBBoxFromPoints(points);
   }
 }
 

@@ -46,9 +46,9 @@ class Sector extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, r0, startAngle, endAngle, clockwise, lineWidth } = attrs;
-    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise, lineWidth);
-    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, clockwise, lineWidth);
+    const { x, y, r, r0, startAngle, endAngle, clockwise } = attrs;
+    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
+    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, clockwise);
     return {
       minX: Math.min(outerBBox.minX, innerBBox.minX),
       minY: Math.min(outerBBox.minY, innerBBox.minY),

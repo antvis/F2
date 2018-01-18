@@ -78,13 +78,12 @@ class Marker extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, radius, lineWidth } = attrs;
-    const halfLineWidth = lineWidth / 2 + radius;
+    const { x, y, radius } = attrs;
     return {
-      minX: x - halfLineWidth,
-      minY: y - halfLineWidth,
-      maxX: x + halfLineWidth,
-      maxY: y + halfLineWidth
+      minX: x - radius,
+      minY: y - radius,
+      maxX: x + radius,
+      maxY: y + radius
     };
   }
 }

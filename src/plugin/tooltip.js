@@ -19,22 +19,30 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
     fill: '#1890FF',
     padding: [ 6, 10 ]
   },
+  titleStyle: {
+    fontSize: 24,
+    fill: '#fff',
+    textAlign: 'start',
+    textBaseline: 'top'
+  },
   nameStyle: {
-    fontSize: 14,
-    fill: '#808080',
+    fontSize: 24,
+    fill: '#fff',
     textAlign: 'start',
     textBaseline: 'middle'
   },
   valueStyle: {
-    fontSize: 14,
-    fill: '#2E2E2E',
+    fontSize: 24,
+    fill: '#fff',
     textAlign: 'start',
     textBaseline: 'middle'
   },
   showItemMarker: true,
   itemMarkerStyle: {
-    radius: 6,
-    symbol: 'circle'
+    radius: 7,
+    symbol: 'circle',
+    lineWidth: 2,
+    stroke: '#fff'
   },
   layout: 'horizontal' // 内容水平布局
 });
@@ -230,9 +238,9 @@ class TooltipController {
       }, tooltipCfg.tooltipMarkerStyle);
     } else {
       cfg.style = Util.mix({
-        radius: 5,
+        radius: 6,
         fill: '#fff',
-        lineWidth: 2
+        lineWidth: 4
       }, tooltipCfg.tooltipMarkerStyle);
     }
 

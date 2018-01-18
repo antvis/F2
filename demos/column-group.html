@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Grouped Column Plot</title>
+  <title>分组柱状图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
-  <div style="width:500px; height:500px; margin: 0 auto;">
-    <canvas id="mountNode" width="500" height="500" ></canvas>
-  </div>
-  <script src="./assets/jquery-3.2.1.min.js"></script>
-  <script src="../build/f2.js"></script>
-  <script>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
     const data =[
       {"name":"London","月份":"Jan","月均降雨量":18.9},
       {"name":"London","月份":"Feb","月均降雨量":28.8},
@@ -32,7 +32,9 @@
     ];
     const chart = new F2.Chart({
       id: 'mountNode',
-      pixelRatio: window.devicePixelRatio
+      pixelRatio: window.devicePixelRatio,
+      width: window.innerWidth,
+      height: window.innerHeight
     });
     chart.source(data);
     chart.axis('月均降雨量', {
@@ -50,10 +52,11 @@
         top: true
       }
     });
+    chart.tooltip(false);
     chart.interval().position('月份*月均降雨量')
       .color('name', [ '#1890FF', '#2FC25B' ])
       .adjust('dodge');
     chart.render();
-  </script>
+</script>
 </body>
 </html>

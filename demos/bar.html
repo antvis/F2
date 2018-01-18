@@ -2,46 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bar Plot</title>
+  <title>条形图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const canvas = document.createElement('canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
-  F2.Global.pixelRatio = window.devicePixelRatio;
-
   const data = [
-    {tem: 10, city: 'tokyo'},
-    {tem: 4, city: 'newYork'},
-    {tem: 3, city: 'berlin'}
+    { country: '巴西', population: 18203 },
+    { country: '印尼', population: 23489 },
+    { country: '美国', population: 29034 },
+    { country: '印度', population: 104970 },
+    { country: '中国', population: 131744 }
   ];
   const chart = new F2.Chart({
-    el: canvas,
-    pixelRatio: 2
+    id: 'mountNode',
+    width: window.innerWidth,
+    height: window.innerHeight,
+    pixelRatio: window.devicePixelRatio
   });
-  chart.source(data);
+
+  chart.source(data, {
+    population: {
+      tickCount: 5
+    }
+  });
   chart.coord({
     transposed: true
   });
-  // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
-  chart.axis('city', {
-    label: {
-      fontSize: 10,
-      top: true
-    },
-    grid: null
-  });
-  // chart.axis('tem', {
-  //   label: {
-  //     fontSize: 10
-  //   }
-  // });
-  chart.interval().position('city*tem').color('city');
+  chart.interval().position('country*population');
   chart.render();
 </script>
 </body>

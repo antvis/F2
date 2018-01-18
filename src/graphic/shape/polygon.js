@@ -42,8 +42,8 @@ class Polygon extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { points, lineWidth } = attrs;
-    return bbox.getBBoxFromPoints(points, lineWidth);
+    const { points } = attrs;
+    return bbox.getBBoxFromPoints(points);
   }
 }
 

@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Donut Plot</title>
+  <title>图例位置：右侧</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
-  <div style="width:500px; height:500px; margin: 0 auto;">
-    <canvas id="mountNode" width="500" height="500" ></canvas>
-  </div>
+<div>
+  <canvas id="mountNode" style="position: relative;">
+  </canvas>
+</div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
@@ -30,39 +31,46 @@
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
-    padding: [ 10, 250, 10, 10 ],
+    padding: [ 0, 400, 0, 0 ],
+    width: window.innerWidth,
+    height: window.innerHeight,
     pixelRatio: window.devicePixelRatio
   });
   chart.source(data);
   chart.legend({
     position: 'right',
-    offsetX: -40,
+    offsetX: 30,
     itemFormatter(val) {
       return val + '  ' + map[val];
     }
   });
   chart.coord('polar', {
     transposed: true,
-    innerRadius: 0.6,
-    // radius: 0.5
+    innerRadius: 0.6
   });
   chart.axis(false);
-  chart.interval().position('a*proportion')
+  chart.interval()
+    .position('a*proportion')
     .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0' ])
     .adjust('stack');
-  chart.guide().text({
+  chart.guide().html({
     position: [ '50%', '50%' ],
-    content: '40% \n 芳华'
+    html: '<div id="show" style="width: 250px;height: 83px;text-align: center;"></div>'
   });
+  chart.tooltip({
+    custom(ev) {
+      const { items } = ev;
+      const content = '<span style="font-size: 48px; color: rgba(0, 0, 0, 0.85);">' + items[0].name + '</span><br />'
+        + '<span style="font-size: 24px; color: rgba(0, 0, 0, 0.45);">' + items[0].value * 100 + '%' + '</span>';
+
+      $('#show').html(content);
+    },
+    onHide() {
+      $('#show').html('');
+    }
+  })
 
   chart.render();
-
-// console.log(chart);
-//   canvas.onclick = function(ev) {
-//     const point = chart.getPointByClient(ev.clientX, ev.clientY);
-//     const records = chart.getSnapRecords(point, 'b');
-//     console.log(records);
-//   };
 </script>
 </body>
 </html>

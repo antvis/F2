@@ -12,7 +12,6 @@ class List {
        * @type {?String}
        */
       title: null,
-      // titleStyle: {},
       /**
        * 记录项的集合
        * @type {?Array}
@@ -45,13 +44,13 @@ class List {
       itemFormatter: null,
       titleStyle: {},
       nameStyle: {
-        fontSize: 14,
+        fontSize: 24,
         fill: '#808080',
         textAlign: 'start',
         textBaseline: 'middle'
       },
       valueStyle: {
-        fontSize: 14,
+        fontSize: 24,
         fill: '#2E2E2E',
         textAlign: 'start',
         textBaseline: 'middle'
@@ -77,12 +76,11 @@ class List {
        * @type {[type]}
        */
       y: 0,
-      layout: 'horizontal',
       /**
-       * 容器内边距
-       * @type {Array}
+       * 布局方式
+       * @type {String}
        */
-      padding: [ 0, 0, 0, 0 ]
+      layout: 'horizontal'
     };
   }
 
@@ -102,10 +100,10 @@ class List {
     this.itemsGroup = itemsGroup;
   }
 
-  _renderTitle() {
-    const { showTitle, title } = this;
+  _renderTitle(title) {
+    title = title || this.title;
 
-    if (showTitle && title) {
+    if (this.showTitle && title) {
       const { container, titleStyle } = this;
       const titleShape = container.addShape('text', {
         className: 'title',
@@ -174,10 +172,10 @@ class List {
       checked: item.checked
     });
     const { unCheckColor, nameStyle, valueStyle, wordSpace } = this;
-    const { marker, name, value } = item;
+    const { marker, value } = item;
     let startX = 0;
 
-    if (marker) { // 如果有 marker 添加 marker, 格式： { radius, symbol, fill / stroke}
+    if (marker) { // 如果有 marker 添加 marker, 格式： { radius, symbol, fill / stroke }
       const radius = marker.radius || MARKER_RADIUS;
       const markerAttrs = Util.mix({
         x: radius,
@@ -202,13 +200,15 @@ class List {
     }
 
     let nameText;
+    let name = item.name;
     if (name) {
+      name = value ? name + ': ' : name;
       nameText = itemGroup.addShape('text', {
         className: 'name',
         attrs: Util.mix({
           x: startX,
           y: 0,
-          text: name + ': '
+          text: name
         }, nameStyle, item.checked === false ? { fill: unCheckColor } : null)
       });
     }
@@ -237,6 +237,16 @@ class List {
       value = formatter.call(this, value);
     }
     return value;
+  }
+
+  _getTitleHeight() {
+    let titleHeight = 0;
+    const { titleShape, titleGap } = this;
+    if (titleShape) {
+      titleHeight = titleShape.getBBox().height + titleGap;
+    }
+
+    return titleHeight;
   }
 
   _getMaxItemWidth() {
@@ -271,11 +281,8 @@ class List {
     const { maxLength, itemsGroup } = this;
 
     const children = itemsGroup.get('children');
-    const { itemGap, itemMarginBottom, titleShape } = this;
-    let titleGap = 0;
-    if (titleShape) {
-      titleGap = titleShape.getBBox().height + this.titleGap;
-    }
+    const { itemGap, itemMarginBottom } = this;
+    const titleGap = this._getTitleHeight();
 
     let row = 0;
     let rowLength = 0;
@@ -309,8 +316,8 @@ class List {
 
   _adjustVertical() {
     const { maxLength, itemsGroup } = this; // 垂直布局，则 maxLength 代表容器的高度
-    const { titleShape, itemGap, itemMarginBottom, titleGap, itemWidth } = this;
-    const titleHeight = titleShape ? (titleShape.getBBox().height + titleGap) : 0;
+    const { itemGap, itemMarginBottom, itemWidth } = this;
+    const titleHeight = this._getTitleHeight();
     const children = itemsGroup.get('children');
 
     let colLength = titleHeight;
@@ -326,7 +333,7 @@ class List {
       width = bbox.width;
       height = bbox.height;
 
-      if (itemWidth) {
+      if (Util.isNumber(itemWidth)) {
         maxItemWidth = itemWidth + itemGap;
       } else if (width > maxItemWidth) {
         maxItemWidth = width + itemGap;
@@ -409,6 +416,8 @@ class List {
     const titleShape = this.titleShape;
     if (titleShape) {
       titleShape.attr('text', title);
+    } else {
+      this._renderTitle(title);
     }
   }
 
