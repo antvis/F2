@@ -6,64 +6,45 @@ const LEGEND_OFFSET = 30;
 const LEGEND_GAP = 24;
 const MARKER_SIZE = 6;
 
+const DEFAULT_CFG = {
+  itemMarginBottom: 24,
+  itemGap: 20,
+  title: null,
+  nameStyle: {
+    fill: '#808080',
+    fontSize: 24,
+    textAlign: 'start',
+    textBaseline: 'middle'
+  },
+  valueStyle: {
+    fill: '#2e2e2e',
+    fontSize: 24,
+    textAlign: 'start',
+    textBaseline: 'middle'
+  },
+  unCheckColor: '#bfbfbf',
+  itemWidth: 'auto',
+  wordSpace: 12
+};
+
 // Register the default configuration for Legend
 Global.legend = Util.deepMix(Global.Legend || {}, {
-  right: {
+  right: Util.mix({
     position: 'right',
-    layout: 'vertical',
-    itemMarginBottom: 24,
-    title: null,
-    valueStyle: {
-      fill: 'rgba(0, 0, 0, .85)',
-      fontSize: 14,
-      textAlign: 'start',
-      textBaseline: 'middle'
-    }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf',
-    itemWidth: 'auto'
-  },
-  left: {
+    layout: 'vertical'
+  }, DEFAULT_CFG),
+  left: Util.mix({
     position: 'left',
-    layout: 'vertical',
-    itemMarginBottom: 24,
-    title: null,
-    valueStyle: {
-      fill: 'rgba(0, 0, 0, .85)',
-      fontSize: 14,
-      textAlign: 'start',
-      textBaseline: 'middle'
-    }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf',
-    itemWidth: 'auto'
-  },
-  top: {
+    layout: 'vertical'
+  }, DEFAULT_CFG),
+  top: Util.mix({
     position: 'top',
-    layout: 'horizontal',
-    title: null,
-    itemGap: 20,
-    valueStyle: {
-      fill: 'rgba(0, 0, 0, .85)',
-      fontSize: 14,
-      textAlign: 'start',
-      textBaseline: 'middle'
-    }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf',
-    itemWidth: 'auto'
-  },
-  bottom: {
+    layout: 'horizontal'
+  }, DEFAULT_CFG),
+  bottom: Util.mix({
     position: 'bottom',
-    layout: 'horizontal',
-    title: null,
-    itemGap: 20,
-    valueStyle: {
-      fill: 'rgba(0, 0, 0, .85)',
-      fontSize: 14,
-      textAlign: 'start',
-      textBaseline: 'middle'
-    }, // 图例项文本的样式
-    unCheckColor: '#bfbfbf',
-    itemWidth: 'auto'
-  }
+    layout: 'horizontal'
+  }, DEFAULT_CFG)
 });
 
 function _isScaleExist(scales, compareScale) {
@@ -140,6 +121,7 @@ class LegendController {
         item.marker.radius = item.marker.radius || MARKER_SIZE;
       }
       item.checked = Util.isNil(item.checked) ? true : item.checked;
+      item.name = item.name || item.value; // 兼容 value 的写法
     });
 
     const legend = new List(Util.deepMix({}, Global.legend[position], legendCfg, {
@@ -202,13 +184,21 @@ class LegendController {
       const color = attr.mapping(value).join('') || Global.defaultColor;
 
       const marker = {
-        symbol,
         fill: color,
-        radius: MARKER_SIZE
+        radius: 7,
+        symbol: 'circle',
+        lineWidth: 2,
+        stroke: '#fff'
       };
 
+      if (Util.isPlainObject(symbol)) {
+        Util.mix(marker, symbol);
+      } else {
+        marker.symbol = symbol;
+      }
+
       items.push({
-        value: name, // 图例项显示文本的内容
+        name, // 图例项显示文本的内容
         dataValue: value, // 图例项对应原始数据中的数值
         checked: filterVals ? self._isFiltered(scale, filterVals, scaleValue) : true,
         marker
@@ -279,7 +269,6 @@ class LegendController {
   handleEvent(ev) {
     const self = this;
 
-    // TODO: 此处又 BUG
     function findItem(x, y) {
       let result = null;
       const legends = self.legends;

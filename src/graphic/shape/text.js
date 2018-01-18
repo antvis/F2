@@ -151,7 +151,7 @@ class Text extends Shape {
   calculateBox() {
     const self = this;
     const attrs = self.get('attrs');
-    const { x, y, textAlign, textBaseline, lineWidth } = attrs;
+    const { x, y, textAlign, textBaseline } = attrs;
     const width = self._getTextWidth(); // attrs.width
     if (!width) {
       // 如果width不存在，四点共其实点
@@ -184,12 +184,11 @@ class Text extends Shape {
       }
     }
 
-    const halfWidth = lineWidth / 2;
     return {
-      minX: point.x - halfWidth,
-      minY: point.y - halfWidth,
-      maxX: point.x + width + halfWidth,
-      maxY: point.y + height + halfWidth
+      minX: point.x,
+      minY: point.y,
+      maxX: point.x + width,
+      maxY: point.y + height
     };
   }
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>面积图</title>
+  <title>曲线图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -13,14 +13,16 @@
 <script src="../build/f2.js"></script>
 <script>
   const data = [
-    { time: 'Jan', tem: 1000 },
-    { time: 'Feb', tem: 2200 },
-    { time: 'Mar', tem: 2000 },
-    { time: 'Apr', tem: 2600 },
-    { time: 'May', tem: 2000 },
-    { time: 'Jun', tem: 2600 },
-    { time: 'Jul', tem: 2800 },
-    { time: 'Aug', tem: 2000 }
+    { time: '周一', tem: 10, city: 'beijing' },
+    { time: '周二', tem: 22, city: 'beijing' },
+    { time: '周三', tem: 20, city: 'beijing' },
+    { time: '周四', tem: 26, city: 'beijing' },
+    { time: '周五', tem: 20, city: 'beijing' },
+    { time: '周一', tem: 15, city: 'newYork' },
+    { time: '周二', tem: 12, city: 'newYork' },
+    { time: '周三', tem: 26, city: 'newYork' },
+    { time: '周四', tem: 20, city: 'newYork' },
+    { time: '周五', tem: 28, city: 'newYork' }
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
@@ -31,24 +33,13 @@
 
   chart.source(data, {
     time: {
+      tickCount: 7,
       range: [ 0, 1 ]
     },
     tem: {
       tickCount: 5,
       min: 0
     }
-  });
-  chart.tooltip({
-    showCrosshairs: true,
-    // showTitle: true
-  });
-  chart.axis('tem', {
-    label: {
-      textAlign: 'start',
-      textBaseline: 'bottom',
-      top: true
-    },
-    labelOffset: 0
   });
   chart.axis('time', {
     label(text, index, total) {
@@ -67,8 +58,9 @@
       return textCfg;
     }
   });
-  chart.area().position('time*tem').color('#1890FF');
-  chart.line().position('time*tem').color('#1890FF');
+  chart.line().position('time*tem')
+    .color('city')
+    .shape('smooth');
   chart.render();
 </script>
 </body>

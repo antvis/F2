@@ -34,9 +34,9 @@ class Arc extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, startAngle, endAngle, clockwise, lineWidth } = attrs;
+    const { x, y, r, startAngle, endAngle, clockwise } = attrs;
 
-    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise, lineWidth);
+    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
   }
 }
 

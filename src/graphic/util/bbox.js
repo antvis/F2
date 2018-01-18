@@ -70,7 +70,7 @@ module.exports = {
    * @param  {Number} lineWidth 线宽
    * @return {Object}        最小包围盒的范围
    */
-  getBBoxFromPoints(points, lineWidth = 0) {
+  getBBoxFromPoints(points) {
     if (points.length === 0) {
       return;
     }
@@ -89,13 +89,11 @@ module.exports = {
       bottom = Math.max(bottom, p.y);
     }
 
-    const halfLineWidth = lineWidth / 2;
-
     return {
-      minX: left - halfLineWidth,
-      minY: top - halfLineWidth,
-      maxX: right + halfLineWidth,
-      maxY: bottom + halfLineWidth
+      minX: left,
+      minY: top,
+      maxX: right,
+      maxY: bottom
     };
   },
   /**
@@ -107,15 +105,15 @@ module.exports = {
    * @param  {Number} lineWidth 线宽
    * @return {Object}    线段的最小包围盒
    */
-  getBBoxFromLine(x0, y0, x1, y1, lineWidth = 0) {
+  getBBoxFromLine(x0, y0, x1, y1) {
     return {
-      minX: Math.min(x0, x1) - lineWidth / 2,
-      minY: Math.min(y0, y1) - lineWidth / 2,
-      maxX: Math.max(x0, x1) + lineWidth / 2,
-      maxY: Math.max(y0, y1) + lineWidth / 2
+      minX: Math.min(x0, x1),
+      minY: Math.min(y0, y1),
+      maxX: Math.max(x0, x1),
+      maxY: Math.max(y0, y1)
     };
   },
-  getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise, lineWidth = 0) {
+  getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise) {
     const diff = Math.abs(startAngle - endAngle);
     if (diff % Math.PI * 2 < 1e-4 && diff > 1e-4) {
       // Is a circle
@@ -169,16 +167,14 @@ module.exports = {
       }
     }
 
-    const halfLineWidth = lineWidth / 2;
-
     return {
-      minX: min[0] - halfLineWidth,
-      minY: min[1] - halfLineWidth,
-      maxX: max[0] + halfLineWidth,
-      maxY: max[1] + halfLineWidth
+      minX: min[0],
+      minY: min[1],
+      maxX: max[0],
+      maxY: max[1]
     };
   },
-  getBBoxFromBezierGroup(points, lineWidth = 0) {
+  getBBoxFromBezierGroup(points) {
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
@@ -199,13 +195,11 @@ module.exports = {
       }
     }
 
-    const halfLineWidth = lineWidth / 2;
-
     return {
-      minX: minX - halfLineWidth,
-      minY: minY - halfLineWidth,
-      maxX: maxX + halfLineWidth,
-      maxY: maxY + halfLineWidth
+      minX,
+      minY,
+      maxX,
+      maxY
     };
   }
 };

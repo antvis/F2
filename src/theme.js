@@ -2,25 +2,28 @@
  * @fileOverview 默认皮肤
  * @author dxq613@gail.com
  */
-const axisLineColor = '#999999';
-const lineColor = '#E9E9E9';
-const Util = require('./util/common');
-const defaultAxis = {
-  label: {
-    fillStyle: '#979797',
-    font: '20px san-serif'
-  },
-  labelOffset: 6,
-  line: {
-    stroke: lineColor,
-    lineWidth: 1
-  },
-  grid: {
-    stroke: lineColor,
-    lineWidth: 1
-  },
-  tickLine: null
+
+// constant
+// FONTSIZE
+// COLOR
+const color1 = 'rgba(0, 0, 0, 0.09)'; // 坐标轴线、坐标轴网格线的颜色
+const color2 = 'rgba(0, 0, 0, 0.45)'; // 字体颜色
+
+const AXIS_LABEL = {
+  fill: color2,
+  fontSize: 20
 };
+const AXIS_LINE = {
+  stroke: color1,
+  lineWidth: 1,
+  top: true
+};
+const AXIS_GRID = {
+  stroke: color1,
+  lineWidth: 1,
+  lineDash: [ 4 ]
+};
+
 const defaultFont = {
   fontStyle: '',
   fontVariant: '',
@@ -33,7 +36,7 @@ const Theme = {
   defaultFont,
   defaultColor: '#4E7CCC',
   pixelRatio: 1,
-  padding: [ 100, 40, 40, 40 ],
+  padding: [ 80 ],
   colors: [ '#4E7CCC', '#36B3C3', '#4ECDA5', '#94E08A', '#E2F194', '#EDCC72', '#F8AB60', '#F9815C', '#EB4456', '#C82B3D' ],
   shapes: {
     line: [ 'line', 'dash' ],
@@ -42,43 +45,41 @@ const Theme = {
   opacities: [ 0.1, 0.9 ],
   sizes: [ 4, 10 ],
   axis: {
-    bottom: Util.deepMix({}, defaultAxis, {
-      line: {
-        stroke: axisLineColor
-      },
-      label: {
-        textBaseline: 'hanging'
-      },
-      labelOffset: 12,
-      gridAttrs: {},
-      grid(text, index, total) {
-        if (index === 0 || index === total - 1) {
-          return null;
-        }
-        return Util.mix({}, defaultAxis.grid, Theme.axis.bottom.gridAttrs);
-      }
-    }),
-    left: Util.deepMix({}, defaultAxis, {
-      label: {
-        textAlign: 'end'
-      },
-      line: null,
-      tickLine: null
-    }),
-    right: Util.deepMix({}, defaultAxis, {
-      label: {
-        textAlign: 'start'
-      },
+    bottom: {
+      line: AXIS_LINE,
+      tickLine: null,
+      grid: null,
+      labelOffset: 15,
+      label: AXIS_LABEL
+    },
+    left: {
+      label: AXIS_LABEL,
       line: null,
       tickLine: null,
-      grid: null
-    }),
-    circle: Util.deepMix({}, defaultAxis, {
-      line: {
-        stroke: axisLineColor
-      }
-    }),
-    radius: Util.deepMix({}, defaultAxis, {})
+      grid: AXIS_GRID,
+      labelOffset: 15
+    },
+    right: {
+      label: AXIS_LABEL,
+      line: null,
+      grid: null,
+      tickLine: null,
+      labelOffset: 15
+    },
+    circle: {
+      label: AXIS_LABEL,
+      line: null,
+      grid: AXIS_GRID,
+      tickLine: null,
+      labelOffset: 15
+    },
+    radius: {
+      label: AXIS_LABEL,
+      line: AXIS_LINE,
+      grid: AXIS_GRID,
+      tickLine: null,
+      labelOffset: 8
+    }
   },
   shape: {
     line: {
@@ -87,6 +88,9 @@ const Theme = {
     point: {
       lineWidth: 0,
       size: 5 // 圆的默认半径
+    },
+    area: {
+      fillOpacity: 0.4 // TODO: 需要确认
     }
   }
 };

@@ -84,7 +84,7 @@ iframe {
 #chart-panel {
   overflow: hidden;
   flex: 1;
-  padding: 1rem;
+  padding: 0 1rem;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: scroll-position;

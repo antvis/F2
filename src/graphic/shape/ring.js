@@ -28,21 +28,20 @@ class Ring extends Shape {
     context.beginPath();
     context.moveTo(x + r, y);
     context.arc(x, y, r, 0, Math.PI * 2, false);
-    context.moveTo(x + r0, y);
+    // context.moveTo(x + r0, y);
     context.arc(x, y, r0, 0, Math.PI * 2, true);
     context.closePath();
   }
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, lineWidth } = attrs;
-    const halfLineWidth = lineWidth / 2 || 0;
+    const { x, y, r } = attrs;
 
     return {
-      minX: x - r - halfLineWidth,
-      maxX: x + r + halfLineWidth,
-      minY: y - r - halfLineWidth,
-      maxY: y + r + halfLineWidth
+      minX: x - r,
+      maxX: x + r,
+      minY: y - r,
+      maxY: y + r
     };
   }
 }

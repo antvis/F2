@@ -46,7 +46,7 @@ class Tooltip {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
           visible: false,
-          zIndex: 0,
+          zIndex: -1,
           attrs: {
             points: [],
             fill: '#1890FF'
@@ -70,6 +70,8 @@ class Tooltip {
       });
       this.crosshairsShape = shape;
     }
+
+    frontPlot.sort();
   }
 
   setContent(title, items) {
@@ -122,8 +124,8 @@ class Tooltip {
 
       if (tooltipArrow) {
         tooltipArrow.attr('points', [
-          { x: x - 8, y: tl.y - 8 + offsetY },
-          { x: x + 8, y: tl.y - 8 + offsetY },
+          { x: x - 6, y: tl.y - 8 + offsetY },
+          { x: x + 6, y: tl.y - 8 + offsetY },
           { x, y: tl.y + offsetY }
         ]);
         if (x === tl.x) {

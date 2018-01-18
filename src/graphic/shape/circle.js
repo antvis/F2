@@ -31,14 +31,13 @@ class Circle extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, lineWidth } = attrs;
-    const halfLineWidth = lineWidth / 2;
+    const { x, y, r } = attrs;
 
     return {
-      minX: x - r - halfLineWidth,
-      maxX: x + r + halfLineWidth,
-      minY: y - r - halfLineWidth,
-      maxY: y + r + halfLineWidth
+      minX: x - r,
+      maxX: x + r,
+      minY: y - r,
+      maxY: y + r
     };
   }
 }
