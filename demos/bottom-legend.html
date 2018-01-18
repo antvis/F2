@@ -56,10 +56,12 @@
     }
   });
   chart.tooltip({
-    showCrosshairs: true
+    showCrosshairs: true,
+    showTitle: true
   });
   chart.legend({
-    position: 'bottom'
+    position: 'bottom',
+    showTitle: true
   });
   chart.axis('year', {
     label(text, index, total) {

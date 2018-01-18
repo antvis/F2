@@ -9,7 +9,13 @@ const MARKER_SIZE = 6;
 const DEFAULT_CFG = {
   itemMarginBottom: 24,
   itemGap: 20,
-  title: null,
+  showTitle: false,
+  titleStyle: {
+    fontSize: 24,
+    fill: '#2e2e2e',
+    textAlign: 'start',
+    textBaseline: 'top'
+  },
   nameStyle: {
     fill: '#808080',
     fontSize: 24,
@@ -204,18 +210,15 @@ class LegendController {
         marker
       });
     });
-
     const lastCfg = Util.deepMix({}, Global.legend[position], legendCfg[field] || legendCfg, {
       maxLength: self._getMaxLength(position),
       items,
       field,
       filterVals
     });
-    if (lastCfg.title) {
+    if (lastCfg.showTitle) {
       Util.deepMix(lastCfg, {
-        title: {
-          text: scale.alias || scale.field
-        }
+        title: scale.alias || scale.field
       });
     }
 

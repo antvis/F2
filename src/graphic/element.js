@@ -243,7 +243,6 @@ class Element extends Base {
     };
   }
 
-  // TODO: 矩阵变换
   initTransform() {
     this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
   }
