@@ -185,7 +185,8 @@ class TooltipController {
       frontPlot,
       backPlot,
       canvas,
-      fixed: coord.transposed || coord.isPolar
+      fixed: coord.transposed || coord.isPolar,
+      visible: false
     }, defaultCfg, cfg);
     cfg.maxLength = self._getMaxLength(cfg);
     this.cfg = cfg;

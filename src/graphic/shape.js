@@ -62,19 +62,8 @@ class Shape extends Element {
     return null;
   }
 
-  /**
-   * TODO: 节点是否在图形中
-   * @param  {Number}  x x 坐标
-   * @param  {Number}  y y 坐标
-   * @return {Boolean}  是否在图形中
-   */
-  isPointInPath() {
-    return false;
-  }
-
   clearTotalMatrix() {
     this._attrs.totalMatrix = null;
-    // this._attrs.region = null;
   }
 
   createPath() {}

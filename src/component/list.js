@@ -21,7 +21,7 @@ class List {
        * 标题距离记录项的间距
        * @type {Number}
        */
-      titleGap: 12,
+      titleGap: 24,
       /**
        * 各个记录项水平方向的间距
        * @type {Number}
@@ -42,19 +42,6 @@ class List {
        * @type {[type]}
        */
       itemFormatter: null,
-      titleStyle: {},
-      nameStyle: {
-        fontSize: 24,
-        fill: '#808080',
-        textAlign: 'start',
-        textBaseline: 'middle'
-      },
-      valueStyle: {
-        fontSize: 24,
-        fill: '#2E2E2E',
-        textAlign: 'start',
-        textBaseline: 'middle'
-      },
       itemWidth: null,
       /**
        * marker 和文字的距离
@@ -94,7 +81,9 @@ class List {
   _init() {
     const container = new Group();
     this.container = container;
-    const itemsGroup = container.addGroup({
+    const wrapper = container.addGroup();
+    this.wrapper = wrapper;
+    const itemsGroup = wrapper.addGroup({
       className: 'itemsGroup'
     });
     this.itemsGroup = itemsGroup;
@@ -104,8 +93,8 @@ class List {
     title = title || this.title;
 
     if (this.showTitle && title) {
-      const { container, titleStyle } = this;
-      const titleShape = container.addShape('text', {
+      const { wrapper, titleStyle } = this;
+      const titleShape = wrapper.addShape('text', {
         className: 'title',
         attrs: Util.mix({
           x: 0,
@@ -139,8 +128,8 @@ class List {
     const background = this.background;
     if (background) {
       const container = this.container;
-      const itemsGroup = this.itemsGroup;
-      const { minX, minY, width, height } = itemsGroup.getBBox();
+      const wrapper = this.wrapper;
+      const { minX, minY, width, height } = wrapper.getBBox();
       let padding = background.padding || [ 0, 0, 0, 0 ];
       padding = Util.parsePadding(padding);
       const attrs = Util.mix({
@@ -373,9 +362,9 @@ class List {
     items = items || this.items;
     const count = items.length;
 
-    if (count < 2) {
-      return;
-    }
+    // if (count < 2) {
+    //   return;
+    // }
 
     if (layout === 'horizontal') {
       this._adjustHorizontal();
