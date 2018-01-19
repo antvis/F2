@@ -53,7 +53,8 @@ describe('axis assist', function() {
     axisCfg: {
       c: false,
       b: {
-        grid: null
+        grid: null,
+        position: 'right'
       }
     }
   });
@@ -84,38 +85,38 @@ describe('axis assist', function() {
   });
 
   it('get line x axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'x');
+    const cfg = assist._getLineCfg(rect, 'bottom');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'y');
+    const cfg = assist._getLineCfg(rect, 'left');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'y', 1);
+    const cfg = assist._getLineCfg(rect, 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get positin x', function() {
-    const positin = assist._getLinePosition('x');
+    const positin = assist._getLinePosition(otherLinear, 'x');
     expect(positin).equal('bottom');
   });
 
   it('get positin y', function() {
-    const positin = assist._getLinePosition('y');
-    expect(positin).equal('left');
+    const positin = assist._getLinePosition(linear, 'y');
+    expect(positin).equal('right');
   });
 
   it('get positin y 2', function() {
-    const positin = assist._getLinePosition('y', 1);
+    const positin = assist._getLinePosition(otherLinear, 'y', 1);
     expect(positin).equal('right');
   });
 
@@ -141,21 +142,21 @@ describe('axis assist rect transposed', function() {
   rect.transposed = true;
 
   it('get line x axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'x', { grid: {} });
+    const cfg = assist._getLineCfg(rect, 'bottom');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'y');
+    const cfg = assist._getLineCfg(rect, 'left');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = assist._getLineCfg(rect, 'y', 1);
+    const cfg = assist._getLineCfg(rect, 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);
