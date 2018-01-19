@@ -41,10 +41,10 @@ describe('Polyline', function() {
 
   it('getBBox', function() {
     const bbox = polyline.getBBox();
-    expect(bbox.x).to.equal(9.5);
-    expect(bbox.y).to.equal(9.5);
-    expect(bbox.width).to.equal(114);
-    expect(bbox.height).to.equal(71);
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(10);
+    expect(bbox.width).to.equal(113);
+    expect(bbox.height).to.equal(70);
   });
 
   it('destroy', function() {
@@ -84,10 +84,10 @@ describe('Smooth Polyline', function() {
 
   it('getBBox', function() {
     const bbox = line.getBBox();
-    expect(bbox.x).to.equal(8);
-    expect(+bbox.y.toFixed(1)).to.equal(86.5);
-    expect(bbox.width).to.equal(93.99739841364499);
-    expect(bbox.height).to.equal(35.502917125608604);
+    expect(bbox.x).to.equal(10);
+    expect(+bbox.y.toFixed(1)).to.equal(88.5);
+    expect(bbox.width).to.equal(89.99739841364499);
+    expect(bbox.height).to.equal(31.502917125608604);
   });
 
   it('destroy', function() {

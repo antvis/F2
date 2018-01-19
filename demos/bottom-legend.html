@@ -45,9 +45,9 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: 450,
     pixelRatio: window.devicePixelRatio,
-    padding: [ 80, 80, 200 ]
+    padding: [ 150, 80 ]
   });
 
   chart.source(data, {
@@ -56,21 +56,14 @@
     }
   });
   chart.tooltip({
-    showCrosshairs: true,
-    showTitle: true
+    showCrosshairs: true
   });
   chart.legend({
-    position: 'bottom',
-    showTitle: true
+    position: 'bottom'
   });
   chart.axis('year', {
     label(text, index, total) {
-      const textCfg = {
-        textBaseline: 'top',
-        fill: 'rgba(0, 0, 0, 0.45)',
-        fontSize: 20,
-        textAlign: 'center'
-      };
+      const textCfg = {};
       if (index === 0) {
         textCfg.textAlign = 'left';
       }

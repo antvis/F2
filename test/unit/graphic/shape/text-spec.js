@@ -59,10 +59,10 @@ describe('Text', function() {
     // bbox
     canvas.draw();
     const bbox = text.getBBox();
-    expect(bbox.x).to.equal(29.5);
-    expect(bbox.y).to.equal(17.5);
-    expect(bbox.width).to.equal(27.23046875);
-    expect(bbox.height).to.equal(13);
+    expect(bbox.x).to.equal(30);
+    expect(bbox.y).to.equal(18);
+    expect(bbox.width).to.equal(26.23046875);
+    expect(bbox.height).to.equal(12);
   });
 
   it('fill', function() {
@@ -82,10 +82,10 @@ describe('Text', function() {
     canvas.add(text1);
     // bbox
     const bbox = text1.getBBox();
-    expect(bbox.x).to.equal(29.5);
-    expect(bbox.y).to.equal(77.5);
-    expect(bbox.width).to.equal(49);
-    expect(bbox.height).to.equal(13);
+    expect(bbox.x).to.equal(30);
+    expect(bbox.y).to.equal(78);
+    expect(bbox.width).to.equal(48);
+    expect(bbox.height).to.equal(12);
 
     canvas.draw();
   });
@@ -106,10 +106,10 @@ describe('Text', function() {
     canvas.add(text1);
      // bbox
     const bbox = text1.getBBox();
-    expect(bbox.x).to.equal(9.5);
-    expect(bbox.y).to.equal(39.5);
-    expect(bbox.width).to.equal(81);
-    expect(bbox.height).to.equal(21);
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(40);
+    expect(bbox.width).to.equal(80);
+    expect(bbox.height).to.equal(20);
 
     canvas.draw();
   });
@@ -163,10 +163,10 @@ describe('Text', function() {
     canvas.add(text);
     // bbox
     const bbox = text.getBBox();
-    expect(bbox.x).to.equal(99.5);
-    expect(bbox.y).to.equal(49.5);
-    expect(bbox.width).to.equal(29.67578125);
-    expect(bbox.height).to.equal(49);
+    expect(bbox.x).to.equal(100);
+    expect(bbox.y).to.equal(50);
+    expect(bbox.width).to.equal(28.67578125);
+    expect(bbox.height).to.equal(48);
     canvas.draw();
   });
 });

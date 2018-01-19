@@ -26,7 +26,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: 450,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -44,12 +44,7 @@
   });
   chart.axis('time', {
     label(text, index, total) {
-      const textCfg = {
-        textBaseline: 'top',
-        fill: 'rgba(0, 0, 0, 0.45)',
-        fontSize: 20,
-        textAlign: 'center'
-      };
+      const textCfg = {};
       if (index === 0) {
         textCfg.textAlign = 'left';
       }

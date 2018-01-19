@@ -5,7 +5,8 @@ const { Tooltip } = require('../component/index');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix(Global.tooltip || {}, {
-  triggerOn: 'mousemove',
+  triggerOn: 'touchmove',
+  triggerOff: 'touchend',
   showTitle: false,
   showCrosshairs: false,
   crosshairsStyle: {
@@ -13,7 +14,6 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
     lineWidth: 2
   },
   showTooltipMarker: true,
-  // tooltipMarkerStyle: {} tooltipMarker 样式
   background: {
     radius: 2,
     fill: '#1890FF',
@@ -255,6 +255,8 @@ class TooltipController {
     const tooltip = this.tooltip;
     const cfg = this.cfg;
 
+    items = _uniqItems(items); // 过滤重复的记录项
+
     if (cfg.onShow) { // tooltip 展示
       cfg.onShow({
         x: point.x,
@@ -267,8 +269,6 @@ class TooltipController {
     if (isEqual(lastActive, items)) {
       return;
     }
-
-    items = _uniqItems(items);
     this._lastActive = items;
 
     if (cfg.onChange) {
@@ -368,17 +368,21 @@ class TooltipController {
 
   hideTooltip() {
     const cfg = this.cfg;
-    const tooltip = this.tooltip;
     this._lastActive = [];
-    tooltip.hide();
-    if (cfg.onHide) {
-      cfg.onHide({
-        tooltip
-      });
+    const tooltip = this.tooltip;
+    if (tooltip) {
+      tooltip.hide();
+      if (cfg.onHide) {
+        cfg.onHide({
+          tooltip
+        });
+      }
+      const canvas = this.chart.get('canvas');
+      canvas.draw();
     }
   }
 
-  handleEvent(ev) {
+  handleShowEvent(ev) {
     const chart = this.chart;
     const plot = chart.get('plot');
     const { x, y } = DomUtil.createEvent(ev, chart);
@@ -394,26 +398,39 @@ class TooltipController {
     }
   }
 
-  bindEvents() {
+  handleHideEvent() {
+    this.hideTooltip();
+  }
+
+  _handleEvent(methodName, method, action) {
     const chart = this.chart;
-    const triggerOn = this.cfg.triggerOn;
-    const method = Util.wrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'bind'); // TODO： 测试。供用户自己绑定事件
+    if (Util.isFunction(methodName)) {
+      methodName(method, action); // TODO： 测试。供用户自己绑定事件
+    } else if (action === 'bind') {
+      DomUtil.addEventListener(chart, methodName, method);
     } else {
-      DomUtil.addEventListener(chart, triggerOn, method);
+      DomUtil.removeEventListener(chart, methodName, method);
     }
   }
 
-  unBindEvents() {
-    const chart = this.chart;
+  bindEvents() {
     const triggerOn = this.cfg.triggerOn;
-    const method = Util.getWrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'unBind'); // TODO： 测试 供用户自己解绑事件
-    } else {
-      DomUtil.removeEventListener(chart, triggerOn, method);
-    }
+    const triggerOff = this.cfg.triggerOff;
+    const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
+    const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
+
+    this._handleEvent(triggerOn, showMethod, 'bind');
+    this._handleEvent(triggerOff, hideMethod, 'bind');
+  }
+
+  unBindEvents() {
+    const triggerOn = this.cfg.triggerOn;
+    const triggerOff = this.cfg.triggerOff;
+    const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
+    const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
+
+    this._handleEvent(triggerOn, showMethod, 'unBind');
+    this._handleEvent(triggerOff, hideMethod, 'unBind');
   }
 }
 

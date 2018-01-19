@@ -11,6 +11,7 @@
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
 <script>
   const data = [
     { country: 'Asia', year: '1750', value: 502 },
@@ -38,7 +39,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: 450,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -53,7 +54,19 @@
   chart.tooltip({
     custom(obj) {
       const legend = chart.get('legendController').legends.top[0];
-      legend.setItems(obj.items);
+      const tooltipItems = obj.items;
+      const legendItems = legend.items;
+      const map = {};
+      legendItems.map(item => {
+        map[item.name] = _.clone(item);
+      });
+      tooltipItems.map(item => {
+        const { name, value } = item;
+        if (map[name]) {
+          map[name].value = value;
+        }
+      });
+      legend.setItems(Object.values(map));
     },
     onHide(tooltip) {
       const legend = chart.get('legendController').legends.top[0];
@@ -62,12 +75,7 @@
   });
   chart.axis('year', {
     label(text, index, total) {
-      const textCfg = {
-        textBaseline: 'top',
-        fill: 'rgba(0, 0, 0, 0.45)',
-        fontSize: 20,
-        textAlign: 'center'
-      };
+      const textCfg = {};
       if (index === 0) {
         textCfg.textAlign = 'left';
       }

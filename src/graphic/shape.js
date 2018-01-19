@@ -1,6 +1,5 @@
 const Util = require('../util/common');
 const Element = require('./element');
-// const Inside = require('../shape/util/inside');
 
 class Shape extends Element {
   getDefaultCfg() {

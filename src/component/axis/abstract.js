@@ -1,4 +1,5 @@
 const Util = require('../../util/common');
+const Global = require('../../global');
 const Vector2 = require('../../graphic/util/vector2');
 
 class Abastract {
@@ -79,7 +80,7 @@ class Abastract {
     const count = ticks.length;
     Util.each(ticks, function(tick, index) {
       if (Util.isFunction(label)) { // 文本的配置项动态可配置
-        labelCfg = label(tick.text, index, count);
+        labelCfg = Util.mix({}, Global._defaultAxis.label, label(tick.text, index, count));
       }
       if (labelCfg) {
         const container = self.getContainer(labelCfg.top);
@@ -109,7 +110,7 @@ class Abastract {
     Util.each(gridPoints, function(subPoints, index) {
       if (Util.isFunction(grid)) {
         const tick = ticks[index] || {};
-        gridCfg = grid(tick.text, index, count);
+        gridCfg = Util.mix({}, Global._defaultAxis.grid, grid(tick.text, index, count));
       }
 
       if (gridCfg) {

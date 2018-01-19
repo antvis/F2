@@ -132,9 +132,10 @@ class LegendController {
 
     const legend = new List(Util.deepMix({}, Global.legend[position], legendCfg, {
       maxLength: self._getMaxLength(position),
-      items
+      items,
+      parent: container
     }));
-    container.add(legend.container);
+    // container.add(legend.container);
     legends[position].push(legend);
   }
 
@@ -214,7 +215,8 @@ class LegendController {
       maxLength: self._getMaxLength(position),
       items,
       field,
-      filterVals
+      filterVals,
+      parent: container
     });
     if (lastCfg.showTitle) {
       Util.deepMix(lastCfg, {
@@ -223,7 +225,7 @@ class LegendController {
     }
 
     const legend = new List(lastCfg);
-    container.add(legend.container);
+    // container.add(legend.container);
     legends[position].push(legend);
     return legend;
   }

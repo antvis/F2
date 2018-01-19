@@ -471,7 +471,8 @@ class Chart extends Base {
         context: self.get('context'),
         pixelRatio: self.get('pixelRatio'),
         width: self.get('width'),
-        height: self.get('height')
+        height: self.get('height'),
+        fontFamily: Global.fontFamily
       });
       self.set('canvas', canvas);
       self.set('width', canvas.get('width'));

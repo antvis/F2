@@ -17,30 +17,6 @@ const SYMBOLS = {
     ctx.lineTo(x + r, y + r);
     ctx.lineTo(x - r, y + r);
     ctx.closePath();
-  },
-  // 菱形
-  diamond(x, y, r, ctx) {
-    ctx.moveTo(x - r, y);
-    ctx.lineTo(x, y - r);
-    ctx.lineTo(x + r, y);
-    ctx.lineTo(x, y + r);
-    ctx.closePath();
-  },
-  // 三角形
-  triangle(x, y, r, ctx) {
-    const diffY = r * Math.sin((1 / 3) * Math.PI);
-    ctx.moveTo(x - r, y + diffY);
-    ctx.lineTo(x, y - diffY);
-    ctx.lineTo(x + r, y + diffY);
-    ctx.closePath();
-  },
-  // 倒三角形
-  'triangle-down': function(x, y, r, ctx) {
-    const diffY = r * Math.sin((1 / 3) * Math.PI);
-    ctx.moveTo(x - r, y - diffY);
-    ctx.lineTo(x + r, y - diffY);
-    ctx.lineTo(x, y + diffY);
-    ctx.closePath();
   }
 };
 

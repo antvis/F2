@@ -22,6 +22,13 @@ module.exports = {
     }
     cfg.canvas = canvas;
     cfg.type = type;
+
+    // 设置字体
+    if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
+      cfg.attrs = cfg.attrs || {};
+      cfg.attrs.fontFamily = canvas.get('fontFamily');
+    }
+
     const shape = new Shape[shapeType](cfg);
     this.add(shape);
     return shape;

@@ -37,26 +37,26 @@ class AxisController {
     return !axisCfg || axisCfg[field] === false;
   }
 
-  _getLinePosition(dimType, index) {
+  _getLinePosition(scale, dimType, index) {
     let position = '';
-    if (dimType === 'x') {
+    const field = scale.field;
+    const axisCfg = this.axisCfg;
+    if (axisCfg[field] && axisCfg[field].position) {
+      position = axisCfg[field].position;
+    } else if (dimType === 'x') {
       position = 'bottom';
+    } else if (dimType === 'y') {
+      position = index ? 'right' : 'left';
     }
-    if (dimType === 'y') {
-      if (index) {
-        position = 'right';
-      } else {
-        position = 'left';
-      }
-    }
+
     return position;
   }
 
-  _getLineCfg(coord, dimType, index) {
+  _getLineCfg(coord, position) {
     let start;
     let end;
     let factor = 1; // 文本的对齐方式，是顺时针方向还是逆时针方向
-    if (dimType === 'x') { // x轴的坐标轴,底部的横坐标
+    if (position === 'bottom') { // x轴的坐标轴,底部的横坐标
       start = {
         x: 0,
         y: 0
@@ -65,27 +65,25 @@ class AxisController {
         x: 1,
         y: 0
       };
-    } else { // y轴坐标轴
-      if (index) { // 多轴的情况
-        start = {
-          x: 1,
-          y: 0
-        };
-        end = {
-          x: 1,
-          y: 1
-        };
-      } else { // 单个y轴，或者第一个y轴
-        start = {
-          x: 0,
-          y: 0
-        };
-        end = {
-          x: 0,
-          y: 1
-        };
-        factor = -1;
-      }
+    } else if (position === 'right') { // 左侧 Y 轴
+      start = {
+        x: 1,
+        y: 0
+      };
+      end = {
+        x: 1,
+        y: 1
+      };
+    } else if (position === 'left') { // 右侧 Y 轴
+      start = {
+        x: 0,
+        y: 0
+      };
+      end = {
+        x: 0,
+        y: 1
+      };
+      factor = -1;
     }
     if (coord.transposed) {
       factor *= -1;
@@ -178,9 +176,9 @@ class AxisController {
     let appendCfg; // 跟特定坐标轴相关的配置项
     if (coordType === 'cartesian' || coordType === 'rect') { // 直角坐标系下
       C = Axis.Line;
-      const position = self._getLinePosition(dimType, index);
+      const position = self._getLinePosition(scale, dimType, index);
       defaultCfg = Global.axis[position];
-      appendCfg = self._getLineCfg(coord, dimType, index);
+      appendCfg = self._getLineCfg(coord, position);
     } else { // 极坐标系下
       if ((dimType === 'x' && !transposed) || (dimType === 'y' && transposed)) { // 圆形坐标轴
         C = Axis.Circle;

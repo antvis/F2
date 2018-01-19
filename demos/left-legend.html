@@ -41,7 +41,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: 450,
     padding: [ 100, 80, 80, 120 ],
     pixelRatio: window.devicePixelRatio
   });
@@ -64,16 +64,9 @@
     grid(text, index) {
       if (text === '140') {
         return {
-          stroke: 'rgba(0, 0, 0, 0.09)',
-          lineWidth: 1
-        }
+          lineDash: null
+        };
       }
-
-      return {
-        stroke: 'rgba(0, 0, 0, 0.09)',
-        lineWidth: 1,
-        lineDash: [ 4 ]
-      };
     }
   });
   chart.interval()

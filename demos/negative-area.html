@@ -26,7 +26,7 @@
     id: 'mountNode',
     pixelRatio: window.devicePixelRatio,
     width: window.innerWidth,
-    height: window.innerHeight
+    height: 450
   });
   chart.source(data, {
     month: {
@@ -40,15 +40,10 @@
     }
   });
 
-  const label = {
-    fill: 'rgba(0, 0, 0, 0.45)',
-    fontSize: 20,
-    offset: 15
-  };
   chart.axis('month', {
     line: null,
     label(text, index, total) {
-      const cfg = label;
+      const cfg = {};
         // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
       if (index === 0) {
         cfg.textAlign = 'start';
@@ -63,16 +58,9 @@
     grid(text, index) {
       if (text === '0') {
         return {
-          stroke: 'rgba(0, 0, 0, 0.09)',
-          lineWidth: 1
+          lineDash: null
         };
       }
-
-      return {
-        stroke: 'rgba(0, 0, 0, 0.09)',
-        lineWidth: 1,
-        lineDash: [ 4 ]
-      };
     }
   });
   chart.tooltip({

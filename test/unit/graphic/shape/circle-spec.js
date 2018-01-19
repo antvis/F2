@@ -53,10 +53,10 @@ describe('Circle', function() {
 
   it('getBBox', function() {
     const bbox = circle.getBBox();
-    expect(bbox.x).to.equal(73);
-    expect(bbox.y).to.equal(73);
-    expect(bbox.width).to.equal(54);
-    expect(bbox.height).to.equal(54);
+    expect(bbox.x).to.equal(75);
+    expect(bbox.y).to.equal(75);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
   });
 
   it('destroy', function() {
