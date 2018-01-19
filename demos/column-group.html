@@ -55,7 +55,10 @@
     chart.tooltip(false);
     chart.interval().position('月份*月均降雨量')
       .color('name', [ '#1890FF', '#2FC25B' ])
-      .adjust('dodge');
+      .adjust({
+        type: 'dodge',
+        marginRatio: 0.05
+      });
     chart.render();
 </script>
 </body>

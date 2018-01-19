@@ -199,7 +199,8 @@ describe('adjust dodge', function() {
 
     const groupData = Util.Array.group(data, 'c');
     const adjust = new Adjust.Dodge({
-      xField: 'a'
+      xField: 'a',
+      marginRatio: 0.5
     });
 
     it('init', function() {
