@@ -36,10 +36,10 @@ describe('Line', function() {
 
   it('getBBox', function() {
     const bbox = line.getBBox();
-    expect(bbox.x).to.equal(30);
-    expect(bbox.y).to.equal(30);
-    expect(bbox.width).to.equal(90);
-    expect(bbox.height).to.equal(90);
+    expect(bbox.x).to.equal(50);
+    expect(bbox.y).to.equal(50);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
   });
 
   it('destroy', function() {

@@ -39,9 +39,11 @@ class Tooltip {
     const plotRange = this.plotRange;
 
     if (!this.custom) { // custom 表示用户使用自定义 tooltip
-      const container = new Container(cfg);
+      const container = new Container(Util.mix({
+        parent: frontPlot
+      }, cfg));
       this.container = container;
-      frontPlot.add(container.container);
+      // frontPlot.add(container.container);
       if (!this.fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
@@ -83,25 +85,23 @@ class Tooltip {
   }
 
   setPosition(items) {
-    const { container, plotRange, offsetX, offsetY, crosshairsShape, fixed, background, tooltipArrow } = this;
+    const { container, plotRange, offsetX, offsetY, crosshairsShape, fixed, tooltipArrow } = this;
     crosshairsShape && crosshairsShape.moveTo(items[0].x, 0); // 移动辅助线
 
     if (!container) {
       return;
     }
 
-    const containerWidth = container.getWidth();
-    const containerHeight = container.getHeight();
-    let padding = [ 0, 0, 0, 0 ];
-    if (background && background.padding) {
-      padding = Util.parsePadding(background.padding);
-    }
+    const containerBBox = container.container.getBBox();
+    const { minX, minY, width, height } = containerBBox;
+
     const { tl, tr } = plotRange;
     let posX = 0;
-    let posY = tl.y - containerHeight / 2 - 8 + offsetY; // 垂直方向贴着图表绘图区域上方边缘
+    const posY = tl.y - height - 8 + offsetY; // 垂直方向贴着图表绘图区域上方边缘
+
     if (fixed) {
       const x = (tl.x + tr.x) / 2;
-      posX = x - containerWidth / 2 + offsetX + padding[3];
+      posX = x - width / 2 + offsetX;
     } else {
       let x;
       if (items.length > 1) {
@@ -109,18 +109,18 @@ class Tooltip {
       } else {
         x = items[0].x;
       }
-      posX = x - (containerWidth / 2) + offsetX + padding[3];
+      posX = x - (width / 2) + offsetX;
       // 调整位置，始终位于图表范围内
       if (posX < tl.x) {
-        posX = tl.x + padding[3];
+        posX = tl.x;
       }
-      if (posX + containerWidth > tr.x) {
-        posX = tr.x - containerWidth + padding[1];
+      if (posX + width > tr.x) {
+        posX = tr.x - width;
       }
 
-      if (posY < 0) {
-        posY = 0;
-      }
+      // if (posY < 0) {
+      //   posY = 0;
+      // }
 
       if (tooltipArrow) {
         tooltipArrow.attr('points', [
@@ -131,20 +131,20 @@ class Tooltip {
         if (x === tl.x) {
           tooltipArrow.attr('points', [
             { x: tl.x, y: tl.y + offsetX },
-            { x: tl.x, y: tl.y - 8 - containerHeight / 2 + offsetY },
+            { x: tl.x, y: tl.y - 8 - height / 2 + offsetY },
             { x: tl.x + 8, y: tl.y - 8 + offsetY }
           ]);
         } else if (x === tr.x) {
           tooltipArrow.attr('points', [
             { x: tr.x, y: tl.y + offsetX },
             { x: tr.x - 8, y: tl.y - 8 + offsetY },
-            { x: tr.x, y: tl.y - 8 - containerHeight / 2 + offsetY }
+            { x: tr.x, y: tl.y - 8 - height / 2 + offsetY }
           ]);
         }
       }
     }
 
-    container.moveTo(posX, posY);
+    container.moveTo(posX - minX, posY - minY);
   }
 
   setMarkers(cfg = {}) {
@@ -196,12 +196,10 @@ class Tooltip {
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
-    const canvas = this.canvas;
     crosshairsShape && crosshairsShape.hide();
     markerGroup && markerGroup.hide();
     container && container.hide();
     tooltipArrow && tooltipArrow.hide();
-    canvas.draw();
   }
 
   destroy() {

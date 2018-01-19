@@ -34,7 +34,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: 450,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -56,28 +56,13 @@
       if (index === total - 1) {
         return null;
       }
-      // TODO: 这种方式有点难受
-      return {
-        text,
-        textAlign: 'end',
-        textBaseline: 'bottom',
-        fill: 'rgba(0, 0, 0, 0.45)',
-        fontSize: 20
-      };
     },
     grid(text, index) {
       if (text === '120') {
         return {
-          stroke: 'rgba(0, 0, 0, 0.09)',
-          lineWidth: 1
-        }
+          lineDash: null
+        };
       }
-
-      return {
-        stroke: 'rgba(0, 0, 0, 0.09)',
-        lineWidth: 1,
-        lineDash: [ 4 ]
-      };
     }
   });
   chart.line().position('item*score').color('user').size(2);

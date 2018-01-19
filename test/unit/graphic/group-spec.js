@@ -285,9 +285,9 @@ describe('Group', function() {
     canvas.draw();
     expect(group.get('children').length).to.equal(3);
     expect(canvas.get('children').length).to.equal(1);
-    expect(bbox.x).to.equal(9.5);
-    expect(bbox.y).to.equal(9.5);
-    expect(bbox.width).to.equal(103.578125);
-    expect(bbox.height).to.equal(71);
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(10);
+    expect(bbox.width).to.equal(102.74479166666667);
+    expect(bbox.height).to.equal(70);
   });
 });

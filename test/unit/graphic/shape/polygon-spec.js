@@ -34,27 +34,16 @@ describe('Polygon', function() {
 
   it('draw', function() {
     canvas.add(polygon);
-    // const bbox = polygon.getBBox();
-    // canvas.addShape('Rect', {
-    //   attrs: {
-    //     x: bbox.x,
-    //     y: bbox.y,
-    //     width: bbox.width,
-    //     height: bbox.height,
-    //     stroke: 'red',
-    //     lineWidth: 1
-    //   }
-    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
   });
 
   it('getBBox', function() {
     const bbox = polygon.getBBox();
-    expect(bbox.x).to.equal(9.5);
-    expect(bbox.y).to.equal(9.5);
-    expect(bbox.width).to.equal(114);
-    expect(bbox.height).to.equal(71);
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(10);
+    expect(bbox.width).to.equal(113);
+    expect(bbox.height).to.equal(70);
   });
 
   it('destroy', function() {

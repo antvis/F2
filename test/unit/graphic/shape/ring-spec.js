@@ -6,7 +6,7 @@ const dom = document.createElement('canvas');
 dom.id = 'canvas-ring';
 document.body.appendChild(dom);
 
-describe('Sector', function() {
+describe('Ring', function() {
   const canvas = new Canvas({
     domId: 'canvas-ring',
     width: 200,
@@ -38,10 +38,10 @@ describe('Sector', function() {
 
   it('getBBox', function() {
     const bbox = ring.getBBox();
-    expect(bbox.x).to.equal(47);
-    expect(bbox.y).to.equal(97);
-    expect(bbox.width).to.equal(106);
-    expect(bbox.height).to.equal(106);
+    expect(bbox.x).to.equal(50);
+    expect(bbox.y).to.equal(100);
+    expect(bbox.width).to.equal(100);
+    expect(bbox.height).to.equal(100);
   });
 
   it('destroy', function() {

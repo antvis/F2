@@ -45,10 +45,10 @@ describe('Arc', function() {
 
   it('getBBox', function() {
     const bbox = arc.getBBox();
-    expect(parseInt(bbox.x)).to.equal(19);
-    expect(parseInt(bbox.y)).to.equal(19);
-    expect(bbox.width).to.equal(52);
-    expect(bbox.height).to.equal(52);
+    expect(parseInt(bbox.x)).to.equal(20);
+    expect(parseInt(bbox.y)).to.equal(20);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
   });
 
   it('destroy', function() {

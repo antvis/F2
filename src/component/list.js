@@ -49,11 +49,6 @@ class List {
        */
       wordSpace: 12,
       /**
-       * 是否自动换行，默认为 true
-       * @type {Boolean}
-       */
-      autoWrap: true,
-      /**
        * 在画布上的位置
        * @type {[type]}
        */
@@ -87,6 +82,10 @@ class List {
       className: 'itemsGroup'
     });
     this.itemsGroup = itemsGroup;
+
+    if (this.parent) {
+      this.parent.add(container);
+    }
   }
 
   _renderTitle(title) {
@@ -120,7 +119,7 @@ class List {
     Util.each(items, (item, index) => {
       self._addItem(item, index);
     });
-    this._adjustItems(items);
+    this._adjustItems();
     this._renderBackground(); // 渲染背景
   }
 
@@ -175,9 +174,9 @@ class List {
         if (markerAttrs.fill) {
           markerAttrs.fill = unCheckColor;
         }
-        if (markerAttrs.stroke) {
-          markerAttrs.stroke = unCheckColor;
-        }
+        // if (markerAttrs.stroke) {
+        //   markerAttrs.stroke = unCheckColor;
+        // }
       }
 
       const markerShape = new Marker({
@@ -197,7 +196,7 @@ class List {
         attrs: Util.mix({
           x: startX,
           y: 0,
-          text: name
+          text: this._formatItemValue(name)
         }, nameStyle, item.checked === false ? { fill: unCheckColor } : null)
       });
     }
@@ -213,7 +212,7 @@ class List {
         attrs: Util.mix({
           x: valueX,
           y: 0,
-          text: this._formatItemValue(value)
+          text: value
         }, valueStyle, item.checked === false ? { fill: unCheckColor } : null)
       });
     }
@@ -354,18 +353,8 @@ class List {
     return;
   }
 
-  _adjustItems(items) {
-    if (this.autoWrap === false) {
-      return;
-    }
+  _adjustItems() {
     const layout = this.layout;
-    items = items || this.items;
-    const count = items.length;
-
-    // if (count < 2) {
-    //   return;
-    // }
-
     if (layout === 'horizontal') {
       this._adjustHorizontal();
     } else {
@@ -381,24 +370,9 @@ class List {
     return this;
   }
 
-  setItems(newItems) {
-    if (this.items && newItems.length < this.items.length) { // 按照原先 items 的顺序补全 newItems
-      const showItems = [];
-      const items = this.items;
-      let count = 0;
-      items.map(item => {
-        if (item.checked) {
-          showItems.push(newItems[count]);
-          count++;
-        } else {
-          showItems.push(item);
-        }
-        return item;
-      });
-      newItems = showItems;
-    }
+  setItems(items) {
     this.clearItems();
-    this._renderItems(newItems);
+    this._renderItems(items);
   }
 
   setTitle(title) {

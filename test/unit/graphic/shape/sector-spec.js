@@ -33,17 +33,6 @@ describe('Sector', function() {
 
   it('draw', function() {
     canvas.add(sector);
-    // const bbox = sector.getBBox();
-    // canvas.addShape('Rect', {
-    //   attrs: {
-    //     x: bbox.x,
-    //     y: bbox.y,
-    //     width: bbox.width,
-    //     height: bbox.height,
-    //     stroke: 'red',
-    //     lineWidth: 1
-    //   }
-    // });
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
   });
