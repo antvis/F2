@@ -259,20 +259,20 @@ class Geom extends Base {
     const self = this;
     const adjust = self.get('adjust');
     if (adjust) {
-      const adjustType = Util.upperFirst(adjust);
+      const adjustType = Util.upperFirst(adjust.type);
       if (!Adjust[adjustType]) {
         throw new Error('not support such adjust : ' + adjust);
       }
 
       const xScale = self.getXScale();
       const yScale = self.getYScale();
-      const cfg = {
+      const cfg = Util.mix({
         xField: xScale.field,
         yField: yScale.field
-      };
+      }, adjust);
       const adjustObject = new Adjust[adjustType](cfg);
       adjustObject.processAdjust(dataArray);
-      if (adjust === 'stack') {
+      if (adjustType === 'Stack') {
         self._updateStackRange(yScale.field, yScale, dataArray);
       }
     }
@@ -587,7 +587,7 @@ class Geom extends Base {
   }
 
   hasAdjust(adjust) {
-    return this.get('adjust') === adjust;
+    return this.get('adjust') && (this.get('adjust').type === adjust);
   }
 
   _getSnap(scale, item, arr) {
@@ -773,6 +773,9 @@ class Geom extends Base {
   }
 
   adjust(type) {
+    if (Util.isString(type)) {
+      type = { type };
+    }
     this.set('adjust', type);
     return this;
   }
