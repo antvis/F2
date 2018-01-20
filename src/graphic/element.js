@@ -104,7 +104,7 @@ class Element extends Base {
   }
 
   initAttrs(attrs) {
-    this.attr(Util.deepMix({}, this.getDefaultAttrs(), attrs));
+    this.attr(Util.mix(this.getDefaultAttrs(), attrs));
   }
 
   attr(name, value) {
