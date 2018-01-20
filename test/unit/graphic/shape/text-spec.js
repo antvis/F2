@@ -70,7 +70,7 @@ describe('Text', function() {
       attrs: {
         x: 30,
         y: 90,
-        text: '填充描边',
+        text: 'fill',
         font: '20px Arial',
         fill: 'rgb(255, 0, 255)',
         stroke: '#8543E0',
@@ -84,7 +84,7 @@ describe('Text', function() {
     const bbox = text1.getBBox();
     expect(bbox.x).to.equal(30);
     expect(bbox.y).to.equal(78);
-    expect(bbox.width).to.equal(48);
+    expect(bbox.width).to.equal(11.33203125);
     expect(bbox.height).to.equal(12);
 
     canvas.draw();
@@ -94,7 +94,7 @@ describe('Text', function() {
     const text1 = new Text({
       attrs: {
         fontSize: 20,
-        text: '字体大小',
+        text: 'fontSize',
         x: 10,
         y: 60,
         stroke: '#000',
@@ -108,7 +108,7 @@ describe('Text', function() {
     const bbox = text1.getBBox();
     expect(bbox.x).to.equal(10);
     expect(bbox.y).to.equal(40);
-    expect(bbox.width).to.equal(80);
+    expect(bbox.width).to.equal(72.265625);
     expect(bbox.height).to.equal(20);
 
     canvas.draw();
@@ -118,7 +118,7 @@ describe('Text', function() {
     const text = new Text({
       attrs: {
         fontSize: 10,
-        text: '10 号字体',
+        text: 'size 10',
         x: 10,
         y: 95,
         stroke: '#000'
@@ -149,7 +149,7 @@ describe('Text', function() {
       attrs: {
         x: 100,
         y: 50,
-        text: '你好\nHello\nworld',
+        text: 'haha\nHello\nworld',
         fill: 'black',
         stroke: 'red',
         textBaseline: 'top',
