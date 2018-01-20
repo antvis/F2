@@ -1,37 +1,62 @@
 const Util = require('../../util/common');
 const GuideBase = require('./base');
-const Global = require('../../global');
 
 class Text extends GuideBase {
   getDefaultCfg() {
     return {
       type: 'text',
-      top: true, // 默认显示在上面
-      position: [],
-      text: '',
-      cfg: Global.guide.text
+      /**
+       * 辅助文本的位置
+       * @type {Object | Function | Array}
+       */
+      position: null,
+      /**
+       * 辅助文本的显示文字
+       * @type {String}
+       */
+      content: null,
+      /**
+       * 辅助文本的样式配置
+       * @type {Object}
+       */
+      style: {
+        fill: '#000'
+      },
+      /**
+       * x 方向的偏移量
+       * @type {Number}
+       */
+      offsetX: 0,
+      /**
+       * y 方向的偏移量
+       * @type {Number}
+       */
+      offsetY: 0
     };
   }
 
   render(coord, container) {
     const position = this.position;
     const point = this.parsePoint(coord, position);
-    const cfg = this.cfg;
-    const text = this.text;
+    const { content, style, offsetX, offsetY } = this;
 
-    if (cfg.offset) {
-      point.x += cfg.offset[0];
-      point.y += cfg.offset[1];
+    if (offsetX) {
+      point.x += offsetX;
     }
 
-    container.addShape('text', {
+    if (offsetY) {
+      point.y += offsetY;
+    }
+
+    const shape = container.addShape('text', {
       className: 'guide-text',
       attrs: Util.mix({
         x: point.x,
         y: point.y,
-        text
-      }, cfg)
+        text: content
+      }, style)
     });
+    this.element = shape;
   }
 }
 

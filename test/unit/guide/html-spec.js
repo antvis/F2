@@ -4,8 +4,12 @@ const Coord = require('../../../src/coord/index');
 const { Html } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
+const canva1s = document.createElement('canvas');
+canva1s.id = 'guide';
+document.body.appendChild(canva1s);
+
 const canvas = new Canvas({
-  domId: 'guide',
+  el: 'guide',
   width: 500,
   height: 500,
   pixelRatio: 2
@@ -39,9 +43,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '五月', 500 ],
-      cfg: {
-        offset: [ 50, 50 ]
-      },
+      offsetX: 50,
+      offsetY: 50,
       html: "<div style='background-color:blue;width:20px;height:20px;border-radius:10px;'></div>"
     });
     guide.render(coord, container);
@@ -70,9 +73,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '八月', 800 ],
-      cfg: {
-        align: 'rc'
-      },
+      alignX: 'right',
+      alignY: 'middle',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>rc</div>"
     });
     guide.render(coord, container);
@@ -87,9 +89,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '六月', 600 ],
-      cfg: {
-        align: 'lc'
-      },
+      alignX: 'left',
+      alignY: 'middle',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>lc</div>"
     });
     guide.render(coord, container);
@@ -104,43 +105,40 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '四月', 400 ],
-      cfg: {
-        align: 'tc'
-      },
-      html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bc</div>"
+      alignX: 'middle',
+      alignY: 'top',
+      html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tc</div>"
     });
     guide.render(coord, container);
     const position = guide.parsePoint(coord, [ '四月', 400 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[4].style.left)).eql(left - 10);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[4].style.top)).eql(top - 20);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[4].style.top)).eql(top);
   });
   it('bc', function() {
     const guide = new Html({
       xScale,
       yScale,
       position: [ '二月', 200 ],
-      cfg: {
-        align: 'bc'
-      },
-      html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tc</div>"
+      alignX: 'middle',
+      alignY: 'bottom',
+      html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bc</div>"
     });
     guide.render(coord, container);
     const position = guide.parsePoint(coord, [ '二月', 200 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[5].style.left)).eql(left - 10);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[5].style.top)).eql(top);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[5].style.top)).eql(top - 20);
   });
   it('tl', function() {
     const guide = new Html({
       xScale,
       yScale,
       position: [ '一月', 100 ],
-      cfg: {
-        align: 'tl'
-      },
+      alignX: 'left',
+      alignY: 'top',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tl</div>"
     });
     guide.render(coord, container);
@@ -155,9 +153,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '三月', 300 ],
-      cfg: {
-        align: 'tr'
-      },
+      alignX: 'right',
+      alignY: 'top',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tr</div>"
     });
     guide.render(coord, container);
@@ -172,9 +169,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '五月', 500 ],
-      cfg: {
-        align: 'bl'
-      },
+      alignX: 'left',
+      alignY: 'bottom',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bl</div>"
     });
     guide.render(coord, container);
@@ -189,9 +185,8 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '七月', 700 ],
-      cfg: {
-        align: 'br'
-      },
+      alignX: 'right',
+      alignY: 'bottom',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>br</div>"
     });
     guide.render(coord, container);

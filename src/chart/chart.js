@@ -136,7 +136,6 @@ class Chart extends Base {
        * @type {String}
        */
       id: null,
-
       /**
        * 画布中绘制图形的边距
        * @type {Array|Number}
@@ -148,7 +147,6 @@ class Chart extends Base {
        * @type {Array}
        */
       data: null,
-
       /**
        * chart 保有的度量
        * @type {Object}
@@ -164,12 +162,6 @@ class Chart extends Base {
       },
       /**
        * @private
-       * 图层
-       * @type {Array}
-       */
-      layers: null,
-      /**
-       * @private
        * 图层对应的图形
        * @type {Array}
        */
@@ -179,7 +171,12 @@ class Chart extends Base {
        * @type {Object}
        */
       colDefs: null,
-      pixelRatio: Global.pixelRatio
+      pixelRatio: Global.pixelRatio,
+      /**
+       * 过滤设置
+       * @type {Object}
+       */
+      filters: {}
     };
   }
 
@@ -225,6 +222,100 @@ class Chart extends Base {
   }
 
   /**
+   * [legend description]
+   * @param  {[type]} field [description]
+   * @param  {[type]} cfg   [description]
+   * @return {[type]}       [description]
+   */
+  legend(field, cfg) {
+    const self = this;
+    const legendController = self.get('legendController');
+    if (!legendController) {
+      return self;
+    }
+
+    let legendCfg = legendController.legendCfg;
+
+    if (Util.isBoolean(field)) { // 支持 chart.legend(true | false)
+      legendController.enable = field;
+      legendCfg = cfg; // chart.legend(true, cfg);
+    } else if (Util.isObject(field)) { // 默认的 legend 配置属性
+      legendCfg = field;
+    } else {
+      legendCfg[field] = cfg; // 配置某一个 field 对应的图例
+    }
+
+    legendController.legendCfg = legendCfg;
+
+    return self;
+  }
+
+  filter(field, condition) {
+    const filters = this.get('filters');
+    filters[field] = condition;
+  }
+
+  /**
+   * 配置 tooltip
+   * @param  {boolean|object} enable 为布尔值表示是否开启tooltip，对象则表示配置项
+   * @param  {object} cfg 配置项
+   * @return {Chart} 返回 Chart 实例
+   */
+  tooltip(enable, cfg = {}) {
+    const tooltipController = this.get('tooltipController');
+    if (!tooltipController) {
+      return this;
+    }
+    if (Util.isObject(enable)) { // chart.tooltip({})
+      cfg = enable;
+      enable = true;
+    }
+    tooltipController.enable = enable;
+    tooltipController.cfg = cfg;
+
+    return this;
+  }
+
+  _getFieldsForLegend() {
+    const fields = [];
+    const geoms = this.get('geoms');
+    Util.each(geoms, geom => {
+      const attrOptions = geom.get('attrOptions');
+      const attrCfg = attrOptions.color;
+      if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
+        const arr = attrCfg.field.split('*');
+        arr.map(item => {
+          if (fields.indexOf(item) === -1) {
+            fields.push(item);
+          }
+          return item;
+        });
+      }
+    });
+    return fields;
+  }
+
+  /**
+   * TODO legends 拍平
+   * [getLegendItems description]
+   * @return {[type]} [description]
+   */
+  getLegendItems() {
+    const result = {};
+    const legendController = this.get('legendController');
+    if (legendController) {
+      const legends = legendController.legends;
+      Util.each(legends, legendItems => {
+        Util.each(legendItems, legend => {
+          const { field, items } = legend;
+          result[field] = items;
+        });
+      });
+    }
+    return result;
+  }
+
+  /**
    * 创建度量
    * @param  {String} field 度量对应的名称
    * @param  {Array} data 数据集合
@@ -232,7 +323,18 @@ class Chart extends Base {
    */
   createScale(field, data) {
     const self = this;
-    data = data || self.get('data');
+    // data = data || self.get('data');
+    if (!data) {
+      const filteredData = self.get('filteredData');
+      const legendFields = this._getFieldsForLegend();
+      // 过滤导致数据为空时，需要使用全局数据
+      // 参与过滤的字段的度量也根据全局数据来生成
+      if (filteredData.length && legendFields.indexOf(field) === -1) {
+        data = filteredData;
+      } else {
+        data = this.get('data');
+      }
+    }
     const scales = self.get('scales');
     if (!scales[field]) {
       scales[field] = self._createScale(field, data);
@@ -359,12 +461,12 @@ class Chart extends Base {
     const self = this;
     try {
       const canvas = new Canvas({
-        domId: self.get('id'),
-        el: self.get('el'),
+        el: self.get('el') || self.get('id'),
         context: self.get('context'),
         pixelRatio: self.get('pixelRatio'),
         width: self.get('width'),
-        height: self.get('height')
+        height: self.get('height'),
+        fontFamily: Global.fontFamily
       });
       self.set('canvas', canvas);
       self.set('width', canvas.get('width'));
@@ -397,35 +499,19 @@ class Chart extends Base {
   _initLayout() {
     const self = this;
     // 兼容margin 的写法
-    const padding = self.get('margin') || self.get('padding');
+    let padding = self.get('margin') || self.get('padding');
     const canvas = self.get('canvas');
     const width = canvas.get('width'); // TODO 很容易混淆
     const height = canvas.get('height'); // TODO 很容易混淆
-    let top;
-    let left;
-    let right;
-    let bottom;
-
-    if (Util.isNumber(padding)) {
-      top = bottom = padding;
-      left = right = padding;
-    } else if (Util.isArray(padding)) {
-      top = padding[0];
-      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
-      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
-      left = !Util.isNil(padding[3]) ? padding[3] : right;
-    }
-
-    bottom = height - bottom;
-    right = width - right;
+    padding = Util.parsePadding(padding);
     const plot = new Plot({
       start: {
-        x: left,
-        y: top
+        x: padding[3],
+        y: padding[0]
       },
       end: {
-        x: right,
-        y: bottom
+        x: width - padding[1],
+        y: height - padding[2]
       }
     });
     self.set('plot', plot);
@@ -436,7 +522,8 @@ class Chart extends Base {
     const self = this;
     const plot = self.get('plot');
     const coordCfg = Util.mix({}, self.get('coordCfg'), {
-      plot
+      start: plot.bl,
+      end: plot.tr
     });
     const type = coordCfg.type;
     const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
@@ -497,10 +584,10 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   clear() {
-    Chart.plugins.notify(this, 'clear');
-
+    Chart.plugins.notify(this, 'clear'); // TODO
     this._removeGeoms();
     this._clearInner();
+    this.set('filters', {});
 
     const canvas = this.get('canvas');
     canvas.draw();
@@ -510,6 +597,8 @@ class Chart extends Base {
   _clearInner() {
     this.set('scales', {});
     this._clearGeoms();
+
+    Chart.plugins.notify(this, 'clearInner'); // TODO
     const frontPlot = this.get('frontPlot');
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
@@ -534,7 +623,9 @@ class Chart extends Base {
     const geoms = self.get('geoms');
 
     // Chart.plugins.notify(self, 'beforeRender');
-
+    const data = this.get('data') || [];
+    const filteredData = this.execFilter(data);
+    this.set('filteredData', filteredData);
     self._initCoord();
     self._initGeoms(geoms);
     self._adjustScale();
@@ -545,7 +636,7 @@ class Chart extends Base {
     self.drawGeom(geoms);
 
     Chart.plugins.notify(self, 'afterGeomDraw');
-
+    canvas.sort();
     canvas.draw();
     return self;
   }
@@ -571,7 +662,7 @@ class Chart extends Base {
   _initGeoms(geoms) {
     const self = this;
     const coord = self.get('coord');
-    const data = self.get('data');
+    const data = self.get('filteredData');
     for (let i = 0; i < geoms.length; i++) {
       const geom = geoms[i];
       geom.set('data', data);
@@ -621,6 +712,26 @@ class Chart extends Base {
         scale.range = range;
       }
     });
+  }
+
+  execFilter(data) {
+    const self = this;
+    const filters = self.get('filters');
+    if (filters) {
+      data = data.filter(function(obj) {
+        let rst = true;
+        Util.each(filters, function(fn, k) {
+          if (fn) {
+            rst = fn(obj[k], obj);
+            if (!rst) {
+              return false;
+            }
+          }
+        });
+        return rst;
+      });
+    }
+    return data;
   }
 
   // 获取x轴对应的度量

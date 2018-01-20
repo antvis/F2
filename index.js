@@ -4,8 +4,7 @@ require('./src/geom/adjust/');
 require('./src/plugin/');
 const F2 = require('./core');
 
-// 测试
-const Guide = require('./src/plugin/guide.js');
-F2.Chart.plugins.register(Guide);
+const { Legend, Guide, Tooltip } = require('./src/plugin/');
+F2.Chart.plugins.register([ Legend, Guide, Tooltip ]);
 
 module.exports = F2;

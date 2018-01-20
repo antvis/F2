@@ -18,7 +18,7 @@ class Rect extends Shape {
       width: 0,
       height: 0,
       radius: 0,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 
@@ -43,6 +43,17 @@ class Rect extends Shape {
       context.arc(x + radius, y + radius, radius, Math.PI, Math.PI * 3 / 2, false);
       context.closePath();
     }
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x, y, width, height } = attrs;
+    return {
+      minX: x,
+      minY: y,
+      maxX: x + width,
+      maxY: y + height
+    };
   }
 }
 

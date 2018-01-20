@@ -1,6 +1,7 @@
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const Smooth = require('../../graphic/util/smooth');
+const Global = require('../../global');
 
 // 是否相等
 function equals(v1, v2) {
@@ -20,18 +21,19 @@ function equalsCenter(points, center) {
 }
 
 function drawCircleArea(topPoints, bottomPoints, container, style, isSmooth) {
-  const shapeName = isSmooth ? 'SmoothLine' : 'Polyline';
-  container.addShape(shapeName, {
+  container.addShape('Polyline', {
     className: 'area',
     attrs: Util.mix({
-      points: topPoints
+      points: topPoints,
+      smooth: isSmooth
     }, style)
   });
   if (bottomPoints.length) {
-    container.addShape(shapeName, {
+    container.addShape('Polyline', {
       className: 'area',
       attrs: Util.mix({
-        points: bottomPoints
+        points: bottomPoints,
+        smooth: isSmooth
       }, style)
     });
   }
@@ -86,7 +88,7 @@ function drawShape(cfg, container, isSmooth) {
   });
   const style = Util.mix({
     fillStyle: cfg.color
-  }, cfg.style);
+  }, Global.shape.area, cfg.style);
   bottomPoints.reverse(); // 下面
   topPoints = self.parsePoints(topPoints);
   bottomPoints = self.parsePoints(bottomPoints);

@@ -5,16 +5,12 @@ class Cartesian extends Base {
     return {
       type: 'cartesian',
       transposed: false,
-      isRect: true,
-      plot: null
+      isRect: true
     };
   }
 
   init() {
-    const self = this;
-    const plot = self.plot;
-    const start = plot ? plot.bl : self.start;
-    const end = plot ? plot.tr : self.end;
+    const { start, end } = this;
 
     this.x = {
       start: start.x,

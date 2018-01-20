@@ -2,44 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Normal Area Plot</title>
+  <title>面积图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const canvas = document.createElement('canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
   const data = [
-    { time: '2016-08-08 00:00:00', tem: 10, city: 'beijing' },
-    { time: '2016-08-08 00:10:00', tem: 22, city: 'beijing' },
-    { time: '2016-08-08 00:30:00', tem: 16, city: 'beijing' },
-    { time: '2016-08-09 00:35:00', tem: 26, city: 'beijing' },
-    { time: '2016-08-09 01:00:00', tem: 12, city: 'beijing' },
-    { time: '2016-08-09 01:20:00', tem: 26, city: 'beijing' },
-    { time: '2016-08-10 01:40:00', tem: 18, city: 'beijing' },
-    { time: '2016-08-10 02:00:00', tem: 26, city: 'beijing' },
-    { time: '2016-08-10 02:20:00', tem: 12, city: 'beijing' },
-    { time: '2016-08-08 00:00:00', tem: 28, city: 'newYork' },
-    { time: '2016-08-08 00:10:00', tem: 16, city: 'newYork' },
-    { time: '2016-08-08 00:30:00', tem: 26, city: 'newYork' },
-    { time: '2016-08-09 00:35:00', tem: 12, city: 'newYork' },
-    { time: '2016-08-09 01:00:00', tem: 26, city: 'newYork' },
-    { time: '2016-08-09 01:20:00', tem: 20, city: 'newYork' },
-    { time: '2016-08-10 01:40:00', tem: 29, city: 'newYork' },
-    { time: '2016-08-10 02:00:00', tem: 16, city: 'newYork' },
-    { time: '2016-08-10 02:20:00', tem: 22, city: 'newYork' }
+    { time: 'Jan', tem: 1000 },
+    { time: 'Feb', tem: 2200 },
+    { time: 'Mar', tem: 2000 },
+    { time: 'Apr', tem: 2600 },
+    { time: 'May', tem: 2000 },
+    { time: 'Jun', tem: 2600 },
+    { time: 'Jul', tem: 2800 },
+    { time: 'Aug', tem: 2000 }
   ];
   const chart = new F2.Chart({
-    el: canvas
+    id: 'mountNode',
+    width: window.innerWidth,
+    height: 450,
+    pixelRatio: window.devicePixelRatio
   });
+
   chart.source(data, {
     time: {
-      type: 'timeCat',
-      tickCount: 3,
       range: [ 0, 1 ]
     },
     tem: {
@@ -47,47 +38,38 @@
       min: 0
     }
   });
-  // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
+  chart.tooltip({
+    showCrosshairs: true,
+    // showTitle: true
+    onShow(ev) {
+      const { items } = ev;
+      console.log(items);
+      items[0].name = items[0].title;
+    }
+  });
   chart.axis('tem', {
     label: {
-      fontSize: 14
-    }
+      textAlign: 'start',
+      textBaseline: 'bottom',
+      top: true
+    },
+    labelOffset: 0
   });
-  // 配置time刻度文字样式
-  const label = {
-    fill: '#979797',
-    font: '14px san-serif',
-    offset: 6
-  };
   chart.axis('time', {
     label(text, index, total) {
-      const cfg = label;
-      // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
+      const textCfg = {};
       if (index === 0) {
-        cfg.textAlign = 'start';
+        textCfg.textAlign = 'left';
       }
-      if (index > 0 && index === total - 1) {
-        cfg.textAlign = 'end';
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
       }
-      return cfg;
+      return textCfg;
     }
   });
-  chart.area().position('time*tem')
-    .color('city')
-    .shape('smooth')
-    .style({
-      opacity: 0.6
-    });
-  chart.guide().text([ 'median', 'median' ], '我在测试');
-
+  chart.area().position('time*tem').color('#1890FF');
+  chart.line().position('time*tem').color('#1890FF');
   chart.render();
-
-console.log(chart);
-  canvas.onclick = function(ev) {
-    const point = chart.getPointByClient(ev.clientX, ev.clientY);
-    const records = chart.getSnapRecords(point, 'b');
-    console.log(records);
-  };
 </script>
 </body>
 </html>

@@ -1,6 +1,18 @@
 const expect = require('chai').expect;
 const Group = require('../../../src/graphic/group');
 const Shape = require('../../../src/graphic/shape/index');
+const Canvas = require('../../../src/graphic/canvas');
+
+const dom = document.createElement('canvas');
+dom.id = 'canvas-group';
+dom.style.margin = '100px';
+document.body.appendChild(dom);
+
+const canvas = new Canvas({
+  el: 'canvas-group',
+  width: 500,
+  height: 500
+});
 
 describe('Group', function() {
   it('constructor', function() {
@@ -167,7 +179,7 @@ describe('Group', function() {
     expect(e1.get('destroyed')).to.be.true;
     e2.remove();
     expect(g1.get('children').length).to.equal(3);
-    expect(e2.get('destroyed')).to.be.true;
+    expect(e2.get('destroyed')).to.be.false;
     e3.remove(false);
     expect(g1.get('children').length).to.equal(2);
     expect(e3.get('destroyed')).to.be.false;
@@ -175,7 +187,7 @@ describe('Group', function() {
     expect(g2.get('children').length).to.equal(1);
     g1.remove();
     expect(g2.get('children').length).to.equal(0);
-    expect(g1.get('destroyed')).to.be.true;
+    expect(g1.get('destroyed')).to.be.false;
   });
 
   it('clear', function() {
@@ -226,5 +238,56 @@ describe('Group', function() {
 
     expect(g.get('children')).to.undefined;
     expect(g.get('destroyed')).to.be.true;
+  });
+
+  it('getBBox()', function() {
+    const polyline = new Shape.Polyline({
+      attrs: {
+        points: [
+          { x: 10, y: 10 },
+          { x: 20, y: 45 },
+          { x: 40, y: 80 },
+          { x: 13, y: 70 },
+          { x: 80, y: 32 }
+        ],
+        lineWidth: 1,
+        stroke: 'red'
+      }
+    });
+    const arc = new Shape.Arc({
+      attrs: {
+        x: 20,
+        y: 20,
+        r: 50,
+        startAngle: 0,
+        endAngle: Math.PI / 2,
+        lineWidth: 2,
+        stroke: '#18901f'
+      }
+    });
+    const text = new Shape.Text({
+      attrs: {
+        x: 100,
+        y: 50,
+        text: '你好\nHello\nworld',
+        fill: 'black',
+        stroke: 'red',
+        textBaseline: 'top',
+        fontSize: 8,
+        lineHeight: 18,
+        lineWidth: 1
+      }
+    });
+    const group = canvas.addGroup();
+    group.add([ polyline, arc, text ]);
+
+    const bbox = group.getBBox();
+    canvas.draw();
+    expect(group.get('children').length).to.equal(3);
+    expect(canvas.get('children').length).to.equal(1);
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(10);
+    expect(bbox.width).to.equal(102.74479166666667);
+    expect(bbox.height).to.equal(70);
   });
 });

@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Arc', function() {
   const canvas = new Canvas({
-    domId: 'canvas-arc',
+    el: 'canvas-arc',
     width: 200,
     height: 200
   });
@@ -43,8 +43,19 @@ describe('Arc', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = arc.getBBox();
+    expect(parseInt(bbox.x)).to.equal(20);
+    expect(parseInt(bbox.y)).to.equal(20);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
+  });
+
   it('destroy', function() {
     arc.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
+    expect(arc.get('destroyed')).to.equal(true);
+    canvas.clear();
+    canvas.draw();
   });
 });

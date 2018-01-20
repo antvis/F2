@@ -1,6 +1,5 @@
 const Util = require('../../util/common');
 const GuideBase = require('./base');
-const Global = require('../../global');
 
 class Arc extends GuideBase {
   getDefaultCfg() {
@@ -8,15 +7,22 @@ class Arc extends GuideBase {
       type: 'arc',
       /**
        * 起点
-       * @type {Array}
+       * @type {Array | Function}
        */
       start: [],
       /**
        * 终点
-       * @type {Array}
+       * @type {Array | Function}
        */
       end: [],
-      cfg: Global.guide.arc
+      /**
+       * 辅助文本的样式配置
+       * @type {Object}
+       */
+      style: {
+        stroke: '#999',
+        lineWidth: 1
+      }
     };
   }
 
@@ -29,7 +35,7 @@ class Arc extends GuideBase {
       + (start.y - coordCenter.y) * (start.y - coordCenter.y));
     const startAngle = Math.atan2(start.y - coordCenter.y, start.x - coordCenter.x);
     const endAngle = Math.atan2(end.y - coordCenter.y, end.x - coordCenter.x);
-    container.addShape('arc', {
+    const shape = container.addShape('arc', {
       className: 'guide-arc',
       attrs: Util.mix({
         x: coordCenter.x,
@@ -37,8 +43,9 @@ class Arc extends GuideBase {
         r: radius,
         startAngle,
         endAngle
-      }, self.cfg)
+      }, self.style)
     });
+    self.element = shape;
   }
 }
 

@@ -8,16 +8,16 @@ document.body.appendChild(dom);
 
 describe('Line', function() {
   const canvas = new Canvas({
-    domId: 'canvas-line',
+    el: 'canvas-line',
     width: 200,
     height: 200
   });
   const line = new Line({
     attrs: {
-      x1: 0,
-      y1: 0,
-      x2: 200,
-      y2: 200,
+      x1: 50,
+      y1: 50,
+      x2: 100,
+      y2: 100,
       lineWidth: 40,
       strokeStyle: '#223273',
       lineCap: 'round'
@@ -34,9 +34,17 @@ describe('Line', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = line.getBBox();
+    expect(bbox.x).to.equal(50);
+    expect(bbox.y).to.equal(50);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
+  });
+
   it('destroy', function() {
     line.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

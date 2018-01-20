@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const bbox = require('../util/bbox');
 
 class Arc extends Shape {
   getDefaultCfg() {
@@ -16,7 +17,7 @@ class Arc extends Shape {
       y: 0,
       r: 0,
       startAngle: 0,
-      endAngle: 0,
+      endAngle: Math.PI * 2,
       clockwise: false,
       lineWidth: 1
     };
@@ -29,6 +30,13 @@ class Arc extends Shape {
     context = context || this.get('context');
     context.beginPath();
     context.arc(x, y, r, startAngle, endAngle, clockwise);
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x, y, r, startAngle, endAngle, clockwise } = attrs;
+
+    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
   }
 }
 

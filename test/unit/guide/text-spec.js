@@ -4,6 +4,11 @@ const Coord = require('../../../src/coord/index');
 const { Text } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
+const canvas1 = document.createElement('canvas');
+canvas1.id = 'guide';
+document.body.appendChild(canvas1);
+
+
 describe('Guide.Text', function() {
   const coord = new Coord.Rect({
     start: { x: 60, y: 460 },
@@ -11,7 +16,7 @@ describe('Guide.Text', function() {
   });
 
   const canvas = new Canvas({
-    domId: 'guide',
+    el: 'guide',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -32,7 +37,7 @@ describe('Guide.Text', function() {
     const text = new Text({
       xScale,
       yScale,
-      text: '(一月，200)',
+      content: '(一月，200)',
       position: [ '三月', 'min' ]
     });
     text.render(coord, group);
@@ -49,9 +54,9 @@ describe('Guide.Text', function() {
     const text = new Text({
       xScale,
       yScale,
-      text: '(一月，200)',
+      content: '(一月，200)',
       position: [ '三月', 'max' ],
-      cfg: {
+      style: {
         fill: 'rgb(251, 192, 45)',
         fontSize: 24,
         fontWeight: 600,
@@ -59,9 +64,10 @@ describe('Guide.Text', function() {
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         shadowOffsetX: 2,
         shadowOffsetY: 4,
-        textAlign: 'center',
-        offset: [ 100, 100 ]
-      }
+        textAlign: 'center'
+      },
+      offsetX: 100,
+      offsetY: 100
     });
     text.render(coord, group);
     canvas.draw();

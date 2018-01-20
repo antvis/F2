@@ -1,72 +1,70 @@
 const Util = require('../../util/common');
+
 const KEYWORDS_PERCENT = {
   min: 0,
   median: 0.5,
   max: 1
 };
 
-function toPercent(scale, value) {
-  let rst;
-  if (Util.isNil(KEYWORDS_PERCENT[value])) {
-    rst = scale.scale(value);
-  } else {
-    rst = KEYWORDS_PERCENT[value];
-  }
-  return rst;
-}
-
-/**
- * 图表的辅助元素
- * @class Guide
- */
 class GuideBase {
-  /**
-   * 获取默认的配置属性
-   * @protected
-   * @return {Object} 默认属性
-   */
   getDefaultCfg() {
     return {
       xScale: null,
       yScale: null,
-      top: false,
-      cfg: {}
+      element: null
     };
   }
 
   constructor(cfg) {
     const defaultCfg = this.getDefaultCfg();
-    Util.deepMix(this, defaultCfg, cfg);
+    cfg = Util.deepMix({}, defaultCfg, cfg);
+    Util.mix(this, cfg);
   }
 
-  /**
-   * @protected
-   * 转换成坐标系上的点
-   * @param  {Coord} coord  坐标系
-   * @param  {Array} position 点的数组 [x,y]
-   * @return {Object} 转换成坐标系上的点
-   */
+  _getNormalizedValue(val, scale) {
+    let rst;
+    if (Util.isNil(KEYWORDS_PERCENT[val])) {
+      rst = scale.scale(val);
+    } else {
+      rst = KEYWORDS_PERCENT[val];
+    }
+    return rst;
+  }
+
+  parsePercentPoint(coord, position) {
+    const xPercent = parseFloat(position[0]) / 100;
+    const yPercent = parseFloat(position[1]) / 100;
+    const start = coord.start;
+    const end = coord.end;
+    const width = Math.abs(start.x - end.x);
+    const height = Math.abs(start.y - end.y);
+    const x = width * xPercent + Math.min(start.x, end.x);
+    const y = height * yPercent + Math.min(start.y, end.y);
+    return {
+      x,
+      y
+    };
+  }
+
   parsePoint(coord, position) {
     const self = this;
     const xScale = self.xScale;
     const yScale = self.yScale;
-    const x = position[0];
-    const y = position[1];
-    let rstX;
-    let rstY;
-    if (xScale) {
-      rstX = toPercent(xScale, x);
-    } else {
-      rstX = 0;
+    if (Util.isFunction(position)) {
+      position = position(xScale, yScale); // position 必须是对象
     }
-    if (yScale) {
-      rstY = toPercent(yScale, y);
-    } else {
-      rstY = 1;
+
+    // 如果数据格式是 ['50%', '50%'] 的格式
+    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1) {
+      return this.parsePercentPoint(coord, position);
     }
+
+    const x = self._getNormalizedValue(position[0], xScale);
+    const y = self._getNormalizedValue(position[1], yScale);
+
     return coord.convertPoint({
-      x: rstX,
-      y: rstY
+      x,
+      y
     });
   }
 
@@ -76,6 +74,13 @@ class GuideBase {
    * @param  {Canvas.Group} group 绘制到的容器
    */
   render(/* coord,group */) {}
+
+  remove() {
+    const { element } = this;
+    if (element) {
+      element.remove();
+    }
+  }
 }
 
 module.exports = GuideBase;

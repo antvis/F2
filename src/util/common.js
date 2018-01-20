@@ -226,18 +226,50 @@ Util = {
     }
     return parseFloat(v.toFixed(length));
   },
-  requestAnimationFrame(fn) {
-    const method = window.requestAnimationFrame || window.webkitRequestAnimationFrame || function(fn) {
-      return setTimeout(fn, 16);
+   /**
+   * 封装事件，便于使用上下文this,和便于解除事件时使用
+   * @protected
+   * @param  {Object} obj   对象
+   * @param  {String} action 事件名称
+   * @return {Function}        返回事件处理函数
+   */
+  wrapBehavior(obj, action) {
+    if (obj['_wrap_' + action]) {
+      return obj['_wrap_' + action];
+    }
+    const method = e => {
+      obj[action](e);
     };
-
-    return method(fn);
+    obj['_wrap_' + action] = method;
+    return method;
   },
-  cancelAnimationFrame(id) {
-    const method = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || function(id) {
-      return clearTimeout(id);
-    };
-    return method(id);
+  /**
+   * 获取封装的事件
+   * @protected
+   * @param  {Object} obj   对象
+   * @param  {String} action 事件名称
+   * @return {Function}        返回事件处理函数
+   */
+  getWrapBehavior(obj, action) {
+    return obj['_wrap_' + action];
+  },
+  parsePadding(padding) {
+    let top;
+    let right;
+    let bottom;
+    let left;
+
+    if (Util.isNumber(padding)) {
+      top = bottom = padding;
+      left = right = padding;
+    } else if (Util.isArray(padding)) {
+      top = padding[0];
+      right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
+      bottom = !Util.isNil(padding[2]) ? padding[2] : padding[0];
+      left = !Util.isNil(padding[3]) ? padding[3] : right;
+    }
+
+    return [ top, right, bottom, left ];
   }
 };
 

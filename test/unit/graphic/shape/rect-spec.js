@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Rect', function() {
   const canvas = new Canvas({
-    domId: 'canvas-rect',
+    el: 'canvas-rect',
     width: 200,
     height: 200
   });
@@ -40,9 +40,17 @@ describe('Rect', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = rect.getBBox();
+    expect(bbox.x).to.equal(50);
+    expect(bbox.y).to.equal(50);
+    expect(bbox.width).to.equal(80);
+    expect(bbox.height).to.equal(20);
+  });
+
   it('destroy', function() {
     rect.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

@@ -1,5 +1,4 @@
 const Abstract = require('./abstract');
-const Vector2 = require('../../graphic/util/vector2');
 const Util = require('../../util/common');
 
 class AxisLine extends Abstract {
@@ -22,7 +21,7 @@ class AxisLine extends Abstract {
   // 获取坐标轴上点的向量，极坐标下覆盖此方法
   getAxisVector() {
     const { start, end } = this;
-    return new Vector2(end.x - start.x, end.y - start.y);
+    return [ end.x - start.x, end.y - start.y ];
   }
 
   drawLine(lineCfg) {

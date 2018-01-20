@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const bbox = require('../util/bbox');
 
 class Line extends Shape {
   getDefaultCfg() {
@@ -28,6 +29,12 @@ class Line extends Shape {
 
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { x1, y1, x2, y2 } = attrs;
+    return bbox.getBBoxFromLine(x1, y1, x2, y2);
   }
 }
 

@@ -18,6 +18,11 @@ class Custom extends Shape {
       createPath(context);
     }
   }
+
+  // TODO
+  calculateBox() {
+    return null;
+  }
 }
 
 module.exports = Custom;

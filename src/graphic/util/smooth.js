@@ -5,13 +5,7 @@
 const Vector2 = require('./vector2');
 
 function getPoint(v) {
-  return new Vector2(v.x, v.y);
-}
-
-function pointScale(p, s) {
-  p.x *= s;
-  p.y *= s;
-  return p;
+  return [ v.x, v.y ];
 }
 
 function smoothBezier(points, smooth, isLoop, constraint) {
@@ -27,16 +21,16 @@ function smoothBezier(points, smooth, isLoop, constraint) {
   let l;
   let i;
   if (hasConstraint) {
-    min = new Vector2(Infinity, Infinity);
-    max = new Vector2(-Infinity, -Infinity);
+    min = [ Infinity, Infinity ];
+    max = [ -Infinity, -Infinity ];
 
     for (i = 0, l = points.length; i < l; i++) {
       point = getPoint(points[i]);
-      min.min(point);
-      max.max(point);
+      Vector2.min(min, min, point);
+      Vector2.max(max, max, point);
     }
-    min.min(getPoint(constraint[0]));
-    max.max(getPoint(constraint[1]));
+    Vector2.min(min, min, constraint[0]);
+    Vector2.max(max, max, constraint[1]);
   }
 
   for (i = 0, len = points.length; i < len; i++) {
@@ -46,7 +40,7 @@ function smoothBezier(points, smooth, isLoop, constraint) {
       nextPoint = getPoint(points[(i + 1) % len]);
     } else {
       if (i === 0 || i === len - 1) {
-        cps.push([ point.x, point.y ]);
+        cps.push([ point[0], point[1] ]);
         continue;
       } else {
         prevPoint = getPoint(points[i - 1]);
@@ -54,10 +48,10 @@ function smoothBezier(points, smooth, isLoop, constraint) {
       }
     }
 
-    const v = Vector2.sub(nextPoint, prevPoint);
-    pointScale(v, smooth);
-    let d0 = point.distanceTo(prevPoint);
-    let d1 = point.distanceTo(nextPoint);
+    const v = Vector2.sub([], nextPoint, prevPoint);
+    Vector2.scale(v, v, smooth);
+    let d0 = Vector2.distance(point, prevPoint);
+    let d1 = Vector2.distance(point, nextPoint);
 
     const sum = d0 + d1;
     if (sum !== 0) {
@@ -65,21 +59,21 @@ function smoothBezier(points, smooth, isLoop, constraint) {
       d1 /= sum;
     }
 
-    const v1 = pointScale(v.clone(), -d0);
-    const v2 = pointScale(v.clone(), d1);
+    const v1 = Vector2.scale([], v, -d0);
+    const v2 = Vector2.scale([], v, d1);
 
-    const cp0 = Vector2.add(point, v1);
-    const cp1 = Vector2.add(point, v2);
+    const cp0 = Vector2.add([], point, v1);
+    const cp1 = Vector2.add([], point, v2);
 
     if (hasConstraint) {
-      cp0.max(min);
-      cp0.min(max);
-      cp1.max(min);
-      cp1.min(max);
+      Vector2.max(cp0, cp0, min);
+      Vector2.min(cp0, cp0, max);
+      Vector2.max(cp1, cp1, min);
+      Vector2.min(cp1, cp1, max);
     }
 
-    cps.push([ cp0.x, cp0.y ]);
-    cps.push([ cp1.x, cp1.y ]);
+    cps.push([ cp0[0], cp0[1] ]);
+    cps.push([ cp1[0], cp1[1] ]);
   }
 
   if (isLoop) {

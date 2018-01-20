@@ -11,8 +11,15 @@ function getComparer(compare) {
 }
 
 module.exports = {
-  // draw() {},
+
   getGroupClass() {},
+
+  /**
+   * 创建并添加 Shape
+   * @param {String} type 添加的 shape 类型
+   * @param {Object} cfg  shape 的配置项
+   * @return {Shape} 返回创建的 shape 实例
+   */
   addShape(type, cfg = {}) {
     const canvas = this.get('canvas');
     let shapeType = SHAPE_MAP[type];
@@ -22,29 +29,48 @@ module.exports = {
     }
     cfg.canvas = canvas;
     cfg.type = type;
+
+    // 设置字体
+    if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
+      cfg.attrs = cfg.attrs || {};
+      cfg.attrs.fontFamily = cfg.attrs.fontFamily || canvas.get('fontFamily');
+    }
+
     const shape = new Shape[shapeType](cfg);
     this.add(shape);
     return shape;
   },
-  addGroup(constructor, cfg) {
+
+  /**
+   * 创建并添加 Group 组
+   * @param {Object|null} cfg 配置信息
+   * @return {Group} 返回创建的 Group 实例
+   */
+  addGroup(cfg) {
     const canvas = this.get('canvas');
     const groupClass = this.getGroupClass();
-    if (Util.isObject(constructor)) {
-      cfg = constructor;
-      constructor = groupClass;
-    }
-    constructor = constructor || groupClass;
-    cfg = Util.deepMix({}, cfg);
+    cfg = Util.mix({}, cfg);
     cfg.canvas = canvas;
     cfg.parent = this;
-    const rst = new constructor(cfg);
+    const rst = new groupClass(cfg);
     this.add(rst);
     return rst;
   },
+
+  /**
+   * 判断是否包含 item
+   * @param  {Shape|Group} item shape 或者 group 实例
+   * @return {Boolean}      true 表示包含，false 表示不包含
+   */
   contain(item) {
     const children = this.get('children');
     return children.indexOf(item) > -1;
   },
+
+  /**
+   * 按照各个元素的 zIndex 进行从大到小的排序
+   * @return {Canvas|Group} 返回自己
+   */
   sort() {
     const children = this.get('children');
     // 必须保证稳定排序
@@ -59,14 +85,25 @@ module.exports = {
 
     return this;
   },
+
+  /**
+   * 清除所有的元素
+   * @return {Canvas|Group} 返回自己
+   */
   clear() {
     const children = this.get('children');
 
     while (children.length !== 0) {
-      children[children.length - 1].remove();
+      children[children.length - 1].remove(true);
     }
     return this;
   },
+
+  /**
+   * 添加元素
+   * @param {Array|Group|Shape} items group 实例或者 shape 实例或者他们的数组集合
+   * @return {Group} 返回自身
+   */
   add(items) {
     const self = this;
     const children = self.get('children');
@@ -87,16 +124,17 @@ module.exports = {
 
     return self;
   },
+
   _setEvn(item) {
     const self = this;
     item._attrs.parent = self;
     item._attrs.context = self._attrs.context;
     item._attrs.canvas = self._attrs.canvas;
-    const clip = item._attrs.attrs.clip; // TODO
-    if (clip) {
-      clip.set('parent', self);
-      clip.set('context', self.get('context'));
-    }
+    // const clip = item._attrs.attrs.clip; // TODO
+    // if (clip) {
+    //   clip.set('parent', self);
+    //   clip.set('context', self.get('context'));
+    // }
     if (item._attrs.isGroup) {
       const children = item._attrs.children;
       for (let i = 0; i < children.length; i++) {
