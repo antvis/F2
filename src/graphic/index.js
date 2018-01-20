@@ -9,7 +9,7 @@ module.exports = {
   Polygon: require('./shape/polygon'),
   Polyline: require('./shape/polyline'),
   Arc: require('./shape/arc'),
-  Fan: require('./shape/fan'),
-  SmoothLine: require('./shape/smooth-line'),
+  Sector: require('./shape/sector'),
+  Ring: require('./shape/ring'),
   Custom: require('./shape/custom')
 };

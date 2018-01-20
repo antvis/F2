@@ -1,3 +1,5 @@
 module.exports = {
-  Guide: require('./guide')
+  Guide: require('./guide'),
+  Legend: require('./legend'),
+  Tooltip: require('./tooltip')
 };

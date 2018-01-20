@@ -17,7 +17,7 @@ describe('Guide.Arc', function() {
   });
 
   const canvas = new Canvas({
-    domId: 'guide',
+    el: 'guide',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -40,7 +40,7 @@ describe('Guide.Arc', function() {
       yScale,
       start: [ 0, 1200 ],
       end: [ 4, 1200 ],
-      cfg: {
+      style: {
         lineWidth: 3,
         stroke: 'blue'
       }

@@ -70,7 +70,13 @@ class Geom extends Base {
 
       attrOptions: {},
 
-      sortable: false
+      sortable: false,
+      /**
+       * 图形的底边是否从 0 开始，默认为 0，即从 0 开始，
+       * 否则从最小值开始
+       * @type {Boolean}
+      */
+      startOnZero: true
     };
   }
 
@@ -253,20 +259,20 @@ class Geom extends Base {
     const self = this;
     const adjust = self.get('adjust');
     if (adjust) {
-      const adjustType = Util.upperFirst(adjust);
+      const adjustType = Util.upperFirst(adjust.type);
       if (!Adjust[adjustType]) {
         throw new Error('not support such adjust : ' + adjust);
       }
 
       const xScale = self.getXScale();
       const yScale = self.getYScale();
-      const cfg = {
+      const cfg = Util.mix({
         xField: xScale.field,
         yField: yScale.field
-      };
+      }, adjust);
       const adjustObject = new Adjust[adjustType](cfg);
       adjustObject.processAdjust(dataArray);
-      if (adjust === 'stack') {
+      if (adjustType === 'Stack') {
         self._updateStackRange(yScale.field, yScale, dataArray);
       }
     }
@@ -524,18 +530,19 @@ class Geom extends Base {
 
   /**
    * @protected
-   * 如果y轴的最小值小于0则返回0，否则返回最小值
-   * @return {Number} y轴上的最小值
+   * @return {Number} y 轴上的最小值
    */
   getYMinValue() {
     const yScale = this.getYScale();
     const min = yScale.min;
     let value;
-    if (min >= 0) {
-      value = min;
+
+    if (this.get('startOnZero')) {
+      value = min >= 0 ? min : 0;
     } else {
-      value = 0;
+      value = min;
     }
+
     return value;
   }
 
@@ -580,7 +587,7 @@ class Geom extends Base {
   }
 
   hasAdjust(adjust) {
-    return this.get('adjust') === adjust;
+    return this.get('adjust') && (this.get('adjust').type === adjust);
   }
 
   _getSnap(scale, item, arr) {
@@ -766,6 +773,9 @@ class Geom extends Base {
   }
 
   adjust(type) {
+    if (Util.isString(type)) {
+      type = { type };
+    }
     this.set('adjust', type);
     return this;
   }

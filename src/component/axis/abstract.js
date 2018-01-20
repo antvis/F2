@@ -1,4 +1,5 @@
 const Util = require('../../util/common');
+const Global = require('../../global');
 const Vector2 = require('../../graphic/util/vector2');
 
 class Abastract {
@@ -79,7 +80,7 @@ class Abastract {
     const count = ticks.length;
     Util.each(ticks, function(tick, index) {
       if (Util.isFunction(label)) { // 文本的配置项动态可配置
-        labelCfg = label(tick.text, index, count);
+        labelCfg = Util.mix({}, Global._defaultAxis.label, label(tick.text, index, count));
       }
       if (labelCfg) {
         const container = self.getContainer(labelCfg.top);
@@ -109,7 +110,7 @@ class Abastract {
     Util.each(gridPoints, function(subPoints, index) {
       if (Util.isFunction(grid)) {
         const tick = ticks[index] || {};
-        gridCfg = grid(tick.text, index, count);
+        gridCfg = Util.mix({}, Global._defaultAxis.grid, grid(tick.text, index, count));
       }
 
       if (gridCfg) {
@@ -134,10 +135,10 @@ class Abastract {
   getOffsetVector(point, offset) {
     const self = this;
     const axisVector = self.getAxisVector(point);
-    const normal = axisVector.normalize();
+    const normal = Vector2.normalize([], axisVector);
     const factor = self.offsetFactor;
-    const verticalVector = new Vector2(normal.y * -1 * factor, normal.x * factor);
-    return verticalVector.multiply(offset);
+    const verticalVector = [ normal[1] * -1 * factor, normal[0] * factor ];
+    return Vector2.scale([], verticalVector, offset);
   }
 
   // 获取坐标轴边上的点
@@ -145,8 +146,8 @@ class Abastract {
     const self = this;
     const offsetVector = self.getOffsetVector(point, offset);
     return {
-      x: point.x + offsetVector.x,
-      y: point.y + offsetVector.y
+      x: point.x + offsetVector[0],
+      y: point.y + offsetVector[1]
     };
   }
 
@@ -156,16 +157,16 @@ class Abastract {
     const offsetVector = self.getOffsetVector(point, offset);
     let align;
     let baseLine;
-    if (offsetVector.x > 0) {
+    if (offsetVector[0] > 0) {
       align = 'left';
-    } else if (offsetVector.x < 0) {
+    } else if (offsetVector[0] < 0) {
       align = 'right';
     } else {
       align = 'center';
     }
-    if (offsetVector.y > 0) {
+    if (offsetVector[1] > 0) {
       baseLine = 'top';
-    } else if (offsetVector.y < 0) {
+    } else if (offsetVector[1] < 0) {
       baseLine = 'bottom';
     } else {
       baseLine = 'middle';

@@ -114,6 +114,7 @@ class Element extends Base {
     }
 
     if (Util.isObject(name)) {
+      this._attrs.bbox = null; // attr 改变了有可能会导致 bbox 改变，故在此清除
       for (const k in name) {
         self._setAttr(k, name[k]); // TODO clip 的问题处理
       }
@@ -123,6 +124,7 @@ class Element extends Base {
       return self;
     }
     if (arguments.length === 2) {
+      this._attrs.bbox = null;
       self._setAttr(name, value);
       if (self._afterAttrsSet) {
         self._afterAttrsSet();
@@ -169,7 +171,7 @@ class Element extends Base {
       for (const k in elAttrs) {
         if (SHAPE_ATTRS.indexOf(k) > -1) { // 非canvas属性不附加
           const v = elAttrs[k];
-          if (k === 'lineDash' && context.setLineDash) {
+          if (k === 'lineDash' && context.setLineDash && v) {
             context.setLineDash(v);
           } else {
             context[k] = v;
@@ -201,30 +203,53 @@ class Element extends Base {
     return this;
   }
 
-  remove(destroy) {
-    if (Util.isNil(destroy)) {
-      destroy = true;
-    }
+  _removeFromParent() {
     const parent = this.get('parent');
     if (parent) {
       const children = parent.get('children');
       Util.Array.remove(children, this);
     }
-    destroy && this.destroy();
+
     return this;
   }
 
+  /**
+   * 移除
+   * @param  {Boolean} destroy true 表示将自己移除的同时销毁自己，false 表示仅移除自己
+   */
+  remove(destroy) {
+    if (destroy) {
+      this.destroy();
+    } else {
+      this._removeFromParent();
+    }
+  }
+
+  /**
+   * 销毁并将自己从父元素中移除（如果有父元素的话）
+   */
   destroy() {
     const destroyed = this.get('destroyed');
 
     if (destroyed) {
       return;
     }
+
+    this._removeFromParent();
+
     this._attrs = {};
     this.set('destroyed', true);
   }
 
-  // TODO: 矩阵变换
+  getBBox() {
+    return {
+      minX: 0,
+      maxX: 0,
+      minY: 0,
+      maxY: 0
+    };
+  }
+
   initTransform() {
     this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
   }
@@ -242,6 +267,11 @@ class Element extends Base {
     return [ m[0], m[1], m[2], m[3], m[4], m[5] ];
   }
 
+  /**
+   * 平移、旋转、缩放
+   * @param  {Array} actions 操作集合
+   * @return {Element}         返回自身
+   */
   transform(actions) {
     const self = this;
     for (let i = 0; i < actions.length; i++) {
@@ -299,6 +329,19 @@ class Element extends Base {
     matrix[3] *= sy;
 
     this.clearTotalMatrix();
+  }
+
+  /**
+   * 移动的到位置
+   * @param  {Number} x 移动到x
+   * @param  {Number} y 移动到y
+   */
+  moveTo(x, y) {
+    const cx = this._attrs.x || 0; // 当前的x
+    const cy = this._attrs.y || 0; // 当前的y
+    this.translate(x - cx, y - cy);
+    this.set('x', x);
+    this.set('y', y);
   }
 
   /**

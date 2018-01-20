@@ -20,7 +20,8 @@ describe('coord circle', function() {
   });
   describe('with inner circle', () => {
     const circle = new Coord.Polar({
-      plot,
+      start: plot.bl,
+      end: plot.tr,
       innerRadius: 0.5
     });
 
@@ -75,7 +76,8 @@ describe('coord circle', function() {
 
   describe('no inner', () => {
     const circle1 = new Coord.Polar({
-      plot,
+      start: plot.bl,
+      end: plot.tr,
       inner: 0
     });
 
@@ -111,7 +113,8 @@ describe('coord circle', function() {
 
   describe('half circle', () => {
     const circle = new Coord.Polar({
-      plot,
+      start: plot.bl,
+      end: plot.tr,
       startAngle: -Math.PI,
       endAngle: 0
     });

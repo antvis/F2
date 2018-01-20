@@ -1,6 +1,5 @@
 const Util = require('../util/common');
 const Element = require('./element');
-// const Inside = require('../shape/util/inside');
 
 class Shape extends Element {
   getDefaultCfg() {
@@ -37,19 +36,33 @@ class Shape extends Element {
     }
   }
 
+  getBBox() {
+    let bbox = this._attrs.bbox;
+    // 延迟计算
+    if (!bbox) {
+      bbox = this.calculateBox();
+      if (bbox) {
+        bbox.x = bbox.minX;
+        bbox.y = bbox.minY;
+        bbox.width = bbox.maxX - bbox.minX;
+        bbox.height = bbox.maxY - bbox.minY;
+      }
+      this._attrs.bbox = bbox;
+    }
+    return bbox;
+  }
+
   /**
-   * TODO: 节点是否在图形中
-   * @param  {Number}  x x 坐标
-   * @param  {Number}  y y 坐标
-   * @return {Boolean}  是否在图形中
+   * @protected
+   * 计算包围盒
+   * @return {Object} 包围盒
    */
-  isPointInPath() {
-    return false;
+  calculateBox() {
+    return null;
   }
 
   clearTotalMatrix() {
     this._attrs.totalMatrix = null;
-    this._attrs.region = null;
   }
 
   createPath() {}

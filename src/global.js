@@ -14,7 +14,7 @@ const Global = {
     column: 1 / 2, // 一般的柱状图占比 1/2
     rose: 0.999999,
     multiplePie: 3 / 4,
-    dodgeMargin: 1 / 2
+    dodgeMargin: 0
   },
   // 动画降频倍数
   animateReduceMultiple: 1,

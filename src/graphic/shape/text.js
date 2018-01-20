@@ -1,5 +1,11 @@
 const Util = require('../../util/common');
+const DOMUtil = require('../../util/dom');
 const Shape = require('../shape');
+
+let dummyContext;
+let textWidthCacheCounter = 0;
+let textWidthCache = {};
+const TEXT_CACHE_MAX = 5000;
 
 class Text extends Shape {
   getDefaultCfg() {
@@ -13,7 +19,7 @@ class Text extends Shape {
 
   getDefaultAttrs() {
     return {
-      lineWidth: 1,
+      lineWidth: 0,
       lineCount: 1,
       fontSize: 12,
       fontFamily: 'sans-serif',
@@ -140,6 +146,92 @@ class Text extends Shape {
         context.strokeText(text, x, y);
       }
     }
+  }
+
+  calculateBox() {
+    const self = this;
+    const attrs = self.get('attrs');
+    const { x, y, textAlign, textBaseline } = attrs;
+    const width = self._getTextWidth(); // attrs.width
+    if (!width) {
+      // 如果width不存在，四点共其实点
+      return {
+        minX: x,
+        minY: y,
+        maxX: x,
+        maxY: y
+      };
+    }
+    const height = self._getTextHeight(); // attrs.height
+    const point = {
+      x,
+      y: y - height
+    }; // default textAlign: start, textBaseline: bottom
+
+    if (textAlign) {
+      if (textAlign === 'end' || textAlign === 'right') {
+        point.x -= width;
+      } else if (textAlign === 'center') {
+        point.x -= width / 2;
+      }
+    }
+
+    if (textBaseline) {
+      if (textBaseline === 'top') {
+        point.y += height;
+      } else if (textBaseline === 'middle') {
+        point.y += height / 2;
+      }
+    }
+
+    return {
+      minX: point.x,
+      minY: point.y,
+      maxX: point.x + width,
+      maxY: point.y + height
+    };
+  }
+
+  _getDummyContext() {
+    if (dummyContext) {
+      return dummyContext;
+    }
+    dummyContext = DOMUtil.createCanvas().getContext('2d');
+    return dummyContext;
+  }
+
+  _getTextWidth() {
+    const self = this;
+    const attrs = self.get('attrs');
+    const { text, font, textArr } = attrs;
+
+    if (Util.isNil(text)) return undefined;
+
+    const key = text + '' + font;
+    if (textWidthCache[key]) {
+      return textWidthCache[key];
+    }
+
+    let width = 0;
+    const context = self._getDummyContext();
+    context.font = font;
+    if (textArr) {
+      for (let i = 0, length = textArr.length; i < length; i++) {
+        const subText = textArr[i];
+        width = Math.max(width, context.measureText(subText).width);
+      }
+    } else {
+      width = context.measureText(text).width;
+    }
+
+    if (textWidthCacheCounter > TEXT_CACHE_MAX) {
+      textWidthCacheCounter = 0;
+      textWidthCache = {};
+    }
+    textWidthCacheCounter++;
+    textWidthCache[key] = width;
+
+    return width;
   }
 }
 

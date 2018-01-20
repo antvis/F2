@@ -8,18 +8,18 @@ document.body.appendChild(dom);
 
 describe('Polygon', function() {
   const canvas = new Canvas({
-    domId: 'canvas-polygon',
+    el: 'canvas-polygon',
     width: 200,
     height: 200
   });
   const polygon = new Polygon({
     attrs: {
       points: [
-        [ 10, 10 ],
-        [ 20, 45 ],
-        [ 40, 80 ],
-        [ 123, 70 ],
-        [ 80, 32 ]
+        { x: 10, y: 10 },
+        { x: 20, y: 45 },
+        { x: 40, y: 80 },
+        { x: 123, y: 70 },
+        { x: 80, y: 32 }
       ],
       lineWidth: 1,
       fill: 'red'
@@ -38,9 +38,17 @@ describe('Polygon', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = polygon.getBBox();
+    expect(bbox.x).to.equal(10);
+    expect(bbox.y).to.equal(10);
+    expect(bbox.width).to.equal(113);
+    expect(bbox.height).to.equal(70);
+  });
+
   it('destroy', function() {
     polygon.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

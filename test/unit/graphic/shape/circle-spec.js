@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Circle', function() {
   const canvas = new Canvas({
-    domId: 'canvas-circle',
+    el: 'canvas-circle',
     width: 200,
     height: 200
   });
@@ -21,7 +21,7 @@ describe('Circle', function() {
   });
 
   it('init attr', function() {
-    expect(circle.attr('lineWidth')).to.equal(1);
+    expect(circle.attr('lineWidth')).to.equal(0);
     expect(circle.attr('stroke')).to.be.undefined;
     expect(circle.attr('fill')).to.be.undefined;
   });
@@ -31,7 +31,7 @@ describe('Circle', function() {
       x: 100,
       y: 100,
       r: 25,
-      lineWidth: 2,
+      lineWidth: 4,
       stroke: '#f80',
       strokeOpacity: 0.4
     });
@@ -39,7 +39,7 @@ describe('Circle', function() {
     expect(circle.attr('x')).to.equal(100);
     expect(circle.attr('y')).to.equal(100);
     expect(circle.attr('r')).to.equal(25);
-    expect(circle.attr('lineWidth')).to.equal(2);
+    expect(circle.attr('lineWidth')).to.equal(4);
     expect(circle.attr('strokeOpacity')).to.equal(0.4);
     expect(circle.attr('stroke')).to.equal('#f80');
   });
@@ -51,9 +51,17 @@ describe('Circle', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('getBBox', function() {
+    const bbox = circle.getBBox();
+    expect(bbox.x).to.equal(75);
+    expect(bbox.y).to.equal(75);
+    expect(bbox.width).to.equal(50);
+    expect(bbox.height).to.equal(50);
+  });
+
   it('destroy', function() {
     circle.destroy();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.get('children').length).to.equal(0);
   });
 });
 

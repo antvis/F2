@@ -20,10 +20,12 @@ const plot = new Plot({
   }
 });
 const circle = new Coord.Polar({
-  plot
+  start: plot.bl,
+  end: plot.tr
 });
 const rect = new Coord.Cartesian({
-  plot
+  start: plot.bl,
+  end: plot.tr
 });
 
 const linear = new Scale.Linear({
@@ -84,38 +86,38 @@ describe('axis controller', function() {
   });
 
   it('get line x axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'x');
+    const cfg = controller._getLineCfg(rect, 'bottom');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y');
+    const cfg = controller._getLineCfg(rect, 'left');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y', 1);
+    const cfg = controller._getLineCfg(rect, 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get positin x', function() {
-    const positin = controller._getLinePosition('x');
+    const positin = controller._getLinePosition(cat, 'x');
     expect(positin).equal('bottom');
   });
 
   it('get positin y', function() {
-    const positin = controller._getLinePosition('y');
+    const positin = controller._getLinePosition(linear, 'y');
     expect(positin).equal('left');
   });
 
   it('get positin y 2', function() {
-    const positin = controller._getLinePosition('y', 1);
+    const positin = controller._getLinePosition(linear, 'y', 1);
     expect(positin).equal('right');
   });
 
@@ -136,26 +138,27 @@ describe('axis controller rect transposed', function() {
   });
 
   const rect = new Coord.Cartesian({
-    plot
+    start: plot.bl,
+    end: plot.tr
   });
   rect.transposed = true;
 
   it('get line x axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'x', { grid: {} });
+    const cfg = controller._getLineCfg(rect, 'bottom');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y');
+    const cfg = controller._getLineCfg(rect, 'left');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y', 1);
+    const cfg = controller._getLineCfg(rect, 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);
@@ -226,7 +229,8 @@ describe('axis controller circle transposed', function() {
   });
 
   const circle = new Coord.Polar({
-    plot
+    start: plot.bl,
+    end: plot.tr
   });
   circle.transposed = true;
 

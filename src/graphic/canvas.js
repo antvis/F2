@@ -7,16 +7,13 @@ const Group = require('./group');
 class Canvas extends Base {
   getDefaultCfg() {
     return {
-      // isBrowser: typeof window !== 'undefined' &&
-      //   ({}.toString.call(window) === '[object Window]' || {}.toString.call(window) === '[object global]'),
+      type: 'canvas',
+      el: null,
+      context: null,
       width: null,
       height: null,
-      el: null,
       children: [],
-      pixelRatio: null,
-      type: 'canvas',
-      domId: null,
-      context: null
+      pixelRatio: null
     };
   }
 
@@ -41,17 +38,16 @@ class Canvas extends Base {
 
   _initCanvas() {
     const self = this;
-    const id = self.get('domId');
     const el = self.get('el');
     const context = self.get('context');
     let canvas;
 
     if (context) { // CanvasRenderingContext2D
       canvas = context.canvas;
-    } else if (el) { // HTMLElement
+    } else if (Util.isString(el)) { // HTMLElement's id
+      canvas = DOMUtil.getDomById(el);
+    } else { // HTMLElement
       canvas = el;
-    } else if (id) { // dom id
-      canvas = document.getElementById(id);
     }
 
     if (!canvas) {
@@ -92,18 +88,31 @@ class Canvas extends Base {
     self.set('context', context || canvas.getContext('2d'));
   }
 
+  /**
+   * 获取 canvas 对应 dom 元素的宽度
+   * @return {Number} 返回宽度
+   */
   getWidth() {
     const pixelRatio = this.get('pixelRatio');
     const width = this.get('width');
     return width * pixelRatio;
   }
 
+  /**
+   * 获取 canvas 对应 dom 元素的高度
+   * @return {Number} 返回高度
+   */
   getHeight() {
     const pixelRatio = this.get('pixelRatio');
     const height = this.get('height');
     return height * pixelRatio;
   }
 
+  /**
+   * 改变 canvas 的宽高
+   * @param  {Number} width  宽度
+   * @param  {Number} height 高度
+   */
   changeSize(width, height) {
     const pixelRatio = this.get('pixelRatio');
     const canvasDOM = this.get('el');
@@ -112,6 +121,7 @@ class Canvas extends Base {
     canvasDOM.setAttribute('width', width * pixelRatio);
     canvasDOM.setAttribute('height', height * pixelRatio);
   }
+
   /**
    * 将窗口坐标转变成 canvas 坐标
    * @param  {Number} clientX 窗口x坐标
@@ -126,17 +136,6 @@ class Canvas extends Base {
     return {
       x: (clientX - bbox.left) * (el.width / width),
       y: (clientY - bbox.top) * (el.height / height)
-    };
-  }
-
-  getClientByPoint(x, y) {
-    const el = this.get('el');
-    const bbox = el.getBoundingClientRect();
-    const width = bbox.right - bbox.left;
-    const height = bbox.bottom - bbox.top;
-    return {
-      clientX: x / (el.width / width) + bbox.left,
-      clientY: y / (el.height / height) + bbox.top
     };
   }
 

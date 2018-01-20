@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const bbox = require('../util/bbox');
 
 class Polygon extends Shape {
   getDefaultCfg() {
@@ -14,7 +15,7 @@ class Polygon extends Shape {
   getDefaultAttrs() {
     return {
       points: null,
-      lineWidth: 1
+      lineWidth: 0
     };
   }
 
@@ -37,6 +38,12 @@ class Polygon extends Shape {
       }
     }
     context.closePath();
+  }
+
+  calculateBox() {
+    const attrs = this.get('attrs');
+    const { points } = attrs;
+    return bbox.getBBoxFromPoints(points);
   }
 }
 

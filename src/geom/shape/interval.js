@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('./shape');
+const Vector2 = require('../../graphic/util/vector2');
 
 function getRectPoints(cfg) {
   const { x, y, y0, size } = cfg;
@@ -73,14 +74,41 @@ Shape.registerShape('interval', 'rect', {
         newPoints = [ points[0], points[3], points[2], points[1] ];
       }
 
-      container.addShape('Fan', {
-        className: 'interval',
-        attrs: Util.mix({
-          points: newPoints,
-          cx: cfg.center.x,
-          cy: cfg.center.y
-        }, style)
-      });
+      const { x, y } = cfg.center;
+      const v = [ 1, 0 ];
+      const v0 = [ newPoints[0].x - x, newPoints[0].y - y ];
+      const v1 = [ newPoints[1].x - x, newPoints[1].y - y ];
+      const v2 = [ newPoints[2].x - x, newPoints[2].y - y ];
+
+      const startAngle = Vector2.angleTo(v, v1);
+      const endAngle = Vector2.angleTo(v, v2);
+      const r0 = Vector2.length(v0);
+      const r = Vector2.length(v1);
+      const diff = Math.abs(startAngle - endAngle);
+
+      if (diff % Math.PI * 2 < 1e-4 && diff > 1e-4) { // Circle
+        container.addShape('Ring', {
+          className: 'interval',
+          attrs: Util.mix({
+            x,
+            y,
+            r,
+            r0
+          }, style)
+        });
+      } else { // Sector
+        container.addShape('Sector', {
+          className: 'interval',
+          attrs: Util.mix({
+            x,
+            y,
+            r,
+            r0,
+            startAngle,
+            endAngle
+          }, style)
+        });
+      }
     } else {
       const rectCfg = getRectRange(points);
 

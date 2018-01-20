@@ -40,7 +40,7 @@ describe('circle axis', function() {
       axis = new AxisCircle(cfg);
       // axis.draw();
       expect(axis.ticks.length).equal(cat.getTicks().length);
-      expect(backContainer.get('children').length).to.equal(3);
+      expect(backContainer.get('children').length).to.equal(2);
     });
 
     it('test point', function() {
