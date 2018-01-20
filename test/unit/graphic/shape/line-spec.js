@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Line', function() {
   const canvas = new Canvas({
-    domId: 'canvas-line',
+    el: 'canvas-line',
     width: 200,
     height: 200
   });

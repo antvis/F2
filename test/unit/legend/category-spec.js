@@ -9,7 +9,7 @@
 // document.body.appendChild(dom);
 
 // const canvas = new Canvas({
-//   domId: 'legend',
+//   el: 'legend',
 //   width: 500,
 //   height: 500
 // });

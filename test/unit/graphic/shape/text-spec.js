@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Text', function() {
   const canvas = new Canvas({
-    domId: 'canvas-text',
+    el: 'canvas-text',
     width: 200,
     height: 200,
     pixelRatio: 2

@@ -8,9 +8,9 @@ document.body.appendChild(dom);
 
 describe('Canvas', function() {
 
-  it('init Canvas with domId', function() {
+  it('init Canvas with dom\'s id', function() {
     const canvas = new Canvas({
-      domId: 'canvas'
+      el: 'canvas'
     });
     expect(canvas.get('canvas')).not.to.be.undefined;
     expect(canvas.get('context')).not.to.be.undefined;
@@ -22,9 +22,9 @@ describe('Canvas', function() {
     canvas.destroy();
   });
 
-  it('init Canvas with domId, width, height, pixelRatio', function() {
+  it('init Canvas with dom\'s id, width, height, pixelRatio', function() {
     const canvas = new Canvas({
-      domId: 'canvas',
+      el: 'canvas',
       width: 300,
       height: 300,
       pixelRatio: 2
@@ -69,7 +69,7 @@ describe('Canvas', function() {
 
   it('add Shape', function() {
     const canvas = new Canvas({
-      domId: 'canvas',
+      el: 'canvas',
       width: 500,
       height: 500
     });
@@ -98,7 +98,7 @@ describe('Canvas', function() {
 
   it('changeSize', function() {
     const canvas = new Canvas({
-      domId: 'canvas',
+      el: 'canvas',
       width: 500,
       height: 500,
       pixelRatio: 1
@@ -111,7 +111,7 @@ describe('Canvas', function() {
 
   it('clear canvas', function() {
     const canvas = new Canvas({
-      domId: 'canvas',
+      el: 'canvas',
       width: 500,
       height: 500,
       pixelRatio: 1

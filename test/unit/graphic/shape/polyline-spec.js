@@ -7,7 +7,7 @@ dom.id = 'canvas-polyline';
 document.body.appendChild(dom);
 
 const canvas = new Canvas({
-  domId: 'canvas-polyline',
+  el: 'canvas-polyline',
   width: 200,
   height: 200
 });

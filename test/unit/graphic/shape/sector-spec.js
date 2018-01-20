@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Sector', function() {
   const canvas = new Canvas({
-    domId: 'canvas-sector',
+    el: 'canvas-sector',
     width: 200,
     height: 200
   });

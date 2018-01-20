@@ -33,6 +33,10 @@ class Group extends Element {
     }
   }
 
+  /**
+   * 获取最小包围盒
+   * @return {Object} 返回包围盒
+   */
   getBBox() {
     const self = this;
     let minX = Infinity;
@@ -40,7 +44,6 @@ class Group extends Element {
     let minY = Infinity;
     let maxY = -Infinity;
     const children = self.get('children');
-    // Util.each(children, function(child) {
     for (let i = 0, length = children.length; i < length; i++) {
       const child = children[i];
       if (child.get('visible')) {

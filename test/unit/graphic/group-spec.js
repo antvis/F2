@@ -9,7 +9,7 @@ dom.style.margin = '100px';
 document.body.appendChild(dom);
 
 const canvas = new Canvas({
-  domId: 'canvas-group',
+  el: 'canvas-group',
   width: 500,
   height: 500
 });
