@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Polygon', function() {
   const canvas = new Canvas({
-    domId: 'canvas-polygon',
+    el: 'canvas-polygon',
     width: 200,
     height: 200
   });

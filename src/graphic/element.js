@@ -213,6 +213,10 @@ class Element extends Base {
     return this;
   }
 
+  /**
+   * 移除
+   * @param  {Boolean} destroy true 表示将自己移除的同时销毁自己，false 表示仅移除自己
+   */
   remove(destroy) {
     if (destroy) {
       this.destroy();
@@ -221,6 +225,9 @@ class Element extends Base {
     }
   }
 
+  /**
+   * 销毁并将自己从父元素中移除（如果有父元素的话）
+   */
   destroy() {
     const destroyed = this.get('destroyed');
 
@@ -260,6 +267,11 @@ class Element extends Base {
     return [ m[0], m[1], m[2], m[3], m[4], m[5] ];
   }
 
+  /**
+   * 平移、旋转、缩放
+   * @param  {Array} actions 操作集合
+   * @return {Element}         返回自身
+   */
   transform(actions) {
     const self = this;
     for (let i = 0; i < actions.length; i++) {

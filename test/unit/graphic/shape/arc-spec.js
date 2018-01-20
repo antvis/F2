@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Arc', function() {
   const canvas = new Canvas({
-    domId: 'canvas-arc',
+    el: 'canvas-arc',
     width: 200,
     height: 200
   });

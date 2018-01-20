@@ -11,7 +11,7 @@ describe('Guide.Region', function() {
   });
 
   const canvas = new Canvas({
-    domId: 'guide',
+    el: 'guide',
     width: 500,
     height: 500,
     pixelRatio: 2

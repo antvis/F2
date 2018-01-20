@@ -145,7 +145,6 @@ class Chart extends Base {
        * @type {Array}
        */
       data: null,
-
       /**
        * chart 保有的度量
        * @type {Object}
@@ -159,12 +158,6 @@ class Chart extends Base {
       coordCfg: {
         type: 'cartesian'
       },
-      /**
-       * @private
-       * 图层
-       * @type {Array}
-       */
-      layers: null,
       /**
        * @private
        * 图层对应的图形
@@ -466,8 +459,7 @@ class Chart extends Base {
     const self = this;
     try {
       const canvas = new Canvas({
-        domId: self.get('id'),
-        el: self.get('el'),
+        el: self.get('el') || self.get('id'),
         context: self.get('context'),
         pixelRatio: self.get('pixelRatio'),
         width: self.get('width'),

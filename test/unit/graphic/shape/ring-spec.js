@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Ring', function() {
   const canvas = new Canvas({
-    domId: 'canvas-ring',
+    el: 'canvas-ring',
     width: 200,
     height: 200
   });

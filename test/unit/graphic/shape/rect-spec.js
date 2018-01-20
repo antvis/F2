@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Rect', function() {
   const canvas = new Canvas({
-    domId: 'canvas-rect',
+    el: 'canvas-rect',
     width: 200,
     height: 200
   });

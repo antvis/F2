@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Custom', function() {
   const canvas = new Canvas({
-    domId: 'canvas-custom',
+    el: 'canvas-custom',
     width: 200,
     height: 200
   });

@@ -8,7 +8,7 @@
 // document.body.appendChild(dom);
 
 // const canvas = new Canvas({
-//   domId: 'tooltip',
+//   el: 'tooltip',
 //   width: 500,
 //   height: 500
 // });

@@ -8,7 +8,7 @@ document.body.appendChild(dom);
 
 describe('Circle', function() {
   const canvas = new Canvas({
-    domId: 'canvas-circle',
+    el: 'canvas-circle',
     width: 200,
     height: 200
   });
