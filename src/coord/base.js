@@ -20,6 +20,12 @@ class Base {
   invertPoint(point) {
     return point;
   }
+
+  reset(start, end) {
+    this.start = start;
+    this.end = end;
+    this.init();
+  }
 }
 
 module.exports = Base;
