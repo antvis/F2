@@ -175,7 +175,7 @@ class TooltipController {
     const canvas = chart.get('canvas');
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    const plotRange = chart.get('plot');
+    const plotRange = chart.get('plotRange');
     const coord = chart.get('coord');
 
     const defaultCfg = self._setCrosshairsCfg();
@@ -212,7 +212,7 @@ class TooltipController {
       let width;
       let height;
       const chart = this.chart;
-      const { tl, br } = chart.get('plot');
+      const { tl, br } = chart.get('plotRange');
       const coord = chart.get('coord');
       const firstItem = items[0];
       const lastItem = items[items.length - 1];
@@ -384,7 +384,7 @@ class TooltipController {
 
   handleShowEvent(ev) {
     const chart = this.chart;
-    const plot = chart.get('plot');
+    const plot = chart.get('plotRange');
     const { x, y } = DomUtil.createEvent(ev, chart);
     if (!(x >= plot.tl.x && x <= plot.tr.x && y >= plot.tl.y && y <= plot.br.y)) { // not in chart plot
       this.hideTooltip();

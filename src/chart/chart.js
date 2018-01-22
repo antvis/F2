@@ -64,7 +64,6 @@ class Chart extends Base {
         return this._plugins;
       },
       notify(chart, hook, args) {
-        // TODO 优化
         const descriptors = this.descriptors(chart);
         const ilen = descriptors.length;
         let i;
@@ -79,7 +78,6 @@ class Chart extends Base {
           method = plugin[hook];
           if (typeof method === 'function') {
             params = [ chart ].concat(args || []);
-            // params.push(descriptor.options);
             if (method.apply(plugin, params) === false) {
               return false;
             }
@@ -89,7 +87,6 @@ class Chart extends Base {
         return true;
       },
       descriptors(chart) {
-        // TODO 优化
         const cache = chart._plugins || (chart._plugins = {});
         if (cache.id === this._cacheId) {
           return cache.descriptors;
@@ -97,24 +94,12 @@ class Chart extends Base {
 
         const plugins = [];
         const descriptors = [];
-        // const config = (chart && chart.get('plugins'));
 
         this._plugins.concat((chart && chart.get('plugins')) || []).forEach(function(plugin) {
           const idx = plugins.indexOf(plugin);
           if (idx !== -1) {
             return;
           }
-
-          // const id = plugin.id;
-          // let opts = options[id];
-          // if (opts === false) {
-          //   return;
-          // }
-
-          // if (opts === true) {
-          //   opts = Util.mix({}, defaults.global.plugins[id]);
-          //   // opts = helpers.clone(defaults.global.plugins[id]);
-          // }
 
           plugins.push(plugin);
           descriptors.push({
@@ -180,102 +165,6 @@ class Chart extends Base {
     };
   }
 
-  constructor(cfg) {
-    super(cfg);
-    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
-    this._init();
-  }
-
-  /**
-   * 设置数据源和数据字段定义
-   * @chainable
-   * @param  {Array} data 数据集合
-   * @param  {Object} colDefs 数据字段定义
-   * @return {Chart} 返回当前 chart 的引用
-   */
-  source(data, colDefs) {
-    const self = this;
-    if (colDefs) {
-      self.set('colDefs', colDefs);
-    }
-    self._initData(data);
-    return self;
-  }
-
-  /**
-   * 设置坐标轴配置项
-   * @chainable
-   * @param  {String|Boolean} field 坐标轴对应的字段
-   * @param  {Object} cfg 坐标轴的配置信息
-   * @return {Chart} 返回当前 chart 的引用
-   */
-  axis(field, cfg) {
-    const self = this;
-    const axisController = self.get('axisController');
-    if (!field) {
-      axisController.axisCfg = null;
-    } else {
-      axisController.axisCfg = axisController.axisCfg || {};
-      axisController.axisCfg[field] = cfg;
-    }
-    return self;
-  }
-
-  /**
-   * [legend description]
-   * @param  {[type]} field [description]
-   * @param  {[type]} cfg   [description]
-   * @return {[type]}       [description]
-   */
-  legend(field, cfg) {
-    const self = this;
-    const legendController = self.get('legendController');
-    if (!legendController) {
-      return self;
-    }
-
-    let legendCfg = legendController.legendCfg;
-
-    if (Util.isBoolean(field)) { // 支持 chart.legend(true | false)
-      legendController.enable = field;
-      legendCfg = cfg; // chart.legend(true, cfg);
-    } else if (Util.isObject(field)) { // 默认的 legend 配置属性
-      legendCfg = field;
-    } else {
-      legendCfg[field] = cfg; // 配置某一个 field 对应的图例
-    }
-
-    legendController.legendCfg = legendCfg;
-
-    return self;
-  }
-
-  filter(field, condition) {
-    const filters = this.get('filters');
-    filters[field] = condition;
-  }
-
-  /**
-   * 配置 tooltip
-   * @param  {boolean|object} enable 为布尔值表示是否开启tooltip，对象则表示配置项
-   * @param  {object} cfg 配置项
-   * @return {Chart} 返回 Chart 实例
-   */
-  tooltip(enable, cfg = {}) {
-    const tooltipController = this.get('tooltipController');
-    if (!tooltipController) {
-      return this;
-    }
-    if (Util.isObject(enable)) { // chart.tooltip({})
-      cfg = enable;
-      enable = true;
-    }
-    tooltipController.enable = enable;
-    tooltipController.cfg = cfg;
-
-    return this;
-  }
-
   _getFieldsForLegend() {
     const fields = [];
     const geoms = this.get('geoms');
@@ -295,391 +184,18 @@ class Chart extends Base {
     return fields;
   }
 
-  /**
-   * TODO legends 拍平
-   * [getLegendItems description]
-   * @return {[type]} [description]
-   */
-  getLegendItems() {
-    const result = {};
-    const legendController = this.get('legendController');
-    if (legendController) {
-      const legends = legendController.legends;
-      Util.each(legends, legendItems => {
-        Util.each(legendItems, legend => {
-          const { field, items } = legend;
-          result[field] = items;
-        });
-      });
-    }
-    return result;
-  }
-
-  /**
-   * 创建度量
-   * @param  {String} field 度量对应的名称
-   * @param  {Array} data 数据集合
-   * @return {Scale} 度量
-   */
-  createScale(field, data) {
-    const self = this;
-    // data = data || self.get('data');
-    if (!data) {
-      const filteredData = self.get('filteredData');
-      const legendFields = this._getFieldsForLegend();
-      // 过滤导致数据为空时，需要使用全局数据
-      // 参与过滤的字段的度量也根据全局数据来生成
-      if (filteredData.length && legendFields.indexOf(field) === -1) {
-        data = filteredData;
-      } else {
-        data = this.get('data');
-      }
-    }
-    const scales = self.get('scales');
-    if (!scales[field]) {
-      scales[field] = self._createScale(field, data);
-    }
-    return scales[field];
-  }
-
-  // 内部调用
   _createScale(field, data) {
-    const self = this;
-    const coord = self.get('coord');
+    const coord = this.get('coord');
     const inCircle = coord.isPolar;
-    const scaleController = self.get('scaleController');
+    const scaleController = this.get('scaleController');
     return scaleController.createScale(field, data, inCircle);
   }
 
-  /**
-   * 设置坐标系配置项
-   * @chainable
-   * @param  {String} type 坐标系类型
-   * @param  {Object} cfg 配置项
-   * @return {Chart} 返回当前 chart 的引用
-   */
-  coord(type, cfg) {
-    const self = this;
-    let coordCfg;
-    if (!cfg) {
-      if (Util.isString(type)) {
-        coordCfg = {
-          type
-        };
-      } else {
-        coordCfg = type;
-      }
-    } else {
-      coordCfg = cfg;
-      coordCfg.type = type;
-    }
-
-    self.set('coordCfg', coordCfg);
-    return self;
-  }
-
-  /**
-   * 获取数据对应在画布空间的坐标
-   * @param  {Object} record 原始数据
-   * @return {Object} 返回对应的画布上的坐标点
-   */
-  getPosition(record) {
-    const self = this;
-    const coord = self.get('coord');
-    const xScale = self._getXScale();
-    const yScale = self._getYScales()[0]; // 暂时只取第一个y轴，忽视多轴的情况
-    const xField = xScale.field;
-    const x = xScale.scale(record[xField]);
-    const yField = yScale.field;
-    const y = yScale.scale(record[yField]);
-    return coord.convertPoint({
-      x,
-      y
-    });
-  }
-  /**
-   * 获取画布上坐标对应的数据值
-   * @param  {Object} point 画布坐标的x,y的值
-   * @return {Object} 当前坐标系的数据值
-   */
-  getRecord(point) {
-    const self = this;
-    const coord = self.get('coord');
-    const xScale = self._getXScale();
-    const yScale = self._getYScales()[0];
-    const invertPoint = coord.invertPoint(point);
-    const record = {};
-    record[xScale.field] = xScale.invert(invertPoint.x);
-    record[yScale.field] = yScale.invert(invertPoint.y);
-    return record;
-  }
-  /**
-   * 根据画布坐标获取对应数据集
-   * @param  {Object} point 画布坐标的x,y的值
-   * @param {String} field 字段名
-   * @return {Array} 纵向切割交点对应数据集
-  **/
-  getSnapRecords(point, field) {
-    const geom = this.get('geoms')[0];
-    const data = geom.getSnapRecords(point, field);
-    return data;
-  }
-
-  // 初始化
-  _init() {
-    const self = this;
-    self._initCanvas();
-    self._initLayers();
-    self.set('geoms', []);
-    self.set('scaleController', new ScaleController());
-    self.set('axisController', new AxisController({
-      frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
-    }));
-    self._initData(self.get('data'));
-    Chart.plugins.notify(self, 'init');
-  }
-
-  // 初始化数据
-  _initData(data) {
-    if (data) {
-      this.set('data', data);
-    }
-    const colDefs = this.get('colDefs');
-    if (colDefs) {
-      const scaleController = this.get('scaleController');
-      scaleController.defs = colDefs;
-    }
-  }
-
-  _getRatio() {
-    return this.get('pixelRatio');
-  }
-
-  // 初始化画布
-  _initCanvas() {
-    const self = this;
-    try {
-      const canvas = new Canvas({
-        el: self.get('el') || self.get('id'),
-        context: self.get('context'),
-        pixelRatio: self.get('pixelRatio'),
-        width: self.get('width'),
-        height: self.get('height'),
-        fontFamily: Global.fontFamily
-      });
-      self.set('canvas', canvas);
-      self.set('width', canvas.get('width'));
-      self.set('height', canvas.get('height'));
-    } catch (info) { // 绘制时异常，中断重绘
-      console.warn('error in init canvas');
-      console.warn(info);
-    }
-    self._initLayout();
-  }
-
-  _initLayers() {
-    const canvas = this.get('canvas');
-    const backPlot = canvas.addGroup({
-      zIndex: 1
-    }); // 图表最后面的容器
-    const middlePlot = canvas.addGroup({
-      zIndex: 2
-    }); // 图表所在的容器
-    const frontPlot = canvas.addGroup({
-      zIndex: 3
-    }); // 图表前面的容器
-
-    this.set('backPlot', backPlot);
-    this.set('middlePlot', middlePlot);
-    this.set('frontPlot', frontPlot);
-  }
-
-  // 初始化布局
-  _initLayout() {
-    const self = this;
-    // 兼容margin 的写法
-    let padding = self.get('margin') || self.get('padding');
-    const canvas = self.get('canvas');
-    const width = canvas.get('width'); // TODO 很容易混淆
-    const height = canvas.get('height'); // TODO 很容易混淆
-    padding = Util.parsePadding(padding);
-    const plot = new Plot({
-      start: {
-        x: padding[3],
-        y: padding[0]
-      },
-      end: {
-        x: width - padding[1],
-        y: height - padding[2]
-      }
-    });
-    self.set('plot', plot);
-  }
-
-  // 初始化坐标系
-  _initCoord() {
-    const self = this;
-    const plot = self.get('plot');
-    const coordCfg = Util.mix({}, self.get('coordCfg'), {
-      start: plot.bl,
-      end: plot.tr
-    });
-    const type = coordCfg.type;
-    const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
-    const coord = new C(coordCfg);
-
-    self.set('coord', coord);
-  }
-
-  /**
-   * @protected
-   * 添加几何标记
-   * @param {Geom} geom 几何标记
-   */
-  addGeom(geom) {
-    const self = this;
-    const geoms = self.get('geoms');
-    geoms.push(geom);
-    geom.set('chart', self);
-    geom.set('container', self.get('middlePlot'));
-  }
-
-  guide() {
-    return this.get('guideController');
-  }
-
-  /**
-   * @protected
-   * 移除几何标记
-   * @param {Geom} geom 几何标记
-   */
-  removeGeom(geom) {
-    const geoms = this.get('geoms');
-    Util.Array.remove(geoms, geom);
-    geom.destroy();
-  }
-
-  _removeGeoms() {
-    const self = this;
-    const geoms = self.get('geoms');
-    while (geoms.length > 0) {
-      const geom = geoms.shift();
-      geom.destroy();
-    }
-  }
-
-  _clearGeoms() {
-    const self = this;
-    const geoms = self.get('geoms');
-    for (let i = 0; i < geoms.length; i++) {
-      const geom = geoms[i];
-      geom.clear();
-    }
-  }
-
-  /**
-   * 清空图表上面的图层
-   * @chainable
-   * @return {Chart} 返回当前 chart 的引用
-   */
-  clear() {
-    Chart.plugins.notify(this, 'clear'); // TODO
-    this._removeGeoms();
-    this._clearInner();
-    this.set('filters', {});
-
-    const canvas = this.get('canvas');
-    canvas.draw();
-    return this;
-  }
-
-  _clearInner() {
-    this.set('scales', {});
-    this._clearGeoms();
-
-    Chart.plugins.notify(this, 'clearInner'); // TODO
-    const frontPlot = this.get('frontPlot');
-    const backPlot = this.get('backPlot');
-    frontPlot && frontPlot.clear();
-    backPlot && backPlot.clear();
-  }
-
-  destroy() {
-    this.clear();
-    const canvas = this.get('canvas');
-    canvas.destroy();
-    super.destroy();
-  }
-
-  /**
-   * 图表绘制
-   * @chainable
-   * @return {Chart} 返回当前 chart 的引用
-   */
-  render() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const geoms = self.get('geoms');
-
-    // Chart.plugins.notify(self, 'beforeRender');
-    const data = this.get('data') || [];
-    const filteredData = this.execFilter(data);
-    this.set('filteredData', filteredData);
-    self._initCoord();
-    self._initGeoms(geoms);
-    self._adjustScale();
-
-    Chart.plugins.notify(self, 'beforeGeomDraw');
-
-    self._renderAxis();
-    self.drawGeom(geoms);
-
-    Chart.plugins.notify(self, 'afterGeomDraw');
-    canvas.sort();
-    canvas.draw();
-    return self;
-  }
-
-  repaint() {
-    Chart.plugins.notify(this, 'repaint');
-    this._clearInner();
-    this.render();
-  }
-
-  changeData(data) {
-    this.set('data', data);
-    this.repaint();
-  }
-
-  drawGeom(geoms) {
-    for (let i = 0; i < geoms.length; i++) {
-      const geom = geoms[i];
-      geom.paint();
-    }
-  }
-
-  _initGeoms(geoms) {
-    const self = this;
-    const coord = self.get('coord');
-    const data = self.get('filteredData');
-    for (let i = 0; i < geoms.length; i++) {
-      const geom = geoms[i];
-      geom.set('data', data);
-      geom.set('coord', coord);
-      geom.init();
-    }
-  }
-
   _adjustScale() {
-    this._setCatScalesRange();
-  }
-
-  _setCatScalesRange() {
     const self = this;
     const coord = self.get('coord');
-    const xScale = self._getXScale();
-    const yScales = self._getYScales();
+    const xScale = self.getXScale();
+    const yScales = self.getYScales();
     let scales = [];
 
     xScale && scales.push(xScale);
@@ -714,9 +230,36 @@ class Chart extends Base {
     });
   }
 
-  execFilter(data) {
-    const self = this;
-    const filters = self.get('filters');
+  _removeGeoms() {
+    const geoms = this.get('geoms');
+    while (geoms.length > 0) {
+      const geom = geoms.shift();
+      geom.destroy();
+    }
+  }
+
+  _clearGeoms() {
+    const geoms = this.get('geoms');
+    for (let i = 0, length = geoms.length; i < length; i++) {
+      const geom = geoms[i];
+      geom.clear();
+    }
+  }
+
+  _clearInner() {
+    this.set('scales', {});
+    this._clearGeoms();
+
+    Chart.plugins.notify(this, 'clearInner'); // TODO
+
+    const frontPlot = this.get('frontPlot');
+    const backPlot = this.get('backPlot');
+    frontPlot && frontPlot.clear();
+    backPlot && backPlot.clear();
+  }
+
+  _execFilter(data) {
+    const filters = this.get('filters');
     if (filters) {
       data = data.filter(function(obj) {
         let rst = true;
@@ -734,18 +277,382 @@ class Chart extends Base {
     return data;
   }
 
-  // 获取x轴对应的度量
-  _getXScale() {
+  _initGeoms(geoms) {
+    const coord = this.get('coord');
+    const data = this.get('filteredData');
+    for (let i = 0, length = geoms.length; i < length; i++) {
+      const geom = geoms[i];
+      geom.set('data', data);
+      geom.set('coord', coord);
+      geom.init();
+    }
+  }
+
+  _initCoord() {
+    const plot = this.get('plotRange');
+    const coordCfg = Util.mix({}, this.get('coordCfg'), {
+      start: plot.bl,
+      end: plot.tr
+    });
+    const type = coordCfg.type;
+    const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
+    const coord = new C(coordCfg);
+    this.set('coord', coord);
+  }
+
+  _initLayout() {
+    let padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
+    padding = Util.parsePadding(padding);
+
+    const width = this.get('width');
+    const height = this.get('height');
+    const plot = new Plot({
+      start: {
+        x: padding[3],
+        y: padding[0]
+      },
+      end: {
+        x: width - padding[1],
+        y: height - padding[2]
+      }
+    });
+    this.set('plotRange', plot);
+    this.set('plot', plot);
+  }
+
+  _initCanvas() {
+    const self = this;
+    try {
+      const canvas = new Canvas({
+        el: self.get('el') || self.get('id'),
+        context: self.get('context'),
+        pixelRatio: self.get('pixelRatio'),
+        width: self.get('width'),
+        height: self.get('height'),
+        fontFamily: Global.fontFamily
+      });
+      self.set('canvas', canvas);
+      self.set('width', canvas.get('width'));
+      self.set('height', canvas.get('height'));
+    } catch (info) { // 绘制时异常，中断重绘
+      console.warn('error in init canvas');
+      console.warn(info);
+    }
+    self._initLayout();
+  }
+
+  _initLayers() {
+    const canvas = this.get('canvas');
+    this.set('backPlot', canvas.addGroup({
+      zIndex: 1
+    }));
+    this.set('middlePlot', canvas.addGroup({
+      zIndex: 2
+    }));
+    this.set('frontPlot', canvas.addGroup({
+      zIndex: 3
+    }));
+  }
+
+  initColDefs() {
+    const colDefs = this.get('colDefs');
+    if (colDefs) {
+      const scaleController = this.get('scaleController');
+      scaleController.defs = colDefs;
+    }
+  }
+
+  _init() {
+    const self = this;
+    self._initCanvas();
+    self._initLayers();
+    self.set('geoms', []);
+    self.set('scaleController', new ScaleController());
+    self.set('axisController', new AxisController({
+      frontPlot: self.get('frontPlot'),
+      backPlot: self.get('backPlot')
+    }));
+    self.initColDefs();
+    Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
+  }
+
+  constructor(cfg) {
+    super(cfg);
+    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
+    this._init();
+  }
+
+  /**
+   * 设置数据源和数据字段定义
+   * @chainable
+   * @param  {Array} data 数据集合
+   * @param  {Object} colDefs 数据字段定义
+   * @return {Chart} 返回当前 chart 的引用
+   */
+  source(data, colDefs) {
+    this.set('data', data);
+    if (colDefs) {
+      this.set('colDefs', colDefs);
+    }
+    this.initColDefs();
+    return this;
+  }
+
+  /**
+   * 设置坐标轴配置项
+   * @chainable
+   * @param  {String|Boolean} field 坐标轴对应的字段
+   * @param  {Object} cfg 坐标轴的配置信息
+   * @return {Chart} 返回当前 chart 的引用
+   */
+  axis(field, cfg) {
+    const axisController = this.get('axisController');
+    if (!field) {
+      axisController.axisCfg = null;
+    } else {
+      axisController.axisCfg = axisController.axisCfg || {};
+      axisController.axisCfg[field] = cfg;
+    }
+    return this;
+  }
+
+  /**
+   * 设置图例
+   * @chainable
+   * @param  {Boolean|String|Object} field Boolean 表示关闭开启图例，String 表示指定具体的图例，Object 表示为所有的图例设置
+   * @param  {Object|Boolean} cfg   图例的配置，Object 表示为对应的图例进行配置，Boolean 表示关闭对应的图例
+   * @return {Chart}       返回当前 chart 的引用
+   */
+  legend(field, cfg) {
+    const legendController = this.get('legendController');
+    if (!legendController) {
+      return this;
+    }
+
+    let legendCfg = legendController.legendCfg;
+
+    if (Util.isBoolean(field)) {
+      legendController.enable = field;
+      legendCfg = cfg || {};
+    } else if (Util.isObject(field)) {
+      legendCfg = field;
+    } else {
+      legendCfg[field] = cfg;
+    }
+
+    legendController.legendCfg = legendCfg;
+
+    return this;
+  }
+
+  /**
+   * 设置坐标系配置项
+   * @chainable
+   * @param  {String} type 坐标系类型
+   * @param  {Object} cfg 配置项
+   * @return {Chart} 返回当前 chart 的引用
+   */
+  coord(type, cfg) {
+    if (!type) {
+      return;
+    }
+    let coordCfg;
+    if (Util.isObject(type)) {
+      coordCfg = type;
+    } else {
+      coordCfg = cfg || {};
+      coordCfg.type = type;
+    }
+    this.set('coordCfg', coordCfg);
+
+    return this;
+  }
+
+  filter(field, condition) {
+    const filters = this.get('filters');
+    filters[field] = condition;
+  }
+
+  /**
+   * 配置 tooltip
+   * @param  {Boolean|Object} enable Boolean 表示是否开启tooltip，Object 则表示配置项
+   * @param  {Object} cfg 配置项
+   * @return {Chart} 返回 Chart 实例
+   */
+  tooltip(enable, cfg = {}) {
+    const tooltipController = this.get('tooltipController');
+    if (!tooltipController) {
+      return this;
+    }
+    if (Util.isObject(enable)) {
+      cfg = enable;
+      enable = true;
+    }
+    tooltipController.enable = enable;
+    tooltipController.cfg = cfg;
+
+    return this;
+  }
+
+  /**
+   * 为图表添加 guide
+   * @return {GuideController} 返回 guide 控制器
+   */
+  guide() {
+    return this.get('guideController');
+  }
+
+  /**
+   * 图表绘制
+   * @chainable
+   * @return {Chart} 返回当前 chart 的引用
+   */
+  render() {
+    const self = this;
+    const canvas = self.get('canvas');
+    const geoms = self.get('geoms');
+    // 处理数据
+    const data = this.get('data') || [];
+    const filteredData = this._execFilter(data);
+    this.set('filteredData', filteredData);
+    // 初始化坐标系
+    self._initCoord();
+    // 初始化 geoms
+    self._initGeoms(geoms);
+    // 调整度量
+    self._adjustScale();
+
+    Chart.plugins.notify(self, 'beforeGeomDraw');
+
+    self._renderAxis();
+    // 绘制 geom
+    for (let i = 0, length = geoms.length; i < length; i++) {
+      const geom = geoms[i];
+      geom.paint();
+    }
+
+    Chart.plugins.notify(self, 'afterGeomDraw');
+    canvas.sort();
+    canvas.draw();
+    return self;
+  }
+
+  /**
+   * 清空图表上面的图层
+   * @chainable
+   * @return {Chart} 返回当前 chart 的引用
+   */
+  clear() {
+    Chart.plugins.notify(this, 'clear'); // TODO: beforeClear afterClear
+    this._removeGeoms();
+    this._clearInner();
+    this.set('filters', {});
+
+    const canvas = this.get('canvas');
+    canvas.draw();
+    return this;
+  }
+
+  repaint() {
+    Chart.plugins.notify(this, 'repaint');
+    this._clearInner();
+    this.render();
+  }
+
+  changeData(data) {
+    this.set('data', data);
+    this.repaint();
+  }
+
+  destroy() {
+    this.clear();
+    const canvas = this.get('canvas');
+    canvas.destroy();
+    super.destroy();
+  }
+
+  /**
+   * TODO legends 拍平
+   * [getLegendItems description]
+   * @return {[type]} [description]
+   */
+  getLegendItems() {
+    const result = {};
+    const legendController = this.get('legendController');
+    if (legendController) {
+      const legends = legendController.legends;
+      Util.each(legends, legendItems => {
+        Util.each(legendItems, legend => {
+          const { field, items } = legend;
+          result[field] = items;
+        });
+      });
+    }
+    return result;
+  }
+
+  /**
+   * 创建度量
+   * @param  {String} field 度量对应的名称
+   * @param  {Array} data 数据集合
+   * @return {Scale} 度量
+   */
+  createScale(field, data) {
+    const self = this;
+    if (!data) {
+      const filteredData = self.get('filteredData');
+      const legendFields = this._getFieldsForLegend();
+      // 过滤导致数据为空时，需要使用全局数据
+      // 参与过滤的字段的度量也根据全局数据来生成
+      if (filteredData.length && legendFields.indexOf(field) === -1) {
+        data = filteredData;
+      } else {
+        data = this.get('data');
+      }
+    }
+    const scales = self.get('scales');
+    if (!scales[field]) {
+      scales[field] = self._createScale(field, data);
+    }
+    return scales[field];
+  }
+
+  /**
+   * @protected
+   * 添加几何标记
+   * @param {Geom} geom 几何标记
+   */
+  addGeom(geom) {
+    const geoms = this.get('geoms');
+    geoms.push(geom);
+    geom.set('chart', this);
+    geom.set('container', this.get('middlePlot'));
+  }
+
+  // drawGeom(geoms) {
+  //   for (let i = 0, length = geoms.length; i < length; i++) {
+  //     const geom = geoms[i];
+  //     geom.paint();
+  //   }
+  // }
+
+  /**
+   * 获取 x 对应的度量
+   * @return {Scale} x 对应的度量
+   */
+  getXScale() {
     const self = this;
     const geoms = self.get('geoms');
     const xScale = geoms[0].getXScale();
     return xScale;
   }
 
-  // 获取y轴对应的度量
-  _getYScales() {
-    const self = this;
-    const geoms = self.get('geoms');
+  /**
+   * 获取 y 对应的度量
+   * @return {Array} 返回所有 y 的度量
+   */
+  getYScales() {
+    const geoms = this.get('geoms');
     const rst = [];
 
     Util.each(geoms, function(geom) {
@@ -757,13 +664,11 @@ class Chart extends Base {
     return rst;
   }
 
-  // 绘制坐标轴
   _renderAxis() {
-    const self = this;
-    const axisController = self.get('axisController');
-    const xScale = self._getXScale();
-    const yScales = self._getYScales();
-    const coord = self.get('coord');
+    const axisController = this.get('axisController');
+    const xScale = this.getXScale();
+    const yScales = this.getYScales();
+    const coord = this.get('coord');
     axisController.createAxis(coord, xScale, yScales);
   }
 }

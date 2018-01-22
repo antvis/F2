@@ -125,8 +125,8 @@ module.exports = {
     if (!guideController.guides.length) {
       return;
     }
-    const xScale = chart._getXScale();
-    const yScale = chart._getYScales()[0];
+    const xScale = chart.getXScale();
+    const yScale = chart.getYScales()[0];
     const coord = chart.get('coord');
     guideController.setScale(xScale, yScale);
     guideController.paint(coord);

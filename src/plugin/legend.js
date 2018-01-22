@@ -353,7 +353,7 @@ module.exports = {
   init(chart) {
     const legendController = new LegendController({
       container: chart.get('backPlot'),
-      plotRange: chart.get('plot'),
+      plotRange: chart.get('plotRange'),
       chart
     });
     chart.set('legendController', legendController);
