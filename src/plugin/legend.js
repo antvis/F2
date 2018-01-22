@@ -235,11 +235,14 @@ class LegendController {
     const plotRange = self.plotRange;
     const offsetX = legend.offsetX || 0;
     const offsetY = legend.offsetY || 0;
+      const legendHeight = legend.getHeight();
+      const canvas = this.chart;
+      const canvasHeight = chart.get('height');
+
 
     let x = 0;
     let y = 0;
     if (position === 'left' || position === 'right') { // position 为 left、right，图例整体居中对齐
-      const legendHeight = legend.getHeight();
       const height = Math.abs(plotRange.tl.y - plotRange.bl.y);
       x = (position === 'left') ? LEGEND_OFFSET : (plotRange.br.x + LEGEND_OFFSET);
       y = (height - legendHeight) / 2 + plotRange.tl.y;
@@ -248,7 +251,7 @@ class LegendController {
       }
     } else { // position 为 top、bottom，图例整体居左对齐
       x = plotRange.tl.x;
-      y = (position === 'top') ? LEGEND_OFFSET : (plotRange.bl.y + LEGEND_OFFSET * 2); // TODO
+      y = (position === 'top') ? (plotRange.tl.y - legendHeight - LEGEND_OFFSET) : canvasHeight - legendHeight + LEGEND_OFFSET; // TODO
 
       if (pre) {
         const preWidth = pre.getWidth();
@@ -358,7 +361,7 @@ module.exports = {
     });
     chart.set('legendController', legendController);
   },
-  afterGeomDraw(chart) {
+  beforeGeomDraw(chart) {
     const legendController = chart.get('legendController');
     if (!legendController.enable) return null; // legend is not displayed
 

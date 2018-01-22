@@ -33,7 +33,7 @@
     const chart = new F2.Chart({
       id: 'mountNode',
       pixelRatio: window.devicePixelRatio,
-      width: window.innerWidth,
+      width: 750,
       height: 450
     });
     chart.source(data);
@@ -53,7 +53,7 @@
       }
     });
     chart.legend(false);
-    chart.legend(true);
+    // chart.legend(true);
     chart.interval().position('月份*月均降雨量')
       .color('name', [ '#1890FF', '#2FC25B' ])
       .adjust({

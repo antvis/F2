@@ -40,6 +40,14 @@ function _mix(dist, obj) {
   }
 }
 
+// function parseAuto(param) {
+//   if (param === 'auto') {
+//     param = 0;
+//   }
+
+//   return param;
+// }
+
 /**
  * @class Util
  * @singleton
@@ -259,9 +267,8 @@ Util = {
     let bottom;
     let left;
 
-    if (Util.isNumber(padding)) {
-      top = bottom = padding;
-      left = right = padding;
+    if (Util.isNumber(padding) || Util.isString(padding)) {
+      top = bottom = left = right = padding;
     } else if (Util.isArray(padding)) {
       top = padding[0];
       right = !Util.isNil(padding[1]) ? padding[1] : padding[0];
@@ -269,6 +276,7 @@ Util = {
       left = !Util.isNil(padding[3]) ? padding[3] : right;
     }
 
+    // return [ parseAuto(top), parseAuto(right), parseAuto(bottom), parseAuto(left) ];
     return [ top, right, bottom, left ];
   }
 };

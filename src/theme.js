@@ -29,7 +29,7 @@ const Theme = {
   fontFamily: 'Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
   defaultColor: '#1890FF',
   pixelRatio: 1,
-  padding: [ 80 ],
+  padding: 80,
   colors: [
     '#1890FF',
     '#73C9E6',

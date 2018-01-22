@@ -26,9 +26,10 @@
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
-    width: window.innerWidth,
+    width: 750,
     height: 450,
-    pixelRatio: window.devicePixelRatio
+    pixelRatio: window.devicePixelRatio,
+    padding: [ 66, 0, 35, 37.25 ]
   });
 
   chart.source(data, {
