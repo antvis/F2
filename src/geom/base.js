@@ -147,8 +147,8 @@ class Geom extends Base {
    // step 1: init attrs
   _initAttrs() {
     const self = this;
-    const attrs = this.get('attrs');
-    const attrOptions = this.get('attrOptions');
+    const attrs = self.get('attrs');
+    const attrOptions = self.get('attrOptions');
     const coord = self.get('coord');
 
     for (const type in attrOptions) {
