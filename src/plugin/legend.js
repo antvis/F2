@@ -233,26 +233,26 @@ class LegendController {
   _alignLegend(legend, pre, position) {
     const self = this;
     const plotRange = self.plotRange;
+    const chart = self.chart;
     const offsetX = legend.offsetX || 0;
     const offsetY = legend.offsetY || 0;
-      const legendHeight = legend.getHeight();
-      const canvas = this.chart;
-      const canvasHeight = chart.get('height');
-
+    const chartWidth = chart.get('width');
+    const chartHeigth = chart.get('height');
+    const legendHeight = legend.getHeight();
+    const legendWidth = legend.getWidth();
 
     let x = 0;
     let y = 0;
     if (position === 'left' || position === 'right') { // position 为 left、right，图例整体居中对齐
       const height = Math.abs(plotRange.tl.y - plotRange.bl.y);
-      x = (position === 'left') ? LEGEND_OFFSET : (plotRange.br.x + LEGEND_OFFSET);
+      x = (position === 'left') ? LEGEND_OFFSET : (chartWidth - legendWidth - LEGEND_OFFSET);
       y = (height - legendHeight) / 2 + plotRange.tl.y;
       if (pre) {
         y = pre.get('y') - legendHeight - LEGEND_GAP;
       }
     } else { // position 为 top、bottom，图例整体居左对齐
       x = plotRange.tl.x;
-      y = (position === 'top') ? (plotRange.tl.y - legendHeight - LEGEND_OFFSET) : canvasHeight - legendHeight + LEGEND_OFFSET; // TODO
-
+      y = (position === 'top') ? (legendHeight / 2 + LEGEND_OFFSET) : (chartHeigth - legendHeight / 2 - LEGEND_OFFSET);
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;
@@ -394,11 +394,43 @@ module.exports = {
       });
     }
 
-    legendController.alignLegends(); // adjust position
-
     if (legendCfg && legendCfg.clickable !== false) {
       legendController.bindEvents();
     }
+
+    const legends = legendController.legends;
+    const legendRange = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    };
+    Util.each(legends, (legendItems, position) => {
+      let padding = 0;
+      Util.each(legendItems, legend => {
+        const width = legend.getWidth();
+        const height = legend.getHeight();
+        if (position === 'top' || position === 'bottom') {
+          padding = Math.max(padding, height);
+        } else {
+          padding = Math.max(padding, width);
+        }
+      });
+      legendRange[position] = padding + LEGEND_OFFSET;
+    });
+    chart.set('legendRange', legendRange);
+  },
+  afterGeomDraw(chart) {
+    const legendController = chart.get('legendController');
+    legendController.plotRange = chart.get('plot');
+    const legends = legendController.legends;
+    Util.each(legends, (legendItems, position) => {
+      Util.each(legendItems, legend => {
+        legend.maxLength = legendController._getMaxLength(position);
+        legend._adjustItems();
+      });
+    });
+    legendController.alignLegends();
   },
   clearInner(chart) {
     const legendController = chart.get('legendController');

@@ -75,27 +75,17 @@ class Abastract {
 
   drawLabels(label) {
     const self = this;
-    const { ticks, labelOffset } = self;
-    let labelCfg = label;
-    const count = ticks.length;
-    Util.each(ticks, function(tick, index) {
-      if (Util.isFunction(label)) { // 文本的配置项动态可配置
-        labelCfg = Util.mix({}, Global._defaultAxis.label, label(tick.text, index, count));
-      }
-      if (labelCfg) {
-        const container = self.getContainer(labelCfg.top);
-        const start = self.getOffsetPoint(tick.value);
-        const { x, y } = self.getSidePoint(start, labelOffset);
-        const cfg = Util.mix({}, self.getTextAlignInfo(start, labelOffset), labelCfg);
-        container.addShape('text', {
-          className: 'axis-label',
-          attrs: Util.mix({
-            x,
-            y,
-            text: cfg.text || tick.text
-          }, cfg)
-        });
-      }
+    const { labels, labelOffset } = self;
+    labels.map(labelShape => {
+      const container = self.getContainer(label.top);
+      const start = self.getOffsetPoint(labelShape.get('value'));
+      const { x, y } = self.getSidePoint(start, labelOffset);
+      labelShape.attr(Util.mix({
+        x,
+        y
+      }, self.getTextAlignInfo(start, labelOffset), labelShape.get('textStyle')));
+      container.add(labelShape);
+      return labelShape;
     });
   }
 
