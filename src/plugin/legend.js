@@ -253,7 +253,6 @@ class LegendController {
     } else { // position 为 top、bottom，图例整体居左对齐
       x = plotRange.tl.x;
       y = (position === 'top') ? (legendHeight / 2 + LEGEND_OFFSET) : (chartHeigth - legendHeight / 2 - LEGEND_OFFSET);
-
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;

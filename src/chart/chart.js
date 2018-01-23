@@ -506,6 +506,65 @@ class Chart extends Base {
     return this.get('guideController');
   }
 
+  _isAutoPadding() {
+    const padding = this.get('padding');
+    if (Util.isArray(padding)) {
+      return padding.indexOf('auto') !== -1;
+    }
+    return padding === 'auto';
+  }
+
+  _adjustLayout() {
+    if (!this._isAutoPadding()) {
+      return;
+    }
+    const frontPlot = this.get('frontPlot');
+    const backPlot = this.get('backPlot');
+    const frontBBox = frontPlot.getBBox();
+    const backBBox = backPlot.getBBox();
+
+    const box = {
+      minX: Math.min(frontBBox.minX, backBBox.minX),
+      minY: Math.min(frontBBox.minY, backBBox.minY),
+      maxX: Math.max(frontBBox.maxX, backBBox.maxX),
+      maxY: Math.max(frontBBox.maxY, backBBox.maxY)
+    };
+    const outter = [
+      0 - box.minY, // 上面超出的部分
+      box.maxX - this.get('width'), // 右边超出的部分
+      box.maxY - this.get('height'), // 下边超出的部分
+      0 - box.minX
+    ];
+    // 如果原始的 padding 内部存在 'auto' 则替换对应的边
+    const autoPadding = Util.parsePadding(this.get('padding') || this.get('margin'));
+    for (let i = 0, len = autoPadding.length; i < len; i++) {
+      // if (autoPadding[i] === AUTO_STR) {
+        const tmp = Math.max(0, outter[i]);
+        autoPadding[i] = tmp;
+      // }
+    }
+
+    const plot = this.get('plotRange');
+    const start = {
+      x: autoPadding[3],
+      y: autoPadding[0]
+    };
+    const end = {
+      x: this.get('width') - autoPadding[1],
+      y: this.get('height') - autoPadding[2]
+    };
+    plot.reset(start, end);
+    const coord = this.get('coord');
+    coord.reset(plot.bl, plot.tr);
+
+    this.set('coord', coord);
+    this.set('plotRange', plot);
+    // return autoPadding;
+    backPlot.clear();
+    frontPlot.clear();
+    this._renderAxis();
+  }
+
   /**
    * 图表绘制
    * @chainable
@@ -526,8 +585,12 @@ class Chart extends Base {
     // 调整度量
     self._adjustScale();
 
+    // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
+
+    self._adjustLayout();
+
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
