@@ -40,14 +40,6 @@ function _mix(dist, obj) {
   }
 }
 
-// function parseAuto(param) {
-//   if (param === 'auto') {
-//     param = 0;
-//   }
-
-//   return param;
-// }
-
 /**
  * @class Util
  * @singleton
@@ -276,7 +268,6 @@ Util = {
       left = !Util.isNil(padding[3]) ? padding[3] : right;
     }
 
-    // return [ parseAuto(top), parseAuto(right), parseAuto(bottom), parseAuto(left) ];
     return [ top, right, bottom, left ];
   }
 };
