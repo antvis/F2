@@ -9,9 +9,7 @@ class Cartesian extends Base {
     };
   }
 
-  init() {
-    const { start, end } = this;
-
+  init(start, end) {
     this.x = {
       start: start.x,
       end: end.x

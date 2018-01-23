@@ -259,9 +259,8 @@ Util = {
     let bottom;
     let left;
 
-    if (Util.isNumber(padding)) {
-      top = bottom = padding;
-      left = right = padding;
+    if (Util.isNumber(padding) || Util.isString(padding)) {
+      top = bottom = left = right = padding;
     } else if (Util.isArray(padding)) {
       top = padding[0];
       right = !Util.isNil(padding[1]) ? padding[1] : padding[0];

@@ -31,7 +31,6 @@
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
-    padding: [ 0, 400, 0, 0 ],
     width: window.innerWidth,
     height: 450,
     pixelRatio: window.devicePixelRatio
@@ -39,7 +38,6 @@
   chart.source(data);
   chart.legend({
     position: 'right',
-    offsetX: 30,
     itemFormatter(val) {
       return val + '  ' + map[val];
     }
