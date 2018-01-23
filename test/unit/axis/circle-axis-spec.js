@@ -3,7 +3,7 @@ const AxisCircle = require('../../../src/component/axis/circle');
 const Scale = require('../../../src/scale/index');
 const axisGlobal = require('../../../src/global').axis;
 const Util = require('../../../src/util/common');
-const { Group } = require('../../../src/graphic/index');
+const { Group, Text } = require('../../../src/graphic/index');
 
 const cat = Scale.cat({
   domain: [ 'a', 'b', 'c' ],
@@ -21,6 +21,22 @@ function equal(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;
 }
 
+const labels = [];
+const ticks = cat.getTicks();
+ticks.map(tick => {
+  const textShape = new Text({
+    className: 'label-text',
+    attrs: {
+      x: 0,
+      y: 0,
+      text: tick.text
+    },
+    value: tick.value
+  });
+  labels.push(textShape);
+  return textShape;
+});
+
 describe('circle axis', function() {
   describe('full circle', function() {
     const cfg = Util.mix({
@@ -32,7 +48,8 @@ describe('circle axis', function() {
         y: 250
       },
       gridPoints,
-      ticks: cat.getTicks()
+      ticks: cat.getTicks(),
+      labels
     }, axisGlobal.circle);
 
     let axis;

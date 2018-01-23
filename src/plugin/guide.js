@@ -120,7 +120,7 @@ module.exports = {
     });
     chart.set('guideController', guideController);
   },
-  beforeGeomDraw(chart) {
+  afterGeomDraw(chart) {
     const guideController = chart.get('guideController');
     if (!guideController.guides.length) {
       return;

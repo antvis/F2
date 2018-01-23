@@ -18,6 +18,22 @@ const backContainer = new Group({
   zIndex: 1
 });
 
+const labels = [];
+const ticks = linear.getTicks();
+ticks.map(tick => {
+  const textShape = new Text({
+    className: 'label-text',
+    attrs: {
+      x: 0,
+      y: 0,
+      text: tick.text
+    },
+    value: tick.value
+  });
+  labels.push(textShape);
+  return textShape;
+});
+
 describe('line axis', function() {
   describe('left', function() {
     const cfg = Util.deepMix({
@@ -32,7 +48,8 @@ describe('line axis', function() {
       frontContainer,
       backContainer,
       offsetFactor: -1,
-      ticks: linear.getTicks()
+      ticks: linear.getTicks(),
+      labels
     }, axisGlobal);
     let axis;
     it('init', function() {

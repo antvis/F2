@@ -161,7 +161,8 @@ class Chart extends Base {
        * 过滤设置
        * @type {Object}
        */
-      filters: {}
+      filters: {},
+      appendPadding: 30
     };
   }
 
@@ -251,7 +252,7 @@ class Chart extends Base {
     this._clearGeoms();
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
-
+    this.get('axisController') && this.get('axisController').clear();
     const frontPlot = this.get('frontPlot');
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
@@ -291,8 +292,7 @@ class Chart extends Base {
   _initCoord() {
     const plot = this.get('plotRange');
     const coordCfg = Util.mix({}, this.get('coordCfg'), {
-      start: plot.bl,
-      end: plot.tr
+      plot
     });
     const type = coordCfg.type;
     const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
@@ -303,17 +303,21 @@ class Chart extends Base {
   _initLayout() {
     let padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
     padding = Util.parsePadding(padding);
+    const top = padding[0] === 'auto' ? 0 : padding[0];
+    const right = padding[1] === 'auto' ? 0 : padding[1];
+    const bottom = padding[2] === 'auto' ? 0 : padding[2];
+    const left = padding[3] === 'auto' ? 0 : padding[3];
 
     const width = this.get('width');
     const height = this.get('height');
     const plot = new Plot({
       start: {
-        x: padding[3],
-        y: padding[0]
+        x: left,
+        y: top
       },
       end: {
-        x: width - padding[1],
-        y: height - padding[2]
+        x: width - right,
+        y: height - bottom
       }
     });
     this.set('plotRange', plot);
@@ -523,7 +527,6 @@ class Chart extends Base {
     self._adjustScale();
 
     Chart.plugins.notify(self, 'beforeGeomDraw');
-
     self._renderAxis();
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
@@ -669,7 +672,33 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
-    axisController.createAxis(coord, xScale, yScales);
+    axisController.createAxis(coord, xScale, yScales, this);
+  }
+
+  _isAutoPadding() {
+    const padding = this.get('padding');
+    if (Util.isArray(padding)) {
+      return padding.indexOf('auto') !== -1;
+    }
+    return padding === 'auto';
+  }
+
+  _updateLayout(padding) {
+    const width = this.get('width');
+    const height = this.get('height');
+    const start = {
+      x: padding[3],
+      y: padding[0]
+    };
+    const end = {
+      x: width - padding[1],
+      y: height - padding[2]
+    };
+
+    const plot = this.get('plot');
+    const coord = this.get('coord');
+    plot.reset(start, end);
+    coord.reset(plot);
   }
 }
 
