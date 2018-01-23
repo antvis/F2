@@ -161,7 +161,8 @@ class Chart extends Base {
        * 过滤设置
        * @type {Object}
        */
-      filters: {}
+      filters: {},
+      appendPadding: 30
     };
   }
 
@@ -251,7 +252,7 @@ class Chart extends Base {
     this._clearGeoms();
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
-
+    this.get('axisController') && this.get('axisController').clear();
     const frontPlot = this.get('frontPlot');
     const backPlot = this.get('backPlot');
     frontPlot && frontPlot.clear();
@@ -291,8 +292,7 @@ class Chart extends Base {
   _initCoord() {
     const plot = this.get('plotRange');
     const coordCfg = Util.mix({}, this.get('coordCfg'), {
-      start: plot.bl,
-      end: plot.tr
+      plot
     });
     const type = coordCfg.type;
     const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
@@ -303,17 +303,21 @@ class Chart extends Base {
   _initLayout() {
     let padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
     padding = Util.parsePadding(padding);
+    const top = padding[0] === 'auto' ? 0 : padding[0];
+    const right = padding[1] === 'auto' ? 0 : padding[1];
+    const bottom = padding[2] === 'auto' ? 0 : padding[2];
+    const left = padding[3] === 'auto' ? 0 : padding[3];
 
     const width = this.get('width');
     const height = this.get('height');
     const plot = new Plot({
       start: {
-        x: padding[3],
-        y: padding[0]
+        x: left,
+        y: top
       },
       end: {
-        x: width - padding[1],
-        y: height - padding[2]
+        x: width - right,
+        y: height - bottom
       }
     });
     this.set('plotRange', plot);
@@ -502,65 +506,6 @@ class Chart extends Base {
     return this.get('guideController');
   }
 
-  _isAutoPadding() {
-    const padding = this.get('padding');
-    if (Util.isArray(padding)) {
-      return padding.indexOf('auto') !== -1;
-    }
-    return padding === 'auto';
-  }
-
-  _adjustLayout() {
-    if (!this._isAutoPadding()) {
-      return;
-    }
-    const frontPlot = this.get('frontPlot');
-    const backPlot = this.get('backPlot');
-    const frontBBox = frontPlot.getBBox();
-    const backBBox = backPlot.getBBox();
-
-    const box = {
-      minX: Math.min(frontBBox.minX, backBBox.minX),
-      minY: Math.min(frontBBox.minY, backBBox.minY),
-      maxX: Math.max(frontBBox.maxX, backBBox.maxX),
-      maxY: Math.max(frontBBox.maxY, backBBox.maxY)
-    };
-    const outter = [
-      0 - box.minY, // 上面超出的部分
-      box.maxX - this.get('width'), // 右边超出的部分
-      box.maxY - this.get('height'), // 下边超出的部分
-      0 - box.minX
-    ];
-    // 如果原始的 padding 内部存在 'auto' 则替换对应的边
-    const autoPadding = Util.parsePadding(this.get('padding') || this.get('margin'));
-    for (let i = 0, len = autoPadding.length; i < len; i++) {
-      // if (autoPadding[i] === AUTO_STR) {
-        const tmp = Math.max(0, outter[i]);
-        autoPadding[i] = tmp;
-      // }
-    }
-
-    const plot = this.get('plotRange');
-    const start = {
-      x: autoPadding[3],
-      y: autoPadding[0]
-    };
-    const end = {
-      x: this.get('width') - autoPadding[1],
-      y: this.get('height') - autoPadding[2]
-    };
-    plot.reset(start, end);
-    const coord = this.get('coord');
-    coord.reset(plot.bl, plot.tr);
-
-    this.set('coord', coord);
-    this.set('plotRange', plot);
-    // return autoPadding;
-    backPlot.clear();
-    frontPlot.clear();
-    this._renderAxis();
-  }
-
   /**
    * 图表绘制
    * @chainable
@@ -584,8 +529,6 @@ class Chart extends Base {
     // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
-
-    self._adjustLayout();
 
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
@@ -634,7 +577,7 @@ class Chart extends Base {
   }
 
   /**
-   * TODO legends 拍平
+   * 获取图例的 items
    * [getLegendItems description]
    * @return {[type]} [description]
    */
@@ -691,13 +634,6 @@ class Chart extends Base {
     geom.set('container', this.get('middlePlot'));
   }
 
-  // drawGeom(geoms) {
-  //   for (let i = 0, length = geoms.length; i < length; i++) {
-  //     const geom = geoms[i];
-  //     geom.paint();
-  //   }
-  // }
-
   /**
    * 获取 x 对应的度量
    * @return {Scale} x 对应的度量
@@ -731,7 +667,33 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
-    axisController.createAxis(coord, xScale, yScales);
+    axisController.createAxis(coord, xScale, yScales, this);
+  }
+
+  _isAutoPadding() {
+    const padding = this.get('padding');
+    if (Util.isArray(padding)) {
+      return padding.indexOf('auto') !== -1;
+    }
+    return padding === 'auto';
+  }
+
+  _updateLayout(padding) {
+    const width = this.get('width');
+    const height = this.get('height');
+    const start = {
+      x: padding[3],
+      y: padding[0]
+    };
+    const end = {
+      x: width - padding[1],
+      y: height - padding[2]
+    };
+
+    const plot = this.get('plot');
+    const coord = this.get('coord');
+    plot.reset(start, end);
+    coord.reset(plot);
   }
 }
 
