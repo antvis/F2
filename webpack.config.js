@@ -1,12 +1,11 @@
 const webpack = require('webpack');
-const {
-  resolve
-} = require('path');
+const resolve = require('path').resolve;
+const pkg = require('./package.json');
 
 module.exports = {
   entry: {
-    f2: './index.js'
-    // core: './core.js'
+    f2: './src/index.js'
+    // core: './src/core.js'
   },
   output: {
     filename: '[name].js',
@@ -22,19 +21,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            babelrc: false,
-            plugins: [
-              'transform-remove-strict-mode'
-            ],
-            presets: [
-              [
-                'es2015', {
-                  loose: true,
-                  modules: false
-                }
-              ],
-              'stage-0'
-            ]
+            babelrc: true
+          }
+        }
+      },
+      {
+        test: /core\.js$/,
+        use: {
+          loader: 'string-replace-loader',
+          options: {
+            search: '____F2_VERSION____',
+            replace: pkg.version
           }
         }
       }
