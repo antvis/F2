@@ -62,6 +62,7 @@ typings/
 
 build
 dist
+lib
 temp
 .DS_Store
 .idea
