@@ -14,7 +14,7 @@ class Group extends Element {
 
   drawInner(context) {
     const children = this.get('children');
-    for (let i = 0; i < children.length; i++) {
+    for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
       child.draw(context);
     }
@@ -26,7 +26,7 @@ class Group extends Element {
     if (m) {
       this._attrs.totalMatrix = null;
       const children = this._attrs.children;
-      for (let i = 0; i < children.length; i++) {
+      for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
         child.clearTotalMatrix();
       }

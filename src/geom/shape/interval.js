@@ -37,7 +37,7 @@ function getRectPoints(cfg) {
 function getRectRange(points) {
   const xValues = [];
   const yValues = [];
-  for (let i = 0; i < points.length; i++) {
+  for (let i = 0, len = points.length; i < len; i++) {
     const point = points[i];
     xValues.push(point.x);
     yValues.push(point.y);

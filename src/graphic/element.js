@@ -109,7 +109,8 @@ class Element extends Base {
 
   attr(name, value) {
     const self = this;
-    if (arguments.length === 0) {
+    const argumentsLen = arguments.length;
+    if (argumentsLen === 0) {
       return self.get('attrs');
     }
 
@@ -123,7 +124,7 @@ class Element extends Base {
       }
       return self;
     }
-    if (arguments.length === 2) {
+    if (argumentsLen === 2) {
       this._attrs.bbox = null;
       self._setAttr(name, value);
       if (self._afterAttrsSet) {

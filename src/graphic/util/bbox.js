@@ -179,7 +179,7 @@ module.exports = {
     let maxX = -Infinity;
     let minY = Infinity;
     let maxY = -Infinity;
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0, len = points.length; i < len; i++) {
       const bbox = cubicBezierBounds(points[i]);
       if (bbox.minX < minX) {
         minX = bbox.minX;

@@ -74,7 +74,7 @@ module.exports = {
   sort() {
     const children = this.get('children');
     // 必须保证稳定排序
-    for (let i = 0; i < children.length; i++) {
+    for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
       child[INDEX] = i;
     }
@@ -111,7 +111,7 @@ module.exports = {
       items = [ items ];
     }
 
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0, len = items.length; i < len; i++) {
       const item = items[i];
       const parent = item.get('parent');
       if (parent) {
@@ -137,7 +137,7 @@ module.exports = {
     // }
     if (item._attrs.isGroup) {
       const children = item._attrs.children;
-      for (let i = 0; i < children.length; i++) {
+      for (let i = 0, len = children.length; i < len; i++) {
         item._setEvn(children[i]);
       }
     }

@@ -25,7 +25,7 @@ function drawLines(cfg, container, style, smooth) {
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0, len = points.length; i < len; i++) {
       const point = points[i];
       const tmp = ShapeUtil.splitPoints(point);
       bottomPoints.push(tmp[0]);

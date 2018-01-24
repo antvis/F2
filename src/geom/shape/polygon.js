@@ -6,7 +6,7 @@ const Polygon = Shape.registerFactory('polygon', {
   getDefaultPoints(pointInfo) {
     const points = [];
     const { x, y } = pointInfo;
-    for (let i = 0; i < x.length; i++) {
+    for (let i = 0, len = x.length; i < len; i++) {
       points.push({
         x: x[i],
         y: y[i]

@@ -35,7 +35,7 @@ function drawShape(cfg, container, shape) {
     pointCfg.lineWidth = 1;
     pointCfg.fill = null;
   }
-  for (let i = 0; i < y.length; i++) {
+  for (let i = 0, len = y.length; i < len; i++) {
     if (shape === 'rect') {
       container.addShape('Rect', {
         className: 'point',
