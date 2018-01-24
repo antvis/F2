@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>折线图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
+  $.getJSON('./data/time-2000.json', data => {
+    const source = [];
+    const tmp = data.data;
+    Object.keys(tmp).map(key => {
+      source.push({
+        time: key * 1,
+        value: tmp[key]
+      });
+    });
+    // console.log(source)
+    let t = performance.now();
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: 750,
+      height: 450,
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(source, {
+      time: {
+        type: 'timeCat'
+      }
+    });
+    chart.line().position('time*value');
+    chart.render();
+    console.log(performance.now() - t);
+  });
+</script>
+</body>
+</html>
