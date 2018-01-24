@@ -160,7 +160,7 @@ class Geom extends Base {
           option.coord = coord;
         }
         const scales = [];
-        for (let i = 0; i < fields.length; i++) {
+        for (let i = 0, len = fields.length; i < len; i++) {
           const field = fields[i];
           const scale = self._createScale(field);
           scales.push(scale);
@@ -211,7 +211,7 @@ class Geom extends Base {
     const data = this.get('data');
     const dataArray = [];
     const groupedArray = this._groupData(data);
-    for (let i = 0; i < groupedArray.length; i++) {
+    for (let i = 0, len = groupedArray.length; i < len; i++) {
       const subData = groupedArray[i];
       const tempData = self._saveOrigin(subData);
       if (this.hasAdjust('dodge')) {
@@ -224,7 +224,7 @@ class Geom extends Base {
 
   _saveOrigin(data) {
     const rst = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const origin = data[i];
       const obj = {};
       for (const k in origin) {
@@ -241,7 +241,7 @@ class Geom extends Base {
   _numberic(data) {
     const positionAttr = this.getAttr('position');
     const scales = positionAttr.scales;
-    for (let j = 0; j < data.length; j++) {
+    for (let j = 0, len = data.length; j < len; j++) {
       const obj = data[j];
       const count = Math.min(2, scales.length);
       for (let i = 0; i < count; i++) {
@@ -282,7 +282,7 @@ class Geom extends Base {
     const mergeArray = Util.Array.merge(dataArray);
     let min = scale.min;
     let max = scale.max;
-    for (let i = 0; i < mergeArray.length; i++) {
+    for (let i = 0, len = mergeArray.length; i < len; i++) {
       const obj = mergeArray[i];
       const tmpMin = Math.min.apply(null, obj[field]);
       const tmpMax = Math.max.apply(null, obj[field]);
@@ -321,7 +321,7 @@ class Geom extends Base {
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
-    for (let i = 0; i < dataArray.length; i++) {
+    for (let i = 0, len = dataArray.length; i < len; i++) {
       let data = dataArray[i];
       data = self._mapping(data);
       mappedArray.push(data);
@@ -351,7 +351,7 @@ class Geom extends Base {
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
     const mappedData = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const record = data[i];
       const newRecord = {};
       newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
@@ -364,7 +364,7 @@ class Geom extends Base {
           const names = attr.names;
           const values = self._getAttrValues(attr, record);
           if (names.length > 1) { // position 之类的生成多个字段的属性
-            for (let j = 0; j < values.length; j++) {
+            for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
               newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val; // 只有一个值时返回第一个属性值
@@ -384,7 +384,7 @@ class Geom extends Base {
   _getAttrValues(attr, record) {
     const scales = attr.scales;
     const params = [];
-    for (let i = 0; i < scales.length; i++) {
+    for (let i = 0, len = scales.length; i < len; i++) {
       const scale = scales[i];
       const field = scale.field;
       if (scale.type === 'identity') {
@@ -494,7 +494,7 @@ class Geom extends Base {
     const self = this;
     const shapeFactory = self.getShapeFactory();
     const shapeAttr = self.getAttr('shape');
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const obj = data[i];
       const cfg = self.createShapePointsCfg(obj);
       const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
@@ -550,7 +550,7 @@ class Geom extends Base {
   _normalizeValues(values, scale) {
     let rst = [];
     if (Util.isArray(values)) {
-      for (let i = 0; i < values.length; i++) {
+      for (let i = 0, len = values.length; i < len; i++) {
         const v = values[i];
         rst.push(scale.scale(v));
       }
@@ -600,7 +600,7 @@ class Geom extends Base {
         values.push(obj[FIELD_ORIGIN_Y]);
       });
 
-      for (; i < values.length; i++) {
+      for (let len = values.length; i < len; i++) {
         if (values[0][0] > item) {
           break;
         }
@@ -617,7 +617,7 @@ class Geom extends Base {
       values.sort(function sortNumber(a, b) {
         return a - b;
       });
-      for (; i < values.length; i++) {
+      for (let len = values.length; i < len; i++) {
         if ((values[0] + values[1]) / 2 > item) {
           break;
         }

@@ -148,7 +148,7 @@ class Canvas extends Base {
     try {
       const context = self.get('context');
       const children = self.get('children');
-      for (let i = 0; i < children.length; i++) {
+      for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
         child.draw(context);
       }

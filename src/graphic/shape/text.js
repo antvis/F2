@@ -113,7 +113,7 @@ class Text extends Shape {
         context.globalAlpha = fillOpacity;
       }
       if (textArr) {
-        for (let i = 0; i < textArr.length; i++) {
+        for (let i = 0, len = textArr.length; i < len; i++) {
           const subText = textArr[i];
           subY = y + i * (spaceingY + fontSize) - height + fontSize; // bottom;
           if (textBaseline === 'middle') {
@@ -131,7 +131,7 @@ class Text extends Shape {
 
     if (self.hasStroke()) {
       if (textArr) {
-        for (let i = 0; i < textArr.length; i++) {
+        for (let i = 0, len = textArr.length; i < len; i++) {
           const subText = textArr[i];
           subY = y + i * (spaceingY + fontSize) - height + fontSize; // bottom;
           if (textBaseline === 'middle') {

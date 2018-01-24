@@ -43,7 +43,7 @@ function arrayFloor(values, value) {
   if (value >= values[length - 1]) {
     return values[length - 1];
   }
-  for (let i = 1; i < values.length; i++) {
+  for (let i = 1, len = values.length; i < len; i++) {
     if (value < values[i]) {
       break;
     }
@@ -68,7 +68,7 @@ function arrayCeiling(values, value) {
     return values[0];
   }
 
-  for (let i = 1; i < values.length; i++) {
+  for (let i = 1, len = values.length; i < len; i++) {
     if (value <= values[i]) {
       rst = values[i];
       break;

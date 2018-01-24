@@ -76,14 +76,6 @@ Util = {
     return typeof value === 'number';
   },
   /**
-   * 判断是否数字或者数字字符串，由于$.isNumberic方法会把 '123'认为数字
-   * @param {*} value 判定的值
-   * @return {Boolean} 是否数字
-   */
-  isNumeric(value) {
-    return !isNaN(parseFloat(value)) && isFinite(value);
-  },
-  /**
    * 是否是布尔类型
    * @param {Object} value 测试的值
    * @return {Boolean} 是否布尔类型
@@ -142,21 +134,14 @@ Util = {
     }
     return Object.getPrototypeOf(o) === proto;
   },
-  /**
-     * 转换成数组
-     * @param  {*} value 需要转换的对象
-     * @return {Array}  数组
-     */
-  toArray(value) {
-    if (!value || !value.length) {
-      return [];
-    }
-    return Array.prototype.slice.call(value);
-  },
   deepMix() {
-    const args = Util.toArray(arguments);
+    const args = new Array(arguments.length);
+    const length = args.length;
+    for (let i = 0; i < length; i++) {
+      args[i] = arguments[i];
+    }
     const rst = args[0];
-    for (let i = 1; i < args.length; i++) {
+    for (let i = 1; i < length; i++) {
       const source = args[i];
       deepMix(rst, source);
     }
@@ -197,7 +182,7 @@ Util = {
       return;
     }
     if (elements.length) {
-      for (let i = 0; i < elements.length; i++) {
+      for (let i = 0, len = elements.length; i < len; i++) {
         const rst = func(elements[i], i);
         if (rst === false) {
           break;
@@ -275,7 +260,7 @@ Util = {
 Util.Array = {
   merge(dataArray) {
     let rst = [];
-    for (let i = 0; i < dataArray.length; i++) {
+    for (let i = 0, len = dataArray.length; i < len; i++) {
       rst = rst.concat(dataArray[i]);
     }
     return rst;
@@ -283,7 +268,7 @@ Util.Array = {
   values(data, name) {
     const rst = [];
     const tmpMap = {};
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const obj = data[i];
       const value = obj[name];
       if (!Util.isNil(value)) {
@@ -306,7 +291,7 @@ Util.Array = {
   },
   firstValue(data, name) {
     let rst = null;
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const obj = data[i];
       const value = obj[name];
       if (!Util.isNil(value)) {
@@ -349,7 +334,7 @@ Util.Array = {
     }
 
     const groups = {};
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const row = data[i];
       const key = condition(row);
       if (groups[key]) {
@@ -362,7 +347,7 @@ Util.Array = {
     return groups;
   },
   remove(arr, obj) {
-    const index = Util.indexOf(arr, obj);
+    const index = arr.indexOf(obj);
     if (index !== -1) {
       arr.splice(index, 1);
     }
@@ -379,7 +364,7 @@ Util.Array = {
       return false;
     }
     let rst = true;
-    for (let i = 0; i < a1.length; i++) {
+    for (let i = 0, len = a1.length; i < len; i++) {
       if (a1[i] !== a2[i]) {
         rst = false;
         break;

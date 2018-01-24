@@ -154,7 +154,7 @@ class AttributeBase {
     const callback = this.callback;
     let values = params;
     if (callback) {
-      for (let i = 0; i < params.length; i++) {
+      for (let i = 0, len = params.length; i < len; i++) {
         params[i] = this._toOriginParam(params[i], scales[i]);
       }
       values = callback.apply(this, params);
@@ -171,7 +171,7 @@ class AttributeBase {
     if (!scale.isLinear) {
       if (Util.isArray(param)) {
         rst = [];
-        for (let i = 0; i < param.length; i++) {
+        for (let i = 0, len = param.length; i < len; i++) {
           rst.push(toScaleString(scale, param[i]));
         }
       } else {

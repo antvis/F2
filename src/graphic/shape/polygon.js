@@ -29,7 +29,7 @@ class Polygon extends Shape {
     context = context || self.get('context');
     context.beginPath();
 
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0, len = points.length; i < len; i++) {
       const point = points[i];
       if (i === 0) {
         context.moveTo(point.x, point.y);

@@ -46,7 +46,7 @@ class Dodge extends Adjust {
     const count = dataArray.length;
     const xField = self.xField;
     Util.each(dataArray, function(data, index) {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0, len = data.length; i < len; i++) {
         const obj = data[i];
         const value = obj[xField];
         const range = {

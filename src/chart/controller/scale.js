@@ -9,7 +9,7 @@ const TYPES = {
 function getRange(values) {
   if (Util.isArray(values[0])) {
     let tmp = [];
-    for (let i = 0; i < values.length; i++) {
+    for (let i = 0, len = values.length; i < len; i++) {
       tmp = tmp.concat(values[i]);
     }
     values = tmp;
