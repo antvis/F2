@@ -4,3 +4,4 @@ dist/
 mocks/
 node_modules/
 demos/assets/
+lib/
