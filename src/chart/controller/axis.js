@@ -142,7 +142,8 @@ class AxisController {
             text: tick.text
           }, labelCfg),
           value: tick.value,
-          textStyle
+          textStyle,
+          top: labelCfg.top
         });
         labels.push(axisLabel);
         const { width, height } = axisLabel.getBBox();
