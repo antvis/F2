@@ -15,8 +15,8 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   },
   showTooltipMarker: true,
   background: {
-    radius: 2,
-    fill: '#1890FF',
+    radius: 1,
+    fill: 'rgba(0, 0, 0, 0.65)',
     padding: [ 6, 10 ]
   },
   titleStyle: {
@@ -27,7 +27,7 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   },
   nameStyle: {
     fontSize: 24,
-    fill: '#fff',
+    fill: 'rgba(255, 255, 255, 0.65)',
     textAlign: 'start',
     textBaseline: 'middle'
   },
@@ -39,7 +39,7 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
   },
   showItemMarker: true,
   itemMarkerStyle: {
-    radius: 7,
+    radius: 5,
     symbol: 'circle',
     lineWidth: 2,
     stroke: '#fff'
