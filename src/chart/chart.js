@@ -185,11 +185,9 @@ class Chart extends Base {
     return fields;
   }
 
-  _createScale(field, data) {
-    const coord = this.get('coord');
-    const inCircle = coord.isPolar;
+  _createScale(field, data, sortable) {
     const scaleController = this.get('scaleController');
-    return scaleController.createScale(field, data, inCircle);
+    return scaleController.createScale(field, data, sortable);
   }
 
   _adjustScale() {
@@ -599,25 +597,24 @@ class Chart extends Base {
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
-   * @param  {Array} data 数据集合
+   * @param  {Boolean} sortable 是否需要排序
    * @return {Scale} 度量
    */
-  createScale(field, data) {
-    const self = this;
-    if (!data) {
-      const filteredData = self.get('filteredData');
+  createScale(field, sortable) {
+    let data = this.get('data');
+    const filteredData = this.get('filteredData');
+    // 过滤导致数据为空时，需要使用全局数据
+    // 参与过滤的字段的度量也根据全局数据来生成
+    if (filteredData.length) {
       const legendFields = this._getFieldsForLegend();
-      // 过滤导致数据为空时，需要使用全局数据
-      // 参与过滤的字段的度量也根据全局数据来生成
-      if (filteredData.length && legendFields.indexOf(field) === -1) {
+      if (legendFields.indexOf(field) === -1) {
         data = filteredData;
-      } else {
-        data = this.get('data');
       }
     }
-    const scales = self.get('scales');
+
+    const scales = this.get('scales');
     if (!scales[field]) {
-      scales[field] = self._createScale(field, data);
+      scales[field] = this._createScale(field, data, sortable);
     }
     return scales[field];
   }

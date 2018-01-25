@@ -177,7 +177,6 @@ class Geom extends Base {
           }
           // 饼图需要填充满整个空间
           if (coord.type === 'polar' && coord.transposed) {
-
             if (yScale.values.length) {
               yScale.change({
                 nice: false,
@@ -196,10 +195,11 @@ class Geom extends Base {
   }
 
   _createScale(field) {
+    const sortable = this.get('sortable');
     const scales = this.get('scales');
     let scale = scales[field];
     if (!scale) {
-      scale = this.get('chart').createScale(field);
+      scale = this.get('chart').createScale(field, sortable);
       scales[field] = scale;
     }
     return scale;
@@ -310,7 +310,7 @@ class Geom extends Base {
         return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
       });
     });
-
+    self.set('hasSorted', true);
     self.set('dataArray', mappedArray);
   }
 
@@ -409,7 +409,7 @@ class Geom extends Base {
 
   _beforeMapping(dataArray) {
     const self = this;
-    if (self.get('sortable')) {
+    if (self.get('sortable')) { // 需要排序
       self._sort(dataArray);
     }
     if (self.get('generatePoints')) {
@@ -614,7 +614,7 @@ class Geom extends Base {
       }
     } else {
       values = scale.values;
-      values.sort(function sortNumber(a, b) {
+      values.sort((a, b) => {
         return a - b;
       });
       for (let len = values.length; i < len; i++) {
@@ -634,10 +634,6 @@ class Geom extends Base {
     return result;
   }
 
-  hasSorted() {
-    return this.get('hasSorted') || this.get('sortable');
-  }
-
   /**
    * 根据画布坐标获取切割线对应数据集
    * @param  {Object} point 画布坐标的x,y的值
@@ -654,9 +650,8 @@ class Geom extends Base {
 
     const invertPoint = coord.invertPoint(point);
     const dataArray = self.get('dataArray');
-    if (!this.hasSorted()) { // 未排序
+    if (!this.get('hasSorted')) {
       this._sort(dataArray);
-      this.set('hasSorted', true);
     }
 
     let rst = [];
