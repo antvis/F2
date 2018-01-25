@@ -3,8 +3,8 @@
  * @author dxq613@gail.com
  */
 const Util = require('./util/common');
-const color1 = 'rgba(0, 0, 0, 0.09)'; // 坐标轴线、坐标轴网格线的颜色
-const color2 = 'rgba(0, 0, 0, 0.45)'; // 字体颜色
+const color1 = '#E8E8E8'; // 坐标轴线、坐标轴网格线的颜色
+const color2 = '#808080'; // 字体颜色
 
 const defaultAxis = {
   label: {
@@ -26,7 +26,7 @@ const defaultAxis = {
 };
 
 const Theme = {
-  fontFamily: 'Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
+  fontFamily: '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
   defaultColor: '#1890FF',
   pixelRatio: 1,
   padding: 'auto',

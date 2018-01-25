@@ -12,7 +12,7 @@ const DEFAULT_CFG = {
   showTitle: false,
   titleStyle: {
     fontSize: 24,
-    fill: '#2e2e2e',
+    fill: '#808080',
     textAlign: 'start',
     textBaseline: 'top'
   },
@@ -23,7 +23,7 @@ const DEFAULT_CFG = {
     textBaseline: 'middle'
   },
   valueStyle: {
-    fill: '#2e2e2e',
+    fill: '#000000',
     fontSize: 24,
     textAlign: 'start',
     textBaseline: 'middle'

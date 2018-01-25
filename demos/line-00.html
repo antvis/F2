@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>曲线图</title>
+  <title>折线图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -13,16 +13,13 @@
 <script src="../build/f2.js"></script>
 <script>
   const data = [
-    { time: '周一', tem: 10, city: 'beijing' },
-    { time: '周二', tem: 22, city: 'beijing' },
-    { time: '周三', tem: 20, city: 'beijing' },
-    { time: '周四', tem: 26, city: 'beijing' },
-    { time: '周五', tem: 20, city: 'beijing' },
-    { time: '周一', tem: 15, city: 'newYork' },
-    { time: '周二', tem: 12, city: 'newYork' },
-    { time: '周三', tem: 26, city: 'newYork' },
-    { time: '周四', tem: 20, city: 'newYork' },
-    { time: '周五', tem: 28, city: 'newYork' }
+    { day: '周一', value: 300 },
+    { day: '周二', value: 400 },
+    { day: '周三', value: 350 },
+    { day: '周四', value: 500 },
+    { day: '周五', value: 490 },
+    { day: '周六', value: 600 },
+    { day: '周日', value: 900 }
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
@@ -32,16 +29,24 @@
   });
 
   chart.source(data, {
-    time: {
-      tickCount: 7,
-      range: [ 0, 1 ]
-    },
-    tem: {
+    value: {
       tickCount: 5,
       min: 0
+    },
+    day: {
+      range: [ 0, 1 ]
     }
   });
-  chart.axis('time', {
+  chart.tooltip({
+    showCrosshairs: true,
+    showItemMarker: false,
+    onShow(ev) {
+      const { items } = ev;
+      items[0].name = null;
+      items[0].value = '$ ' + items[0].value;
+    }
+  });
+  chart.axis('day', {
     label(text, index, total) {
       const textCfg = {};
       if (index === 0) {
@@ -53,9 +58,11 @@
       return textCfg;
     }
   });
-  chart.line().position('time*tem')
-    .color('city')
-    .shape('smooth');
+  chart.line().position('day*value');
+  chart.point().position('day*value').style({
+    stroke: '#fff',
+    lineWidth: 2
+  });
   chart.render();
 </script>
 </body>
