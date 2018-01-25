@@ -19,10 +19,4 @@ for (const k in Base) {
   }
 }
 
-const CAT_ARR = [ 'cat', 'timeCat' ];
-
-Base.isCategory = function(type) {
-  return CAT_ARR.indexOf(type) >= 0;
-};
-
 module.exports = Base;

@@ -32,17 +32,17 @@ describe('test basic util', function() {
     expect(Util.isNil(1)).to.be.equal(false);
   });
 
-  it('isNumeric', function() {
-    const val = '1234';
-    expect(Util.isNumeric(val)).to.be.equal(true);
-    expect(Util.isNumeric('abc')).to.be.equal(false);
-    expect(Util.isNumeric('123a')).to.be.equal(false);
-  });
+  // it('isNumeric', function() {
+  //   const val = '1234';
+  //   expect(Util.isNumeric(val)).to.be.equal(true);
+  //   expect(Util.isNumeric('abc')).to.be.equal(false);
+  //   expect(Util.isNumeric('123a')).to.be.equal(false);
+  // });
 
-  it('to array', function() {
-    const args = Util.toArray(arguments);
-    expect(Util.isArray(args)).to.be.equal(true);
-  });
+  // it('to array', function() {
+  //   const args = Util.toArray(arguments);
+  //   expect(Util.isArray(args)).to.be.equal(true);
+  // });
 
   it('simple mix', function() {
     const a = {

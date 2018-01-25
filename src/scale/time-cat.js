@@ -35,7 +35,8 @@ class TimeCategory extends Category {
       /**
        * @override
        */
-      tickCount: 5
+      tickCount: 5,
+      sortable: true
     });
   }
 
@@ -46,9 +47,11 @@ class TimeCategory extends Category {
     Util.each(values, function(v, i) {
       values[i] = self._toTimeStamp(v);
     });
-    values.sort(function(v1, v2) {
-      return v1 - v2;
-    });
+    if (this.sortable) {
+      values.sort(function(v1, v2) {
+        return v1 - v2;
+      });
+    }
 
     if (!self.ticks) {
       self.ticks = this.calculateTicks(false);

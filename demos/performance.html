@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>折线图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<!-- <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.0.2/f2.js"></script> -->
+
+<script>
+
+  // Line Chart
+  $.getJSON('./data/time-2000.json', data => {
+    const source = [];
+    const tmp = data.data;
+    Object.keys(tmp).map(key => {
+      source.push({
+        time: key * 1,
+        value: tmp[key]
+      });
+    });
+
+    let t = performance.now();
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: 750,
+      height: 450,
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(source, {
+      time: {
+        type: 'timeCat'
+      }
+    });
+    chart.area({
+      sortable: false
+    }).position('time*value');
+    chart.render();
+    console.log(performance.now() - t);
+  });
+
+/*
+  // Bar Chart
+  const count = 10;
+  const data = [];
+  for (let i = 0; i < count; i++) {
+    data.push({
+      x: i + '',
+      y: Math.random() * 1000
+    });
+  }
+ let t = performance.now();
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    width: 750,
+    height: 450,
+    pixelRatio: window.devicePixelRatio,
+    // padding: 40
+  });
+
+  chart.source(data);
+  chart.interval().position('x*y');
+  chart.render();
+  console.log(performance.now() - t);
+*/
+
+</script>
+</body>
+</html>
