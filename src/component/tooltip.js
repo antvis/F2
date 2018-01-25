@@ -183,7 +183,7 @@ class Tooltip {
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
     const canvas = this.canvas;
-    canvas.sort();
+    // canvas.sort();
     crosshairsShape && crosshairsShape.show();
     markerGroup && markerGroup.show();
     container && container.show();

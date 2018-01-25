@@ -7,13 +7,6 @@ const TYPES = {
 };
 
 function getRange(values) {
-  if (Util.isArray(values[0])) {
-    let tmp = [];
-    for (let i = 0, len = values.length; i < len; i++) {
-      tmp = tmp.concat(values[i]);
-    }
-    values = tmp;
-  }
   const max = Math.max.apply(null, values);
   const min = Math.min.apply(null, values);
   return {
@@ -64,15 +57,15 @@ class ScaleController {
     };
     const values = Util.Array.values(data, field);
     cfg.values = values;
-    if (!Scale.isCategory(type)) {
-      const range = getRange(values);
-      cfg.min = range.min;
-      cfg.max = range.max;
+    if (type !== 'cat' && type !== 'timeCat') {
+      const { min, max } = getRange(values);
+      cfg.min = min;
+      cfg.max = max;
     }
     return cfg;
   }
 
-  createScale(field, data) {
+  createScale(field, data, sortable) {
     const self = this;
     const def = self._getDef(field);
     let scale;
@@ -111,6 +104,7 @@ class ScaleController {
       if (def) {
         Util.mix(cfg, def);
       }
+      cfg.sortable = sortable;
       scale = Scale[type](cfg);
     }
     return scale;

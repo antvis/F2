@@ -69,7 +69,6 @@ class Category extends Base {
    * @override
    */
   getText(value) {
-
     if (this.values.indexOf(value) === -1 && Util.isNumber(value)) {
       value = this.values[Math.round(value)];
     }
