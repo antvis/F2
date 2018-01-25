@@ -255,12 +255,13 @@ class List {
       }
     } else if (Util.isNumber(itemWidth)) {
       maxItemWidth = itemWidth;
-    } else {
+    } else if (maxLength <= itemsGroup.getBBox().width) {
       for (let i = 0; i < count; i++) {
         const bbox = children[i].getBBox();
         maxItemWidth = Math.max(maxItemWidth, bbox.width);
       }
     }
+
     this.maxItemWidth = maxItemWidth;
     return maxItemWidth;
   }

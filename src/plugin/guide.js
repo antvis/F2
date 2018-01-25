@@ -6,14 +6,14 @@ const Global = require('../global');
 Global.guide = Util.deepMix(Global.guide || {}, {
   line: {
     style: {
-      stroke: '#000',
+      stroke: '#a3a3a3',
       lineWidth: 1
     },
     top: true
   },
   text: {
     style: {
-      fill: '#000',
+      fill: '#787878',
       textAlign: 'center',
       textBaseline: 'middle'
     },
@@ -29,7 +29,7 @@ Global.guide = Util.deepMix(Global.guide || {}, {
   },
   arc: {
     style: {
-      stroke: '#CCC'
+      stroke: '#a3a3a3'
     },
     top: true
   },
