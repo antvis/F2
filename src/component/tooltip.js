@@ -51,7 +51,7 @@ class Tooltip {
           zIndex: -1,
           attrs: {
             points: [],
-            fill: '#1890FF'
+            fill: this.background.fill
           }
         });
       }
@@ -131,14 +131,14 @@ class Tooltip {
         if (x === tl.x) {
           tooltipArrow.attr('points', [
             { x: tl.x, y: tl.y + offsetX },
-            { x: tl.x, y: tl.y - 8 - height / 2 + offsetY },
+            { x: tl.x, y: tl.y - 8 + offsetY },
             { x: tl.x + 8, y: tl.y - 8 + offsetY }
           ]);
         } else if (x === tr.x) {
           tooltipArrow.attr('points', [
             { x: tr.x, y: tl.y + offsetX },
             { x: tr.x - 8, y: tl.y - 8 + offsetY },
-            { x: tr.x, y: tl.y - 8 - height / 2 + offsetY }
+            { x: tr.x, y: tl.y - 8 + offsetY }
           ]);
         }
       }
