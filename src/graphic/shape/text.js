@@ -47,13 +47,13 @@ class Text extends Shape {
   }
 
   _getFontStyle() {
-    const attrs = this.get('attrs');
+    const attrs = this._attrs.attrs;
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = attrs;
-    return [ fontStyle, fontVariant, fontWeight, fontSize + 'px', fontFamily ].join(' ');
+    return `${fontStyle} ${fontVariant} ${fontWeight} ${fontSize}px ${fontFamily}`;
   }
 
   _afterAttrsSet() {
-    const attrs = this.get('attrs');
+    const attrs = this._attrs.attrs;
     attrs.font = this._getFontStyle();
 
     if (attrs.text) {
@@ -70,7 +70,7 @@ class Text extends Shape {
   }
 
   _getTextHeight() {
-    const attrs = this.get('attrs');
+    const attrs = this._attrs.attrs;
     const lineCount = attrs.lineCount;
     const fontSize = attrs.fontSize * 1;
     if (lineCount > 1) {
@@ -81,7 +81,7 @@ class Text extends Shape {
   }
 
   _getSpaceingY() {
-    const attrs = this.get('attrs');
+    const attrs = this._attrs.attrs;
     const lineHeight = attrs.lineHeight;
     const fontSize = attrs.fontSize * 1;
     return lineHeight ? (lineHeight - fontSize) : fontSize * 0.14;
@@ -89,7 +89,7 @@ class Text extends Shape {
 
   drawInner(context) {
     const self = this;
-    const attrs = self.get('attrs');
+    const attrs = self._attrs.attrs;
     const text = attrs.text;
     if (!text) {
       return;
@@ -150,7 +150,7 @@ class Text extends Shape {
 
   calculateBox() {
     const self = this;
-    const attrs = self.get('attrs');
+    const attrs = self._attrs.attrs;
     const { x, y, textAlign, textBaseline } = attrs;
     const width = self._getTextWidth(); // attrs.width
     if (!width) {
@@ -201,19 +201,20 @@ class Text extends Shape {
   }
 
   _getTextWidth() {
-    const self = this;
-    const attrs = self.get('attrs');
-    const { text, font, textArr } = attrs;
+    const attrs = this._attrs.attrs;
+    const text = attrs.text;
 
     if (Util.isNil(text)) return undefined;
 
+    const font = attrs.font;
+    const textArr = attrs.textArr;
     const key = text + '' + font;
     if (textWidthCache[key]) {
       return textWidthCache[key];
     }
 
     let width = 0;
-    const context = self._getDummyContext();
+    const context = this._getDummyContext();
     context.font = font;
     if (textArr) {
       for (let i = 0, length = textArr.length; i < length; i++) {

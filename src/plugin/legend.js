@@ -53,12 +53,18 @@ Global.legend = Util.deepMix(Global.Legend || {}, {
   }, DEFAULT_CFG)
 });
 
+function compare(a, b) {
+  return a - b;
+}
+
 function _isScaleExist(scales, compareScale) {
   let flag = false;
   Util.each(scales, scale => {
     const scaleValues = [].concat(scale.values);
     const compareScaleValues = [].concat(compareScale.values);
-    if (scale.type === compareScale.type && scale.field === compareScale.field && scaleValues.sort().toString() === compareScaleValues.sort().toString()) {
+    if (scale.type === compareScale.type
+        && scale.field === compareScale.field
+        && scaleValues.sort(compare).toString() === compareScaleValues.sort(compare).toString()) {
       flag = true;
       return;
     }

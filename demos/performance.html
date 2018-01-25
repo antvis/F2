@@ -21,7 +21,7 @@
         value: tmp[key]
       });
     });
-    // console.log(source)
+
     let t = performance.now();
     const chart = new F2.Chart({
       id: 'mountNode',
@@ -35,10 +35,38 @@
         type: 'timeCat'
       }
     });
-    chart.line().position('time*value');
+
+    chart.area({
+      sortable: false
+    }).position('time*value');
     chart.render();
     console.log(performance.now() - t);
   });
+
+/*
+  // Bar Chart
+  const count = 10;
+  const data = [];
+  for (let i = 0; i < count; i++) {
+    data.push({
+      x: i + '',
+      y: Math.random() * 1000
+    });
+  }
+ let t = performance.now();
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    width: 750,
+    height: 450,
+    pixelRatio: window.devicePixelRatio,
+    // padding: 40
+  });
+
+  chart.source(data);
+  chart.interval().position('x*y');
+  chart.render();
+  console.log(performance.now() - t);
+*/
 </script>
 </body>
 </html>

@@ -49,7 +49,7 @@ class Abastract {
 
     line && this.drawLine(line);
     tickLine && this.drawTicks(tickLine);
-    label && this.drawLabels(label);
+    label && this.drawLabels();
     grid && this.drawGrid(grid);
   }
 
@@ -73,11 +73,12 @@ class Abastract {
     });
   }
 
-  drawLabels(label) {
+  drawLabels() {
     const self = this;
-    const { labels, labelOffset } = self;
+    const labelOffset = self.labelOffset;
+    const labels = self.labels;
     labels.map(labelShape => {
-      const container = self.getContainer(label.top);
+      const container = self.getContainer(labelShape.get('top'));
       const start = self.getOffsetPoint(labelShape.get('value'));
       const { x, y } = self.getSidePoint(start, labelOffset);
       labelShape.attr(Util.mix({

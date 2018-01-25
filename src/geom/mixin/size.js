@@ -36,7 +36,9 @@ const SizeMixin = {
       const dataArray = this.get('dataArray');
       let count;
       if (xScale.isLinear && xValues.length > 1) {
-        xValues.sort();
+        xValues.sort((a, b) => {
+          return a - b;
+        });
         const interval = findMinDistance(xValues, xScale);
         count = (xScale.max - xScale.min) / interval;
         if (xValues.length > count) {

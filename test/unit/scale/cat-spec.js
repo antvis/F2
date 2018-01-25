@@ -72,9 +72,9 @@ describe('scale cat', function() {
     expect(scale.getTicks().length).to.be.equal(6);
   });
 
-  it('is category', function() {
-    expect(Scale.isCategory('cat')).to.be.equal(true);
-  });
+  // it('is category', function() {
+  //   expect(Scale.isCategory('cat')).to.be.equal(true);
+  // });
 
   it('Converted into string', function() {
     scale.change({
@@ -149,9 +149,9 @@ describe('scale time cat', function() {
     mask
   });
 
-  it('is category', function() {
-    expect(Scale.isCategory('timeCat')).to.be.equal(true);
-  });
+  // it('is category', function() {
+  //   expect(Scale.isCategory('timeCat')).to.be.equal(true);
+  // });
 
   it('cfg', function() {
     expect(scale.values).not.to.be.equal(undefined);
