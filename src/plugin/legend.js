@@ -2,7 +2,7 @@ const Util = require('../util/common');
 const DomUtil = require('../util/dom');
 const { List } = require('../component');
 const Global = require('../global');
-const LEGEND_OFFSET = 30;
+// const LEGEND_OFFSET = 30;
 const LEGEND_GAP = 24;
 const MARKER_SIZE = 6;
 
@@ -135,7 +135,6 @@ class LegendController {
       item.checked = Util.isNil(item.checked) ? true : item.checked;
       item.name = item.name || item.value; // 兼容 value 的写法
     });
-
     const legend = new List(Util.deepMix({}, Global.legend[position], legendCfg, {
       maxLength: self._getMaxLength(position),
       items,
@@ -170,8 +169,9 @@ class LegendController {
   }
 
   _getMaxLength(position) {
-    const plotRange = this.plotRange;
-    return (position === 'right' || position === 'left') ? plotRange.bl.y - plotRange.tr.y : plotRange.br.x - plotRange.bl.x;
+    const chart = this.chart;
+    const appendPadding = chart.get('appendPadding') * 2;
+    return (position === 'right' || position === 'left') ? (chart.get('height') - appendPadding) : (chart.get('width') - appendPadding);
   }
 
   _addCategroyLegend(scale, attr, position, filterVals) {
@@ -217,6 +217,7 @@ class LegendController {
         marker
       });
     });
+
     const lastCfg = Util.deepMix({}, Global.legend[position], legendCfg[field] || legendCfg, {
       maxLength: self._getMaxLength(position),
       items,
@@ -244,6 +245,7 @@ class LegendController {
     const offsetY = legend.offsetY || 0;
     const chartWidth = chart.get('width');
     const chartHeigth = chart.get('height');
+    const appendPadding = chart.get('appendPadding');
     const legendHeight = legend.getHeight();
     const legendWidth = legend.getWidth();
 
@@ -251,14 +253,14 @@ class LegendController {
     let y = 0;
     if (position === 'left' || position === 'right') { // position 为 left、right，图例整体居中对齐
       const height = Math.abs(plotRange.tl.y - plotRange.bl.y);
-      x = (position === 'left') ? LEGEND_OFFSET : (chartWidth - legendWidth - LEGEND_OFFSET);
+      x = (position === 'left') ? appendPadding : (chartWidth - legendWidth - appendPadding);
       y = (height - legendHeight) / 2 + plotRange.tl.y;
       if (pre) {
         y = pre.get('y') - legendHeight - LEGEND_GAP;
       }
     } else { // position 为 top、bottom，图例整体居左对齐
-      x = plotRange.tl.x;
-      y = (position === 'top') ? (legendHeight / 2 + LEGEND_OFFSET) : (chartHeigth - legendHeight / 2 - LEGEND_OFFSET);
+      x = appendPadding;
+      y = (position === 'top') ? (legendHeight / 2 + appendPadding) : (chartHeigth - legendHeight / 2 - appendPadding);
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;
@@ -411,6 +413,7 @@ module.exports = {
       bottom: 0,
       left: 0
     };
+    const appendPadding = chart.get('appendPadding');
     Util.each(legends, (legendItems, position) => {
       let padding = 0;
       Util.each(legendItems, legend => {
@@ -422,20 +425,12 @@ module.exports = {
           padding = Math.max(padding, width);
         }
       });
-      legendRange[position] = padding + LEGEND_OFFSET;
+      legendRange[position] = padding + appendPadding;
     });
     chart.set('legendRange', legendRange);
   },
   afterGeomDraw(chart) {
     const legendController = chart.get('legendController');
-    legendController.plotRange = chart.get('plot');
-    const legends = legendController.legends;
-    Util.each(legends, (legendItems, position) => {
-      Util.each(legendItems, legend => {
-        legend.maxLength = legendController._getMaxLength(position);
-        legend._adjustItems();
-      });
-    });
     legendController.alignLegends();
   },
   clearInner(chart) {
