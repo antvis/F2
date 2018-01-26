@@ -63,9 +63,11 @@
   data.forEach(function (obj, index) {
     // 文字部分
     const offsetY = obj.tem > 0 ? -16 : 14;
-    chart.guide().html([obj.month, obj.tem], `<div style='color: #999999;'><span>${obj.tem}</span></div>`, {
-      align: 'cc',
-      offset: [0, offsetY]
+    chart.guide().text([obj.month, obj.tem], obj.tem, {
+      offset: [0, offsetY],
+      textAlign: 'center',
+      fontSize: 14,
+      textBaseline: 'middle'
     });
     // 背景部分
     const offset = 0.25;

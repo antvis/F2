@@ -88,7 +88,8 @@ const Theme = {
     },
     text: {
       fill: '#000',
-      textAlign: 'center'
+      textAlign: 'center',
+      offset: [ 0, 0 ]
     },
     rect: {
       fillStyle: '#fafafa'
@@ -99,6 +100,22 @@ const Theme = {
     html: {
       offset: [ 0, 0 ],
       align: 'cc'
+    },
+    tag: {
+      direct: 'tl', // 默认的朝向
+      padding: [ 4, 6 ], // tag内边距.
+      radius: 2, // tag圆角
+      fill: '#1890FF', // tag颜色
+      stroke: null, // 无边框
+      offsetX: 0, // X轴偏移
+      offsetY: 0, // Y轴偏移
+      side: 4, //  三角标的边长
+      fontStyle: '', // 字体样式普通,斜体
+      fontVariant: '',
+      fontWeight: '',
+      fontSize: 14,
+      fontFamily: 'sans-serif',
+      color: '#FFFFFF'
     }
   }
 };
