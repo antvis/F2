@@ -320,7 +320,7 @@ class List {
       const box = child.getBBox();
       const childHeight = box.height;
       const childWidth = box.width;
-      width = itemWidth < childWidth ? childWidth : itemWidth;
+      width = itemWidth;
       height = childHeight + itemMarginBottom;
 
       if (width - (maxLength - rowWidth) > 0.0001) {
