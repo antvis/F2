@@ -4,8 +4,9 @@ const pkg = require('./package.json');
 
 module.exports = {
   entry: {
-    f2: './src/index.js'
-    // core: './src/core.js'
+    f2: './src/index.js',
+    'f2-simple': './src/index-simple.js',
+    'f2-common': './src/index-common.js'
   },
   output: {
     filename: '[name].js',

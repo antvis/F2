@@ -164,4 +164,5 @@ class Linear extends Base {
   }
 }
 
+Base.Linear = Linear;
 module.exports = Linear;

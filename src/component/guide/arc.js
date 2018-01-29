@@ -49,4 +49,5 @@ class Arc extends GuideBase {
   }
 }
 
+GuideBase.Arc = Arc;
 module.exports = Arc;

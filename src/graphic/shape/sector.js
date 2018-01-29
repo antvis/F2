@@ -2,7 +2,6 @@ const Util = require('../../util/common');
 const Shape = require('../shape');
 const bbox = require('../util/bbox');
 
-
 class Sector extends Shape {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
@@ -58,5 +57,6 @@ class Sector extends Shape {
   }
 }
 
+Shape.Sector = Sector;
 module.exports = Sector;
 

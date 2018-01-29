@@ -236,4 +236,5 @@ class Text extends Shape {
   }
 }
 
+Shape.Text = Text;
 module.exports = Text;

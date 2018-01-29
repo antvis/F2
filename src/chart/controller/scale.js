@@ -1,9 +1,11 @@
 const Util = require('../../util/common');
 const Global = require('../../global');
 const Scale = require('../../scale/');
-const TYPES = {
-  LINEAR: 'linear',
-  CAT: 'cat'
+const SCALE_TYPES_MAP = {
+  linear: 'Linear',
+  cat: 'Cat',
+  timeCat: 'TimeCat',
+  identity: 'Identity'
 };
 
 function getRange(values) {
@@ -40,13 +42,13 @@ class ScaleController {
   }
 
   _getDefaultType(field, data) {
-    let type = TYPES.LINEAR;
+    let type = 'linear';
     let value = Util.Array.firstValue(data, field);
     if (Util.isArray(value)) {
       value = value[0];
     }
     if (Util.isString(value)) {
-      type = TYPES.CAT;
+      type = 'cat';
     }
     return type;
   }
@@ -72,9 +74,9 @@ class ScaleController {
     // 如果数据为空直接返回常量度量
     if (!data || !data.length) {
       if (def && def.type) {
-        scale = Scale[def.type](def);
+        scale = new Scale[SCALE_TYPES_MAP[def.type]](def);
       } else {
-        scale = Scale.identity({
+        scale = new Scale.Identity({
           value: field,
           field: field.toString(),
           values: [ field ]
@@ -89,7 +91,7 @@ class ScaleController {
     }
 
     if (Util.isNumber(field) || (Util.isNil(firstValue)) && !def) {
-      scale = Scale.identity({
+      scale = new Scale.Identity({
         value: field,
         field: field.toString(),
         values: [ field ]
@@ -105,7 +107,7 @@ class ScaleController {
         Util.mix(cfg, def);
       }
       cfg.sortable = sortable;
-      scale = Scale[type](cfg);
+      scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
     }
     return scale;
   }

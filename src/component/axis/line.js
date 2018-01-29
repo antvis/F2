@@ -1,7 +1,7 @@
-const Abstract = require('./abstract');
 const Util = require('../../util/common');
+const Abstract = require('./abstract');
 
-class AxisLine extends Abstract {
+class Line extends Abstract {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
     return Util.mix({}, cfg, {
@@ -39,4 +39,5 @@ class AxisLine extends Abstract {
   }
 }
 
-module.exports = AxisLine;
+Abstract.Line = Line;
+module.exports = Line;

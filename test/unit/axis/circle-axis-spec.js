@@ -5,7 +5,7 @@ const axisGlobal = require('../../../src/global').axis;
 const Util = require('../../../src/util/common');
 const { Group, Text } = require('../../../src/graphic/index');
 
-const cat = Scale.cat({
+const cat = new Scale.Cat({
   domain: [ 'a', 'b', 'c' ],
   range: [ 0, 0.66 ]
 });
