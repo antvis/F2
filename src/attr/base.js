@@ -50,14 +50,6 @@ class AttributeBase {
     Util.mix(this, cfg);
   }
 
-  get(name) {
-    return this[name];
-  }
-
-  set(name, value) {
-    this[name] = value;
-  }
-
   // 获取属性值，将值映射到视觉通道
   _getAttrValue(scale, value) {
     const values = this.values;

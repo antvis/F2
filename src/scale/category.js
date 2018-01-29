@@ -2,8 +2,6 @@
  * @fileOverview the scale function to process the categories
  * @author dxq613@gmail.com
  */
-
-
 const Base = require('./base');
 const Util = require('../util/common');
 const catAuto = require('./auto/cat');
@@ -131,4 +129,5 @@ class Category extends Base {
   }
 }
 
+Base.Cat = Category;
 module.exports = Category;

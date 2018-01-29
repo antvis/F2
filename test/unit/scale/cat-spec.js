@@ -1,10 +1,11 @@
 const expect = require('chai').expect;
 const Scale = require('../../../src/scale/');
+require('../../../src/scale/time-cat');
 const fecha = require('fecha');
 
 describe('scale cat', function() {
 
-  const scale = Scale.cat({
+  const scale = new Scale.Cat({
     values: [ '一月', '二月', '三月', '四月', '五月' ]
   });
 
@@ -86,7 +87,7 @@ describe('scale cat', function() {
 
 describe('scale cat change range', function() {
 
-  const scale = Scale.cat({
+  const scale = new Scale.Cat({
     values: [ '一月', '二月', '三月', '四月', '五月' ],
     range: [ 0.1, 0.9 ]
   });
@@ -121,7 +122,7 @@ describe('scale cat with tick count', function() {
   for (let i = 0; i < 100; i++) {
     values.push(i);
   }
-  const scale = Scale.cat({
+  const scale = new Scale.Cat({
     values,
     tickCount: 10
   });
@@ -144,7 +145,7 @@ describe('scale cat with tick count', function() {
 // 时间分类 time-category
 describe('scale time cat', function() {
   const mask = 'YYYY/MM/DD';
-  const scale = Scale.timeCat({
+  const scale = new Scale.TimeCat({
     values: [ 1442937600000, 1441296000000, 1449849600000 ],
     mask
   });

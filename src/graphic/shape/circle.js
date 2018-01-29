@@ -41,5 +41,5 @@ class Circle extends Shape {
     };
   }
 }
-
+Shape.Circle = Circle;
 module.exports = Circle;

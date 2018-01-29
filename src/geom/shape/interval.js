@@ -84,31 +84,18 @@ Shape.registerShape('interval', 'rect', {
       const endAngle = Vector2.angleTo(v, v2);
       const r0 = Vector2.length(v0);
       const r = Vector2.length(v1);
-      const diff = Math.abs(startAngle - endAngle);
 
-      if (diff % Math.PI * 2 < 1e-4 && diff > 1e-4) { // Circle
-        container.addShape('Ring', {
-          className: 'interval',
-          attrs: Util.mix({
-            x,
-            y,
-            r,
-            r0
-          }, style)
-        });
-      } else { // Sector
-        container.addShape('Sector', {
-          className: 'interval',
-          attrs: Util.mix({
-            x,
-            y,
-            r,
-            r0,
-            startAngle,
-            endAngle
-          }, style)
-        });
-      }
+      container.addShape('Sector', {
+        className: 'interval',
+        attrs: Util.mix({
+          x,
+          y,
+          r,
+          r0,
+          startAngle,
+          endAngle
+        }, style)
+      });
     } else {
       const rectCfg = getRectRange(points);
 

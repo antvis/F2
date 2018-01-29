@@ -3,12 +3,12 @@ const Attr = require('../../../src/attr/base');
 const Scale = require('../../../src/scale/');
 
 describe('attr base test', function() {
-  const scale1 = Scale.linear({
+  const scale1 = new Scale.Linear({
     field: 'dim1',
     min: 0,
     max: 100
   });
-  const scale2 = Scale.cat({
+  const scale2 = new Scale.Cat({
     field: 'dim2',
     values: [ 'a', 'b', 'c', 'd' ]
   });
