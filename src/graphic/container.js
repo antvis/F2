@@ -1,5 +1,5 @@
 const Util = require('../util/common');
-const Shape = require('./shape/index');
+const Shape = require('./shape');
 const SHAPE_MAP = {}; // 缓存图形类型
 const INDEX = '_INDEX';
 

@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const { Canvas } = require('../../../src/graphic/index');
 const Coord = require('../../../src/coord/index');
-const { Region } = require('../../../src/component/guide/index');
+const Rect = require('../../../src/component/guide/rect');
 const Scale = require('../../../src/scale/index');
 
-describe('Guide.Region', function() {
+describe('Guide.Rect', function() {
   const coord = new Coord.Rect({
     start: { x: 60, y: 460 },
     end: { x: 460, y: 60 }
@@ -19,17 +19,17 @@ describe('Guide.Region', function() {
 
   const group = canvas.addGroup();
 
-  const xScale = Scale.cat({
+  const xScale = new Scale.Cat({
     values: [ '一月', '二月', '三月', '四月', '五月' ]
   });
 
-  const yScale = Scale.linear({
+  const yScale = new Scale.Linear({
     min: 0,
     max: 1200
   });
 
   it('guide region', function() {
-    const region = new Region({
+    const region = new Rect({
       xScale,
       yScale,
       start: [ 0, 200 ],

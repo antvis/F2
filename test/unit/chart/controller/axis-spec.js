@@ -3,6 +3,7 @@ const Scale = require('../../../../src/scale/');
 const Controller = require('../../../../src/chart/controller/axis');
 const Plot = require('../../../../src/chart/plot');
 const Coord = require('../../../../src/coord/index');
+require('../../../../src/coord/polar');
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;
@@ -42,7 +43,7 @@ const linear = new Scale.Linear({
 //   tickCount: 5
 // });
 
-const cat = Scale.cat({
+const cat = new Scale.Cat({
   field: 'a',
   range: [ 0, 0.66 ],
   values: [ 'a', 'b', 'c' ]

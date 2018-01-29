@@ -1,7 +1,7 @@
 const Util = require('../../util/common');
-const { Axis } = require('../../component/index');
+const Axis = require('../../component/axis/');
 const Global = require('../../global');
-const { Text } = require('../../graphic/index');
+const { Shape } = require('../../graphic/index');
 
 function formatTicks(ticks) {
   const tmp = ticks.slice(0);
@@ -134,7 +134,7 @@ class AxisController {
         if (labelCfg.textBaseline) {
           textStyle.textBaseline = labelCfg.textBaseline;
         }
-        const axisLabel = new Text({
+        const axisLabel = new Shape.Text({
           className: 'axis-label',
           attrs: Util.mix({
             x: 0,

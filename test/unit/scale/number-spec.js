@@ -71,7 +71,7 @@ describe('scale linear', () => {
 
 describe('scale linear change range', () => {
 
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 0,
     max: 100,
     range: [ 0, 1000 ]
@@ -100,7 +100,7 @@ describe('scale linear change range', () => {
 
 describe('scale not nice', () => {
 
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 3,
     max: 97,
     nice: false
@@ -133,7 +133,7 @@ describe('scale not nice', () => {
 
 describe('scale nice', () => {
 
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 3,
     max: 97,
     nice: true
@@ -170,7 +170,7 @@ describe('scale nice', () => {
 });
 
 describe('scale ticks', () => {
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     ticks: [ 1, 2, 3, 4, 5 ]
   });
 
@@ -182,7 +182,7 @@ describe('scale ticks', () => {
 });
 
 describe('scale linear: min is equal to max', () => {
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 0,
     max: 0,
     nice: false
@@ -200,7 +200,7 @@ describe('scale linear: min is equal to max', () => {
 });
 
 describe('scale linear: min is equal to max,nice true', () => {
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 0,
     max: 0,
     nice: true
@@ -218,7 +218,7 @@ describe('scale linear: min is equal to max,nice true', () => {
 });
 
 describe('scale linear: declare tickInterval.', () => {
-  const scale = Scale.linear({
+  const scale = new Scale.Linear({
     min: 20,
     max: 85,
     tickInterval: 15,

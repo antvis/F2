@@ -1,5 +1,5 @@
 const Util = require('../util/common');
-const { Guide } = require('../component/index');
+const Guide = require('../component/guide/');
 const Global = require('../global');
 
 // register the default configuration for Guide
@@ -107,8 +107,8 @@ class GuideController {
     return this._createGuide('html', cfg);
   }
 
-  region(cfg = {}) {
-    return this._createGuide('region', cfg);
+  rect(cfg = {}) {
+    return this._createGuide('rect', cfg);
   }
 }
 

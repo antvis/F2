@@ -1,9 +1,5 @@
-const Cartesian = require('./cartesian');
-const Polar = require('./polar');
+const Coord = require('./base');
 
-module.exports = {
-  Rect: Cartesian,
-  Cartesian,
-  Polar,
-  Circle: Polar
-};
+require('./cartesian');
+
+module.exports = Coord;

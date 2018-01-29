@@ -38,4 +38,5 @@ class Line extends Shape {
   }
 }
 
+Shape.Line = Line;
 module.exports = Line;

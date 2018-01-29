@@ -2,7 +2,7 @@
  * @fileOverview 时间数据作为分类类型
  * @author dxq613@gmail.com
  */
-
+const Base = require('./base');
 const Category = require('./category');
 const Util = require('../util/common');
 const fecha = require('fecha');
@@ -163,4 +163,5 @@ class TimeCategory extends Category {
   }
 }
 
+Base.TimeCat = TimeCategory;
 module.exports = TimeCategory;

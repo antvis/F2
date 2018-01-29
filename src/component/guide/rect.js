@@ -30,4 +30,5 @@ class Rect extends GuideBase {
   }
 }
 
+GuideBase.Rect = Rect;
 module.exports = Rect;

@@ -1,4 +1,6 @@
-module.exports = {
-  Line: require('./line'),
-  Circle: require('./circle')
-};
+const Abstract = require('./abstract');
+
+// require('./circle');
+require('./line');
+
+module.exports = Abstract;

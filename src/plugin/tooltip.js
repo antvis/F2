@@ -1,7 +1,7 @@
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
 const Global = require('../global');
-const { Tooltip } = require('../component/index');
+const Tooltip = require('../component/tooltip');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix(Global.tooltip || {}, {

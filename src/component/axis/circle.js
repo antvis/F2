@@ -1,7 +1,7 @@
 const Util = require('../../util/common');
 const Abstract = require('./abstract');
 
-class AxisCircle extends Abstract {
+class Circle extends Abstract {
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
     return Util.mix({}, cfg, {
@@ -92,4 +92,5 @@ class AxisCircle extends Abstract {
   }
 }
 
-module.exports = AxisCircle;
+Abstract.Circle = Circle;
+module.exports = Circle;
