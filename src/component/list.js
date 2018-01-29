@@ -83,7 +83,7 @@ class List {
     });
     this.itemsGroup = itemsGroup;
 
-    if (this.parent) {
+    if (this.parent) { // 如果传入了父容器
       this.parent.add(container);
     }
   }
@@ -91,6 +91,7 @@ class List {
   _renderTitle(title) {
     title = title || this.title;
 
+    let titleHeight = 0;
     if (this.showTitle && title) {
       const { wrapper, titleStyle } = this;
       const titleShape = wrapper.addShape('text', {
@@ -101,8 +102,10 @@ class List {
           text: title
         }, titleStyle)
       });
+      titleHeight = titleShape.getBBox().height + this.titleGap;
       this.titleShape = titleShape;
     }
+    this._titleHeight = titleHeight;
   }
 
   _renderItems(items) {
@@ -119,7 +122,9 @@ class List {
     Util.each(items, (item, index) => {
       self._addItem(item, index);
     });
-    this._adjustItems();
+    if (items.length > 1) {
+      this._adjustItems();
+    }
     this._renderBackground(); // 渲染背景
   }
 
@@ -167,7 +172,7 @@ class List {
       const radius = marker.radius || MARKER_RADIUS;
       const markerAttrs = Util.mix({
         x: radius,
-        y: 0
+        y: this._titleHeight
       }, marker);
 
       if (item.checked === false) {
@@ -195,7 +200,7 @@ class List {
         className: 'name',
         attrs: Util.mix({
           x: startX,
-          y: 0,
+          y: this._titleHeight,
           text: this._formatItemValue(name)
         }, nameStyle, item.checked === false ? { fill: unCheckColor } : null)
       });
@@ -211,7 +216,7 @@ class List {
         className: 'value',
         attrs: Util.mix({
           x: valueX,
-          y: 0,
+          y: this._titleHeight,
           text: value
         }, valueStyle, item.checked === false ? { fill: unCheckColor } : null)
       });
@@ -227,43 +232,74 @@ class List {
     return value;
   }
 
-  _getTitleHeight() {
-    let titleHeight = 0;
-    const { titleShape, titleGap } = this;
-    if (titleShape) {
-      titleHeight = titleShape.getBBox().height + titleGap;
-    }
+  // _getMaxItemWidth() {
+  //   const itemsGroup = this.itemsGroup;
+  //   const children = itemsGroup.get('children');
+  //   let maxItemWidth = 0;
+  //   const maxLength = this.maxLength;
+  //   const itemGap = this.itemGap;
+  //   const count = children.length;
 
-    return titleHeight;
-  }
+  //   const itemWidth = this.itemWidth;
+  //   if (itemWidth === 'auto') { // 按照默认规则自动计算
+  //     const averageLength = (maxLength - (count - 1) * itemGap) / count;
+  //     if (count <= 3) {
+  //       maxItemWidth = averageLength;
+  //     } else {
+  //       maxItemWidth = (maxLength - itemGap) / 2;
+  //     }
+  //   } else if (Util.isNumber(itemWidth)) {
+  //     maxItemWidth = itemWidth;
+  //   } else if (maxLength <= itemsGroup.getBBox().width) {
+  //     for (let i = 0; i < count; i++) {
+  //       const bbox = children[i].getBBox();
+  //       maxItemWidth = Math.max(maxItemWidth, bbox.width);
+  //     }
+  //   }
+
+  //   this.maxItemWidth = maxItemWidth;
+  //   return maxItemWidth;
+  // }
+
 
   _getMaxItemWidth() {
-    const itemsGroup = this.itemsGroup;
-    const children = itemsGroup.get('children');
-    let maxItemWidth = 0;
-    const maxLength = this.maxLength;
-    const itemGap = this.itemGap;
-    const count = children.length;
-
+    let width;
     const itemWidth = this.itemWidth;
-    if (itemWidth === 'auto') { // 按照默认规则自动计算
-      const averageLength = (maxLength - (count - 1) * itemGap) / count;
-      if (count <= 3) {
-        maxItemWidth = averageLength;
-      } else {
-        maxItemWidth = (maxLength - itemGap) / 2;
-      }
-    } else if (Util.isNumber(itemWidth)) {
-      maxItemWidth = itemWidth;
-    } else if (maxLength <= itemsGroup.getBBox().width) {
-      for (let i = 0; i < count; i++) {
-        const bbox = children[i].getBBox();
-        maxItemWidth = Math.max(maxItemWidth, bbox.width);
-      }
-    }
 
-    this.maxItemWidth = maxItemWidth;
-    return maxItemWidth;
+    if (Util.isNumber(itemWidth) || Util.isNil(itemWidth)) {
+      return itemWidth;
+    }
+    // 采用默认的栅栏布局
+    if (itemWidth === 'auto') {
+      const itemsGroup = this.itemsGroup;
+      const children = itemsGroup.get('children');
+      const count = children.length;
+      let maxItemWidth = 0;
+      for (let i = 0; i < count; i++) {
+        const { width } = children[i].getBBox();
+        maxItemWidth = Math.max(maxItemWidth, width);
+      }
+      const maxLength = this.maxLength;
+      const itemGap = this.itemGap;
+      const twoAvgWidth = (maxLength - itemGap) / 2;
+      const threeAvgWidth = (maxLength - itemGap * 2) / 3;
+
+      if (count === 2) {
+        width = Math.max(maxItemWidth, twoAvgWidth);
+      } else {
+        // 1. max <= 3Avg, 3Avg
+        // 2. 3Avg < max && max < 2avg, 2avg
+        // 3. max > 2avg, max, 一列布局
+        if (maxItemWidth <= threeAvgWidth) {
+          width = threeAvgWidth;
+        } else if (maxItemWidth <= twoAvgWidth) {
+          width = twoAvgWidth;
+        } else {
+          width = maxItemWidth;
+        }
+      }
+      return width;
+    }
   }
 
   _adjustHorizontal() {
@@ -271,10 +307,10 @@ class List {
 
     const children = itemsGroup.get('children');
     const { itemGap, itemMarginBottom } = this;
-    const titleGap = this._getTitleHeight();
+    const titleHeight = this._titleHeight;
 
     let row = 0;
-    let rowLength = 0;
+    let rowWidth = 0;
     let width;
     let height;
     const itemWidth = this._getMaxItemWidth();
@@ -282,22 +318,24 @@ class List {
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
       const box = child.getBBox();
-      width = itemWidth || box.width;
-      height = box.height + itemMarginBottom;
+      const childHeight = box.height;
+      const childWidth = box.width;
+      width = itemWidth;
+      height = childHeight + itemMarginBottom;
 
-      if (width - (maxLength - rowLength) > 0.0001) {
+      if (width - (maxLength - rowWidth) > 0.0001) {
         row++;
-        rowLength = 0;
+        rowWidth = 0;
       }
 
-      child.moveTo(rowLength, row * height + titleGap);
+      child.moveTo(rowWidth, row * height);
       legendHitBoxes.push({
-        x: rowLength,
-        y: row * height + titleGap - box.height / 2,
-        width: box.width * 1.1,
-        height: box.height * 1.1
+        x: rowWidth,
+        y: row * height + titleHeight - childHeight / 2,
+        width: childWidth * 1.1,
+        height: childHeight * 1.1
       });
-      rowLength += width + itemGap;
+      rowWidth += width + itemGap;
     }
     this.legendHitBoxes = legendHitBoxes;
     return;
@@ -306,14 +344,14 @@ class List {
   _adjustVertical() {
     const { maxLength, itemsGroup } = this; // 垂直布局，则 maxLength 代表容器的高度
     const { itemGap, itemMarginBottom, itemWidth } = this;
-    const titleHeight = this._getTitleHeight();
+    const titleHeight = this._titleHeight;
     const children = itemsGroup.get('children');
 
-    let colLength = titleHeight;
+    let colHeight = 0;
     let width;
     let height;
     let maxItemWidth = 0;
-    let totalLength = 0;
+    let totalWidth = 0;
     const legendHitBoxes = [];
 
     for (let i = 0, length = children.length; i < length; i++) {
@@ -328,33 +366,34 @@ class List {
         maxItemWidth = width + itemGap;
       }
 
-      if (maxLength - colLength < height) {
-        colLength = titleHeight;
-        totalLength += maxItemWidth;
-        child.moveTo(totalLength, titleHeight);
+      if (maxLength - colHeight < height) {
+        colHeight = 0;
+        totalWidth += maxItemWidth;
+        child.moveTo(totalWidth, 0);
         legendHitBoxes.push({
-          x: totalLength,
+          x: totalWidth,
           y: titleHeight - height / 2,
           width: width * 1.1,
           height: height * 1.1
         });
       } else {
-        child.moveTo(totalLength, colLength);
+        child.moveTo(totalWidth, colHeight);
         legendHitBoxes.push({
-          x: totalLength,
-          y: colLength - height / 2,
+          x: totalWidth,
+          y: colHeight - height / 2 + titleHeight,
           width: width * 1.1,
           height: height * 1.1
         });
       }
 
-      colLength += height + itemMarginBottom;
+      colHeight += height + itemMarginBottom;
     }
     this.legendHitBoxes = legendHitBoxes;
     return;
   }
 
   _adjustItems() {
+    // TODO: 这个需要优化
     const layout = this.layout;
     if (layout === 'horizontal') {
       this._adjustHorizontal();

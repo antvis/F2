@@ -27,7 +27,11 @@
     pixelRatio: window.devicePixelRatio
   });
 
-  chart.source(data);
+  chart.source(data, {
+    range: {
+      tickCount: 5
+    }
+  });
   chart.coord({
     transposed: true
   });
