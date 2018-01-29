@@ -232,36 +232,6 @@ class List {
     return value;
   }
 
-  // _getMaxItemWidth() {
-  //   const itemsGroup = this.itemsGroup;
-  //   const children = itemsGroup.get('children');
-  //   let maxItemWidth = 0;
-  //   const maxLength = this.maxLength;
-  //   const itemGap = this.itemGap;
-  //   const count = children.length;
-
-  //   const itemWidth = this.itemWidth;
-  //   if (itemWidth === 'auto') { // 按照默认规则自动计算
-  //     const averageLength = (maxLength - (count - 1) * itemGap) / count;
-  //     if (count <= 3) {
-  //       maxItemWidth = averageLength;
-  //     } else {
-  //       maxItemWidth = (maxLength - itemGap) / 2;
-  //     }
-  //   } else if (Util.isNumber(itemWidth)) {
-  //     maxItemWidth = itemWidth;
-  //   } else if (maxLength <= itemsGroup.getBBox().width) {
-  //     for (let i = 0; i < count; i++) {
-  //       const bbox = children[i].getBBox();
-  //       maxItemWidth = Math.max(maxItemWidth, bbox.width);
-  //     }
-  //   }
-
-  //   this.maxItemWidth = maxItemWidth;
-  //   return maxItemWidth;
-  // }
-
-
   _getMaxItemWidth() {
     let width;
     const itemWidth = this.itemWidth;
@@ -393,7 +363,6 @@ class List {
   }
 
   _adjustItems() {
-    // TODO: 这个需要优化
     const layout = this.layout;
     if (layout === 'horizontal') {
       this._adjustHorizontal();
