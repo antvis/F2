@@ -1,7 +1,17 @@
 const expect = require('chai').expect;
 const Group = require('../../../src/graphic/group');
-const Shape = require('../../../src/graphic/shape/index');
+const Shape = require('../../../src/graphic/shape');
 const Canvas = require('../../../src/graphic/canvas');
+
+require('../../../src/graphic/shape/rect');
+require('../../../src/graphic/shape/circle');
+require('../../../src/graphic/shape/line');
+require('../../../src/graphic/shape/polygon');
+require('../../../src/graphic/shape/polyline');
+require('../../../src/graphic/shape/arc');
+require('../../../src/graphic/shape/sector');
+require('../../../src/graphic/shape/text');
+require('../../../src/graphic/shape/custom');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-group';

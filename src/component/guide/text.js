@@ -60,4 +60,5 @@ class Text extends GuideBase {
   }
 }
 
+GuideBase.Text = Text;
 module.exports = Text;

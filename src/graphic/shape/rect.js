@@ -57,4 +57,5 @@ class Rect extends Shape {
   }
 }
 
+Shape.Rect = Rect;
 module.exports = Rect;

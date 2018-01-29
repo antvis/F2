@@ -7,7 +7,6 @@ const Base = require('./base');
 const Util = require('../util/common');
 
 class Identity extends Base {
-
   /**
    * @override
    */
@@ -54,4 +53,5 @@ class Identity extends Base {
   }
 }
 
+Base.Identity = Identity;
 module.exports = Identity;

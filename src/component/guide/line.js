@@ -31,4 +31,5 @@ class Line extends GuideBase {
   }
 }
 
+GuideBase.Line = Line;
 module.exports = Line;

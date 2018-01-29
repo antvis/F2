@@ -39,5 +39,5 @@ class Arc extends Shape {
     return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
   }
 }
-
+Shape.Arc = Arc;
 module.exports = Arc;

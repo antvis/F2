@@ -3,17 +3,17 @@ const Attr = require('../../../src/attr/');
 const Scale = require('../../../src/scale/');
 
 describe('attr test color', () => {
-  const scaleIdentity = Scale.identity({
+  const scaleIdentity = new Scale.Identity({
     field: 'type',
     value: 'red'
   });
 
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -92,12 +92,12 @@ describe('attr test color', () => {
 });
 
 describe('attr test size', () => {
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -137,12 +137,12 @@ describe('attr test size', () => {
 });
 
 describe('attr test shape', () => {
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -180,12 +180,12 @@ describe('attr test shape', () => {
 });
 
 describe('attr test position', () => {
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd', 'e' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10

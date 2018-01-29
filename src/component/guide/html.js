@@ -133,4 +133,5 @@ class Html extends GuideBase {
   }
 }
 
+GuideBase.Html = Html;
 module.exports = Html;

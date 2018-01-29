@@ -1,6 +1,6 @@
 const Util = require('../util/common');
 const DomUtil = require('../util/dom');
-const { List } = require('../component');
+const List = require('../component/list');
 const Global = require('../global');
 // const LEGEND_OFFSET = 30;
 const LEGEND_GAP = 24;

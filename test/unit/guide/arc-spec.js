@@ -25,11 +25,11 @@ describe('Guide.Arc', function() {
 
   const group = canvas.addGroup();
 
-  const xScale = new Scale.cat({
+  const xScale = new Scale.Cat({
     values: [ '一月', '二月', '三月', '四月', '五月' ]
   });
 
-  const yScale = new Scale.linear({
+  const yScale = new Scale.Linear({
     min: 0,
     max: 1200
   });

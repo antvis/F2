@@ -78,4 +78,5 @@ class Polyline extends Shape {
   }
 }
 
+Shape.Polyline = Polyline;
 module.exports = Polyline;

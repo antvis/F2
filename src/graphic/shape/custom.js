@@ -24,5 +24,5 @@ class Custom extends Shape {
     return null;
   }
 }
-
+Shape.Custom = Custom;
 module.exports = Custom;

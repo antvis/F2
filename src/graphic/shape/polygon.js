@@ -47,4 +47,5 @@ class Polygon extends Shape {
   }
 }
 
+Shape.Polygon = Polygon;
 module.exports = Polygon;

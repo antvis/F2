@@ -103,4 +103,5 @@ class Polar extends Base {
   }
 }
 
+Base.Polar = Polar;
 module.exports = Polar;
