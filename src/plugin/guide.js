@@ -1,9 +1,9 @@
 const Util = require('../util/common');
-const Guide = require('../component/guide/');
+const Guide = require('../component/guide/base');
 const Global = require('../global');
 
 // register the default configuration for Guide
-Global.guide = Util.deepMix(Global.guide || {}, {
+Global.guide = Util.deepMix({
   line: {
     style: {
       stroke: '#a3a3a3',
@@ -39,7 +39,7 @@ Global.guide = Util.deepMix(Global.guide || {}, {
     alignX: 'middle',
     alignY: 'middle'
   }
-});
+}, Global.guide || {});
 
 class GuideController {
   constructor(cfg) {

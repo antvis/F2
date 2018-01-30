@@ -1,9 +1,7 @@
-const Guide = require('./base');
-
-require('./text');
-require('./line');
-require('./arc');
-require('./rect');
-require('./html');
-
-module.exports = Guide;
+module.exports = {
+  Text: require('./text'),
+  Line: require('./line'),
+  Arc: require('./arc'),
+  Rect: require('./rect'),
+  Html: require('./html')
+};
