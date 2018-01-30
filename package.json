@@ -1,0 +1,84 @@
+{
+  "name": "@antv/f2",
+  "version": "3.0.3",
+  "description": "A canvas library which providing 2d draw for G2.",
+  "keywords": [
+    "canvas",
+    "f2",
+    "2d draw"
+  ],
+  "main": "build/f2.js",
+  "browser": "build/f2.js",
+  "module": "index.js",
+  "homepage": "https://github.com/antvis/f2",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  },
+  "devDependencies": {
+    "@lite-js/torch": "~0.2.6",
+    "babel-cli": "~6.26.0",
+    "babel-core": "~6.25.0",
+    "babel-eslint": "~7.2.3",
+    "babel-loader": "~7.1.1",
+    "babel-plugin-transform-remove-strict-mode": "~0.0.2",
+    "babel-preset-env": "~1.6.1",
+    "chai": "~4.0.1",
+    "commander": "~2.9.0",
+    "connect": "~3.6.3",
+    "d3-queue": "~3.0.7",
+    "debug": "~3.1.0",
+    "electron": "~1.6.11",
+    "eslint": "~3.19.0",
+    "eslint-config-airbnb": "~15.0.1",
+    "eslint-config-egg": "~4.2.0",
+    "eslint-plugin-html": "~3.1.1",
+    "event-simulate": "~1.0.0",
+    "get-port": "~3.1.0",
+    "jquery": "~3.3.1",
+    "nightmare": "~2.10.0",
+    "nunjucks": "~3.0.1",
+    "open": "~0.0.5",
+    "parseurl": "~1.3.1",
+    "pre-commit": "~1.2.2",
+    "serve-static": "~1.12.4",
+    "shelljs": "~0.7.8",
+    "string-replace-loader": "~1.3.0",
+    "uglify-js": "~3.0.15",
+    "webpack": "~3.4.1"
+  },
+  "scripts": {
+    "build": "webpack",
+    "build-lib": "babel src --out-dir lib",
+    "ci": "npm run lint && npm run test",
+    "compress": "uglifyjs --compress --mangle --output dist/f2.min.js -- build/f2.js",
+    "coverage": "npm run coverage-generator && npm run coverage-viewer",
+    "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
+    "coverage-viewer": "torch-coverage",
+    "demos": "$(npm bin)/electron ./demos/app.js",
+    "demos-web": "node ./demos/app.js --web --port 2048",
+    "dev": "npm run watch & DEBUG=app:* npm run demos-web",
+    "dist": "rm -rf dist && mkdir dist && npm run build && npm run compress",
+    "lint": "eslint ./",
+    "lint-fix": "eslint --fix ./",
+    "prepublishOnly": "npm run build-lib && npm run dist",
+    "screenshot": "DEBUG=app:* ./bin/screenshot.js",
+    "test": "torch --compile --renderer --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit",
+    "watch": "webpack --config webpack-dev.config.js"
+  },
+  "pre-commit": {
+    "run": [
+      "lint",
+      "test"
+    ],
+    "silent": false
+  },
+  "dependencies": {
+    "fecha": "~2.3.1"
+  }
+}
