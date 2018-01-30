@@ -4,7 +4,7 @@ const Global = require('../global');
 const Tooltip = require('../component/tooltip');
 
 // Register the default configuration for Tooltip
-Global.tooltip = Util.deepMix(Global.tooltip || {}, {
+Global.tooltip = Util.deepMix({
   triggerOn: 'touchmove',
   triggerOff: 'touchend',
   showTitle: false,
@@ -45,7 +45,7 @@ Global.tooltip = Util.deepMix(Global.tooltip || {}, {
     stroke: '#fff'
   },
   layout: 'horizontal' // 内容水平布局
-});
+}, Global.tooltip || {});
 
 function _getTooltipValueScale(geom) {
   const colorAttr = geom.getAttr('color');

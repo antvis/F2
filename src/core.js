@@ -1,10 +1,10 @@
-const F2 = {};
+const Core = {};
 
-F2.version = '____F2_VERSION____';
-F2.Global = require('./global');
-F2.Chart = require('./chart/chart');
-F2.Shape = require('./geom/shape/shape');
-F2.G = require('./graphic/index');
-F2.Util = require('./util/common');
+Core.version = '____F2_VERSION____';
+Core.Global = require('./global');
+Core.Chart = require('./chart/chart');
+Core.Shape = require('./geom/shape/shape');
+Core.G = require('./graphic/index');
+Core.Util = require('./util/common');
 
-module.exports = F2;
+module.exports = Core;

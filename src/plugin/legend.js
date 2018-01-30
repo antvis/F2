@@ -34,7 +34,7 @@ const DEFAULT_CFG = {
 };
 
 // Register the default configuration for Legend
-Global.legend = Util.deepMix(Global.Legend || {}, {
+Global.legend = Util.deepMix({
   right: Util.mix({
     position: 'right',
     layout: 'vertical'
@@ -51,7 +51,7 @@ Global.legend = Util.deepMix(Global.Legend || {}, {
     position: 'bottom',
     layout: 'horizontal'
   }, DEFAULT_CFG)
-});
+}, Global.legend || {});
 
 function compare(a, b) {
   return a - b;
