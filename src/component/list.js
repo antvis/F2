@@ -1,7 +1,7 @@
 const Util = require('../util/common');
 const { Group } = require('../graphic/index');
 const Marker = require('./marker');
-const MARKER_RADIUS = 6;
+const MARKER_RADIUS = 3;
 
 class List {
   getDefaultCfg() {
@@ -21,17 +21,17 @@ class List {
        * 标题距离记录项的间距
        * @type {Number}
        */
-      titleGap: 24,
+      titleGap: 12,
       /**
        * 各个记录项水平方向的间距
        * @type {Number}
        */
-      itemGap: 20,
+      itemGap: 10,
       /**
        * 各个记录项水平方向的间距
        * @type {Number}
        */
-      itemMarginBottom: 24,
+      itemMarginBottom: 12,
       /**
        * 记录项置灰的颜色
        * @type {String}
@@ -47,7 +47,7 @@ class List {
        * marker 和文字的距离
        * @type {Number}
        */
-      wordSpace: 12,
+      wordSpace: 6,
       /**
        * 在画布上的位置
        * @type {[type]}

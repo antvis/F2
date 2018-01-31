@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const Marker = require('./marker');
 const Container = require('./list');
+const GAP = 4;
 
 class Tooltip {
   getDefaultCfg() {
@@ -16,7 +17,7 @@ class Tooltip {
        */
       crosshairsStyle: {
         stroke: 'rgba(0, 0, 0, 0.25)',
-        lineWidth: 2
+        lineWidth: 1
       },
       /**
        * tooltip 容器的样式
@@ -97,7 +98,7 @@ class Tooltip {
 
     const { tl, tr } = plotRange;
     let posX = 0;
-    const posY = tl.y - height - 8 + offsetY; // 垂直方向贴着图表绘图区域上方边缘
+    const posY = tl.y - height - GAP + offsetY; // 垂直方向贴着图表绘图区域上方边缘
 
     if (fixed) {
       const x = (tl.x + tr.x) / 2;
@@ -124,21 +125,21 @@ class Tooltip {
 
       if (tooltipArrow) {
         tooltipArrow.attr('points', [
-          { x: x - 6, y: tl.y - 8 + offsetY },
-          { x: x + 6, y: tl.y - 8 + offsetY },
+          { x: x - 3, y: tl.y - GAP + offsetY },
+          { x: x + 3, y: tl.y - GAP + offsetY },
           { x, y: tl.y + offsetY }
         ]);
         if (x === tl.x) {
           tooltipArrow.attr('points', [
-            { x: tl.x, y: tl.y + offsetX },
-            { x: tl.x, y: tl.y - 8 + offsetY },
-            { x: tl.x + 8, y: tl.y - 8 + offsetY }
+            { x: tl.x, y: tl.y + offsetY },
+            { x: tl.x, y: tl.y - GAP + offsetY },
+            { x: tl.x + GAP, y: tl.y - GAP + offsetY }
           ]);
         } else if (x === tr.x) {
           tooltipArrow.attr('points', [
-            { x: tr.x, y: tl.y + offsetX },
-            { x: tr.x - 8, y: tl.y - 8 + offsetY },
-            { x: tr.x, y: tl.y - 8 + offsetY }
+            { x: tr.x, y: tl.y + offsetY },
+            { x: tr.x - GAP, y: tl.y - GAP + offsetY },
+            { x: tr.x, y: tl.y - GAP + offsetY }
           ]);
         }
       }

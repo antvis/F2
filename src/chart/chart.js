@@ -162,7 +162,7 @@ class Chart extends Base {
        * @type {Object}
        */
       filters: {},
-      appendPadding: 30
+      appendPadding: Global.appendPadding
     };
   }
 

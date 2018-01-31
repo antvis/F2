@@ -9,7 +9,7 @@ const color2 = '#808080'; // 字体颜色
 const defaultAxis = {
   label: {
     fill: color2,
-    fontSize: 20
+    fontSize: 10
   },
   line: {
     stroke: color1,
@@ -22,7 +22,7 @@ const defaultAxis = {
     lineDash: [ 4 ]
   },
   tickLine: null,
-  labelOffset: 15
+  labelOffset: 7.5 // TODO
 };
 
 const Theme = {
@@ -30,6 +30,7 @@ const Theme = {
   defaultColor: '#1890FF',
   pixelRatio: 1,
   padding: 'auto',
+  appendPadding: 15,
   colors: [
     '#1890FF',
     '#73C9E6',
@@ -69,16 +70,16 @@ const Theme = {
       line: null
     }),
     radius: Util.mix({}, defaultAxis, {
-      labelOffset: 8
+      labelOffset: 4
     })
   },
   shape: {
     line: {
-      lineWidth: 4 // 线的默认宽度
+      lineWidth: 2 // 线的默认宽度
     },
     point: {
       lineWidth: 0,
-      size: 5 // 圆的默认半径
+      size: 4 // 圆的默认半径
     },
     area: {
       fillOpacity: 0.4 // TODO: 需要确认

@@ -2,35 +2,34 @@ const Util = require('../util/common');
 const DomUtil = require('../util/dom');
 const List = require('../component/list');
 const Global = require('../global');
-// const LEGEND_OFFSET = 30;
-const LEGEND_GAP = 24;
-const MARKER_SIZE = 6;
+const LEGEND_GAP = 12;
+const MARKER_SIZE = 3;
 
 const DEFAULT_CFG = {
-  itemMarginBottom: 24,
-  itemGap: 20,
+  itemMarginBottom: 12,
+  itemGap: 10,
   showTitle: false,
   titleStyle: {
-    fontSize: 24,
+    fontSize: 12,
     fill: '#808080',
     textAlign: 'start',
     textBaseline: 'top'
   },
   nameStyle: {
     fill: '#808080',
-    fontSize: 24,
+    fontSize: 12,
     textAlign: 'start',
     textBaseline: 'middle'
   },
   valueStyle: {
     fill: '#000000',
-    fontSize: 24,
+    fontSize: 12,
     textAlign: 'start',
     textBaseline: 'middle'
   },
   unCheckColor: '#bfbfbf',
   itemWidth: 'auto',
-  wordSpace: 12
+  wordSpace: 6
 };
 
 // Register the default configuration for Legend
@@ -198,9 +197,8 @@ class LegendController {
 
       const marker = {
         fill: color,
-        radius: 7,
+        radius: 3,
         symbol: 'circle',
-        lineWidth: 2,
         stroke: '#fff'
       };
 
