@@ -33,19 +33,6 @@ class Text extends Shape {
     };
   }
 
-  initTransform() {
-    const attrs = this._attrs.attrs;
-    this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
-    const fontSize = attrs.fontSize;
-    if (fontSize && +fontSize < 12) { // 小于 12 像素的文本进行 scale 处理
-      this.transform([
-        [ 't', attrs.x, attrs.y ],
-        [ 's', +fontSize / 12, +fontSize / 12 ],
-        [ 't', -attrs.x, -attrs.y ]
-      ]);
-    }
-  }
-
   _getFontStyle() {
     const attrs = this._attrs.attrs;
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = attrs;

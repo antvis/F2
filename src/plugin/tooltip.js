@@ -11,37 +11,37 @@ Global.tooltip = Util.deepMix({
   showCrosshairs: false,
   crosshairsStyle: {
     stroke: 'rgba(0, 0, 0, 0.25)',
-    lineWidth: 2
+    lineWidth: 1
   },
   showTooltipMarker: true,
   background: {
     radius: 1,
     fill: 'rgba(0, 0, 0, 0.65)',
-    padding: [ 6, 10 ]
+    padding: [ 3, 5 ]
   },
   titleStyle: {
-    fontSize: 24,
+    fontSize: 12,
     fill: '#fff',
     textAlign: 'start',
     textBaseline: 'top'
   },
   nameStyle: {
-    fontSize: 24,
+    fontSize: 12,
     fill: 'rgba(255, 255, 255, 0.65)',
     textAlign: 'start',
     textBaseline: 'middle'
   },
   valueStyle: {
-    fontSize: 24,
+    fontSize: 12,
     fill: '#fff',
     textAlign: 'start',
     textBaseline: 'middle'
   },
   showItemMarker: true,
   itemMarkerStyle: {
-    radius: 5,
+    radius: 3,
     symbol: 'circle',
-    lineWidth: 2,
+    lineWidth: 1,
     stroke: '#fff'
   },
   layout: 'horizontal' // 内容水平布局
@@ -239,9 +239,9 @@ class TooltipController {
       }, tooltipCfg.tooltipMarkerStyle);
     } else {
       cfg.style = Util.mix({
-        radius: 6,
+        radius: 5,
         fill: '#fff',
-        lineWidth: 4
+        lineWidth: 2
       }, tooltipCfg.tooltipMarkerStyle);
     }
 
