@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>气泡图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
+  $.getJSON('./data/bubble.json', data => {
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: 260,
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.source(data, {
+      LifeExpectancy: {
+        alias: '人均寿命（年）',
+        tickCount: 5
+      },
+      // Population: {
+      //   type: 'pow',
+      //   alias: '人口总数'
+      // },
+      GDP: {
+        alias: '人均国内生产总值($)'
+      },
+      Country: {
+        alias: '国家/地区'
+      }
+    });
+    chart.axis('GDP', {
+      label(value){
+        return {
+          text: (value / 1000).toFixed(0) + 'k'
+        };
+      }
+    });
+    chart.tooltip(false);
+    chart.point().position('GDP*LifeExpectancy')
+      .size('Population', [ 4, 65 ])
+      .color('continent')
+      .style({
+        fillOpacity: 0.65
+      });
+    chart.render();
+  });
+</script>
+</body>
+</html>
