@@ -1,3 +1,4 @@
+process.env.DEBUG = 'app:*';
 const debug = require('debug')('app:demos');
 const commander = require('commander');
 const connect = require('connect');
@@ -18,6 +19,7 @@ const lstatSync = fs.lstatSync;
 const readdirSync = fs.readdirSync;
 const readFileSync = fs.readFileSync;
 const mkdirSync = fs.mkdirSync;
+const writeFile = fs.writeFile;
 const nunjucks = require('nunjucks');
 const renderString = nunjucks.renderString;
 const pkg = require('../package.json');
@@ -53,12 +55,12 @@ function startService(port) {
       if (pathname === '/demos/index.html') {
         const demoFiles = getFiles(__dirname)
           .filter(filename => {
-            return extname(filename) === '.html';
+            return extname(filename) === '.html' && basename(filename, '.html') !== 'index';
           })
           .map(filename => {
             const bn = basename(filename, '.html');
             const file = {
-              screenshot: `/demos/assets/screenshots/${bn}.png`,
+              screenshot: `./assets/screenshots/${bn}.png`,
               basename: bn,
               content: readFileSync(filename),
               filename
@@ -66,9 +68,14 @@ function startService(port) {
             return file;
           });
         const template = readFileSync(join(__dirname, './index.njk'), 'utf8');
-        res.end(renderString(template, {
+        const content = renderString(template, {
           demoFiles
-        }));
+        });
+        writeFile(join(process.cwd(), './demos/index.html'), content, 'utf8', err => {
+          if (err) throw err;
+          debug('The demo page has been saved!');
+        });
+        res.end(content);
       } else {
         next();
       }
