@@ -105,7 +105,7 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '四月', 400 ],
-      alignX: 'middle',
+      alignX: 'center',
       alignY: 'top',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>tc</div>"
     });
@@ -121,7 +121,7 @@ describe('Guide.Html', function() {
       xScale,
       yScale,
       position: [ '二月', 200 ],
-      alignX: 'middle',
+      alignX: 'center',
       alignY: 'bottom',
       html: "<div style='background-color:blue;width:20px;height:20px;color:#fff;'>bc</div>"
     });

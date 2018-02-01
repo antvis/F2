@@ -22,10 +22,10 @@ function getOffsetFromAlign(alignX, alignY, width, height) {
   } else if (alignX === 'left' && alignY === 'middle') {
     result[0] = 0;
     result[1] = Math.floor(-height / 2);
-  } else if (alignX === 'middle' && alignY === 'bottom') {
+  } else if (alignX === 'center' && alignY === 'bottom') {
     result[0] = Math.floor(-width / 2);
     result[1] = Math.floor(-height);
-  } else if (alignX === 'middle' && alignY === 'top') {
+  } else if (alignX === 'center' && alignY === 'top') {
     result[0] = Math.floor(-width / 2);
     result[1] = 0;
   } else {
@@ -46,10 +46,10 @@ class Html extends GuideBase {
        */
       position: null,
       /**
-       * 水平方向对齐方式，可取值 'left'、'middle'、'right'
+       * 水平方向对齐方式，可取值 'left'、'center'、'right'
        * @type {String}
        */
-      alignX: 'middle',
+      alignX: 'center',
       /**
        * 垂直方向对齐方式，可取值 'top'、'middle'、'bottom'
        * @type {String}
