@@ -5,6 +5,7 @@ const Chart = require('../../../src/chart/chart');
 const { Guide } = require('../../../src/plugin/index');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
+require('../../../src/component/guide');
 
 Chart.plugins.register(Guide);
 
@@ -127,8 +128,7 @@ describe('chart test', () => {
       a: 1,
       b: 3,
       c: '2'
-    },
-    {
+    }, {
       a: 2,
       b: 1,
       c: '1'
@@ -136,8 +136,7 @@ describe('chart test', () => {
       a: 2,
       b: 4,
       c: '2'
-    },
-    {
+    }, {
       a: 3,
       b: 5,
       c: '1'
@@ -153,6 +152,8 @@ describe('chart test', () => {
         width: 500,
         height: 500
       });
+
+      expect(chart.get('canvas')).to.not.be.empty;
     });
 
 
@@ -165,6 +166,29 @@ describe('chart test', () => {
       });
       expect(chart.get('data')).equal(data);
       expect(chart.get('colDefs').a.min).equal(0);
+    });
+
+    it('scale', function() {
+      chart.scale('a', {
+        max: 10
+      });
+      chart.scale({
+        b: {
+          nice: false
+        }
+      });
+      expect(chart.get('colDefs').a).eql({ max: 10 });
+      expect(chart.get('colDefs').b).eql({ nice: false });
+      expect(chart.get('scaleController').defs).eql({ a: { max: 10 }, b: { nice: false } });
+
+      chart.scale({
+        a: {
+          min: 0,
+          max: 4
+        }
+      });
+      expect(chart.get('colDefs').a).eql({ min: 0, max: 4 });
+      expect(chart.get('scaleController').defs).eql({ a: { min: 0, max: 4 }, b: { nice: false } });
     });
 
     it('guide', function() {
