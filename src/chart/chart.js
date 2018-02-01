@@ -360,7 +360,7 @@ class Chart extends Base {
     const colDefs = this.get('colDefs');
     if (colDefs) {
       const scaleController = this.get('scaleController');
-      scaleController.defs = colDefs;
+      Util.mix(scaleController.defs, colDefs);
     }
   }
 
@@ -374,7 +374,6 @@ class Chart extends Base {
       frontPlot: self.get('frontPlot'),
       backPlot: self.get('backPlot')
     }));
-    self.initColDefs();
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
   }
 
@@ -394,8 +393,20 @@ class Chart extends Base {
   source(data, colDefs) {
     this.set('data', data);
     if (colDefs) {
-      this.set('colDefs', colDefs);
+      this.scale(colDefs);
     }
+    return this;
+  }
+
+  scale(field, cfg) {
+    const colDefs = this.get('colDefs') || {};
+    if (Util.isObject(field)) {
+      Util.mix(colDefs, field);
+    } else {
+      colDefs[field] = cfg;
+    }
+
+    this.set('colDefs', colDefs);
     this.initColDefs();
     return this;
   }
