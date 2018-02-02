@@ -25,7 +25,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
   chart.source(data, {
@@ -38,7 +38,7 @@
     position: 'left'
   });
   chart.tooltip({
-    offsetY: -40
+    offsetY: -20
   });
   chart.axis('cost', {
     label: {
