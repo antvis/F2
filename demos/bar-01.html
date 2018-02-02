@@ -27,15 +27,37 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
-  chart.source(data.reverse());
+  chart.source(data.reverse(), {
+    value: {
+      tickInterval: 750
+    }
+  });
   chart.coord({
     transposed: true
   });
   chart.legend(false);
+  chart.axis('label', {
+    line: F2.Global._defaultAxis.line,
+    grid: null
+  });
+  chart.axis('value', {
+    line: null,
+    grid: F2.Global._defaultAxis.grid,
+    label(text, index, total) {
+      const textCfg = {};
+      if (index === 0) {
+        textCfg.textAlign = 'left';
+      }
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
+      }
+      return textCfg;
+    }
+  });
   chart.interval().position('label*value').color('type').adjust({
     type: 'dodge',
     marginRatio: 1 / 32

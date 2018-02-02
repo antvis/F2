@@ -25,7 +25,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -39,21 +39,6 @@
       min: 0
     }
   });
-  chart.tooltip({
-    showCrosshairs: true,
-    onShow(ev) {
-      const { items } = ev;
-      items[0].name = items[0].title;
-    }
-  });
-  chart.axis('tem', {
-    label: {
-      textAlign: 'start',
-      textBaseline: 'bottom',
-      top: true
-    },
-    labelOffset: 0
-  });
   chart.axis('time', {
     label(text, index, total) {
       const textCfg = {};
@@ -64,6 +49,13 @@
         textCfg.textAlign = 'right';
       }
       return textCfg;
+    }
+  });
+  chart.tooltip({
+    showCrosshairs: true,
+    onShow(ev) {
+      const { items } = ev;
+      items[0].name = items[0].title;
     }
   });
   chart.area().position('time*tem');

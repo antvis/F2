@@ -35,9 +35,13 @@
       id: 'mountNode',
       pixelRatio: window.devicePixelRatio,
       width: window.innerWidth,
-      height: 200
+      height: window.innerWidth * 0.64
     });
-    chart.source(data);
+    chart.source(data, {
+      '月均降雨量': {
+        tickCount: 5
+      }
+    });
     chart.legend(false);
     chart.interval()
       .position('月份*月均降雨量')
