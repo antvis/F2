@@ -372,7 +372,8 @@ class Chart extends Base {
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
       frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
+      backPlot: self.get('backPlot'),
+      chart: self
     }));
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
   }
@@ -675,7 +676,7 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
-    axisController.createAxis(coord, xScale, yScales, this);
+    axisController.createAxis(coord, xScale, yScales);
   }
 
   _isAutoPadding() {

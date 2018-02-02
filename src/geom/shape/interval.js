@@ -1,6 +1,7 @@
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const Vector2 = require('../../graphic/util/vector2');
+const Global = require('../../global');
 
 function getRectPoints(cfg) {
   const { x, y, y0, size } = cfg;
@@ -67,7 +68,7 @@ Shape.registerShape('interval', 'rect', {
     const points = this.parsePoints(cfg.points);
     const style = Util.mix({
       fill: cfg.color
-    }, cfg.style);
+    }, Global.shape.interval, cfg.style);
     if (cfg.isInCircle) {
       let newPoints = points.slice(0);
       if (this._coord.transposed) {
