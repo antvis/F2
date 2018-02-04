@@ -1,24 +1,22 @@
 const Util = require('../util/common');
 const DOMUtil = require('../util/dom');
-const Base = require('../base');
 const Container = require('./container');
 const Group = require('./group');
 
-class Canvas extends Base {
-  getDefaultCfg() {
-    return {
-      type: 'canvas',
-      el: null,
-      context: null,
-      width: null,
-      height: null,
-      children: [],
-      pixelRatio: null
-    };
+class Canvas {
+  get(name) {
+    return this._attrs[name];
+  }
+
+  set(name, value) {
+    this._attrs[name] = value;
   }
 
   constructor(cfg) {
-    super(cfg);
+    this._attrs = Util.mix({
+      type: 'canvas',
+      children: []
+    }, cfg);
     this._initPixelRatio();
     this._initCanvas();
   }

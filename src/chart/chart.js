@@ -485,6 +485,7 @@ class Chart extends Base {
   filter(field, condition) {
     const filters = this.get('filters') || {};
     filters[field] = condition;
+    this.set('filters', filters);
   }
 
   /**

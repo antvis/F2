@@ -14,30 +14,34 @@ const TimeUtil = require('./time-util');
  * @class Scale.TimeCategory
  */
 class TimeCategory extends Category {
-
-  /**
-   * @override
-   */
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      /**
-       * @override
-       */
-      type: 'timeCat',
-
-      /**
-       * 格式化符
-       * @type {String}
-       */
-      mask: 'YYYY-MM-DD',
-
-      /**
-       * @override
-       */
-      tickCount: 5,
-      sortable: true
-    });
+  _initDefaultCfg() {
+    this.type = 'timeCat';
+    /**
+     * 是否需要排序，默认进行排序
+     * @type {Boolean}
+     */
+    this.sortable = true;
+    this.tickCount = 5;
+    /**
+     * 时间格式化
+     * @type {String}
+     */
+    this.mask = 'YYYY-MM-DD';
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 度量的标记
+     * @type {Array}
+     */
+    this.ticks = null;
+    /**
+     * 参与度量计算的值，可选项
+     * @type {Array}
+     */
+    this.values = [];
   }
 
   init() {
