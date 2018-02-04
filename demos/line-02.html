@@ -13,23 +13,16 @@
 <script src="../build/f2.js"></script>
 <script>
   const data = [
-    { month: 'Jan', temperature: 7.0 },
-    { month: 'Feb', temperature: 6.9 },
-    { month: 'Mar', temperature: 9.5 },
-    { month: 'Apr', temperature: 14.5 },
-    { month: 'May', temperature: 18.2 },
-    { month: 'Jun', temperature: 21.5 },
-    { month: 'Jul', temperature: 25.2 },
-    { month: 'Aug', temperature: 26.5 },
-    { month: 'Sep', temperature: 23.3 },
-    { month: 'Oct', temperature: 18.3 },
-    { month: 'Nov', temperature: 13.9 },
-    { month: 'Dec', temperature: 9.6 }
+    { month: 'AUG', temperature: 16.5 },
+    { month: 'SEP', temperature: 23.3 },
+    { month: 'OCT', temperature: 18.3 },
+    { month: 'NOV', temperature: 13.9 },
+    { month: 'DEC', temperature: 29.6 }
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 

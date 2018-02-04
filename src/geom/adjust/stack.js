@@ -7,12 +7,9 @@ const Util = require('../../util/common');
 const Adjust = require('./base');
 
 class Stack extends Adjust {
-
-  getDefaultCfg() {
-    return {
-      xField: null,
-      yField: null
-    };
+  _initDefaultCfg() {
+    this.xField = null;
+    this.yField = null;
   }
 
   processAdjust(dataArray) {

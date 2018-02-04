@@ -23,7 +23,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -34,6 +34,26 @@
   });
   chart.coord({
     transposed: true
+  });
+  chart.axis('profession', {
+    line: F2.Global._defaultAxis.line,
+    grid: null
+  });
+  chart.axis('range', {
+    line: null,
+    grid: F2.Global._defaultAxis.grid,
+    label(text, index, total) {
+      const textCfg = {
+        text: text / 1000 + ' k'
+      };
+      if (index === 0) {
+        textCfg.textAlign = 'left';
+      }
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
+      }
+      return textCfg;
+    }
   });
   chart.interval().position('profession*range');
   chart.render();

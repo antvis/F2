@@ -25,11 +25,15 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
-  chart.source(data);
+  chart.source(data, {
+    sales: {
+      tickCount: 5
+    }
+  });
   chart.tooltip({
     showItemMarker: false,
     onShow(ev) {
@@ -39,7 +43,9 @@
       items[0].value = '¥ ' + items[0].value;
     }
   });
-  chart.interval().position('year*sales');
+  chart.interval().position('year*sales').style({
+    radius: [ 10, 10, 0, 0 ]
+  });
   chart.render();
 </script>
 </body>

@@ -32,12 +32,11 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
   chart.source(data);
   chart.legend({
-    showTitle: true,
     position: 'right',
     itemFormatter(val) {
       return val + '  ' + map[val];
@@ -54,15 +53,13 @@
     .adjust('stack');
   chart.guide().html({
     position: [ '50%', '50%' ],
-    html: '<div id="show" style="width: 250px;height: 83px;text-align: center;"></div>'
+    html: '<div id="show" style="width: 250px;height: 83px;line-height: 83px;text-align: center;"></div>'
   });
   chart.tooltip({
     custom(ev) {
       const { items } = ev;
-      const content = '<span style="font-size: 48px; color: rgba(0, 0, 0, 0.85);">' + items[0].name + '</span><br />'
-        + '<span style="font-size: 24px; color: rgba(0, 0, 0, 0.45);">' + items[0].value * 100 + '%' + '</span>';
 
-      $('#show').html(content);
+      $('#show').html(items[0].name);
     },
     onHide() {
       $('#show').html('');

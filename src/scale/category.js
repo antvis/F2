@@ -12,31 +12,34 @@ const catAuto = require('./auto/cat');
  */
 class Category extends Base {
 
-  /**
-   * @override
-   */
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      /**
-       * type of the scale
-       * @type {String}
-       */
-      type: 'cat',
-
-      /**
-       * 自动生成标记时的个数
-       * @type {Number}
-       * @default null
-       */
-      tickCount: null,
-
-      /**
-       * 是否分类度量
-       * @type {Boolean}
-       */
-      isCategory: true
-    });
+  _initDefaultCfg() {
+    this.type = 'cat';
+    /**
+     * 自动生成标记时的个数
+     * @type {Number}
+     * @default null
+     */
+    this.tickCount = null;
+    /**
+     * 是否分类度量
+     * @type {Boolean}
+     */
+    this.isCategory = true;
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 度量的标记
+     * @type {Array}
+     */
+    this.ticks = null;
+    /**
+     * 参与度量计算的值，可选项
+     * @type {Array}
+     */
+    this.values = [];
   }
 
   /**

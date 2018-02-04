@@ -230,7 +230,6 @@ class Geom extends Base {
       for (const k in origin) {
         obj[k] = origin[k];
       }
-      // const obj = Util.mix({}, origin);
       obj[FIELD_ORIGIN] = origin;
       rst.push(obj);
     }

@@ -25,7 +25,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
   chart.source(data, {
@@ -43,15 +43,14 @@
   chart.axis('month', {
     line: null,
     label(text, index, total) {
-      const cfg = {};
-        // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
+      const textCfg = {};
       if (index === 0) {
-        cfg.textAlign = 'start';
+        textCfg.textAlign = 'left';
       }
-      if (index > 0 && index === total - 1) {
-        cfg.textAlign = 'end';
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
       }
-      return cfg;
+      return textCfg;
     }
   });
   chart.axis('value', {
@@ -69,15 +68,8 @@
   });
   chart.area({
     startOnZero: true // X 轴从 0 开始
-  }).position('month*value')
-    .color('#1890ff')
-    .style({
-      opacity: 0.45
-    });
-  chart.line()
-    .position('month*value')
-    .color('#1890ff')
-    .size(4);
+  }).position('month*value');
+  chart.line().position('month*value');
   chart.render();
 </script>
 </body>

@@ -2,15 +2,13 @@ const Util = require('../../util/common');
 const GuideBase = require('./base');
 
 class Line extends GuideBase {
-  getDefaultCfg() {
-    return {
-      type: 'line',
-      start: [],
-      end: [],
-      style: {
-        stroke: '#000',
-        lineWidth: 1
-      }
+  _initDefaultCfg() {
+    this.type = 'line';
+    this.start = [];
+    this.end = [];
+    this.style = {
+      stroke: '#000',
+      lineWidth: 1
     };
   }
 

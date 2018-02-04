@@ -37,40 +37,38 @@ function getOffsetFromAlign(alignX, alignY, width, height) {
 }
 
 class Html extends GuideBase {
-  getDefaultCfg() {
-    return {
-      type: 'html',
-      /**
-       * dom 显示位置点
-       * @type {Object | Array}
-       */
-      position: null,
-      /**
-       * 水平方向对齐方式，可取值 'left'、'center'、'right'
-       * @type {String}
-       */
-      alignX: 'center',
-      /**
-       * 垂直方向对齐方式，可取值 'top'、'middle'、'bottom'
-       * @type {String}
-       */
-      alignY: 'middle',
-      /**
-       * x 方向的偏移量
-       * @type {Number}
-       */
-      offsetX: null,
-      /**
-       * y 方向的偏移量
-       * @type {Number}
-       */
-      offsetY: null,
-      /**
-      * html内容
-      *@type {String | Function}
+  _initDefaultCfg() {
+    this.type = 'html';
+    /**
+     * dom 显示位置点
+     * @type {Object | Array}
+     */
+    this.position = null;
+    /**
+      * 水平方向对齐方式，可取值 'left'、'center'、'right'
+      * @type {String}
       */
-      html: null
-    };
+    this.alignX = 'center';
+    /**
+      * 垂直方向对齐方式，可取值 'top'、'middle'、'bottom'
+      * @type {String}
+      */
+    this.alignY = 'middle';
+    /**
+      * x 方向的偏移量
+      * @type {Number}
+      */
+    this.offsetX = null;
+    /**
+      * y 方向的偏移量
+      * @type {Number}
+      */
+    this.offsetY = null;
+    /**
+    * html内容
+    *@type {String | Function}
+    */
+    this.html = null;
   }
 
   // override paint

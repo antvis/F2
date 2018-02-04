@@ -1,16 +1,13 @@
-const Util = require('../../util/common');
 const Shape = require('../shape');
 const Smooth = require('../util/smooth');
 const bbox = require('../util/bbox');
 
 class Polyline extends Shape {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      canStroke: true,
-      canFill: true,
-      type: 'polyline'
-    });
+  _initProperties() {
+    super._initProperties();
+    this._attrs.canFill = true;
+    this._attrs.canStroke = true;
+    this._attrs.type = 'polyline';
   }
 
   getDefaultAttrs() {

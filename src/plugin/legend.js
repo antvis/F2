@@ -237,7 +237,7 @@ class LegendController {
 
   _alignLegend(legend, pre, position) {
     const self = this;
-    const plotRange = self.plotRange;
+    const { tl, bl } = self.plotRange;
     const chart = self.chart;
     const offsetX = legend.offsetX || 0;
     const offsetY = legend.offsetY || 0;
@@ -249,15 +249,29 @@ class LegendController {
 
     let x = 0;
     let y = 0;
-    if (position === 'left' || position === 'right') { // position 为 left、right，图例整体居中对齐
-      const height = Math.abs(plotRange.tl.y - plotRange.bl.y);
+    if (position === 'left' || position === 'right') { // position 为 left、right，默认图例整体居中对齐
+      const verticalAlign = legend.verticalAlign || 'middle'; // 图例垂直方向上的对齐方式
+      const height = Math.abs(tl.y - bl.y);
       x = (position === 'left') ? appendPadding : (chartWidth - legendWidth - appendPadding);
-      y = (height - legendHeight) / 2 + plotRange.tl.y;
+      y = (height - legendHeight) / 2 + tl.y;
+      if (verticalAlign === 'top') {
+        y = tl.y;
+      } else if (verticalAlign === 'bottom') {
+        y = bl.y - legendHeight;
+      }
+
       if (pre) {
         y = pre.get('y') - legendHeight - LEGEND_GAP;
       }
     } else { // position 为 top、bottom，图例整体居左对齐
+      const align = legend.align || 'left'; // 图例水平方向上的对齐方式
       x = appendPadding;
+
+      if (align === 'center') {
+        x = chartWidth / 2 - legendWidth / 2;
+      } else if (align === 'right') {
+        x = chartWidth - (legendWidth + appendPadding);
+      }
       y = (position === 'top') ? (legendHeight / 2 + appendPadding) : (chartHeigth - legendHeight / 2 - appendPadding);
       if (pre) {
         const preWidth = pre.getWidth();
