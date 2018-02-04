@@ -1,3 +1,4 @@
+const Util = require('../../util/common');
 const Shape = require('../shape');
 
 class Rect extends Shape {
@@ -22,22 +23,24 @@ class Rect extends Shape {
   createPath(context) {
     const self = this;
     const attrs = self.get('attrs');
-    const { x, y, width, height, radius } = attrs;
+    const { x, y, width, height } = attrs;
     context = context || self.get('context');
 
     context.beginPath();
-    if (radius === 0) {
+    let radius = attrs.radius;
+    if (!radius) {
       context.rect(x, y, width, height);
     } else {
-      context.moveTo(x + radius, y);
-      context.lineTo(x + width - radius, y);
-      context.arc(x + width - radius, y + radius, radius, -Math.PI / 2, 0, false);
-      context.lineTo(x + width, y + height - radius);
-      context.arc(x + width - radius, y + height - radius, radius, 0, Math.PI / 2, false);
-      context.lineTo(x + radius, y + height);
-      context.arc(x + radius, y + height - radius, radius, Math.PI / 2, Math.PI, false);
-      context.lineTo(x, y + radius);
-      context.arc(x + radius, y + radius, radius, Math.PI, Math.PI * 3 / 2, false);
+      radius = Util.parsePadding(radius);
+      context.moveTo(x + radius[0], y);
+      context.lineTo(x + width - radius[1], y);
+      context.arc(x + width - radius[1], y + radius[1], radius[1], -Math.PI / 2, 0, false);
+      context.lineTo(x + width, y + height - radius[2]);
+      context.arc(x + width - radius[2], y + height - radius[2], radius[2], 0, Math.PI / 2, false);
+      context.lineTo(x + radius[3], y + height);
+      context.arc(x + radius[3], y + height - radius[3], radius[3], Math.PI / 2, Math.PI, false);
+      context.lineTo(x, y + radius[0]);
+      context.arc(x + radius[0], y + radius[0], radius[0], Math.PI, Math.PI * 3 / 2, false);
       context.closePath();
     }
   }
