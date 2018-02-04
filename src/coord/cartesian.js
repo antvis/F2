@@ -1,12 +1,10 @@
 const Base = require('./base');
 
 class Cartesian extends Base {
-  getDefaultCfg() {
-    return {
-      type: 'cartesian',
-      transposed: false,
-      isRect: true
-    };
+  _initDefaultCfg() {
+    this.type = 'cartesian';
+    this.transposed = false;
+    this.isRect = true;
   }
 
   init(start, end) {

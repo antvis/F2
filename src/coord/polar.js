@@ -2,18 +2,16 @@ const Base = require('./base');
 const Vector2 = require('../graphic/util/vector2');
 
 class Polar extends Base {
-  getDefaultCfg() {
-    return {
-      type: 'polar',
-      startAngle: -Math.PI / 2,
-      endAngle: Math.PI * 3 / 2,
-      inner: 0,
-      innerRadius: 0, // alias
-      isPolar: true,
-      transposed: false,
-      center: null,
-      radius: null
-    };
+  _initDefaultCfg() {
+    this.type = 'polar';
+    this.startAngle = -Math.PI / 2;
+    this.endAngle = Math.PI * 3 / 2;
+    this.inner = 0;
+    this.innerRadius = 0; // alias
+    this.isPolar = true;
+    this.transposed = false;
+    this.center = null;
+    this.radius = null;
   }
 
   init(start, end) {

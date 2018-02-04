@@ -2,27 +2,25 @@ const Util = require('../../util/common');
 const GuideBase = require('./base');
 
 class Arc extends GuideBase {
-  getDefaultCfg() {
-    return {
-      type: 'arc',
-      /**
-       * 起点
-       * @type {Array | Function}
-       */
-      start: [],
-      /**
-       * 终点
-       * @type {Array | Function}
-       */
-      end: [],
-      /**
-       * 辅助文本的样式配置
-       * @type {Object}
-       */
-      style: {
-        stroke: '#999',
-        lineWidth: 1
-      }
+  _initDefaultCfg() {
+    this.type = 'arc';
+    /**
+     * 起点
+     * @type {Array | Function}
+     */
+    this.start = [];
+    /**
+     * 终点
+     * @type {Array | Function}
+     */
+    this.end = [];
+    /**
+     * 辅助文本的样式配置
+     * @type {Object}
+     */
+    this.style = {
+      stroke: '#999',
+      lineWidth: 1
     };
   }
 

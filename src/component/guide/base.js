@@ -7,18 +7,11 @@ const KEYWORDS_PERCENT = {
 };
 
 class GuideBase {
-  getDefaultCfg() {
-    return {
-      xScale: null,
-      yScale: null,
-      element: null
-    };
-  }
+  _initDefaultCfg() {}
 
   constructor(cfg) {
-    const defaultCfg = this.getDefaultCfg();
-    cfg = Util.deepMix({}, defaultCfg, cfg);
-    Util.mix(this, cfg);
+    this._initDefaultCfg();
+    Util.deepMix(this, cfg);
   }
 
   _getNormalizedValue(val, scale) {

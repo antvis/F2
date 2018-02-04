@@ -2,12 +2,10 @@ const Util = require('../../util/common');
 const Abstract = require('./abstract');
 
 class Line extends Abstract {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      start: null,
-      end: null
-    });
+  _initDefaultCfg() {
+    super._initDefaultCfg();
+    this.start = null;
+    this.end = null;
   }
   // 获取坐标轴上的点
   getOffsetPoint(value) {
