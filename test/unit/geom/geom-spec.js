@@ -793,7 +793,7 @@ describe('test schema', function() {
     it('draw', function() {
       clearCanvas(canvas);
       geom.init();
-      expect(geom.getNormalizedSize()).equal(1 / 10 / 2);
+      expect(geom.getNormalizedSize()).equal(1 / 6 / 2);
       geom.paint();
 
     });
