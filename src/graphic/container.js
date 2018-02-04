@@ -32,7 +32,6 @@ module.exports = {
 
     // 设置字体
     if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
-      cfg.attrs = cfg.attrs || {};
       cfg.attrs.fontFamily = cfg.attrs.fontFamily || canvas.get('fontFamily');
     }
 
