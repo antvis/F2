@@ -14,7 +14,7 @@ require('./component/guide'); // 加载 guide 组件
 const F2 = require('./core');
 F2.Plugin = require('./plugin');
 // 注册插件
-// const { Tooltip, Legend, Guide } = require('./plugin');
-// F2.Chart.plugins.register([ Tooltip, Legend, Guide ]);
+const { Tooltip, Legend, Guide } = require('./plugin');
+F2.Chart.plugins.register([ Tooltip, Legend, Guide ]);
 
 module.exports = F2;
