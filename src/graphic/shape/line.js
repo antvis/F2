@@ -1,14 +1,11 @@
-const Util = require('../../util/common');
 const Shape = require('../shape');
 const bbox = require('../util/bbox');
 
 class Line extends Shape {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      canStroke: true,
-      type: 'line'
-    });
+  _initProperties() {
+    super._initProperties();
+    this._attrs.canStroke = true;
+    this._attrs.type = 'line';
   }
 
   getDefaultAttrs() {
