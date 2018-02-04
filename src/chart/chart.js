@@ -161,7 +161,7 @@ class Chart extends Base {
        * 过滤设置
        * @type {Object}
        */
-      filters: {},
+      filters: null,
       appendPadding: Global.appendPadding
     };
   }
@@ -483,7 +483,7 @@ class Chart extends Base {
   }
 
   filter(field, condition) {
-    const filters = this.get('filters');
+    const filters = this.get('filters') || {};
     filters[field] = condition;
   }
 
@@ -561,7 +561,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'clear'); // TODO: beforeClear afterClear
     this._removeGeoms();
     this._clearInner();
-    this.set('filters', {});
+    this.set('filters', null);
 
     const canvas = this.get('canvas');
     canvas.draw();

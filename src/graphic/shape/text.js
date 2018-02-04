@@ -8,13 +8,11 @@ let textWidthCache = {};
 const TEXT_CACHE_MAX = 5000;
 
 class Text extends Shape {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      canFill: true,
-      canStroke: true,
-      type: 'text'
-    });
+  _initProperties() {
+    super._initProperties();
+    this._attrs.canFill = true;
+    this._attrs.canStroke = true;
+    this._attrs.type = 'text';
   }
 
   getDefaultAttrs() {
