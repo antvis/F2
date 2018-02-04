@@ -1,5 +1,5 @@
 const Util = require('../util/common');
-const Base = require('../base');
+// const Base = require('../base');
 const MatrixUtil = require('./util/matrix');
 
 // 是否未改变
@@ -31,50 +31,37 @@ const SHAPE_ATTRS = [
   'lineDash'
 ];
 
-class Element extends Base {
-  getDefaultCfg() {
-    return {
-      /**
-       * 唯一标示
-       * @type {Number}
-       */
-      className: null,
-      /**
-       * Z轴的层叠关系，Z值越大离用户越近
-       * @type {Number}
-       */
+class Element {
+  _initProperties() {
+    this._attrs = {
       zIndex: 0,
-      /**
-       * Canvas对象
-       * @type: {Object}
-       */
-      canvas: null,
-      /**
-       * 父元素指针
-       * @type {Object}
-       */
-      parent: null,
-      /**
-       * 画布的上下文
-       * @type {Object}
-       */
-      context: null,
-      /**
-       * 是否显示
-       * @type {Boolean}
-       */
       visible: true,
-      /**
-       * 是否被销毁
-       * @type: {Boolean}
-       */
-      destroyed: false,
-      /**
-       * 图形属性
-       * @type {Object}
-       */
-      attrs: {}
+      destroyed: false
     };
+  }
+
+  constructor(cfg) {
+    this._initProperties();
+    Util.mix(this._attrs, cfg);
+
+    const attrs = this._attrs.attrs;
+    if (attrs) { // 初始化图形属性
+      this.initAttrs(attrs);
+    }
+
+    this.initTransform(); // 初始化变换
+  }
+
+  get(name) {
+    return this._attrs[name];
+  }
+
+  set(name, value) {
+    this._attrs[name] = value;
+  }
+
+  initAttrs(attrs) {
+    this.attr(Util.mix(this.getDefaultAttrs(), attrs));
   }
 
   getDefaultAttrs() {
@@ -82,7 +69,7 @@ class Element extends Base {
   }
 
   _setAttr(name, value) {
-    const attrs = this.get('attrs');
+    const attrs = this._attrs.attrs;
     const alias = ALIAS_ATTRS_MAP[name];
     if (alias) {
       attrs[alias] = value;
@@ -91,27 +78,16 @@ class Element extends Base {
   }
 
   _getAttr(name) {
-    return this.get('attrs')[name];
+    return this._attrs.attrs[name];
   }
 
   _afterAttrsSet() {}
-
-  constructor(cfg) {
-    super(cfg);
-    const attrs = cfg && cfg.attrs || {};
-    this.initAttrs(attrs);
-    this.initTransform(); // 初始化变换
-  }
-
-  initAttrs(attrs) {
-    this.attr(Util.mix(this.getDefaultAttrs(), attrs));
-  }
 
   attr(name, value) {
     const self = this;
     const argumentsLen = arguments.length;
     if (argumentsLen === 0) {
-      return self.get('attrs');
+      return self._attrs.attrs;
     }
 
     if (Util.isObject(name)) {
@@ -167,7 +143,7 @@ class Element extends Base {
   }
 
   resetContext(context) {
-    const elAttrs = this.get('attrs');
+    const elAttrs = this._attrs.attrs;
     if (!this.get('isGroup')) {
       for (const k in elAttrs) {
         if (SHAPE_ATTRS.indexOf(k) > -1) { // 非canvas属性不附加
@@ -183,11 +159,11 @@ class Element extends Base {
   }
 
   hasFill() {
-    return this.get('canFill') && this.get('attrs').fillStyle;
+    return this.get('canFill') && this._attrs.attrs.fillStyle;
   }
 
   hasStroke() {
-    return this.get('canStroke') && this.get('attrs').strokeStyle;
+    return this.get('canStroke') && this._attrs.attrs.strokeStyle;
   }
 
   drawInner(/* context */) {

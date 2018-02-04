@@ -2,11 +2,14 @@ const Util = require('../util/common');
 const Element = require('./element');
 
 class Shape extends Element {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      isShape: true
-    });
+  _initProperties() {
+    this._attrs = {
+      zIndex: 0,
+      visible: true,
+      destroyed: false,
+      isShape: true,
+      attrs: {}
+    };
   }
 
   drawInner(context) {

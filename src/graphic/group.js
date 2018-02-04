@@ -4,12 +4,14 @@ const Container = require('./container');
 const Vector2 = require('./util/vector2');
 
 class Group extends Element {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
+  _initProperties() {
+    this._attrs = {
+      zIndex: 0,
+      visible: true,
+      destroyed: false,
       isGroup: true,
       children: []
-    });
+    };
   }
 
   drawInner(context) {

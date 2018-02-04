@@ -35,7 +35,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.75,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -49,6 +49,9 @@
     }
   });
   chart.legend(false);
+  chart.tooltip({
+    offsetY: -20
+  });
   chart.axis('score', {
     label(text, index, total) {
       if (index === total - 1) {

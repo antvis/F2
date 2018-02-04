@@ -239,7 +239,7 @@ class TooltipController {
       }, tooltipCfg.tooltipMarkerStyle);
     } else {
       cfg.style = Util.mix({
-        radius: 5,
+        radius: 4,
         fill: '#fff',
         lineWidth: 2
       }, tooltipCfg.tooltipMarkerStyle);

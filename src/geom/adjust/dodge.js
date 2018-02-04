@@ -10,22 +10,17 @@ const Global = require('../../global');
 
 class Dodge extends Adjust {
 
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    Util.mix(cfg, {
-      /**
-       * 调整过程中,2个数据的间距
-       * @type {Number}
-       */
-      marginRatio: Global.widthRatio.dodgeMargin,
-
-      /**
-       * 调整占单位宽度的比例,例如：占2个分类间距的 1/2
-       * @type {Number}
-       */
-      dodgeRatio: Global.widthRatio.column
-    });
-    return cfg;
+  _initDefaultCfg() {
+    /**
+     * 调整过程中,2个数据的间距
+     * @type {Number}
+     */
+    this.marginRatio = Global.widthRatio.dodgeMargin;
+    /**
+     * 调整占单位宽度的比例,例如：占2个分类间距的 1/2
+     * @type {Number}
+     */
+    this.dodgeRatio = Global.widthRatio.column;
   }
 
   getDodgeOffset(range, index, count) {

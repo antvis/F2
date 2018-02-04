@@ -2,30 +2,12 @@ const Util = require('../../util/common');
 const Abstract = require('./abstract');
 
 class Circle extends Abstract {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      /**
-       * 起始角度，弧度
-       * @type {Number}
-       */
-      startAngle: -Math.PI / 2,
-      /**
-       * 结束角度，弧度
-       * @type {Number}
-       */
-      endAngle: Math.PI * 3 / 2,
-      /**
-       * 半径
-       * @type {Number}
-       */
-      radius: null,
-      /**
-       * 圆心
-       * @type {Object}
-       */
-      center: null
-    });
+  _initDefaultCfg() {
+    super._initDefaultCfg();
+    this.startAngle = -Math.PI / 2; // 起始角度，弧度
+    this.endAngle = Math.PI * 3 / 2; // 结束角度，弧度
+    this.radius = null; // 半径
+    this.center = null; // 圆心
   }
 
   // 获取坐标轴上的点

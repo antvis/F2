@@ -54,7 +54,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -67,7 +67,6 @@
       min: 0
     }
   });
-  chart.legend(false);
   chart.axis('month', {
     label(text, index, total) {
       const textCfg = {};
@@ -80,6 +79,7 @@
       return textCfg;
     }
   });
+  chart.legend(false);
   chart.area().position('month*tem').color('city')
     .shape('smooth')
     .adjust('stack');

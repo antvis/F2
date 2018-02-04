@@ -161,7 +161,7 @@ class Chart extends Base {
        * 过滤设置
        * @type {Object}
        */
-      filters: {},
+      filters: null,
       appendPadding: Global.appendPadding
     };
   }
@@ -372,7 +372,8 @@ class Chart extends Base {
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
       frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
+      backPlot: self.get('backPlot'),
+      chart: self
     }));
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
   }
@@ -482,8 +483,9 @@ class Chart extends Base {
   }
 
   filter(field, condition) {
-    const filters = this.get('filters');
+    const filters = this.get('filters') || {};
     filters[field] = condition;
+    this.set('filters', filters);
   }
 
   /**
@@ -560,7 +562,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'clear'); // TODO: beforeClear afterClear
     this._removeGeoms();
     this._clearInner();
-    this.set('filters', {});
+    this.set('filters', null);
 
     const canvas = this.get('canvas');
     canvas.draw();
@@ -675,7 +677,7 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
-    axisController.createAxis(coord, xScale, yScales, this);
+    axisController.createAxis(coord, xScale, yScales);
   }
 
   _isAutoPadding() {

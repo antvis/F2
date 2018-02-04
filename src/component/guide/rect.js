@@ -2,15 +2,13 @@ const Util = require('../../util/common');
 const GuideBase = require('./base');
 
 class Rect extends GuideBase {
-  getDefaultCfg() {
-    return {
-      type: 'region',
-      start: [],
-      end: [],
-      style: {
-        fill: '#CCD7EB',
-        opacity: 0.4
-      }
+  _initDefaultCfg() {
+    this.type = 'region';
+    this.start = [];
+    this.end = [];
+    this.style = {
+      fill: '#CCD7EB',
+      opacity: 0.4
     };
   }
 

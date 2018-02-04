@@ -33,21 +33,13 @@ const Theme = {
   appendPadding: 15,
   colors: [
     '#1890FF',
-    '#73C9E6',
-    '#13C2C2',
-    '#6CD9B3',
     '#2FC25B',
-    '#9DD96C',
     '#FACC14',
-    '#E6965C',
-    '#F04864',
-    '#D66BCA',
-    '#8543E0',
-    '#8E77ED',
-    '#3436C7',
-    '#737EE6',
     '#223273',
-    '#7EA2E6'
+    '#8543E0',
+    '#13C2C2',
+    '#3436C7',
+    '#F04864'
   ],
   shapes: {
     line: [ 'line', 'dash' ],
@@ -81,8 +73,11 @@ const Theme = {
       lineWidth: 0,
       size: 4 // 圆的默认半径
     },
+    interval: {
+      fillOpacity: 0.85
+    },
     area: {
-      fillOpacity: 0.4 // TODO: 需要确认
+      fillOpacity: 0.3
     }
   },
   _defaultAxis: defaultAxis
