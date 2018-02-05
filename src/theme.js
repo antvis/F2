@@ -19,7 +19,7 @@ const defaultAxis = {
   grid: {
     stroke: color1,
     lineWidth: 1,
-    lineDash: [ 4 ]
+    lineDash: [ 2 ]
   },
   tickLine: null,
   labelOffset: 7.5 // TODO
@@ -67,17 +67,19 @@ const Theme = {
   },
   shape: {
     line: {
-      lineWidth: 2 // 线的默认宽度
+      lineWidth: 2, // 线的默认宽度
+      lineJoin: 'round',
+      lineCap: 'round'
     },
     point: {
       lineWidth: 0,
-      size: 4 // 圆的默认半径
+      size: 3 // 圆的默认半径
     },
     interval: {
       fillOpacity: 0.85
     },
     area: {
-      fillOpacity: 0.3
+      fillOpacity: 0.1
     }
   },
   _defaultAxis: defaultAxis
