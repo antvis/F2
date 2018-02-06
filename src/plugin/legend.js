@@ -351,7 +351,7 @@ class LegendController {
   bindEvents() {
     const chart = this.chart;
     const legendCfg = this.legendCfg;
-    const triggerOn = legendCfg.triggerOn || 'click';
+    const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.wrapBehavior(this, 'handleEvent');
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'bind');
@@ -363,7 +363,7 @@ class LegendController {
   unBindEvents() {
     const chart = this.chart;
     const legendCfg = this.legendCfg;
-    const triggerOn = legendCfg.triggerOn || 'click';
+    const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.getWrapBehavior(this, 'handleEvent');
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'unBind');
