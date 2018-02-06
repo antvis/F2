@@ -6,7 +6,7 @@ const Tooltip = require('../component/tooltip');
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
   triggerOn: [ 'touchstart', 'touchmove' ],
-  triggerOff: 'touchend',
+  // triggerOff: 'touchend',
   showTitle: false,
   showCrosshairs: false,
   crosshairsStyle: {
@@ -422,8 +422,8 @@ class TooltipController {
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
-    this._handleEvent(triggerOn, showMethod, 'bind');
-    this._handleEvent(triggerOff, hideMethod, 'bind');
+    triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
+    triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
   }
 
   unBindEvents() {
@@ -432,8 +432,8 @@ class TooltipController {
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
 
-    this._handleEvent(triggerOn, showMethod, 'unBind');
-    this._handleEvent(triggerOff, hideMethod, 'unBind');
+    triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
+    triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
   }
 }
 
