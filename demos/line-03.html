@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>多条折线(只带图例)</title>
+  <title>多条折线(只带 tooltip)</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -131,7 +131,7 @@
       tickCount: 5
     }
   });
-  chart.tooltip(false);
+  chart.legend(false);
   chart.axis('date', {
     label(text, index, total) {
       const textCfg = {};

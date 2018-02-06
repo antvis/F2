@@ -13,15 +13,23 @@
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-    const data = [
-      { x: '分类一', y: [ 76, 100 ] },
-      { x: '分类二', y: [ 56, 108 ] },
-      { x: '分类三', y: [ 38, 129 ] },
-      { x: '分类四', y: [ 58, 155 ] },
-      { x: '分类五', y: [ 45, 120 ] },
-      { x: '分类六', y: [ 23, 99 ] },
-      { x: '分类七', y: [ 18, 56 ] },
-      { x: '分类八', y: [ 18, 34 ] },
+    const data =[
+      { name: 'London', 月份: 'Jan.', 月均降雨量: 18.9 },
+      { name: 'London', 月份: 'Feb.', 月均降雨量: 28.8 },
+      { name: 'London', 月份: 'Mar.', 月均降雨量: 39.3 },
+      { name: 'London', 月份: 'Apr.', 月均降雨量: 81.4 },
+      { name: 'London', 月份: 'May.', 月均降雨量: 47 },
+      { name: 'London', 月份: 'Jun.', 月均降雨量: 20.3 },
+      { name: 'London', 月份: 'Jul.', 月均降雨量: 24 },
+      { name: 'London', 月份: 'Aug.', 月均降雨量: 35.6 },
+      { name: 'Berlin', 月份: 'Jan.', 月均降雨量: 12.4 },
+      { name: 'Berlin', 月份: 'Feb.', 月均降雨量: 23.2 },
+      { name: 'Berlin', 月份: 'Mar.', 月均降雨量: 34.5 },
+      { name: 'Berlin', 月份: 'Apr.', 月均降雨量: 99.7 },
+      { name: 'Berlin', 月份: 'May.', 月均降雨量: 52.6 },
+      { name: 'Berlin', 月份: 'Jun.', 月均降雨量: 35.5 },
+      { name: 'Berlin', 月份: 'Jul.', 月均降雨量: 37.4 },
+      { name: 'Berlin', 月份: 'Aug.', 月均降雨量: 42.4 }
     ];
     const chart = new F2.Chart({
       id: 'mountNode',
@@ -30,20 +38,36 @@
       height: window.innerWidth * 0.64
     });
     chart.source(data, {
-      y: {
+      '月均降雨量': {
         tickCount: 5
       }
     });
     chart.tooltip({
-      showItemMarker: false,
-      onShow(ev) {
-        const { items } = ev;
-        items[0].name = '范围';
-        const value = items[0].value;
-        items[0].value = value[0] + ' 至 ' + value[1];
+      custom(obj) {
+        const legend = chart.get('legendController').legends.top[0];
+        const tooltipItems = obj.items;
+        const legendItems = legend.items;
+        const map = {};
+        legendItems.map(item => {
+          map[item.name] = _.clone(item);
+        });
+        tooltipItems.map(item => {
+          const { name, value } = item;
+          if (map[name]) {
+            map[name].value = value;
+          }
+        });
+        legend.setItems(Object.values(map));
+      },
+      onHide(tooltip) {
+        const legend = chart.get('legendController').legends.top[0];
+        legend.setItems(chart.getLegendItems().country);
       }
     });
-    chart.interval().position('x*y');
+    chart.interval()
+      .position('月份*月均降雨量')
+      .color('name')
+      .adjust('stack');
     chart.render();
 </script>
 </body>

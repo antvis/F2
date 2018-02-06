@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>多条折线(只带 tooltip)</title>
+  <title>多条折线(tooltip 同 legend 合体)</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -11,6 +11,8 @@
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+
 <script>
   const data = [
     { value: 63.4, city: 'New York', date: '2011-10-01' },
@@ -131,7 +133,28 @@
       tickCount: 5
     }
   });
-  chart.legend(false);
+  chart.tooltip({
+    custom(obj) {
+      const legend = chart.get('legendController').legends.top[0];
+      const tooltipItems = obj.items;
+      const legendItems = legend.items;
+      const map = {};
+      legendItems.map(item => {
+        map[item.name] = _.clone(item);
+      });
+      tooltipItems.map(item => {
+        const { name, value } = item;
+        if (map[name]) {
+          map[name].value = value;
+        }
+      });
+      legend.setItems(Object.values(map));
+    },
+    onHide(tooltip) {
+      const legend = chart.get('legendController').legends.top[0];
+      legend.setItems(chart.getLegendItems().country);
+    }
+  });
   chart.axis('date', {
     label(text, index, total) {
       const textCfg = {};

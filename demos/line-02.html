@@ -35,7 +35,9 @@
       range: [ 0, 1 ]
     }
   });
-  chart.tooltip(false)
+  chart.tooltip({
+    showCrosshairs: true
+  });
   chart.axis('month', {
     label(text, index, total) {
       const textCfg = {};
