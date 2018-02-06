@@ -5,7 +5,7 @@ const Tooltip = require('../component/tooltip');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
-  triggerOn: 'touchmove',
+  triggerOn: [ 'touchstart', 'touchmove' ],
   triggerOff: 'touchend',
   showTitle: false,
   showCrosshairs: false,
@@ -404,13 +404,16 @@ class TooltipController {
 
   _handleEvent(methodName, method, action) {
     const chart = this.chart;
-    if (Util.isFunction(methodName)) {
-      methodName(method, action); // TODO： 测试。供用户自己绑定事件
-    } else if (action === 'bind') {
-      DomUtil.addEventListener(chart, methodName, method);
-    } else {
-      DomUtil.removeEventListener(chart, methodName, method);
-    }
+    ([]).concat(methodName).map(aMethod => {
+      if (Util.isFunction(aMethod)) {
+        aMethod(method, action); // TODO： 测试，供用户自己绑定事件
+      } else if (action === 'bind') {
+        DomUtil.addEventListener(chart, aMethod, method);
+      } else {
+        DomUtil.removeEventListener(chart, aMethod, method);
+      }
+      return aMethod;
+    });
   }
 
   bindEvents() {
