@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>层叠面积图</title>
+  <title>层叠面积图 hover 方式 1</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -80,7 +80,13 @@
     }
   });
   chart.legend(false);
+  chart.tooltip({
+    showCrosshairs: true,
+  });
   chart.area().position('month*tem').color('city')
+    .shape('smooth')
+    .adjust('stack');
+  chart.line().position('month*tem').color('city')
     .shape('smooth')
     .adjust('stack');
   chart.render();

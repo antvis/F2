@@ -13,7 +13,7 @@
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const map = {
+   const map = {
     '芳华': '40%',
     '妖猫传': '20%',
     '机器之血': '18%',
@@ -51,21 +51,22 @@
     .position('a*proportion')
     .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0' ])
     .adjust('stack');
+
   chart.guide().html({
     position: [ '50%', '50%' ],
-    html: '<div id="show" style="width: 250px;height: 83px;line-height: 83px;text-align: center;"></div>'
+    html: '<div id="show" style="width: 250px;height: 41.5px;text-align: center;margin-top: 41.5px;"></div>',
   });
   chart.tooltip({
     custom(ev) {
       const { items } = ev;
-
-      $('#show').html(items[0].name);
+      const content = '<span style="font-size: 24px; color: rgba(0, 0, 0, 0.85);">' + items[0].name + '</span><br />'
+        + '<span style="font-size: 12px; color: rgba(0, 0, 0, 0.45);">' + items[0].value * 100 + '%' + '</span>';
+      $('#show').html(content);
     },
     onHide() {
       $('#show').html('');
     }
-  })
-
+  });
   chart.render();
 </script>
 </body>
