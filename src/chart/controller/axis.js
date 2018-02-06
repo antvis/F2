@@ -147,7 +147,12 @@ class AxisController {
     let labelCfg = label;
     ticks.map((tick, index) => {
       if (Util.isFunction(label)) { // 文本的配置项动态可配置
-        labelCfg = Util.mix({}, Global._defaultAxis.label, label(tick.text, index, count));
+        const executedLabel = label(tick.text, index, count);
+        if (executedLabel) {
+          labelCfg = Util.mix({}, Global._defaultAxis.label, executedLabel);
+        } else {
+          labelCfg = null;
+        }
       }
       if (labelCfg) {
         const textStyle = {};
