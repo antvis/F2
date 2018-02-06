@@ -55,8 +55,7 @@ const Theme = {
       line: null
     }),
     right: Util.mix({}, defaultAxis, {
-      line: null,
-      grid: null
+      line: null
     }),
     circle: Util.mix({}, defaultAxis, {
       line: null
