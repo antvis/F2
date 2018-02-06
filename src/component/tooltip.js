@@ -44,7 +44,6 @@ class Tooltip {
         parent: frontPlot
       }, cfg));
       this.container = container;
-      // frontPlot.add(container.container);
       if (!this.fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
@@ -214,10 +213,12 @@ class Tooltip {
     const crosshairsShape = this.crosshairsShape;
     const markerGroup = this.markerGroup;
     const container = this.container;
+    const tooltipArrow = this.tooltipArrow;
 
     crosshairsShape && crosshairsShape.remove(true);
     markerGroup && markerGroup.remove(true);
     container && container.clear();
+    tooltipArrow && tooltipArrow.remove(true);
 
     this.destroyed = true;
   }

@@ -70,9 +70,7 @@ class GuideBase {
 
   remove() {
     const { element } = this;
-    if (element) {
-      element.remove();
-    }
+    element && element.remove(true);
   }
 }
 

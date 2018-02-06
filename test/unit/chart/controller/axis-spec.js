@@ -101,7 +101,7 @@ describe('axis controller', function() {
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y', 1);
+    const cfg = controller._getLineCfg(rect, 'y', 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
@@ -159,7 +159,7 @@ describe('axis controller rect transposed', function() {
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'y', 1);
+    const cfg = controller._getLineCfg(rect, 'y', 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);

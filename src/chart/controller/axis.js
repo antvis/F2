@@ -56,11 +56,11 @@ class AxisController {
     return position;
   }
 
-  _getLineCfg(coord, dimType, index) {
+  _getLineCfg(coord, dimType, position) {
     let start;
     let end;
     let factor = 1; // 文本的对齐方式，是顺时针方向还是逆时针方向
-    if (dimType === 'x') { // x轴的坐标轴,底部的横坐标
+    if (dimType === 'x') { // x 轴的坐标轴，底部的横坐标
       start = {
         x: 0,
         y: 0
@@ -70,7 +70,7 @@ class AxisController {
         y: 0
       };
     } else { // y轴坐标轴
-      if (index) { // 多轴的情况
+      if (position === 'right') { // 多轴的情况
         start = {
           x: 1,
           y: 0
@@ -197,7 +197,7 @@ class AxisController {
     if (coordType === 'cartesian' || coordType === 'rect') { // 直角坐标系下
       const position = self._getLinePosition(scale, dimType, index, transposed);
       defaultCfg = Global.axis[position];
-      defaultCfg.index = index;
+      defaultCfg.position = position;
       type = 'Line';
       key = position;
     } else { // 极坐标系下
@@ -266,36 +266,24 @@ class AxisController {
         if (axes.right && userPadding[1] === 'auto') {
           const { maxWidth, labelOffset } = axes.right;
           padding[1] += maxWidth + labelOffset;
-          // padding[0] = Math.max(maxHeight, padding[0]);
-          // padding[2] = Math.max(maxHeight, padding[2]);
         }
 
         if (axes.left && userPadding[3] === 'auto') {
           const { maxWidth, labelOffset } = axes.left;
           padding[3] += maxWidth + labelOffset;
-          // padding[0] = Math.max(maxHeight, padding[0]);
-          // padding[2] = Math.max(maxHeight, padding[2]);
         }
 
         if (axes.bottom && userPadding[2] === 'auto') {
           const { maxHeight, labelOffset } = axes.bottom;
           padding[2] += maxHeight + labelOffset;
-          // padding[1] = Math.max(maxWidth, padding[1]);
-          // padding[3] = Math.max(maxWidth, padding[3]);
         }
-
-        // if (coord.transposed) { // 坐标轴发生转置
-        //   const temp = padding[2];
-        //   padding[2] = padding[3];
-        //   padding[3] = temp;
-        // }
       }
 
       chart._updateLayout(padding);
     }
 
     Util.each(axes, axis => {
-      const { type, grid, verticalScale, ticks, dimType, index } = axis;
+      const { type, grid, verticalScale, ticks, dimType, position } = axis;
       let appendCfg;
       if (coord.isPolar) {
         if (type === 'Line') {
@@ -304,7 +292,7 @@ class AxisController {
           appendCfg = self._getCircleCfg(coord);
         }
       } else {
-        appendCfg = self._getLineCfg(coord, dimType, index);
+        appendCfg = self._getLineCfg(coord, dimType, position);
       }
 
       if (grid && verticalScale) {
@@ -336,6 +324,8 @@ class AxisController {
 
   clear() {
     this.axes = {};
+    this.frontPlot.clear();
+    this.backPlot.clear();
   }
 }
 

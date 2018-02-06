@@ -251,10 +251,6 @@ class Chart extends Base {
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
     this.get('axisController') && this.get('axisController').clear();
-    const frontPlot = this.get('frontPlot');
-    const backPlot = this.get('backPlot');
-    frontPlot && frontPlot.clear();
-    backPlot && backPlot.clear();
   }
 
   _execFilter(data) {
@@ -371,8 +367,8 @@ class Chart extends Base {
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot'),
+      frontPlot: self.get('frontPlot').addGroup(),
+      backPlot: self.get('backPlot').addGroup(),
       chart: self
     }));
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
