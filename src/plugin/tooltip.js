@@ -305,7 +305,7 @@ class TooltipController {
     tooltip.show();
   }
 
-  _showTooltip(point) {
+  showTooltip(point) {
     const self = this;
     const chart = self.chart;
 
@@ -393,7 +393,7 @@ class TooltipController {
     const lastTimeStamp = this.timeStamp;
     const timeStamp = +new Date();
     if ((timeStamp - lastTimeStamp) > 16) {
-      this._showTooltip({ x, y });
+      this.showTooltip({ x, y });
       this.timeStamp = timeStamp;
     }
   }
