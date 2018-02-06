@@ -604,6 +604,75 @@ class Chart extends Base {
   }
 
   /**
+   * 获取数据对应在画布空间的坐标
+   * @param  {Object} record 原始数据
+   * @return {Object} 返回对应的画布上的坐标点
+   */
+  getPosition(record) {
+    const self = this;
+    const coord = self.get('coord');
+    const xScale = self.getXScale();
+    const yScale = self.getYScales()[0]; // 暂时只取第一个y轴，忽视多轴的情况
+    const xField = xScale.field;
+    const x = xScale.scale(record[xField]);
+    const yField = yScale.field;
+    const y = yScale.scale(record[yField]);
+    return coord.convertPoint({
+      x,
+      y
+    });
+  }
+
+  /**
+   * 获取画布上坐标对应的数据值
+   * @param  {Object} point 画布坐标的x,y的值
+   * @return {Object} 当前坐标系的数据值
+   */
+  getRecord(point) {
+    const self = this;
+    const coord = self.get('coord');
+    const xScale = self.getXScale();
+    const yScale = self.getYScales()[0];
+    const invertPoint = coord.invertPoint(point);
+    const record = {};
+    record[xScale.field] = xScale.invert(invertPoint.x);
+    record[yScale.field] = yScale.invert(invertPoint.y);
+    return record;
+  }
+  /**
+   * 根据画布坐标获取对应数据集
+   * @param  {Object} point 画布坐标的x,y的值
+   * @param {String} field 字段名
+   * @return {Array} 纵向切割交点对应数据集
+  **/
+  getSnapRecords(point, field) {
+    const geom = this.get('geoms')[0];
+    const data = geom.getSnapRecords(point, field);
+    return data;
+  }
+
+  /**
+   * 根据坐标点显示对应的 tooltip
+   * @param  {Object} point 画布上的点
+   * @return {Chart}       返回 chart 实例
+   */
+  showTooltip(point) {
+    const tooltipController = this.get('tooltipController');
+    tooltipController.showTooltip(point);
+    return this;
+  }
+
+  /**
+   * 隐藏 tooltip
+  * @return {Chart}       返回 chart 实例
+   */
+  hideTooltip() {
+    const tooltipController = this.get('tooltipController');
+    tooltipController.hideTooltip();
+    return this;
+  }
+
+  /**
    * 创建度量
    * @param  {String} field 度量对应的名称
    * @param  {Boolean} sortable 是否需要排序
