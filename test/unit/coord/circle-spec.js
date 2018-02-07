@@ -35,8 +35,8 @@ describe('coord circle', function() {
       expect(center.y).to.be.equal(200);
     });
 
-    it('radius', function() {
-      expect(circle.radius).to.be.equal(200);
+    it('绝对半径 radius', function() {
+      expect(circle.circleRadius).to.be.equal(200);
     });
 
     it('convertPoint', function() {
@@ -81,6 +81,14 @@ describe('coord circle', function() {
       inner: 0
     });
 
+    it('radius', function() {
+      expect(circle1.radius).to.be.equal(null);
+    });
+
+    it('circleRadius', function() {
+      expect(circle1.circleRadius).to.be.equal(200);
+    });
+
     it('inner convertPoint', function() {
       let p = { x: 0, y: 0 };
       p = circle1.convertPoint(p);
@@ -119,7 +127,8 @@ describe('coord circle', function() {
       endAngle: 0
     });
     it('init', function() {
-      expect(circle.radius).equal(200);
+      expect(circle.radius).equal(null);
+      expect(circle.circleRadius).equal(200);
     });
     it('convert point', function() {
       const p = circle.convertPoint({
@@ -143,6 +152,40 @@ describe('coord circle', function() {
     it('invert point', function() {
       expect(circle.invertPoint({ x: 200, y: 400 })).eqls({ x: 0, y: 0 });
       expect(circle.invertPoint({ x: 200, y: 200 })).eqls({ x: 0.5, y: 1 });
+    });
+  });
+
+  describe('set radius', () => {
+    const circle5 = new Coord.Polar({
+      start: plot.bl,
+      end: plot.tr,
+      radius: 0.6
+    });
+
+    it('radius', function() {
+      expect(circle5.radius).to.be.equal(0.6);
+    });
+
+    it('circleRadius', function() {
+      expect(circle5.circleRadius).to.be.equal(120);
+    });
+
+    it('reset', function() {
+      const newPlot = new Plot({
+        start: {
+          x: 0,
+          y: 0
+        },
+        end: {
+          x: 200,
+          y: 200
+        }
+      });
+      circle5.reset(newPlot);
+      expect(circle5.radius).to.be.equal(0.6);
+      expect(circle5.circleRadius).to.be.equal(60);
+      expect(circle5.start).to.eql({ x: 0, y: 200 });
+      expect(circle5.end).to.eql({ x: 200, y: 0 });
     });
   });
 });
