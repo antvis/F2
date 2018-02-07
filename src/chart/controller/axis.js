@@ -107,7 +107,7 @@ class AxisController {
       startAngle: coord.startAngle,
       endAngle: coord.endAngle,
       center: coord.center,
-      radius: coord.radius
+      radius: coord.circleRadius
     };
   }
 
