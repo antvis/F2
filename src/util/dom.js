@@ -125,13 +125,11 @@ DomUtil = {
   createCanvas() {
     return document.createElement('canvas');
   },
-  addEventListener(chart, type, listener) {
-    const canvas = chart.get('canvas').get('el');
-    canvas.addEventListener(type, listener, eventListenerOptions);
+  addEventListener(source, type, listener) {
+    source.addEventListener(type, listener, eventListenerOptions);
   },
-  removeEventListener(chart, type, listener) {
-    const canvas = chart.get('canvas').get('el');
-    canvas.removeEventListener(type, listener, eventListenerOptions);
+  removeEventListener(source, type, listener) {
+    source.removeEventListener(type, listener, eventListenerOptions);
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);

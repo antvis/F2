@@ -78,6 +78,8 @@ class LegendController {
     this.enable = true;
     this.position = 'top';
     Util.mix(this, cfg);
+    const chart = this.chart;
+    this.canvasDom = chart.get('canvas').get('el');
     this.clear();
   }
 
@@ -349,26 +351,24 @@ class LegendController {
   }
 
   bindEvents() {
-    const chart = this.chart;
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.wrapBehavior(this, 'handleEvent');
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'bind');
     } else {
-      DomUtil.addEventListener(chart, triggerOn, method);
+      DomUtil.addEventListener(this.canvasDom, triggerOn, method);
     }
   }
 
   unBindEvents() {
-    const chart = this.chart;
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.getWrapBehavior(this, 'handleEvent');
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'unBind');
     } else {
-      DomUtil.removeEventListener(chart, triggerOn, method);
+      DomUtil.removeEventListener(this.canvasDom, triggerOn, method);
     }
   }
 }
