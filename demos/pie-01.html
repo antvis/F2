@@ -44,7 +44,8 @@
   });
   chart.coord('polar', {
     transposed: true,
-    innerRadius: 0.6
+    innerRadius: 0.6,
+    radius: 0.8
   });
   chart.axis(false);
   chart.interval()
@@ -54,7 +55,7 @@
 
   chart.guide().html({
     position: [ '50%', '50%' ],
-    html: '<div id="show" style="width: 250px;height: 41.5px;text-align: center;margin-top: 41.5px;"></div>',
+    html: '<div id="show" style="width: 250px;height: 41.5px;text-align: center;"></div>',
   });
   chart.tooltip({
     custom(ev) {
