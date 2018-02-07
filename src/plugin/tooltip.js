@@ -133,6 +133,8 @@ class TooltipController {
     this.chart = null;
     this.timeStamp = 0;
     Util.mix(this, cfg);
+    const chart = this.chart;
+    this.canvasDom = chart.get('canvas').get('el');
   }
 
   _setCrosshairsCfg() {
@@ -402,15 +404,22 @@ class TooltipController {
     this.hideTooltip();
   }
 
+  handleDocEvent(ev) {
+    const canvasDom = this.canvasDom;
+    if (ev.target !== canvasDom) {
+      this.hideTooltip();
+    }
+  }
+
   _handleEvent(methodName, method, action) {
-    const chart = this.chart;
+    const canvasDom = this.canvasDom;
     ([]).concat(methodName).map(aMethod => {
       if (Util.isFunction(aMethod)) {
         aMethod(method, action); // TODO： 测试，供用户自己绑定事件
       } else if (action === 'bind') {
-        DomUtil.addEventListener(chart, aMethod, method);
+        DomUtil.addEventListener(canvasDom, aMethod, method);
       } else {
-        DomUtil.removeEventListener(chart, aMethod, method);
+        DomUtil.removeEventListener(canvasDom, aMethod, method);
       }
       return aMethod;
     });
@@ -424,6 +433,9 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
+    // 当用户点击canvas 外的事件时 tooltip 消失
+    const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
+    DomUtil.addEventListener(document, 'touchstart', docMethod);
   }
 
   unBindEvents() {
@@ -434,6 +446,9 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
+
+    const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
+    DomUtil.removeEventListener(document, 'touchstart', docMethod);
   }
 }
 
