@@ -2,7 +2,7 @@
 
 ## 容器层次结构
 
-<img src="https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/skylark/png/d48807dc-1fc4-4d1b-90d4-f328ddee87d1.png"> 
+![undefined](https://gw.alipayobjects.com/zos/skylark/bf8b4e5a-0421-48ae-ac32-a789b0079d17/2018/png/3c63f255-011a-4166-8715-0f72511175b5.png)  
 
 ## API
 
@@ -86,7 +86,6 @@ getPointByClient(clientX, clientY)
  */
 addShape(type, cfg = {})
 ```
-
 
 - addGroup
 
@@ -291,7 +290,7 @@ attr(name, value) // 设置单个图形属性
 attr({}) // 设置多个图形属性
 ```
 
--getBBox
+- getBBox
 
 ```js
 /**
