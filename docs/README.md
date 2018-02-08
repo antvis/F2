@@ -14,7 +14,7 @@ F2 是面向移动端的一套基于可视化图形语法的图表库，具有�
 
 **在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
 
-[了解更多 F2 详情](./docs/SUMMARY.md)。
+[了解更多 F2 详情](./SUMMARY.md)。
 
 ## 安装
 
@@ -29,10 +29,10 @@ $ npm install @antv/f2
 
 ## 文档
 
-- [快速开始](./docs/getting-started/README.md)
-- [使用教程](./docs/chart-concept/README.md)
-- [API](./docs/api/README.md)
-- [图表示例](./demos)
+- [快速开始](./getting-started/README.md)
+- [使用教程](./chart-concept/README.md)
+- [API](./api/README.md)
+- [图表示例](../demos)
 
 ### 快速开始
 
@@ -64,7 +64,7 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-[更多示例](./demos)。
+[更多示例](../demos)。
 
 ## 本地开发
 
