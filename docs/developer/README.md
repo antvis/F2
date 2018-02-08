@@ -1,46 +1,10 @@
-# Developers
+# Developer
 
-Developer features allow extending and enhancing Chart.js in many different ways.
-
-# Latest resources
-
-Latest documentation and samples, including unreleased features, are available at:
-
- - http://www.chartjs.org/docs/master/
- - http://www.chartjs.org/samples/master/
-
-# Development releases
-
-Latest builds are available for testing at:
-
- - http://www.chartjs.org/dist/master/Chart.min.js
- - http://www.chartjs.org/dist/master/Chart.bundle.min.js
-
-> Note: Development builds are currently only available via HTTP, so in order to include them in [JSFiddle](http://jsfiddle.net) or [CodePen](http://codepen.io), you need to access these tools via HTTP as well.
-
-**WARNING: Development builds MUST not be used for production purposes or as replacement for CDN.**
-
-# Browser support
-
-Chart.js offers support for the following browsers:
-* Chrome 50+
-* Firefox 45+
-* Internet Explorer 11
-* Edge 14+
-* Safari 9+
-
-Browser support for the canvas element is available in all modern & major mobile browsers. [CanIUse](http://caniuse.com/#feat=canvas)
-
-Thanks to [BrowserStack](https://browserstack.com) for allowing our team to test on thousands of browsers.
+F2 提供了多种方式便于开发者扩展 F2 的功能。
 
 # Previous versions
 
-Version 2 has a completely different API than earlier versions.
+F2 3.1 版本同之前的 3.0 版本主要有以下区别：
 
-Most earlier version options have current equivalents or are the same.
-
-Please use the documentation that is available on [chartjs.org](http://www.chartjs.org/docs/) for the current version of Chart.js.
-
-Please note - documentation for previous versions are available on the GitHub repo.
-
-- [1.x Documentation](https://github.com/chartjs/Chart.js/tree/v1.1.1/docs)
+1. `chart.guide()` api 参数类型发生变化；
+2. 底层绘图引擎改造，原先 `F2.G` 中的所有方法全部废弃，新版 G 的使用参见[ graphic](./graphic.md)；

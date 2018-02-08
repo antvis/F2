@@ -1,65 +1,92 @@
 # Chart.js
 
-[![slack](https://img.shields.io/badge/slack-Chart.js-blue.svg?style=flat-square&maxAge=600)](https://chart-js-automation.herokuapp.com/)
+# F2: a canvas library which providing 2d draw for mobile
 
-## Installation
+[![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
+![](https://img.shields.io/badge/language-javascript-red.svg)
+![](https://img.shields.io/badge/license-MIT-000000.svg)
 
-You can download the latest version of Chart.js from the [GitHub releases](https://github.com/chartjs/Chart.js/releases/latest) or use a [Chart.js CDN](https://cdnjs.com/libraries/Chart.js). Detailed installation instructions can be found on the [installation](./getting-started/installation.md) page.
+[![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2)
+[![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-## Creating a Chart
+F2 是面向移动端的一套基于可视化图形语法的图表库，具有精简、高性能、易扩展的特性。适用于对性能、大小、扩展性要求很高的场景。
 
-It's easy to get started with Chart.js. All that's required is the script included in your page along with a single `<canvas>` node to render the chart.
+**在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
 
-In this example, we create a bar chart for a single dataset and render that in our page. You can see all the ways to use Chart.js in the [usage documentation](./getting-started/usage.md)
-```html
-<canvas id="myChart" width="400" height="400"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-</script>
+[了解更多 F2 详情](./docs/SUMMARY.md)。
+
+## 安装
+
+```bash
+$ npm install @antv/f2
 ```
 
-## Contributing
+## 特性
+- ✔︎ 极小：精简版压缩后不到 100k 的代码。
+- ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化。
+- ✔︎ 强大扩展能力：任何图表，都可以基于图形语法灵活绘制，满足你无限的创意。
 
-Before submitting an issue or a pull request to the project, please take a moment to look over the [contributing guidelines](https://github.com/chartjs/Chart.js/blob/master/docs/developers/contributing.md) first.
+## 文档
 
-For support using Chart.js, please post questions with the [`chartjs` tag on Stack Overflow](http://stackoverflow.com/questions/tagged/chartjs).
+- [快速开始](./docs/getting-started/README.md)
+- [使用教程](./docs/chart-concept/README.md)
+- [API](./docs/api/README.md)
+- [图表示例](./demos)
+
+### 快速开始
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/SdOcnMWWxXxsQsiwcytd.png" width="492">
+
+```html
+<canvas id="c1"></canvas>
+```
+
+```js
+import F2 from '@antv/f2';
+
+const data = [ 
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: 150 },
+];
+
+const chart = new F2.Chart({
+  id: 'c1',
+  width: 500,
+  height: 300  
+});
+
+chart.source(data);
+chart.interval().position('genre*sold').color('genre');
+chart.render();
+```
+
+[更多示例](./demos)。
+
+## 本地开发
+
+```bash
+$ npm install
+
+# 跑测试用例
+$ npm run test-live
+
+# 监听文件变化构建，并打开 demo 页面
+$ npm run dev
+
+# 打开 demo
+$ npm run demos
+```
+
+## 如何贡献
+
+如果您在使用的过程中碰到问题，可以先通过 [issues](https://github.com/antvis/f2/issues) 看看有没有类似的 bug 或者建议。
+
+如需提交代码，请遵从我们的[贡献指南](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md)。
 
 ## License
 
-Chart.js is available under the [MIT license](http://opensource.org/licenses/MIT).
+[MIT license](http://opensource.org/licenses/MIT).

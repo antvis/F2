@@ -255,13 +255,13 @@ chart.scale({
 
 ### 创建 Geometry 对象
 
-- `chart.point()`：创建 point（点）的几何标记对象，详见 [./geometry/point.md]
-- `chart.line()`：创建 line（线）的几何标记对象，详见 [./geometry/line.md]
-- `chart.area()`：创建 area（区域）的几何标记对象，详见 [./geometry/area.md]
-- `chart.path()`：创建 path（路径）的几何标记对象，详见 [./geometry/path.md]
-- `chart.interval()`：创建 interval（柱）的几何标记对象，详见 [./geometry/interval.md]
-- `chart.polygon()`：创建 polygon（多边形）的几何标记对象，详见 [./geometry/polygon.md]
-- `chart.schema()`：创建 schema 的几何标记对象，详见 [./geometry/schema.md]
+- `chart.point()`：创建 point（点）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.line()`：创建 line（线）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.area()`：创建 area（区域）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.path()`：创建 path（路径）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.interval()`：创建 interval（柱）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.polygon()`：创建 polygon（多边形）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.schema()`：创建 schema 的几何标记对象，具体的方法详见 [Geometry]./geometry.md
 
 注意：以上方法返回的是几何标记实例，不是 chart 实例。
 
