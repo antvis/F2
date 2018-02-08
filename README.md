@@ -89,4 +89,4 @@ $ npm run demos
 
 ## License
 
-[MIT license](http://opensource.org/licenses/MIT).
+[MIT license](https://github.com/antvis/f2/blob/f2-docs/LICENSE).
