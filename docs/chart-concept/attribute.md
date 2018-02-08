@@ -203,7 +203,7 @@ chart.point().position('x*y').size('level*text', (level, text) => {
 下表列出了各个 geom 几何标记对各个图形属性的支持情况：
 
 几何标记 | position | color | size | shape 
--------|---------|-----|---|---|---
+-------|---------|-----|---|---|
 point |支持|支持|支持|支持
 path、line |支持|支持|支持|支持
 area|支持|支持|`不支持`|支持
