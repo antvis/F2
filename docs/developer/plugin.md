@@ -1,132 +1,63 @@
-# Plugins
+# Plugin
 
-Plugins are the most efficient way to customize or change the default behavior of a chart. They have been introduced at [version 2.1.0](https://github.com/chartjs/Chart.js/releases/tag/2.1.0) (global plugins only) and extended at [version 2.5.0](https://github.com/chartjs/Chart.js/releases/tag/v2.5.0) (per chart plugins and options).
+F2 提供插件机制用于扩展图表的功能，该机制可以帮助用户在图表创建的各个阶段定制或更改图表的默认行为。
 
-## Using plugins
+目前默认提供了 legend、guide、和 tooltip 这三种插件。
 
-Plugins can be shared between chart instances:
+F2  在 Chart 类上注册一个静态属性 Chart.plugins, 使用发布-订阅模式，在 chart 的生命周期中通知注册的各个插件进行各自的操作。
 
-```javascript
-var plugin = { /* plugin implementation */ };
+目前开放的生命周期包括：
 
-// chart1 and chart2 use "plugin"
-var chart1 = new Chart(ctx, {
-    plugins: [plugin]
-});
+- `init` chart 初始化结束后
+- `beforeGeomDraw` 绘制 geom 之前
+- `afterGeomDraw`  绘制 geom 之后
+- `clear` 清空图表，移除 geom
+- `clearInner` 清空图层
+- `repaint` 重绘
 
-var chart2 = new Chart(ctx, {
-    plugins: [plugin]
-});
+## 如何自定义插件
 
+参考： [guide]()
+
+```js
+const plugin = {
+    init(chart) {
+       // do something when initialize the chart 
+    }
+};   
+```
+
+## 如何注册/使用插件
+
+1. 全局注册 Chart.plugins.register(Pluign);
+
+```js
+const plugin1 = { /* plugin implementation */ };
+const plugin2 = { /* plugin implementation */ };
+// 全局注册插件 plugin1，所有创建的 chart 实例都默认注册上
+Chart.plugins.register(plugin1); 
+// 全局注册多个插件
+Chart.plugins.register([ plugin1, plugin2 ]); 
+```
+
+2. 在 chart 实例上注册
+
+```js
+onst plugin1 = { /* plugin implementation */ };
+const plugin2 = { /* plugin implementation */ };
+
+// chart1 use "plugin1"
+const chart1 = new Chart({
+  plugins: plugin1
+);
+// chart2 use "plugin2"
+const chart2 = new Chart({
+  plugins: plugin2
+);
 // chart3 doesn't use "plugin"
-var chart3 = new Chart(ctx, {});
+const chart3 = new Chart({});
 ```
 
-Plugins can also be defined directly in the chart `plugins` config (a.k.a. *inline plugins*):
-
-```javascript
-var chart = new Chart(ctx, {
-    plugins: [{
-        beforeInit: function(chart, options) {
-            //..
-        }
-    }]
-});
-```
-
-However, this approach is not ideal when the customization needs to apply to many charts.
-
-## Global plugins
-
-Plugins can be registered globally to be applied on all charts (a.k.a. *global plugins*):
-
-```javascript
-Chart.plugins.register({
-    // plugin implementation
-});
-```
-
-> Note: *inline* plugins can't be registered globally.
-
-## Configuration
-
-### Plugin ID
-
-Plugins must define a unique id in order to be configurable.
-
-This id should follow the [npm package name convention](https://docs.npmjs.com/files/package.json#name):
-
-- can't start with a dot or an underscore
-- can't contain any non-URL-safe characters
-- can't contain uppercase letters
-- should be something short, but also reasonably descriptive
-
-If a plugin is intended to be released publicly, you may want to check the [registry](https://www.npmjs.com/search?q=chartjs-plugin-) to see if there's something by that name already. Note that in this case, the package name should be prefixed by `chartjs-plugin-` to appear in Chart.js plugin registry.
-
-### Plugin options
-
-Plugin options are located under the `options.plugins` config and are scoped by the plugin ID: `options.plugins.{plugin-id}`.
-
-```javascript
-var chart = new Chart(ctx, {
-    config: {
-        foo: { ... },           // chart 'foo' option
-        plugins: {
-            p1: {
-                foo: { ... },   // p1 plugin 'foo' option
-                bar: { ... }
-            },
-            p2: {
-                foo: { ... },   // p2 plugin 'foo' option
-                bla: { ... }
-            }
-        }
-    }
-});
-```
-
-#### Disable plugins
-
-To disable a global plugin for a specific chart instance, the plugin options must be set to `false`:
-
-```javascript
-Chart.plugins.register({
-    id: 'p1',
-    // ...
-});
-
-var chart = new Chart(ctx, {
-    config: {
-        plugins: {
-            p1: false   // disable plugin 'p1' for this instance
-        }
-    }
-});
-```
-
-## Plugin Core API
-
-Available hooks (as of version 2.6):
-
-* beforeInit
-* afterInit
-* beforeUpdate *(cancellable)*
-* afterUpdate
-* beforeLayout *(cancellable)*
-* afterLayout
-* beforeDatasetsUpdate *(cancellable)*
-* afterDatasetsUpdate
-* beforeDatasetUpdate *(cancellable)*
-* afterDatasetUpdate
-* beforeRender *(cancellable)*
-* afterRender
-* beforeDraw *(cancellable)*
-* afterDraw
-* beforeDatasetsDraw *(cancellable)*
-* afterDatasetsDraw
-* beforeDatasetDraw *(cancellable)*
-* afterDatasetDraw
-* beforeEvent *(cancellable)*
-* afterEvent
-* resize
-* destroy
+- `Chart.plugins.unregister(plugins)` 注销 plugins
+- `Chart.plugins.clear()` 清除插件
+- `Chart.plugins.getAll()`  获取注册的所有插件

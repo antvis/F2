@@ -41,7 +41,8 @@ geom 类型 | 描述
 
 * 属性方法之外的方法
 
-  + style(cfg) 配置绘图属性
+  + style(object) 配置绘图属性
+  + adjust(string|object) 配置数据调整方式
 
 ## 几何标记和图表类型
 
