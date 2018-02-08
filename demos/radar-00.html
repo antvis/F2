@@ -35,7 +35,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.75,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -75,6 +75,9 @@
       if (index === total - 1) {
         return null;
       }
+      return {
+        top: true
+      };
     },
     grid(text, index) {
       if (text === '120') {
@@ -87,10 +90,10 @@
       top: false
     }
   });
-  chart.line().position('item*score').color('user').size(2);
+  chart.line().position('item*score').color('user');
   chart.point().position('item*score').color('user').style({
     stroke: '#fff',
-    lineWidth: 2
+    lineWidth: 1
   });
   chart.render();
 </script>

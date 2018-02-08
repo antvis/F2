@@ -2,27 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>分组条形图 hover 方式 1</title>
+  <title>区间条形图</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
 <div>
   <canvas id="mountNode"></canvas>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
   const data = [
-    { label: 'Mon.', type: 'series1', value: 2800 },
-    { label: 'Mon.', type: 'series2', value: 2260 },
-    { label: 'Tue.', type: 'series1', value: 1800 },
-    { label: 'Tue.', type: 'series2', value: 1300 },
-    { label: 'Wed.', type: 'series1', value: 950 },
-    { label: 'Wed.', type: 'series2', value: 900 },
-    { label: 'Thu.', type: 'series1', value: 500 },
-    { label: 'Thu.', type: 'series2', value: 390 },
-    { label: 'Fri.', type: 'series1', value: 170 },
-    { label: 'Fri.', type: 'series2', value: 100 }
+    { profession: '两年制副学士学位', highest: 110000, minimum: 23000, mean: 56636, range: [ 23000, 110000 ] },
+    { profession: '执法与救火', highest: 120000, minimum: 18000, mean: 66625, range: [ 18000, 120000 ] },
+    { profession: '教育学', highest: 125000, minimum: 24000, mean: 72536, range: [ 24000, 125000 ] },
+    { profession: '心理学', highest: 130000, minimum: 22500, mean: 75256, range: [ 22500, 130000 ] },
+    { profession: '计算机科学', highest: 131000, minimum: 23000, mean: 77031, range: [ 23000, 131000 ] }
   ];
   const chart = new F2.Chart({
     id: 'mountNode',
@@ -31,24 +27,25 @@
     pixelRatio: window.devicePixelRatio
   });
 
-  chart.source(data.reverse(), {
-    value: {
-      tickInterval: 750
+  chart.source(data, {
+    range: {
+      tickCount: 5
     }
   });
   chart.coord({
     transposed: true
   });
-  chart.legend(false);
-  chart.axis('label', {
+  chart.axis('profession', {
     line: F2.Global._defaultAxis.line,
     grid: null
   });
-  chart.axis('value', {
+  chart.axis('range', {
     line: null,
     grid: F2.Global._defaultAxis.grid,
     label(text, index, total) {
-      const textCfg = {};
+      const textCfg = {
+        text: text / 1000 + ' k'
+      };
       if (index === 0) {
         textCfg.textAlign = 'left';
       }
@@ -58,10 +55,7 @@
       return textCfg;
     }
   });
-  chart.interval().position('label*value').color('type').adjust({
-    type: 'dodge',
-    marginRatio: 1 / 32
-  });
+  chart.interval().position('profession*range');
   chart.render();
 </script>
 </body>

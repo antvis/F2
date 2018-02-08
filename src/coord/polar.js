@@ -2,18 +2,16 @@ const Base = require('./base');
 const Vector2 = require('../graphic/util/vector2');
 
 class Polar extends Base {
-  getDefaultCfg() {
-    return {
-      type: 'polar',
-      startAngle: -Math.PI / 2,
-      endAngle: Math.PI * 3 / 2,
-      inner: 0,
-      innerRadius: 0, // alias
-      isPolar: true,
-      transposed: false,
-      center: null,
-      radius: null
-    };
+  _initDefaultCfg() {
+    this.type = 'polar';
+    this.startAngle = -Math.PI / 2;
+    this.endAngle = Math.PI * 3 / 2;
+    this.inner = 0;
+    this.innerRadius = 0; // alias
+    this.isPolar = true;
+    this.transposed = false;
+    this.center = null;
+    this.radius = null; // 相对半径
   }
 
   init(start, end) {
@@ -22,20 +20,25 @@ class Polar extends Base {
     const width = Math.abs(end.x - start.x);
     const height = Math.abs(end.y - start.y);
 
-    let radius;
+    let maxRadius;
     let center;
     if (self.startAngle === -Math.PI && self.endAngle === 0) {
-      radius = Math.min(width / 2, height);
+      maxRadius = Math.min(width / 2, height);
       center = {
         x: (start.x + end.x) / 2,
         y: start.y
       };
     } else {
-      radius = Math.min(width, height) / 2;
+      maxRadius = Math.min(width, height) / 2;
       center = {
         x: (start.x + end.x) / 2,
         y: (start.y + end.y) / 2
       };
+    }
+
+    const radius = self.radius; // 相对半径
+    if (radius > 0 && radius <= 1) {
+      maxRadius = maxRadius * radius;
     }
 
     this.x = {
@@ -44,11 +47,11 @@ class Polar extends Base {
     };
 
     this.y = {
-      start: radius * inner,
-      end: radius
+      start: maxRadius * inner,
+      end: maxRadius
     };
     this.center = center;
-    this.radius = radius;
+    this.circleRadius = maxRadius; // 绝对半径
   }
 
   convertPoint(point) {

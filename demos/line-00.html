@@ -24,7 +24,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -61,7 +61,7 @@
   chart.line().position('day*value');
   chart.point().position('day*value').style({
     stroke: '#fff',
-    lineWidth: 2
+    lineWidth: 1
   });
   chart.render();
 </script>

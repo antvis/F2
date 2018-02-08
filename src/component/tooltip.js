@@ -44,7 +44,6 @@ class Tooltip {
         parent: frontPlot
       }, cfg));
       this.container = container;
-      // frontPlot.add(container.container);
       if (!this.fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
@@ -129,19 +128,26 @@ class Tooltip {
           { x: x + 3, y: tl.y - GAP + offsetY },
           { x, y: tl.y + offsetY }
         ]);
+        const backShape = container.backShape;
+        const radius = Util.parsePadding(backShape.attr('radius'));
         if (x === tl.x) {
+          radius[3] = 0;
+
           tooltipArrow.attr('points', [
             { x: tl.x, y: tl.y + offsetY },
             { x: tl.x, y: tl.y - GAP + offsetY },
             { x: tl.x + GAP, y: tl.y - GAP + offsetY }
           ]);
         } else if (x === tr.x) {
+          radius[2] = 0;
+
           tooltipArrow.attr('points', [
             { x: tr.x, y: tl.y + offsetY },
             { x: tr.x - GAP, y: tl.y - GAP + offsetY },
             { x: tr.x, y: tl.y - GAP + offsetY }
           ]);
         }
+        backShape.attr('radius', radius);
       }
     }
 
@@ -207,10 +213,12 @@ class Tooltip {
     const crosshairsShape = this.crosshairsShape;
     const markerGroup = this.markerGroup;
     const container = this.container;
+    const tooltipArrow = this.tooltipArrow;
 
     crosshairsShape && crosshairsShape.remove(true);
     markerGroup && markerGroup.remove(true);
     container && container.clear();
+    tooltipArrow && tooltipArrow.remove(true);
 
     this.destroyed = true;
   }

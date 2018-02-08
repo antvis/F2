@@ -19,7 +19,7 @@ const defaultAxis = {
   grid: {
     stroke: color1,
     lineWidth: 1,
-    lineDash: [ 4 ]
+    lineDash: [ 2 ]
   },
   tickLine: null,
   labelOffset: 7.5 // TODO
@@ -33,21 +33,13 @@ const Theme = {
   appendPadding: 15,
   colors: [
     '#1890FF',
-    '#73C9E6',
-    '#13C2C2',
-    '#6CD9B3',
     '#2FC25B',
-    '#9DD96C',
     '#FACC14',
-    '#E6965C',
-    '#F04864',
-    '#D66BCA',
-    '#8543E0',
-    '#8E77ED',
-    '#3436C7',
-    '#737EE6',
     '#223273',
-    '#7EA2E6'
+    '#8543E0',
+    '#13C2C2',
+    '#3436C7',
+    '#F04864'
   ],
   shapes: {
     line: [ 'line', 'dash' ],
@@ -63,8 +55,7 @@ const Theme = {
       line: null
     }),
     right: Util.mix({}, defaultAxis, {
-      line: null,
-      grid: null
+      line: null
     }),
     circle: Util.mix({}, defaultAxis, {
       line: null
@@ -75,14 +66,19 @@ const Theme = {
   },
   shape: {
     line: {
-      lineWidth: 2 // 线的默认宽度
+      lineWidth: 2, // 线的默认宽度
+      lineJoin: 'round',
+      lineCap: 'round'
     },
     point: {
       lineWidth: 0,
-      size: 4 // 圆的默认半径
+      size: 3 // 圆的默认半径
+    },
+    interval: {
+      fillOpacity: 0.85
     },
     area: {
-      fillOpacity: 0.4 // TODO: 需要确认
+      fillOpacity: 0.1
     }
   },
   _defaultAxis: defaultAxis

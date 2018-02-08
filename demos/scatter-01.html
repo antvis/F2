@@ -16,7 +16,7 @@
     const chart = new F2.Chart({
       id: 'mountNode',
       width: window.innerWidth,
-      height: 260,
+      height: window.innerWidth * 0.64,
       pixelRatio: window.devicePixelRatio
     });
     chart.source(data, {
@@ -25,6 +25,18 @@
       },
       weight: {
         tickCount: 5
+      }
+    });
+    chart.axis('height', {
+      label(text, index, total) {
+        const textCfg = {};
+        if (index === 0) {
+          textCfg.textAlign = 'left';
+        }
+        if (index === total - 1) {
+          textCfg.textAlign = 'right';
+        }
+        return textCfg;
       }
     });
     chart.tooltip(false);
