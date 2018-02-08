@@ -12,7 +12,7 @@ function getStyle(cfg) {
   const style = {
     strokeStyle: cfg.color
   };
-  if (cfg.size) {
+  if (cfg.size >= 0) {
     style.lineWidth = cfg.size;
   }
   Util.mix(style, cfg.style);
