@@ -32,7 +32,7 @@ geom 类型 | 描述
 
 几何标记 geom 对象方法主要有两种：
 
-* 图形属性（./attribute.md）方法：用户设置数据到视觉通道的映射，详细信息查看 [图形属性](./attribute.md)。
+* [图形属性](./attribute.md)方法：用户设置数据到视觉通道的映射，详细信息查看 [图形属性](./attribute.md)。
 
   + position
   + color
@@ -82,5 +82,5 @@ interval| 'rect' |
 polygon | 'polygon' | 
 schema| 'candle'| 目前仅 K 线图
 
-如果上面各种几何标记的图形形状没法满足你需求的话，可以进行 [自定义shape](../develop/shape.html)。
+如果上面各种几何标记的图形形状没法满足你需求的话，可以进行 [自定义shape](../developer/shape.html)。
 
