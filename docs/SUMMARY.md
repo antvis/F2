@@ -31,7 +31,3 @@
   * [Shape](developer/shape.md)
   * [Graphic](developer/graphic.md)
   * [Contributing](developer/contributing.md)
-* [Additional Note](note/README.md)
-  * [Comparison Table](note/comparison.md)
-  * [Popular Extension](note/extension.md)
-  * [License](note/license.md)
