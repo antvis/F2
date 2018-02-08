@@ -1,36 +1,27 @@
 # Integration
 
-Chart.js can be integrated with plain JavaScript or with different module loaders. The examples below show how to load Chart.js in different systems.
+F2 can be integrated with plain JavaScript or with different module loaders. The examples below show how to load F2 in different systems.
 
 ## ES6 Modules
 
 ```javascript
-import Chart from 'chart.js';
-var myChart = new Chart(ctx, {...});
+import F2 from '@antv/f2';
 ```
 
 ## Script Tag
 
 ```html
-<script src="path/to/chartjs/dist/Chart.js"></script>
-<script>
-    var myChart = new Chart(ctx, {...});
-</script>
-```
+<script src="path/to/antv/f2/dist/f2.min.js"></script>```
 
 ## Common JS
 
 ```javascript
-var Chart = require('chart.js');
-var myChart = new Chart(ctx, {...});
+var F2 = require('@antv/f2');
 ```
 
 ## Require JS
 
 ```javascript
-require(['path/to/chartjs/dist/Chart.js'], function(Chart){
-    var myChart = new Chart(ctx, {...});
+require(['path/to/antv/f2/dist/f2.min.js'], function(F2){
 });
 ```
-
-> **Important:** RequireJS [can **not** load CommonJS module as is](http://www.requirejs.org/docs/commonjs.html#intro), so be sure to require one of the built UMD files instead (i.e. `dist/Chart.js`, `dist/Chart.min.js`, etc.).
