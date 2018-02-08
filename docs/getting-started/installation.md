@@ -1,57 +1,23 @@
 # Installation
-Chart.js can be installed via npm or bower. It is recommended to get Chart.js this way.
+F2 can be installed via npm. It is recommended to get F2 this way.
 
 ## npm
-[![npm](https://img.shields.io/npm/v/chart.js.svg?style=flat-square&maxAge=600)](https://npmjs.com/package/chart.js)
-[![npm](https://img.shields.io/npm/dm/chart.js.svg?style=flat-square&maxAge=600)](https://npmjs.com/package/chart.js)
+[![npm](https://img.shields.io/npm/v/@antv/f2.svg?style=flat-square&maxAge=600)](https://npmjs.com/package/@antv/f2)
+[![npm](https://img.shields.io/npm/dm/@antv/f2.svg?style=flat-square&maxAge=600)](https://npmjs.com/package/@antv/f2)
 
 ```bash
-npm install chart.js --save
+npm install @antv/f2 --save
 ```
 
-## Bower
-[![bower](https://img.shields.io/bower/v/chartjs.svg?style=flat-square&maxAge=600)](https://libraries.io/bower/chartjs)
+## Import in Browser
+Add script and link tags in your browser and use the global variable `F2`.
 
-```bash
-bower install chart.js --save
+```html
+<script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.1.0/f2.js"></script>
 ```
 
-## CDN
-### CDNJS
-[![cdnjs](https://img.shields.io/cdnjs/v/Chart.js.svg?style=flat-square&maxAge=600)](https://cdnjs.com/libraries/Chart.js)
-
-Chart.js built files are available on [CDNJS](https://cdnjs.com/):
-
-https://cdnjs.com/libraries/Chart.js
-
-### jsDelivr
-[![jsdelivr](https://img.shields.io/npm/v/chart.js.svg?label=jsdelivr&style=flat-square&maxAge=600)](https://cdn.jsdelivr.net/npm/chart.js@latest/dist/) [![jsdelivr hits](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
-
-Chart.js built files are also available through [jsDelivr](http://www.jsdelivr.com/):
-
-https://www.jsdelivr.com/package/npm/chart.js?path=dist
+You can also download these files directly from [unpkg](https://unpkg.com/@antv/f2).
 
 ## Github
-[![github](https://img.shields.io/github/release/chartjs/Chart.js.svg?style=flat-square&maxAge=600)](https://github.com/chartjs/Chart.js/releases/latest)
 
-You can download the latest version of [Chart.js on GitHub](https://github.com/chartjs/Chart.js/releases/latest).
-
-If you download or clone the repository, you must [build](../developers/contributing.md#building-and-testing) Chart.js to generate the dist files. Chart.js no longer comes with prebuilt release versions, so an alternative option to downloading the repo is **strongly** advised.
-
-# Selecting the Correct Build
-
-Chart.js provides two different builds that are available for your use.
-
-## Stand-Alone Build
-Files:
-* `dist/Chart.js`
-* `dist/Chart.min.js`
-
-This version only includes Chart.js. If this version is used and you require the use of the time axis, [Moment.js](http://momentjs.com/) will need to be included before Chart.js.
-
-## Bundled Build
-Files:
-* `dist/Chart.bundle.js`
-* `dist/Chart.bundle.min.js`
-
-The bundled version includes Moment.js built into the same file. This version should be used if you wish to use time axes and want a single file to include. Do not use this build if your application already includes Moment.js. If you do, Moment.js will be included twice, increasing the page load time and potentially introducing version issues.
+You can download the latest version of [F2 on GitHub](https://github.com/antvis/f2/releases/latest).
