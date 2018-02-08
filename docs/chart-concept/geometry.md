@@ -82,5 +82,5 @@ interval| 'rect' |
 polygon | 'polygon' | 
 schema| 'candle'| 目前仅 K 线图
 
-如果上面各种几何标记的图形形状没法满足你需求的话，可以进行 [自定义shape](../developer/shape.html)。
+如果上面各种几何标记的图形形状没法满足你需求的话，可以进行 [自定义shape](../developer/shape.md)。
 
