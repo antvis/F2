@@ -29,10 +29,10 @@ $ npm install @antv/f2
 
 ## 文档
 
-- [快速开始](./getting-started/README.md)
-- [使用教程](./chart-concept/README.md)
-- [API](./api/README.md)
-- [图表示例](../demos)
+- [快速开始](./docs/getting-started/README.md)
+- [使用教程](./docs/chart-concept/README.md)
+- [API](./docs/api/README.md)
+- [图表示例](./demos)
 
 ### 快速开始
 
@@ -64,7 +64,7 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-[更多示例](../demos)。
+[更多示例](./demos)。
 
 ## 本地开发
 
