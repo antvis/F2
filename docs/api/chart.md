@@ -118,7 +118,7 @@ const chart = new F2.Chart({
 - 描述：为 chart 实例注册插件
 - 默认值：null
 
-更多关于插件的使用，详见[Plugin](../develop/plugin.md)。
+更多关于插件的使用，详见[Plugin](../developer/plugin.md)。
 
 ## 方法
 
@@ -255,13 +255,13 @@ chart.scale({
 
 ### 创建 Geometry 对象
 
-- `chart.point()`：创建 point（点）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.line()`：创建 line（线）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.area()`：创建 area（区域）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.path()`：创建 path（路径）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.interval()`：创建 interval（柱）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.polygon()`：创建 polygon（多边形）的几何标记对象，具体的方法详见 [Geometry]./geometry.md
-- `chart.schema()`：创建 schema 的几何标记对象，具体的方法详见 [Geometry]./geometry.md
+- `chart.point()`：创建 point（点）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.line()`：创建 line（线）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.area()`：创建 area（区域）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.path()`：创建 path（路径）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.interval()`：创建 interval（柱）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.polygon()`：创建 polygon（多边形）的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
+- `chart.schema()`：创建 schema 的几何标记对象，具体的方法详见 [Geometry](./geometry.md)
 
 注意：以上方法返回的是几何标记实例，不是 chart 实例。
 
