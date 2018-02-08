@@ -658,7 +658,7 @@ class Chart extends Base {
    */
   showTooltip(point) {
     const tooltipController = this.get('tooltipController');
-    tooltipController.showTooltip(point);
+    tooltipController && tooltipController.showTooltip(point);
     return this;
   }
 
@@ -668,7 +668,7 @@ class Chart extends Base {
    */
   hideTooltip() {
     const tooltipController = this.get('tooltipController');
-    tooltipController.hideTooltip();
+    tooltipController && tooltipController.hideTooltip();
     return this;
   }
 
