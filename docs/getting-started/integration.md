@@ -11,7 +11,8 @@ import F2 from '@antv/f2';
 ## Script Tag
 
 ```html
-<script src="path/to/antv/f2/dist/f2.min.js"></script>```
+<script src="path/to/antv/f2/dist/f2.min.js"></script>
+```
 
 ## Common JS
 
