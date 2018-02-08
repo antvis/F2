@@ -5,8 +5,8 @@ const Tooltip = require('../component/tooltip');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
-  triggerOn: 'touchmove',
-  triggerOff: 'touchend',
+  triggerOn: [ 'touchstart', 'touchmove' ],
+  // triggerOff: 'touchend',
   showTitle: false,
   showCrosshairs: false,
   crosshairsStyle: {
@@ -133,6 +133,8 @@ class TooltipController {
     this.chart = null;
     this.timeStamp = 0;
     Util.mix(this, cfg);
+    const chart = this.chart;
+    this.canvasDom = chart.get('canvas').get('el');
   }
 
   _setCrosshairsCfg() {
@@ -239,7 +241,7 @@ class TooltipController {
       }, tooltipCfg.tooltipMarkerStyle);
     } else {
       cfg.style = Util.mix({
-        radius: 5,
+        radius: 4,
         fill: '#fff',
         lineWidth: 2
       }, tooltipCfg.tooltipMarkerStyle);
@@ -305,7 +307,7 @@ class TooltipController {
     tooltip.show();
   }
 
-  _showTooltip(point) {
+  showTooltip(point) {
     const self = this;
     const chart = self.chart;
 
@@ -393,7 +395,7 @@ class TooltipController {
     const lastTimeStamp = this.timeStamp;
     const timeStamp = +new Date();
     if ((timeStamp - lastTimeStamp) > 16) {
-      this._showTooltip({ x, y });
+      this.showTooltip({ x, y });
       this.timeStamp = timeStamp;
     }
   }
@@ -402,15 +404,25 @@ class TooltipController {
     this.hideTooltip();
   }
 
-  _handleEvent(methodName, method, action) {
-    const chart = this.chart;
-    if (Util.isFunction(methodName)) {
-      methodName(method, action); // TODO： 测试。供用户自己绑定事件
-    } else if (action === 'bind') {
-      DomUtil.addEventListener(chart, methodName, method);
-    } else {
-      DomUtil.removeEventListener(chart, methodName, method);
+  handleDocEvent(ev) {
+    const canvasDom = this.canvasDom;
+    if (ev.target !== canvasDom) {
+      this.hideTooltip();
     }
+  }
+
+  _handleEvent(methodName, method, action) {
+    const canvasDom = this.canvasDom;
+    ([]).concat(methodName).map(aMethod => {
+      if (Util.isFunction(aMethod)) {
+        aMethod(method, action); // TODO： 测试，供用户自己绑定事件
+      } else if (action === 'bind') {
+        DomUtil.addEventListener(canvasDom, aMethod, method);
+      } else {
+        DomUtil.removeEventListener(canvasDom, aMethod, method);
+      }
+      return aMethod;
+    });
   }
 
   bindEvents() {
@@ -419,8 +431,11 @@ class TooltipController {
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
-    this._handleEvent(triggerOn, showMethod, 'bind');
-    this._handleEvent(triggerOff, hideMethod, 'bind');
+    triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
+    triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
+    // 当用户点击canvas 外的事件时 tooltip 消失
+    const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
+    DomUtil.addEventListener(document, 'touchstart', docMethod);
   }
 
   unBindEvents() {
@@ -429,8 +444,11 @@ class TooltipController {
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
 
-    this._handleEvent(triggerOn, showMethod, 'unBind');
-    this._handleEvent(triggerOff, hideMethod, 'unBind');
+    triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
+    triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
+
+    const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
+    DomUtil.removeEventListener(document, 'touchstart', docMethod);
   }
 }
 

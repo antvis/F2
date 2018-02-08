@@ -35,7 +35,7 @@
       id: 'mountNode',
       pixelRatio: window.devicePixelRatio,
       width: window.innerWidth,
-      height: 260
+      height: window.innerWidth * 0.64
     });
     chart.source(data, {
       percent: {
@@ -45,7 +45,15 @@
         }
       }
     });
-    chart.tooltip(false);
+    chart.legend(false);
+    chart.tooltip({
+      onShow(ev) {
+        const { items } = ev;
+        items.map(item => {
+          item.value = (item.value * 100).toFixed(2) + '%';
+        });
+      }
+    })
     chart.interval()
       .position('year*percent')
       .color('country')

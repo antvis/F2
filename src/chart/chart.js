@@ -161,7 +161,7 @@ class Chart extends Base {
        * 过滤设置
        * @type {Object}
        */
-      filters: {},
+      filters: null,
       appendPadding: Global.appendPadding
     };
   }
@@ -251,10 +251,6 @@ class Chart extends Base {
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
     this.get('axisController') && this.get('axisController').clear();
-    const frontPlot = this.get('frontPlot');
-    const backPlot = this.get('backPlot');
-    frontPlot && frontPlot.clear();
-    backPlot && backPlot.clear();
   }
 
   _execFilter(data) {
@@ -360,7 +356,7 @@ class Chart extends Base {
     const colDefs = this.get('colDefs');
     if (colDefs) {
       const scaleController = this.get('scaleController');
-      scaleController.defs = colDefs;
+      Util.mix(scaleController.defs, colDefs);
     }
   }
 
@@ -371,10 +367,10 @@ class Chart extends Base {
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      frontPlot: self.get('frontPlot'),
-      backPlot: self.get('backPlot')
+      frontPlot: self.get('frontPlot').addGroup(),
+      backPlot: self.get('backPlot').addGroup(),
+      chart: self
     }));
-    self.initColDefs();
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
   }
 
@@ -394,8 +390,20 @@ class Chart extends Base {
   source(data, colDefs) {
     this.set('data', data);
     if (colDefs) {
-      this.set('colDefs', colDefs);
+      this.scale(colDefs);
     }
+    return this;
+  }
+
+  scale(field, cfg) {
+    const colDefs = this.get('colDefs') || {};
+    if (Util.isObject(field)) {
+      Util.mix(colDefs, field);
+    } else {
+      colDefs[field] = cfg;
+    }
+
+    this.set('colDefs', colDefs);
     this.initColDefs();
     return this;
   }
@@ -471,8 +479,9 @@ class Chart extends Base {
   }
 
   filter(field, condition) {
-    const filters = this.get('filters');
+    const filters = this.get('filters') || {};
     filters[field] = condition;
+    this.set('filters', filters);
   }
 
   /**
@@ -549,7 +558,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'clear'); // TODO: beforeClear afterClear
     this._removeGeoms();
     this._clearInner();
-    this.set('filters', {});
+    this.set('filters', null);
 
     const canvas = this.get('canvas');
     canvas.draw();
@@ -592,6 +601,75 @@ class Chart extends Base {
       });
     }
     return result;
+  }
+
+  /**
+   * 获取数据对应在画布空间的坐标
+   * @param  {Object} record 原始数据
+   * @return {Object} 返回对应的画布上的坐标点
+   */
+  getPosition(record) {
+    const self = this;
+    const coord = self.get('coord');
+    const xScale = self.getXScale();
+    const yScale = self.getYScales()[0]; // 暂时只取第一个y轴，忽视多轴的情况
+    const xField = xScale.field;
+    const x = xScale.scale(record[xField]);
+    const yField = yScale.field;
+    const y = yScale.scale(record[yField]);
+    return coord.convertPoint({
+      x,
+      y
+    });
+  }
+
+  /**
+   * 获取画布上坐标对应的数据值
+   * @param  {Object} point 画布坐标的x,y的值
+   * @return {Object} 当前坐标系的数据值
+   */
+  getRecord(point) {
+    const self = this;
+    const coord = self.get('coord');
+    const xScale = self.getXScale();
+    const yScale = self.getYScales()[0];
+    const invertPoint = coord.invertPoint(point);
+    const record = {};
+    record[xScale.field] = xScale.invert(invertPoint.x);
+    record[yScale.field] = yScale.invert(invertPoint.y);
+    return record;
+  }
+  /**
+   * 根据画布坐标获取对应数据集
+   * @param  {Object} point 画布坐标的x,y的值
+   * @param {String} field 字段名
+   * @return {Array} 纵向切割交点对应数据集
+  **/
+  getSnapRecords(point, field) {
+    const geom = this.get('geoms')[0];
+    const data = geom.getSnapRecords(point, field);
+    return data;
+  }
+
+  /**
+   * 根据坐标点显示对应的 tooltip
+   * @param  {Object} point 画布上的点
+   * @return {Chart}       返回 chart 实例
+   */
+  showTooltip(point) {
+    const tooltipController = this.get('tooltipController');
+    tooltipController.showTooltip(point);
+    return this;
+  }
+
+  /**
+   * 隐藏 tooltip
+  * @return {Chart}       返回 chart 实例
+   */
+  hideTooltip() {
+    const tooltipController = this.get('tooltipController');
+    tooltipController.hideTooltip();
+    return this;
   }
 
   /**
@@ -664,7 +742,7 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
-    axisController.createAxis(coord, xScale, yScales, this);
+    axisController.createAxis(coord, xScale, yScales);
   }
 
   _isAutoPadding() {

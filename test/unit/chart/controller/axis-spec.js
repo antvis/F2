@@ -87,21 +87,21 @@ describe('axis controller', function() {
   });
 
   it('get line x axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'bottom');
+    const cfg = controller._getLineCfg(rect, 'x');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'left');
+    const cfg = controller._getLineCfg(rect, 'y');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'right');
+    const cfg = controller._getLineCfg(rect, 'y', 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
@@ -145,21 +145,21 @@ describe('axis controller rect transposed', function() {
   rect.transposed = true;
 
   it('get line x axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'bottom');
+    const cfg = controller._getLineCfg(rect, 'x');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.offsetFactor).equal(-1);
   });
 
   it('get line y axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'left');
+    const cfg = controller._getLineCfg(rect, 'y');
     expect(cfg.start).eql(rect.convertPoint({ x: 0, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 0, y: 1 }));
     expect(cfg.offsetFactor).equal(1);
   });
 
   it('get line y2 axis cfg', function() {
-    const cfg = controller._getLineCfg(rect, 'right');
+    const cfg = controller._getLineCfg(rect, 'y', 'right');
     expect(cfg.start).eql(rect.convertPoint({ x: 1, y: 0 }));
     expect(cfg.end).eql(rect.convertPoint({ x: 1, y: 1 }));
     expect(cfg.offsetFactor).equal(-1);

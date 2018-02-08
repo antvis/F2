@@ -35,10 +35,10 @@
   });
   chart.coord('polar');
   chart.legend({
-    position: 'left'
+    position: 'right'
   });
   chart.tooltip({
-    offsetY: -40
+    offsetY: -20
   });
   chart.axis('cost', {
     label: {
@@ -50,6 +50,9 @@
           lineDash: null
         };
       }
+    },
+    line: {
+      top: false
     }
   });
   chart.interval()

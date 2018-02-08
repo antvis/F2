@@ -45,7 +45,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 260,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -58,6 +58,18 @@
         return formatterPercent(val);
       },
       alias: 'percent(%)'
+    }
+  });
+  chart.axis('year', {
+    label(text, index, total) {
+      const textCfg = {};
+      if (index === 0) {
+        textCfg.textAlign = 'left';
+      }
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
+      }
+      return textCfg;
     }
   });
   chart.tooltip({
@@ -83,26 +95,13 @@
       legend.setItems(chart.getLegendItems().country);
     }
   });
-  chart.axis('year', {
-    label(text, index, total) {
-      const textCfg = {};
-      if (index === 0) {
-        textCfg.textAlign = 'left';
-      }
-      if (index === total - 1) {
-        textCfg.textAlign = 'right';
-      }
-      return textCfg;
-    }
-  });
-
   chart.area()
     .position('year*percent')
-    .color('country', [ '#B5F5EC', '#40A9FF', '#FFA940' ])
+    .color('country')
     .adjust('stack');
   chart.line()
     .position('year*percent')
-    .color('country', [ '#B5F5EC', '#40A9FF', '#FFA940' ])
+    .color('country')
     .adjust('stack');
   chart.render();
 </script>

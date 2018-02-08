@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>堆叠条形图</title>
+  <title>堆叠条形图 hover 方式 1</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -33,15 +33,39 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 260,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
-  chart.source(data);
+  chart.source(data, {
+    '人口数量': {
+      tickCount: 5
+    }
+  });
   chart.coord({
     transposed: true
   });
-  chart.tooltip(false);
+  chart.axis('State', {
+    line: F2.Global._defaultAxis.line,
+    grid: null
+  });
+  chart.axis('人口数量', {
+    line: null,
+    grid: F2.Global._defaultAxis.grid,
+    label(text, index, total) {
+      const textCfg = {
+        text: text / 1000 + ' k'
+      };
+      if (index === 0) {
+        textCfg.textAlign = 'left';
+      }
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
+      }
+      return textCfg;
+    }
+  });
+  chart.legend(false);
   chart.interval().position('State*人口数量').color('年龄段').adjust('stack');
 
   chart.render();

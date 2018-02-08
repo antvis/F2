@@ -35,7 +35,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 200,
+    height: window.innerWidth * 0.75,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -48,11 +48,35 @@
       tickCount: 4
     }
   });
-  chart.legend(false);
+  chart.tooltip({
+    custom(obj) {
+      const legend = chart.get('legendController').legends.top[0];
+      const tooltipItems = obj.items;
+      const legendItems = legend.items;
+      const map = {};
+      legendItems.map(item => {
+        map[item.name] = _.clone(item);
+      });
+      tooltipItems.map(item => {
+        const { name, value } = item;
+        if (map[name]) {
+          map[name].value = value;
+        }
+      });
+      legend.setItems(Object.values(map));
+    },
+    onHide(tooltip) {
+      const legend = chart.get('legendController').legends.top[0];
+      legend.setItems(chart.getLegendItems().country);
+    }
+  });
   chart.axis('score', {
     label(text, index, total) {
       if (index === total - 1) {
         return null;
+      }
+      return {
+        top: true
       }
     },
     grid(text, index) {

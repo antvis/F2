@@ -3,44 +3,42 @@ const Global = require('../../global');
 const Vector2 = require('../../graphic/util/vector2');
 
 class Abastract {
-  getDefaultCfg() {
-    return {
-      /**
-       * 坐标点
-       * @type {Array}
-       */
-      ticks: [],
-      /**
-       * tick 的配置信息
-       * @type {Object}
-       */
-      tickLine: {},
-      /**
-       * 文本、tick跟坐标轴线的方向，默认是顺时针方向
-       * @type {Number}
-       */
-      offsetFactor: 1,
-      /**
-       * 上层图层
-       * @type {container}
-       */
-      frontContainer: null,
-      /**
-       * 下层图层
-       * @type {[type]}
-       */
-      backContainer: null,
-      /**
-       * 绘制栅格的点
-       * @type {Array}
-       */
-      gridPoints: []
-    };
+  _initDefaultCfg() {
+    /**
+     * 坐标点
+     * @type {Array}
+     */
+    this.ticks = [];
+    /**
+     * tick 的配置信息
+     * @type {Object}
+     */
+    this.tickLine = {};
+    /**
+     * 文本、tick跟坐标轴线的方向，默认是顺时针方向
+     * @type {Number}
+     */
+    this.offsetFactor = 1;
+    /**
+     * 上层图层
+     * @type {container}
+     */
+    this.frontContainer = null;
+    /**
+     * 下层图层
+     * @type {[type]}
+     */
+    this.backContainer = null;
+    /**
+     * 绘制栅格的点
+     * @type {Array}
+     */
+    this.gridPoints = [];
   }
 
   constructor(cfg) {
-    const defaultCfg = this.getDefaultCfg();
-    Util.mix(this, defaultCfg, cfg);
+    this._initDefaultCfg();
+    Util.mix(this, cfg);
     this.draw();
   }
 

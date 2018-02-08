@@ -1,15 +1,12 @@
-const Util = require('../../util/common');
 const Shape = require('../shape');
 const bbox = require('../util/bbox');
 
 class Polygon extends Shape {
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      canFill: true,
-      canStroke: true,
-      type: 'polygon'
-    });
+  _initProperties() {
+    super._initProperties();
+    this._attrs.canFill = true;
+    this._attrs.canStroke = true;
+    this._attrs.type = 'polygon';
   }
 
   getDefaultAttrs() {

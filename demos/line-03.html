@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>多条折线(只带图例)</title>
+  <title>多条折线(只带 tooltip)</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -117,7 +117,7 @@
   const chart = new F2.Chart({
     id: 'mountNode',
     width: window.innerWidth,
-    height: 260,
+    height: window.innerWidth * 0.64,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -126,9 +126,12 @@
       range: [ 0, 1 ],
       type: 'timeCat',
       mask: 'MM-DD'
+    },
+    value: {
+      tickCount: 5
     }
   });
-  chart.tooltip(false);
+  chart.legend(false);
   chart.axis('date', {
     label(text, index, total) {
       const textCfg = {};
@@ -141,7 +144,7 @@
       return textCfg;
     }
   });
-  chart.line().position('date*value').color('city', [ '#40A9FF', '#FF7875', '#FFC069' ]);
+  chart.line().position('date*value').color('city');
   chart.render();
 </script>
 </body>
