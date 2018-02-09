@@ -1,4 +1,4 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案。
+# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -28,10 +28,37 @@ $ npm install @antv/f2
 
 ## 文档
 
-- [快速开始](./getting-started/README.md)
-- [使用教程](./chart-concept/README.md)
-- [API](./api/README.md)
-- [图表示例](../demos)
+* [快速开始](getting-started/README.md)
+  * [Installation](getting-started/installation.md)
+  * [Integration](getting-started/integration.md)
+  * [Usage](getting-started/usage.md)
+  * [Require On Demand](getting-started/require-on-demand.md)
+* [教程](chart-concept/README.md)
+  * [Understanding F2 Charts](chart-concept/understanding-f2-charts.md)
+  * [Data](chart-concept/data.md)
+  * [Scale](chart-concept/scale.md)
+  * [Geometry](chart-concept/geometry.md)
+  * [Attribute](chart-concept/attribute.md)
+  * [Coordinate](chart-concept/coordinate.md)
+* [API](api/README.md)
+  * [Chart](api/chart.md)
+  * [Geometry](api/geometry.md)
+  * [Scale](api/scale.md)
+  * [Coordinate](api/coordinate.md)
+  * [Axis](api/axis.md)
+  * [Legend](api/legend.md)
+  * [Tooltip](api/tooltip.md)
+  * [Guide](api/guide.md)
+  * [Interaction](api/interaction.md)
+  * [Animation](api/animation.md)
+  * [Global](api/global.md)
+  * [Canvas](api/canvas.md)
+* [开发者](developer/README.md)
+  * [Plugin](developer/plugin.md)
+  * [Shape](developer/shape.md)
+  * [Graphic](developer/graphic.md)
+  * [Contributing](developer/contributing.md)
+* [图表示例](./demos)
 
 3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
 
@@ -65,7 +92,7 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-更多示例：[demos](../demos)。
+更多示例：[demos](./demos)。
 
 ![demos](https://gw.alipayobjects.com/zos/rmsportal/RDCaavVwfzwoVTynJuNR.png)
 

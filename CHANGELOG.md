@@ -6,7 +6,7 @@
 * 新增插件机制，更好支持图表功能扩展，详见 [plugin](./docs/developer/plugin.md)
 * 扩展图表功能组件：[Tooltip](./docs/api/tooltip.md)、[Legend](./docs/api/legend.md)，[扩展 Guide 功能](./docs/api/guide.md)
 * 更灵活的模块按需引用，详见[按需引用](./docs/getting-started/require-on-demand.md)
-* 全新的图表样式，详见 [demos](./demos)
+* 全新的图表样式，详见 [demos](https://antvis.github.io/f2/demos/)
 * 支持图表布局 padding 的自动计算，详见 [padding](./docs/api/chart.md#padding)
 * 添加 [`chart.scale()`](./docs/api/chart.md#scale) 方法，用于列定义
 * 扩展 [`adjust()`](./docs/api/geometry.md#adjust) 方法，支持传入对象，dodge 方式支持设置 `marginRatio` 属性用于调整间距

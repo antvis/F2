@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_470089_zi11p1tyqf7s0pb9.css" />
+    <title>F2@3.1 Demos</title>
+    <style>
+        .intro {
+            background: #F8FAFE;
+            /*min-height: 725px;*/
+            padding: 88px 35px 100px;
+        }
+        .intro h1 {
+            margin: 48px 0;
+            font-size: 40px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.85);
+        }
+        .intro p {
+            margin-bottom: 0;
+            font-size: 16px;
+            line-height: 36px;
+            font-weight: 300;
+            margin: 0;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+
+<body class="drawer-open">
+    <header class="navbar">
+      <a class="navbar-brand" href="#"><img src="https://gw.alipayobjects.com/os/s/prod/antv/assets/image/logo-with-text-73b8a.svg" alt=""> </a>
+    </header>
+
+    <section class="intro">
+        <h1 style="">F2 移动端图表库</h1>
+        <p>F2 是面向移动端的一套基于可视化图形语法的图表库，具有精简、高性能、易扩展的特性。适用于对性能、大小、扩展性要求严苛的场景。</p>
+        <p style="font-size: 14px;color: #1890FF;">请使用 Device Mode 模拟移动设备来查看这个页面</p>
+    </section>
+
+    <div id="mySidenav" class="sidenav">
+      <a href="./line.html">折线图</a>
+      <a href="./area.html">面积图</a>
+      <a href="./bar.html">条形图</a>
+      <a href="./column.html">柱状图</a>
+      <a href="./pie.html">饼环图</a>
+      <a href="./scatter.html">散点图</a>
+      <a href="./radar.html">雷达图</a>
+    </div>
+
+    <!-- <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span> -->
+    <div class="drawer-toggle">
+      <span class="iconfont icon-menu-unfold"></span>
+    </div>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/drawer.js"></script>
+</body>
+
+</html>
