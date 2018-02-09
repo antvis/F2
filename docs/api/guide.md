@@ -7,8 +7,6 @@
 Guide 作为 F2 的插件，如果需要使用的话，需要先将该组件注册入 Chart 类或者 Chart 实例。
 
 ```js
-import { Chart } from '@antv/f2';
-
 // 第一步：加载需要的 guide 组件，可以选择加载全部，也可以选择只加载需要的 Guide 组件
 require('@antv/f2/lib/component/guide'); // 加载全部的 guide 组件
 require('@antv/f2/lib/component/guide/arc'); // 加载 Guide.Arc 组件
@@ -54,7 +52,7 @@ chart.guide().line({
 
 指定 guide 是否绘制在 canvas 最上层，默认为 true, 即绘制在最上层。
 
-- `start`: Array | Function
+- `start`: Array|Function
 
 指定辅助线的起始位置，该值的类型如下：
   + array: 数组来配置位置 [ x, y ]，根据数组中的值的存在以下几种形式：
@@ -86,7 +84,7 @@ chart.guide().line({
 });
 ```
 
-- `end`: array | function
+- `end`: Array|Functionn
 
 指定辅助线的结束位置，使用同 start。
 
@@ -118,11 +116,11 @@ chart.guide().text({
 
 #### 参数
 
-- `top`: boolean
+- `top`: Boolean
 
 指定 guide 是否绘制在 canvas 最上层，默认为 true, 即绘制在最上层。
 
-- `position`: array | function
+- `position`: Array|Function
 
 指定辅助文本的显示位置，该值的类型如下：
 
@@ -147,19 +145,19 @@ chart.guide().text({
 });
 ```
 
-- `content`: string
+- `content`: String
 
 辅助文本的显示内容。
 
-- `style`: object
+- `style`: Object
 
 用于设置辅助文本的显示样式，详见绘图属性。
 
-- `offsetX`: number
+- `offsetX`: Number
 
 设置辅助文本 x 方向的偏移量。
 
-- `offsetY`: number
+- `offsetY`: Number
 
 设置辅助文本 y 方向的偏移量。
 
@@ -185,11 +183,11 @@ chart.guide().rect({
 
 #### 参数
 
-- `top`: boolean
+- `top`: Boolean
 
 指定 guide 是否绘制在 canvas 最上层，默认为 false, 即绘制在最下层。
 
-- `start`: array | function
+- `start`: Array|Function
 
 指定辅助背景框的起始位置，即背景框的左上角，该值的类型如下：
  
@@ -222,11 +220,11 @@ chart.guide().region({
 });
 ```
 
-- `end`: array | function
+- `end`: Array|Function
 
 指定辅助背景框的结束位置，即背景框的右下角，该属性用法同 start。
 
-- `style`: object
+- `style`: Object
 
 用于设置辅助背景框的样式，详见绘图属性。
 
@@ -249,7 +247,7 @@ chart.guide().html({
 
 #### 参数
 
-- `position`: function | array
+- `position`: Array|Function
 
 设置 html 的显示位置，该值的类型如下：
 
@@ -274,23 +272,23 @@ chart.guide().html({
 });
 ```
 
-- `alignX`: string
+- `alignX`: String
 
 html 的水平对齐方式，可取值为： left、center、right，默认值为 center。
 
-- `alignY`: string
+- `alignY`: String
 
 html 的垂直对齐方式，可取值为： top、middle、bottom，默认值为 middle。
 
-- `html`: string
+- `html`: String
 
 需要显示的 html 内容。
 
-- `offsetX`: number
+- `offsetX`: Number
 
 设置 html 在 x 方向的偏移量。
 
-- `offsetY`: number
+- `offsetY`: Number
 
 设置 html 在 y 方向的偏移量。
 
@@ -311,11 +309,11 @@ chart.arc({
 
 #### 参数
 
-- `top`: boolean
+- `top`: Boolean
 
 指定 guide 是否绘制在 canvas 最上层，默认为 false, 即绘制在最下层。
 
-- `start`: array | function
+- `start`: Array|Function
 
 指定辅助圆弧的起始位置，该值的类型如下：
 
@@ -348,11 +346,11 @@ chart.guide().arc({
 });
 ```
 
-- `end`: array | function
+- `end`: Array|Function
 
 指定辅助圆弧的结束位置，该属性用法同 start。
 
-- `style`: object
+- `style`: Object
 
 设置圆弧的显示样式，详见绘图属性。
 
