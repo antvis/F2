@@ -1,4 +1,4 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案。
+# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
