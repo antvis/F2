@@ -37,7 +37,7 @@ $ npm install @antv/f2
 
 ## 快速开始
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/QTqjaZLcsrmDFywWRfHv.png" width="240">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/QTqjaZLcsrmDFywWRfHv.png" width="480">
 
 ```html
 <canvas id="c1"></canvas>
