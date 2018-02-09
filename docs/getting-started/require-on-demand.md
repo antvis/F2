@@ -62,11 +62,11 @@ require('@antv/f2/lib/scale/time-cat'); // 加载 timeCat 类型的度量 \
 ```js
 // 第一步：加载需要的 guide 组件
 require('@antv/f2/lib/component/guide'); // 加载全部的 guide 组件
-require('@antv/f2/lib/component/guide/arc'); // 全部的 Guide.Arc 组件
-require('@antv/f2/lib/component/guide/html'); // 加载全部的 Guide.Html 组件
-require('@antv/f2/lib/component/guide/text'); // 加载全部的 Guide.Text 组件
-require('@antv/f2/lib/component/guide/rect'); // 加载全部的 Guide.Rect 组件
-require('@antv/f2/lib/component/guide/line'); // 加载全部的 Guide.Line 组件
+require('@antv/f2/lib/component/guide/arc'); // 加载 Guide.Arc 组件
+require('@antv/f2/lib/component/guide/html'); // 加载 Guide.Html 组件
+require('@antv/f2/lib/component/guide/text'); // 加载 Guide.Text 组件
+require('@antv/f2/lib/component/guide/rect'); // 加载 Guide.Rect 组件
+require('@antv/f2/lib/component/guide/line'); // 加载 Guide.Line 组件
 // 第二步：加载插件 Guide
 const Guide = require('@antv/f2/lib/plugin/guide');
 // 第三步：注册插件 Guide
@@ -79,7 +79,7 @@ Chart.plugins.register(Guide); // 这里进行全局注册，也可以给 chart 
 // 第一步：加载插件 Tooltip
 const Tooltip = require('@antv/f2/lib/plugin/tooltip');
 // 第二步：注册插件 Tooltip
-Chart.plugins.register(Tooltip); // 这里进行全局注册，也可以给 chart 的实例注册\
+Chart.plugins.register(Tooltip); // 这里进行全局注册，也可以给 chart 的实例注册
 ```
 
 ### Legend
