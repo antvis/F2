@@ -8,7 +8,7 @@ First, we need to have a canvas in our page.
 <canvas id="myChart"></canvas>
 ```
 
-Now that we have a canvas we can use, we need to include Chart.js in our page.
+Now that we have a canvas we can use, we need to include F2 in our page.
 
 ```html
 <!-- online -->
