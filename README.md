@@ -14,7 +14,6 @@ F2 是面向移动端的一套基于可视化图形语法的解决方案，具�
 
 **在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
 
-
 ## 安装
 
 ```bash
@@ -25,6 +24,12 @@ $ npm install @antv/f2
 - ✔︎ 极小：精简版压缩后不到 100k 的代码。
 - ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化。
 - ✔︎ 强大扩展能力：任何图表，都可以基于图形语法灵活绘制，满足你无限的创意。
+
+### 正在建设中
+
+- [ ] 丰富交互功能
+- [ ] 动画支持
+- [ ] 多平台支持
 
 ## 文档
 
