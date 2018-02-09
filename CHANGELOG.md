@@ -9,7 +9,7 @@
 * 全新的图表样式，详见 [demos](./demos)
 * 支持图表布局 padding 的自动计算，详见 [padding](./docs/api/chart.md#padding)
 * 添加 [`chart.scale()`](./docs/api/chart.md#scale) 方法，用于列定义
-* 扩展 [`adjust()`](.docs/api/geometry.md#adjust) 方法，支持传入对象，dodge 方式支持设置 `marginRatio` 属性用于调整间距
+* 扩展 [`adjust()`](./docs/api/geometry.md#adjust) 方法，支持传入对象，dodge 方式支持设置 `marginRatio` 属性用于调整间距
 * `chart.coord('polar')` 新增 `radius` 属性，用于调整半径大小，详见 [Coordinate API](./docs/api/coordinate.md#%E6%9E%81%E5%9D%90%E6%A0%87%E7%B3%BB)
 
 ##### 不兼容性接口说明
