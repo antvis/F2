@@ -1,10 +1,5 @@
-/**
- * @fileOverview interval geometry
- * @author dxq613@gmail.com
- */
-
 const Geom = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 const SizeMixin = require('./mixin/size');
 require('./shape/interval');
 

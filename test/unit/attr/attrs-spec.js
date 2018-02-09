@@ -3,17 +3,17 @@ const Attr = require('../../../src/attr/');
 const Scale = require('../../../src/scale/');
 
 describe('attr test color', () => {
-  const scaleIdentity = Scale.identity({
+  const scaleIdentity = new Scale.Identity({
     field: 'type',
     value: 'red'
   });
 
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -91,13 +91,13 @@ describe('attr test color', () => {
 
 });
 
-describe('attr test size & opacity', () => {
-  const scaleCat = Scale.cat({
+describe('attr test size', () => {
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -134,26 +134,15 @@ describe('attr test size & opacity', () => {
     expect(size.mapping('b')[0]).equal(10);
     expect(size.mapping('c')[0]).equal(100);
   });
-
-  it('mapping opacity', () => {
-    const opactiy = new Attr.Opacity({
-      scales: [ scaleLinear ],
-      values: [ 0, 1 ]
-    });
-    expect(opactiy.type).equal('opacity');
-    expect(opactiy.mapping(0)[0]).equal(0);
-    expect(opactiy.mapping(10)[0]).equal(1);
-    expect(opactiy.mapping(5)[0]).equal(0.5);
-  });
 });
 
 describe('attr test shape', () => {
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10
@@ -191,12 +180,12 @@ describe('attr test shape', () => {
 });
 
 describe('attr test position', () => {
-  const scaleCat = Scale.cat({
+  const scaleCat = new Scale.Cat({
     field: 'type',
     values: [ 'a', 'b', 'c', 'd', 'e' ]
   });
 
-  const scaleLinear = Scale.linear({
+  const scaleLinear = new Scale.Linear({
     field: 'age',
     min: 0,
     max: 10

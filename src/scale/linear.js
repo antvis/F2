@@ -2,10 +2,8 @@
  * @fileOverview The measurement of linear data scale function
  * @author dxq613@gmail.com
  */
-
-
 const Base = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 const numberAuto = require('./auto/number');
 
 /**
@@ -14,62 +12,61 @@ const numberAuto = require('./auto/number');
  */
 class Linear extends Base {
 
-  /**
-   * @override
-   */
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      /**
-       * type of the scale
-       * @type {String}
-       */
-      type: 'linear',
-
-      /**
-       * 是否线性
-       * @type {Boolean}
-       * @readOnly
-       * @default true
-       */
-      isLinear: true,
-
-      /**
-       * min value of the scale
-       * @type {Number}
-       * @default null
-       */
-      min: null,
-
-      /**
-       * max value of the scale
-       * @type {Number}
-       * @default null
-       */
-      max: null,
-
-      /**
-       * 是否为了用户习惯，优化min,max和ticks，如果进行优化，则会根据生成的ticks调整min,max，否则舍弃(min,max)范围之外的ticks
-       * @type {Boolean}
-       * @default false
-       */
-      nice: true,
-
-      /**
-       * 自动生成标记时的个数
-       * @type {Number}
-       * @default null
-       */
-      tickCount: null,
-
-      /**
-       * 坐标轴点之间的间距，指的是真实数据的差值
-       * @type {Number}
-       * @default null
-       */
-      tickInterval: null
-    });
+  _initDefaultCfg() {
+    this.type = 'linear';
+    this.isLinear = true;
+    /**
+      * min value of the scale
+      * @type {Number}
+      * @default null
+      */
+    this.min = null;
+    /**
+      * max value of the scale
+      * @type {Number}
+      * @default null
+      */
+    this.max = null;
+    /**
+      * 是否为了用户习惯，优化min,max和ticks，如果进行优化，则会根据生成的ticks调整min,max，否则舍弃(min,max)范围之外的ticks
+      * @type {Boolean}
+      * @default false
+      */
+    this.nice = true;
+    /**
+      * 自动生成标记时的个数
+      * @type {Number}
+      * @default null
+      */
+    this.tickCount = null;
+    /**
+      * 坐标轴点之间的间距，指的是真实数据的差值
+      * @type {Number}
+      * @default null
+      */
+    this.tickInterval = null;
+    /**
+     * 格式化函数,输出文本或者tick时的格式化函数
+     * @type {Function}
+     */
+    this.formatter = null;
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 度量的标记
+     * @type {Array}
+     */
+    this.ticks = null;
+    /**
+     * 参与度量计算的值，可选项
+     * @type {Array}
+     */
+    this.values = [];
   }
+
   /**
    * @protected
    * @override
@@ -164,4 +161,5 @@ class Linear extends Base {
   }
 }
 
+Base.Linear = Linear;
 module.exports = Linear;

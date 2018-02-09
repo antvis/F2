@@ -1,12 +1,9 @@
 const expect = require('chai').expect;
-const AxisLine = require('../../../src/axis/line');
+const AxisLine = require('../../../src/component/axis/line');
 const Scale = require('../../../src/scale/');
 const axisGlobal = require('../../../src/global').axis;
-const Util = require('../../../src/util');
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-document.body.appendChild(canvas);
+const Util = require('../../../src/util/common');
+const { Group } = require('../../../src/graphic/index');
 
 const linear = new Scale.Linear({
   min: 0,
@@ -14,9 +11,28 @@ const linear = new Scale.Linear({
   tickCount: 5
 });
 
-// const cat = Scale.cat({
-//   values: [ 'a', 'b', 'c' ]
-// });
+const frontContainer = new Group({
+  zIndex: 2
+});
+const backContainer = new Group({
+  zIndex: 1
+});
+
+const labels = [];
+const ticks = linear.getTicks();
+ticks.map(tick => {
+  const textShape = new Text({
+    className: 'label-text',
+    attrs: {
+      x: 0,
+      y: 0,
+      text: tick.text
+    },
+    value: tick.value
+  });
+  labels.push(textShape);
+  return textShape;
+});
 
 describe('line axis', function() {
   describe('left', function() {
@@ -29,14 +45,17 @@ describe('line axis', function() {
         x: 40,
         y: 40
       },
-      canvas,
+      frontContainer,
+      backContainer,
       offsetFactor: -1,
-      ticks: linear.getTicks()
+      ticks: linear.getTicks(),
+      labels
     }, axisGlobal);
     let axis;
     it('init', function() {
       axis = new AxisLine(cfg);
-      expect(axis.get('ticks').length).equal(linear.ticks.length);
+      // TODO
+      expect(axis.ticks.length).equal(linear.ticks.length);
     });
 
     it('test point', function() {
@@ -56,11 +75,6 @@ describe('line axis', function() {
       const side = axis.getSidePoint(point, 10);
       expect(side).eql({ x: 30, y: 460 });
     });
-
-    it('draw', function() {
-      axis.draw();
-    });
-
   });
 
   describe('bottom', function() {
@@ -73,13 +87,14 @@ describe('line axis', function() {
         x: 460,
         y: 460
       },
-      canvas,
+      frontContainer,
+      backContainer,
       ticks: linear.getTicks()
     }, axisGlobal, {
       line: null
     });
     const axis = new AxisLine(cfg);
-    axis.draw();
+    // axis.draw();
 
     it('test point', function() {
       let point = axis.getOffsetPoint(0);
@@ -119,14 +134,14 @@ describe('line axis', function() {
         x: 460,
         y: 40
       },
-      canvas,
+      frontContainer,
+      backContainer,
       gridPoints: [[{ x: 460, y: 450 }, { x: 40, y: 450 }], [{ x: 460, y: 60 }, { x: 40, y: 60 }]],
       ticks: linear.getTicks()
     }, axisGlobal, {
       label: null
     });
     const axis = new AxisLine(cfg);
-    axis.draw();
 
     it('test point', function() {
       let point = axis.getOffsetPoint(0);
@@ -169,7 +184,8 @@ describe('line axis', function() {
         x: 460,
         y: 40
       },
-      canvas,
+      frontContainer,
+      backContainer,
       offsetFactor: -1,
       ticks: linear.getTicks()
     }, axisGlobal, {
@@ -177,7 +193,6 @@ describe('line axis', function() {
       tick: null
     });
     const axis = new AxisLine(cfg);
-    axis.draw();
 
     it('test point', function() {
       let point = axis.getOffsetPoint(0);
@@ -207,43 +222,44 @@ describe('line axis', function() {
     });
   });
 
-  describe('grid label function', function() {
-    const cfg = Util.deepMix({
-      start: {
-        x: 40,
-        y: 150
-      },
-      end: {
-        x: 460,
-        y: 250
-      },
-      canvas,
-      gridPoints: [[{ x: 40, y: 40 }, { x: 40, y: 450 }], [{ x: 460, y: 60 }, { x: 460, y: 460 }]],
-      ticks: linear.getTicks()
-    }, axisGlobal, {
-      label(text, index) {
-        if (index % 2 === 0) {
-          return null;
-        }
-        return {
-          offset: 10,
-          font: '30px sans-serif',
-          fillStyle: '#333'
-        };
+  // describe('grid label function', function() {
+  //   const cfg = Util.deepMix({
+  //     start: {
+  //       x: 40,
+  //       y: 150
+  //     },
+  //     end: {
+  //       x: 460,
+  //       y: 250
+  //     },
+  //     frontContainer,
+  //     backContainer,
+  //     gridPoints: [[{ x: 40, y: 40 }, { x: 40, y: 450 }], [{ x: 460, y: 60 }, { x: 460, y: 460 }]],
+  //     ticks: linear.getTicks()
+  //   }, axisGlobal, {
+  //     label(text, index) {
+  //       if (index % 2 === 0) {
+  //         return null;
+  //       }
+  //       return {
+  //         offset: 10,
+  //         font: '30px sans-serif',
+  //         fillStyle: '#333'
+  //       };
 
-      },
-      grid(text, index) {
-        if (index % 2 !== 0) {
-          return null;
-        }
-        return {
-          strokeStyle: 'blue'
-        };
+  //     },
+  //     grid(text, index) {
+  //       if (index % 2 !== 0) {
+  //         return null;
+  //       }
+  //       return {
+  //         strokeStyle: 'blue'
+  //       };
 
-      }
-    });
-    const axis = new AxisLine(cfg);
-    axis.draw();
-  });
+  //     }
+  //   });
+  //   // const axis = new AxisLine(cfg);
+  //   // axis.draw();
+  // });
 
 });

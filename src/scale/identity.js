@@ -2,31 +2,24 @@
  * @fileOverview The data is replaced with constant
  * @author dxq613@gmail.com
  */
-
 const Base = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 
 class Identity extends Base {
 
-  /**
-   * @override
-   */
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      isIdentity: true,
-      /**
-       * @override
-       * @type {String}
-       */
-      type: 'identity',
-
-      /**
-       * 常量值
-       * @type {*}
-       */
-      value: null
-    });
+  _initDefaultCfg() {
+    this.isIdentity = true;
+    this.type = 'identity';
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 常量值
+     * @type {*}
+     */
+    this.value = null;
   }
 
   /**
@@ -54,4 +47,5 @@ class Identity extends Base {
   }
 }
 
+Base.Identity = Identity;
 module.exports = Identity;

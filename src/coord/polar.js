@@ -1,76 +1,68 @@
-/**
- * @fileOverview 极坐标系
- * @author dxq613@gmail.com
- */
-
 const Base = require('./base');
-const Vector2 = require('../graphic/vector2');
+const Vector2 = require('../graphic/util/vector2');
 
 class Polar extends Base {
-
-  getDefaultCfg() {
-    return {
-      type: 'polar',
-      startAngle: -Math.PI / 2,
-      endAngle: Math.PI * 3 / 2,
-      inner: 0,
-      innerRadius: 0, // alias
-      isPolar: true,
-      transposed: false,
-      center: null,
-      radius: null
-    };
+  _initDefaultCfg() {
+    this.type = 'polar';
+    this.startAngle = -Math.PI / 2;
+    this.endAngle = Math.PI * 3 / 2;
+    this.inner = 0;
+    this.innerRadius = 0; // alias
+    this.isPolar = true;
+    this.transposed = false;
+    this.center = null;
+    this.radius = null; // 相对半径
   }
 
-  init() {
+  init(start, end) {
     const self = this;
-    const plot = self.get('plot');
-    const start = plot ? plot.get('bl') : self.get('start');
-    const end = plot ? plot.get('tr') : self.get('end');
-    const inner = self.get('inner') || self.get('innerRadius');
+    const inner = self.inner || self.innerRadius;
     const width = Math.abs(end.x - start.x);
     const height = Math.abs(end.y - start.y);
 
-    let radius;
+    let maxRadius;
     let center;
-    if (self.get('startAngle') === -Math.PI && self.get('endAngle') === 0) {
-      radius = Math.min(width / 2, height);
+    if (self.startAngle === -Math.PI && self.endAngle === 0) {
+      maxRadius = Math.min(width / 2, height);
       center = {
         x: (start.x + end.x) / 2,
         y: start.y
       };
     } else {
-      radius = Math.min(width, height) / 2;
+      maxRadius = Math.min(width, height) / 2;
       center = {
         x: (start.x + end.x) / 2,
         y: (start.y + end.y) / 2
       };
     }
 
-    const x = {
-      start: self.get('startAngle'),
-      end: self.get('endAngle')
+    const radius = self.radius; // 相对半径
+    if (radius > 0 && radius <= 1) {
+      maxRadius = maxRadius * radius;
+    }
+
+    this.x = {
+      start: self.startAngle,
+      end: self.endAngle
     };
 
-    const y = {
-      start: radius * inner,
-      end: radius
+    this.y = {
+      start: maxRadius * inner,
+      end: maxRadius
     };
-    self.set('center', center);
-    self.set('radius', radius);
-    self.set('x', x);
-    self.set('y', y);
+    this.center = center;
+    this.circleRadius = maxRadius; // 绝对半径
   }
 
   convertPoint(point) {
     const self = this;
-    const center = self.get('center');
-    const transposed = self.get('transposed');
+    const center = self.center;
+    const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
 
-    const x = self.get('x');
-    const y = self.get('y');
+    const x = self.x;
+    const y = self.y;
 
     const angle = x.start + (x.end - x.start) * point[xDim];
     const radius = y.start + (y.end - y.start) * point[yDim];
@@ -83,29 +75,28 @@ class Polar extends Base {
 
   invertPoint(point) {
     const self = this;
-    const center = self.get('center');
-    const transposed = self.get('transposed');
+    const center = self.center;
+    const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
-    const x = self.get('x');
-    const y = self.get('y');
+    const x = self.x;
+    const y = self.y;
 
-    const startv = new Vector2(1, 0);
+    const startV = [ 1, 0 ];
+    const pointV = [ point.x - center.x, point.y - center.y ];
 
-    const pointv = new Vector2(point.x - center.x, point.y - center.y);
-
-    if (pointv.zero()) {
+    if (Vector2.zero(pointV)) {
       return {
         x: 0,
         y: 0
       };
     }
 
-    let theta = startv.angleTo(pointv);
+    let theta = Vector2.angleTo(startV, pointV);
     while (theta > x.end) {
       theta = theta - 2 * Math.PI;
     }
-    const l = pointv.length();
+    const l = Vector2.length(pointV);
     const percentX = (theta - x.start) / (x.end - x.start);
     const percentY = (l - y.start) / (y.end - y.start);
     const rst = {};
@@ -115,4 +106,5 @@ class Polar extends Base {
   }
 }
 
+Base.Polar = Polar;
 module.exports = Polar;

@@ -3,16 +3,13 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Adjust = require('./base');
 
 class Stack extends Adjust {
-
-  getDefaultCfg() {
-    return {
-      xField: null,
-      yField: null
-    };
+  _initDefaultCfg() {
+    this.xField = null;
+    this.yField = null;
   }
 
   processAdjust(dataArray) {
@@ -24,7 +21,7 @@ class Stack extends Adjust {
 
     for (let i = 0; i < count; i++) {
       const data = dataArray[i];
-      for (let j = 0; j < data.length; j++) {
+      for (let j = 0, len = data.length; j < len; j++) {
         const item = data[j];
         const x = item[xField];
         let y = item[yField];

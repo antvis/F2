@@ -1,58 +1,37 @@
-/**
- * @fileOverview 绘图区域
- * @author dxq613@gmail.com
- */
-
-const Util = require('../util');
-
-/**
- * 画布绘制图表的区域
- * @class Plot
- */
+const Util = require('../util/common');
 class Plot {
-
-  get(name) {
-    return this[name];
-  }
-
-  set(name, value) {
-    this[name] = value;
-  }
-
   constructor(cfg) {
     Util.mix(this, cfg);
-    this.__init();
+    this._init();
   }
 
-  // 初始化，设置4个顶点
-  __init() {
+  _init() {
     const self = this;
-    const start = self.get('start');
-    const end = self.get('end');
+    const start = self.start;
+    const end = self.end;
+    const xMin = Math.min(start.x, end.x);
+    const xMax = Math.max(start.x, end.x);
+    const yMin = Math.min(start.y, end.y);
+    const yMax = Math.max(start.y, end.y);
 
-    const tl = {};
-    tl.x = Math.min(start.x, end.x);
-    tl.y = Math.min(start.y, end.y);
-    self.set('tl', tl);
-
-    const tr = {};
-    tr.x = Math.max(start.x, end.x);
-    tr.y = Math.min(start.y, end.y);
-    self.set('tr', tr);
-
-    const bl = {};
-    bl.x = Math.min(start.x, end.x);
-    bl.y = Math.max(start.y, end.y);
-    self.set('bl', bl);
-
-
-    const br = {};
-    br.x = Math.max(start.x, end.x);
-    br.y = Math.max(start.y, end.y);
-    self.set('br', br);
-
-    self.set('width', br.x - tl.x);
-    self.set('height', br.y - tl.y);
+    this.tl = {
+      x: xMin,
+      y: yMin
+    };
+    this.tr = {
+      x: xMax,
+      y: yMin
+    };
+    this.bl = {
+      x: xMin,
+      y: yMax
+    };
+    this.br = {
+      x: xMax,
+      y: yMax
+    };
+    this.width = xMax - xMin;
+    this.height = yMax - yMin;
   }
 
   /**
@@ -61,9 +40,9 @@ class Plot {
    * @param  {Object} end  结束点
    */
   reset(start, end) {
-    this.set('start', start);
-    this.set('end', end);
-    this.__init();
+    this.start = start;
+    this.end = end;
+    this._init();
   }
 
   /**
@@ -77,8 +56,8 @@ class Plot {
       y = x.y;
       x = x.x;
     }
-    const tl = this.get('tl');
-    const br = this.get('br');
+    const tl = this.tl;
+    const br = this.br;
     return tl.x <= x && x <= br.x && tl.y <= y && y <= br.y;
   }
 }

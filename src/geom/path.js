@@ -1,11 +1,6 @@
-/**
- * @fileOverview 路径图，无序的线图
- * @author dxq613@gmail.com
- */
-
 const Geom = require('./base');
 const ShapeUtil = require('./shape/util');
-const Util = require('../util');
+const Util = require('../util/common');
 require('./shape/line');
 
 class Path extends Geom {

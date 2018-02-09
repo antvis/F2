@@ -1,14 +1,7 @@
-/**
- * @fileOverview the position attribute of core
- * @author huangtonger@aliyun.com
- */
-
-
-const Util = require('../util');
+const Util = require('../util/common');
 const Base = require('./base');
 
 class Position extends Base {
-
   constructor(cfg) {
     super(cfg);
     this.names = [ 'x', 'y' ];
@@ -29,7 +22,7 @@ class Position extends Base {
     if (Util.isArray(y) && Util.isArray(x)) {
       rstX = [];
       rstY = [];
-      for (let i = 0, j = 0; i < x.length && j < y.length; i++, j++) {
+      for (let i = 0, j = 0, xLen = x.length, yLen = y.length; i < xLen && j < yLen; i++, j++) {
         obj = coord.convertPoint({
           x: scaleX.scale(x[i]),
           y: scaleY.scale(y[j])

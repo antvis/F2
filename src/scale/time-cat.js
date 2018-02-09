@@ -2,9 +2,9 @@
  * @fileOverview 时间数据作为分类类型
  * @author dxq613@gmail.com
  */
-
+const Base = require('./base');
 const Category = require('./category');
-const Util = require('../util');
+const Util = require('../util/common');
 const fecha = require('fecha');
 const catAuto = require('./auto/cat');
 const TimeUtil = require('./time-util');
@@ -14,29 +14,34 @@ const TimeUtil = require('./time-util');
  * @class Scale.TimeCategory
  */
 class TimeCategory extends Category {
-
-  /**
-   * @override
-   */
-  getDefaultCfg() {
-    const cfg = super.getDefaultCfg();
-    return Util.mix({}, cfg, {
-      /**
-       * @override
-       */
-      type: 'timeCat',
-
-      /**
-       * 格式化符
-       * @type {String}
-       */
-      mask: 'YYYY-MM-DD',
-
-      /**
-       * @override
-       */
-      tickCount: 5
-    });
+  _initDefaultCfg() {
+    this.type = 'timeCat';
+    /**
+     * 是否需要排序，默认进行排序
+     * @type {Boolean}
+     */
+    this.sortable = true;
+    this.tickCount = 5;
+    /**
+     * 时间格式化
+     * @type {String}
+     */
+    this.mask = 'YYYY-MM-DD';
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 度量的标记
+     * @type {Array}
+     */
+    this.ticks = null;
+    /**
+     * 参与度量计算的值，可选项
+     * @type {Array}
+     */
+    this.values = [];
   }
 
   init() {
@@ -46,9 +51,11 @@ class TimeCategory extends Category {
     Util.each(values, function(v, i) {
       values[i] = self._toTimeStamp(v);
     });
-    values.sort(function(v1, v2) {
-      return v1 - v2;
-    });
+    if (this.sortable) {
+      values.sort(function(v1, v2) {
+        return v1 - v2;
+      });
+    }
 
     if (!self.ticks) {
       self.ticks = this.calculateTicks(false);
@@ -160,4 +167,5 @@ class TimeCategory extends Category {
   }
 }
 
+Base.TimeCat = TimeCategory;
 module.exports = TimeCategory;

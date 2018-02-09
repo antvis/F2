@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 const MAX_COUNT = 8;
 
 function getSimpleArray(data) {
@@ -37,7 +37,7 @@ module.exports = function(info) {
     });
 
     ticks.push(categories[0]);
-    for (let i = 1; (i < groups.length) && (i < tickCount - 1); i++) {
+    for (let i = 1, groupLen = groups.length; (i < groupLen) && (i < tickCount - 1); i++) {
       ticks.push(groups[i][0]);
     }
 

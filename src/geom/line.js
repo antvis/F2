@@ -1,8 +1,3 @@
-/**
- * @fileOverview 线图
- * @author dxq613@gmail.com
- */
-
 const Path = require('./path');
 const Geom = require('./base');
 

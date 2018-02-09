@@ -5,3 +5,6 @@ dist/
 lib/
 mocks/
 node_modules/
+demos/assets/
+lib/
+demos/index.html

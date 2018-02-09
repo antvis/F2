@@ -2,11 +2,12 @@ const expect = require('chai').expect;
 require('../../../src/geom/index');
 
 const Chart = require('../../../src/chart/chart');
-
-require('../../../src/guide/index');
+const { Guide } = require('../../../src/plugin/index');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
+require('../../../src/component/guide');
 
+Chart.plugins.register(Guide);
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');
@@ -92,17 +93,17 @@ describe('chart test', () => {
     });
 
 
-    it('test assist', function() {
+    it('test controller', function() {
       chart = new Chart({
         el: canvas,
         width: 400,
         height: 600,
         padding: 50
       });
-      expect(chart.get('scaleAssist')).not.equal(undefined);
-      expect(chart.get('guideAssist')).not.equal(undefined);
-      expect(chart.get('axisAssist')).not.equal(undefined);
-      expect(chart.get('animateAssist')).not.equal(undefined);
+      expect(chart.get('scaleController')).not.equal(undefined);
+      expect(chart.get('guideController')).not.equal(undefined);
+      expect(chart.get('axisController')).not.equal(undefined);
+      // expect(chart.get('animateController')).not.equal(undefined);
     });
 
     it('test coord', function() {
@@ -112,7 +113,7 @@ describe('chart test', () => {
 
     it('test methods', function() {
       chart.axis('field', { test: true });
-      expect(chart.get('axisAssist').axisCfg.field).eqls({ test: true });
+      expect(chart.get('axisController').axisCfg.field).eqls({ test: true });
     });
   });
 
@@ -127,8 +128,7 @@ describe('chart test', () => {
       a: 1,
       b: 3,
       c: '2'
-    },
-    {
+    }, {
       a: 2,
       b: 1,
       c: '1'
@@ -136,8 +136,7 @@ describe('chart test', () => {
       a: 2,
       b: 4,
       c: '2'
-    },
-    {
+    }, {
       a: 3,
       b: 5,
       c: '1'
@@ -153,6 +152,8 @@ describe('chart test', () => {
         width: 500,
         height: 500
       });
+
+      expect(chart.get('canvas')).to.not.be.empty;
     });
 
 
@@ -167,10 +168,36 @@ describe('chart test', () => {
       expect(chart.get('colDefs').a.min).equal(0);
     });
 
+    it('scale', function() {
+      chart.scale('a', {
+        max: 10
+      });
+      chart.scale({
+        b: {
+          nice: false
+        }
+      });
+      expect(chart.get('colDefs').a).eql({ max: 10 });
+      expect(chart.get('colDefs').b).eql({ nice: false });
+      expect(chart.get('scaleController').defs).eql({ a: { max: 10 }, b: { nice: false } });
+
+      chart.scale({
+        a: {
+          min: 0,
+          max: 4
+        }
+      });
+      expect(chart.get('colDefs').a).eql({ min: 0, max: 4 });
+      expect(chart.get('scaleController').defs).eql({ a: { min: 0, max: 4 }, b: { nice: false } });
+    });
+
     it('guide', function() {
       expect(chart.guide().text).not.equal(undefined);
-      chart.guide().text([ 2.5, 3 ], 'test');
-      expect(chart.get('guideAssist').guides.length).equal(1);
+      chart.guide().text({
+        position: [ 2.5, 3 ],
+        content: 'test'
+      });
+      expect(chart.get('guideController').guides.length).equal(1);
     });
 
     it('geom methods', function() {
@@ -197,7 +224,7 @@ describe('chart test', () => {
       chart.render();
     });
 
-    it('animate', function() {
+    xit('animate', function() {
       chart.clear();
       const data = [
         { a: '1', b: 2 },
@@ -218,7 +245,10 @@ describe('chart test', () => {
     });
 
     it('repaint', function() {
-      chart.guide().text([ '1', 3 ], '这是测试文本');
+      chart.guide().text({
+        position: [ '1', 3 ],
+        content: '这是测试文本'
+      });
       chart.repaint();
     });
 

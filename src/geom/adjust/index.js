@@ -1,4 +1,3 @@
-
 const Adjust = require('./base');
 
 require('./dodge');

@@ -1,15 +1,6 @@
-/**
- * @fileOverview point shape
- * @author dxq613@gmail.com
- */
-
-
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Shape = require('./shape');
 const ShapeUtil = require('./util');
-
-const G = require('../../graphic/g');
-const DEFAULT_SIZE = 4; // 线的默认宽度
 const Global = require('../../global');
 
 // regist line geom
@@ -18,59 +9,92 @@ const Line = Shape.registerFactory('line', {
 });
 
 function getStyle(cfg) {
-  const style = Util.mix({
-    strokeStyle: cfg.color,
-    lineWidth: cfg.size || DEFAULT_SIZE,
-    z: cfg.isInCircle
-  }, cfg.style);
-  return style;
+  const style = {
+    strokeStyle: cfg.color
+  };
+  if (cfg.size >= 0) {
+    style.lineWidth = cfg.size;
+  }
+  Util.mix(style, cfg.style);
+
+  return Util.mix({}, Global.shape.line, style);
 }
 
-function drawLines(cfg, canvas, style, isSmooth) {
+function drawLines(cfg, container, style, smooth) {
   const points = cfg.points;
-  const method = isSmooth ? 'drawSmooth' : 'drawLines';
   if (points.length && Util.isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0, len = points.length; i < len; i++) {
       const point = points[i];
       const tmp = ShapeUtil.splitPoints(point);
       bottomPoints.push(tmp[0]);
       topPoints.push(tmp[1]);
     }
+    if (cfg.isInCircle) {
+      topPoints.push(topPoints[0]);
+      bottomPoints.push(bottomPoints[0]);
+    }
     if (cfg.isStack) {
-      G[method](topPoints, canvas, style);
+      container.addShape('Polyline', {
+        className: 'line',
+        attrs: Util.mix({
+          points: topPoints,
+          smooth
+        }, style)
+      });
     } else {
-      G[method](topPoints, canvas, style);
-      G[method](bottomPoints, canvas, style);
+      container.addShape('Polyline', {
+        className: 'line',
+        attrs: Util.mix({
+          points: topPoints,
+          smooth
+        }, style)
+      });
+      container.addShape('Polyline', {
+        className: 'line',
+        attrs: Util.mix({
+          points: bottomPoints,
+          smooth
+        }, style)
+      });
     }
   } else {
-    G[method](points, canvas, style);
+    if (cfg.isInCircle) {
+      points.push(points[0]);
+    }
+    container.addShape('Polyline', {
+      className: 'line',
+      attrs: Util.mix({
+        points,
+        smooth
+      }, style)
+    });
   }
 }
 
 // draw line shape
 Shape.registerShape('line', 'line', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
-    drawLines(cfg, canvas, style);
+    drawLines(cfg, container, style);
   }
 });
 
 // draw smooth line shape
 Shape.registerShape('line', 'smooth', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
-    drawLines(cfg, canvas, style, true);
+    drawLines(cfg, container, style, true);
   }
 });
 
 // draw dash line shape
 Shape.registerShape('line', 'dash', {
-  draw(cfg, canvas) {
+  draw(cfg, container) {
     const style = getStyle(cfg);
     style.lineDash = Global.lineDash;
-    drawLines(cfg, canvas, style);
+    drawLines(cfg, container, style);
   }
 });
 
