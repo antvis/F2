@@ -1,4 +1,4 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案。
+# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -33,10 +33,12 @@ $ npm install @antv/f2
 
 ## 文档
 
-- [快速开始](./docs/getting-started/README.md)
-- [使用教程](./docs/chart-concept/README.md)
-- [API](./docs/api/README.md)
-- [图表示例](./demos)
+地址：[https://antvis.github.io/f2/SUMMARY](https://antvis.github.io/f2/SUMMARY)
+
+- [快速开始](https://antvis.github.io/f2/getting-started/)
+- [使用教程](https://antvis.github.io/f2/chart-concept/)
+- [API](https://antvis.github.io/f2/api/)
+- [图表示例](https://antvis.github.io/f2/demos/)
 
 3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
 
@@ -70,7 +72,7 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-更多示例：[demos](./demos)。
+更多示例：[demos](https://antvis.github.io/f2/demos/)。
 
 ![demos](https://gw.alipayobjects.com/zos/rmsportal/RDCaavVwfzwoVTynJuNR.png)
 
