@@ -2,6 +2,32 @@
 
 用于绘制图表的辅助元素，该方法的返回值不为 chart 对象，而是一个 guide 对应的控制类 guideController。 包括辅助线、辅助文本、辅助框、辅助弧线（只在极坐标下适用）、辅助 html。
 
+## 如何引入 Guide
+
+Guide 作为 F2 的插件，如果需要使用的话，需要先将该组件注册入 Chart 类或者 Chart 实例。
+
+```js
+import { Chart } from '@antv/f2';
+
+// 第一步：加载需要的 guide 组件，可以选择加载全部，也可以选择只加载需要的 Guide 组件
+require('@antv/f2/lib/component/guide'); // 加载全部的 guide 组件
+require('@antv/f2/lib/component/guide/arc'); // 加载 Guide.Arc 组件
+require('@antv/f2/lib/component/guide/html'); // 加载 Guide.Html 组件
+require('@antv/f2/lib/component/guide/text'); // 加载 Guide.Text 组件
+require('@antv/f2/lib/component/guide/rect'); // 加载 Guide.Rect 组件
+require('@antv/f2/lib/component/guide/line'); // 加载 Guide.Line 组件
+// 第二步：加载插件 Guide
+const Guide = require('@antv/f2/lib/plugin/guide');
+// 第三步：注册插件 Guide
+Chart.plugins.register(Guide); // 这里进行全局注册，也可以给 chart 的实例注册
+
+// 给具体的 chart 实例注册
+const chart = new Chart({
+  id: 'canvas',
+  plugins: Guide
+});
+```
+
 ## API
 
 ### line
