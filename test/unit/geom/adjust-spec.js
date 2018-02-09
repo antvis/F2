@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const Adjust = require('../../../src/geom/adjust/index');
-const Util = require('../../../src/util');
+const Util = require('../../../src/util/common');
 
 describe('stack adjust', function() {
 
@@ -199,7 +199,8 @@ describe('adjust dodge', function() {
 
     const groupData = Util.Array.group(data, 'c');
     const adjust = new Adjust.Dodge({
-      xField: 'a'
+      xField: 'a',
+      marginRatio: 0.5
     });
 
     it('init', function() {

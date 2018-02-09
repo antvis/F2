@@ -1,10 +1,5 @@
-/**
- * @fileOverview Geometry Polygon
- * @author dxq613@gmail.com
- */
-
 const Geom = require('./base');
-const Util = require('../util');
+const Util = require('../util/common');
 require('./shape/polygon');
 
 class Polygon extends Geom {

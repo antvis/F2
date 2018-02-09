@@ -48,7 +48,7 @@ describe('scale base test', () => {
 
 describe('scale identity', function() {
 
-  const scale = new Scale.identity({
+  const scale = new Scale.Identity({
     value: 'test'
   });
 

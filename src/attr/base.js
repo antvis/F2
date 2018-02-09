@@ -1,9 +1,4 @@
-/**
- * @fileOverview the Attribute base class
- * @author huangtonger@aliyun.com
- */
-
-const Util = require('../util');
+const Util = require('../util/common');
 
 function toScaleString(scale, value) {
   if (Util.isString(value)) {
@@ -11,10 +6,8 @@ function toScaleString(scale, value) {
   }
   return scale.invert(scale.scale(value));
 }
-/**
- * 所有视觉通道属性的基类
- * @class Attr
- */
+
+
 class AttributeBase {
 
   constructor(cfg) {
@@ -55,14 +48,6 @@ class AttributeBase {
     this.linear = null;
 
     Util.mix(this, cfg);
-  }
-
-  get(name) {
-    return this[name];
-  }
-
-  set(name, value) {
-    this[name] = value;
   }
 
   // 获取属性值，将值映射到视觉通道
@@ -161,7 +146,7 @@ class AttributeBase {
     const callback = this.callback;
     let values = params;
     if (callback) {
-      for (let i = 0; i < params.length; i++) {
+      for (let i = 0, len = params.length; i < len; i++) {
         params[i] = this._toOriginParam(params[i], scales[i]);
       }
       values = callback.apply(this, params);
@@ -178,7 +163,7 @@ class AttributeBase {
     if (!scale.isLinear) {
       if (Util.isArray(param)) {
         rst = [];
-        for (let i = 0; i < param.length; i++) {
+        for (let i = 0, len = param.length; i < len; i++) {
           rst.push(toScaleString(scale, param[i]));
         }
       } else {

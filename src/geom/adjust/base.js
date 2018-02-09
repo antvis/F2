@@ -3,17 +3,15 @@
  * @author dxq613@gmail.com
  */
 
-const Util = require('../../util');
+const Util = require('../../util/common');
 
 class Base {
 
-  getDefaultCfg() {
-    return {};
-  }
+  _initDefaultCfg() {}
 
   constructor(cfg) {
-    const defaultCfg = this.getDefaultCfg();
-    Util.mix(this, defaultCfg, cfg);
+    this._initDefaultCfg();
+    Util.mix(this, cfg);
   }
 
   processAdjust(/* dataArray */) {

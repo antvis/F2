@@ -2,57 +2,40 @@
  * @fileOverview the base class of scale
  * @author dxq613@gmail.com
  */
-
-const Util = require('../util');
+const Util = require('../util/common');
 
 /**
  * 度量的构造函数
  * @class Scale
  */
 class Scale {
-
-  /**
-   * 获取默认的配置属性
-   * @protected
-   * @return {Object} 默认属性
-   */
-  getDefaultCfg() {
-    return {
-      /**
-       * type of the scale
-       * @type {String}
-       */
-      type: 'base',
-
-      /**
-       * 格式化函数,输出文本或者tick时的格式化函数
-       * @type {Function}
-       */
-      formatter: null,
-
-      /**
-       * 输出的值域
-       * @type {Array}
-       */
-      range: [ 0, 1 ],
-
-      /**
-       * 度量的标记
-       * @type {Array}
-       */
-      ticks: null,
-
-      /**
-       * 参与度量计算的值，可选项
-       * @type {Array}
-       */
-      values: []
-    };
+  _initDefaultCfg() {
+    this.type = 'base';
+    /**
+     * 格式化函数,输出文本或者tick时的格式化函数
+     * @type {Function}
+     */
+    this.formatter = null;
+    /**
+     * 输出的值域
+     * @type {Array}
+     */
+    this.range = [ 0, 1 ];
+    /**
+     * 度量的标记
+     * @type {Array}
+     */
+    this.ticks = null;
+    /**
+     * 参与度量计算的值，可选项
+     * @type {Array}
+     */
+    this.values = [];
   }
 
   constructor(cfg) {
-    const defaultCfg = this.getDefaultCfg();
-    Util.mix(this, defaultCfg, cfg);
+    this._initDefaultCfg();
+    Util.mix(this, cfg);
     this.init();
   }
 

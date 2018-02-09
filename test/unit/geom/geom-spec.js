@@ -1,48 +1,54 @@
 const expect = require('chai').expect;
 const Geom = require('../../../src/geom/index');
-// const Global = require('../../../src/global');
 const Scale = require('../../../src/scale/index');
 const Coord = require('../../../src/coord/index');
+require('../../../src/coord/polar');
 const Global = require('../../../src/global');
+const { Canvas } = require('../../../src/graphic/index');
 
 require('../../../src/geom/adjust/index');
-
 require('../../../src/geom/shape/index');
 
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-document.body.appendChild(canvas);
+const dom = document.createElement('canvas');
+dom.width = 500;
+dom.height = 500;
+document.body.appendChild(dom);
 
-let scaleA = Scale.linear({
+const canvas = new Canvas({
+  el: dom,
+  width: 500,
+  height: 500
+});
+
+let scaleA = new Scale.Linear({
   field: 'a',
   min: 0,
   max: 10
 });
 
-const scaleB = Scale.linear({
+const scaleB = new Scale.Linear({
   field: 'b',
   min: 0,
   max: 5,
   nice: false
 });
 
-const scaleC = Scale.cat({
+const scaleC = new Scale.Cat({
   field: 'c',
   values: [ '1', '2' ]
 });
 
-const ScaleRed = Scale.identity({
+const ScaleRed = new Scale.Identity({
   field: 'red',
   value: 'red'
 });
 
-const ScaleSmooth = Scale.identity({
+const ScaleSmooth = new Scale.Identity({
   field: 'smooth',
   value: 'smooth'
 });
 
-const ScaleTen = Scale.identity({
+const ScaleTen = new Scale.Identity({
   field: '10',
   value: 10
 });
@@ -108,17 +114,14 @@ describe('test geoms', function() {
           .shape('a', [ 'circle', 'rect' ])
           .size('b', function() {
 
-          })
-          .opacity(0.8);
+          });
       const attrOptions = geom.get('attrOptions');
       // debugger;
       expect(attrOptions.color.field).eqls('red');
       expect(attrOptions.color.values).eqls(Global.colors);
-      // expect(attrOptions.color.values).to.be.undefined;
       expect(attrOptions.shape).eqls({ field: 'a', values: [ 'circle', 'rect' ] });
       expect(attrOptions.size.field).equal('b');
       expect(attrOptions.size.callback).to.be.a('function');
-      expect(attrOptions.opacity.field).equal(0.8);
     });
 
   });
@@ -188,12 +191,12 @@ describe('test geoms', function() {
   describe('test paint', function() {
     const newData = data.slice(0);
     let geom;
-    const scaleA = Scale.linear({
+    const scaleA = new Scale.Linear({
       field: 'a',
       min: 0,
       max: 10
     });
-    const scaleB = Scale.linear({
+    const scaleB = new Scale.Linear({
       field: 'b',
       min: 0,
       max: 5,
@@ -267,7 +270,7 @@ describe('test geoms', function() {
 });
 
 function clearCanvas(canvas) {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.get('context');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -349,12 +352,12 @@ describe('test geom path', function() {
 
 describe('test geom line', function() {
   let data = [{ a: 4, b: 3, c: '1' }, { a: 2, b: 2, c: '2' }];
-  const scaleA = Scale.linear({
+  const scaleA = new Scale.Linear({
     field: 'a',
     min: 0,
     max: 10
   });
-  const scaleB = Scale.linear({
+  const scaleB = new Scale.Linear({
     field: 'b',
     min: 0,
     max: 5,
@@ -465,7 +468,7 @@ describe('test geom area', function() {
   ];
   let geom;
   it('create area', function() {
-    scaleA = Scale.cat({
+    scaleA = new Scale.Cat({
       field: 'a',
       values: [ '1', '2', '3' ],
       range: [ 0.2, 0.8 ]
@@ -544,7 +547,7 @@ describe('test geom interval', function() {
       { a: '3', b: 2, c: '2' }
   ];
 
-  scaleA = Scale.cat({
+  scaleA = new Scale.Cat({
     field: 'a',
     values: [ '1', '2', '3' ],
     range: [ 0.2, 0.8 ]
@@ -688,26 +691,26 @@ describe('test polygon', function() {
   }, {
     a: '2', b: '2', c: 5
   }];
-  const scaleX = Scale.linear({
+  const scaleX = new Scale.Linear({
     field: 'x',
     min: 0,
     max: 5
   });
-  const scaleY = Scale.linear({
+  const scaleY = new Scale.Linear({
     field: 'y',
     min: 0,
     max: 5
   });
 
-  const scaleA = Scale.cat({
+  const scaleA = new Scale.Cat({
     field: 'a',
     values: [ '1', '2' ]
   });
-  const scaleB = Scale.cat({
+  const scaleB = new Scale.Cat({
     field: 'b',
     values: [ '1', '2' ]
   });
-  const scaleC = Scale.linear({
+  const scaleC = new Scale.Linear({
     field: 'c',
     min: 0,
     max: 10
@@ -750,19 +753,19 @@ describe('test polygon', function() {
 });
 
 describe('test schema', function() {
-  const scaleX = Scale.linear({
+  const scaleX = new Scale.Linear({
     field: 'x',
     min: 0,
     values: [ 0, 1, 2, 3, 4, 5 ],
     max: 10
   });
-  const scaleY = Scale.linear({
+  const scaleY = new Scale.Linear({
     field: 'y',
     min: 0,
     max: 5
   });
 
-  const scaleCandle = Scale.identity({
+  const scaleCandle = new Scale.Identity({
     field: 'candle',
     value: 'candle'
   });
@@ -790,7 +793,7 @@ describe('test schema', function() {
     it('draw', function() {
       clearCanvas(canvas);
       geom.init();
-      expect(geom.getNormalizedSize()).equal(1 / 10 / 2);
+      expect(geom.getNormalizedSize()).equal(1 / 6 / 2);
       geom.paint();
 
     });

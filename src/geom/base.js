@@ -1,9 +1,4 @@
-/**
- * @fileOverview geometry 的基类
- * @author dxq613@gmail.com
- */
-
-const Util = require('../util');
+const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
@@ -80,7 +75,7 @@ class Geom extends Base {
        * 图形的底边是否从 0 开始，默认为 0，即从 0 开始，
        * 否则从最小值开始
        * @type {Boolean}
-       */
+      */
       startOnZero: true
     };
   }
@@ -152,8 +147,8 @@ class Geom extends Base {
    // step 1: init attrs
   _initAttrs() {
     const self = this;
-    const attrs = this.get('attrs');
-    const attrOptions = this.get('attrOptions');
+    const attrs = self.get('attrs');
+    const attrOptions = self.get('attrOptions');
     const coord = self.get('coord');
 
     for (const type in attrOptions) {
@@ -165,7 +160,7 @@ class Geom extends Base {
           option.coord = coord;
         }
         const scales = [];
-        for (let i = 0; i < fields.length; i++) {
+        for (let i = 0, len = fields.length; i < len; i++) {
           const field = fields[i];
           const scale = self._createScale(field);
           scales.push(scale);
@@ -182,7 +177,6 @@ class Geom extends Base {
           }
           // 饼图需要填充满整个空间
           if (coord.type === 'polar' && coord.transposed) {
-
             if (yScale.values.length) {
               yScale.change({
                 nice: false,
@@ -201,10 +195,11 @@ class Geom extends Base {
   }
 
   _createScale(field) {
+    const sortable = this.get('sortable');
     const scales = this.get('scales');
     let scale = scales[field];
     if (!scale) {
-      scale = this.get('chart').createScale(field);
+      scale = this.get('chart').createScale(field, sortable);
       scales[field] = scale;
     }
     return scale;
@@ -216,7 +211,7 @@ class Geom extends Base {
     const data = this.get('data');
     const dataArray = [];
     const groupedArray = this._groupData(data);
-    for (let i = 0; i < groupedArray.length; i++) {
+    for (let i = 0, len = groupedArray.length; i < len; i++) {
       const subData = groupedArray[i];
       const tempData = self._saveOrigin(subData);
       if (this.hasAdjust('dodge')) {
@@ -229,13 +224,12 @@ class Geom extends Base {
 
   _saveOrigin(data) {
     const rst = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const origin = data[i];
       const obj = {};
       for (const k in origin) {
         obj[k] = origin[k];
       }
-      // const obj = Util.mix({}, origin);
       obj[FIELD_ORIGIN] = origin;
       rst.push(obj);
     }
@@ -246,7 +240,7 @@ class Geom extends Base {
   _numberic(data) {
     const positionAttr = this.getAttr('position');
     const scales = positionAttr.scales;
-    for (let j = 0; j < data.length; j++) {
+    for (let j = 0, len = data.length; j < len; j++) {
       const obj = data[j];
       const count = Math.min(2, scales.length);
       for (let i = 0; i < count; i++) {
@@ -264,20 +258,20 @@ class Geom extends Base {
     const self = this;
     const adjust = self.get('adjust');
     if (adjust) {
-      const adjustType = Util.upperFirst(adjust);
+      const adjustType = Util.upperFirst(adjust.type);
       if (!Adjust[adjustType]) {
         throw new Error('not support such adjust : ' + adjust);
       }
 
       const xScale = self.getXScale();
       const yScale = self.getYScale();
-      const cfg = {
+      const cfg = Util.mix({
         xField: xScale.field,
         yField: yScale.field
-      };
+      }, adjust);
       const adjustObject = new Adjust[adjustType](cfg);
       adjustObject.processAdjust(dataArray);
-      if (adjust === 'stack') {
+      if (adjustType === 'Stack') {
         self._updateStackRange(yScale.field, yScale, dataArray);
       }
     }
@@ -287,7 +281,7 @@ class Geom extends Base {
     const mergeArray = Util.Array.merge(dataArray);
     let min = scale.min;
     let max = scale.max;
-    for (let i = 0; i < mergeArray.length; i++) {
+    for (let i = 0, len = mergeArray.length; i < len; i++) {
       const obj = mergeArray[i];
       const tmpMin = Math.min.apply(null, obj[field]);
       const tmpMax = Math.max.apply(null, obj[field]);
@@ -315,7 +309,7 @@ class Geom extends Base {
         return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
       });
     });
-
+    self.set('hasSorted', true);
     self.set('dataArray', mappedArray);
   }
 
@@ -326,7 +320,7 @@ class Geom extends Base {
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
-    for (let i = 0; i < dataArray.length; i++) {
+    for (let i = 0, len = dataArray.length; i < len; i++) {
       let data = dataArray[i];
       data = self._mapping(data);
       mappedArray.push(data);
@@ -356,7 +350,7 @@ class Geom extends Base {
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
     const mappedData = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const record = data[i];
       const newRecord = {};
       newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
@@ -369,7 +363,7 @@ class Geom extends Base {
           const names = attr.names;
           const values = self._getAttrValues(attr, record);
           if (names.length > 1) { // position 之类的生成多个字段的属性
-            for (let j = 0; j < values.length; j++) {
+            for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
               newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val; // 只有一个值时返回第一个属性值
@@ -389,7 +383,7 @@ class Geom extends Base {
   _getAttrValues(attr, record) {
     const scales = attr.scales;
     const params = [];
-    for (let i = 0; i < scales.length; i++) {
+    for (let i = 0, len = scales.length; i < len; i++) {
       const scale = scales[i];
       const field = scale.field;
       if (scale.type === 'identity') {
@@ -414,7 +408,7 @@ class Geom extends Base {
 
   _beforeMapping(dataArray) {
     const self = this;
-    if (self.get('sortable')) {
+    if (self.get('sortable')) { // 需要排序
       self._sort(dataArray);
     }
     if (self.get('generatePoints')) {
@@ -468,7 +462,7 @@ class Geom extends Base {
       cfg.points = obj.points;
     }
     if (isInCircle) {
-      cfg.center = self.get('coord').get('center');
+      cfg.center = self.get('coord').center;
     }
     return cfg;
   }
@@ -499,7 +493,7 @@ class Geom extends Base {
     const self = this;
     const shapeFactory = self.getShapeFactory();
     const shapeAttr = self.getAttr('shape');
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0, len = data.length; i < len; i++) {
       const obj = data[i];
       const cfg = self.createShapePointsCfg(obj);
       const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
@@ -535,7 +529,7 @@ class Geom extends Base {
 
   /**
    * @protected
-   * @return {Number} y轴上的最小值
+   * @return {Number} y 轴上的最小值
    */
   getYMinValue() {
     const yScale = this.getYScale();
@@ -555,7 +549,7 @@ class Geom extends Base {
   _normalizeValues(values, scale) {
     let rst = [];
     if (Util.isArray(values)) {
-      for (let i = 0; i < values.length; i++) {
+      for (let i = 0, len = values.length; i < len; i++) {
         const v = values[i];
         rst.push(scale.scale(v));
       }
@@ -592,7 +586,7 @@ class Geom extends Base {
   }
 
   hasAdjust(adjust) {
-    return this.get('adjust') === adjust;
+    return this.get('adjust') && (this.get('adjust').type === adjust);
   }
 
   _getSnap(scale, item, arr) {
@@ -605,7 +599,7 @@ class Geom extends Base {
         values.push(obj[FIELD_ORIGIN_Y]);
       });
 
-      for (; i < values.length; i++) {
+      for (let len = values.length; i < len; i++) {
         if (values[0][0] > item) {
           break;
         }
@@ -619,10 +613,10 @@ class Geom extends Base {
       }
     } else {
       values = scale.values;
-      values.sort(function sortNumber(a, b) {
+      values.sort((a, b) => {
         return a - b;
       });
-      for (; i < values.length; i++) {
+      for (let len = values.length; i < len; i++) {
         if ((values[0] + values[1]) / 2 > item) {
           break;
         }
@@ -637,10 +631,6 @@ class Geom extends Base {
     }
     const result = values[i];
     return result;
-  }
-
-  hasSorted() {
-    return this.get('hasSorted') || this.get('sortable');
   }
 
   /**
@@ -659,9 +649,8 @@ class Geom extends Base {
 
     const invertPoint = coord.invertPoint(point);
     const dataArray = self.get('dataArray');
-    if (!this.hasSorted()) { // 未排序
+    if (!this.get('hasSorted')) {
       this._sort(dataArray);
-      this.set('hasSorted', true);
     }
 
     let rst = [];
@@ -672,7 +661,7 @@ class Geom extends Base {
     }
     dataArray.forEach(function(data) {
       data.forEach(function(obj) {
-        const originValue = Util.isNull(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
         if (self._isEqual(originValue, xValue, xScale)) {
           tmp.push(obj);
         }
@@ -758,18 +747,6 @@ class Geom extends Base {
     return this;
   }
 
-  /**
-   * 透明度属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @param  {Array|Function} values 透明度的数组或者回调函数
-   * @return {Geom} geom 当前几何标记
-   */
-  opacity(field, values) {
-    this._createAttrOption('opacity', field, values, Global.opacities);
-    return this;
-  }
-
   style(field, cfg) {
     let styleOptions = this.get('styleOptions');
     if (!styleOptions) {
@@ -790,6 +767,9 @@ class Geom extends Base {
   }
 
   adjust(type) {
+    if (Util.isString(type)) {
+      type = { type };
+    }
     this.set('adjust', type);
     return this;
   }
@@ -801,6 +781,8 @@ class Geom extends Base {
   }
 
   clearInner() {
+    const container = this.get('container');
+    container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);
     this.set('shapeDatas', []);
@@ -814,6 +796,8 @@ class Geom extends Base {
 
   destroy() {
     this.clear();
+    // const container = this.get('container');
+    // container && container.remove();
     super.destroy();
   }
 

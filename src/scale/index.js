@@ -2,27 +2,10 @@
  * @fileOverview Scale entry, used to reference all the scales
  * @author dxq613@gmail.com
  */
+const Scale = require('./base');
 
-const Util = require('../util');
-const Base = require('./base');
-Base.Linear = require('./linear');
-Base.Identity = require('./identity');
-Base.Cat = require('./category');
-Base.TimeCat = require('./time-cat');
+require('./linear');
+require('./identity');
+require('./category');
 
-for (const k in Base) {
-  if (Base.hasOwnProperty(k)) {
-    const methodName = Util.lowerFirst(k);
-    Base[methodName] = function(cfg) {
-      return new Base[k](cfg);
-    };
-  }
-}
-
-const CAT_ARR = [ 'cat', 'timeCat' ];
-
-Base.isCategory = function(type) {
-  return CAT_ARR.indexOf(type) >= 0;
-};
-
-module.exports = Base;
+module.exports = Scale;

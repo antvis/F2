@@ -1,34 +1,27 @@
-/**
- * @fileOverview basic class of coordination
- * @author dxq613@gmail.com
- */
-
-const Util = require('../util');
+const Util = require('../util/common');
 
 class Base {
-
-  getDefaultCfg() {
-    return {};
-  }
+  _initDefaultCfg() {}
 
   constructor(cfg) {
-    const defaultCfg = this.getDefaultCfg();
-    Util.mix(this, defaultCfg, cfg);
-    this.init();
+    this._initDefaultCfg();
+    Util.mix(this, cfg);
+
+    let start;
+    let end;
+    if (this.plot) {
+      start = this.plot.bl;
+      end = this.plot.tr;
+      this.start = start;
+      this.end = end;
+    } else {
+      start = this.start;
+      end = this.end;
+    }
+    this.init(start, end);
   }
 
-  get(name) {
-    return this[name];
-  }
-
-  set(name, value) {
-    this[name] = value;
-    return this;
-  }
-
-  init() {
-
-  }
+  init() {}
 
   convertPoint(point) {
     return point;
@@ -36,6 +29,14 @@ class Base {
 
   invertPoint(point) {
     return point;
+  }
+
+  reset(plot) {
+    this.plot = plot;
+    const { bl, tr } = plot;
+    this.start = bl;
+    this.end = tr;
+    this.init(bl, tr);
   }
 }
 

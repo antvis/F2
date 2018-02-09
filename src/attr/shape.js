@@ -1,15 +1,5 @@
-/**
- * @fileOverview the shape attribute of core
- * @author huangtonger@aliyun.com
- */
-
-
 const Base = require('./base');
 
-/**
- * 视觉通道 Shape
- * @class Attr.Shape
- */
 class Shape extends Base {
   constructor(cfg) {
     super(cfg);

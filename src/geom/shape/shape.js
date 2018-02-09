@@ -1,10 +1,4 @@
-/**
- * @fileOverview shape 基类
- * @author huangtonger@aliyun.com
- */
-
-
-const Util = require('../../util');
+const Util = require('../../util/common');
 const Global = require('../../global');
 
 const Shape = {};
@@ -91,7 +85,7 @@ const ShapeFactoryBase = {
 
 // 注册 Geometry 获取图形的入口
 Shape.registerFactory = function(factoryName, cfg) {
-  const className = Util.ucfirst(factoryName);
+  const className = Util.upperFirst(factoryName);
   const geomObj = Util.mix({}, ShapeFactoryBase, cfg);
   Shape[className] = geomObj;
   geomObj.name = factoryName;
@@ -100,7 +94,7 @@ Shape.registerFactory = function(factoryName, cfg) {
 
 // 注册图形
 Shape.registerShape = function(factoryName, shapeType, cfg) {
-  const className = Util.ucfirst(factoryName);
+  const className = Util.upperFirst(factoryName);
   const factory = Shape[className];
   const shapeObj = Util.mix({}, ShapeBase, cfg);
   factory[shapeType] = shapeObj;
@@ -113,7 +107,7 @@ Shape.registShape = Shape.registerShape;
 Shape.getShapeFactory = function(factoryName) {
   const self = this;
   factoryName = factoryName || 'point';
-  const className = Util.ucfirst(factoryName);
+  const className = Util.upperFirst(factoryName);
   return self[className];
 };
 
