@@ -62,60 +62,7 @@ $ npm install @antv/f2
 
 3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
 
-## 快速开始
-
-<img src="https://gw.alipayobjects.com/zos/rmsportal/QTqjaZLcsrmDFywWRfHv.png" width="480">
-
-```html
-<canvas id="c1"></canvas>
-```
-
-```js
-import F2 from '@antv/f2';
-
-const data = [ 
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 },
-];
-
-const chart = new F2.Chart({
-  id: 'c1',
-  width: 500,
-  height: 300  
-});
-
-chart.source(data);
-chart.interval().position('genre*sold').color('genre');
-chart.render();
-```
-
-更多示例：[demos](./demos)。
-
 ![demos](https://gw.alipayobjects.com/zos/rmsportal/RDCaavVwfzwoVTynJuNR.png)
-
-## 本地开发
-
-```bash
-$ npm install
-
-# 跑测试用例
-$ npm run test-live
-
-# 监听文件变化构建，并打开 demo 页面
-$ npm run dev
-
-# 打开 demo
-$ npm run demos
-```
-
-## 如何贡献
-
-如果您在使用的过程中碰到问题，可以先通过 [issues](https://github.com/antvis/f2/issues) 看看有没有类似的 bug 或者建议。
-
-如需提交代码，请遵从我们的[贡献指南](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md)。
 
 ## License
 
