@@ -33,14 +33,8 @@ $ npm install @antv/f2
 
 ## 文档
 
-地址：[https://antvis.github.io/f2/SUMMARY](https://antvis.github.io/f2/SUMMARY)
-
-- [快速开始](https://antvis.github.io/f2/getting-started/)
-- [使用教程](https://antvis.github.io/f2/chart-concept/)
-- [API](https://antvis.github.io/f2/api/)
-- [图表示例](https://antvis.github.io/f2/demos/)
-
-3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
+- 文档地址：[https://antvis.github.io/f2/](https://antvis.github.io/f2/#%E6%96%87%E6%A1%A3)，所以内容位于 [doc](./docs) 目录下
+- 3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
 
 ## 快速开始
 
