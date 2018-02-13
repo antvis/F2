@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 // const Base = require('../base');
 const MatrixUtil = require('./util/matrix');
+const Vector2 = require('./util/vector2');
 
 // 是否未改变
 function isUnchanged(m) {
@@ -30,6 +31,8 @@ const SHAPE_ATTRS = [
   'textBaseline',
   'lineDash'
 ];
+
+const CLIP_SHAPES = [ 'circle', 'sector', 'polygon', 'rect', 'polyline' ];
 
 class Element {
   _initProperties() {
@@ -70,9 +73,13 @@ class Element {
 
   _setAttr(name, value) {
     const attrs = this._attrs.attrs;
-    const alias = ALIAS_ATTRS_MAP[name];
-    if (alias) {
-      attrs[alias] = value;
+    if (name === 'clip') {
+      this._setAttrClip(value);
+    } else {
+      const alias = ALIAS_ATTRS_MAP[name];
+      if (alias) {
+        attrs[alias] = value;
+      }
     }
     attrs[name] = value;
   }
@@ -82,6 +89,18 @@ class Element {
   }
 
   _afterAttrsSet() {}
+
+  _setAttrClip(clip) {
+    if (clip && (CLIP_SHAPES.indexOf(clip._attrs.type) > -1)) {
+      if (clip.get('canvas') === null) {
+        clip = Object.assign({}, clip);
+      }
+      // clip.set('parent', this.get('parent'));
+      clip.set('context', this.get('context'));
+      return clip;
+    }
+    return null;
+  }
 
   attr(name, value) {
     const self = this;
@@ -127,13 +146,13 @@ class Element {
   }
 
   setContext(context) {
-    // const clip = this.attrs.clip;
+    const clip = this._attrs.attrs.clip;
     context.save();
-    // if (clip) {
-    //   clip.resetTransform(context);
-    //   clip.createPath(context);
-    //   context.clip();
-    // }
+    if (clip) {
+      clip.resetTransform(context);
+      clip.createPath(context);
+      context.clip();
+    }
     this.resetContext(context);
     this.resetTransform(context);
   }
@@ -228,15 +247,19 @@ class Element {
   }
 
   initTransform() {
-    this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
+    const attrs = this._attrs.attrs || {};
+    if (!attrs.matrix) {
+      attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
+    }
+    this._attrs.attrs = attrs;
   }
 
   getMatrix() {
-    return this._attrs.matrix;
+    return this._attrs.attrs.matrix;
   }
 
   setMatrix(m) {
-    this._attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
+    this._attrs.attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
     this.clearTotalMatrix();
   }
 
@@ -250,61 +273,77 @@ class Element {
    * @return {Element}         返回自身
    */
   transform(actions) {
-    const self = this;
-    for (let i = 0; i < actions.length; i++) {
-      const action = actions[i];
-      switch (action[0]) {
-        case 't':
-          self.translate(action[1], action[2]);
-          break;
-        case 's':
-          self.scale(action[1], action[2]);
-          break;
-        case 'r':
-          self.rotate(action[1]);
-          break;
-        default:
-          break;
-      }
-    }
+    // const self = this;
+    // for (let i = 0; i < actions.length; i++) {
+    //   const action = actions[i];
+    //   switch (action[0]) {
+    //     case 't':
+    //       self.translate(action[1], action[2]);
+    //       break;
+    //     case 's':
+    //       self.scale(action[1], action[2]);
+    //       break;
+    //     case 'r':
+    //       self.rotate(action[1]);
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
 
-    return self;
+    // return self;
+    const matrix = this._attrs.attrs.matrix;
+    this._attrs.attrs.matrix = MatrixUtil.transform(matrix, actions);
+    this.clearTotalMatrix();
+    return this;
   }
 
   setTransform(actions) {
-    this._attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
+    this._attrs.attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
     return this.transform(actions);
   }
 
   translate(x, y) {
-    const matrix = this._attrs.matrix;
-    matrix[4] += matrix[0] * x + matrix[2] * y;
-    matrix[5] += matrix[1] * x + matrix[3] * y;
+    // const matrix = this._attrs.attrs.matrix;
+    // matrix[4] += matrix[0] * x + matrix[2] * y;
+    // matrix[5] += matrix[1] * x + matrix[3] * y;
+    // this.clearTotalMatrix();
+    const matrix = this._attrs.attrs.matrix;
+    MatrixUtil.translate(matrix, matrix, [ x, y ]);
     this.clearTotalMatrix();
   }
 
   rotate(rad) {
-    const matrix = this._attrs.matrix;
-    const c = Math.cos(rad);
-    const s = Math.sin(rad);
-    const m11 = matrix[0] * c + matrix[2] * s;
-    const m12 = matrix[1] * c + matrix[3] * s;
-    const m21 = matrix[0] * -s + matrix[2] * c;
-    const m22 = matrix[1] * -s + matrix[3] * c;
-    matrix[0] = m11;
-    matrix[1] = m12;
-    matrix[2] = m21;
-    matrix[3] = m22;
+    // const matrix = this._attrs.attrs.matrix;
+    // const c = Math.cos(rad);
+    // const s = Math.sin(rad);
+    // const m11 = matrix[0] * c + matrix[2] * s;
+    // const m12 = matrix[1] * c + matrix[3] * s;
+    // const m21 = matrix[0] * -s + matrix[2] * c;
+    // const m22 = matrix[1] * -s + matrix[3] * c;
+    // matrix[0] = m11;
+    // matrix[1] = m12;
+    // matrix[2] = m21;
+    // matrix[3] = m22;
+    // this.clearTotalMatrix();
+
+    const matrix = this._attrs.attrs.matrix;
+    MatrixUtil.rotate(matrix, matrix, rad);
     this.clearTotalMatrix();
   }
 
   scale(sx, sy) {
-    const matrix = this._attrs.matrix;
-    matrix[0] *= sx;
-    matrix[1] *= sx;
-    matrix[2] *= sy;
-    matrix[3] *= sy;
+    // const matrix = this._attrs.attrs.matrix;
+    // matrix[0] *= sx;
+    // matrix[1] *= sx;
+    // matrix[2] *= sy;
+    // matrix[3] *= sy;
 
+    // this.clearTotalMatrix();
+
+
+    const matrix = this._attrs.attrs.matrix;
+    MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
     this.clearTotalMatrix();
   }
 
@@ -321,6 +360,12 @@ class Element {
     this.set('y', y);
   }
 
+  apply(v) {
+    const m = this._attrs.attrs.matrix;
+    Vector2.transformMat2d(v, v, m);
+    return this;
+  }
+
   /**
    * 应用到当前元素上的总的矩阵
    * @return {Matrix} 矩阵
@@ -335,7 +380,7 @@ class Element {
         m = MatrixUtil.multiple(m, pm);
       }
 
-      m = MatrixUtil.multiple(m, this._attrs.matrix);
+      m = MatrixUtil.multiple(m, this._attrs.attrs.matrix);
       this._attrs.totalMatrix = m;
     }
     return m;
@@ -357,7 +402,7 @@ class Element {
   }
 
   resetTransform(context) {
-    const mo = this._attrs.matrix;
+    const mo = this._attrs.attrs.matrix;
     // 不改变时
     if (!isUnchanged(mo)) {
       context.transform(mo[0], mo[1], mo[2], mo[3], mo[4], mo[5]);
