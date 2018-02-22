@@ -86,25 +86,25 @@ Shape.registerShape('interval', 'rect', {
       const r0 = Vector2.length(v0);
       const r = Vector2.length(v1);
 
-      container.addShape('Sector', {
+      return container.addShape('Sector', {
         className: 'interval',
         attrs: Util.mix({
           x,
           y,
           r,
           r0,
-          startAngle,
+          startAngle: startAngle === Math.PI * 1.5 ? startAngle - Math.PI * 2 : startAngle,
           endAngle
         }, style)
       });
-    } else {
-      const rectCfg = getRectRange(points);
-
-      container.addShape('rect', {
-        className: 'interval',
-        attrs: Util.mix(rectCfg, style)
-      });
     }
+
+    const rectCfg = getRectRange(points);
+
+    return container.addShape('rect', {
+      className: 'interval',
+      attrs: Util.mix(rectCfg, style)
+    });
   }
 });
 

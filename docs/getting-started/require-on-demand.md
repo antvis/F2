@@ -56,6 +56,24 @@ require('@antv/f2/lib/geom/adjust/stack'); // 层叠类型
 require('@antv/f2/lib/scale/time-cat'); // 加载 timeCat 类型的度量 \
 ```
 
+### 动画模块
+
+动画模块也作为 Chart 的插件，所以在加载该模块之后还需要将模块注册至 Chart 上。
+
+1. 仅包含入场的动画
+
+```js
+const GroupAnimation = require('@antv/f2/lib/animation/group-animation');
+Chart.plugins.register(GroupAnimation); // 这里进行全局注册，也可以给 chart 的实例注册
+```
+
+2. 精细的动画模块（包含入场、更新以及销毁动画）
+
+```js
+const Animation = require('@antv/f2/lib/animation/animation');
+Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 chart 的实例注册
+```
+
 ## 图表组件
 ### Guide
 

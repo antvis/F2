@@ -24,7 +24,7 @@ Shape.registerShape('polygon', 'polygon', {
       points
     }, cfg.style);
     // G.drawLines(points, canvas, style);
-    container.addShape('Polygon', {
+    return container.addShape('Polygon', {
       className: 'polygon',
       attrs: style
     });

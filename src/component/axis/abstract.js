@@ -59,7 +59,7 @@ class Abastract {
     Util.each(ticks, function(tick) {
       const start = self.getOffsetPoint(tick.value);
       const end = self.getSidePoint(start, length);
-      container.addShape('line', {
+      const shape = container.addShape('line', {
         className: 'axis-tick',
         attrs: Util.mix({
           x1: start.x,
@@ -68,6 +68,7 @@ class Abastract {
           y2: end.y
         }, tickCfg)
       });
+      shape._id = self._id + '-ticks';
     });
   }
 
@@ -75,7 +76,7 @@ class Abastract {
     const self = this;
     const labelOffset = self.labelOffset;
     const labels = self.labels;
-    labels.map(labelShape => {
+    Util.each(labels, labelShape => {
       const container = self.getContainer(labelShape.get('top'));
       const start = self.getOffsetPoint(labelShape.get('value'));
       const { x, y } = self.getSidePoint(start, labelOffset);
@@ -83,8 +84,8 @@ class Abastract {
         x,
         y
       }, self.getTextAlignInfo(start, labelOffset), labelShape.get('textStyle')));
+      labelShape._id = self._id + '-' + labelShape.attr('text');
       container.add(labelShape);
-      return labelShape;
     });
   }
 
@@ -104,12 +105,13 @@ class Abastract {
 
       if (gridCfg) {
         const container = self.getContainer(gridCfg.top);
-        container.addShape('Polyline', {
+        const shape = container.addShape('Polyline', {
           className: 'axis-grid',
           attrs: Util.mix({
-            points: subPoints
+            points: subPoints.points
           }, gridCfg)
         });
+        shape._id = subPoints._id;
       }
     });
   }

@@ -12,7 +12,7 @@ class Custom extends Shape {
   createPath(context) {
     const createPath = this.get('createPath');
     if (createPath) {
-      createPath(context);
+      createPath(this, context);
     }
   }
 

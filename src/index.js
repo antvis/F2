@@ -12,9 +12,15 @@ require('./scale/time-cat'); // timeCat 类型的度量
 require('./component/guide'); // 加载 guide 组件
 
 const F2 = require('./core');
-F2.Plugin = require('./plugin');
+F2.Plugin = {
+  Tooltip: require('./plugin/tooltip'),
+  Guide: require('./plugin/guide'),
+  Legend: require('./plugin/legend')
+};
+F2.Animate = require('./animation/animate');
 // 注册插件
-const { Tooltip, Legend, Guide } = require('./plugin');
-F2.Chart.plugins.register([ Tooltip, Legend, Guide ]);
+const Animation = require('./animation/animation');
+const { Tooltip, Legend, Guide } = F2.Plugin;
+F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
 
 module.exports = F2;

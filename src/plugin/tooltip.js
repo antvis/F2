@@ -143,12 +143,11 @@ class TooltipController {
     const defaultCfg = Util.mix({}, Global.tooltip);
     const geoms = chart.get('geoms');
     const shapes = [];
-    geoms.map(geom => {
+    Util.each(geoms, geom => {
       const type = geom.get('type');
       if (Util.indexOf(shapes, type) === -1) {
         shapes.push(type);
       }
-      return geom;
     });
     if (geoms.length && chart.get('coord').type === 'cartesian') {
       if (shapes.length === 1 && [ 'line', 'area', 'path', 'point' ].indexOf(shapes[0]) !== -1) {
@@ -322,10 +321,11 @@ class TooltipController {
 
     const geoms = chart.get('geoms');
     const coord = chart.get('coord');
-    geoms.map(geom => {
+
+    Util.each(geoms, geom => {
       const type = geom.get('type');
       const records = geom.getSnapRecords(point);
-      records.map(record => {
+      Util.each(records, record => {
         const { x, y, _origin, color } = record;
         const tooltipItem = {
           x,
@@ -351,10 +351,7 @@ class TooltipController {
           tooltipItem.width = geom.getSize(record._origin);
           tooltipMarkerItems.push(tooltipItem);
         }
-        return record;
       });
-
-      return geoms;
     });
 
     if (items.length) {
@@ -413,7 +410,7 @@ class TooltipController {
 
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
-    ([]).concat(methodName).map(aMethod => {
+    Util.each([].concat(methodName), aMethod => {
       if (Util.isFunction(aMethod)) {
         aMethod(method, action); // TODO： 测试，供用户自己绑定事件
       } else if (action === 'bind') {
@@ -421,7 +418,6 @@ class TooltipController {
       } else {
         DomUtil.removeEventListener(canvasDom, aMethod, method);
       }
-      return aMethod;
     });
   }
 
