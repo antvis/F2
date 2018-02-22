@@ -76,9 +76,8 @@ class GuideController {
 
   reset() {
     const guides = this.guides;
-    guides.map(guide => {
+    Util.each(guides, guide => {
       guide.remove();
-      return guide;
     });
   }
   _createGuide(type, cfg) {

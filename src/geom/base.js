@@ -320,13 +320,16 @@ class Geom extends Base {
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
+    // let shapes = [];
     for (let i = 0, len = dataArray.length; i < len; i++) {
       let data = dataArray[i];
       data = self._mapping(data);
       mappedArray.push(data);
       self.draw(data, shapeFactory);
+      // shapes = shapes.concat(drawedShapes);
     }
     self.set('dataArray', mappedArray);
+    // self.set('shapes', shapes);
   }
 
   /**
@@ -466,11 +469,7 @@ class Geom extends Base {
     }
     return cfg;
   }
-  /**
-   * 绘制图层
-   * @param {Array} data 绘制的数据
-   * @param {Object} shapeFactory 图形的工厂类
-   */
+
   draw(data, shapeFactory) {
     const self = this;
     const container = self.get('container');
@@ -485,7 +484,10 @@ class Geom extends Base {
       obj.index = index;
       const cfg = self.getDrawCfg(obj);
       const shape = obj.shape;
-      shapeFactory.drawShape(shape, cfg, container);
+      const gShape = shapeFactory.drawShape(shape, cfg, container);
+      Util.each([].concat(gShape), s => {
+        s.set('origin', obj); // todo
+      });
     });
   }
 
@@ -771,6 +773,11 @@ class Geom extends Base {
       type = { type };
     }
     this.set('adjust', type);
+    return this;
+  }
+
+  animate(cfg) {
+    this.set('animateCfg', cfg);
     return this;
   }
 

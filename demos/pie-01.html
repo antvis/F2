@@ -51,7 +51,11 @@
   chart.interval()
     .position('a*proportion')
     .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0' ])
-    .adjust('stack');
+    .adjust('stack')
+    .style({
+      lineWidth: 1,
+      stroke: '#fff'
+    });
 
   chart.guide().html({
     position: [ '50%', '50%' ],

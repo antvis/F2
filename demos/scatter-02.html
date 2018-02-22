@@ -56,6 +56,11 @@
       .color('continent')
       .style({
         fillOpacity: 0.65
+      })
+      .animate({
+        appear: {
+          animation: 'shapesScaleInXY'
+        }
       });
     chart.render();
   });

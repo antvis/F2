@@ -28,7 +28,7 @@ module.exports = {
       SHAPE_MAP[type] = shapeType;
     }
     cfg.canvas = canvas;
-    cfg.type = type;
+    // cfg.type = type;
 
     // 设置字体
     if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {

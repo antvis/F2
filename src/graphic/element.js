@@ -95,7 +95,7 @@ class Element {
       if (clip.get('canvas') === null) {
         clip = Object.assign({}, clip);
       }
-      // clip.set('parent', this.get('parent'));
+      clip.set('parent', this.get('parent'));
       clip.set('context', this.get('context'));
       return clip;
     }
@@ -104,6 +104,7 @@ class Element {
 
   attr(name, value) {
     const self = this;
+    if (self.get('destroyed')) return;
     const argumentsLen = arguments.length;
     if (argumentsLen === 0) {
       return self._attrs.attrs;

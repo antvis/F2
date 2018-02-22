@@ -174,11 +174,11 @@ class Chart extends Base {
       const attrCfg = attrOptions.color;
       if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
         const arr = attrCfg.field.split('*');
-        arr.map(item => {
+
+        Util.each(arr, item => {
           if (fields.indexOf(item) === -1) {
             fields.push(item);
           }
-          return item;
         });
       }
     });
@@ -212,7 +212,7 @@ class Chart extends Base {
           let widthRatio = 1;
           let offset = 0;
           if (inFullCircle) {
-            if (!coord.isTransposed) {
+            if (!coord.transposed) {
               range = [ 0, 1 - 1 / count ];
             } else {
               widthRatio = Global.widthRatio.multiplePie;
@@ -545,6 +545,7 @@ class Chart extends Base {
 
     Chart.plugins.notify(self, 'afterGeomDraw');
     canvas.sort();
+    Chart.plugins.notify(self, 'beforeCanvasDraw');
     canvas.draw();
     return self;
   }
@@ -559,13 +560,14 @@ class Chart extends Base {
     this._removeGeoms();
     this._clearInner();
     this.set('filters', null);
-
+    this.set('isUpdate', false);
     const canvas = this.get('canvas');
     canvas.draw();
     return this;
   }
 
   repaint() {
+    this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
     this.render();
@@ -704,9 +706,10 @@ class Chart extends Base {
    */
   addGeom(geom) {
     const geoms = this.get('geoms');
+    const middlePlot = this.get('middlePlot');
     geoms.push(geom);
     geom.set('chart', this);
-    geom.set('container', this.get('middlePlot'));
+    geom.set('container', middlePlot.addGroup());
   }
 
   /**

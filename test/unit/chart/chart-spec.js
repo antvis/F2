@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 require('../../../src/geom/index');
 
 const Chart = require('../../../src/chart/chart');
-const { Guide } = require('../../../src/plugin/index');
+const Guide = require('../../../src/plugin/guide');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
 require('../../../src/component/guide');
