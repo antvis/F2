@@ -1,4 +1,9 @@
-const Util = require('./util');
+const requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || function(fn) {
+  return setInterval(fn, 16);
+};
+const cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || function(id) {
+  return clearInterval(id);
+};
 
 class Timeline {
   constructor() {
@@ -7,19 +12,13 @@ class Timeline {
     self.anims = [];
     self.time = 0;
     self.totalTime = 0;
-    self.loopCount = 0;
-    self.loopMode = 0;
     self.playing = true;
     self.fps = 60; // 用于降频
     function animate() {
-      self.loopInterval = Util.requestAnimationFrame(animate);
+      self.loopInterval = requestAnimationFrame(animate);
       self.playing && self.update();
     }
     animate();
-  }
-
-  loop(n) {
-    this.loopMode = n;
   }
 
   stop() {
@@ -38,46 +37,19 @@ class Timeline {
   update(deltaTime) {
     if (deltaTime !== undefined) {
       if (this.loopInterval !== 0) {
-        Util.cancelAnimationFrame(this.loopInterval);
+        cancelAnimationFrame(this.loopInterval);
         this.loopInterval = 0;
       }
     } else {
-      deltaTime = 1 / this.fps;
+      deltaTime = 1000 / this.fps;
     }
 
     if (this.playing) {
       this.totalTime += deltaTime;
       this.time += deltaTime;
     }
-    if (this.loopMode !== 0) {
-      const animationEnd = this.findAnimationEnd();
-      if (this.time > animationEnd) {
-        if (this.loopMode === -1 || (this.loopCount < this.loopMode)) {
-          this.time = 0;
-          this.loopCount++;
-          for (let i = 0, len = this.anims.length; i < len; i++) {
-            this.anims[i].hasStarted = false;
-            this.anims[i].hasEnded = false;
-          }
-        } else {
-          this.playing = false;
-        }
-      }
-    }
 
     this.applyValues();
-  }
-
-  findAnimationEnd() {
-    let endTime = 0;
-    const anims = this.anims;
-    for (let i = 0, len = anims.length; i < len; i++) {
-      const anim = anims[i];
-      if (anim.endTime > endTime) {
-        endTime = anim.endTime;
-      }
-    }
-    return endTime;
   }
 
   applyValues() {
@@ -88,13 +60,12 @@ class Timeline {
       }
       const shape = propertyAnim.shape; // shape
       if (shape.get('destroyed')) {
+        this.anims.splice(i, 1);
+        i--;
         continue;
       }
 
-      const key = propertyAnim.propertyName;
-      let startValue = propertyAnim.target[key];
-      let endValue = propertyAnim.endValue;
-      const diff = propertyAnim.diff;
+      const { startValue, endValue, key, diff } = propertyAnim;
       if (this.time >= propertyAnim.startTime && !propertyAnim.hasStarted) {
         propertyAnim.hasStarted = true;
         if (propertyAnim.onStart) {
@@ -110,8 +81,6 @@ class Timeline {
       let newValue;
       if (key === 'points') {
         newValue = [];
-        startValue = Util.plainArray(startValue);
-        endValue = Util.plainArray(endValue);
         const aLen = Math.max(startValue.length, endValue.length);
         for (let j = 0; j < aLen; j += 2) {
           newValue.push({
@@ -123,13 +92,8 @@ class Timeline {
         newValue = value;
       }
 
-      shape.attr(key, newValue);
+      shape._attrs.attrs[key] = newValue;
       shape.get('canvas').draw();
-      propertyAnim.target[key] = newValue;
-
-      if (propertyAnim.parent && propertyAnim.parent.onUpdateCallback) {
-        propertyAnim.parent.onUpdateCallback(propertyAnim);
-      }
 
       if (this.time >= propertyAnim.endTime && !propertyAnim.hasEnded) {
         propertyAnim.hasEnded = true;
@@ -139,10 +103,8 @@ class Timeline {
       }
 
       if (t === 1) {
-        if (this.loopMode === 0) {
-          this.anims.splice(i, 1);
-          i--;
-        }
+        this.anims.splice(i, 1);
+        i--;
       }
     }
   }

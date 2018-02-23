@@ -113,7 +113,7 @@ class Element {
     if (Util.isObject(name)) {
       this._attrs.bbox = null; // attr 改变了有可能会导致 bbox 改变，故在此清除
       for (const k in name) {
-        self._setAttr(k, name[k]); // TODO clip 的问题处理
+        self._setAttr(k, name[k]);
       }
       if (self._afterAttrsSet) {
         self._afterAttrsSet();

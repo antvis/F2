@@ -103,14 +103,10 @@ const GROUP_ANIMATION = {
 function diff(fromAttrs, toAttrs) {
   const endState = {};
   for (const k in toAttrs) {
-    if (Util.isNumber(fromAttrs[k]) && Util.isNumber(toAttrs[k])) {
-      if (fromAttrs[k] !== toAttrs[k]) {
-        endState[k] = toAttrs[k];
-      }
-    } else if (Util.isArray(fromAttrs[k]) && Util.isArray(toAttrs[k])) {
-      if (JSON.stringify(fromAttrs[k]) !== JSON.stringify(toAttrs[k])) {
-        endState[k] = toAttrs[k];
-      }
+    if (Util.isNumber(fromAttrs[k]) && fromAttrs[k] !== toAttrs[k]) {
+      endState[k] = toAttrs[k];
+    } else if (Util.isArray(fromAttrs[k]) && JSON.stringify(fromAttrs[k]) !== JSON.stringify(toAttrs[k])) {
+      endState[k] = toAttrs[k];
     }
   }
   return endState;
