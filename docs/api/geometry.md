@@ -310,10 +310,36 @@ interval().adjust([{
 
 用于配置几何标记显示的图形属性，详见[绘图属性](./canvas.md)。
 
+有以下两种使用方式：
+
+1. `style(cfg)`
+
+参数：
+
+- `cfg` Object 类型，配置绘图属性，详见[绘图属性](./canvas.md)
+
 ```js
-// 几种使用方式
 line().style({ // 统一为所有 shape 设置固定的样式
   lineWidth: 2
 });
 ```
+
+2. `style(field, cfg)`  映射到字段的样式
+
+参数：
+
+- `field` String 类型，映射的字段名
+- `cfg` Object 类型，配置绘图属性，**此时属性值也可以是回调函数**
+
+```js
+style('city', {
+  lineDash(val) {
+    if (val === 'HZ') {
+      return [ 2, 2 ];
+    }
+    return null;
+  }
+})
+```
+
 

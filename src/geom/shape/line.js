@@ -3,7 +3,7 @@ const Shape = require('./shape');
 const ShapeUtil = require('./util');
 const Global = require('../../global');
 
-// regist line geom
+// register line geom
 const Line = Shape.registerFactory('line', {
   defaultShapeType: 'line'
 });
@@ -73,29 +73,19 @@ function drawLines(cfg, container, style, smooth) {
   });
 }
 
-// draw line shape
-Shape.registerShape('line', 'line', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    return drawLines(cfg, container, style);
-  }
-});
+const SHAPES = [ 'line', 'smooth', 'dash' ];
+Util.each(SHAPES, function(shapeType) {
+  Shape.registerShape('line', shapeType, {
+    draw(cfg, container) {
+      const smooth = (shapeType === 'smooth');
+      const style = getStyle(cfg);
+      if (shapeType === 'dash') {
+        style.lineDash = Global.lineDash;
+      }
 
-// draw smooth line shape
-Shape.registerShape('line', 'smooth', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    return drawLines(cfg, container, style, true);
-  }
-});
-
-// draw dash line shape
-Shape.registerShape('line', 'dash', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    style.lineDash = Global.lineDash;
-    return drawLines(cfg, container, style);
-  }
+      return drawLines(cfg, container, style, smooth);
+    }
+  });
 });
 
 module.exports = Line;

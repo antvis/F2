@@ -130,18 +130,14 @@ const Area = Shape.registerFactory('area', {
   }
 });
 
-// draw area shape
-Shape.registerShape('area', 'area', {
-  draw(cfg, container) {
-    return drawShape.call(this, cfg, container, false);
-  }
-});
-
-// draw smooth shape
-Shape.registerShape('area', 'smooth', {
-  draw(cfg, container) {
-    return drawShape.call(this, cfg, container, true);
-  }
+const SHAPES = [ 'area', 'smooth' ];
+Util.each(SHAPES, function(shapeType) {
+  Shape.registerShape('area', shapeType, {
+    draw(cfg, container) {
+      const smooth = (shapeType === 'smooth');
+      return drawShape.call(this, cfg, container, smooth);
+    }
+  });
 });
 
 module.exports = Area;
