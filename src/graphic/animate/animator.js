@@ -1,5 +1,4 @@
 const Easing = require('./easing');
-const { interpolate, interpolateArray } = require('d3-interpolate');
 
 function plainArray(arr) {
   const result = [];
@@ -10,6 +9,30 @@ function plainArray(arr) {
     }
   }
   return result;
+}
+
+function interpolateNumber(a, b) {
+  a = +a;
+  b -= a;
+  return function(t) {
+    return a + b * t;
+  };
+}
+
+function interpolateArray(a, b) {
+  const nb = b ? b.length : 0;
+  const na = a ? Math.min(nb, a.length) : 0;
+  const x = new Array(na);
+  const c = new Array(nb);
+  let i;
+
+  for (i = 0; i < na; ++i) x[i] = interpolateNumber(a[i], b[i]);
+  for (; i < nb; ++i) c[i] = b[i];
+
+  return function(t) {
+    for (i = 0; i < na; ++i) c[i] = x[i](t);
+    return c;
+  };
 }
 
 class Animator {
@@ -58,7 +81,7 @@ class Animator {
       } else if (attrName === 'matrix') {
         diff = interpolateArray(startValue, endValue);
       } else {
-        diff = interpolate(startValue, endValue);
+        diff = interpolateNumber(startValue, endValue);
       }
       animInfo.diff = diff;
       this.timeline.anims.push(animInfo);

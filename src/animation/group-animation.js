@@ -1,3 +1,7 @@
+/**
+ * 整体动画版本
+ * @author sima.zhang
+ */
 const Util = require('../util/common');
 const Animate = require('./animate');
 const Action = require('./group-action');
