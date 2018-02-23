@@ -9,13 +9,13 @@ const defaultAnimationCfg = {
     easing: 'quadraticOut'
   }, // 初始入场动画配置
   update: {
-    duration: 450,
+    duration: 300,
     easing: 'quadraticOut'
   }, // 更新时发生变更的动画配置
   enter: {
     duration: 150,
     easing: 'quadraticInOut',
-    delay: 300
+    delay: 150
   }, // 更新时新增元素的入场动画配置
   leave: {
     duration: 350,
