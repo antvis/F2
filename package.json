@@ -79,7 +79,6 @@
     "silent": false
   },
   "dependencies": {
-    "d3-interpolate": "^1.1.6",
     "fecha": "~2.3.1"
   }
 }
