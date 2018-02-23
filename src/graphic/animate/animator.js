@@ -1,9 +1,19 @@
-const Util = require('./util');
 const Easing = require('./easing');
 const { interpolate, interpolateArray } = require('d3-interpolate');
 
+function plainArray(arr) {
+  const result = [];
+  for (let i = 0, len = arr.length; i < len; i++) {
+    if (arr[i]) {
+      result.push(arr[i].x);
+      result.push(arr[i].y);
+    }
+  }
+  return result;
+}
+
 class Animator {
-  constructor(shape, target, timeline) {
+  constructor(shape, source, timeline) {
     this.startTime = 0;
     this.endTime = 0;
     this.time = 0;
@@ -12,53 +22,40 @@ class Animator {
     this.hasEnded = false;
 
     this.shape = shape;
-    this.target = target;
+    this.source = source;
     this.timeline = timeline;
     this.animGroups = [];
   }
 
-  // delay, properties, duration, easing
+  // delay, attrs, duration, easing
   to(cfg = {}) {
-    const defaultCfg = {
-      delay: 0,
-      attrs: {},
-      duration: 1,
-      easing: 'linear'
-    };
-
-    cfg = Util.mix(defaultCfg, cfg);
-    const delay = cfg.delay;
-    const properties = cfg.attrs;
-    const duration = cfg.duration;
-    const easing = Easing[cfg.easing];
+    const delay = cfg.delay || 0;
+    const attrs = cfg.attrs || {};
+    const duration = cfg.duration || 1000;
+    const easing = Easing[cfg.easing] || Easing.linear;
     const animGroup = [];
-    const nop = function() {};
 
-    for (const propertyName in properties) {
+    for (const attrName in attrs) {
       const animInfo = {
-        hasStarted: false,
-        timeline: this.timeline,
         shape: this.shape, // Shape 对象
-        target: this.target,
-        propertyName,
-        endValue: properties[propertyName],
-        delay,
+        key: attrName,
+        startValue: this.source[attrName],
+        endValue: attrs[attrName],
         startTime: this.timeline.time + delay + this.endTime,
         endTime: this.timeline.time + delay + this.endTime + duration,
-        easing,
-        parent: this,
-        onStart: nop,
-        onEnd: nop
+        easing
       };
 
       let diff;
-      let startValue = this.target[propertyName];
-      let endValue = properties[propertyName];
-      if (propertyName === 'points') {
-        startValue = Util.plainArray(startValue);
-        endValue = Util.plainArray(endValue);
+      let startValue = this.source[attrName];
+      let endValue = attrs[attrName];
+      if (attrName === 'points') {
+        startValue = plainArray(startValue);
+        endValue = plainArray(endValue);
         diff = interpolateArray(startValue, endValue);
-      } else if (propertyName === 'matrix') {
+        animInfo.startValue = startValue;
+        animInfo.endValue = endValue;
+      } else if (attrName === 'matrix') {
         diff = interpolateArray(startValue, endValue);
       } else {
         diff = interpolate(startValue, endValue);

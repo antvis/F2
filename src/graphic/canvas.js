@@ -29,8 +29,8 @@ class Canvas {
   }
 
   _beforeDraw() {
-    const context = this.get('context');
-    const el = this.get('el');
+    const context = this._attrs.context;
+    const el = this._attrs.el;
     context && context.clearRect(0, 0, el.width, el.height);
   }
 
@@ -139,13 +139,13 @@ class Canvas {
 
   draw() {
     const self = this;
-    if (self.get('destroyed')) {
+    if (self._attrs.destroyed) {
       return;
     }
     self._beforeDraw();
     try {
-      const context = self.get('context');
-      const children = self.get('children');
+      const context = self._attrs.context;
+      const children = self._attrs.children;
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
         child.draw(context);

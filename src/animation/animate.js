@@ -5,20 +5,20 @@
 const Util = require('../util/common');
 const defaultAnimationCfg = {
   appear: {
-    duration: 0.45,
+    duration: 450,
     easing: 'quadraticOut'
   }, // 初始入场动画配置
   update: {
-    duration: 0.45,
-    easing: 'quadraticInOut'
+    duration: 450,
+    easing: 'quadraticOut'
   }, // 更新时发生变更的动画配置
   enter: {
-    duration: 0.45,
+    duration: 150,
     easing: 'quadraticInOut',
-    delay: 0.1
+    delay: 300
   }, // 更新时新增元素的入场动画配置
   leave: {
-    duration: 0.35,
+    duration: 350,
     easing: 'quadraticIn'
   } // 更新时销毁动画配置
 };
