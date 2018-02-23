@@ -1,6 +1,7 @@
 /**
  * 包含常用的图表类型、图表组件（tooltip、legend 以及 guide）
  */
+const F2 = require('./core'); // 核心包
 
 require('./geom/area'); // 面积图
 require('./geom/line'); // 折线图
@@ -16,7 +17,6 @@ require('./scale/time-cat'); // timeCat 类型的度量
 
 require('./component/guide'); // 加载 guide 组件
 
-const F2 = require('./core'); // 核心包
 F2.Plugin = {
   Tooltip: require('./plugin/tooltip'),
   Guide: require('./plugin/guide'),

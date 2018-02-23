@@ -17,16 +17,6 @@ function isFullCircle(coord) {
   return true;
 }
 
-const ViewGeoms = {};
-Util.each(Geom, function(geomConstructor, className) {
-  const methodName = Util.lowerFirst(className);
-  ViewGeoms[methodName] = function(cfg) {
-    const geom = new geomConstructor(cfg);
-    this.addGeom(geom);
-    return geom;
-  };
-});
-
 class Chart extends Base {
   static initPlugins() {
     return {
@@ -376,8 +366,17 @@ class Chart extends Base {
 
   constructor(cfg) {
     super(cfg);
-    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
-    this._init();
+    // 附加各种 geometry 对应的方法
+    const self = this;
+    Util.each(Geom, function(geomConstructor, className) {
+      const methodName = Util.lowerFirst(className);
+      self[methodName] = function(cfg) {
+        const geom = new geomConstructor(cfg);
+        self.addGeom(geom);
+        return geom;
+      };
+    });
+    self._init();
   }
 
   /**
