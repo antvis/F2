@@ -50,10 +50,10 @@ geom.animate({
   appear: {
     animation: 'fadeIn', // 动画名称
     easing: 'elasticIn', // 动画缓动效果
-    delay: 0.1, // 动画延迟执行时间，单位 s
-    duration: 0.6 || function(index, id) { 
+    delay: 1000, // 动画延迟执行时间，单位 ms
+    duration: 600 || function(index, id) { 
       // 回调函数
-    }  // 动画执行时间， 单位 s，也可以是回调函数
+    }  // 动画执行时间， 单位 ms，也可以是回调函数
   }
 });
 ```
@@ -182,7 +182,7 @@ Animate.registerAnimation(animationName, animationFun);
         animation: 'delayScaleInY',
         easing: 'elasticOut',
         delay(index) {
-          return index * 0.01;
+          return index * 10;
         }
       }
     });
@@ -197,8 +197,8 @@ Animate.registerAnimation(animationName, animationFun);
 shape.animate().to({
   attrs: {Object}, // shape 最终的图形属性
   easing: {String}, // 缓动函数
-  duration: {Number}, // 动画持续时间，单位为 s
-  delay: {Number} // 动画延迟时间，单位为 s
+  duration: {Number}, // 动画持续时间，单位为 ms
+  delay: {Number} // 动画延迟时间，单位为 ms
 }).onStart(function() {
   // 动画开始的回调函数
 }).onUpdate(function() {
@@ -207,6 +207,3 @@ shape.animate().to({
   // 动画结束时的回调函数
 });
 ```
-
-
-
