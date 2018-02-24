@@ -1,5 +1,4 @@
 const Util = require('../util/common');
-// const Base = require('../base');
 const MatrixUtil = require('./util/matrix');
 const Vector2 = require('./util/vector2');
 
@@ -274,25 +273,6 @@ class Element {
    * @return {Element}         返回自身
    */
   transform(actions) {
-    // const self = this;
-    // for (let i = 0; i < actions.length; i++) {
-    //   const action = actions[i];
-    //   switch (action[0]) {
-    //     case 't':
-    //       self.translate(action[1], action[2]);
-    //       break;
-    //     case 's':
-    //       self.scale(action[1], action[2]);
-    //       break;
-    //     case 'r':
-    //       self.rotate(action[1]);
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
-
-    // return self;
     const matrix = this._attrs.attrs.matrix;
     this._attrs.attrs.matrix = MatrixUtil.transform(matrix, actions);
     this.clearTotalMatrix();
@@ -305,44 +285,18 @@ class Element {
   }
 
   translate(x, y) {
-    // const matrix = this._attrs.attrs.matrix;
-    // matrix[4] += matrix[0] * x + matrix[2] * y;
-    // matrix[5] += matrix[1] * x + matrix[3] * y;
-    // this.clearTotalMatrix();
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.translate(matrix, matrix, [ x, y ]);
     this.clearTotalMatrix();
   }
 
   rotate(rad) {
-    // const matrix = this._attrs.attrs.matrix;
-    // const c = Math.cos(rad);
-    // const s = Math.sin(rad);
-    // const m11 = matrix[0] * c + matrix[2] * s;
-    // const m12 = matrix[1] * c + matrix[3] * s;
-    // const m21 = matrix[0] * -s + matrix[2] * c;
-    // const m22 = matrix[1] * -s + matrix[3] * c;
-    // matrix[0] = m11;
-    // matrix[1] = m12;
-    // matrix[2] = m21;
-    // matrix[3] = m22;
-    // this.clearTotalMatrix();
-
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.rotate(matrix, matrix, rad);
     this.clearTotalMatrix();
   }
 
   scale(sx, sy) {
-    // const matrix = this._attrs.attrs.matrix;
-    // matrix[0] *= sx;
-    // matrix[1] *= sx;
-    // matrix[2] *= sy;
-    // matrix[3] *= sy;
-
-    // this.clearTotalMatrix();
-
-
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
     this.clearTotalMatrix();
@@ -388,19 +342,17 @@ class Element {
   }
 
   // 清除当前的矩阵
-  clearTotalMatrix() {
-    // this.__cfg.totalMatrix = null;
-  }
+  clearTotalMatrix() { }
 
-  // TODO
-  invert(px, py) {
-    const m = this.getTotalMatrix();
-    const x = px;
-    const y = py;
-    px = x * m[0] + y * m[2] + m[4];
-    py = x * m[1] + y * m[3] + m[5];
-    return [ px, py ];
-  }
+  // 暂时没有用到
+  // invert(px, py) {
+  //   const m = this.getTotalMatrix();
+  //   const x = px;
+  //   const y = py;
+  //   px = x * m[0] + y * m[2] + m[4];
+  //   py = x * m[1] + y * m[3] + m[5];
+  //   return [ px, py ];
+  // }
 
   resetTransform(context) {
     const mo = this._attrs.attrs.matrix;

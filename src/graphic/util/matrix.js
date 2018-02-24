@@ -22,16 +22,16 @@ const Matrix = {
    * @param  {Array} m 参数
    * @return {Array}   返回结果
    */
-  invert(m) {
-    const d = 1 / (m[0] * m[3] - m[1] * m[2]);
-    const m0 = m[3] * d;
-    const m1 = -m[1] * d;
-    const m2 = -m[2] * d;
-    const m3 = m[0] * d;
-    const m4 = d * (m[2] * m[5] - m[3] * m[4]);
-    const m5 = d * (m[1] * m[4] - m[0] * m[5]);
-    return [ m0, m1, m2, m3, m4, m5 ];
-  },
+  // invert(m) {
+  //   const d = 1 / (m[0] * m[3] - m[1] * m[2]);
+  //   const m0 = m[3] * d;
+  //   const m1 = -m[1] * d;
+  //   const m2 = -m[2] * d;
+  //   const m3 = m[0] * d;
+  //   const m4 = d * (m[2] * m[5] - m[3] * m[4]);
+  //   const m5 = d * (m[1] * m[4] - m[0] * m[5]);
+  //   return [ m0, m1, m2, m3, m4, m5 ];
+  // },
   scale(out, m, v) {
     out[0] = m[0] * v[0];
     out[1] = m[1] * v[0];
