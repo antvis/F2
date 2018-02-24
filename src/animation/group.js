@@ -3,10 +3,21 @@
  * @author sima.zhang
  */
 const Util = require('../util/common');
+
+const Global = require('../global');
+const Shape = require('../graphic/shape');
+const Timeline = require('../graphic/animate/timeline');
+const Animator = require('../graphic/animate/animator');
+
+Shape.prototype.animate = function(timeline) {
+  timeline = timeline || Timeline.getGlobalInstance();
+  timeline.fps /= Global.animateReduceMultiple; // 动画降频
+  const attrs = this.get('attrs');
+  return new Animator(this, attrs, timeline);
+};
+
 const Animate = require('./animate');
 const Action = require('./group-action');
-require('../graphic/animate/index');
-
 Animate.Action = Action;
 Animate.defaultCfg = {
   line(coord) {

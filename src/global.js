@@ -17,7 +17,7 @@ const Global = {
     dodgeMargin: 0
   },
   // 动画降频倍数
-  animateReduceMultiple: 1, // TODO
+  animateReduceMultiple: 1,
   // 虚线配置
   lineDash: [ 5, 15 ]
 };

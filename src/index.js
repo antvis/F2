@@ -20,7 +20,7 @@ F2.Plugin = {
 };
 F2.Animate = require('./animation/animate');
 // 注册插件
-const Animation = require('./animation/animation');
+const Animation = require('./animation/detail'); // 使用精细动画
 const { Tooltip, Legend, Guide } = F2.Plugin;
 F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
 
