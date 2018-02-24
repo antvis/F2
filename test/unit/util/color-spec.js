@@ -3,14 +3,14 @@ const ColorUtil = require('../../../src/util/color');
 
 describe('color util test', function() {
   it('color to rgb', () => {
-    expect(ColorUtil.toRGB('red')).equal('#ff0000');
-    expect(ColorUtil.toRGB('white')).equal('#ffffff');
-    expect(ColorUtil.toRGB('#ddd')).equal('#dddddd');
-    expect(ColorUtil.toRGB('#eeeeee')).equal('#eeeeee');
+    expect(ColorUtil.toHex('red')).equal('#ff0000');
+    expect(ColorUtil.toHex('white')).equal('#ffffff');
+    expect(ColorUtil.toHex('#ddd')).equal('#dddddd');
+    expect(ColorUtil.toHex('#eeeeee')).equal('#eeeeee');
   });
   it('color to rgb with rgb(r,g,b)', () => {
-    expect(ColorUtil.toRGB('rgb(255,0, 0)')).equal('#ff0000');
-    expect(ColorUtil.toRGB('rgba(255,0, 0, 1)')).equal('#ff0000');
+    expect(ColorUtil.toHex('rgb(255,0, 0)')).equal('#ff0000');
+    expect(ColorUtil.toHex('rgba(255,0, 0, 1)')).equal('#ff0000');
   });
 
   it('gradient white black', () => {
@@ -19,7 +19,6 @@ describe('color util test', function() {
     expect(gradient(1)).equal('#000000');
     expect(gradient(0.5)).equal('#808080');
   });
-
 
   it('gradient red blue', () => {
     const gradient = ColorUtil.gradient([ 'red', 'blue' ]);

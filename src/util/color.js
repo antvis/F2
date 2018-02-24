@@ -1,17 +1,4 @@
-/**
- * TODO: 优化，最好去除 document
- */
 const Util = require('./common');
-const RGB_REG = /rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
-
-// 创建辅助 tag 取颜色
-function createTmp() {
-  const i = document.createElement('i');
-  i.title = 'Web Colour Picker';
-  i.style.display = 'none';
-  document.body.appendChild(i);
-  return i;
-}
 
 // 获取颜色之间的插值
 function getValue(start, end, percent, index) {
@@ -20,12 +7,12 @@ function getValue(start, end, percent, index) {
 }
 
 // 数组转换成颜色
-function arr2rgb(arr) {
-  return '#' + toHex(arr[0]) + toHex(arr[1]) + toHex(arr[2]);
+function arr2hex(arr) {
+  return '#' + toRGBValue(arr[0]) + toRGBValue(arr[1]) + toRGBValue(arr[2]);
 }
 
 // 将数值从 0-255 转换成16进制字符串
-function toHex(value) {
+function toRGBValue(value) {
   value = Math.round(value);
   value = value.toString(16);
   if (value.length === 1) {
@@ -40,7 +27,7 @@ function calColor(colors, percent) {
   const left = steps * percent - step;
   const start = colors[step];
   const end = step === steps ? start : colors[step + 1];
-  const rgb = arr2rgb([
+  const rgb = arr2hex([
     getValue(start, end, left, 0),
     getValue(start, end, left, 1),
     getValue(start, end, left, 2)
@@ -49,7 +36,7 @@ function calColor(colors, percent) {
 }
 
 // rgb 颜色转换成数组
-function rgb2arr(str) {
+function hex2arr(str) {
   const arr = [];
   arr.push(parseInt(str.substr(1, 2), 16));
   arr.push(parseInt(str.substr(3, 2), 16));
@@ -57,37 +44,51 @@ function rgb2arr(str) {
   return arr;
 }
 
-const colorCache = {};
-let iEl = null;
+const colorCache = {
+  black: '#000000',
+  blue: '#0000ff',
+  grey: '#808080',
+  green: '#008000',
+  orange: '#ffa500',
+  pink: '#ffc0cb',
+  purple: '#800080',
+  red: '#ff0000',
+  white: '#ffffff',
+  yellow: '#ffff00'
+};
+
 const ColorUtil = {
   /**
-   * 将颜色转换到 rgb 的格式
+   * 将颜色转换到 hex 的格式
    * @param  {String} color 颜色
    * @return {String} 将颜色转换到 '#ffffff' 的格式
    */
-  toRGB(color) {
-    // 如果已经是 rgb的格式
-    if (color[0] === '#' && color.length === 7) {
-      return color;
-    }
-    if (!iEl) { // 防止防止在页头报错
-      iEl = createTmp();
-    }
-    let rst;
+  toHex(color) {
     if (colorCache[color]) {
-      rst = colorCache[color];
-    } else {
-      iEl.style.color = color;
-      rst = document.defaultView.getComputedStyle(iEl, '').getPropertyValue('color');
-      const cArray = RGB_REG.exec(rst);
-      cArray.shift();
-      rst = arr2rgb(cArray);
-      colorCache[color] = rst;
+      return colorCache[color];
     }
+
+    if (color[0] === '#') {
+      if (color.length === 7) {
+        return color;
+      }
+
+      const hex = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+        return '#' + r + r + g + g + b + b;
+      }); // hex3 to hex6
+      colorCache[color] = hex;
+      return hex;
+    }
+
+    // rgb/rgba to hex
+    let rst = color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+    rst.shift();
+    rst = arr2hex(rst);
+    colorCache[color] = rst;
     return rst;
   },
 
-  rgb2arr,
+  hex2arr,
 
   /**
    * 获取渐变函数
@@ -101,9 +102,9 @@ const ColorUtil = {
     }
     Util.each(colors, function(color) {
       if (color.indexOf('#') === -1) {
-        color = ColorUtil.toRGB(color);
+        color = ColorUtil.toHex(color);
       }
-      points.push(rgb2arr(color));
+      points.push(hex2arr(color));
     });
     return function(percent) {
       return calColor(points, percent);
