@@ -675,7 +675,7 @@ class Geom extends Base {
       let yValue = yScale.invert(invertPoint.y);
       yValue = self._getSnap(yScale, yValue, tmp);
       tmp.forEach(function(obj) {
-        if (Util.isArray(yValue) ? Util.Array.equals(obj[FIELD_ORIGIN_Y], yValue) : obj[FIELD_ORIGIN_Y] === yValue) {
+        if (Util.isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
           rst.push(obj);
         }
       });

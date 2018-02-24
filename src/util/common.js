@@ -351,26 +351,6 @@ Util.Array = {
     if (index !== -1) {
       arr.splice(index, 1);
     }
-  },
-  equals(a1, a2) {
-    if (a1 === a2) {
-      return true;
-    }
-    if (!a1 || !a2) {
-      return false;
-    }
-
-    if (a1.length !== a2.length) {
-      return false;
-    }
-    let rst = true;
-    for (let i = 0, len = a1.length; i < len; i++) {
-      if (a1[i] !== a2[i]) {
-        rst = false;
-        break;
-      }
-    }
-    return rst;
   }
 };
 
