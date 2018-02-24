@@ -156,10 +156,12 @@ chart.render();
 属性名|说明
 ----|----
 nice | 是否将 ticks 进行优化，变更数据的最小值、最大值，使得每个 tick 都是用户易于理解的数据
-mask| 数据的格式化格式 默认：'YYYY-MM-DD',
+mask| 数据的格式化格式 默认：'YYYY-MM-DD'
 tickCount| 坐标点的个数，默认是5。但不一定是准确值
 values | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系
 alias | 别名
 range |输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
 formatter | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。
 ticks | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
+
+**注意：`mask` 和 `formatter` 这两个属性不可公用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**

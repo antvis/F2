@@ -150,14 +150,11 @@ describe('scale time cat', function() {
     mask
   });
 
-  // it('is category', function() {
-  //   expect(Scale.isCategory('timeCat')).to.be.equal(true);
-  // });
-
   it('cfg', function() {
-    expect(scale.values).not.to.be.equal(undefined);
+    expect(scale.values).to.be.eql([ 1441296000000, 1442937600000, 1449849600000 ]);
     expect(scale.type).to.be.equal('timeCat');
     expect(scale.mask).to.be.equal('YYYY/MM/DD');
+    expect(scale.sortable).to.be.true;
   });
 
   it('translate', function() {
@@ -165,7 +162,6 @@ describe('scale time cat', function() {
     expect(scale.translate(1)).to.be.equal(1);
     expect(scale.translate('2015/10/06').toString()).to.be.equal('NaN');
     expect(scale.translate(3).toString()).to.be.equal('NaN');
-
   });
 
   it('scale', function() {
@@ -219,5 +215,18 @@ describe('scale time cat', function() {
       values: [ 1442937600000, 1441296000000, 1449849600000, 1359648000000, 1362326400000, 1443024000000 ]
     });
     expect(scale.getTicks().length).equal(2);
+  });
+
+  it('scale formatter', function() {
+    const scale = new Scale.TimeCat({
+      values: [ '2018-02-20', '2018-02-21', '2018-02-22' ],
+      mask,
+      formatter(val) {
+        return 'time is ' + val;
+      },
+      sortable: false
+    });
+    const text = scale.getText('2018-02-20');
+    expect(text).to.be.equal('time is 1519056000000'); // 原始值
   });
 });
