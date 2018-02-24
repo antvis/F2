@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>股票图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script>
+  $.getJSON('./data/candle.json',function(data){
+    data = data.slice(0, 100); // 仅显示100 个
+    //数据处理
+    data.sort(function(obj1, obj2) {
+      return obj1.time > obj2.time ? 1 : -1;
+    });
+    data.forEach(function(obj) {
+      obj.range = [ obj.start, obj.end, obj.max, obj.min ];
+      obj.trend = (obj.start <= obj.end) ? 0 : 1;
+    });
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: window.innerWidth * 0.64,
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(data, {
+      range: {
+        tickCount: 5
+      },
+      time: {
+        tickCount: 3
+      }
+    });
+
+    chart.axis('time', {
+      label(text, index, total) {
+        const textCfg = {};
+        if (index === 0) {
+          textCfg.textAlign = 'left';
+        }
+        if (index === total - 1) {
+          textCfg.textAlign = 'right';
+        }
+        return textCfg;
+      }
+    });
+
+    chart.schema().position('time*range')
+      .color('trend', function(trend) {
+        return [ '#C00000', '#19B24B' ][trend];
+      })
+      .shape('candle');
+    chart.render();
+  });
+</script>
+</body>
+</html>

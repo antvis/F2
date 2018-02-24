@@ -32,18 +32,6 @@ describe('test basic util', function() {
     expect(Util.isNil(1)).to.be.equal(false);
   });
 
-  // it('isNumeric', function() {
-  //   const val = '1234';
-  //   expect(Util.isNumeric(val)).to.be.equal(true);
-  //   expect(Util.isNumeric('abc')).to.be.equal(false);
-  //   expect(Util.isNumeric('123a')).to.be.equal(false);
-  // });
-
-  // it('to array', function() {
-  //   const args = Util.toArray(arguments);
-  //   expect(Util.isArray(args)).to.be.equal(true);
-  // });
-
   it('simple mix', function() {
     const a = {
       a: 123
@@ -97,35 +85,6 @@ describe('test basic util', function() {
     Util.mix(b, a);
     expect(b.c).to.be.equal(undefined);
   });
-/*
-  it('frame', function(done) {
-    let called = false;
-    const callback = function() {
-      called = true;
-    };
-
-    Util.requestAnimationFrame(callback);
-    setTimeout(function() {
-      expect(called).to.be.equal(true);
-      done();
-    }, 20);
-  });
-
-  it('clear frame', function(done) {
-    let called = false;
-    const callback = function() {
-      called = true;
-    };
-
-    const id = Util.requestAnimationFrame(callback);
-
-    Util.cancelAnimationFrame(id);
-    setTimeout(function() {
-      expect(called).to.be.equal(false);
-      done();
-    }, 20);
-  });
-*/
 
   it('each obj', function() {
     const a = {
@@ -196,5 +155,13 @@ describe('test basic util', function() {
     a.a3 = b;
     const obj = Util.deepMix({}, b);
     expect(obj.b2).not.to.be.equal(a);
+  });
+
+  it('parsePadding', function() {
+    expect(Util.parsePadding('auto')).to.be.eql([ 'auto', 'auto', 'auto', 'auto' ]);
+    expect(Util.parsePadding(10)).to.be.eql([ 10, 10, 10, 10 ]);
+    expect(Util.parsePadding([ 10 ])).to.be.eql([ 10, 10, 10, 10 ]);
+    expect(Util.parsePadding([ 10, 19 ])).to.be.eql([ 10, 19, 10, 19 ]);
+    expect(Util.parsePadding([ 10, 19, 29 ])).to.be.eql([ 10, 19, 29, 19 ]);
   });
 });
