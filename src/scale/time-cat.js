@@ -63,10 +63,9 @@ class TimeCategory extends Category {
 
   /**
    * 计算 ticks
-   * @param  {boolean} formated 是否将 ticks 按照指定的 mask 格式化
    * @return {array} 返回 ticks 数组
    */
-  calculateTicks(formated) {
+  calculateTicks(/* formated */) {
     const self = this;
     const count = self.tickCount;
     const temp = catAuto({
@@ -75,11 +74,11 @@ class TimeCategory extends Category {
     });
 
     const ticks = temp.ticks;
-    if (formated) {
-      Util.each(ticks, function(value, index) {
-        ticks[index] = fecha.format(value, self.mask);
-      });
-    }
+    // if (formated) {
+    //   Util.each(ticks, function(value, index) {
+    //     ticks[index] = fecha.format(value, self.mask);
+    //   });
+    // }
     return ticks;
   }
 

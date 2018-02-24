@@ -25,7 +25,6 @@ class Sector extends Shape {
   createPath(context) {
     const attrs = this.get('attrs');
     const { x, y, startAngle, endAngle, r, r0, clockwise } = attrs;
-    context = context || this.get('context');
     context.beginPath();
     const unitX = Math.cos(startAngle);
     const unitY = Math.sin(startAngle);
