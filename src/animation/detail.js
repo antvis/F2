@@ -23,7 +23,7 @@ Animate.Action = ShapeAction;
 Animate.defaultCfg = {
   interval: {
     enter(coord) {
-      if (coord.isPolar && coord.transposed) { // 饼图
+      if (coord.isPolar && coord.transposed) { // 饼图特殊处理
         return function(shape) {
           shape.set('zIndex', -1);
           const container = shape.get('parent');
