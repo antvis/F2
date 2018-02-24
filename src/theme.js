@@ -74,9 +74,6 @@ const Theme = {
       lineWidth: 0,
       size: 3 // 圆的默认半径
     },
-    interval: {
-      fillOpacity: 0.85
-    },
     area: {
       fillOpacity: 0.1
     }
