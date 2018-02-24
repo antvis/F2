@@ -49,12 +49,12 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
       attrs: Util.mix({
         points: topPoints.concat(bottomPoints)
       }, style),
-      createPath(shape, context) {
+      createPath(context) {
         const constaint = [ // 范围
           [ 0, 0 ],
           [ 1, 1 ]
         ];
-        const points = shape._attrs.attrs.points;
+        const points = this._attrs.attrs.points;
         const topSps = Smooth.smooth(points.slice(0, points.length / 2), false, constaint);
         const bottomSps = Smooth.smooth(points.slice(points.length / 2, points.length), false, constaint);
 

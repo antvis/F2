@@ -20,7 +20,6 @@ class Circle extends Shape {
   createPath(context) {
     const attrs = this.get('attrs');
     const { x, y, r } = attrs;
-    context = context || this.get('context');
     context.beginPath();
     context.arc(x, y, r, 0, Math.PI * 2, false);
     context.closePath();
