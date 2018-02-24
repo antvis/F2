@@ -3,10 +3,21 @@
  * @author sima.zhang
  */
 const Util = require('../util/common');
+const Global = require('../global');
+const Shape = require('../graphic/shape');
+const Timeline = require('../graphic/animate/timeline');
+const Animator = require('../graphic/animate/animator');
+
+Shape.prototype.animate = function(timeline) {
+  timeline = timeline || Timeline.getGlobalInstance();
+  timeline.fps /= Global.animateReduceMultiple; // 动画降频
+  const attrs = this.get('attrs');
+  return new Animator(this, attrs, timeline);
+};
+
 const Animate = require('./animate');
 const ShapeAction = require('./shape-action');
 const GroupAction = require('./group-action');
-require('../graphic/animate/index');
 
 Animate.Action = ShapeAction;
 Animate.defaultCfg = {
@@ -78,27 +89,6 @@ const GROUP_ANIMATION = {
     return GroupAction.groupWaveIn;
   }
 };
-
-// const animateAttrs = {
-//   x: 'x',
-//   y: 'y',
-//   lineWidth: 'lineWidth',
-//   points: 'points',
-//   matrix: 'matrix',
-//   opacity: 'opacity',
-//   strokeOpacity: 'strokeOpacity',
-//   fillOpacity: 'fillOpacity',
-//   r: 'r',
-//   r0: 'r0',
-//   startAngle: 'startAngle',
-//   endAngle: 'endAngle',
-//   x1: 'x1',
-//   y1: 'y1',
-//   x2: 'x2',
-//   y2: 'y2',
-//   width: 'width',
-//   height: 'height'
-// };
 
 function diff(fromAttrs, toAttrs) {
   const endState = {};

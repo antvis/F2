@@ -13,17 +13,17 @@ F2 默认提供了两种动画版本：
 
 ## 如何按需引用
 
-1. 入场动画版本
+1. 仅包含入场动画版本
 
 ```js
-const GroupAnimation = require('@antv/f2/lib/animation/group-animation');
+const GroupAnimation = require('@antv/f2/lib/animation/group');
 Chart.plugins.register(GroupAnimation); // 这里进行全局注册，也可以给 chart 的实例注册
 ```
 
 2. 精细动画版本
 
 ```js
-const Animation = require('@antv/f2/lib/animation/animation');
+const Animation = require('@antv/f2/lib/animation/detail');
 Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 chart 的实例注册
 ```
 
@@ -103,6 +103,7 @@ geom.animate({
 如果上述动画动作不满足需求，用户也可以自己注册动画动作：
 
 ```js
+// 加载动画注册类
 const Animate = require('@antv/f2/lib/animation/animate');
 /**
  * @param  {String} 动画名称，用户自定义即可
