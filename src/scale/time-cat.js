@@ -7,7 +7,6 @@ const Category = require('./category');
 const Util = require('../util/common');
 const fecha = require('fecha');
 const catAuto = require('./auto/cat');
-const TimeUtil = require('./time-util');
 
 /**
  * 度量的构造函数
@@ -163,7 +162,17 @@ class TimeCategory extends Category {
 
   // 将时间转换为时间戳
   _toTimeStamp(value) {
-    return TimeUtil.toTimeStamp(value);
+    if (Util.isString(value)) {
+      if (value.indexOf('T') > 0) {
+        value = new Date(value).getTime();
+      } else {
+        value = new Date(value.replace(/-/ig, '/')).getTime();
+      }
+    }
+    if (Util.isDate(value)) {
+      value = value.getTime();
+    }
+    return value;
   }
 }
 
