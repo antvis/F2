@@ -22,7 +22,14 @@ const GroupAction = require('./group-action');
 Animate.Action = ShapeAction;
 Animate.defaultCfg = {
   interval: {
-    enter() {
+    enter(coord) {
+      if (coord.isPolar && coord.transposed) { // 饼图
+        return function(shape) {
+          shape.set('zIndex', -1);
+          const container = shape.get('parent');
+          container.sort();
+        };
+      }
       return ShapeAction.fadeIn;
     }
   },
