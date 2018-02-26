@@ -104,7 +104,7 @@ describe('Text', function() {
     expect(text1.attr('fontSize')).to.equal(20);
     expect(text1.attr('font')).to.equal('normal normal normal 20px sans-serif');
     canvas.add(text1);
-     // bbox
+    // bbox
     const bbox = text1.getBBox();
     expect(bbox.x).to.equal(10);
     expect(bbox.y).to.equal(40);
@@ -170,4 +170,3 @@ describe('Text', function() {
     canvas.draw();
   });
 });
-

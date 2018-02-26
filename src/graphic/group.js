@@ -15,7 +15,7 @@ class Group extends Element {
   }
 
   drawInner(context) {
-    context = context || this.get('context');
+    // context = context || this.get('context');
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
@@ -24,17 +24,17 @@ class Group extends Element {
     return this;
   }
 
-  clearTotalMatrix() {
-    const m = this._attrs.totalMatrix;
-    if (m) {
-      this._attrs.totalMatrix = null;
-      const children = this._attrs.children;
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        child.clearTotalMatrix();
-      }
-    }
-  }
+  // clearTotalMatrix() {
+  //   const m = this._attrs.totalMatrix;
+  //   if (m) {
+  //     this._attrs.totalMatrix = null;
+  //     const children = this._attrs.children;
+  //     for (let i = 0, len = children.length; i < len; i++) {
+  //       const child = children[i];
+  //       child.clearTotalMatrix();
+  //     }
+  //   }
+  // }
 
   /**
    * 获取最小包围盒

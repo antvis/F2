@@ -219,14 +219,14 @@ describe('scale time cat', function() {
 
   it('scale formatter', function() {
     const scale = new Scale.TimeCat({
-      values: [ '2018-02-20', '2018-02-21', '2018-02-22' ],
+      values: [ 1519084800000, 1519171200000, 1519257600000 ],
       mask,
       formatter(val) {
         return 'time is ' + val;
       },
       sortable: false
     });
-    const text = scale.getText('2018-02-20');
-    expect(text).to.be.equal('time is 1519056000000'); // 原始值
+    const text = scale.getText('1519084800000');
+    expect(text).to.be.equal('time is 1519084800000'); // 原始值
   });
 });

@@ -71,16 +71,16 @@ class Canvas {
     }
 
     const ratio = self.get('pixelRatio');
-    if (ratio) {
-      canvas.width = width * ratio;
-      canvas.height = height * ratio;
-      canvas.style.height = height + 'px';
-      canvas.style.width = width + 'px';
-      if (ratio !== 1) {
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
+    // if (ratio) {
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.height = height + 'px';
+    canvas.style.width = width + 'px';
+    if (ratio !== 1) {
+      const ctx = canvas.getContext('2d');
+      ctx.scale(ratio, ratio);
     }
+    // }
     self.set('canvas', this);
     self.set('el', canvas);
     self.set('context', context || canvas.getContext('2d'));

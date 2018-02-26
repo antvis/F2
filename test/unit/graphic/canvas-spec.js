@@ -1,14 +1,16 @@
 const expect = require('chai').expect;
 const Group = require('../../../src/graphic/group');
 const Canvas = require('../../../src/graphic/canvas');
+require('../../../src/graphic/shape/line');
+require('../../../src/graphic/shape/circle');
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';
 document.body.appendChild(dom);
 
 describe('Canvas', function() {
-
   it('init Canvas with dom\'s id', function() {
+    const pixelRatio = window && window.devicePixelRatio || 1;
     const canvas = new Canvas({
       el: 'canvas'
     });
@@ -16,6 +18,7 @@ describe('Canvas', function() {
     expect(canvas.get('context')).not.to.be.undefined;
     expect(canvas.get('width')).to.equal(300);
     expect(canvas.get('height')).to.equal(150);
+    expect(canvas.get('pixelRatio')).to.equal(pixelRatio);
     expect(canvas.get('el')).not.to.be.undefined;
     expect(canvas.get('el').style.width).to.equal('300px');
     expect(canvas.get('el').style.height).to.equal('150px');
@@ -40,6 +43,26 @@ describe('Canvas', function() {
   it('init Canvas with context, width, height, pixelRatio', function() {
     const canvas = new Canvas({
       context: dom.getContext('2d'),
+      width: 300,
+      height: 300,
+      pixelRatio: 1
+    });
+    expect(canvas.get('canvas')).not.to.be.undefined;
+    expect(canvas.getWidth()).to.equal(300);
+    expect(canvas.getHeight()).to.equal(300);
+    expect(canvas.get('el').style.width).to.equal('300px');
+    expect(canvas.get('el').style.height).to.equal('300px');
+    canvas.destroy();
+  });
+
+  it('init Canvas with context, not html5 canvas context', function() {
+    const context = {
+      canvas: {
+        style: {}
+      }
+    };
+    const canvas = new Canvas({
+      context,
       width: 300,
       height: 300,
       pixelRatio: 1
