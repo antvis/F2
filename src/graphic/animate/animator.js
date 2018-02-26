@@ -66,7 +66,8 @@ class Animator {
         endValue: attrs[attrName],
         startTime: this.timeline.time + delay + this.endTime,
         endTime: this.timeline.time + delay + this.endTime + duration,
-        easing
+        easing,
+        parent: this
       };
 
       let diff;

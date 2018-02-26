@@ -95,6 +95,10 @@ class Timeline {
       shape._attrs.attrs[key] = newValue;
       shape.get('canvas').draw();
 
+      if (propertyAnim.parent && propertyAnim.parent.onUpdateCallback) {
+        propertyAnim.parent.onUpdateCallback(propertyAnim);
+      }
+
       if (this.time >= propertyAnim.endTime && !propertyAnim.hasEnded) {
         propertyAnim.hasEnded = true;
         if (propertyAnim.onEnd) {

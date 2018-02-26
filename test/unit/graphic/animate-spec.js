@@ -1,0 +1,145 @@
+const expect = require('chai').expect;
+const Animator = require('../../../src/graphic/animate/animator');
+const Timeline = require('../../../src/graphic/animate/timeline');
+const Canvas = require('../../../src/graphic/canvas');
+require('../../../src/graphic/shape/rect');
+require('../../../src/graphic/shape/polyline');
+
+const dom = document.createElement('canvas');
+dom.id = 'animate';
+document.body.appendChild(dom);
+
+const canvas = new Canvas({
+  el: 'animate',
+  width: 500,
+  height: 500,
+  pixelRatio: 2
+});
+
+const rect = canvas.addShape('rect', {
+  attrs: {
+    x: 10,
+    y: 10,
+    width: 30,
+    height: 0,
+    fill: '#18901f'
+  }
+});
+
+describe('Do Animation', function() {
+  let animator;
+  const timeline = new Timeline();
+  it('initial', function() {
+    const initialAttrs = {
+      height: 0
+    };
+    animator = new Animator(rect, initialAttrs, timeline);
+
+    expect(animator.startTime).to.equal(0);
+    expect(animator.endTime).to.equal(0);
+    expect(animator.time).to.equal(0);
+    expect(animator.time).to.equal(0);
+    expect(timeline.anims.length).to.equal(0);
+  });
+
+  it('do animation', function(done) {
+    let isStarted = false;
+    let isEnded = false;
+    let counter = 0;
+
+    animator
+      .to({
+        attrs: {
+          height: 100
+        },
+        duration: 800
+      })
+      .onStart(function() {
+        isStarted = true;
+      })
+      .onUpdate(function() {
+        counter = counter + 1;
+      })
+      .onEnd(function() {
+        isEnded = true;
+      });
+
+    setTimeout(function() {
+      expect(isStarted).to.be.true;
+      expect(isEnded).to.be.true;
+      expect(counter).to.equal(49);
+      expect(rect.attr('height')).to.equal(100);
+      expect(animator.endTime).to.equal(800);
+      expect(animator.animGroups.length).to.equal(1);
+      timeline.stop();
+      done();
+    }, 1000);
+  });
+
+  it('do matrix animation', function(done) {
+    expect(timeline.playing).to.be.false;
+
+    timeline.play();
+    animator.to({
+      attrs: {
+        matrix: [ 1, 0, 0, 1, 20, 20 ]
+      },
+      duration: 800
+    });
+
+    setTimeout(function() {
+      expect(rect.getMatrix()).to.eql([ 1, 0, 0, 1, 20, 20 ]);
+      expect(animator.endTime).to.equal(1600);
+      expect(animator.animGroups.length).to.equal(2);
+      done();
+    }, 1200);
+  });
+
+  it('do points animation', function(done) {
+    const polyline = canvas.addShape('polyline', {
+      attrs: {
+        points: [
+          { x: 10, y: 10 },
+          { x: 15, y: 15 },
+          { x: 25, y: 5 },
+          { x: 50, y: 25 }
+        ],
+        lineWidth: 2,
+        stroke: '#f80'
+      }
+    });
+    const initialAttrs = {
+      points: [
+        { x: 10, y: 10 },
+        { x: 15, y: 15 },
+        { x: 25, y: 5 },
+        { x: 50, y: 25 }
+      ]
+    };
+    const animator = new Animator(polyline, initialAttrs, timeline);
+    animator.to({
+      attrs: {
+        points: [
+          { x: 20, y: 20 },
+          { x: 25, y: 25 },
+          { x: 35, y: 15 },
+          { x: 60, y: 35 }
+        ]
+      },
+      duration: 800
+    });
+
+    setTimeout(function() {
+      expect(polyline.attr('points')).to.eql([
+        { x: 20, y: 20 },
+        { x: 25, y: 25 },
+        { x: 35, y: 15 },
+        { x: 60, y: 35 }
+      ]);
+      expect(animator.endTime).to.equal(800);
+      expect(animator.animGroups.length).to.equal(1);
+      done();
+    }, 1200);
+  });
+
+});

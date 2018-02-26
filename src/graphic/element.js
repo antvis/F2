@@ -73,7 +73,7 @@ class Element {
   _setAttr(name, value) {
     const attrs = this._attrs.attrs;
     if (name === 'clip') {
-      this._setAttrClip(value);
+      value = this._setAttrClip(value);
     } else {
       const alias = ALIAS_ATTRS_MAP[name];
       if (alias) {
@@ -87,7 +87,7 @@ class Element {
     return this._attrs.attrs[name];
   }
 
-  _afterAttrsSet() {}
+  // _afterAttrsSet() {}
 
   _setAttrClip(clip) {
     if (clip && (CLIP_SHAPES.indexOf(clip._attrs.type) > -1)) {
@@ -103,7 +103,7 @@ class Element {
 
   attr(name, value) {
     const self = this;
-    if (self.get('destroyed')) return;
+    if (self.get('destroyed')) return null;
     const argumentsLen = arguments.length;
     if (argumentsLen === 0) {
       return self._attrs.attrs;
@@ -221,14 +221,11 @@ class Element {
     }
   }
 
-  /**
-   * 销毁并将自己从父元素中移除（如果有父元素的话）
-   */
-  destroy() {
+  destroy() { // 销毁并将自己从父元素中移除（如果有父元素的话）
     const destroyed = this.get('destroyed');
 
     if (destroyed) {
-      return;
+      return null;
     }
 
     this._removeFromParent();
@@ -260,12 +257,12 @@ class Element {
 
   setMatrix(m) {
     this._attrs.attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
-    this.clearTotalMatrix();
+    // this.clearTotalMatrix();
   }
 
-  cloneMatrix(m) {
-    return [ m[0], m[1], m[2], m[3], m[4], m[5] ];
-  }
+  // cloneMatrix(m) {
+  //   return [ m[0], m[1], m[2], m[3], m[4], m[5] ];
+  // }
 
   /**
    * 平移、旋转、缩放
@@ -275,7 +272,7 @@ class Element {
   transform(actions) {
     const matrix = this._attrs.attrs.matrix;
     this._attrs.attrs.matrix = MatrixUtil.transform(matrix, actions);
-    this.clearTotalMatrix();
+    // this.clearTotalMatrix();
     return this;
   }
 
@@ -287,19 +284,19 @@ class Element {
   translate(x, y) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.translate(matrix, matrix, [ x, y ]);
-    this.clearTotalMatrix();
+    // this.clearTotalMatrix();
   }
 
   rotate(rad) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.rotate(matrix, matrix, rad);
-    this.clearTotalMatrix();
+    // this.clearTotalMatrix();
   }
 
   scale(sx, sy) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
-    this.clearTotalMatrix();
+    // this.clearTotalMatrix();
   }
 
   /**
@@ -325,26 +322,25 @@ class Element {
    * 应用到当前元素上的总的矩阵
    * @return {Matrix} 矩阵
    */
-  getTotalMatrix() {
-    let m = this._attrs.totalMatrix;
-    if (!m) {
-      m = [ 1, 0, 0, 1, 0, 0 ];
-      const parent = this._attrs.parent;
-      if (parent) {
-        const pm = parent.getTotalMatrix();
-        m = MatrixUtil.multiple(m, pm);
-      }
+  // getTotalMatrix() {
+  //   let m = this._attrs.totalMatrix;
+  //   if (!m) {
+  //     m = [ 1, 0, 0, 1, 0, 0 ];
+  //     const parent = this._attrs.parent;
+  //     if (parent) {
+  //       const pm = parent.getTotalMatrix();
+  //       m = MatrixUtil.multiple(m, pm);
+  //     }
 
-      m = MatrixUtil.multiple(m, this._attrs.attrs.matrix);
-      this._attrs.totalMatrix = m;
-    }
-    return m;
-  }
+  //     m = MatrixUtil.multiple(m, this._attrs.attrs.matrix);
+  //     this._attrs.totalMatrix = m;
+  //   }
+  //   return m;
+  // }
 
   // 清除当前的矩阵
-  clearTotalMatrix() { }
+  // clearTotalMatrix() { }
 
-  // 暂时没有用到
   // invert(px, py) {
   //   const m = this.getTotalMatrix();
   //   const x = px;

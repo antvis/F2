@@ -15,9 +15,11 @@ describe('Element', function() {
 
     expect(e._attrs).not.to.be.undefined;
     expect(e.get('className')).to.equal('aElement');
+    expect(e.get('visible')).to.be.true;
     expect(e.attr('width')).to.equal(20);
     expect(e.attr('height')).to.equal(30);
     expect(e.attr('stroke')).to.equal('#231');
+    expect(e.attr('matrix')).to.eql([ 1, 0, 0, 1, 0, 0 ]);
   });
 
   it('set and get', function() {
@@ -73,8 +75,86 @@ describe('Element', function() {
     expect(attrs.strokeStyle).to.equal('#222');
   });
 
-  it('destroy', function() {
+  it('hide()', function() {
+    e.hide();
+    expect(e.get('visible')).to.be.false;
+  });
+
+  it('show()', function() {
+    e.show();
+    expect(e.get('visible')).to.be.true;
+  });
+
+  it('getBBox()', function() {
+    const bbox = e.getBBox();
+    expect(bbox).to.eql({
+      minX: 0,
+      maxX: 0,
+      minY: 0,
+      maxY: 0
+    });
+  });
+
+  it('getMatrix()', function() {
+    const matrix = e.getMatrix();
+    expect(matrix).to.eql([ 1, 0, 0, 1, 0, 0 ]);
+  });
+
+  it('setMatrix()', function() {
+    const matrix = [ 1, 0, 0, 1, 100, 20 ];
+    e.setMatrix(matrix);
+    expect(e.getMatrix()).to.eql(matrix);
+  });
+
+  it('setTransform', function() {
+    e.setTransform([]);
+    expect(e.getMatrix()).to.eql([ 1, 0, 0, 1, 0, 0 ]);
+  });
+
+  it('transform', function() {
+    e.transform([
+      [ 's', 0.5, 0.5 ],
+      [ 'r', Math.PI ]
+    ]);
+    expect(e.getMatrix()).to.eql([ -0.5, 6.123233995736766e-17, -6.123233995736766e-17, -0.5, 0, 0 ]);
+  });
+
+  it('translate', function() {
+    e.translate(10, 10);
+    expect(e.getMatrix()).to.eql([ -0.5, 6.123233995736766e-17, -6.123233995736766e-17, -0.5, -5.000000000000001, -4.999999999999999 ]);
+  });
+
+  it('rotate', function() {
+    e.rotate(-Math.PI);
+    expect(e.getMatrix()).to.eql([ 0.5, 0, 0, 0.5, -5.000000000000001, -4.999999999999999 ]);
+  });
+
+  it('scale', function() {
+    e.scale(2, 2);
+    expect(e.getMatrix()).to.eql([ 1, 0, 0, 1, -5.000000000000001, -4.999999999999999 ]);
+  });
+
+  it('moveTo', function() {
+    const x = e.get('x');
+    const y = e.get('y');
+    expect(x).to.be.undefined;
+    expect(y).to.be.undefined;
+    e.moveTo(10, 10);
+    expect(e.get('x')).to.equal(10);
+    expect(e.get('y')).to.equal(10);
+    expect(e.getMatrix()).to.eql([ 1, 0, 0, 1, 4.999999999999999, 5.000000000000001 ]);
+  });
+
+  it('apply', function() {
+    const v = [ -10, -10 ];
+    e.apply(v);
+    expect(v).to.eql([ -5.000000000000001, -4.999999999999999 ]);
+  });
+
+  it('destroy()', function() {
     e.destroy();
     expect(e.get('destroyed')).to.equal(true);
+    expect(e.attr()).to.be.null;
+    expect(e.destroy()).to.be.null;
   });
 });
