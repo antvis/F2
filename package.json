@@ -68,7 +68,7 @@
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit/plugin/legend-spec.js",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
