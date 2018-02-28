@@ -439,6 +439,7 @@ class Chart extends Base {
     }
 
     let legendCfg = legendController.legendCfg;
+    legendController.enable = true;
 
     if (Util.isBoolean(field)) {
       legendController.enable = field;
@@ -643,12 +644,11 @@ class Chart extends Base {
   /**
    * 根据画布坐标获取对应数据集
    * @param  {Object} point 画布坐标的x,y的值
-   * @param {String} field 字段名
    * @return {Array} 纵向切割交点对应数据集
   **/
-  getSnapRecords(point, field) {
+  getSnapRecords(point) {
     const geom = this.get('geoms')[0];
-    const data = geom.getSnapRecords(point, field);
+    const data = geom.getSnapRecords(point);
     return data;
   }
 

@@ -1,13 +1,12 @@
 const expect = require('chai').expect;
-require('../../../src/geom/index');
-
 const Chart = require('../../../src/chart/chart');
-const Guide = require('../../../src/plugin/guide');
+const Tooltip = require('../../../src/plugin/tooltip');
+require('../../../src/geom/index');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
-require('../../../src/component/guide');
-
-Chart.plugins.register(Guide);
+require('../../../src/component/axis/line');
+require('../../../src/component/axis/circle');
+require('../../../src/coord/polar');
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');
@@ -92,7 +91,6 @@ describe('chart test', () => {
       chart.destroy();
     });
 
-
     it('test controller', function() {
       chart = new Chart({
         el: canvas,
@@ -100,13 +98,29 @@ describe('chart test', () => {
         height: 600,
         padding: 50
       });
+      const isAutoPadding = chart._isAutoPadding();
+      expect(isAutoPadding).to.be.false;
       expect(chart.get('scaleController')).not.equal(undefined);
-      expect(chart.get('guideController')).not.equal(undefined);
+      // expect(chart.get('guideController')).not.equal(undefined);
       expect(chart.get('axisController')).not.equal(undefined);
-      // expect(chart.get('animateController')).not.equal(undefined);
     });
 
-    it('test coord', function() {
+    it('test plugin', function() {
+      Chart.plugins.register(Tooltip); // 注册 guide 插件
+      expect(Chart.plugins.count()).to.equal(1);
+      // 重复注册 guide 插件
+      Chart.plugins.register(Tooltip);
+      expect(Chart.plugins.count()).to.equal(1);
+      expect(Chart.plugins.getAll()).to.eql([ Tooltip ]);
+
+      Chart.plugins.unregister(Tooltip);
+      expect(Chart.plugins.count()).to.equal(0);
+
+      Chart.plugins.clear();
+      expect(Chart.plugins.count()).to.equal(0);
+    });
+
+    it('test plot', function() {
       const plot = chart.get('plot');
       expect(plot.bl).eqls({ x: 50, y: 550 });
     });
@@ -114,37 +128,23 @@ describe('chart test', () => {
     it('test methods', function() {
       chart.axis('field', { test: true });
       expect(chart.get('axisController').axisCfg.field).eqls({ test: true });
+
+      chart.axis(false);
+      expect(chart.get('axisController').axisCfg).to.be.null;
     });
   });
 
   describe('render', function() {
     let chart;
 
-    const data = [{
-      a: 1,
-      b: 2,
-      c: '1'
-    }, {
-      a: 1,
-      b: 3,
-      c: '2'
-    }, {
-      a: 2,
-      b: 1,
-      c: '1'
-    }, {
-      a: 2,
-      b: 4,
-      c: '2'
-    }, {
-      a: 3,
-      b: 5,
-      c: '1'
-    }, {
-      a: 3,
-      b: 1,
-      c: '2'
-    }];
+    const data = [
+     { a: '1', b: 2, c: '1' },
+     { a: '1', b: 3, c: '2' },
+     { a: '2', b: 1, c: '1' },
+     { a: '2', b: 4, c: '2' },
+     { a: '3', b: 5, c: '1' },
+     { a: '3', b: 1, c: '2' }
+    ];
 
     it('init', function() {
       chart = new Chart({
@@ -152,12 +152,20 @@ describe('chart test', () => {
         width: 500,
         height: 500
       });
+      chart.axis(false);
 
       expect(chart.get('canvas')).to.not.be.empty;
+      expect(chart.get('canvas').get('children').length).to.equal(3);
+      expect(chart.interval).not.to.be.undefined;
+      expect(chart.point).not.to.be.undefined;
     });
 
+    it('auto padding', function() {
+      const isAutoPadding = chart._isAutoPadding();
+      expect(isAutoPadding).to.be.true;
+    });
 
-    it('source', function() {
+    it('source with colDefs', function() {
       chart.source(data, {
         a: {
           min: 0,
@@ -191,13 +199,29 @@ describe('chart test', () => {
       expect(chart.get('scaleController').defs).eql({ a: { min: 0, max: 4 }, b: { nice: false } });
     });
 
-    it('guide', function() {
-      expect(chart.guide().text).not.equal(undefined);
-      chart.guide().text({
-        position: [ 2.5, 3 ],
-        content: 'test'
+    it('coord', function() {
+      chart.coord(); // 默认使用笛卡尔坐标系
+      expect(chart.get('coordCfg')).to.eql({ type: 'cartesian' });
+
+      chart.coord({
+        transposed: true
       });
-      expect(chart.get('guideController').guides.length).equal(1);
+      expect(chart.get('coordCfg')).to.eql({ transposed: true });
+
+      chart.coord('rect');
+      expect(chart.get('coordCfg')).to.eql({
+        type: 'rect'
+      });
+    });
+
+    it('filter', function() {
+      let filters = chart.get('filters');
+      expect(filters).to.be.null;
+      chart.filter('b', val => {
+        return val !== 1;
+      });
+      filters = chart.get('filters');
+      expect(filters.b).to.be.an.instanceof(Function);
     });
 
     it('geom methods', function() {
@@ -205,59 +229,100 @@ describe('chart test', () => {
       const geom = chart.point().position('a*b').color('c');
       expect(chart.get('geoms').length).equal(1);
       expect(geom.get('type')).equal('point');
-
+      expect(geom.get('container')).not.to.be.empty;
+      expect(chart.get('middlePlot').get('children').length).to.equal(1);
     });
 
     it('render', function() {
       chart.render();
+      // 自动计算 padding
+      // const padding = chart.get('padding');
+      // expect(padding).to.eql([ 30, 15, 15, 15 ]); // TODO
+      // filter data
+      const filterData = chart.get('filteredData');
+      expect(filterData.length).to.equal(4);
+
+      const frontPlot = chart.get('frontPlot');
+      const backPlot = chart.get('backPlot');
+      expect(frontPlot.get('children').length).to.equal(1);
+      expect(backPlot.get('children').length).to.equal(1);
+    });
+
+    it('getPosition', function() {
+      const record = { a: '2', b: 4 };
+      const position = chart.getPosition(record);
+      expect(position).to.eql({
+        x: 250,
+        y: 181.66666666666669
+      });
+    });
+
+    it('getRecord', function() {
+      const point = { x: 250, y: 181.66666666666669 };
+      const record = chart.getRecord(point);
+      expect(record).to.eql({
+        a: '2',
+        b: 4
+      });
+    });
+
+    it('getSnapRecords', function() {
+      const point = { x: 250, y: 150 };
+      const data = chart.getSnapRecords(point);
+      expect(data.length).to.equal(1);
+      expect(data[0]._origin).to.eql({ a: '2', b: 4, c: '2' });
     });
 
     it('clear', function() {
       chart.clear();
+      const geoms = chart.get('geoms');
+      expect(geoms).to.be.empty;
+      const filters = chart.get('filters');
+      expect(filters).to.be.null;
+      expect(chart.get('scales')).to.eql({});
+      const frontPlot = chart.get('frontPlot');
+      const backPlot = chart.get('backPlot');
+      expect(frontPlot.get('children').length).to.equal(1);
+      expect(backPlot.get('children').length).to.equal(1);
     });
 
     it('change coord', function() {
-      chart.coord('polar');
+      chart.coord('polar', {
+        startAngle: -Math.PI,
+        endAngle: 0,
+        transposed: true
+      });
       chart.interval().position('a*b')
         .color('c')
         .adjust('stack');
       chart.render();
-    });
 
-    xit('animate', function() {
-      chart.clear();
-      const data = [
-        { a: '1', b: 2 },
-        { a: '2', b: 5 }
-      ];
-      chart.coord('rect');
-      chart.source(data);
-      chart.animate({
-        type: 'scaley'
-      });
+      const coord = chart.get('coord');
+      expect(coord.isPolar).to.be.true;
+      expect(coord.transposed).to.be.true;
 
-      chart.interval().position('a*b');
-        // .color('c');
-      chart.render();
-
-      const xScale = chart.get('scales').a;
-      expect(xScale.range).eqls([ 0.25, 0.75 ]);
+      const scales = chart.get('scales');
+      expect(scales.a.range).to.eql([ 0.16666666666666666, 0.8333333333333334 ]);
     });
 
     it('repaint', function() {
-      chart.guide().text({
-        position: [ '1', 3 ],
-        content: '这是测试文本'
-      });
       chart.repaint();
+      expect(chart.get('isUpdate')).to.be.true;
     });
 
     it('change data', function() {
+      chart.coord('polar', {
+        transposed: true
+      });
       chart.changeData([
         { a: '1', b: 5 },
-        { a: '2', b: 2 }
+        { a: '1', b: 2 }
       ]);
+      expect(chart.get('isUpdate')).to.be.true;
+      expect(chart.get('filters')).to.be.null;
+      expect(chart.get('scales').a.range).to.eql([ 0.5, 1 ]);
     });
+
 
     it('destroy', function(done) {
       setTimeout(function() {

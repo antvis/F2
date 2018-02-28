@@ -448,5 +448,6 @@ module.exports = {
   clearInner(chart) {
     const legendController = chart.get('legendController');
     legendController.clear();
+    chart.set('legendRange', null);
   }
 };

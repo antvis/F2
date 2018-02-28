@@ -16,12 +16,11 @@ const Helpers = {
     };
   },
   getScaledMatrix(shape, v, direct) {
-    const matrix = shape.getMatrix();
+    let scaledMatrix;
+
     shape.apply(v); // shape 原先可能做了变化
     const x = v[0];
     const y = v[1];
-
-    let scaledMatrix;
 
     if (direct === 'x') {
       shape.transform([
@@ -29,7 +28,7 @@ const Helpers = {
         [ 's', 0.01, 1 ],
         [ 't', -x, -y ]
       ]);
-
+      const matrix = shape.getMatrix();
       scaledMatrix = Matrix.transform(matrix, [
         [ 't', x, y ],
         [ 's', 100, 1 ],
@@ -41,7 +40,7 @@ const Helpers = {
         [ 's', 1, 0.01 ],
         [ 't', -x, -y ]
       ]);
-
+      const matrix = shape.getMatrix();
       scaledMatrix = Matrix.transform(matrix, [
         [ 't', x, y ],
         [ 's', 1, 100 ],
@@ -53,7 +52,7 @@ const Helpers = {
         [ 's', 0.01, 0.01 ],
         [ 't', -x, -y ]
       ]);
-
+      const matrix = shape.getMatrix();
       scaledMatrix = Matrix.transform(matrix, [
         [ 't', x, y ],
         [ 's', 100, 100 ],

@@ -45,7 +45,7 @@ describe('Do Animation', function() {
   it('do animation', function(done) {
     let isStarted = false;
     let isEnded = false;
-    let counter = 0;
+    let isUpdate = false;
 
     animator
       .to({
@@ -58,7 +58,7 @@ describe('Do Animation', function() {
         isStarted = true;
       })
       .onUpdate(function() {
-        counter = counter + 1;
+        isUpdate = true;
       })
       .onEnd(function() {
         isEnded = true;
@@ -67,7 +67,7 @@ describe('Do Animation', function() {
     setTimeout(function() {
       expect(isStarted).to.be.true;
       expect(isEnded).to.be.true;
-      expect(counter).to.equal(49);
+      expect(isUpdate).to.be.true;
       expect(rect.attr('height')).to.equal(100);
       expect(animator.endTime).to.equal(800);
       expect(animator.animGroups.length).to.equal(1);
@@ -138,6 +138,7 @@ describe('Do Animation', function() {
       ]);
       expect(animator.endTime).to.equal(800);
       expect(animator.animGroups.length).to.equal(1);
+      timeline.stop();
       done();
     }, 1200);
   });

@@ -72,4 +72,23 @@ describe('attr base test', function() {
     expect(rst[0]).equal('blue');
   });
 
+  it('getFields', function() {
+    const attr = new Attr({
+      type: 'test',
+      names: [ 't1', 't2' ],
+      values: [ 0, 10, 40 ],
+      scales: [ scale1, scale2 ]
+    });
+    expect(attr.getFields()).to.eql([ 'dim1', 'dim2' ]);
+  });
+
+  it('getScale', function() {
+    const attr = new Attr({
+      type: 'test',
+      names: [ 't1', 't2' ],
+      values: [ 0, 10, 40 ],
+      scales: [ scale1, scale2 ]
+    });
+    expect(attr.getScale('t2')).to.eql(scale2);
+  });
 });

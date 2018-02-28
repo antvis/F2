@@ -1,4 +1,3 @@
-
 const expect = require('chai').expect;
 const Scale = require('../../../src/scale/');
 
