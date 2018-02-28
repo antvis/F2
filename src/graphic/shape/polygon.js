@@ -20,10 +20,7 @@ class Polygon extends Shape {
     const self = this;
     const attrs = self.get('attrs');
     const points = attrs.points;
-    if (points.length < 2) {
-      return;
-    }
-    context = context || self.get('context');
+
     context.beginPath();
 
     for (let i = 0, len = points.length; i < len; i++) {

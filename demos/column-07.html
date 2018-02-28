@@ -43,7 +43,11 @@
         items[0].value = value[0] + ' 至 ' + value[1];
       }
     });
-    chart.interval().position('x*y');
+    chart.interval().position('x*y').animate({
+      appear: {
+        animation: 'shapesScaleInY'
+      }
+    });
     chart.render();
 </script>
 </body>

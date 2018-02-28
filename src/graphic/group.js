@@ -15,6 +15,7 @@ class Group extends Element {
   }
 
   drawInner(context) {
+    // context = context || this.get('context');
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
@@ -23,17 +24,17 @@ class Group extends Element {
     return this;
   }
 
-  clearTotalMatrix() {
-    const m = this._attrs.totalMatrix;
-    if (m) {
-      this._attrs.totalMatrix = null;
-      const children = this._attrs.children;
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        child.clearTotalMatrix();
-      }
-    }
-  }
+  // clearTotalMatrix() {
+  //   const m = this._attrs.totalMatrix;
+  //   if (m) {
+  //     this._attrs.totalMatrix = null;
+  //     const children = this._attrs.children;
+  //     for (let i = 0, len = children.length; i < len; i++) {
+  //       const child = children[i];
+  //       child.clearTotalMatrix();
+  //     }
+  //   }
+  // }
 
   /**
    * 获取最小包围盒
@@ -58,11 +59,12 @@ class Group extends Element {
         const leftBottom = [ box.minX, box.maxY ];
         const rightTop = [ box.maxX, box.minY ];
         const rightBottom = [ box.maxX, box.maxY ];
+        const matrix = child.attr('matrix');
 
-        Vector2.transformMat2d(leftTop, leftTop, child.get('matrix'));
-        Vector2.transformMat2d(leftBottom, leftBottom, child.get('matrix'));
-        Vector2.transformMat2d(rightTop, rightTop, child.get('matrix'));
-        Vector2.transformMat2d(rightBottom, rightBottom, child.get('matrix'));
+        Vector2.transformMat2d(leftTop, leftTop, matrix);
+        Vector2.transformMat2d(leftBottom, leftBottom, matrix);
+        Vector2.transformMat2d(rightTop, rightTop, matrix);
+        Vector2.transformMat2d(rightBottom, rightBottom, matrix);
 
         minX = Math.min(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], minX);
         maxX = Math.max(leftTop[0], leftBottom[0], rightTop[0], rightBottom[0], maxX);

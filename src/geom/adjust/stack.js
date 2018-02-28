@@ -17,7 +17,10 @@ class Stack extends Adjust {
     const xField = self.xField;
     const yField = self.yField;
     const count = dataArray.length;
-    const stackCache = {};
+    const stackCache = {
+      positive: {},
+      negative: {}
+    };
 
     for (let i = 0; i < count; i++) {
       const data = dataArray[i];
@@ -27,11 +30,12 @@ class Stack extends Adjust {
         let y = item[yField];
         const xkey = x.toString();
         y = Util.isArray(y) ? y[1] : y;
-        if (!stackCache[xkey]) {
-          stackCache[xkey] = 0;
+        const direction = y >= 0 ? 'positive' : 'negative';
+        if (!stackCache[direction][xkey]) {
+          stackCache[direction][xkey] = 0;
         }
-        item[yField] = [ stackCache[xkey], y + stackCache[xkey] ];
-        stackCache[xkey] += y;
+        item[yField] = [ stackCache[direction][xkey], y + stackCache[direction][xkey] ];
+        stackCache[direction][xkey] += y;
       }
     }
   }

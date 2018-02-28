@@ -3,7 +3,7 @@ const Shape = require('./shape');
 const ShapeUtil = require('./util');
 const Global = require('../../global');
 
-// regist line geom
+// register line geom
 const Line = Shape.registerFactory('line', {
   defaultShapeType: 'line'
 });
@@ -36,66 +36,56 @@ function drawLines(cfg, container, style, smooth) {
       bottomPoints.push(bottomPoints[0]);
     }
     if (cfg.isStack) {
-      container.addShape('Polyline', {
+      return container.addShape('Polyline', {
         className: 'line',
         attrs: Util.mix({
           points: topPoints,
           smooth
         }, style)
       });
-    } else {
-      container.addShape('Polyline', {
-        className: 'line',
-        attrs: Util.mix({
-          points: topPoints,
-          smooth
-        }, style)
-      });
-      container.addShape('Polyline', {
-        className: 'line',
-        attrs: Util.mix({
-          points: bottomPoints,
-          smooth
-        }, style)
-      });
     }
-  } else {
-    if (cfg.isInCircle) {
-      points.push(points[0]);
-    }
-    container.addShape('Polyline', {
+    const topShape = container.addShape('Polyline', {
       className: 'line',
       attrs: Util.mix({
-        points,
+        points: topPoints,
         smooth
       }, style)
     });
+    const bottomShape = container.addShape('Polyline', {
+      className: 'line',
+      attrs: Util.mix({
+        points: bottomPoints,
+        smooth
+      }, style)
+    });
+
+    return [ topShape, bottomShape ];
   }
+  if (cfg.isInCircle) {
+    points.push(points[0]);
+  }
+  return container.addShape('Polyline', {
+    className: 'line',
+    attrs: Util.mix({
+      points,
+      smooth
+    }, style)
+  });
 }
 
-// draw line shape
-Shape.registerShape('line', 'line', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    drawLines(cfg, container, style);
-  }
-});
+const SHAPES = [ 'line', 'smooth', 'dash' ];
+Util.each(SHAPES, function(shapeType) {
+  Shape.registerShape('line', shapeType, {
+    draw(cfg, container) {
+      const smooth = (shapeType === 'smooth');
+      const style = getStyle(cfg);
+      if (shapeType === 'dash') {
+        style.lineDash = Global.lineDash;
+      }
 
-// draw smooth line shape
-Shape.registerShape('line', 'smooth', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    drawLines(cfg, container, style, true);
-  }
-});
-
-// draw dash line shape
-Shape.registerShape('line', 'dash', {
-  draw(cfg, container) {
-    const style = getStyle(cfg);
-    style.lineDash = Global.lineDash;
-    drawLines(cfg, container, style);
-  }
+      return drawLines(cfg, container, style, smooth);
+    }
+  });
 });
 
 module.exports = Line;

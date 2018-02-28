@@ -17,16 +17,6 @@ function isFullCircle(coord) {
   return true;
 }
 
-const ViewGeoms = {};
-Util.each(Geom, function(geomConstructor, className) {
-  const methodName = Util.lowerFirst(className);
-  ViewGeoms[methodName] = function(cfg) {
-    const geom = new geomConstructor(cfg);
-    this.addGeom(geom);
-    return geom;
-  };
-});
-
 class Chart extends Base {
   static initPlugins() {
     return {
@@ -174,11 +164,11 @@ class Chart extends Base {
       const attrCfg = attrOptions.color;
       if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
         const arr = attrCfg.field.split('*');
-        arr.map(item => {
+
+        Util.each(arr, item => {
           if (fields.indexOf(item) === -1) {
             fields.push(item);
           }
-          return item;
         });
       }
     });
@@ -212,7 +202,7 @@ class Chart extends Base {
           let widthRatio = 1;
           let offset = 0;
           if (inFullCircle) {
-            if (!coord.isTransposed) {
+            if (!coord.transposed) {
               range = [ 0, 1 - 1 / count ];
             } else {
               widthRatio = Global.widthRatio.multiplePie;
@@ -376,8 +366,17 @@ class Chart extends Base {
 
   constructor(cfg) {
     super(cfg);
-    Util.mix(this, ViewGeoms); // 附加各种 geometry 对应的方法
-    this._init();
+    // 附加各种 geometry 对应的方法
+    const self = this;
+    Util.each(Geom, function(geomConstructor, className) {
+      const methodName = Util.lowerFirst(className);
+      self[methodName] = function(cfg) {
+        const geom = new geomConstructor(cfg);
+        self.addGeom(geom);
+        return geom;
+      };
+    });
+    self._init();
   }
 
   /**
@@ -440,6 +439,7 @@ class Chart extends Base {
     }
 
     let legendCfg = legendController.legendCfg;
+    legendController.enable = true;
 
     if (Util.isBoolean(field)) {
       legendController.enable = field;
@@ -545,6 +545,7 @@ class Chart extends Base {
 
     Chart.plugins.notify(self, 'afterGeomDraw');
     canvas.sort();
+    Chart.plugins.notify(self, 'beforeCanvasDraw');
     canvas.draw();
     return self;
   }
@@ -559,13 +560,14 @@ class Chart extends Base {
     this._removeGeoms();
     this._clearInner();
     this.set('filters', null);
-
+    this.set('isUpdate', false);
     const canvas = this.get('canvas');
     canvas.draw();
     return this;
   }
 
   repaint() {
+    this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
     this.render();
@@ -642,12 +644,11 @@ class Chart extends Base {
   /**
    * 根据画布坐标获取对应数据集
    * @param  {Object} point 画布坐标的x,y的值
-   * @param {String} field 字段名
    * @return {Array} 纵向切割交点对应数据集
   **/
-  getSnapRecords(point, field) {
+  getSnapRecords(point) {
     const geom = this.get('geoms')[0];
-    const data = geom.getSnapRecords(point, field);
+    const data = geom.getSnapRecords(point);
     return data;
   }
 
@@ -704,9 +705,10 @@ class Chart extends Base {
    */
   addGeom(geom) {
     const geoms = this.get('geoms');
+    const middlePlot = this.get('middlePlot');
     geoms.push(geom);
     geom.set('chart', this);
-    geom.set('container', this.get('middlePlot'));
+    geom.set('container', middlePlot.addGroup());
   }
 
   /**
