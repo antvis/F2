@@ -274,7 +274,7 @@ class LegendController {
       } else if (align === 'right') {
         x = chartWidth - (legendWidth + appendPadding);
       }
-      y = (position === 'top') ? (legendHeight / 2 + appendPadding) : (chartHeigth - legendHeight / 2 - appendPadding);
+      y = (position === 'top') ? appendPadding + Math.abs(legend.container.getBBox().minY) : (chartHeigth - legendHeight - appendPadding);
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;
@@ -448,5 +448,6 @@ module.exports = {
   clearInner(chart) {
     const legendController = chart.get('legendController');
     legendController.clear();
+    chart.set('legendRange', null);
   }
 };

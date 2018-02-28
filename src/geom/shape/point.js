@@ -37,7 +37,7 @@ function drawShape(cfg, container, shape) {
   }
   for (let i = 0, len = y.length; i < len; i++) {
     if (shape === 'rect') {
-      container.addShape('Rect', {
+      return container.addShape('Rect', {
         className: 'point',
         attrs: Util.mix({
           x: x - size,
@@ -46,23 +46,23 @@ function drawShape(cfg, container, shape) {
           height: size * 2
         }, pointCfg)
       });
-    } else {
-      container.addShape('Circle', {
-        className: 'point',
-        attrs: Util.mix({
-          x,
-          y: y[i],
-          r: size
-        }, pointCfg)
-      });
     }
+
+    return container.addShape('Circle', {
+      className: 'point',
+      attrs: Util.mix({
+        x,
+        y: y[i],
+        r: size
+      }, pointCfg)
+    });
   }
 }
 
 Util.each(SHAPES, function(shapeType) {
   Shape.registerShape('point', shapeType, {
     draw(cfg, container) {
-      drawShape(cfg, container, shapeType);
+      return drawShape(cfg, container, shapeType);
     }
   });
 });

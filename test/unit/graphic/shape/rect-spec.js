@@ -52,5 +52,23 @@ describe('Rect', function() {
     rect.destroy();
     expect(canvas.get('children').length).to.equal(0);
   });
+
+  it('rect with radius', function() {
+    const rect = new Rect({
+      attrs: {
+        x: 10,
+        y: 10,
+        height: 20,
+        width: 80,
+        radius: [ 3, 0, 5 ],
+        lineWidth: 1,
+        fill: '#1890FF',
+        strokeStyle: '#000'
+      }
+    });
+    canvas.add(rect);
+    canvas.draw();
+    expect(canvas.get('children').length).to.equal(1);
+  });
 });
 

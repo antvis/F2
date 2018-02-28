@@ -21,7 +21,7 @@ function equalsCenter(points, center) {
 }
 
 function drawCircleArea(topPoints, bottomPoints, container, style, isSmooth) {
-  container.addShape('Polyline', {
+  const shape = container.addShape('Polyline', {
     className: 'area',
     attrs: Util.mix({
       points: topPoints,
@@ -29,28 +29,34 @@ function drawCircleArea(topPoints, bottomPoints, container, style, isSmooth) {
     }, style)
   });
   if (bottomPoints.length) {
-    container.addShape('Polyline', {
+    const bottomShape = container.addShape('Polyline', {
       className: 'area',
       attrs: Util.mix({
         points: bottomPoints,
         smooth: isSmooth
       }, style)
     });
+    return [ shape, bottomShape ];
   }
+  return shape;
 }
 
 function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
+  let shape;
   if (isSmooth) {
-    container.addShape('Custom', {
+    shape = container.addShape('Custom', {
       className: 'area',
-      attrs: style,
+      attrs: Util.mix({
+        points: topPoints.concat(bottomPoints)
+      }, style),
       createPath(context) {
         const constaint = [ // 范围
           [ 0, 0 ],
           [ 1, 1 ]
         ];
-        const topSps = Smooth.smooth(topPoints, false, constaint);
-        const bottomSps = Smooth.smooth(bottomPoints, false, constaint);
+        const points = this._attrs.attrs.points;
+        const topSps = Smooth.smooth(points.slice(0, points.length / 2), false, constaint);
+        const bottomSps = Smooth.smooth(points.slice(points.length / 2, points.length), false, constaint);
 
         context.beginPath();
         context.moveTo(topPoints[0].x, topPoints[0].y);
@@ -68,13 +74,14 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
     });
   } else {
     topPoints = topPoints.concat(bottomPoints);
-    container.addShape('Polyline', {
+    shape = container.addShape('Polyline', {
       className: 'area',
       attrs: Util.mix({
         points: topPoints
       }, style)
     });
   }
+  return shape;
 }
 
 function drawShape(cfg, container, isSmooth) {
@@ -96,10 +103,10 @@ function drawShape(cfg, container, isSmooth) {
     if (equalsCenter(bottomPoints, cfg.center)) { // 如果内部点等于圆心，不绘制
       bottomPoints = [];
     }
-    drawCircleArea(topPoints, bottomPoints, container, style, isSmooth);
-  } else {
-    drawRectShape(topPoints, bottomPoints, container, style, isSmooth);
+    return drawCircleArea(topPoints, bottomPoints, container, style, isSmooth);
   }
+
+  return drawRectShape(topPoints, bottomPoints, container, style, isSmooth);
 }
 
 const Area = Shape.registerFactory('area', {
@@ -123,18 +130,14 @@ const Area = Shape.registerFactory('area', {
   }
 });
 
-// draw area shape
-Shape.registerShape('area', 'area', {
-  draw(cfg, container) {
-    drawShape.call(this, cfg, container, false);
-  }
-});
-
-// draw smooth shape
-Shape.registerShape('area', 'smooth', {
-  draw(cfg, container) {
-    drawShape.call(this, cfg, container, true);
-  }
+const SHAPES = [ 'area', 'smooth' ];
+Util.each(SHAPES, function(shapeType) {
+  Shape.registerShape('area', shapeType, {
+    draw(cfg, container) {
+      const smooth = (shapeType === 'smooth');
+      return drawShape.call(this, cfg, container, smooth);
+    }
+  });
 });
 
 module.exports = Area;

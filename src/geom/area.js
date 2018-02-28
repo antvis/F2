@@ -30,13 +30,17 @@ class Area extends Geom {
     const yScale = self.getYScale();
     const splitArray = ShapeUtil.splitArray(data, yScale.field);
     cfg.origin = data; // path,line,area 等图的origin 是整个序列
+
     Util.each(splitArray, function(subData, splitedIndex) {
       cfg.splitedIndex = splitedIndex; // 传入分割片段索引 用于生成id
       const points = subData.map(obj => {
         return obj.points;
       });
       cfg.points = points;
-      shapeFactory.drawShape(cfg.shape, cfg, container);
+      const gShape = shapeFactory.drawShape(cfg.shape, cfg, container);
+      Util.each([].concat(gShape), s => {
+        s.set('origin', data[0]); // todo
+      });
     });
   }
 }

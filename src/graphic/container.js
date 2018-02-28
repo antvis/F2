@@ -28,7 +28,7 @@ module.exports = {
       SHAPE_MAP[type] = shapeType;
     }
     cfg.canvas = canvas;
-    cfg.type = type;
+    // cfg.type = type;
 
     // 设置字体
     if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
@@ -129,11 +129,11 @@ module.exports = {
     item._attrs.parent = self;
     item._attrs.context = self._attrs.context;
     item._attrs.canvas = self._attrs.canvas;
-    // const clip = item._attrs.attrs.clip; // TODO
-    // if (clip) {
-    //   clip.set('parent', self);
-    //   clip.set('context', self.get('context'));
-    // }
+    const clip = item._attrs.attrs.clip;
+    if (clip) {
+      clip.set('parent', self);
+      clip.set('context', self.get('context'));
+    }
     if (item._attrs.isGroup) {
       const children = item._attrs.children;
       for (let i = 0, len = children.length; i < len; i++) {

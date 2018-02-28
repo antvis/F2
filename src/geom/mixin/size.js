@@ -60,7 +60,7 @@ const SizeMixin = {
     let width = this.get('_width');
     if (!width) {
       const coord = this.get('coord');
-      if (coord && coord.isPolar && !coord.isTransposed) { // 极坐标下 width 为弧长
+      if (coord && coord.isPolar && !coord.transposed) { // 极坐标下 width 为弧长
         width = (coord.endAngle - coord.startAngle) * coord.circleRadius;
       } else {
         width = this.getDimWidth('x'); // 不需要判断transpose

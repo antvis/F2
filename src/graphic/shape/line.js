@@ -21,9 +21,8 @@ class Line extends Shape {
   createPath(context) {
     const attrs = this.get('attrs');
     const { x1, y1, x2, y2 } = attrs;
-    context = context || this.get('context');
-    context.beginPath();
 
+    context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
   }

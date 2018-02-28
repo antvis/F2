@@ -3,7 +3,7 @@ const GuideBase = require('./base');
 
 class Rect extends GuideBase {
   _initDefaultCfg() {
-    this.type = 'region';
+    this.type = 'rect';
     this.start = [];
     this.end = [];
     this.style = {
@@ -16,7 +16,7 @@ class Rect extends GuideBase {
     const start = this.parsePoint(coord, this.start);
     const end = this.parsePoint(coord, this.end);
     const shape = container.addShape('rect', {
-      className: 'guide-region',
+      className: 'guide-rect',
       attrs: Util.mix({
         x: start.x,
         y: start.y,

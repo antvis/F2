@@ -45,7 +45,7 @@ describe('Guide.Rect', function() {
     canvas.draw();
     const children = group.get('children');
     expect(children.length).to.equal(1);
-    expect(children[0].get('className')).to.equal('guide-region');
+    expect(children[0].get('className')).to.equal('guide-rect');
     expect(children[0].attr('width')).to.equal(400);
     expect(children[0].attr('height')).to.equal(200);
   });

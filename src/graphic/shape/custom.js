@@ -11,14 +11,12 @@ class Custom extends Shape {
 
   createPath(context) {
     const createPath = this.get('createPath');
-    if (createPath) {
-      createPath(context);
-    }
+    createPath && createPath.call(this, context);
   }
 
-  // TODO
   calculateBox() {
-    return null;
+    const calculateBox = this.get('calculateBox');
+    return calculateBox && calculateBox.call(this);
   }
 }
 Shape.Custom = Custom;

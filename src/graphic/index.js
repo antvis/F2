@@ -1,7 +1,9 @@
 const G = {
   Canvas: require('./canvas'),
   Group: require('./group'),
-  Shape: require('./shape')
+  Shape: require('./shape'),
+  Matrix: require('./util/matrix'),
+  Vector2: require('./util/vector2')
 };
 
 require('./shape/rect');

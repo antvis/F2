@@ -39,7 +39,7 @@
     "eslint-plugin-html": "~3.1.1",
     "event-simulate": "~1.0.0",
     "get-port": "~3.1.0",
-    "jquery": "~3.3.1",
+    "jquery": "^3.3.1",
     "nightmare": "~2.10.0",
     "nunjucks": "~3.0.1",
     "open": "~0.0.5",
@@ -68,7 +68,7 @@
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit/plugin/legend-spec.js",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
