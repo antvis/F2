@@ -154,18 +154,18 @@ function getShapes(geoms) {
     const coord = geom.get('coord');
     const type = geom.get('type');
     const animateCfg = geom.get('animateCfg');
-
-    Util.each(geomShapes, (shape, index) => {
-      if (shape.get('className') === type) {
-        shape._id = _getShapeId(geom, shape.get('origin')._origin);
-        // shape.geomType = type;
-        shape.set('coord', coord);
-        shape.set('animateCfg', animateCfg);
-        shape.set('index', index);
-        shapes.push(shape);
-      }
-    });
-
+    if (animateCfg !== false) {
+      Util.each(geomShapes, (shape, index) => {
+        if (shape.get('className') === type) {
+          shape._id = _getShapeId(geom, shape.get('origin')._origin);
+          // shape.geomType = type;
+          shape.set('coord', coord);
+          shape.set('animateCfg', animateCfg);
+          shape.set('index', index);
+          shapes.push(shape);
+        }
+      });
+    }
     geom.set('shapes', geomShapes);
   });
   return shapes;
@@ -291,6 +291,9 @@ function addAnimate(cache, shapes, canvas) {
 
 module.exports = {
   beforeCanvasDraw(chart) {
+    if (chart.get('animate') === false) {
+      return;
+    }
     let isUpdate = chart.get('isUpdate');
     const canvas = chart.get('canvas');
     const coord = chart.get('coord');
@@ -325,24 +328,26 @@ module.exports = {
       let animate;
       Util.each(geoms, geom => {
         const type = geom.get('type');
-        animateCfg = getAnimateCfg(type, 'appear', geom.get('animateCfg'));
-        animate = getAnimate(type, coord, 'appear', animateCfg.animation);
-        if (Util.isFunction(animate)) { // 用户指定了动画类型
-          const shapes = geom.get('shapes');
-          Util.each(shapes, shape => {
-            animate(shape, animateCfg, coord);
-          });
-        } else if (GROUP_ANIMATION[type]) { // 默认进行整体动画
-          animate = GroupAction[animateCfg.animation] || GROUP_ANIMATION[type](coord);
+        if (geom.get('animateCfg') !== false) {
+          animateCfg = getAnimateCfg(type, 'appear', geom.get('animateCfg'));
+          animate = getAnimate(type, coord, 'appear', animateCfg.animation);
+          if (Util.isFunction(animate)) { // 用户指定了动画类型
+            const shapes = geom.get('shapes');
+            Util.each(shapes, shape => {
+              animate(shape, animateCfg, coord);
+            });
+          } else if (GROUP_ANIMATION[type]) { // 默认进行整体动画
+            animate = GroupAction[animateCfg.animation] || GROUP_ANIMATION[type](coord);
 
-          const yScale = geom.getYScale();
-          const zeroY = coord.convertPoint({
-            x: 0,
-            y: yScale.scale(geom.getYMinValue())
-          });
+            const yScale = geom.getYScale();
+            const zeroY = coord.convertPoint({
+              x: 0,
+              y: yScale.scale(geom.getYMinValue())
+            });
 
-          const container = geom.get('container');
-          animate && animate(container, animateCfg, coord, zeroY);
+            const container = geom.get('container');
+            animate && animate(container, animateCfg, coord, zeroY);
+          }
         }
       });
     }

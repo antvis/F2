@@ -81,6 +81,9 @@ function getAnimateCfg(geomType, animateCfg) {
 
 module.exports = {
   beforeCanvasDraw(chart) {
+    if (chart.get('animate') === false) {
+      return;
+    }
     const geoms = chart.get('geoms');
     const coord = chart.get('coord');
     let animateCfg;
@@ -89,19 +92,21 @@ module.exports = {
     Util.each(geoms, geom => {
       const type = geom.get('type');
       const container = geom.get('container');
-      animateCfg = getAnimateCfg(type, geom.get('animateCfg'));
-      animate = getAnimate(type, coord, animateCfg.animation);
-      if (Util.isFunction(animate)) { // 用户指定了动画类型
-        animate(container, animateCfg);
-      } else if (Animate.defaultCfg[type]) { // 默认进行整体动画
-        animate = Animate.defaultCfg[type](coord);
-        const yScale = geom.getYScale();
-        const zeroY = coord.convertPoint({
-          x: 0,
-          y: yScale.scale(geom.getYMinValue())
-        });
+      if (geom.get('animateCfg') !== false) {
+        animateCfg = getAnimateCfg(type, geom.get('animateCfg'));
+        animate = getAnimate(type, coord, animateCfg.animation);
+        if (Util.isFunction(animate)) { // 用户指定了动画类型
+          animate(container, animateCfg);
+        } else if (Animate.defaultCfg[type]) { // 默认进行整体动画
+          animate = Animate.defaultCfg[type](coord);
+          const yScale = geom.getYScale();
+          const zeroY = coord.convertPoint({
+            x: 0,
+            y: yScale.scale(geom.getYMinValue())
+          });
 
-        animate && animate(container, animateCfg, coord, zeroY);
+          animate && animate(container, animateCfg, coord, zeroY);
+        }
       }
     });
   }

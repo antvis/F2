@@ -186,8 +186,7 @@ class TooltipController {
       frontPlot,
       backPlot,
       canvas,
-      fixed: coord.transposed || coord.isPolar,
-      visible: false
+      fixed: coord.transposed || coord.isPolar
     }, defaultCfg, cfg);
     cfg.maxLength = self._getMaxLength(cfg);
     this.cfg = cfg;
@@ -429,7 +428,7 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
-    // 当用户点击canvas 外的事件时 tooltip 消失
+    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
     DomUtil.addEventListener(document, 'touchstart', docMethod);
   }
@@ -442,7 +441,7 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
-
+    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
     DomUtil.removeEventListener(document, 'touchstart', docMethod);
   }

@@ -218,48 +218,6 @@ describe('line axis', function() {
 
       side = axis.getSidePoint(point, -10);
       expect(side).eql({ x: 40, y: 50 });
-
     });
   });
-
-  // describe('grid label function', function() {
-  //   const cfg = Util.deepMix({
-  //     start: {
-  //       x: 40,
-  //       y: 150
-  //     },
-  //     end: {
-  //       x: 460,
-  //       y: 250
-  //     },
-  //     frontContainer,
-  //     backContainer,
-  //     gridPoints: [[{ x: 40, y: 40 }, { x: 40, y: 450 }], [{ x: 460, y: 60 }, { x: 460, y: 460 }]],
-  //     ticks: linear.getTicks()
-  //   }, axisGlobal, {
-  //     label(text, index) {
-  //       if (index % 2 === 0) {
-  //         return null;
-  //       }
-  //       return {
-  //         offset: 10,
-  //         font: '30px sans-serif',
-  //         fillStyle: '#333'
-  //       };
-
-  //     },
-  //     grid(text, index) {
-  //       if (index % 2 !== 0) {
-  //         return null;
-  //       }
-  //       return {
-  //         strokeStyle: 'blue'
-  //       };
-
-  //     }
-  //   });
-  //   // const axis = new AxisLine(cfg);
-  //   // axis.draw();
-  // });
-
 });

@@ -279,7 +279,7 @@ class AxisController {
           padding[2] += maxHeight + labelOffset;
         }
       }
-      chart.set('padding', padding); // changeData 时不变换
+      chart.set('padding', padding); // TODO, 需要判断下，changeData 时不变换
       chart._updateLayout(padding);
     }
 

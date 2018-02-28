@@ -21,9 +21,9 @@ Global.guide = Util.deepMix({
     offsetY: 0,
     top: true
   },
-  region: {
+  rect: {
     style: {
-      fillStyle: '#fafafa'
+      fill: '#fafafa'
     },
     top: false
   },

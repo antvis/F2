@@ -342,8 +342,28 @@ const obj = chart.getRecord({x: 100, y: 100});
 `chart.getSnapRecords(point)`
 
 * 参数：`point`，Object 类型，画布坐标，格式为 `{x: ,y: }`
-* 描述：根据画布上的坐标获取附近的数据
-* 返回：Array 类型，返回数据集
+* 描述：根据画布上的坐标获取附近的数据集
+* 返回：Array 类型，返回数据集，该数据集中的每一项记录包含映射后的数据以及对应的原始数据集，结构如下
+
+```js
+[
+  {
+    _origin: { year: '1959 年', sales: 38 }, // 该 shape 对应的原始数据
+    points: [
+      { x: 0.65625, y: 0 },
+      { x: 0.65625, y: 0.2375 },
+      { x: 0.71875, y: 0.2375 },
+      { x: 0.71875, y: 0 }
+    ], // 组成该 shape 的关键顶点，归一化数据
+    _originY: 38, // Y 轴对应的原始数据
+    x: 260.53499698638916, // 该 shape 的 x 轴画布坐标
+    y: 165.34375, // 该 shape 的 y 轴画布坐标
+    index: 5 // shape 的索引
+  },
+  ...
+  {}
+]
+```
 
 ```js
 const obj = chart.getSnapRecords({x: 100, y: 100});
