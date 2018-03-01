@@ -8,9 +8,9 @@
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-F2 是面向移动端的一套基于可视化图形语法的解决方案，具有精简、高性能、易扩展的特性。适用于对性能、大小、扩展性要求很高的场景。
+F2（Fast && Flexible），是一套面向移动端的基于可视化图形语法的解决方案，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求很高的场景。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/JrymDHcnHRIgSDglEYNY.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/aqUteypLffbwVhjKwtZe.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/FkXzykmbYhPDqDpouJsg.gif" width="180"><img src="https://gw.alipayobjects.com/zos/rmsportal/ntPqElbzargYvMnJcxVX.gif" width="200">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/TzJcRDHJNFlPhUVByrvG.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/eOHezxTwQScZvAlLSLfh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CpdljwuwbEPSiaVIbVwE.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/GYRfGZxtdcIWoPURiNNQ.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/nCVpGkXoNjWqNMXIAuaL.gif" width="200">
 
 **在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
 
@@ -21,14 +21,16 @@ $ npm install @antv/f2
 ```
 
 ## 特性
-- ✔︎ 极小：精简版压缩后不到 100k 的代码。
-- ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化。
-- ✔︎ 强大扩展能力：任何图表，都可以基于图形语法灵活绘制，满足你无限的创意。
+
+- ✔︎ 灵活且易扩展：灵活的按需引入机制，并提供自定义 Shape 以及动画机制，基于图形语法灵活绘制图表，满足你无限的创意
+- ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化
+- ✔︎ 精简：精简版（简单折柱饼）压缩后不到 100k，完整版本压缩后 152k
+- ✔︎ 丰富的图表类型：支持 20+ 图表类型
 
 ### 正在建设中
 
+- [x] 动画支持
 - [ ] 丰富交互功能
-- [ ] 动画支持
 - [ ] 多平台支持
 
 ## 文档
