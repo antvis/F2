@@ -351,7 +351,7 @@ destroy() // 销毁并将自己从父元素中移除（如果有父元素的话�
 #### Line 线
 
 ```js
-new G.Line({
+new G.Shape.Line({
   attrs: {
     x1: 50, // 线段起始点 x 坐标
     y1: 50,// 线段起始点 y 坐标
@@ -367,7 +367,7 @@ new G.Line({
 #### Arc 圆弧
 
 ```js
-new G.Arc({
+new G.Shape.Arc({
   attrs: {
     x: 20, // 圆心 x 坐标
     y: 20, // 圆心 y 坐标
@@ -383,7 +383,7 @@ new G.Arc({
 #### Circle 圆
 
 ```js
-new G.Circle({
+new G.Shape.Circle({
   attrs: {
     x: 10, // 圆心 x 坐标
     y: 10, // 圆心 y 坐标
@@ -396,7 +396,7 @@ new G.Circle({
 #### Polygon 多边形
 
 ```js
-new Polygon({
+new G.Shape.Polygon({
   attrs: {
     points: [
       { x: 10, y: 10 },
@@ -414,7 +414,7 @@ new Polygon({
 #### Polyline 多点线段
 
 ```js
-new G.Polyline({
+new G.Shape.Polyline({
   attrs: {
     points: [
       { x: 10, y: 10 },
@@ -433,7 +433,7 @@ new G.Polyline({
 #### Rect 矩形
 
 ```js
-new G.Rect({
+new G.Shape.Rect({
   attrs: {
     x: 50, // 矩形左上角 x 坐标
     y: 50, // 矩形左上角 y 坐标
@@ -450,7 +450,7 @@ new G.Rect({
 #### Ring 圆环
 
 ```js
-new G.Ring({
+new G.Shape.Ring({
   attrs: {
     x: 100, // 圆心 x 坐标
     y: 150, // 圆心 y 坐标
@@ -466,7 +466,7 @@ new G.Ring({
 #### Sector 扇形
 
 ```js
-new G.Sector({
+new G.Shape.Sector({
   attrs: {
     x: 100, // 圆心 x 坐标 
     y: 150, // 圆心 y 坐标 
@@ -483,7 +483,7 @@ new G.Sector({
 #### Text 文本
 
 ```js
-new G.Text({
+new G.Shape.Text({
   attrs: {
     x: 30, // 显示位置 x 坐标
     y: 30, // 显示位置 x 坐标
@@ -501,11 +501,14 @@ new G.Text({
 #### Custom 自定义图形
 
 ```js
-new G.Custom({
+new G.Shape.Custom({
   attrs: {},
   createPath(context) {
     // 在这里绘制图形
-  }
+  },
+  calculateBox() {
+    // 自定义包围盒
+  }
 })
 ```
 
