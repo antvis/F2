@@ -226,6 +226,10 @@ valueStyle: {
 
 - `triggerOn`: String|Function
 
+**TODO**
+
+该属性只能在 chart.legend({}); 或者 主题中设置
+
 图例筛选行为的触发事件，默认为 `click`。
 
 1. String 类型 
@@ -268,7 +272,7 @@ onClick: ev => {}
 
 默认为 false，当 `custom` 为 true，表示不使用默认生成的图例，允许用户自定义图例，包括具体的图例项以及 click 交互。
 
-自定义图例时需要用户自己声明具体的图例项 `items`(该属性是一个对象数组，数组中每一项为一个对象类型，结构为：`{ value: '', marker:{fill: 'red'}}`)以及图例项的 `onClick` 事件。
+自定义图例时需要用户自己声明具体的图例项 `items`(该属性是一个对象数组，数组中每一项为一个对象类型，结构为：`{ name: '', marker:{ fill: 'red' } }`)以及图例项的 `onClick` 事件。
 
 `marker` 的格式可以为数组或者字符串。
 
@@ -284,27 +288,27 @@ chart.legend('city', {
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: 'triangle', fill: 'red'},
-    { value: 'a2', marker: 'triangle', fill: 'blue'},
-    { value: 'a3', marker: 'triangle', fill: 'green'}
+    { name: 'a1', marker: 'square', fill: 'red'},
+    { name: 'a2', marker: 'square', fill: 'blue'},
+    { name: 'a3', marker: 'square', fill: 'green'}
   ]
 });
 chart.legend('city', {
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: { symbol: 'triangle', stroke: 'red', radius: 8 }},
-    { value: 'a2', marker: { symbol: 'triangle', stroke: 'green', radius: 8 }},
-    { value: 'a3', marker: { symbol: 'triangle', stroke: 'blue', radius: 8 }}
+    { name: 'a1', marker: { symbol: 'square', stroke: 'red', radius: 8 }},
+    { name: 'a2', marker: { symbol: 'square', stroke: 'green', radius: 8 }},
+    { name: 'a3', marker: { symbol: 'square', stroke: 'blue', radius: 8 }}
   ]
 });
 chart.legend({
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: 'triangle', fill: 'red'},
-    { value: 'a2', marker: 'triangle', fill: 'blue'},
-    { value: 'a3', marker: 'triangle', fill: 'green'}
+    { name: 'a1', marker: 'square', fill: 'red'},
+    { name: 'a2', marker: 'square', fill: 'blue'},
+    { name: 'a3', marker: 'square', fill: 'green'}
   ]
 });
 ```
