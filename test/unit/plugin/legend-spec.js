@@ -147,7 +147,7 @@ describe('Legend Plugin', function() {
     expect(legend.items[0].marker).to.eql({ fill: '#1890FF', radius: 10, symbol: 'circle', stroke: '#fff' });
     expect(legend.container.get('x')).to.equal(15);
     expect(legend.container.get('y')).to.equal(30);
-
+    
     // 自定义 marker
     chart.clear();
     chart.source(data);
