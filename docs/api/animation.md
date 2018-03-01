@@ -5,11 +5,11 @@ F2 默认提供了两种动画版本：
 1. 入场动画
 2. 精细动画，包含入场动画、更新动画以及销毁动画
 
-当图表仅用于展示时，为了缩减代码体量，用户可以选择第一种动画，即仅包含入场动画。如果图表包含较多交互，可以选择第二种动画策略。
+当图表仅用于展示时，为了缩减代码体量，用户可以选择第一种动画，即仅包含入场动画。如果需要更丰富的动画，可以选择第二种动画策略。
 
 另外 F2 还提供了自定义动画机制，帮助用户定制更加生动、更具场景的动画。
 
-默认我们提供的是精细动画，当然用户也可以使用按需引用策略，选择适合自己场景的动画：
+完整版的 F2 我们默认提供的是精细动画，当然用户也可以使用按需引用策略，选择适合自己场景的动画：
 
 ## 如何按需引用
 
@@ -27,7 +27,7 @@ const Animation = require('@antv/f2/lib/animation/detail');
 Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 chart 的实例注册
 ```
 
-两个版本的动画择其一即可。
+**两个版本的动画择其一即可。**
 
 ## 配置动画
 
@@ -36,7 +36,7 @@ Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 ch
 在 F2 中，我们提供了四种动画场景类型：
 
 - appear: 初始化时的入场动画；
-- enter: 更新时的出现动画；
+- enter: 更新时的出场动画；
 - update: 更新时的变化动画；
 - leave: 更新时的动画；
 
@@ -54,11 +54,37 @@ geom.animate({
     duration: 600 || function(index, id) { 
       // 回调函数
     }  // 动画执行时间， 单位 ms，也可以是回调函数
-  }
+  },
+  enter: {
+    animation: 'fadeIn', // 动画名称
+    easing: 'elasticIn', // 动画缓动效果
+    delay: 1000, // 动画延迟执行时间，单位 ms
+    duration: 600 || function(index, id) { 
+      // 回调函数
+    }  // 动画执行时间， 单位 ms，也可以是回调函数
+  },
+  update: {
+    animation: 'fadeIn', // 动画名称
+    easing: 'elasticIn', // 动画缓动效果
+    delay: 1000, // 动画延迟执行时间，单位 ms
+    duration: 600 || function(index, id) { 
+      // 回调函数
+    }  // 动画执行时间， 单位 ms，也可以是回调函数
+  },
+  leave: {
+    animation: 'fadeIn', // 动画名称
+    easing: 'elasticIn', // 动画缓动效果
+    delay: 1000, // 动画延迟执行时间，单位 ms
+    duration: 600 || function(index, id) { 
+      // 回调函数
+    }  // 动画执行时间， 单位 ms，也可以是回调函数
+  },
 });
 ```
 
-- `animation` 动画名称
+#### 配置属性说明
+
+- `animation`： String 类型，动画名称
 
 默认我们提供了如下几种动画：
 

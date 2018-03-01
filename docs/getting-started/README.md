@@ -40,6 +40,6 @@ chart.render();
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/DilorPgmSmZjWNkEqIdp.png" width="256">
 
-It's that easy to get started using F2! From here you can explore the many options that can help you customize your charts with scales, tooltips, axis, geoms, legends and much more.
+It's that easy to get started using F2! From here you can explore the many options that can help you customize your charts with scales, tooltip, axis, geoms, legends and much more.
 
 There are many examples of F2 that are available in the `/demos` folder of `f2.zip` that is attached to every [release](https://github.com/antvis/f2/releases).
