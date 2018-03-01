@@ -98,6 +98,8 @@ describe('chart test', () => {
         height: 600,
         padding: 50
       });
+      const isAutoPadding = chart._isAutoPadding();
+      expect(isAutoPadding).to.be.false;
       expect(chart.get('scaleController')).not.equal(undefined);
       // expect(chart.get('guideController')).not.equal(undefined);
       expect(chart.get('axisController')).not.equal(undefined);

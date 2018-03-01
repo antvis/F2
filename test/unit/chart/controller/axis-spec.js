@@ -36,13 +36,6 @@ const linear = new Scale.Linear({
   tickCount: 5
 });
 
-// const otherLinear = new Scale.Linear({
-//   min: 0,
-//   max: 100,
-//   field: 'c',
-//   tickCount: 5
-// });
-
 const cat = new Scale.Cat({
   field: 'a',
   range: [ 0, 0.66 ],
@@ -56,7 +49,8 @@ describe('axis controller', function() {
     axisCfg: {
       c: false,
       b: {
-        grid: null
+        grid: null,
+        position: 'right'
       }
     }
   });
@@ -69,21 +63,16 @@ describe('axis controller', function() {
   it('get axis default x cfg', function() {
     const cfg = controller._getAxisCfg(rect, cat, linear, 'x', { grid: {} });
     expect(cfg.ticks.length).equal(cat.getTicks().length);
-    // expect(cfg.gridPoints.length).equal(cat.getTicks().length);
-    // expect(cfg.gridPoints[0].length).equal(linear.getTicks().length);
   });
 
   it('get axis default y cfg', function() {
     const cfg = controller._getAxisCfg(rect, cat, linear, 'y', { grid: {} });
     expect(cfg.ticks.length).equal(cat.getTicks().length);
-    // expect(cfg.gridPoints.length).equal(cat.getTicks().length);
-    // expect(cfg.gridPoints[0].length).equal(linear.getTicks().length);
   });
 
   it('get axis default, no grid', function() {
     const cfg = controller._getAxisCfg(rect, linear, cat, 'x', { grid: {} });
     expect(cfg.ticks.length).equal(linear.getTicks().length);
-    // expect(cfg.gridPoints).equal(undefined);
   });
 
   it('get line x axis cfg', function() {
@@ -107,24 +96,20 @@ describe('axis controller', function() {
     expect(cfg.offsetFactor).equal(1);
   });
 
-  it('get positin x', function() {
-    const positin = controller._getLinePosition(cat, 'x');
-    expect(positin).equal('bottom');
+  it('get position x', function() {
+    const position = controller._getLinePosition(cat, 'x');
+    expect(position).equal('bottom');
   });
 
-  it('get positin y', function() {
-    const positin = controller._getLinePosition(linear, 'y');
-    expect(positin).equal('left');
+  it('get position y', function() {
+    const position = controller._getLinePosition(linear, 'y');
+    expect(position).equal('right');
   });
 
-  it('get positin y 2', function() {
-    const positin = controller._getLinePosition(linear, 'y', 1);
-    expect(positin).equal('right');
+  it('get position y 2', function() {
+    const position = controller._getLinePosition(linear, 'y', 1);
+    expect(position).equal('right');
   });
-
-  // it('createAxis', function() {
-  //   controller.createAxis(rect, cat, [ linear ]);
-  // });
 
   it('clear', function() {
     const ctx = canvas.getContext('2d');
