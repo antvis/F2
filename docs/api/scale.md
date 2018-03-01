@@ -5,14 +5,18 @@
 根据数据的类型，F2 支持以下几种度量类型：
   
 + **identity**，常量类型的数值，也就是说数据的某个字段是不变的常量；
-+ **linear**，连续的数字 [1,2,3,4,5]；
++ **linear**，连续的数字 [1, 2, 3, 4, 5]；
 + **cat**，分类, ['男','女']；
 + **timeCat**，时间类型；
 
-在 F2 的使用中，我们主要通过列定义操作了接触度量：
+在 F2 的使用中，我们主要通过列定义操作来接触度量：
 
 ```js
-const data = [...];
+const data = [
+  { a: 'a', b: 20 },
+  { a: 'b', b: 12 },
+  { a: 'c', b: 8 },
+];
 const defs = {
   a: {
     type: 'cat' // 声明 a 字段的类型
@@ -32,25 +36,25 @@ chart.source(data, defs);
 
 ### type
 
-类型：string
+类型：String
 
-指定不同的度量类型，支持的 type 在上面已经列出。
+指定不同的度量类型，支持的 type 为 `identity`、`linear`、`cat`、`timeCat`。
 
 ### formatter
 
-类型：function
+类型：Function
 
-回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。
+回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。
 
 ### range
 
-类型：array
+类型：Array
 
 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
 
 ### alias
 
-类型：string
+类型：String
 
 该数据字段的显示别名，一般用于将字段的英文名称转换成中文名。
 
@@ -62,7 +66,7 @@ chart.source(data, defs);
 
 ### ticks
 
-类型：array
+类型：Array
 
 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
 
@@ -84,10 +88,10 @@ chart.scale('aqi',  {
 属性名| 说明 
 ----|----
 alias | 别名
-nice| 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100]
-min| 定义数值范围的最小值
-max| 定义数值范围的最大值
-range |输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
+nice | 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100]
+min | 定义数值范围的最小值
+max | 定义数值范围的最大值
+range | 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
 formatter | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。
 ticks | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
 tickCount| 定义坐标轴刻度线的条数，默认为 5
@@ -98,7 +102,7 @@ tickInterval | 用于指定坐标轴各个标度点的间距，是原始数据�
 属性名| 说明
 ----|----
 alias | 别名
-range |输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
+range | 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
 formatter | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。
 ticks | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
 tickCount| 定义坐标轴刻度线的条数，默认为 5
@@ -110,7 +114,7 @@ values | 具体的分类的值，一般用于指定具体的顺序和枚举的�
     
 ```js
 const defs = {
-  'c': {
+  c: {
     type: 'cat',
     values: [ '最小','适中','最大' ]
   }
@@ -121,18 +125,18 @@ const defs = {
 
 ```js
 const data = [
-  { month: 0, tem: 7, city: "tokyo" },
-  { month: 1, tem: 6.9, city: "tokyo" },
-  { month: 2, tem: 9.5, city: "tokyo" },
-  { month: 3, tem: 14.5, city: "tokyo" },
-  { month: 4, tem: 18.2, city: "tokyo" },
-  { month: 5, tem: 21.5, city: "tokyo" },
-  { month: 6, tem: 25.2, city: "tokyo" }
+  { month: 0, tem: 7, city: 'Tokyo' },
+  { month: 1, tem: 6.9, city: 'Tokyo' },
+  { month: 2, tem: 9.5, city: 'Tokyo' },
+  { month: 3, tem: 14.5, city: 'Tokyo' },
+  { month: 4, tem: 18.2, city: 'Tokyo' },
+  { month: 5, tem: 21.5, city: 'Tokyo' },
+  { month: 6, tem: 25.2, city: 'Tokyo' }
 ];
 const defs = {
-  'month':{
+  month: {
     type: 'cat',
-    values: [ '一月','二月','三月','四月','五月','六月','七月' ] // 这时候 month 的原始值是索引值
+    values: [ '一月', '二月', '三月', '四月', '五月', '六月', '七月' ] // 这时候 month 的原始值是索引值
   }
 };
 
@@ -164,4 +168,4 @@ range |输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max
 formatter | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。
 ticks | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。
 
-**注意：`mask` 和 `formatter` 这两个属性不可公用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**
+**注意：`mask` 和 `formatter` 这两个属性不可共用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**

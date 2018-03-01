@@ -2,7 +2,7 @@
 
 ## 代码贡献规范
 
-https://github.com/antvis/f2/blob/master/CONTRIBUTING.zh-CN.md
+参见：https://github.com/antvis/f2/blob/master/CONTRIBUTING.zh-CN.md
 
 ## 本地开发
 

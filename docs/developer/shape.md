@@ -124,7 +124,7 @@ Shape.registerShape('interval', 'rect', {
 
 ## 代码示例
 
-![undefined](https://gw.alipayobjects.com/zos/skylark/7f60b58f-d551-4432-8982-52680722f8fb/2018/png/dee693a9-f200-4fa5-8157-a2b49925ecf7.png) 
+<img src="https://gw.alipayobjects.com/zos/rmsportal/GvaABgxSihAhupbppGpL.png" style="width: 490px;"> 
 
 ```js
 const Shape = F2.Shape;
@@ -169,7 +169,6 @@ const chart = new F2.Chart({
   width: 400,
   height : 200,
   pixelRatio: window.devicePixelRatio,
-
 });
 
 chart.source(data);
