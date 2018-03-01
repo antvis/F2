@@ -6,3 +6,5 @@
 
 - 通过 F2.Global.fontFamily 获取 F2 图表默认的字体
 - 通过 F2.Global.setTheme({}) 来设置皮肤
+
+具体可以通过打印 `console.log(F2.Global)` 来查看各个配置项。
