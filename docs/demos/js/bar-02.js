@@ -26,9 +26,9 @@
   chart.coord({
     transposed: true
   });
-  chart.legend({
-    reversed: true
-  });
+  // chart.legend({
+  //   reversed: true
+  // });
   chart.tooltip({
     custom(obj) {
       const legend = chart.get('legendController').legends.top[0];
