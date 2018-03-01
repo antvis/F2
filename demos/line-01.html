@@ -101,7 +101,13 @@
       return textCfg;
     }
   });
-  chart.line().position('date*value');
+  chart.line()
+    .position('date*value')
+    .animate({
+      appear: {
+        duration: 1200
+      }
+    });
   chart.render();
 </script>
 </body>
