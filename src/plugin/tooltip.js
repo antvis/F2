@@ -250,8 +250,6 @@ class TooltipController {
 
   _setTooltip(point, items, tooltipMarkerCfg = {}) {
     const lastActive = this._lastActive;
-    const first = items[0];
-    const title = first.title || first.name;
     const tooltip = this.tooltip;
     const cfg = this.cfg;
 
@@ -285,11 +283,13 @@ class TooltipController {
       cfg.custom({
         x: point.x,
         y: point.y,
-        title,
+        tooltip,
         items,
         tooltipMarkerCfg
       });
     } else {
+      const first = items[0];
+      const title = first.title || first.name;
       tooltip.setContent(title, items);
     }
     tooltip.setPosition(items);

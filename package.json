@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.1.1-beta.1",
+  "version": "3.1.1-beta.2",
   "description": "A canvas library which providing 2d draw for G2.",
   "keywords": [
     "canvas",
@@ -67,8 +67,11 @@
     "lint-fix": "eslint --fix ./",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
-    "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-live": "torch --compile --interactive --recursive ./test/unit/plugin/legend-spec.js",
+    "test": "npm run test-unit && npm run test-bug",
+    "test-bug": "torch --compile --renderer --recursive ./test/bug",
+    "test-bug-live": "torch --compile --interactive --recursive ./test/bug",
+    "test-unit": "torch --compile --renderer --recursive ./test/unit",
+    "test-unit-live": "torch --compile --interactive --recursive ./test/unit",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {

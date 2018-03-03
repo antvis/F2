@@ -304,11 +304,13 @@ class Geom extends Base {
     const self = this;
     const xScale = self.getXScale();
     const xField = xScale.field;
-    Util.each(mappedArray, itemArr => {
-      itemArr.sort((obj1, obj2) => {
-        return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+    if (xScale.type !== 'identity' && xScale.values.length > 1) {
+      Util.each(mappedArray, itemArr => {
+        itemArr.sort((obj1, obj2) => {
+          return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+        });
       });
-    });
+    }
     self.set('hasSorted', true);
     self.set('dataArray', mappedArray);
   }
