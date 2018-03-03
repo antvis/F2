@@ -81,10 +81,18 @@ Shape.registerShape('interval', 'rect', {
       const v1 = [ newPoints[1].x - x, newPoints[1].y - y ];
       const v2 = [ newPoints[2].x - x, newPoints[2].y - y ];
 
-      const startAngle = Vector2.angleTo(v, v1);
-      const endAngle = Vector2.angleTo(v, v2);
+      let startAngle = Vector2.angleTo(v, v1);
+      let endAngle = Vector2.angleTo(v, v2);
       const r0 = Vector2.length(v0);
       const r = Vector2.length(v1);
+
+      if (startAngle >= 1.5 * Math.PI) {
+        startAngle = startAngle - 2 * Math.PI;
+      }
+
+      if (endAngle >= 1.5 * Math.PI) {
+        endAngle = endAngle - 2 * Math.PI;
+      }
 
       return container.addShape('Sector', {
         className: 'interval',
@@ -93,7 +101,7 @@ Shape.registerShape('interval', 'rect', {
           y,
           r,
           r0,
-          startAngle: startAngle === Math.PI * 1.5 ? startAngle - Math.PI * 2 : startAngle,
+          startAngle,
           endAngle
         }, style)
       });
