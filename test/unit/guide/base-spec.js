@@ -27,7 +27,7 @@ describe('Guide Base', function() {
     const point = [ '三月', 600 ];
     const cfg = {
       xScale,
-      yScale
+      yScales: [ yScale ]
     };
     const guide = new Guide(cfg);
 
