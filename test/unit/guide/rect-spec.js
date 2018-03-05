@@ -31,7 +31,7 @@ describe('Guide.Rect', function() {
   it('guide region', function() {
     const region = new Rect({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       start: [ 0, 200 ],
       end: [ 4, 800 ],
       style: {

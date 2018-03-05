@@ -89,7 +89,8 @@ describe('Guide Plugin', function() {
       }
     });
     chart.guide().html({
-      position(xScale, yScale) {
+      position(xScale, yScales) {
+        const yScale = yScales[0];
         return [ xScale.values[xScale.values.length - 1], yScale.values[1] ]; // 位置信息
       },
       html: '<div style="width: 50px; height: 50px;text-align: center">你好</div>'
