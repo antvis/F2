@@ -487,9 +487,11 @@ class Geom extends Base {
       const cfg = self.getDrawCfg(obj);
       const shape = obj.shape;
       const gShape = shapeFactory.drawShape(shape, cfg, container);
-      Util.each([].concat(gShape), s => {
-        s.set('origin', obj); // todo
-      });
+      if (gShape) {
+        Util.each([].concat(gShape), s => {
+          s.set('origin', obj); // todo
+        });
+      }
     });
   }
 

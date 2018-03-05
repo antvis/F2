@@ -75,6 +75,12 @@ class Timeline {
       const duration = propertyAnim.endTime - propertyAnim.startTime;
       let t = duration ? (this.time - propertyAnim.startTime) / (duration) : 1;
       t = Math.max(0, Math.min(t, 1));
+
+      if (t === 1) {
+        this.anims.splice(i, 1);
+        i--;
+      }
+
       t = propertyAnim.easing(t);
 
       const value = diff(t);
@@ -105,10 +111,10 @@ class Timeline {
         }
       }
 
-      if (t === 1) {
-        this.anims.splice(i, 1);
-        i--;
-      }
+      // if (t === 1) {
+      //   this.anims.splice(i, 1);
+      //   i--;
+      // }
     }
   }
 }
