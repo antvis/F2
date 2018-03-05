@@ -744,6 +744,7 @@ class Chart extends Base {
     const xScale = this.getXScale();
     const yScales = this.getYScales();
     const coord = this.get('coord');
+    Chart.plugins.notify(this, 'beforeRenderAxis');
     axisController.createAxis(coord, xScale, yScales);
   }
 
