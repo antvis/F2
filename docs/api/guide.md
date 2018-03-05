@@ -72,19 +72,19 @@ chart.guide().line({
    /**
    * 设置辅助线的起始点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  start(xScale, yScale) {
+  start(xScale, yScales) {
     return []; // 位置信息
   },
   /**
    * 设置辅助线的终止点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  end(xScale, yScale) {
+  end(xScale, yScales) {
     return []; // 位置信息
   }
 });
@@ -141,10 +141,10 @@ chart.guide().text({
   /**
    * 设置辅助文本的显示位置
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  position(xScale, yScale) {
+  position(xScale, yScales) {
     return []; // 位置信息
   },
   content: '最大值'
@@ -208,19 +208,19 @@ chart.guide().region({
   /**
    * 设置辅助框的起始点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  start(xScale, yScale) {
+  start(xScale, yScales) {
     return []; // 位置信息
   },
   /**
    * 设置辅助框的终止点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  end(xScale, yScale) {
+  end(xScale, yScales) {
     return []; // 位置信息
   }
 });
@@ -268,10 +268,10 @@ chart.guide().html({
   /**
    * 设置辅助 html 的显示位置
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  position(xScale, yScale) {
+  position(xScale, yScales) {
     return []; // 位置信息
   },
   html: '<p>最大值</p>'
@@ -334,19 +334,19 @@ chart.guide().arc({
   /**
    * 设置辅助弧线的起始点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  start(xScale, yScale) {
+  start(xScale, yScales) {
     return []; // 位置信息
   },
   /**
    * 设置辅助弧线的终止点
    * @param  {Scale} xScale x 轴对应的度量
-   * @param {Scale} yScale y 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
    * @return {Array} 返回值必须为数组格式
    */
-  end(xScale, yScale) {
+  end(xScale, yScales) {
     return []; // 位置信息
   }
 });
