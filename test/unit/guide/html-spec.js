@@ -41,7 +41,7 @@ describe('Guide.Html', function() {
   it('offset', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '五月', 500 ],
       offsetX: 50,
       offsetY: 50,
@@ -57,7 +57,7 @@ describe('Guide.Html', function() {
   it('default', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '九月', 900 ],
       html: "<div style='background-color:red;width:20px;height:20px;border-radius:10px;'></div>"
     });
@@ -71,7 +71,7 @@ describe('Guide.Html', function() {
   it('rc', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '八月', 800 ],
       alignX: 'right',
       alignY: 'middle',
@@ -87,7 +87,7 @@ describe('Guide.Html', function() {
   it('lc', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '六月', 600 ],
       alignX: 'left',
       alignY: 'middle',
@@ -103,7 +103,7 @@ describe('Guide.Html', function() {
   it('tc', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '四月', 400 ],
       alignX: 'center',
       alignY: 'top',
@@ -119,7 +119,7 @@ describe('Guide.Html', function() {
   it('bc', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '二月', 200 ],
       alignX: 'center',
       alignY: 'bottom',
@@ -135,7 +135,7 @@ describe('Guide.Html', function() {
   it('tl', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '一月', 100 ],
       alignX: 'left',
       alignY: 'top',
@@ -151,7 +151,7 @@ describe('Guide.Html', function() {
   it('tr', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '三月', 300 ],
       alignX: 'right',
       alignY: 'top',
@@ -167,7 +167,7 @@ describe('Guide.Html', function() {
   it('bl', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '五月', 500 ],
       alignX: 'left',
       alignY: 'bottom',
@@ -183,7 +183,7 @@ describe('Guide.Html', function() {
   it('br', function() {
     const guide = new Html({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       position: [ '七月', 700 ],
       alignX: 'right',
       alignY: 'bottom',

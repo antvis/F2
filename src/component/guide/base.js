@@ -42,9 +42,9 @@ class GuideBase {
   parsePoint(coord, position) {
     const self = this;
     const xScale = self.xScale;
-    const yScale = self.yScale;
+    const yScales = self.yScales;
     if (Util.isFunction(position)) {
-      position = position(xScale, yScale); // position 必须是对象
+      position = position(xScale, yScales); // position 必须是对象
     }
 
     // 如果数据格式是 ['50%', '50%'] 的格式
@@ -53,7 +53,7 @@ class GuideBase {
     }
 
     const x = self._getNormalizedValue(position[0], xScale);
-    const y = self._getNormalizedValue(position[1], yScale);
+    const y = self._getNormalizedValue(position[1], yScales[0]);
 
     return coord.convertPoint({
       x,
