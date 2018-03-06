@@ -6,11 +6,14 @@ const Scale = require('../../../src/scale/index');
 
 const canvas1 = document.createElement('canvas');
 canvas1.id = 'guide';
+canvas1.style.position = 'fixed';
+canvas1.style.top = 0;
+canvas1.style.left = 0;
 document.body.appendChild(canvas1);
 
 describe('Guide.Tag', function() {
   const coord = new Coord.Rect({
-    start: { x: 60, y: 460 },
+    start: { x: 60, y: 400 },
     end: { x: 460, y: 60 }
   });
 
@@ -49,16 +52,15 @@ describe('Guide.Tag', function() {
 
     tag.remove();
 
-        // canvas.clear();
     tag = new Tag({
       xScale,
       yScales: [ yScale ],
       content: '三月：200',
-      position: [ 0, 'min' ]
+      position: [ 2, 1400 ]
     });
     tag.render(coord, group);
     canvas.draw();
-    expect(tag.direct).to.equal('tr');
+    expect(tag.direct).to.equal('bl');
 
     tag.remove();
 
