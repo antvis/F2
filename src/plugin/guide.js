@@ -38,6 +38,23 @@ Global.guide = Util.deepMix({
     offsetY: 0,
     alignX: 'middle',
     alignY: 'middle'
+  },
+  tag: {
+    top: true,
+    offsetX: 0, // X 轴偏移
+    offsetY: 0, // Y 轴偏移
+    side: 4, //  三角标的边长
+    background: {
+      padding: 5, // tag 内边距
+      radius: 2, // tag 圆角
+      fill: '#1890FF' // tag 背景色
+    },
+    textStyle: {
+      fontSize: 12,
+      fill: '#fff',
+      textAlign: 'center',
+      textBaseline: 'middle'
+    }
   }
 }, Global.guide || {});
 
@@ -99,6 +116,10 @@ class GuideController {
 
   rect(cfg = {}) {
     return this._createGuide('rect', cfg);
+  }
+
+  tag(cfg = {}) {
+    return this._createGuide('tag', cfg);
   }
 }
 
