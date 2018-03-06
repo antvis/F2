@@ -58,15 +58,21 @@
       items[0].name = items[0].title;
     }
   });
+  chart.guide().tag({
+    position: [6, 2800],
+    content: '最高点',
+    offsetY: -2,
+    direct: 'tc'
+  });
   chart.area().position('time*tem');
   chart.line().position('time*tem');
   chart.render();
 
-  // const point = chart.getPosition({
-  //   time: 'Apr.',
-  //   tem: 2600
-  // });
-  // chart.showTooltip(point);
+  const point = chart.getPosition({
+    time: 'Apr.',
+    tem: 2600
+  });
+  chart.showTooltip(point);
 </script>
 </body>
 </html>

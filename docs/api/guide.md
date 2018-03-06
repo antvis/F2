@@ -17,6 +17,7 @@ require('@antv/f2/lib/component/guide/html'); // 只加载 Guide.Html 组件
 require('@antv/f2/lib/component/guide/text'); // 只加载 Guide.Text 组件
 require('@antv/f2/lib/component/guide/rect'); // 只加载 Guide.Rect 组件
 require('@antv/f2/lib/component/guide/line'); // 只加载 Guide.Line 组件
+require('@antv/f2/lib/component/guide/tag'); // 只加载 Guide.Tag 组件
 
 // 第二步：加载插件 Guide
 const Guide = require('@antv/f2/lib/plugin/guide');
@@ -166,6 +167,113 @@ chart.guide().text({
 - `offsetY`: Number
 
 设置辅助文本 y 方向的偏移量。
+
+### Tag
+
+`chart.guide().tag({})`
+
+绘制辅助 Tag。
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/kaPGgxRvqETVwUCRBQAG.png" width="50%;">
+
+
+```js
+chart.guide().tag({
+  top: {Boolean}, // 指定 guide 是否绘制在 canvas 最上层，默认为 true, 即绘制在最上层
+  position: {Function} | {Array}, // Tag 的起始位置，值为原始数据值，支持 callback
+  content: {String}, // tag 的文本内容，支持文本换行，只需要在文本中写入 '\n'，如 '最大值\n200'
+  direct: {String}, // 箭头朝向，默认自动计算，也可以手动指定方向，'tl'、'tc'、'tr'、'cl'、'cr'、'bl'、'bc'、'br'
+  side: {Number}, // 三角标的边长，默认为 4
+  offsetX: {Number}, // X 轴偏移，默认为 0
+  offsetY: {Number}, // Y 轴偏移，默认为 0
+  backgroud: {
+    padding: [ 4, 6 ], // tag 内边距，使用同 css 盒模型的 padding
+    radius: 2, // tag 圆角
+    fill: '#1890FF', // tag 背景色
+  }, // tag 背景样式
+  textStyle: {
+    fontSize: 12,
+    fill: '#fff'
+  } // tag 文本样式
+});
+```
+
+#### 参数
+
+- `top`: Boolean
+
+指定 guide 是否绘制在 canvas 最上层，默认为 true, 即绘制在最上层。
+
+- `position`: Array/Function
+
+指定辅助 Tag 的显示位置，该值的类型如下：
+
+  + Array: 数组来配置位置 [ x, y ]，根据数组中的值的存在以下几种形式：
+    * x，y 都是原始数据 [ '2010-01-01', 200 ];
+    * x，y 可以使用原始数据的替代字符串 'min', 'max', 'median' , 例如：[ 'median', 200 ]
+    * x, y 都是用百分比的形式，在绘图区域定位，字符串中存在 '%', 例如 [ '50%', '50%'] 使得辅助元素居中
+  + Function: 回调函数，可以动态的确定辅助元素的位置，应用于数据动态更新，辅助元素的位置根据数据变化的场景
+
+```js
+chart.guide().tag({
+  /**
+   * 设置辅助文本的显示位置
+   * @param  {Scale} xScale x 轴对应的度量
+   * @param {Array} yScales y 轴对应的度量的数组集合
+   * @return {Array} 返回值必须为数组格式
+   */
+  position(xScale, yScales) {
+    return []; // 位置信息
+  },
+  content: '最大值'
+});
+```
+
+- `content`: String
+
+辅助 tag  的显示内容。
+
+- `direct`: String
+
+Tag 箭头的方向，默认自动计算，用户也可以手动设置，该方向相对于 point，可设置值为：'tl'、'tc'、'tr'、'cl'、'cr'、'bl'、'bc'、'br'，如下如所示：
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/hyRzDvMdRVwukHVfmGWL.png" width="50%">
+
+- `side`: Number
+
+Tag 箭头的边长，默认为 4px。
+
+- `offsetX`: Number
+
+设置 Tag x 方向的偏移量。
+
+- `offsetY`: Number
+
+设置 Tag y 方向的偏移量。
+
+- `backgroud`: Object
+
+Tag 的背景样式设置，可设置的属性如下，详见[绘图属性](./canvas.md)：
+
+```js
+backgroud: {
+  padding: [ 4, 6 ], // tag 内边距，用法同 css 盒模型的 padding
+  radius: 2, // tag 圆角
+  fill: '#1890FF', // tag 背景填充颜色
+  // 其他绘图属性 
+}
+```
+
+- `textStyle`: Object
+
+Tag 的字体样式设置，可设置的属性如下，详见[绘图属性](./canvas.md)：
+
+```js
+textStyle: {
+  fontSize: 12, // 字体大小
+  fill: '#fff' // 字体颜色
+}
+```
 
 ### Rect
 
@@ -359,6 +467,7 @@ chart.guide().arc({
 - `style`: Object
 
 设置圆弧的显示样式，详见绘图属性。
+
 
 ### 清空 guides
 

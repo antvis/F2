@@ -6,7 +6,7 @@ class Text extends GuideBase {
     this.type = 'text';
     /**
      * 辅助文本的位置
-     * @type {Object | Function | Array}
+     * @type {Function | Array}
      */
     this.position = null;
     /**

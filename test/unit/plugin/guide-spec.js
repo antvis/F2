@@ -37,7 +37,7 @@ describe('Guide Plugin', function() {
 
     guideController = chart.get('guideController');
     expect(guideController).not.to.be.empty;
-    expect(F2.Global.guide).to.have.all.keys('line', 'text', 'rect', 'arc', 'html');
+    expect(F2.Global.guide).to.have.all.keys('line', 'text', 'rect', 'arc', 'html', 'tag');
     expect(F2.Global.guide.line).to.eql({
       style: {
         stroke: '#a3a3a3',
@@ -95,23 +95,36 @@ describe('Guide Plugin', function() {
       },
       html: '<div style="width: 50px; height: 50px;text-align: center">你好</div>'
     });
+
+    chart.guide().tag({
+      position: [ 'c', 30 ],
+      content: '换行\n啊换行\n阿哈哈哈',
+      side: 10,
+      background: {
+        padding: 10,
+        radius: 4
+      },
+      textStyle: {
+        fontSize: 16
+      }
+    });
     chart.render();
 
     const guideController = chart.get('guideController');
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    expect(guideController.guides.length).to.equal(5);
-    expect(frontPlot.get('children').length).to.equal(4);
+    expect(guideController.guides.length).to.equal(6);
+    expect(frontPlot.get('children').length).to.equal(5);
     expect(backPlot.get('children').length).to.equal(2);
   });
 
   it('chart.guide().reset()', function() {
     chart.repaint();
     const guideController = chart.get('guideController');
-    expect(guideController.guides.length).to.equal(5);
+    expect(guideController.guides.length).to.equal(6);
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    expect(frontPlot.get('children').length).to.equal(4);
+    expect(frontPlot.get('children').length).to.equal(5);
     expect(backPlot.get('children').length).to.equal(2);
     const guideWrapper = document.getElementsByClassName('guideWapper');
     expect(guideWrapper.length).to.equal(1);
@@ -127,7 +140,7 @@ describe('Guide Plugin', function() {
     expect(backPlot.get('children').length).to.equal(1);
     const guideWrapper = document.getElementsByClassName('guideWapper');
     expect(guideWrapper.length).to.equal(0);
-
     chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

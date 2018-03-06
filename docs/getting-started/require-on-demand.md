@@ -100,6 +100,7 @@ require('@antv/f2/lib/component/guide/html'); // 只加载 Guide.Html 组件
 require('@antv/f2/lib/component/guide/text'); // 只加载 Guide.Text 组件
 require('@antv/f2/lib/component/guide/rect'); // 只加载 Guide.Rect 组件
 require('@antv/f2/lib/component/guide/line'); // 只加载 Guide.Line 组件
+require('@antv/f2/lib/component/guide/tag'); // 只加载 Guide.Tag 组件
 
 // 第二步：加载插件 Guide
 const Guide = require('@antv/f2/lib/plugin/guide');
