@@ -3,5 +3,6 @@ module.exports = {
   Line: require('./line'),
   Arc: require('./arc'),
   Rect: require('./rect'),
-  Html: require('./html')
+  Html: require('./html'),
+  Tag: require('./tag')
 };
