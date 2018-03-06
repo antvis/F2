@@ -22,7 +22,7 @@ const defaultAxis = {
     lineDash: [ 2 ]
   },
   tickLine: null,
-  labelOffset: 7.5 // TODO
+  labelOffset: 7.5
 };
 
 const Theme = {
@@ -45,7 +45,6 @@ const Theme = {
     line: [ 'line', 'dash' ],
     point: [ 'circle', 'hollowCircle' ]
   },
-  opacities: [ 0.1, 0.9 ],
   sizes: [ 4, 10 ],
   axis: {
     bottom: Util.mix({}, defaultAxis, {

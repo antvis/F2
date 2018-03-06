@@ -143,9 +143,14 @@ const defs = {
 const chart = new F2.Chart({
   id: 'c1',
   width: 400,
-  height: 250
+  height: 250,
+  pixelRatio: window.devicePixelRatio
 });
-chart.source(data,defs);
+chart.source(data, defs);
+chart.legend({
+  align: 'center',
+  itemWidth: null
+});
 chart.interval().position('month*tem').color('month');
 chart.render();
 ```
