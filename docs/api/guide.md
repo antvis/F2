@@ -177,7 +177,7 @@ chart.guide().text({
 <img src="https://gw.alipayobjects.com/zos/rmsportal/kaPGgxRvqETVwUCRBQAG.png" width="50%;">
 
 
-```ja
+```js
 chart.guide().tag({
   top: {Boolean}, // 指定 guide 是否绘制在 canvas 最上层，默认为 true, 即绘制在最上层
   position: {Function} | {Array}, // Tag 的起始位置，值为原始数据值，支持 callback
