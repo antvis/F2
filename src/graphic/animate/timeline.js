@@ -15,6 +15,9 @@ class Timeline {
     self.playing = true;
     self.fps = 60; // 用于降频
     function animate() {
+      // if (totalTime === 0 && this.anims.length > 0) {
+      //   for()
+      // }
       self.loopInterval = requestAnimationFrame(animate);
       self.playing && self.update();
     }
@@ -65,7 +68,7 @@ class Timeline {
         continue;
       }
 
-      const { startValue, endValue, key, diff } = propertyAnim;
+      const { startState, endState, interpolate } = propertyAnim;
       if (this.time >= propertyAnim.startTime && !propertyAnim.hasStarted) {
         propertyAnim.hasStarted = true;
         if (propertyAnim.onStart) {
@@ -76,29 +79,33 @@ class Timeline {
       let t = duration ? (this.time - propertyAnim.startTime) / (duration) : 1;
       t = Math.max(0, Math.min(t, 1));
 
-      if (t === 1) {
+      if (t === 1) { // 结束
         this.anims.splice(i, 1);
         i--;
       }
 
       t = propertyAnim.easing(t);
-
-      const value = diff(t);
-      let newValue;
-      if (key === 'points') {
-        newValue = [];
-        const aLen = Math.max(startValue.length, endValue.length);
-        for (let j = 0; j < aLen; j += 2) {
-          newValue.push({
-            x: value[j],
-            y: value[j + 1]
-          });
+      const newState = {};
+      for (const key in interpolate) {
+        const diff = interpolate[key];
+        const value = diff(t);
+        let newValue;
+        if (key === 'points') {
+          newValue = [];
+          const aLen = Math.max(startState.points.length, endState.points.length);
+          for (let j = 0; j < aLen; j += 2) {
+            newValue.push({
+              x: value[j],
+              y: value[j + 1]
+            });
+          }
+        } else {
+          newValue = value;
         }
-      } else {
-        newValue = value;
+        newState[key] = newValue;
       }
 
-      shape._attrs.attrs[key] = newValue;
+      shape.attr(newState);
       shape.get('canvas').draw();
 
       if (propertyAnim.parent && propertyAnim.parent.onUpdateCallback) {
@@ -110,11 +117,6 @@ class Timeline {
           propertyAnim.onEnd();
         }
       }
-
-      // if (t === 1) {
-      //   this.anims.splice(i, 1);
-      //   i--;
-      // }
     }
   }
 }
