@@ -61,29 +61,39 @@ class Canvas {
     let width = self.get('width');
     if (!width) {
       width = DOMUtil.getWidth(canvas);
-      self.set('width', width);
     }
 
     let height = self.get('height');
     if (!height) {
       height = DOMUtil.getHeight(canvas);
-      self.set('height', height);
     }
 
-    const ratio = self.get('pixelRatio');
-    // if (ratio) {
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-    canvas.style.height = height + 'px';
-    canvas.style.width = width + 'px';
-    if (ratio !== 1) {
-      const ctx = canvas.getContext('2d');
-      ctx.scale(ratio, ratio);
-    }
-    // }
     self.set('canvas', this);
     self.set('el', canvas);
     self.set('context', context || canvas.getContext('2d'));
+    self.changeSize(width, height);
+  }
+
+  /**
+   * 改变 canvas 的宽高
+   * @param  {Number} width  宽度
+   * @param  {Number} height 高度
+   */
+  changeSize(width, height) {
+    const pixelRatio = this.get('pixelRatio');
+    const canvasDOM = this.get('el');
+    canvasDOM.style.width = width + 'px';
+    canvasDOM.style.height = height + 'px';
+    canvasDOM.width = width * pixelRatio;
+    canvasDOM.height = height * pixelRatio;
+
+    if (pixelRatio !== 1) {
+      const ctx = this.get('context');
+      ctx.scale(pixelRatio, pixelRatio);
+    }
+
+    this.set('width', width);
+    this.set('height', height);
   }
 
   /**
@@ -104,20 +114,6 @@ class Canvas {
     const pixelRatio = this.get('pixelRatio');
     const height = this.get('height');
     return height * pixelRatio;
-  }
-
-  /**
-   * 改变 canvas 的宽高
-   * @param  {Number} width  宽度
-   * @param  {Number} height 高度
-   */
-  changeSize(width, height) {
-    const pixelRatio = this.get('pixelRatio');
-    const canvasDOM = this.get('el');
-    canvasDOM.style.width = width + 'px';
-    canvasDOM.style.height = height + 'px';
-    canvasDOM.setAttribute('width', width * pixelRatio);
-    canvasDOM.setAttribute('height', height * pixelRatio);
   }
 
   /**
