@@ -15,10 +15,8 @@ class Timeline {
     self.time = clock.now();
     self.playing = true;
     function animate() {
-      if (self.playing) {
-        self.loopInterval = requestAnimationFrame(animate);
-        self.update();
-      }
+      self.loopInterval = requestAnimationFrame(animate);
+      self.playing && self.update();
     }
     animate();
   }

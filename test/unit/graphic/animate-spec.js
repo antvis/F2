@@ -67,7 +67,7 @@ describe('Do Animation', function() {
       expect(isEnded).to.be.true;
       expect(isUpdate).to.be.true;
       expect(rect.attr('height')).to.equal(100);
-      expect(animator.animate.endTime - animator.animate.startTime).to.equal(800);
+      expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.equal(800);
       // expect(animator.animGroups.length).to.equal(1);
       timeline.stop();
       done();
@@ -134,7 +134,7 @@ describe('Do Animation', function() {
         { x: 35, y: 15 },
         { x: 60, y: 35 }
       ]);
-      expect(animator.animate.endTime - animator.animate.startTime).to.equal(800);
+      expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.equal(800);
       // expect(animator.animGroups.length).to.equal(1);
       timeline.stop();
       done();
