@@ -186,7 +186,7 @@ chart.guide().tag({
   side: {Number}, // 三角标的边长，默认为 4
   offsetX: {Number}, // X 轴偏移，默认为 0
   offsetY: {Number}, // Y 轴偏移，默认为 0
-  backgroud: {
+  background: {
     padding: [ 4, 6 ], // tag 内边距，使用同 css 盒模型的 padding
     radius: 2, // tag 圆角
     fill: '#1890FF', // tag 背景色
@@ -251,12 +251,12 @@ Tag 箭头的边长，默认为 4px。
 
 设置 Tag y 方向的偏移量。
 
-- `backgroud`: Object
+- `background`: Object
 
 Tag 的背景样式设置，可设置的属性如下，详见[绘图属性](./canvas.md)：
 
 ```js
-backgroud: {
+background: {
   padding: [ 4, 6 ], // tag 内边距，用法同 css 盒模型的 padding
   radius: 2, // tag 圆角
   fill: '#1890FF', // tag 背景填充颜色
