@@ -14,6 +14,7 @@ class Timeline {
     self.anims = [];
     self.time = clock.now();
     self.playing = true;
+    self.canvas = [];
     function animate() {
       self.loopInterval = requestAnimationFrame(animate);
       self.playing && self.update();
@@ -23,7 +24,8 @@ class Timeline {
 
   stop() {
     this.playing = false;
-    self.time = clock.now();
+    this.time = clock.now();
+    this.canvas = [];
   }
 
   pause() {
@@ -77,9 +79,9 @@ class Timeline {
         shape._attrs.attrs[key] = newValue;
       }
 
-      if (!this.canvas) {
-        this.canvas = shape.get('canvas');
-        this.canvas.draw();
+      const canvas = shape.get('canvas');
+      if (this.canvas.indexOf(canvas) === -1) {
+        this.canvas.push(canvas);
       }
 
       if (propertyAnim.onUpdate) {
@@ -99,7 +101,10 @@ class Timeline {
       }
     }
 
-    this.canvas && this.canvas.draw();
+    this.canvas.map(c => {
+      c.draw();
+      return c;
+    });
     this.time = clock.now();
   }
 }
