@@ -4,14 +4,12 @@
  */
 const Util = require('../util/common');
 
-const Global = require('../global');
 const Shape = require('../graphic/shape');
 const Timeline = require('../graphic/animate/timeline');
 const Animator = require('../graphic/animate/animator');
+const timeline = Timeline.getGlobalInstance();
 
-Shape.prototype.animate = function(timeline) {
-  timeline = timeline || Timeline.getGlobalInstance();
-  timeline.fps /= Global.animateReduceMultiple; // 动画降频
+Shape.prototype.animate = function() {
   const attrs = this.get('attrs');
   return new Animator(this, attrs, timeline);
 };
