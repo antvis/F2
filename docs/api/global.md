@@ -20,8 +20,6 @@ const Global = {
     multiplePie: 3 / 4, // 多层饼图的宽度
     dodgeMargin: 0 // 分组柱状图的间距
   },
-  // 动画降频倍数
-  animateReduceMultiple: 1,
   // 虚线配置
   lineDash: [ 5, 15 ]
 };

@@ -310,6 +310,17 @@ describe('chart test', () => {
       expect(chart.get('isUpdate')).to.be.true;
     });
 
+    it('changeSize', function(done) {
+      const width = 399;
+      chart.changeSize(width);
+
+      setTimeout(function() {
+        expect(chart.get('width')).to.eql(399);
+        expect(chart.get('canvas').get('width')).to.eql(399);
+        done();
+      }, 200);
+    });
+
     it('change data', function() {
       chart.coord('polar', {
         transposed: true

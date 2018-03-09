@@ -100,6 +100,9 @@ class Linear extends Base {
     const min = self.min;
     const max = self.max;
     const count = self.tickCount;
+    if (count === 1) {
+      throw new Error('linear scale\'tickCount should not be 1');
+    }
     const interval = self.tickInterval;
     if (max < min) {
       throw new Error(`max: ${max} should not be less than min: ${min}`);

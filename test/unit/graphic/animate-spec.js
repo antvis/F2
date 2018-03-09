@@ -35,11 +35,9 @@ describe('Do Animation', function() {
     };
     animator = new Animator(rect, initialAttrs, timeline);
 
-    expect(animator.startTime).to.equal(0);
-    expect(animator.endTime).to.equal(0);
-    expect(animator.time).to.equal(0);
-    expect(animator.time).to.equal(0);
-    expect(timeline.anims.length).to.equal(0);
+    expect(animator.hasStarted).to.be.false;
+    expect(animator.hasEnded).to.be.false;
+    expect(animator.animate).to.be.null;
   });
 
   it('do animation', function(done) {
@@ -69,8 +67,8 @@ describe('Do Animation', function() {
       expect(isEnded).to.be.true;
       expect(isUpdate).to.be.true;
       expect(rect.attr('height')).to.equal(100);
-      expect(animator.endTime).to.equal(800);
-      expect(animator.animGroups.length).to.equal(1);
+      expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.equal(800);
+      // expect(animator.animGroups.length).to.equal(1);
       timeline.stop();
       done();
     }, 1000);
@@ -89,8 +87,8 @@ describe('Do Animation', function() {
 
     setTimeout(function() {
       expect(rect.getMatrix()).to.eql([ 1, 0, 0, 1, 20, 20 ]);
-      expect(animator.endTime).to.equal(1600);
-      expect(animator.animGroups.length).to.equal(2);
+      expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.equal(800);
+      // expect(animator.animGroups.length).to.equal(2);
       done();
     }, 1200);
   });
@@ -136,8 +134,8 @@ describe('Do Animation', function() {
         { x: 35, y: 15 },
         { x: 60, y: 35 }
       ]);
-      expect(animator.endTime).to.equal(800);
-      expect(animator.animGroups.length).to.equal(1);
+      expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.equal(800);
+      // expect(animator.animGroups.length).to.equal(1);
       timeline.stop();
       done();
     }, 1200);

@@ -323,6 +323,16 @@ chart.render();
 * 描述：改变数据，同时图表刷新
 * 返回：当前 chart 实例
 
+### `changeSize`
+
+`chart.changeSize(width, height)`
+
+* 参数：`width`: Number/null, 如果为 null，表示宽度不变， `height`: Number/null, 如果为 null，表示高度不变
+* 描述：改变数据，同时图表刷新
+* 返回：当前 chart 实例
+
+`chart.changeSize(300)` 只改变宽度；`chart.changeSize(300, 500)` 宽度高度同时改变；`chart.changeSize(, 300)` 只改变高度。
+
 ### `destroy`
 
 `chart.destroy()`
