@@ -37,17 +37,12 @@ function interpolateArray(a, b) {
 
 class Animator {
   constructor(shape, source, timeline) {
-    this.startTime = 0;
-    this.endTime = 0;
-    this.time = 0;
-    this.propertyAnims = [];
     this.hasStarted = false;
     this.hasEnded = false;
-
     this.shape = shape;
     this.source = source;
     this.timeline = timeline;
-    this.animGroups = [];
+    this.animate = null;
   }
 
   // delay, attrs, duration, easing
@@ -56,82 +51,66 @@ class Animator {
     const attrs = cfg.attrs || {};
     const duration = cfg.duration || 1000;
     const easing = Easing[cfg.easing] || Easing.linear;
-    const animGroup = [];
 
+    const animInfo = {
+      shape: this.shape,
+      startTime: this.timeline.time + delay,
+      duration,
+      easing
+    };
+
+    const interpolate = {}; // 差值函数
     for (const attrName in attrs) {
-      const animInfo = {
-        shape: this.shape, // Shape 对象
-        key: attrName,
-        startValue: this.source[attrName],
-        endValue: attrs[attrName],
-        startTime: this.timeline.time + delay + this.endTime,
-        endTime: this.timeline.time + delay + this.endTime + duration,
-        easing,
-        parent: this
-      };
-
-      let diff;
       let startValue = this.source[attrName];
       let endValue = attrs[attrName];
       if (attrName === 'points') {
         startValue = plainArray(startValue);
         endValue = plainArray(endValue);
-        diff = interpolateArray(startValue, endValue);
-        animInfo.startValue = startValue;
-        animInfo.endValue = endValue;
+        interpolate.points = interpolateArray(startValue, endValue);
+        this.source.points = startValue;
+        attrs.points = endValue;
       } else if (attrName === 'matrix') {
-        diff = interpolateArray(startValue, endValue);
+        interpolate.matrix = interpolateArray(startValue, endValue);
       } else {
-        diff = interpolateNumber(startValue, endValue);
+        interpolate[attrName] = interpolateNumber(startValue, endValue);
       }
-      animInfo.diff = diff;
-      this.timeline.anims.push(animInfo);
-      animGroup.push(animInfo);
     }
-    this.animGroups.push(animGroup);
-    this.endTime += delay + duration;
+    animInfo.interpolate = interpolate;
+    animInfo.startState = this.source;
+    animInfo.endState = attrs;
+    animInfo.endTime = animInfo.startTime + duration;
+
+    this.timeline.anims.push(animInfo);
+    this.animate = animInfo;
     return this;
   }
 
   onStart(callback) {
-    const currentAnimGroup = this.animGroups[this.animGroups.length - 1];
-    if (!currentAnimGroup) return;
-
-    let called = false;
-
-    currentAnimGroup.forEach(function(anim) {
-      anim.onStart = function() {
-        if (!called) {
-          called = true;
-          callback();
-        }
+    if (this.animate) {
+      this.animate.onStart = function() {
+        callback();
       };
-    });
+    }
 
     return this;
   }
 
   onUpdate(callback) {
-    this.onUpdateCallback = function() {
-      callback();
-    };
+    if (this.animate) {
+      this.animate.onUpdate = function() {
+        callback();
+      };
+    }
+
     return this;
   }
 
   onEnd(callback) {
-    const currentAnimGroup = this.animGroups[this.animGroups.length - 1];
-    if (!currentAnimGroup) return;
-
-    let called = false;
-
-    currentAnimGroup.forEach(function(anim) {
-      anim.onEnd = function() {
-        if (!called) {
-          called = true;
-          callback();
-        }
+    if (this.animate) {
+      this.animate.onEnd = function() {
+        callback();
       };
-    });
+    }
 
     return this;
   }

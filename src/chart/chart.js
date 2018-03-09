@@ -578,6 +578,26 @@ class Chart extends Base {
     this.repaint();
   }
 
+  changeSize(width, height) {
+    if (width) {
+      this.set('width', width);
+    } else {
+      width = this.get('width');
+    }
+
+    if (height) {
+      this.set('height', height);
+    } else {
+      height = this.get('height');
+    }
+
+    const canvas = this.get('canvas');
+    canvas.changeSize(width, height);
+    this._initLayout();
+    this.repaint();
+    return this;
+  }
+
   destroy() {
     this.clear();
     const canvas = this.get('canvas');

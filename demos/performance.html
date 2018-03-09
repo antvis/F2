@@ -8,96 +8,10 @@
 <body>
 <div>
   <canvas id="mountNode"></canvas>
-  <div>
-    <button id='one'>近 1 月</button>
-    <button id='three'>近 3 月</button>
-    <button id='six'>近 6 月</button>
-    <button id='oneYear'>近 1 年</button>
-    <!-- <button id='threeYear'>近 3 年</button> -->
-  </div>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2.js"></script>
 <script>
-  const G = F2.G;
-
-let data;
-let oneMonth;
-let threeMonth;
-let sixMonth;
-let oneYear;
-let chart;
-
-$('#one').click(e => {
-  const one = data.slice(oneMonth);
-  chart.changeData(one);
-});
-
-$('#three').click(e => {
-  const three  = data.slice(threeMonth);
-  chart.changeData(three);
-});
-
-$('#six').click(e => {
-  const six  = data.slice(sixMonth);
-  chart.changeData(six);
-});
-
-$('#oneYear').click(e => {
-  const six  = data.slice(oneYear);
-  chart.changeData(six);
-});
-
-F2.Animate.registerAnimation('lineUpdate', function(updateShape, animateCfg, coord) {
-  const cacheAttrs = updateShape.get('cacheShape').attrs;
-  const attrs = updateShape.attr();
-  const points = attrs.points;
-  const partA = points.slice(0, cacheAttrs.points.length);
-  const partB = points.slice(cacheAttrs.points.length);
-  points.map((point, index) => {
-    if (index <= cacheAttrs.points.length - 1) {
-      partB.unshift({});
-    } else {
-      partA.push({});
-    }
-  });
-  updateShape.attr(cacheAttrs);
-  const clip = new G.Shape.Rect({
-    attrs: {
-      x: cacheAttrs.points[cacheAttrs.points.length - 1].x,
-      y: cacheAttrs.points[cacheAttrs.points.length - 1].y,
-      // width: coord.end.x - coord.start.x,
-      width: 0,
-      height: Math.abs(coord.end.y - coord.start.y)
-    }
-  });
-  clip.set('canvas', updateShape.get('canvas'));
-
-  updateShape.animate().to({
-    attrs: {
-      points: partA
-    },
-    duration: 400,
-    easing: animateCfg.easing
-  }).onEnd(function() {
-    console.log(222);
-    updateShape.set('cacheShape', null);
-    updateShape.attr('points', points);
-    updateShape.get('canvas').draw();
-  });
-
-
-  // updateShape.animate().to({
-  //   attrs: {
-  //     points
-  //   },
-  //   easing: animateCfg.easing,
-  //   delay: 400
-  // }).onEnd(function() {
-  //   updateShape.set('cacheShape', null);
-  // });
-});
-
 
 $.getJSON('./data/3nian.json', json => {
     const source = [];
@@ -107,21 +21,10 @@ $.getJSON('./data/3nian.json', json => {
 
     json.map(a => {
       a.map(obj => {
-        i++;
-        if (obj.reportDate === "2018-01-02") {
-          oneMonth = i;
-        } else if (obj.reportDate === "2017-11-01") {
-          threeMonth = i;
-        } else if (obj.reportDate === "2017-08-01") {
-          sixMonth = i;
-        } else if (obj.reportDate === "2017-01-03") {
-          oneYear = i;
-        }
         obj.value = obj.value * 1;
         source.push(obj);
       });
     });
-    data = source;
     let t = performance.now();
     chart = new F2.Chart({
       id: 'mountNode',
@@ -130,7 +33,7 @@ $.getJSON('./data/3nian.json', json => {
       pixelRatio: window.devicePixelRatio
     });
 
-    chart.source(data.slice(oneMonth), {
+    chart.source(source, {
       reportDateTimestamp: {
         type: 'timeCat'
       }
