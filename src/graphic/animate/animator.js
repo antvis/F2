@@ -37,16 +37,12 @@ function interpolateArray(a, b) {
 
 class Animator {
   constructor(shape, source, timeline) {
-    this.startTime = 0;
-    this.endTime = 0;
-    this.time = 0;
     this.hasStarted = false;
     this.hasEnded = false;
-
     this.shape = shape;
     this.source = source;
     this.timeline = timeline;
-    this.animGroup = [];
+    this.animate = null;
   }
 
   // delay, attrs, duration, easing
@@ -58,11 +54,11 @@ class Animator {
 
     const animInfo = {
       shape: this.shape,
-      startTime: this.timeline.time + delay + this.endTime,
-      endTime: this.timeline.time + delay + this.endTime + duration,
-      easing,
-      parent: this
+      startTime: this.timeline.time + delay,
+      duration,
+      easing
     };
+
     const interpolate = {}; // 差值函数
     for (const attrName in attrs) {
       let startValue = this.source[attrName];
@@ -82,39 +78,39 @@ class Animator {
     animInfo.interpolate = interpolate;
     animInfo.startState = this.source;
     animInfo.endState = attrs;
+    animInfo.endTime = animInfo.startTime + duration;
 
-    this.animGroup.push(animInfo);
     this.timeline.anims.push(animInfo);
-
-    this.endTime += delay + duration;
+    this.animate = animInfo;
     return this;
   }
 
   onStart(callback) {
-    const currentAnim = this.animGroup[this.animGroup.length - 1]; // 获取当前的动画
-    if (!currentAnim) return;
-
-    currentAnim.onStart = function() {
-      callback();
-    };
+    if (this.animate) {
+      this.animate.onStart = function() {
+        callback();
+      };
+    }
 
     return this;
   }
 
   onUpdate(callback) {
-    this.onUpdateCallback = function() {
-      callback();
-    };
+    if (this.animate) {
+      this.animate.onUpdate = function() {
+        callback();
+      };
+    }
+
     return this;
   }
 
   onEnd(callback) {
-    const currentAnim = this.animGroup[this.animGroup.length - 1]; // 获取当前的动画
-    if (!currentAnim) return;
-
-    currentAnim.onEnd = function() {
-      callback();
-    };
+    if (this.animate) {
+      this.animate.onEnd = function() {
+        callback();
+      };
+    }
 
     return this;
   }
