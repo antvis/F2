@@ -59,8 +59,6 @@ class Geom extends Base {
 
       shapeType: '',
 
-      shapeDatas: [],
-
       /**
        * 是否生成多个点来绘制图形
        * @protected
@@ -476,10 +474,7 @@ class Geom extends Base {
     const self = this;
     const container = self.get('container');
     const yScale = self.getYScale();
-    const shapeDatas = self.get('shapeDatas');
-
     Util.each(data, function(obj, index) {
-      shapeDatas.push(obj);
       if (yScale && Util.isNil(obj._origin[yScale.field])) {
         return;
       }
@@ -697,11 +692,6 @@ class Geom extends Base {
     return value === originValue;
   }
 
-  // 返回 geom 所有 shape 的数据源
-  getAllShapeData() {
-    return this.get('shapeDatas');
-  }
-
   /**
    * 位置属性映射
    * @chainable
@@ -796,7 +786,6 @@ class Geom extends Base {
     container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);
-    this.set('shapeDatas', []);
     this.set('xDistance', null);
   }
 
