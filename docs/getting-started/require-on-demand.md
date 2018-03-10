@@ -137,5 +137,5 @@ Chart.plugins.register(Legend); // 这里进行全局注册，也可以给 chart
 | -------- | -------- | -------- |
 | `require('@antv/f2/lib/core')`     | 不包含任何图形，只有图形语法的核心代码 | 82K |
 | `require('@antv/f2/lib/index-simple')` | 仅包含简单的折线图、柱状图（包含分组柱状图、层叠柱状图、瀑布图）、饼图（包含环图） | 93 k |
-| `require('@antv/f2/lib/index-common')` | 包含常用的图表类型: 面积图(包含层叠面积图)、柱状图（包含分组柱状图、层叠柱状图、瀑布图）、折线图、点图（包含气泡图）、饼图（包含环图）、雷达图等；坐标系包含：直角坐标系、极坐标系支持；timeCat 类型度量；图表组件（tooltip、legend 以及 guide）| 135K |
-| `require('@antv/f2')` | 完整版 | 152K |
+| `require('@antv/f2/lib/index-common')` | 包含常用的图表类型: 面积图(包含层叠面积图)、柱状图（包含分组柱状图、层叠柱状图、瀑布图）、折线图、点图（包含气泡图）、饼图（包含环图）、雷达图等；坐标系包含：直角坐标系、极坐标系支持；timeCat 类型度量；图表组件（tooltip、legend 以及 guide）| 138K |
+| `require('@antv/f2')` | 完整版 | 154K |
