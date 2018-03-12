@@ -168,13 +168,12 @@ class Geom extends Base {
           if (self.get('type') === 'interval') { // 柱状图起始点从0点开始
             if (yScale.values.length) {
               yScale.change({
-                min: Math.min(0, yScale.min),
-                max: Math.max.apply(null, yScale.values)
+                min: Math.min(0, yScale.min)
               });
             }
           }
           // 饼图需要填充满整个空间
-          if (coord.type === 'polar' && coord.transposed) {
+          if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {
               yScale.change({
                 nice: false,

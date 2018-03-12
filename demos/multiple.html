@@ -30,14 +30,16 @@
 
   chart.source(data, {
     tem: {
-      tickCount: 5,
+      min: 0,
       max: 30,
-      min: 0
+      tickInterval: 10,
+      nice: false
     },
     rain: {
-      tickCount: 5,
       min: 0,
-      max: 30
+      max: 30,
+      tickInterval: 10,
+      nice: false
     }
   });
 
