@@ -325,30 +325,32 @@ class TooltipController {
       const type = geom.get('type');
       const records = geom.getSnapRecords(point);
       Util.each(records, record => {
-        const { x, y, _origin, color } = record;
-        const tooltipItem = {
-          x,
-          y: Util.isArray(y) ? y[1] : y,
-          color: color || Global.defaultColor,
-          origin: _origin,
-          name: getTooltipName(geom, _origin),
-          value: getTooltipValue(geom, _origin),
-          title: getTooltipTitle(geom, _origin)
-        };
-        if (marker) {
-          tooltipItem.marker = Util.mix({
-            fill: color || Global.defaultColor
-          }, marker);
-        }
-        items.push(tooltipItem);
+        if (record.x && record.y) {
+          const { x, y, _origin, color } = record;
+          const tooltipItem = {
+            x,
+            y: Util.isArray(y) ? y[1] : y,
+            color: color || Global.defaultColor,
+            origin: _origin,
+            name: getTooltipName(geom, _origin),
+            value: getTooltipValue(geom, _origin),
+            title: getTooltipTitle(geom, _origin)
+          };
+          if (marker) {
+            tooltipItem.marker = Util.mix({
+              fill: color || Global.defaultColor
+            }, marker);
+          }
+          items.push(tooltipItem);
 
-        if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
-          tooltipMarkerType = 'circle';
-          tooltipMarkerItems.push(tooltipItem);
-        } else if (type === 'interval' && coord.type === 'cartesian') {
-          tooltipMarkerType = 'rect';
-          tooltipItem.width = geom.getSize(record._origin);
-          tooltipMarkerItems.push(tooltipItem);
+          if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
+            tooltipMarkerType = 'circle';
+            tooltipMarkerItems.push(tooltipItem);
+          } else if (type === 'interval' && coord.type === 'cartesian') {
+            tooltipMarkerType = 'rect';
+            tooltipItem.width = geom.getSize(record._origin);
+            tooltipMarkerItems.push(tooltipItem);
+          }
         }
       });
     });
