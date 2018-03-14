@@ -47,7 +47,7 @@ describe('Guide.Tag', function() {
     const children = group.get('children');
     expect(children.length).to.equal(1);
     expect(children[0]).eql(tag.element);
-    expect(children[0].get('children').length).to.equal(3);
+    expect(children[0].get('children').length).to.equal(4);
     expect(tag.direct).to.equal('tl');
 
     tag.remove();
