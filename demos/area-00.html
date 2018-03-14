@@ -61,8 +61,11 @@
   chart.guide().tag({
     position: [6, 2800],
     content: '最高点',
-    offsetY: -2,
-    direct: 'tc'
+    offsetY: -5,
+    direct: 'tc',
+    pointStyle: {
+      fill:'red'
+    }
   });
   chart.area().position('time*tem');
   chart.line().position('time*tem');
