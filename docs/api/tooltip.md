@@ -21,6 +21,8 @@ const chart = new Chart({
 ```js
 chart.tooltip(false); // 关闭 tooltip
 chart.tooltip({
+  offsetX: 0, // x 方向的偏移
+  offsetY: 0, // y 方向的偏移
   triggerOn: [ 'touchstart', 'touchmove' ], // tooltip 出现的触发行为，可自定义，用法同 legend 的 triggerOn
   triggerOff: 'touchend', // 消失的触发行为，可自定义
   showTitle: false, // 是否展示标题，默认不展示
@@ -30,6 +32,9 @@ chart.tooltip({
     lineWidth: 2
   }, // 配置辅助线的样式
   showTooltipMarker: true, // 是否显示 tooltipMarker
+  tooltipMarkerStyle: {
+    fill: '#fff' // 设置 tooltipMarker 的样式
+  },
   background: {
     radius: 2,
     fill: '#1890FF',

@@ -261,7 +261,10 @@ triggerOn(method, type) {
  * @param  {object} ev 事件对象
  * @return {null}
  */
-onClick: ev => {}
+onClick: ev => {
+  // clickedItem: G.Group 类型，表示被选中图例像，通过 clickedItem.get() 方法获取该对象的属性
+  const { clickedItem } = ev;
+}
 ```
 
 - `custom`: Boolean
