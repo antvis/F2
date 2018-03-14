@@ -243,16 +243,16 @@ class AxisController {
       };
 
       const padding = [
-        userPadding[0] === 'auto' ? 0 : userPadding[0],
-        userPadding[1] === 'auto' ? 0 : userPadding[1],
-        userPadding[2] === 'auto' ? 0 : userPadding[2],
-        userPadding[3] === 'auto' ? 0 : userPadding[3]
+        userPadding[0] === 'auto' ? legendRange.top + appendPadding * 2 : userPadding[0],
+        userPadding[1] === 'auto' ? legendRange.right + appendPadding : userPadding[1],
+        userPadding[2] === 'auto' ? legendRange.bottom + appendPadding : userPadding[2],
+        userPadding[3] === 'auto' ? legendRange.left + appendPadding : userPadding[3]
       ];
 
-      padding[0] += legendRange.top + appendPadding * 2; // top 需要给 tooltip 留一些距离
-      padding[1] += legendRange.right + appendPadding;
-      padding[2] += legendRange.bottom + appendPadding;
-      padding[3] += legendRange.left + appendPadding;
+      // padding[0] += legendRange.top + appendPadding * 2; // top 需要给 tooltip 留一些距离
+      // padding[1] += legendRange.right + appendPadding;
+      // padding[2] += legendRange.bottom + appendPadding;
+      // padding[3] += legendRange.left + appendPadding;
 
       if (coord.isPolar) { // 极坐标
         const circleAxis = axes.circle;

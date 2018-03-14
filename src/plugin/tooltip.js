@@ -44,7 +44,7 @@ Global.tooltip = Util.deepMix({
     lineWidth: 1,
     stroke: '#fff'
   },
-  layout: 'horizontal' // 内容水平布局
+  layout: 'horizontal'
 }, Global.tooltip || {});
 
 function _getTooltipValueScale(geom) {
