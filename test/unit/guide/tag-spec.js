@@ -47,7 +47,8 @@ describe('Guide.Tag', function() {
     const children = group.get('children');
     expect(children.length).to.equal(1);
     expect(children[0]).eql(tag.element);
-    expect(children[0].get('children').length).to.equal(4);
+    expect(children[0].get('children').length).to.equal(2);
+    expect(children[0].get('children')[1].get('children').length).to.equal(3);
     expect(tag.direct).to.equal('tl');
 
     tag.remove();
@@ -56,11 +57,15 @@ describe('Guide.Tag', function() {
       xScale,
       yScales: [ yScale ],
       content: '三月：200',
-      position: [ 2, 1400 ]
+      position: [ 2, 1400 ],
+      direct: 'bl'
     });
     tag.render(coord, group);
     canvas.draw();
     expect(tag.direct).to.equal('bl');
+    let circle = group.get('children')[0].get('children')[0];
+    expect(circle.attr('x')).to.equal(260);
+    expect(circle.attr('y')).to.equal(3.3333333333333144);
 
     tag.remove();
 
@@ -74,6 +79,9 @@ describe('Guide.Tag', function() {
     tag.render(coord, group);
     canvas.draw();
     expect(tag.direct).to.equal('bc');
+    circle = group.get('children')[0].get('children')[0];
+    expect(circle.attr('x')).to.equal(60);
+    expect(circle.attr('y')).to.equal(400);
     canvas.destroy();
     document.body.removeChild(canvas1);
 

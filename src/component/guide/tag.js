@@ -73,10 +73,21 @@ class Tag extends GuideBase {
     const position = this.parsePoint(coord, this.position);
     const { content, background, textStyle } = this;
 
-    const tagContainer = container.addGroup({
+    const wrapperContainer = container.addGroup({
       className: 'guide-tag'
     });
 
+    if (this.withPoint) {
+      wrapperContainer.addShape('Circle', {
+        className: 'guide-tag-point',
+        attrs: Util.mix({
+          x: position.x,
+          y: position.y
+        }, this.pointStyle)
+      });
+    }
+
+    const tagContainer = wrapperContainer.addGroup();
     // 绘制文本
     const tagText = tagContainer.addShape('text', {
       className: 'guide-tag-text',
@@ -190,21 +201,11 @@ class Tag extends GuideBase {
       }
     });
 
-    if (this.withPoint) {
-      tagContainer.addShape('Circle', {
-        className: 'guide-tag-point',
-        zIndex: 1,
-        attrs: Util.mix({
-          x: tagWidth / 2 + xMin - this.offsetX,
-          y: tagHeight + side + yMin - this.offsetY
-        }, this.pointStyle)
-      });
-    }
     tagBg.attr('radius', radius);
     tagContainer.moveTo(x - xMin, y - yMin);
     tagContainer.sort();
 
-    this.element = tagContainer;
+    this.element = wrapperContainer;
   }
 }
 
