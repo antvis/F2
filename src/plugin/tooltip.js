@@ -86,7 +86,7 @@ function getTooltipName(geom, origin) {
 
 function getTooltipValue(geom, origin) {
   const scale = _getTooltipValueScale(geom);
-  return origin[scale.field];
+  return scale.getText(origin[scale.field]);
 }
 
 function getTooltipTitle(geom, origin) {
