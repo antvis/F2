@@ -174,7 +174,7 @@ chart.guide().text({
 
 绘制辅助 Tag。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/kaPGgxRvqETVwUCRBQAG.png" width="50%;">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/dMuqNQRONIlKlJOyTRJS.png" width="50%;">
 
 
 ```js
@@ -194,7 +194,14 @@ chart.guide().tag({
   textStyle: {
     fontSize: 12,
     fill: '#fff'
-  } // tag 文本样式
+  }, // tag 文本样式
+  withPoint: {Boolean}, // 是否带点，默认带
+  pointStyle: {
+    fill: '#1890FF', // 填充颜色
+    r: 3, // 半径
+    lineWidth: 1, // 线的边框
+    stroke: '#fff' // 线的描边
+  } // 点的样式
 });
 ```
 
@@ -274,6 +281,14 @@ textStyle: {
   fill: '#fff' // 字体颜色
 }
 ```
+
+- `withPoint`: Boolean
+
+是否带点，默认为 true，如果要关闭将其值设置为 false 即可。
+
+- `pointStyle`: Object
+
+点的样式配置。
 
 ### Rect
 
