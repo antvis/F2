@@ -249,11 +249,6 @@ class AxisController {
         userPadding[3] === 'auto' ? legendRange.left + appendPadding : userPadding[3]
       ];
 
-      // padding[0] += legendRange.top + appendPadding * 2; // top 需要给 tooltip 留一些距离
-      // padding[1] += legendRange.right + appendPadding;
-      // padding[2] += legendRange.bottom + appendPadding;
-      // padding[3] += legendRange.left + appendPadding;
-
       if (coord.isPolar) { // 极坐标
         const circleAxis = axes.circle;
         if (circleAxis) {

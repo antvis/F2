@@ -17,7 +17,7 @@ const Global = {
     dodgeMargin: 0
   },
   // 虚线配置
-  lineDash: [ 5, 15 ]
+  lineDash: [ 4, 4 ]
 };
 
 Global.setTheme = function(theme) {

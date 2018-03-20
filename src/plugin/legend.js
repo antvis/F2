@@ -244,7 +244,7 @@ class LegendController {
     const offsetX = legend.offsetX || 0;
     const offsetY = legend.offsetY || 0;
     const chartWidth = chart.get('width');
-    const chartHeigth = chart.get('height');
+    const chartHeight = chart.get('height');
     const appendPadding = chart.get('appendPadding');
     const legendHeight = legend.getHeight();
     const legendWidth = legend.getWidth();
@@ -274,7 +274,7 @@ class LegendController {
       } else if (align === 'right') {
         x = chartWidth - (legendWidth + appendPadding);
       }
-      y = (position === 'top') ? appendPadding + Math.abs(legend.container.getBBox().minY) : (chartHeigth - legendHeight - appendPadding);
+      y = (position === 'top') ? appendPadding + Math.abs(legend.container.getBBox().minY) : (chartHeight - legendHeight);
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;

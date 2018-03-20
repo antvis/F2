@@ -72,11 +72,8 @@ const GROUP_ANIMATION = {
     }
     return GroupAction.groupWaveIn;
   },
-  point(coord) {
-    if (coord.isPolar) {
-      return GroupAction.groupScaleInXY;
-    }
-    return GroupAction.groupWaveIn;
+  point() {
+    return GroupAction.shapesScaleInXY;
   },
   interval(coord) {
     let result;
