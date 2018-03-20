@@ -66,7 +66,6 @@ describe('Group animation', function() {
     const interval = chart.interval().position('time*tem').animate(false);
     const line = chart.line().position('time*rain')
       .color('#5ed470')
-      .size(2)
       .shape('smooth')
       .animate({
         appear: {
@@ -86,7 +85,9 @@ describe('Group animation', function() {
     setTimeout(function() {
       expect(interval.get('container').attr('clip')).to.be.undefined;
       expect(line.get('container').attr('clip')).to.be.null;
-      expect(point.get('container').attr('clip')).to.be.null;
+      // expect(point.get('container').attr('clip')).to.be.null;
+      const shapes = point.get('container').get('children');
+      expect(shapes[0].attr('matrix')).to.eql([ 1, 0, 0, 1, 0, 0 ]);
       document.body.removeChild(canvas);
       Chart.plugins.unregister(GroupAnimation);
       done();

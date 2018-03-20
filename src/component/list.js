@@ -302,8 +302,8 @@ class List {
       legendHitBoxes.push({
         x: rowWidth,
         y: row * height + titleHeight - childHeight / 2,
-        width: childWidth * 1.1,
-        height: childHeight * 1.1
+        width: childWidth * 1.375,
+        height: childHeight * 1.375
       });
       rowWidth += width + itemGap;
     }
@@ -343,16 +343,16 @@ class List {
         legendHitBoxes.push({
           x: totalWidth,
           y: titleHeight - height / 2,
-          width: width * 1.1,
-          height: height * 1.1
+          width: width * 1.375,
+          height: height * 1.375
         });
       } else {
         child.moveTo(totalWidth, colHeight);
         legendHitBoxes.push({
           x: totalWidth,
           y: colHeight - height / 2 + titleHeight,
-          width: width * 1.1,
-          height: height * 1.1
+          width: width * 1.375,
+          height: height * 1.375
         });
       }
 

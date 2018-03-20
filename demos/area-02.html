@@ -85,7 +85,7 @@
       tooltipItems.map(item => {
         const { name, value } = item;
         if (map[name]) {
-          map[name].value = formatterPercent(value);
+          map[name].value = (value);
         }
       });
       legend.setItems(Object.values(map));
