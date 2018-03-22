@@ -143,7 +143,7 @@ describe('Tooltip Plugin', function() {
     let isShowCalled = false;
     let isChangeCalled = false;
     let isHideCalled = false;
-    let isCustomCalled = false;
+    // let isCustomCalled = false;
     const tooltipValue = [];
     // 配置 tooltip
     chart.tooltip({
@@ -152,10 +152,8 @@ describe('Tooltip Plugin', function() {
       onShow() {
         isShowCalled = true;
       },
-      onChange() {
-        isChangeCalled = true;
-      },
-      custom(obj) {
+      custom: true,
+      onChange(obj) {
         const legend = chart.get('legendController').legends.top[0];
         const tooltipItems = obj.items;
         const legendItems = legend.items;
@@ -173,7 +171,7 @@ describe('Tooltip Plugin', function() {
           return item;
         });
         legend.setItems(Object.values(map));
-        isCustomCalled = true;
+        isChangeCalled = true;
       },
       onHide() {
         const legend = chart.get('legendController').legends.top[0];
@@ -216,7 +214,7 @@ describe('Tooltip Plugin', function() {
     });
     expect(isShowCalled).to.be.true;
     expect(isChangeCalled).to.be.true;
-    expect(isCustomCalled).to.be.true;
+    // expect(isCustomCalled).to.be.true;
     expect(legend.itemsGroup.get('children')[0].get('children').length).to.equal(3);
     expect(tooltipValue.length).to.equal(2);
     expect(tooltipValue[0]).to.equal('900%');

@@ -45,6 +45,7 @@
 | `tickLine`     |  Object/null    |  坐标轴刻度线的样式配置，设置 null 不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)   |
 | `label`     |   Object/Function/null   |  坐标轴文本配置，设置 null 不显示, 支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数    |
 | `position`     | String     | 坐标轴显示位置配置，x 轴默认位于底部 'bottom'，y 轴可设置 position 为 'left'、'right' |
+| `top`     | Boolean     | 调整图层层级，true 表示展示在最上层图形，false 表示展示在最下层图形 |
 
 
 注意：grid 和 label 为回调函数时，返回值必须是对象。
