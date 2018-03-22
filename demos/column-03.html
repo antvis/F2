@@ -46,14 +46,6 @@
       }
     });
     chart.legend(false);
-    chart.tooltip({
-      onShow(ev) {
-        const { items } = ev;
-        items.map(item => {
-          item.value = (item.value * 100).toFixed(2) + '%';
-        });
-      }
-    })
     chart.interval()
       .position('year*percent')
       .color('country')
