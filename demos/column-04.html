@@ -46,7 +46,8 @@
       }
     });
     chart.tooltip({
-      custom(obj) {
+      custom: true,
+      onChange(obj) {
         const legend = chart.get('legendController').legends.top[0];
         const tooltipItems = obj.items;
         const legendItems = legend.items;
@@ -57,7 +58,7 @@
         tooltipItems.map(item => {
           const { name, value } = item;
           if (map[name]) {
-            map[name].value = (value * 100).toFixed(2) + '%';;
+            map[name].value = value;
           }
         });
         legend.setItems(Object.values(map));
