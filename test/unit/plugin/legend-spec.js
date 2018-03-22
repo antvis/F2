@@ -130,7 +130,7 @@ describe('Legend Plugin', function() {
     let legend = legendController.legends.bottom[0];
     expect(legend.items[0].marker).to.eql({ fill: '#1890FF', radius: 3, symbol: 'square', stroke: '#fff' });
     expect(parseInt(legend.container.get('x'))).to.equal(50);
-    expect(legend.container.get('y')).to.equal(249);
+    expect(legend.container.get('y')).to.equal(264);
 
     chart.clear();
     chart.source(data);

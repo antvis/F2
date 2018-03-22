@@ -36,11 +36,8 @@ Animate.defaultCfg = {
     }
     return Action.groupWaveIn;
   },
-  point(coord) {
-    if (coord.isPolar) {
-      return Action.groupScaleInXY;
-    }
-    return Action.groupWaveIn;
+  point() {
+    return Action.shapesScaleInXY;
   },
   interval(coord) {
     let result;

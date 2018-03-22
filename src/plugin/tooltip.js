@@ -86,7 +86,7 @@ function getTooltipName(geom, origin) {
 
 function getTooltipValue(geom, origin) {
   const scale = _getTooltipValueScale(geom);
-  return origin[scale.field];
+  return scale.getText(origin[scale.field]);
 }
 
 function getTooltipTitle(geom, origin) {
@@ -269,8 +269,9 @@ class TooltipController {
     }
     this._lastActive = items;
 
-    if (cfg.onChange) {
-      cfg.onChange({
+    if (cfg.onChange || Util.isFunction(cfg.custom)) { // 兼容之前的写法
+      const onChange = cfg.onChange || cfg.custom;
+      onChange({
         x: point.x,
         y: point.y,
         tooltip,
@@ -279,15 +280,7 @@ class TooltipController {
       });
     }
 
-    if (cfg.custom) { // 用户自定义 tooltip
-      cfg.custom({
-        x: point.x,
-        y: point.y,
-        tooltip,
-        items,
-        tooltipMarkerCfg
-      });
-    } else {
+    if (!cfg.custom) {
       const first = items[0];
       const title = first.title || first.name;
       tooltip.setContent(title, items);
