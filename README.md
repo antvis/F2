@@ -1,4 +1,4 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端图表解决方案
+# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -8,7 +8,7 @@
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-F2（Fast & Flexible），是专为移动端定制的一套开箱即用的可视化图表解决方案，基于图形语法理论，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求严苛的场景。
+F2（Fast & Flexible），是专为移动端定制的一套开箱即用的可视化解决方案，基于图形语法理论，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求严苛的场景。
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
 
@@ -21,8 +21,6 @@ $ npm install @antv/f2
 ```
 
 ## 特性
-
-【TODO，用发布邮件中的图】
 
 - ✔︎ 体验优雅：基于 AntV 完整的移动端可视化设计体系
 - ✔︎ 扩展灵活：可自定义 Shape、动画，图表组件灵活可配，满足无限创意
