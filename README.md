@@ -73,7 +73,7 @@ chart.render();
 
 更多示例：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)。
 
-**手机扫码**
+**手机扫码观看 demos**
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
 
