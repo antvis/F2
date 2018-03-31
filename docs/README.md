@@ -1,4 +1,4 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
+# F2: 基于 HTML5 Canvas，开箱即用的移动端图表解决方案
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -8,18 +8,26 @@
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-F2（Fast && Flexible），是一套面向移动端的基于可视化图形语法的解决方案，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求很高的场景。
+F2（Fast & Flexible），是专为移动端定制的一套开箱即用的可视化图表解决方案，基于图形语法理论，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求严苛的场景。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/TzJcRDHJNFlPhUVByrvG.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/eOHezxTwQScZvAlLSLfh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CpdljwuwbEPSiaVIbVwE.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/GYRfGZxtdcIWoPURiNNQ.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/nCVpGkXoNjWqNMXIAuaL.gif" width="200">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
 
 **在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
 
+## 安装
+
+```bash
+$ npm install @antv/f2
+```
+
 ## 特性
 
-- ✔︎ 精简：精简版（简单折柱饼）压缩后不到 100k，完整版本压缩后 155k
-- ✔︎ 丰富的图表类型：支持 45+ 图表类型
-- ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化
-- ✔︎ 灵活且易扩展：灵活的按需引入机制，并提供自定义 Shape 以及动画机制，基于图形语法灵活绘制图表，满足你无限的创意
+【TODO，用发布邮件中的图】
+
+- ✔︎ 体验优雅：基于 AntV 完整的移动端可视化设计体系
+- ✔︎ 扩展灵活：可自定义 Shape、动画，图表组件灵活可配，满足无限创意
+- ✔︎ 绘制迅速：性能极致追求，针对移动设备做了大量的优化
+- ✔︎ 体积小巧：在支持丰富（45+）图表的基础上保持代码量的小巧
 
 ## 文档
 
@@ -52,11 +60,16 @@ F2（Fast && Flexible），是一套面向移动端的基于可视化图形语�
   * [自定义 Shape](developer/shape.md)
   * [绘制引擎 G](developer/graphic.md)
   * [开源贡献 Contributing](developer/contributing.md)
-* [图表示例](./demos)
 
-3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
+## Demo
 
-![demos](https://gw.alipayobjects.com/zos/rmsportal/RDCaavVwfzwoVTynJuNR.png)
+- 手机扫码：
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/QZwVElOjeIrPMNiDldJh.png" style="width:148px;">  
+
+- PC 端访问：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
+
+【TODO，放张大图】
 
 ## License
 

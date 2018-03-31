@@ -16,7 +16,7 @@ npm install @antv/f2 --save
 Add script and link tags in your browser and use the global variable `F2`.
 
 ```html
-<script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.1.0/f2.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.1.1/f2.js"></script>
 ```
 
 You can also download these files directly from [unpkg](https://unpkg.com/@antv/f2).

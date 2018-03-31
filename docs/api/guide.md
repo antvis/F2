@@ -174,7 +174,7 @@ chart.guide().text({
 
 绘制辅助 Tag。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/dMuqNQRONIlKlJOyTRJS.png" width="50%;">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/dMuqNQRONIlKlJOyTRJS.png" style="width: 242px;">
 
 
 ```js
