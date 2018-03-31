@@ -63,11 +63,10 @@ $ npm install @antv/f2
 
 - 手机扫码：
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/QZwVElOjeIrPMNiDldJh.png" style="width:148px;">  
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
 
 - PC 端访问：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
 
-【TODO，放张大图】
 
 ## License
 
