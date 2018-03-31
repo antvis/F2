@@ -75,7 +75,7 @@ chart.render();
 
 **手机扫码**
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/QZwVElOjeIrPMNiDldJh.png" style="width:148px;">  
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
 
 
 ## 本地开发
