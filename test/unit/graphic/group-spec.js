@@ -100,6 +100,36 @@ describe('Group', function() {
     expect(arc.get('parent')).to.eql(group2);
   });
 
+  it('add(Shape), the shape has clip', function() {
+    const group = new Group();
+    const line = new Shape.Line({
+      attrs: {
+        x1: 50,
+        y1: 50,
+        x2: 100,
+        y2: 100,
+        lineWidth: 2,
+        strokeStyle: '#223273',
+        lineCap: 'round'
+      }
+    });
+    const rect = new Shape.Rect({
+      attrs: {
+        x: 75,
+        y: 75,
+        width: 25,
+        height: 25
+      }
+    });
+    line.attr('clip', rect);
+
+    group.add(line);
+    expect(group.get('children').length).to.equal(1);
+    expect(line.get('parent')).to.eql(group);
+    expect(rect.get('parent')).to.eql(group);
+    expect(rect.get('context')).to.eql(group.get('context'));
+  });
+
   it('add(Array)', function() {
     const group = new Group();
     const child1 = new Group({
@@ -248,6 +278,13 @@ describe('Group', function() {
 
     expect(g.get('children')).to.undefined;
     expect(g.get('destroyed')).to.be.true;
+    expect(e1.get('destroyed')).to.be.true;
+    expect(e2.get('destroyed')).to.be.true;
+    expect(e3.get('destroyed')).to.be.true;
+
+    g.destroy();
+    expect(g.get('children')).to.undefined;
+    expect(g.get('destroyed')).to.be.true;
   });
 
   it('getBBox()', function() {
@@ -264,6 +301,7 @@ describe('Group', function() {
         stroke: 'red'
       }
     });
+    // 当不可见时，不参与计算
     const arc = new Shape.Arc({
       attrs: {
         x: 20,
@@ -273,7 +311,8 @@ describe('Group', function() {
         endAngle: Math.PI / 2,
         lineWidth: 2,
         stroke: '#18901f'
-      }
+      },
+      visible: false
     });
     const text = new Shape.Text({
       attrs: {
@@ -288,16 +327,45 @@ describe('Group', function() {
         lineWidth: 1
       }
     });
+    const custom = new Shape.Custom({
+      createPath() {
+        return null;
+      },
+      calculateBox() {
+        return null;
+      }
+    });
     const group = canvas.addGroup();
-    group.add([ polyline, arc, text ]);
+    group.add([ polyline, arc, text, custom ]);
 
     const bbox = group.getBBox();
     canvas.draw();
-    expect(group.get('children').length).to.equal(3);
+    expect(group.get('children').length).to.equal(4);
     expect(canvas.get('children').length).to.equal(1);
     expect(bbox.x).to.equal(10);
     expect(bbox.y).to.equal(10);
     expect(bbox.width).to.equal(109.1171875);
     expect(bbox.height).to.equal(84);
+    group.destroy();
+  });
+
+  it('group transform', function() {
+    const rect = new Shape.Rect({
+      attrs: {
+        x: 10,
+        y: 10,
+        width: 50,
+        height: 50,
+        fill: 'pink'
+      }
+    });
+
+    const group = canvas.addGroup();
+    group.add(rect);
+
+    expect(group.attr('matrix')).to.eql([ 1, 0, 0, 1, 0, 0 ]);
+
+    group.scale(0.5, 0.5);
+    expect(group.attr('matrix')).to.eql([ 0.5, 0, 0, 0.5, 0, 0 ]);
   });
 });

@@ -8,20 +8,18 @@ F2 图例的生成是由图形语法中的图形属性决定的，我们会根�
 
 ## 如何引入图例
 
-Legend 作为 F2 的插件，如果需要使用的话，需要先将该组件注册入 Chart 类或者 Chart 实例。
+如果你默认加载的是完整的 F2 代码，那么 Legend 已经注册至 Chart 类中，如果您采用动态引用的策略，那么需要先将该组件注册入 Chart 类或者 Chart 实例。
 
 ```js
-import { Plugin, Chart } from '@antv/f2';
-Chart.plugins.register(Plugin.Legend); // 方式一：全局注册 
+const F2 = require('@antv/f2/lib/core');
+const Legend = require('@antv/f2/lib/plugin/legend');
+Chart.plugins.register(Legend); // 方式一：全局注册 
 
 // 方式二：具体的 chart 实例注册
 const chart = new Chart({
   id: 'canvas',
-  plugins: Plugin.Legend
+  plugins: Legend
 });
-
-// 动态引入方式，然后使用上述方式注册
-const { Legend } = require('@antv/f2/lib/plugin/');
 ```
 
 ## API
@@ -60,7 +58,7 @@ chart.legend('gender', {
 
 - `position`: String
 
-设置图例的显示位置，可设置的值为：top、right、bottom、left，分别表示上、右、下、左。默认为 top。
+设置图例的显示位置，可设置的值为：'top'、'right'、'bottom'、'left'，分别表示上、右、下、左。默认为 top。
 
 - `align`: String
 
@@ -78,7 +76,7 @@ chart.legend('gender', {
 | -------- | -------- | -------- |
 | ![undefined](https://gw.alipayobjects.com/zos/skylark/3e351090-9e91-44b7-9c79-9fae1576a83e/2018/png/90d4ab82-0baa-429c-a92a-eb06c51e9b0d.png)  | ![undefined](https://gw.alipayobjects.com/zos/skylark/a6d8e7cd-951b-409e-96c7-b76a49ec0405/2018/png/6504d001-3bd8-4e3d-acd9-0c1fda595a0f.png)  | ![undefined](https://gw.alipayobjects.com/zos/skylark/e5a77ada-f4bc-4acd-9611-aac5f9769a41/2018/png/795f70b0-89bc-4b1b-a8d6-b26b543521c4.png)   |
 
-- `itemWidth`: Number | 'auto'
+- `itemWidth`: Number/'auto'
 
 用于设置每个图例项的宽度，默认为 'auto'，即使用 F2 默认的图例布局计算 `itemWidth`。如果 `itemWidth` 为 null，则会根据每个图例项自身的宽度计算，另外用户也可以自己设置 `itemWidth` 的数值。
 
@@ -138,20 +136,20 @@ itemFormatter(val) {
 }
 ```
 
-- `marker`: String | Function | Object
+- `marker`: String/Function/Object
 
 用于设置图例的 marker 样式，默认为 circle 即圆形。
 
-1. String 类型
+* String 类型
 
 当为 String 类型时，即表示使用 F2 默认提供的类型，支持的类型如下：
 
 | marker 类型 | 样式 |
 | -------- | -------- |
-| 'circle'     | ![undefined](https://gw.alipayobjects.com/zos/skylark/9f52dd0d-104a-451d-9e56-8423e20c4581/2018/png/6780ea94-a9ca-452d-b9c8-8a1e74f8b73d.png)  |
-| 'square' | ![undefined](https://gw.alipayobjects.com/zos/skylark/a31497a6-23ae-4512-8eb8-7d697f158be9/2018/png/406e0df1-7d97-4361-be25-0f20e85418f7.png)  |
+| 'circle'     | <img src="https://gw.alipayobjects.com/zos/skylark/9f52dd0d-104a-451d-9e56-8423e20c4581/2018/png/6780ea94-a9ca-452d-b9c8-8a1e74f8b73d.png" style="width: 84px;">  |
+| 'square' | <img src="https://gw.alipayobjects.com/zos/skylark/a31497a6-23ae-4512-8eb8-7d697f158be9/2018/png/406e0df1-7d97-4361-be25-0f20e85418f7.png" style="width: 84px;">  |
 
-2. Object 类型
+* Object 类型
 
 marker 为 Object 时，可以配置 symbol、radius 以及一些绘图属性。
 
@@ -162,7 +160,7 @@ marker: {
 }
 ```
 
-3. Function 类型
+* Function 类型
 
 用于自定义 shape，使用方式如下，
 
@@ -178,7 +176,7 @@ marker: {
 marker(x, y, r, ctx) {}
 ```
 
-以下代码绘制了如图所示的 marker：![undefined](https://gw.alipayobjects.com/zos/skylark/041d2fef-a068-4012-ac28-2439e15bdbda/2018/png/c541e6b3-8f37-4cc9-b8bb-fd97345ef7da.png) 
+以下代码绘制了如图所示的 marker：<img src="https://gw.alipayobjects.com/zos/skylark/041d2fef-a068-4012-ac28-2439e15bdbda/2018/png/c541e6b3-8f37-4cc9-b8bb-fd97345ef7da.png" style="width: 194px;"> 
 
 ```js
 chart.legend('city', {
@@ -224,7 +222,7 @@ valueStyle: {
 }
 ```
 
-- `triggerOn`: String|Function
+- `triggerOn`: String/Function
 
 图例筛选行为的触发事件，默认为 `click`。
 
@@ -247,6 +245,8 @@ triggerOn(method, type) {
 }
 ```
 
+**注意该属性只能使用 `chart.legend({})` 方式或者 Global 主题中设置。**
+
 - `clickable`: Boolean
 
 设置图例项是否允许点击，默认为 true，即允许点击。
@@ -261,21 +261,24 @@ triggerOn(method, type) {
  * @param  {object} ev 事件对象
  * @return {null}
  */
-onClick: ev => {}
+onClick: ev => {
+  // clickedItem: G.Group 类型，表示被选中图例像，通过 clickedItem.get() 方法获取该对象的属性
+  const { clickedItem } = ev;
+}
 ```
 
 - `custom`: Boolean
 
-默认为 false，当 `custom` 为 true，表示不使用默认生成的图例，允许用户自定义图例，包括具体的图例项以及 click 交互。
+默认为 false，当 `custom` 为 true，表示不使用默认生成的图例，允许用户自定义图例，包括具体的图例项以及点击交互行为。
 
-自定义图例时需要用户自己声明具体的图例项 `items`(该属性是一个对象数组，数组中每一项为一个对象类型，结构为：`{ value: '', marker:{fill: 'red'}}`)以及图例项的 `onClick` 事件。
-
-`marker` 的格式可以为数组或者字符串。
+自定义图例时需要用户自己声明具体的图例项 `items`(该属性是一个对象数组，数组中每一项为一个对象类型，结构为：`{ name: '', marker:{ fill: 'red' } }`)以及图例项的 `onClick` 事件。
 
 ```js
 chart.legend({ custom: true, items: [], onClick(){} });
 chart.legend('field', { custom: true, items: [], onClick(){} });
 ```
+
+`marker` 的格式可以为数组或者字符串。
 
 具体使用如下：
 
@@ -284,42 +287,27 @@ chart.legend('city', {
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: 'triangle', fill: 'red'},
-    { value: 'a2', marker: 'triangle', fill: 'blue'},
-    { value: 'a3', marker: 'triangle', fill: 'green'}
+    { name: 'a1', marker: 'square', fill: 'red'},
+    { name: 'a2', marker: 'square', fill: 'blue'},
+    { name: 'a3', marker: 'square', fill: 'green'}
   ]
 });
 chart.legend('city', {
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: { symbol: 'triangle', stroke: 'red', radius: 8 }},
-    { value: 'a2', marker: { symbol: 'triangle', stroke: 'green', radius: 8 }},
-    { value: 'a3', marker: { symbol: 'triangle', stroke: 'blue', radius: 8 }}
+    { name: 'a1', marker: { symbol: 'square', stroke: 'red', radius: 8 }},
+    { name: 'a2', marker: { symbol: 'square', stroke: 'green', radius: 8 }},
+    { name: 'a3', marker: { symbol: 'square', stroke: 'blue', radius: 8 }}
   ]
 });
 chart.legend({
   custom: true,
   position: 'left',
   items: [
-    { value: 'a1', marker: 'triangle', fill: 'red'},
-    { value: 'a2', marker: 'triangle', fill: 'blue'},
-    { value: 'a3', marker: 'triangle', fill: 'green'}
+    { name: 'a1', marker: 'square', fill: 'red'},
+    { name: 'a2', marker: 'square', fill: 'blue'},
+    { name: 'a3', marker: 'square', fill: 'green'}
   ]
 });
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

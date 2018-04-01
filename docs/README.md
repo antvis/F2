@@ -8,12 +8,11 @@
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-F2 是面向移动端的一套基于可视化图形语法的解决方案，具有精简、高性能、易扩展的特性。适用于对性能、大小、扩展性要求很高的场景。
+F2（Fast & Flexible），是专为移动端定制的一套开箱即用的可视化解决方案，基于图形语法理论，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求严苛的场景。
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/JrymDHcnHRIgSDglEYNY.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/aqUteypLffbwVhjKwtZe.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/FkXzykmbYhPDqDpouJsg.gif" width="180"><img src="https://gw.alipayobjects.com/zos/rmsportal/ntPqElbzargYvMnJcxVX.gif" width="200">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
 
 **在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
-
 
 ## 安装
 
@@ -22,73 +21,52 @@ $ npm install @antv/f2
 ```
 
 ## 特性
-- ✔︎ 极小：精简版压缩后不到 100k 的代码。
-- ✔︎ 高性能：性能极致追求，针对移动设备做了大量的优化。
-- ✔︎ 强大扩展能力：任何图表，都可以基于图形语法灵活绘制，满足你无限的创意。
+
+- ✔︎ 体验优雅：基于 AntV 完整的移动端可视化设计体系
+- ✔︎ 扩展灵活：可自定义 Shape、动画，图表组件灵活可配，满足无限创意
+- ✔︎ 绘制迅速：性能极致追求，针对移动设备做了大量的优化
+- ✔︎ 体积小巧：在支持丰富（45+）图表的基础上保持代码量的小巧
 
 ## 文档
 
-- [快速开始](./getting-started/README.md)
-- [使用教程](./chart-concept/README.md)
-- [API](./api/README.md)
-- [图表示例](../demos)
+* [快速开始 Getting started](getting-started/README.md)
+  * [安装 Installation](getting-started/installation.md)
+  * [一分钟上手 F2 Your First Chart](getting-started/your-first-chart.md)
+  * [按需引用 Require On Demand](getting-started/require-on-demand.md)
+* [基础教程 Chart Concept](chart-concept/README.md)
+  * [F2 图表组成 Understanding F2 Charts](chart-concept/understanding-f2-charts.md)
+  * [数据 Data](chart-concept/data.md)
+  * [度量 Scale](chart-concept/scale.md)
+  * [几何标记 Geometry](chart-concept/geometry.md)
+  * [图形属性 Attribute](chart-concept/attribute.md)
+  * [坐标系 Coordinate](chart-concept/coordinate.md)
+* [API](api/README.md)
+  * [Chart](api/chart.md)
+  * [Geometry](api/geometry.md)
+  * [Scale](api/scale.md)
+  * [Coordinate](api/coordinate.md)
+  * [Axis](api/axis.md)
+  * [Legend](api/legend.md)
+  * [Tooltip](api/tooltip.md)
+  * [Guide](api/guide.md)
+  * [Interaction](api/interaction.md)
+  * [Animation](api/animation.md)
+  * [Global](api/global.md)
+  * [绘图属性](api/canvas.md)
+* [开发者](developer/README.md)
+  * [插件 Plugin](developer/plugin.md)
+  * [自定义 Shape](developer/shape.md)
+  * [绘制引擎 G](developer/graphic.md)
+  * [开源贡献 Contributing](developer/contributing.md)
 
-3.0 版本的文档，可访问 AntV 官网：[F2](https://antv.alipay.com/zh-cn/f2/3.x/index.html)。
+## Demo
 
-## 快速开始
+- 手机扫码：
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/QTqjaZLcsrmDFywWRfHv.png" width="480">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
 
-```html
-<canvas id="c1"></canvas>
-```
+- PC 端访问：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
 
-```js
-import F2 from '@antv/f2';
-
-const data = [ 
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 },
-];
-
-const chart = new F2.Chart({
-  id: 'c1',
-  width: 500,
-  height: 300  
-});
-
-chart.source(data);
-chart.interval().position('genre*sold').color('genre');
-chart.render();
-```
-
-更多示例：[demos](../demos)。
-
-![demos](https://gw.alipayobjects.com/zos/rmsportal/RDCaavVwfzwoVTynJuNR.png)
-
-## 本地开发
-
-```bash
-$ npm install
-
-# 跑测试用例
-$ npm run test-live
-
-# 监听文件变化构建，并打开 demo 页面
-$ npm run dev
-
-# 打开 demo
-$ npm run demos
-```
-
-## 如何贡献
-
-如果您在使用的过程中碰到问题，可以先通过 [issues](https://github.com/antvis/f2/issues) 看看有没有类似的 bug 或者建议。
-
-如需提交代码，请遵从我们的[贡献指南](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md)。
 
 ## License
 

@@ -24,7 +24,6 @@ class Rect extends Shape {
     const self = this;
     const attrs = self.get('attrs');
     const { x, y, width, height } = attrs;
-    context = context || self.get('context');
 
     context.beginPath();
     let radius = attrs.radius;

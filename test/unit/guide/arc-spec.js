@@ -37,7 +37,7 @@ describe('Guide.Arc', function() {
   it('guide arc', function() {
     const arc = new Arc({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       start: [ 0, 1200 ],
       end: [ 4, 1200 ],
       style: {

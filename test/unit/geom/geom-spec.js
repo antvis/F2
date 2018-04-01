@@ -355,7 +355,8 @@ describe('test geom line', function() {
   const scaleA = new Scale.Linear({
     field: 'a',
     min: 0,
-    max: 10
+    max: 10,
+    values: [ 2, 4 ]
   });
   const scaleB = new Scale.Linear({
     field: 'b',

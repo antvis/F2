@@ -36,7 +36,7 @@ describe('Guide.Text', function() {
   it('guide text', function() {
     const text = new Text({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       content: '(一月，200)',
       position: [ '三月', 'min' ]
     });
@@ -53,7 +53,7 @@ describe('Guide.Text', function() {
     group.clear();
     const text = new Text({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       content: '(一月，200)',
       position: [ '三月', 'max' ],
       style: {

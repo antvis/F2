@@ -13,7 +13,6 @@ describe('plot', function() {
     }
   });
 
-
   it('isInRange', function() {
     const p = { x: 250, y: 350 };
     expect(plot.isInRange(p)).to.be.equal(true);

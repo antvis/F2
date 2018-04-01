@@ -44,7 +44,7 @@ Global.tooltip = Util.deepMix({
     lineWidth: 1,
     stroke: '#fff'
   },
-  layout: 'horizontal' // 内容水平布局
+  layout: 'horizontal'
 }, Global.tooltip || {});
 
 function _getTooltipValueScale(geom) {
@@ -86,7 +86,7 @@ function getTooltipName(geom, origin) {
 
 function getTooltipValue(geom, origin) {
   const scale = _getTooltipValueScale(geom);
-  return origin[scale.field];
+  return scale.getText(origin[scale.field]);
 }
 
 function getTooltipTitle(geom, origin) {
@@ -143,12 +143,11 @@ class TooltipController {
     const defaultCfg = Util.mix({}, Global.tooltip);
     const geoms = chart.get('geoms');
     const shapes = [];
-    geoms.map(geom => {
+    Util.each(geoms, geom => {
       const type = geom.get('type');
       if (Util.indexOf(shapes, type) === -1) {
         shapes.push(type);
       }
-      return geom;
     });
     if (geoms.length && chart.get('coord').type === 'cartesian') {
       if (shapes.length === 1 && [ 'line', 'area', 'path', 'point' ].indexOf(shapes[0]) !== -1) {
@@ -187,8 +186,7 @@ class TooltipController {
       frontPlot,
       backPlot,
       canvas,
-      fixed: coord.transposed || coord.isPolar,
-      visible: false
+      fixed: coord.transposed || coord.isPolar
     }, defaultCfg, cfg);
     cfg.maxLength = self._getMaxLength(cfg);
     this.cfg = cfg;
@@ -252,8 +250,6 @@ class TooltipController {
 
   _setTooltip(point, items, tooltipMarkerCfg = {}) {
     const lastActive = this._lastActive;
-    const first = items[0];
-    const title = first.title || first.name;
     const tooltip = this.tooltip;
     const cfg = this.cfg;
 
@@ -273,8 +269,9 @@ class TooltipController {
     }
     this._lastActive = items;
 
-    if (cfg.onChange) {
-      cfg.onChange({
+    if (cfg.onChange || Util.isFunction(cfg.custom)) { // 兼容之前的写法
+      const onChange = cfg.onChange || cfg.custom;
+      onChange({
         x: point.x,
         y: point.y,
         tooltip,
@@ -283,15 +280,9 @@ class TooltipController {
       });
     }
 
-    if (cfg.custom) { // 用户自定义 tooltip
-      cfg.custom({
-        x: point.x,
-        y: point.y,
-        title,
-        items,
-        tooltipMarkerCfg
-      });
-    } else {
+    if (!cfg.custom) {
+      const first = items[0];
+      const title = first.title || first.name;
       tooltip.setContent(title, items);
     }
     tooltip.setPosition(items);
@@ -322,39 +313,39 @@ class TooltipController {
 
     const geoms = chart.get('geoms');
     const coord = chart.get('coord');
-    geoms.map(geom => {
+
+    Util.each(geoms, geom => {
       const type = geom.get('type');
       const records = geom.getSnapRecords(point);
-      records.map(record => {
-        const { x, y, _origin, color } = record;
-        const tooltipItem = {
-          x,
-          y: Util.isArray(y) ? y[1] : y,
-          color: color || Global.defaultColor,
-          origin: _origin,
-          name: getTooltipName(geom, _origin),
-          value: getTooltipValue(geom, _origin),
-          title: getTooltipTitle(geom, _origin)
-        };
-        if (marker) {
-          tooltipItem.marker = Util.mix({
-            fill: color || Global.defaultColor
-          }, marker);
-        }
-        items.push(tooltipItem);
+      Util.each(records, record => {
+        if (record.x && record.y) {
+          const { x, y, _origin, color } = record;
+          const tooltipItem = {
+            x,
+            y: Util.isArray(y) ? y[1] : y,
+            color: color || Global.defaultColor,
+            origin: _origin,
+            name: getTooltipName(geom, _origin),
+            value: getTooltipValue(geom, _origin),
+            title: getTooltipTitle(geom, _origin)
+          };
+          if (marker) {
+            tooltipItem.marker = Util.mix({
+              fill: color || Global.defaultColor
+            }, marker);
+          }
+          items.push(tooltipItem);
 
-        if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
-          tooltipMarkerType = 'circle';
-          tooltipMarkerItems.push(tooltipItem);
-        } else if (type === 'interval' && coord.type === 'cartesian') {
-          tooltipMarkerType = 'rect';
-          tooltipItem.width = geom.getSize(record._origin);
-          tooltipMarkerItems.push(tooltipItem);
+          if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
+            tooltipMarkerType = 'circle';
+            tooltipMarkerItems.push(tooltipItem);
+          } else if (type === 'interval' && coord.type === 'cartesian') {
+            tooltipMarkerType = 'rect';
+            tooltipItem.width = geom.getSize(record._origin);
+            tooltipMarkerItems.push(tooltipItem);
+          }
         }
-        return record;
       });
-
-      return geoms;
     });
 
     if (items.length) {
@@ -413,7 +404,7 @@ class TooltipController {
 
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
-    ([]).concat(methodName).map(aMethod => {
+    Util.each([].concat(methodName), aMethod => {
       if (Util.isFunction(aMethod)) {
         aMethod(method, action); // TODO： 测试，供用户自己绑定事件
       } else if (action === 'bind') {
@@ -421,7 +412,6 @@ class TooltipController {
       } else {
         DomUtil.removeEventListener(canvasDom, aMethod, method);
       }
-      return aMethod;
     });
   }
 
@@ -433,7 +423,7 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
-    // 当用户点击canvas 外的事件时 tooltip 消失
+    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
     DomUtil.addEventListener(document, 'touchstart', docMethod);
   }
@@ -446,7 +436,7 @@ class TooltipController {
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
-
+    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
     DomUtil.removeEventListener(document, 'touchstart', docMethod);
   }

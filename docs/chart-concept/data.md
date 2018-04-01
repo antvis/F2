@@ -15,7 +15,7 @@ const data = [
 ];
 ```
 
-## 转载数据
+## 如何加载数据
 
 ```js
 chart.source(data);

@@ -29,8 +29,8 @@ class Canvas {
   }
 
   _beforeDraw() {
-    const context = this.get('context');
-    const el = this.get('el');
+    const context = this._attrs.context;
+    const el = this._attrs.el;
     context && context.clearRect(0, 0, el.width, el.height);
   }
 
@@ -61,29 +61,39 @@ class Canvas {
     let width = self.get('width');
     if (!width) {
       width = DOMUtil.getWidth(canvas);
-      self.set('width', width);
     }
 
     let height = self.get('height');
     if (!height) {
       height = DOMUtil.getHeight(canvas);
-      self.set('height', height);
     }
 
-    const ratio = self.get('pixelRatio');
-    if (ratio) {
-      canvas.width = width * ratio;
-      canvas.height = height * ratio;
-      canvas.style.height = height + 'px';
-      canvas.style.width = width + 'px';
-      if (ratio !== 1) {
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
-    }
     self.set('canvas', this);
     self.set('el', canvas);
     self.set('context', context || canvas.getContext('2d'));
+    self.changeSize(width, height);
+  }
+
+  /**
+   * 改变 canvas 的宽高
+   * @param  {Number} width  宽度
+   * @param  {Number} height 高度
+   */
+  changeSize(width, height) {
+    const pixelRatio = this.get('pixelRatio');
+    const canvasDOM = this.get('el');
+    canvasDOM.style.width = width + 'px';
+    canvasDOM.style.height = height + 'px';
+    canvasDOM.width = width * pixelRatio;
+    canvasDOM.height = height * pixelRatio;
+
+    if (pixelRatio !== 1) {
+      const ctx = this.get('context');
+      ctx.scale(pixelRatio, pixelRatio);
+    }
+
+    this.set('width', width);
+    this.set('height', height);
   }
 
   /**
@@ -107,20 +117,6 @@ class Canvas {
   }
 
   /**
-   * 改变 canvas 的宽高
-   * @param  {Number} width  宽度
-   * @param  {Number} height 高度
-   */
-  changeSize(width, height) {
-    const pixelRatio = this.get('pixelRatio');
-    const canvasDOM = this.get('el');
-    canvasDOM.style.width = width + 'px';
-    canvasDOM.style.height = height + 'px';
-    canvasDOM.setAttribute('width', width * pixelRatio);
-    canvasDOM.setAttribute('height', height * pixelRatio);
-  }
-
-  /**
    * 将窗口坐标转变成 canvas 坐标
    * @param  {Number} clientX 窗口x坐标
    * @param  {Number} clientY 窗口y坐标
@@ -139,13 +135,13 @@ class Canvas {
 
   draw() {
     const self = this;
-    if (self.get('destroyed')) {
+    if (self._attrs.destroyed) {
       return;
     }
     self._beforeDraw();
     try {
-      const context = self.get('context');
-      const children = self.get('children');
+      const context = self._attrs.context;
+      const children = self._attrs.children;
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
         child.draw(context);

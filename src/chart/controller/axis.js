@@ -145,7 +145,8 @@ class AxisController {
     let maxWidth = 0;
     let maxHeight = 0;
     let labelCfg = label;
-    ticks.map((tick, index) => {
+
+    Util.each(ticks, (tick, index) => {
       if (Util.isFunction(label)) { // 文本的配置项动态可配置
         const executedLabel = label(tick.text, index, count);
         if (executedLabel) {
@@ -178,7 +179,6 @@ class AxisController {
         maxWidth = Math.max(maxWidth, width);
         maxHeight = Math.max(maxHeight, height);
       }
-      return tick;
     });
 
     cfg.labels = labels;
@@ -187,7 +187,7 @@ class AxisController {
     return cfg;
   }
 
-  _createAxis(coord, scale, verticalScale, dimType, index) {
+  _createAxis(coord, scale, verticalScale, dimType, index = '') {
     const self = this;
     const coordType = coord.type;
     const transposed = coord.transposed;
@@ -215,6 +215,7 @@ class AxisController {
     cfg.type = type;
     cfg.dimType = dimType;
     cfg.verticalScale = verticalScale;
+    cfg.index = index;
     this.axes[key] = cfg;
   }
 
@@ -242,16 +243,11 @@ class AxisController {
       };
 
       const padding = [
-        userPadding[0] === 'auto' ? 0 : userPadding[0],
-        userPadding[1] === 'auto' ? 0 : userPadding[1],
-        userPadding[2] === 'auto' ? 0 : userPadding[2],
-        userPadding[3] === 'auto' ? 0 : userPadding[3]
+        userPadding[0] === 'auto' ? legendRange.top + appendPadding * 2 : userPadding[0],
+        userPadding[1] === 'auto' ? legendRange.right + appendPadding : userPadding[1],
+        userPadding[2] === 'auto' ? legendRange.bottom + appendPadding : userPadding[2],
+        userPadding[3] === 'auto' ? legendRange.left + appendPadding : userPadding[3]
       ];
-
-      padding[0] += legendRange.top + appendPadding * 2; // top 需要给 tooltip 留一些距离
-      padding[1] += legendRange.right + appendPadding;
-      padding[2] += legendRange.bottom + appendPadding;
-      padding[3] += legendRange.left + appendPadding;
 
       if (coord.isPolar) { // 极坐标
         const circleAxis = axes.circle;
@@ -278,12 +274,12 @@ class AxisController {
           padding[2] += maxHeight + labelOffset;
         }
       }
-
+      chart.set('padding', padding); // TODO, 需要判断下，changeData 时不变换
       chart._updateLayout(padding);
     }
 
     Util.each(axes, axis => {
-      const { type, grid, verticalScale, ticks, dimType, position } = axis;
+      const { type, grid, verticalScale, ticks, dimType, position, index } = axis;
       let appendCfg;
       if (coord.isPolar) {
         if (type === 'Line') {
@@ -313,9 +309,16 @@ class AxisController {
               y: point.y
             });
           });
-          gridPoints.push(subPoints);
+          gridPoints.push({
+            points: subPoints,
+            _id: 'axis-' + dimType + index + '-grid-' + tick.tickValue
+          });
         });
         axis.gridPoints = gridPoints;
+      }
+      appendCfg._id = 'axis-' + dimType;
+      if (!Util.isNil(index)) {
+        appendCfg._id = 'axis-' + dimType + index;
       }
 
       new Axis[type](Util.mix(axis, appendCfg));

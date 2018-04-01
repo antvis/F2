@@ -2,22 +2,23 @@
 
 F2 提供插件机制用于扩展图表的功能，该机制可以帮助用户在图表创建的各个阶段定制或更改图表的默认行为。
 
-目前默认提供了 legend、guide、和 tooltip 这三种插件。
+目前默认提供了 legend、guide、tooltip 以及动画（群组以及精细动画两个版本）这三种插件。
 
-F2  在 Chart 类上注册一个静态属性 Chart.plugins, 使用发布-订阅模式，在 chart 的生命周期中通知注册的各个插件进行各自的操作。
+F2 在 Chart 类上注册一个静态属性 Chart.plugins, 使用发布-订阅模式，在 chart 的生命周期中通知注册的各个插件进行各自的操作。
 
 目前开放的生命周期包括：
 
 - `init` chart 初始化结束后
 - `beforeGeomDraw` 绘制 geom 之前
 - `afterGeomDraw`  绘制 geom 之后
+- `beforeCanvasDraw` canvas draw 之前
 - `clear` 清空图表，移除 geom
 - `clearInner` 清空图层
 - `repaint` 重绘
 
 ## 如何自定义插件
 
-参考： [guide]()
+参考： [Guide 插件](https://github.com/antvis/f2/blob/master/src/plugin/guide.js)
 
 ```js
 const plugin = {
@@ -43,7 +44,7 @@ Chart.plugins.register([ plugin1, plugin2 ]);
 2. 在 chart 实例上注册
 
 ```js
-onst plugin1 = { /* plugin implementation */ };
+const plugin1 = { /* plugin implementation */ };
 const plugin2 = { /* plugin implementation */ };
 
 // chart1 use "plugin1"

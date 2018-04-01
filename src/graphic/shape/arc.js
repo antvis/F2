@@ -24,7 +24,6 @@ class Arc extends Shape {
     const attrs = this.get('attrs');
     const { x, y, r, startAngle, endAngle, clockwise } = attrs;
 
-    context = context || this.get('context');
     context.beginPath();
     context.arc(x, y, r, startAngle, endAngle, clockwise);
   }

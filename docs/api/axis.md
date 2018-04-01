@@ -40,11 +40,12 @@
 | 属性 | 类型 | 使用说明 |
 | -------- | -------- | -------- |
 | `line`     |   Object/null   |  坐标轴线的配置信息，设置 null 时不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)  |
-| `labelOffset`     |  Number    |   坐标轴文本距离轴线的距离   |
+| `labelOffset`     |  Number    |   坐标轴文本距离轴线的距离  |
 | `grid`     |   Object/Function/null  |  坐标轴网格线的配置项，设置 null 时不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数   |
 | `tickLine`     |  Object/null    |  坐标轴刻度线的样式配置，设置 null 不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)   |
 | `label`     |   Object/Function/null   |  坐标轴文本配置，设置 null 不显示, 支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数    |
 | `position`     | String     | 坐标轴显示位置配置，x 轴默认位于底部 'bottom'，y 轴可设置 position 为 'left'、'right' |
+| `top`     | Boolean     | 调整图层层级，true 表示展示在最上层图形，false 表示展示在最下层图形 |
 
 
 注意：grid 和 label 为回调函数时，返回值必须是对象。
@@ -64,7 +65,7 @@ chart.axis('field', {
   tickLine: {
     lineWidth: 1,
     stroke: '#ccc',
-    value: 5,// 刻度线长度
+    length: 5,// 刻度线长度
   },
   // 0％ 处的栅格线着重显示
   grid: (text, index) => {
@@ -79,12 +80,14 @@ chart.axis('field', {
   },
   // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
   label: (text, index, total) => {
-    const cfg = {};
+    const cfg = {
+      textAlign: 'center'
+    };
     if (index === 0) {
-      cfg.textAlign = 'left';
+      cfg.textAlign = 'start';
     }
     if (index > 0 && index === total - 1) {
-      cfg.textAlign = 'right';
+      cfg.textAlign = 'end';
     }
     cfg.text = text + '%';  // cfg.text 支持文本格式化处理
     return cfg;

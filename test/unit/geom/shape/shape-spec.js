@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const Shape = require('../../../../src/geom/shape/index');
 const Coord = require('../../../../src/coord/');
-const { Canvas } = require('../../../../src/graphic/index');
+// const { Canvas } = require('../../../../src/graphic/index');
 
 describe('shape register', () => {
   const coord = new Coord.Rect({
@@ -137,11 +137,11 @@ describe('geom shapes', function() {
   dom.height = 500;
   document.body.appendChild(dom);
 
-  const canvas = new Canvas({
-    el: dom,
-    width: 500,
-    height: 500
-  });
+  // const canvas = new Canvas({
+  //   el: dom,
+  //   width: 500,
+  //   height: 500
+  // });
 
   const coord = new Coord.Rect({
     start: {
@@ -176,23 +176,6 @@ describe('geom shapes', function() {
       });
       expect(arr2.length).equal(2);
     });
-    it('draw point', function() {
-      shapeFactory.drawShape('point', {
-        x: 50,
-        y: 50,
-        color: 'red'
-      }, canvas);
-
-      shapeFactory.drawShape('rect', {
-        x: 50,
-        y: 50,
-        size: 20,
-        style: {
-          opacity: 0.2
-        },
-        color: 'yellow'
-      }, canvas);
-    });
   });
 
   describe('line', function() {
@@ -204,55 +187,6 @@ describe('geom shapes', function() {
     it('getShape', function() {
       expect(shapeFactory.getShape('line')).not.equal(undefined);
     });
-
-    it('draw line', function() {
-      shapeFactory.drawShape('line', {
-        points: [{
-          x: 0,
-          y: 0
-        }, {
-          x: 100,
-          y: 10
-        }],
-        color: 'blue',
-        size: 1
-      }, canvas);
-    });
-
-    it('draw dash', function() {
-      shapeFactory.drawShape('dash', {
-        points: [{
-          x: 10,
-          y: 10
-        }, {
-          x: 100,
-          y: 20
-        }],
-        color: 'blue',
-        size: 1
-      }, canvas);
-    });
-
-    it('draw smooth', function() {
-      shapeFactory.drawShape('smooth', {
-        points: [{
-          x: 10,
-          y: 10
-        }, {
-          x: 100,
-          y: 50
-        }, {
-          x: 200,
-          y: 10
-        }, {
-          x: 300,
-          y: 10
-        }],
-        color: 'blue',
-        size: 1
-      }, canvas);
-    });
-
   });
 
   describe('interval', function() {
@@ -291,28 +225,6 @@ describe('geom shapes', function() {
       });
 
     });
-    it('draw interval', () => {
-      const points = [{
-        x: 0.3,
-        y: 0
-      }, {
-        x: 0.3,
-        y: 0.5
-      }, {
-        x: 0.7,
-        y: 0.5
-      }, {
-        x: 0.7,
-        y: 0
-      }];
-      shapeFactory.drawShape('rect', {
-        points,
-        color: 'blue',
-        style: {
-          opacity: 0.4
-        }
-      }, canvas);
-    });
   });
 
   describe('area', function() {
@@ -342,72 +254,6 @@ describe('geom shapes', function() {
         y: 0.5
       });
     });
-
-    it('draw area', function() {
-      const points = [{
-        x: 0,
-        y: 0.2
-      }, {
-        x: 0.2,
-        y: 0.3
-      }, {
-        x: 0.3,
-        y: 0.5
-      }, {
-        x: 0.4,
-        y: 0.3
-      }, {
-        x: 0.5,
-        y: 0.1
-      }];
-      const rst = points.map(p => {
-        return shapeFactory.getShapePoints('area', {
-          y0: 0,
-          x: p.x,
-          y: p.y
-        });
-      });
-      shapeFactory.drawShape('area', {
-        points: rst,
-        color: 'pink',
-        style: {
-          opacity: 0.4
-        }
-      }, canvas);
-    });
-
-    it('draw smooth', function() {
-      const points = [{
-        x: 0,
-        y: 0.2
-      }, {
-        x: 0.2,
-        y: 0.3
-      }, {
-        x: 0.3,
-        y: 0.5
-      }, {
-        x: 0.4,
-        y: 0.3
-      }, {
-        x: 0.5,
-        y: 0.1
-      }];
-      const rst = points.map(p => {
-        return shapeFactory.getShapePoints('area', {
-          y0: 0.2,
-          x: p.x,
-          y: p.y
-        });
-      });
-      shapeFactory.drawShape('smooth', {
-        points: rst,
-        color: 'purple',
-        style: {
-          opacity: 0.4
-        }
-      }, canvas);
-    });
   });
 
   describe('polygon', function() {
@@ -436,31 +282,5 @@ describe('geom shapes', function() {
         y: 0.4
       });
     });
-
-    it('draw polygon', () => {
-      const points = [{
-        x: 0,
-        y: 0
-      }, {
-        x: 0.2,
-        y: 0.4
-      }, {
-        x: 0.4,
-        y: 0.2
-      }, {
-        x: 0.4,
-        y: 0
-      }];
-      shapeFactory.drawShape('polygon', {
-        points,
-        color: '#DC143C'
-      }, canvas);
-    });
-
   });
-
-  describe('schema', function() {
-
-  });
-
 });

@@ -41,6 +41,29 @@ describe('Custom', function() {
     expect(canvas.get('children').length).to.equal(1);
   });
 
+  it('calculateBBox', function() {
+    house.set('calculateBox', function() {
+      return {
+        minX: 20,
+        maxX: 180,
+        minY: 10,
+        maxY: 190
+      };
+    });
+
+    const bbox = house.getBBox();
+    expect(bbox).to.eql({
+      height: 180,
+      maxX: 180,
+      maxY: 190,
+      minX: 20,
+      minY: 10,
+      width: 160,
+      x: 20,
+      y: 10
+    });
+  });
+
   it('destroy', function() {
     house.destroy();
     expect(canvas.get('children').length).to.equal(0);

@@ -28,13 +28,18 @@ const ShapeUtil = {
     Util.each(data, function(obj) {
       yValue = obj._origin ? obj._origin[yField] : obj[yField];
       if ((Util.isArray(yValue) && Util.isNil(yValue[0])) || Util.isNil(yValue)) {
-        arr.push(tmp);
-        tmp = [];
+        if (tmp.length) {
+          arr.push(tmp);
+          tmp = [];
+        }
       } else {
         tmp.push(obj);
       }
     });
-    arr.push(tmp);
+
+    if (tmp.length) {
+      arr.push(tmp);
+    }
 
     return arr;
   }

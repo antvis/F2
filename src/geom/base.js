@@ -59,8 +59,6 @@ class Geom extends Base {
 
       shapeType: '',
 
-      shapeDatas: [],
-
       /**
        * 是否生成多个点来绘制图形
        * @protected
@@ -170,13 +168,12 @@ class Geom extends Base {
           if (self.get('type') === 'interval') { // 柱状图起始点从0点开始
             if (yScale.values.length) {
               yScale.change({
-                min: Math.min(0, yScale.min),
-                max: Math.max.apply(null, yScale.values)
+                min: Math.min(0, yScale.min)
               });
             }
           }
           // 饼图需要填充满整个空间
-          if (coord.type === 'polar' && coord.transposed) {
+          if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {
               yScale.change({
                 nice: false,
@@ -304,11 +301,13 @@ class Geom extends Base {
     const self = this;
     const xScale = self.getXScale();
     const xField = xScale.field;
-    Util.each(mappedArray, itemArr => {
-      itemArr.sort((obj1, obj2) => {
-        return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+    if (xScale.type !== 'identity' && xScale.values.length > 1) {
+      Util.each(mappedArray, itemArr => {
+        itemArr.sort((obj1, obj2) => {
+          return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+        });
       });
-    });
+    }
     self.set('hasSorted', true);
     self.set('dataArray', mappedArray);
   }
@@ -320,13 +319,16 @@ class Geom extends Base {
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
+    // let shapes = [];
     for (let i = 0, len = dataArray.length; i < len; i++) {
       let data = dataArray[i];
       data = self._mapping(data);
       mappedArray.push(data);
       self.draw(data, shapeFactory);
+      // shapes = shapes.concat(drawedShapes);
     }
     self.set('dataArray', mappedArray);
+    // self.set('shapes', shapes);
   }
 
   /**
@@ -466,26 +468,24 @@ class Geom extends Base {
     }
     return cfg;
   }
-  /**
-   * 绘制图层
-   * @param {Array} data 绘制的数据
-   * @param {Object} shapeFactory 图形的工厂类
-   */
+
   draw(data, shapeFactory) {
     const self = this;
     const container = self.get('container');
     const yScale = self.getYScale();
-    const shapeDatas = self.get('shapeDatas');
-
     Util.each(data, function(obj, index) {
-      shapeDatas.push(obj);
       if (yScale && Util.isNil(obj._origin[yScale.field])) {
         return;
       }
       obj.index = index;
       const cfg = self.getDrawCfg(obj);
       const shape = obj.shape;
-      shapeFactory.drawShape(shape, cfg, container);
+      const gShape = shapeFactory.drawShape(shape, cfg, container);
+      if (gShape) {
+        Util.each([].concat(gShape), s => {
+          s.set('origin', obj); // todo
+        });
+      }
     });
   }
 
@@ -673,7 +673,7 @@ class Geom extends Base {
       let yValue = yScale.invert(invertPoint.y);
       yValue = self._getSnap(yScale, yValue, tmp);
       tmp.forEach(function(obj) {
-        if (Util.isArray(yValue) ? Util.Array.equals(obj[FIELD_ORIGIN_Y], yValue) : obj[FIELD_ORIGIN_Y] === yValue) {
+        if (Util.isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
           rst.push(obj);
         }
       });
@@ -689,11 +689,6 @@ class Geom extends Base {
       return scale._toTimeStamp(originValue) === value;
     }
     return value === originValue;
-  }
-
-  // 返回 geom 所有 shape 的数据源
-  getAllShapeData() {
-    return this.get('shapeDatas');
   }
 
   /**
@@ -774,6 +769,11 @@ class Geom extends Base {
     return this;
   }
 
+  animate(cfg) {
+    this.set('animateCfg', cfg);
+    return this;
+  }
+
   reset() {
     this.set('attrOptions', {});
     this.set('adjust', null);
@@ -785,7 +785,6 @@ class Geom extends Base {
     container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);
-    this.set('shapeDatas', []);
     this.set('xDistance', null);
   }
 

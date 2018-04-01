@@ -21,9 +21,9 @@ Global.guide = Util.deepMix({
     offsetY: 0,
     top: true
   },
-  region: {
+  rect: {
     style: {
-      fillStyle: '#fafafa'
+      fill: '#fafafa'
     },
     top: false
   },
@@ -38,6 +38,23 @@ Global.guide = Util.deepMix({
     offsetY: 0,
     alignX: 'middle',
     alignY: 'middle'
+  },
+  tag: {
+    top: true,
+    offsetX: 0, // X 轴偏移
+    offsetY: 0, // Y 轴偏移
+    side: 4, //  三角标的边长
+    background: {
+      padding: 5, // tag 内边距
+      radius: 2, // tag 圆角
+      fill: '#1890FF' // tag 背景色
+    },
+    textStyle: {
+      fontSize: 12,
+      fill: '#fff',
+      textAlign: 'center',
+      textBaseline: 'middle'
+    }
   }
 }, Global.guide || {});
 
@@ -45,24 +62,18 @@ class GuideController {
   constructor(cfg) {
     this.guides = [];
     this.xScale = null;
-    this.yScale = null;
+    this.yScales = null;
     Util.mix(this, cfg);
-  }
-
-  setScale(xScale, yScale) {
-    const guides = this.guides;
-    this.xScale = xScale;
-    this.yScale = yScale;
-    Util.each(guides, function(guide) {
-      guide.xScale = xScale;
-      guide.yScale = yScale;
-    });
   }
 
   paint(coord) {
     const self = this;
     const guides = self.guides;
+    const xScale = self.xScale;
+    const yScales = self.yScales;
     Util.each(guides, function(guide) {
+      guide.xScale = xScale;
+      guide.yScales = yScales;
       const container = guide.top ? self.frontPlot : self.backPlot;
       guide.render(coord, container);
     });
@@ -76,17 +87,13 @@ class GuideController {
 
   reset() {
     const guides = this.guides;
-    guides.map(guide => {
+    Util.each(guides, guide => {
       guide.remove();
-      return guide;
     });
   }
   _createGuide(type, cfg) {
     const ClassName = Util.upperFirst(type);
-    const guide = new Guide[ClassName](Util.deepMix({
-      xScale: this.xScale,
-      yScale: this.yScale
-    }, Global.guide[type], cfg));
+    const guide = new Guide[ClassName](Util.deepMix({}, Global.guide[type], cfg));
     this.guides.push(guide);
     return this;
   }
@@ -110,6 +117,10 @@ class GuideController {
   rect(cfg = {}) {
     return this._createGuide('rect', cfg);
   }
+
+  tag(cfg = {}) {
+    return this._createGuide('tag', cfg);
+  }
 }
 
 module.exports = {
@@ -126,9 +137,10 @@ module.exports = {
       return;
     }
     const xScale = chart.getXScale();
-    const yScale = chart.getYScales()[0];
+    const yScales = chart.getYScales();
     const coord = chart.get('coord');
-    guideController.setScale(xScale, yScale);
+    guideController.xScale = xScale;
+    guideController.yScales = yScales;
     guideController.paint(coord);
   },
   clear(chart) {

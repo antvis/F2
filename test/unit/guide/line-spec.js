@@ -32,7 +32,7 @@ describe('Guide.Line', function() {
   it('Basic Line', function() {
     const line = new Line({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       start: [ '一月', 200 ],
       end: [ '五月', 200 ],
       style: {
@@ -54,7 +54,7 @@ describe('Guide.Line', function() {
 
     const line = new Line({
       xScale,
-      yScale,
+      yScales: [ yScale ],
       start: [ 'min', 'median' ],
       end: [ 'median', 'max' ],
       style: {

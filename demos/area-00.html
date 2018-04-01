@@ -58,6 +58,12 @@
       items[0].name = items[0].title;
     }
   });
+  chart.guide().tag({
+    position: [6, 2800],
+    content: '最高点',
+    offsetY: -5,
+    direct: 'tl'
+  });
   chart.area().position('time*tem');
   chart.line().position('time*tem');
   chart.render();

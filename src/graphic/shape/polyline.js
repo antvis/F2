@@ -23,10 +23,6 @@ class Polyline extends Shape {
     const attrs = self.get('attrs');
     const { points, smooth } = attrs;
 
-    if (points.length < 2) {
-      return;
-    }
-    context = context || self.get('context');
     context.beginPath();
     context.moveTo(points[0].x, points[0].y);
     if (smooth) {

@@ -2,9 +2,11 @@
 
 ## 容器层次结构
 
-![undefined](https://gw.alipayobjects.com/zos/skylark/bf8b4e5a-0421-48ae-ac32-a789b0079d17/2018/png/3c63f255-011a-4166-8715-0f72511175b5.png)  
+<img src="https://gw.alipayobjects.com/zos/skylark/bf8b4e5a-0421-48ae-ac32-a789b0079d17/2018/png/3c63f255-011a-4166-8715-0f72511175b5.png" style="width: 248px;">
 
 ## API
+
+通过 `F2.G` 引入。
 
 ### Canvas
 
@@ -13,7 +15,7 @@
 ```
 
 ```js
-new Canvas({
+new G.Canvas({
   el: 'c1',
   width: 500,
   height: 500
@@ -22,17 +24,17 @@ new Canvas({
 
 #### 属性
 
-- `el` String | HtmlElement： 容器的 id 或者 canvas dom 对象。
-- `context` CanvasRenderingContext2D：canvas 上下文，也支持传入 canvas 上下文对象来创建 Canvas 对象。
-- `width` Number：canvas 的宽度，可选，如果不设置则默认按照传入 canvas 元素的实际宽度。
-- `height` Number：canvas 的高度，可选，如果不设置则默认按照传入 canvas 元素的实际高度。
-- `pixelRatio` Number: canvas 的显示精度，默认读取当前设备的像素比。
-- `children` Array：canvas 容器下包含的元素集合。
-- `destroyed` Boolean: 是否对象已被销毁
+- `el`: String/HtmlElement，canvas dom的 id 或者 canvas dom 对象。
+- `context`: CanvasRenderingContext2D，canvas 上下文，也支持传入 canvas 上下文对象来创建 Canvas 对象。
+- `width`: Number，canvas 的宽度，可选，如果不设置则默认按照传入 canvas 元素的实际宽度。
+- `height`: Number，canvas 的高度，可选，如果不设置则默认按照传入 canvas 元素的实际高度。
+- `pixelRatio`: Number，canvas 的显示精度，默认读取当前设备的像素比。
+- `children`: Array，canvas 容器下包含的元素集合。
+- `destroyed`: Boolean，标识对象是否已被销毁
 
 #### 方法
 
-- getWidth
+- `getWidth`
 
 ```js
 /**
@@ -42,7 +44,7 @@ new Canvas({
 getWidth()
 ```
 
-- getHeight
+- `getHeight`
 
 ```js
 /**
@@ -52,7 +54,7 @@ getWidth()
 getHeight()
 ```
 
-- changeSize
+- `changeSize`
 
 ```js
 /**
@@ -63,7 +65,7 @@ getHeight()
 changeSize(width, height)
 ```
 
-- getPointByClient
+- `getPointByClient`
 
 ```js
 /**
@@ -75,7 +77,7 @@ changeSize(width, height)
 getPointByClient(clientX, clientY)
 ```
 
-- addShape
+- `addShape`
 
 ```js
 /**
@@ -87,7 +89,7 @@ getPointByClient(clientX, clientY)
 addShape(type, cfg = {})
 ```
 
-- addGroup
+- `addGroup`
 
 ```js
 /**
@@ -98,7 +100,7 @@ addShape(type, cfg = {})
 addGroup(cfg)
 ```
 
-- add
+- `add`
 
 ```js
 /**
@@ -108,7 +110,7 @@ addGroup(cfg)
 add(items)
 ```
 
-- contain
+- `contain`
 
 ```js
 /**
@@ -119,7 +121,7 @@ add(items)
 contain(item)
 ```
 
-- sort
+- `sort`
 
 ```js
 /**
@@ -140,12 +142,13 @@ destroy() // 销毁
 ### Group
 
 ```js
-new Group({
+new G.Group({
   zIndex: 0
 });
 ```
 
 #### 属性
+
 - `className` String: 标记
 - `zIndex` Number: 层级，默认值为 0
 - `visible` Boolean：显示还是隐藏
@@ -155,7 +158,7 @@ new Group({
 
 #### 方法
 
-- addShape
+- `addShape`
 
 ```js
 /**
@@ -168,7 +171,7 @@ addShape(type, cfg = {})
 ```
 
 
-- addGroup
+- `addGroup`
 
 ```js
 /**
@@ -179,7 +182,7 @@ addShape(type, cfg = {})
 addGroup(cfg)
 ```
 
--add
+- `add`
 
 ```js
 /**
@@ -189,7 +192,7 @@ addGroup(cfg)
 add(items)
 ```
 
-- contain
+- `contain`
 
 ```js
 /**
@@ -200,7 +203,7 @@ add(items)
 contain(item)
 ```
 
-- sort
+- `sort`
 
 ```js
 /**
@@ -210,7 +213,7 @@ contain(item)
 sort()
 ```
 
-- getBBox
+- `getBBox`
 
 ```js
 /**
@@ -220,7 +223,7 @@ sort()
 getBBox()
 ```
 
-- remove
+- `remove`
 
 ```js
 /**
@@ -231,7 +234,7 @@ getBBox()
 remove(destroy)
 ```
 
-- transform 平移、旋转、缩放
+- `transform` 平移、旋转、缩放
 
 ```js
 transform(actions) // actions 为 Array 类型，表示操作的集合
@@ -247,7 +250,7 @@ actions 格式：
 ]
 ```
 
-- setTransform 重新设置矩阵后，在进行平移、旋转、缩放操作
+- `setTransform` 重新设置矩阵后，在进行平移、旋转、缩放操作
 
 ```js
 setTransform(actions) // actions 为 Array 类型，表示操作的集合setTransform
@@ -265,11 +268,11 @@ getParent() // 获取父亲元素
 show() // 显示
 hide() // 隐藏
 clear() // 清除所有元素
-draw() // 绘制上下文
 destroy() // 销毁并将自己从父元素中移除（如果有父元素的话）
 ```
 
 ### Shape
+
 #### 通用属性
 - `type` String: 图形类型
 - `attrs` Object：绘图属性，不同的图形有所差异
@@ -281,7 +284,7 @@ destroy() // 销毁并将自己从父元素中移除（如果有父元素的话�
 
 #### 通用方法
 
-- attr 获取/设置属性
+- `attr` 获取/设置属性
 
 ```js
 attr() // 返回所有的图形属性
@@ -290,7 +293,10 @@ attr(name, value) // 设置单个图形属性
 attr({}) // 设置多个图形属性
 ```
 
-- getBBox
+获取 matrix 属性：`attr('matrix')`;
+获取 clip：`attr('clip',)`;
+
+- `getBBox`
 
 ```js
 /**
@@ -300,7 +306,7 @@ attr({}) // 设置多个图形属性
 getBBox()
 ```
 
-- remove
+- `remove`
 
 ```js
 /**
@@ -311,7 +317,7 @@ getBBox()
 remove(destroy)
 ```
 
-- transform 平移、旋转、缩放
+- `transform` 平移、旋转、缩放
 
 ```js
 transform(actions) // actions 为 Array 类型，表示操作的集合
@@ -327,7 +333,7 @@ actions 格式：
 ]
 ```
 
-- setTransform 重新设置矩阵后，在进行平移、旋转、缩放操作
+- `setTransform` 重新设置矩阵后，在进行平移、旋转、缩放操作
 
 ```js
 setTransform(actions) // actions 为 Array 类型，表示操作的集合setTransform
@@ -344,14 +350,13 @@ set(name, value) // 设置属性
 getParent() // 获取父亲元素
 show() // 显示
 hide() // 隐藏
-draw() // 绘制上下文
 destroy() // 销毁并将自己从父元素中移除（如果有父元素的话）
 ```
 
 #### Line 线
 
 ```js
-new G.Line({
+new G.Shape.Line({
   attrs: {
     x1: 50, // 线段起始点 x 坐标
     y1: 50,// 线段起始点 y 坐标
@@ -367,7 +372,7 @@ new G.Line({
 #### Arc 圆弧
 
 ```js
-new G.Arc({
+new G.Shape.Arc({
   attrs: {
     x: 20, // 圆心 x 坐标
     y: 20, // 圆心 y 坐标
@@ -383,7 +388,7 @@ new G.Arc({
 #### Circle 圆
 
 ```js
-new G.Circle({
+new G.Shape.Circle({
   attrs: {
     x: 10, // 圆心 x 坐标
     y: 10, // 圆心 y 坐标
@@ -396,7 +401,7 @@ new G.Circle({
 #### Polygon 多边形
 
 ```js
-new Polygon({
+new G.Shape.Polygon({
   attrs: {
     points: [
       { x: 10, y: 10 },
@@ -414,7 +419,7 @@ new Polygon({
 #### Polyline 多点线段
 
 ```js
-new G.Polyline({
+new G.Shape.Polyline({
   attrs: {
     points: [
       { x: 10, y: 10 },
@@ -433,7 +438,7 @@ new G.Polyline({
 #### Rect 矩形
 
 ```js
-new G.Rect({
+new G.Shape.Rect({
   attrs: {
     x: 50, // 矩形左上角 x 坐标
     y: 50, // 矩形左上角 y 坐标
@@ -447,26 +452,10 @@ new G.Rect({
 })
 ```
 
-#### Ring 圆环
-
-```js
-new G.Ring({
-  attrs: {
-    x: 100, // 圆心 x 坐标
-    y: 150, // 圆心 y 坐标
-    r: 50, // 圆环外半径
-    r0: 30, // 圆环内半径
-    lineWidth: 6, // html5 canvas 绘图属性
-    fill: '#223273', // html5 canvas 绘图属性
-    stroke: '#bfbfbf' // html5 canvas 绘图属性
-  }
-})
-```
-
 #### Sector 扇形
 
 ```js
-new G.Sector({
+new G.Shape.Sector({
   attrs: {
     x: 100, // 圆心 x 坐标 
     y: 150, // 圆心 y 坐标 
@@ -483,7 +472,7 @@ new G.Sector({
 #### Text 文本
 
 ```js
-new G.Text({
+new G.Shape.Text({
   attrs: {
     x: 30, // 显示位置 x 坐标
     y: 30, // 显示位置 x 坐标
@@ -501,11 +490,14 @@ new G.Text({
 #### Custom 自定义图形
 
 ```js
-new G.Custom({
+new G.Shape.Custom({
   attrs: {},
   createPath(context) {
     // 在这里绘制图形
-  }
+  },
+  calculateBox() {
+    // 自定义包围盒
+  }
 })
 ```
 

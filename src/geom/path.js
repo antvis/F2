@@ -30,10 +30,16 @@ class Path extends Geom {
 
     const cfg = this.getDrawCfg(data[0]);
     cfg.origin = data; // path,line 等图的origin 是整个序列
+
     Util.each(splitArray, function(subData, splitedIndex) {
       cfg.splitedIndex = splitedIndex; // 传入分割片段索引 用于生成id
       cfg.points = subData;
-      shapeFactory.drawShape(cfg.shape, cfg, container);
+      const gShape = shapeFactory.drawShape(cfg.shape, cfg, container);
+      if (gShape) {
+        Util.each([].concat(gShape), s => {
+          s.set('origin', data[0]); // todo
+        });
+      }
     });
   }
 }

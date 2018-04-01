@@ -36,7 +36,12 @@ class Area extends Geom {
         return obj.points;
       });
       cfg.points = points;
-      shapeFactory.drawShape(cfg.shape, cfg, container);
+      const gShape = shapeFactory.drawShape(cfg.shape, cfg, container);
+      if (gShape) {
+        Util.each([].concat(gShape), s => {
+          s.set('origin', data[0]); // todo
+        });
+      }
     });
   }
 }

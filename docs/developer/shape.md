@@ -16,6 +16,8 @@ const shapeObj = Shape.registerShape('geomType', 'shapeName', {
   },
   draw(cfg, container) {
     // 自定义最终绘制的逻辑
+
+    return shape; // 返回最后绘制的 shape
   }
 });
 ```
@@ -28,7 +30,7 @@ const shapeObj = Shape.registerShape('geomType', 'shapeName', {
 
 `getPoints` 方法用于计算绘制每种 shape 的关键点，在 F2 中每种几何形状都是由特定的几个关键点通过线连接而成。
 
-`getPoints` 方法中传入的参数 pointInfo 数据结构如下，所有的数值都是归一化后的结果（即 0 至 1 范围内的数据）：
+`getPoints` 方法中传入的参数 pointInfo 数据结构如下，所有的数值都是**归一化后的结果**（即 0 至 1 范围内的数据）：
 
 ```js
 {
@@ -48,22 +50,25 @@ line | 线其实是由无数个点组成，在 F2 中我们将参与绘制的各
 area | area 面其实是在 line 线的基础之上形成的, 它将折线图中折线与自变量坐标轴之间的区域使用颜色或者纹理填充。<br>![image](https://zos.alipayobjects.com/skylark/dbcd60f3-7662-4ebd-8e0e-85d7d754d0c7/attach/3378/f67277978d5d8e3e/image.png)
 interval | interval 默认的图形形状是矩形，而矩形实际是由四个点组成的，在 F2 中我们根据 pointInfo 中的 x、y、size 以及 y0 这四个值来计算出这四个点，然后顺时针连接而成。<br>![image](https://zos.alipayobjects.com/skylark/f36a2e27-13e8-4d55-8c93-b698e15bcc1f/attach/3378/94a6515e2eb60265/image.png)
 polygon | polygon 多边形其实也是由多个点连接而成，在 pointInfo 中 x 和 y 都是数组结构。<br>![image](https://zos.alipayobjects.com/skylark/b4f6981c-ccd3-4237-97bd-dd88950758ea/attach/3378/ed2b5c05a1ff3581/image.png)
-schema | schema 作为一种自定义的几何图形，在 F2 中默认提供了 box 和 candle 两种 shape，分别用于绘制箱型图和股票图，注意这两种形状的矩形部分四个点的连接顺序都是顺时针，并且起始点均为左下角，这样就可以无缝转换至极坐标。<br>![image](https://zos.alipayobjects.com/skylark/340c229d-be30-4f98-8a2a-8d55c8422645/attach/3378/1bfed6f3f5f90e13/image.png)![image](https://zos.alipayobjects.com/skylark/8afa13da-95d1-4282-a08b-f1c421b0d972/attach/3378/d82c45d3a526bd80/image.png)
-edge | edge 边同 line 线一致，区别就是 edge 是一个线段，连接边的两个端点即可。
+schema | schema 作为一种自定义的几何图形，在 F2 中默认提供了 candle（烛形图，又称股票图、k 线图） shape，用于绘制股票图，注意矩形部分四个点的连接顺序都是顺时针，并且起始点均为左下角，这样就可以无缝转换至极坐标。<br>![image](https://zos.alipayobjects.com/skylark/340c229d-be30-4f98-8a2a-8d55c8422645/attach/3378/1bfed6f3f5f90e13/image.png)![image](https://zos.alipayobjects.com/skylark/8afa13da-95d1-4282-a08b-f1c421b0d972/attach/3378/d82c45d3a526bd80/image.png)
 
 ### draw
 
 `getPoints` 用于计算绘制 shape 的关键点，那么 `draw` 方法就是用来定义如何连接这些关键点的。
 
+注意：该方法需要返回最后绘制的 shape。
+
 #### 参数
 
-- `cfg`: object
+- `cfg`: Object
 
 该参数包含经过图形映射后的所有数据以及该数据对应的原始数据，结构如下图所示：
 
-![image](https://zos.alipayobjects.com/skylark/505c6cb1-fde7-4714-98b6-43cb77099f19/attach/3378/332f7e3e64bc48f5/image.png)
+<img src="https://gw.alipayobjects.com/zos/rmsportal/GIutZIjQWLrTeLxgQNMJ.png" width="50%">
 
-原始数据存储于 cfg.origin._origin 中，通过 getPoints 计算出的图形关键点都储存于 points 中。而 cfg 对象中的 color、size、shape 都是通过映射之后的图形属性数据，可以直接使用。
+* 原始数据存储于 `cfg.origin._origin` 中；
+* 通过 getPoints 计算出的图形关键点都储存于 points 中；
+* cfg 对象中的 `color`、`size`、`shape` 都是通过映射之后的图形属性数据，可以直接使用。
 
 - `container`: F2.G.Group
 
@@ -80,6 +85,8 @@ Shape.registerShape('interval', 'rect', {
     // ...
     path = this.parsePath(path);
     // ...
+    // 
+    return shape; // 返回最后绘制的 shape
   }
 });
 ```
@@ -124,7 +131,7 @@ Shape.registerShape('interval', 'rect', {
 
 ## 代码示例
 
-![undefined](https://gw.alipayobjects.com/zos/skylark/7f60b58f-d551-4432-8982-52680722f8fb/2018/png/dee693a9-f200-4fa5-8157-a2b49925ecf7.png) 
+<img src="https://gw.alipayobjects.com/zos/rmsportal/GvaABgxSihAhupbppGpL.png" style="width: 490px;"> 
 
 ```js
 const Shape = F2.Shape;
@@ -169,7 +176,6 @@ const chart = new F2.Chart({
   width: 400,
   height : 200,
   pixelRatio: window.devicePixelRatio,
-
 });
 
 chart.source(data);

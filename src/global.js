@@ -16,10 +16,8 @@ const Global = {
     multiplePie: 3 / 4,
     dodgeMargin: 0
   },
-  // 动画降频倍数
-  animateReduceMultiple: 1,
   // 虚线配置
-  lineDash: [ 5, 15 ]
+  lineDash: [ 4, 4 ]
 };
 
 Global.setTheme = function(theme) {
