@@ -21,7 +21,7 @@ const Global = {
     dodgeMargin: 0 // 分组柱状图的间距
   },
   // 虚线配置
-  lineDash: [ 5, 15 ]
+  lineDash: [ 4, 4 ]
 };
 
 ```
