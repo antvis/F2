@@ -29,4 +29,4 @@
   * [自定义 Shape](developer/shape.md)
   * [绘制引擎 G](developer/graphic.md)
   * [开源贡献 Contributing](developer/contributing.md)
-* [图表示例](./demos)
+* [图表示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
