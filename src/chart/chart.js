@@ -428,36 +428,6 @@ class Chart extends Base {
   }
 
   /**
-   * 设置图例
-   * @chainable
-   * @param  {Boolean|String|Object} field Boolean 表示关闭开启图例，String 表示指定具体的图例，Object 表示为所有的图例设置
-   * @param  {Object|Boolean} cfg   图例的配置，Object 表示为对应的图例进行配置，Boolean 表示关闭对应的图例
-   * @return {Chart}       返回当前 chart 的引用
-   */
-  legend(field, cfg) {
-    const legendController = this.get('legendController');
-    if (!legendController) {
-      return this;
-    }
-
-    let legendCfg = legendController.legendCfg;
-    legendController.enable = true;
-
-    if (Util.isBoolean(field)) {
-      legendController.enable = field;
-      legendCfg = cfg || {};
-    } else if (Util.isObject(field)) {
-      legendCfg = field;
-    } else {
-      legendCfg[field] = cfg;
-    }
-
-    legendController.legendCfg = legendCfg;
-
-    return this;
-  }
-
-  /**
    * 设置坐标系配置项
    * @chainable
    * @param  {String} type 坐标系类型
@@ -484,35 +454,6 @@ class Chart extends Base {
     const filters = this.get('filters') || {};
     filters[field] = condition;
     this.set('filters', filters);
-  }
-
-  /**
-   * 配置 tooltip
-   * @param  {Boolean|Object} enable Boolean 表示是否开启tooltip，Object 则表示配置项
-   * @param  {Object} cfg 配置项
-   * @return {Chart} 返回 Chart 实例
-   */
-  tooltip(enable, cfg = {}) {
-    const tooltipController = this.get('tooltipController');
-    if (!tooltipController) {
-      return this;
-    }
-    if (Util.isObject(enable)) {
-      cfg = enable;
-      enable = true;
-    }
-    tooltipController.enable = enable;
-    tooltipController.cfg = cfg;
-
-    return this;
-  }
-
-  /**
-   * 为图表添加 guide
-   * @return {GuideController} 返回 guide 控制器
-   */
-  guide() {
-    return this.get('guideController');
   }
 
   /**
@@ -609,26 +550,6 @@ class Chart extends Base {
   }
 
   /**
-   * 获取图例的 items
-   * [getLegendItems description]
-   * @return {[type]} [description]
-   */
-  getLegendItems() {
-    const result = {};
-    const legendController = this.get('legendController');
-    if (legendController) {
-      const legends = legendController.legends;
-      Util.each(legends, legendItems => {
-        Util.each(legendItems, legend => {
-          const { field, items } = legend;
-          result[field] = items;
-        });
-      });
-    }
-    return result;
-  }
-
-  /**
    * 获取数据对应在画布空间的坐标
    * @param  {Object} record 原始数据
    * @return {Object} 返回对应的画布上的坐标点
@@ -673,27 +594,6 @@ class Chart extends Base {
     const geom = this.get('geoms')[0];
     const data = geom.getSnapRecords(point);
     return data;
-  }
-
-  /**
-   * 根据坐标点显示对应的 tooltip
-   * @param  {Object} point 画布上的点
-   * @return {Chart}       返回 chart 实例
-   */
-  showTooltip(point) {
-    const tooltipController = this.get('tooltipController');
-    tooltipController && tooltipController.showTooltip(point);
-    return this;
-  }
-
-  /**
-   * 隐藏 tooltip
-  * @return {Chart}       返回 chart 实例
-   */
-  hideTooltip() {
-    const tooltipController = this.get('tooltipController');
-    tooltipController && tooltipController.hideTooltip();
-    return this;
   }
 
   /**
