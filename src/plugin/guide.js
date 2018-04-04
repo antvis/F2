@@ -135,6 +135,13 @@ module.exports = {
       })
     });
     chart.set('guideController', guideController);
+    /**
+     * 为图表添加 guide
+     * @return {GuideController} 返回 guide 控制器
+     */
+    chart.guide = function() {
+      return guideController;
+    };
   },
   afterGeomDraw(chart) {
     const guideController = chart.get('guideController');
