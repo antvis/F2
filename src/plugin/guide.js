@@ -126,8 +126,13 @@ class GuideController {
 module.exports = {
   init(chart) {
     const guideController = new GuideController({
-      frontPlot: chart.get('frontPlot'),
-      backPlot: chart.get('backPlot')
+      frontPlot: chart.get('frontPlot').addGroup({
+        zIndex: 20,
+        className: 'guideContainer'
+      }),
+      backPlot: chart.get('backPlot').addGroup({
+        className: 'guideContainer'
+      })
     });
     chart.set('guideController', guideController);
   },
