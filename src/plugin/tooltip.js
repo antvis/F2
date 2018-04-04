@@ -174,8 +174,13 @@ class TooltipController {
 
     const chart = self.chart;
     const canvas = chart.get('canvas');
-    const frontPlot = chart.get('frontPlot');
-    const backPlot = chart.get('backPlot');
+    const frontPlot = chart.get('frontPlot').addGroup({
+      className: 'tooltipContainer',
+      zIndex: 10
+    });
+    const backPlot = chart.get('backPlot').addGroup({
+      className: 'tooltipContainer'
+    });
     const plotRange = chart.get('plotRange');
     const coord = chart.get('coord');
 

@@ -331,14 +331,12 @@ class Chart extends Base {
 
   _initLayers() {
     const canvas = this.get('canvas');
-    this.set('backPlot', canvas.addGroup({
-      zIndex: 1
-    }));
+    this.set('backPlot', canvas.addGroup()); // 默认 zIndex 为 0
     this.set('middlePlot', canvas.addGroup({
-      zIndex: 2
+      zIndex: 10
     }));
     this.set('frontPlot', canvas.addGroup({
-      zIndex: 3
+      zIndex: 20
     }));
   }
 
@@ -357,8 +355,12 @@ class Chart extends Base {
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      frontPlot: self.get('frontPlot').addGroup(),
-      backPlot: self.get('backPlot').addGroup(),
+      frontPlot: self.get('frontPlot').addGroup({
+        className: 'axisContainer'
+      }),
+      backPlot: self.get('backPlot').addGroup({
+        className: 'axisContainer'
+      }),
       chart: self
     }));
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
@@ -545,6 +547,7 @@ class Chart extends Base {
 
     Chart.plugins.notify(self, 'afterGeomDraw');
     canvas.sort();
+    this.get('frontPlot').sort();
     Chart.plugins.notify(self, 'beforeCanvasDraw');
     canvas.draw();
     return self;
