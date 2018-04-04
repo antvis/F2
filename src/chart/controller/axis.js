@@ -130,6 +130,7 @@ class AxisController {
   }
 
   _getAxisCfg(coord, scale, verticalScale, dimType, defaultCfg) {
+    const self = this;
     const axisCfg = this.axisCfg;
     const ticks = scale.getTicks();
 
@@ -168,7 +169,8 @@ class AxisController {
           attrs: Util.mix({
             x: 0,
             y: 0,
-            text: tick.text
+            text: tick.text,
+            fontFamily: self.chart.get('canvas').get('fontFamily') // 保持字体一致
           }, labelCfg),
           value: tick.value,
           textStyle,
