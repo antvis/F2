@@ -45,10 +45,10 @@ class Abastract {
   draw() {
     const { line, tickLine, label, grid } = this;
 
-    line && this.drawLine(line);
-    tickLine && this.drawTicks(tickLine);
-    label && this.drawLabels();
-    grid && this.drawGrid(grid);
+    grid && this.drawGrid(grid); // 渲染网格
+    tickLine && this.drawTicks(tickLine); // 渲染刻度线
+    line && this.drawLine(line); // 渲染轴线
+    label && this.drawLabels(); // 渲染坐标轴文本
   }
 
   drawTicks(tickCfg) {
