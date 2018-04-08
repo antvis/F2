@@ -325,6 +325,12 @@ describe('chart test', () => {
       chart.coord('polar', {
         transposed: true
       });
+      chart.axis(true);
+      chart.axis('a', {
+        label: {
+          fontFamily: 'Arial'
+        }
+      });
       chart.changeData([
         { a: '1', b: 5 },
         { a: '1', b: 2 }
@@ -334,6 +340,18 @@ describe('chart test', () => {
       expect(chart.get('scales').a.range).to.eql([ 0.5, 1 ]);
     });
 
+    it('axis label fontFamily', function() {
+      const backPlot = chart.get('backPlot');
+      const axisGroup = backPlot.get('children')[0];
+      expect(axisGroup.get('className')).to.equal('axisContainer');
+
+      const xAxisLabel = axisGroup.get('children')[1]; // x 轴文本
+      const xAxisfont = xAxisLabel.attr('font');
+      const yAxisLabel = axisGroup.get('children')[10]; // y 轴文本
+      const yAxisfont = yAxisLabel.attr('font');
+      expect(xAxisfont).to.equal('normal normal normal 10px Arial'); // a 轴文本
+      expect(yAxisfont).to.equal('normal normal normal 10px "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif'); // b 轴文本
+    });
 
     it('destroy', function(done) {
       setTimeout(function() {

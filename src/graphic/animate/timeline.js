@@ -38,6 +38,8 @@ class Timeline {
 
   update() {
     const currentTime = clock.now();
+    this.canvas = [];
+
     for (let i = 0; i < this.anims.length; i++) {
       const propertyAnim = this.anims[i];
       if (currentTime < propertyAnim.startTime || propertyAnim.hasEnded) {
@@ -101,10 +103,12 @@ class Timeline {
       }
     }
 
-    this.canvas.map(c => {
-      c.draw();
-      return c;
-    });
+    if (this.anims.length) {
+      this.canvas.map(c => {
+        c.draw();
+        return c;
+      });
+    }
     this.time = clock.now();
   }
 }

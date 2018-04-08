@@ -56,9 +56,6 @@ describe('Group animation', function() {
     });
 
     chart.source(data);
-    chart.legend({
-      triggerOn: 'click'
-    });
     chart.interval().position('genre*sold').color('genre');
     chart.render();
 

@@ -380,6 +380,31 @@ module.exports = {
       chart
     });
     chart.set('legendController', legendController);
+
+    /**
+     * 设置图例
+     * @chainable
+     * @param  {Boolean|String|Object} field Boolean 表示关闭开启图例，String 表示指定具体的图例，Object 表示为所有的图例设置
+     * @param  {Object|Boolean} cfg   图例的配置，Object 表示为对应的图例进行配置，Boolean 表示关闭对应的图例
+     * @return {Chart}       返回当前 chart 的引用
+     */
+    chart.legend = function(field, cfg) {
+      let legendCfg = legendController.legendCfg;
+      legendController.enable = true;
+
+      if (Util.isBoolean(field)) {
+        legendController.enable = field;
+        legendCfg = cfg || {};
+      } else if (Util.isObject(field)) {
+        legendCfg = field;
+      } else {
+        legendCfg[field] = cfg;
+      }
+
+      legendController.legendCfg = legendCfg;
+
+      return this;
+    };
   },
   beforeGeomDraw(chart) {
     const legendController = chart.get('legendController');
@@ -444,6 +469,23 @@ module.exports = {
   afterGeomDraw(chart) {
     const legendController = chart.get('legendController');
     legendController.alignLegends();
+
+    /**
+     * 获取图例的 items
+     * [getLegendItems description]
+     * @return {[type]} [description]
+     */
+    chart.getLegendItems = function() {
+      const result = {};
+      const legends = legendController.legends;
+      Util.each(legends, legendItems => {
+        Util.each(legendItems, legend => {
+          const { field, items } = legend;
+          result[field] = items;
+        });
+      });
+      return result;
+    };
   },
   clearInner(chart) {
     const legendController = chart.get('legendController');
