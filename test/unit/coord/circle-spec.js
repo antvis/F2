@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const Plot = require('../../../src/chart/plot');
 const Coord = require('../../../src/coord/index');
+
 const gMath = {
   equal(v1, v2) {
     return Math.abs(v1 - v2) < 0.001;
@@ -59,12 +60,12 @@ describe('coord circle', function() {
     it('invertPoint', function() {
       let p = { x: 200, y: 100 };
       p = circle.invertPoint(p);
-      expect(p.x).to.be.equal(1);
+      expect(p.x).to.be.equal(0);
       expect(p.y).to.be.equal(0);
 
       p = { x: 200, y: 0 };
       p = circle.invertPoint(p);
-      expect(p.x).to.be.equal(1);
+      expect(p.x).to.be.equal(0);
       expect(p.y).to.be.equal(1);
 
       p = { x: 50, y: 200 };
