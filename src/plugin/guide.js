@@ -126,10 +126,22 @@ class GuideController {
 module.exports = {
   init(chart) {
     const guideController = new GuideController({
-      frontPlot: chart.get('frontPlot'),
-      backPlot: chart.get('backPlot')
+      frontPlot: chart.get('frontPlot').addGroup({
+        zIndex: 20,
+        className: 'guideContainer'
+      }),
+      backPlot: chart.get('backPlot').addGroup({
+        className: 'guideContainer'
+      })
     });
     chart.set('guideController', guideController);
+    /**
+     * 为图表添加 guide
+     * @return {GuideController} 返回 guide 控制器
+     */
+    chart.guide = function() {
+      return guideController;
+    };
   },
   afterGeomDraw(chart) {
     const guideController = chart.get('guideController');

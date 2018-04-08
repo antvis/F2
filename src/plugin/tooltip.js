@@ -174,8 +174,13 @@ class TooltipController {
 
     const chart = self.chart;
     const canvas = chart.get('canvas');
-    const frontPlot = chart.get('frontPlot');
-    const backPlot = chart.get('backPlot');
+    const frontPlot = chart.get('frontPlot').addGroup({
+      className: 'tooltipContainer',
+      zIndex: 10
+    });
+    const backPlot = chart.get('backPlot').addGroup({
+      className: 'tooltipContainer'
+    });
     const plotRange = chart.get('plotRange');
     const coord = chart.get('coord');
 
@@ -448,10 +453,45 @@ module.exports = {
       chart
     });
     chart.set('tooltipController', tooltipController);
+    /**
+     * 配置 tooltip
+     * @param  {Boolean|Object} enable Boolean 表示是否开启tooltip，Object 则表示配置项
+     * @param  {Object} cfg 配置项
+     * @return {Chart} 返回 Chart 实例
+     */
+    chart.tooltip = function(enable, cfg = {}) {
+      if (Util.isObject(enable)) {
+        cfg = enable;
+        enable = true;
+      }
+      tooltipController.enable = enable;
+      tooltipController.cfg = cfg;
+
+      return this;
+    };
   },
   afterGeomDraw(chart) {
     const tooltipController = chart.get('tooltipController');
     tooltipController.render();
+
+    /**
+     * 根据坐标点显示对应的 tooltip
+     * @param  {Object} point 画布上的点
+     * @return {Chart}       返回 chart 实例
+     */
+    chart.showTooltip = function(point) {
+      tooltipController.showTooltip(point);
+      return this;
+    };
+
+    /**
+     * 隐藏 tooltip
+     * @return {Chart}       返回 chart 实例
+     */
+    chart.hideTooltip = function() {
+      tooltipController.hideTooltip();
+      return this;
+    };
   },
   clearInner(chart) {
     const tooltipController = chart.get('tooltipController');

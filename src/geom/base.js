@@ -643,22 +643,27 @@ class Geom extends Base {
     const coord = self.get('coord');
     const xScale = self.getXScale();
     const yScale = self.getYScale();
-
     const xfield = xScale.field;
-    // const yfield = yScale.field;
 
-    const invertPoint = coord.invertPoint(point);
     const dataArray = self.get('dataArray');
     if (!this.get('hasSorted')) {
       this._sort(dataArray);
     }
 
     let rst = [];
-    const tmp = [];
-    let xValue = xScale.invert(invertPoint.x);
+    const invertPoint = coord.invertPoint(point);
+    let invertPointX = invertPoint.x;
+    if (self.isInCircle() && !coord.transposed && invertPointX > (1 + xScale.rangeMax()) / 2) {
+      invertPointX = xScale.rangeMin(); // 极坐标下，scale 的 range 被做过特殊处理 see chart.js#L183
+    }
+
+    let xValue = xScale.invert(invertPointX);
     if (!xScale.isCategory) {
       xValue = self._getSnap(xScale, xValue);
     }
+
+    const tmp = [];
+
     dataArray.forEach(function(data) {
       data.forEach(function(obj) {
         const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];

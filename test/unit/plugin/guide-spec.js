@@ -113,19 +113,34 @@ describe('Guide Plugin', function() {
     const guideController = chart.get('guideController');
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    expect(guideController.guides.length).to.equal(6);
-    expect(frontPlot.get('children').length).to.equal(5);
+
+    expect(frontPlot.get('children').length).to.equal(2);
     expect(backPlot.get('children').length).to.equal(2);
+
+    const frontGuideContainer = frontPlot.get('children')[1];
+    const backGuideContainer = backPlot.get('children')[1];
+
+    expect(guideController.guides.length).to.equal(6);
+    expect(frontGuideContainer.get('children').length).to.equal(4);
+    expect(backGuideContainer.get('children').length).to.equal(1);
   });
 
   it('chart.guide().reset()', function() {
     chart.repaint();
     const guideController = chart.get('guideController');
     expect(guideController.guides.length).to.equal(6);
+
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    expect(frontPlot.get('children').length).to.equal(5);
+
+    expect(frontPlot.get('children').length).to.equal(2);
     expect(backPlot.get('children').length).to.equal(2);
+
+    const frontGuideContainer = frontPlot.get('children')[1];
+    const backGuideContainer = backPlot.get('children')[1];
+
+    expect(frontGuideContainer.get('children').length).to.equal(4);
+    expect(backGuideContainer.get('children').length).to.equal(1);
     const guideWrapper = document.getElementsByClassName('guideWapper');
     expect(guideWrapper.length).to.equal(1);
   });
@@ -136,8 +151,15 @@ describe('Guide Plugin', function() {
     expect(guideController.guides.length).to.equal(0);
     const frontPlot = chart.get('frontPlot');
     const backPlot = chart.get('backPlot');
-    expect(frontPlot.get('children').length).to.equal(1);
-    expect(backPlot.get('children').length).to.equal(1);
+
+    expect(frontPlot.get('children').length).to.equal(2);
+    expect(backPlot.get('children').length).to.equal(2);
+
+    const frontGuideContainer = frontPlot.get('children')[1];
+    const backGuideContainer = backPlot.get('children')[1];
+
+    expect(frontGuideContainer.get('children').length).to.equal(0);
+    expect(backGuideContainer.get('children').length).to.equal(0);
     const guideWrapper = document.getElementsByClassName('guideWapper');
     expect(guideWrapper.length).to.equal(0);
     chart.destroy();
