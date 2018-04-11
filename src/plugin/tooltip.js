@@ -1,5 +1,4 @@
 const Util = require('../util/common');
-const DomUtil = require('../util/dom');
 const Global = require('../global');
 const Tooltip = require('../component/tooltip');
 
@@ -383,7 +382,7 @@ class TooltipController {
   handleShowEvent(ev) {
     const chart = this.chart;
     const plot = chart.get('plotRange');
-    const { x, y } = DomUtil.createEvent(ev, chart);
+    const { x, y } = Util.createEvent(ev, chart);
     if (!(x >= plot.tl.x && x <= plot.tr.x && y >= plot.tl.y && y <= plot.br.y)) { // not in chart plot
       this.hideTooltip();
       return;
@@ -413,9 +412,9 @@ class TooltipController {
       if (Util.isFunction(aMethod)) {
         aMethod(method, action); // TODO： 测试，供用户自己绑定事件
       } else if (action === 'bind') {
-        DomUtil.addEventListener(canvasDom, aMethod, method);
+        Util.addEventListener(canvasDom, aMethod, method);
       } else {
-        DomUtil.removeEventListener(canvasDom, aMethod, method);
+        Util.removeEventListener(canvasDom, aMethod, method);
       }
     });
   }
@@ -430,7 +429,7 @@ class TooltipController {
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
     // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-    DomUtil.addEventListener(document, 'touchstart', docMethod);
+    document && Util.addEventListener(document, 'touchstart', docMethod);
   }
 
   unBindEvents() {
@@ -443,7 +442,7 @@ class TooltipController {
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
     // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-    DomUtil.removeEventListener(document, 'touchstart', docMethod);
+    document && Util.removeEventListener(document, 'touchstart', docMethod);
   }
 }
 

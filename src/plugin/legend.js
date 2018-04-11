@@ -1,5 +1,4 @@
 const Util = require('../util/common');
-const DomUtil = require('../util/dom');
 const List = require('../component/list');
 const Global = require('../global');
 const LEGEND_GAP = 12;
@@ -325,7 +324,7 @@ class LegendController {
     }
 
     const chart = self.chart;
-    const { x, y } = DomUtil.createEvent(ev, chart);
+    const { x, y } = Util.createEvent(ev, chart);
     const clicked = findItem(x, y);
     if (clicked && clicked.clickedLegend.clickable !== false) {
       const { clickedItem, clickedLegend } = clicked;
@@ -357,7 +356,7 @@ class LegendController {
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'bind');
     } else {
-      DomUtil.addEventListener(this.canvasDom, triggerOn, method);
+      Util.addEventListener(this.canvasDom, triggerOn, method);
     }
   }
 
@@ -368,7 +367,7 @@ class LegendController {
     if (Util.isFunction(triggerOn)) {
       triggerOn(method, 'unBind');
     } else {
-      DomUtil.removeEventListener(this.canvasDom, triggerOn, method);
+      Util.removeEventListener(this.canvasDom, triggerOn, method);
     }
   }
 }

@@ -5,7 +5,9 @@
   "keywords": [
     "canvas",
     "f2",
-    "2d draw"
+    "2d draw",
+    "mobile visualization",
+    "charts"
   ],
   "main": "build/f2.js",
   "browser": "build/f2.js",

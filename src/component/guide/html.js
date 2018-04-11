@@ -1,4 +1,4 @@
-const DOMUtil = require('../../util/dom');
+const Util = require('../../util/common');
 const GuideBase = require('./base');
 
 function getOffsetFromAlign(alignX, alignY, width, height) {
@@ -34,6 +34,22 @@ function getOffsetFromAlign(alignX, alignY, width, height) {
   }
 
   return result;
+}
+
+function modifyCSS(DOM, CSS) {
+  for (const key in CSS) {
+    if (CSS.hasOwnProperty(key)) {
+      DOM.style[key] = CSS[key];
+    }
+  }
+  return DOM;
+}
+
+function createDom(str) {
+  const container = document.createElement('div');
+  str = str.replace(/(^\s*)|(\s*$)/g, '');
+  container.innerHTML = '' + str;
+  return container.childNodes[0];
 }
 
 class Html extends GuideBase {
@@ -75,8 +91,8 @@ class Html extends GuideBase {
   render(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
-    let myNode = DOMUtil.createDom(self.html);
-    myNode = DOMUtil.modifyCSS(myNode, {
+    let myNode = createDom(self.html);
+    myNode = modifyCSS(myNode, {
       position: 'absolute',
       top: Math.floor(position.y) + 'px',
       left: Math.floor(position.x) + 'px',
@@ -84,7 +100,7 @@ class Html extends GuideBase {
     });
 
     let parentNode = container.get('canvas').get('el').parentNode;
-    parentNode = DOMUtil.modifyCSS(parentNode, {
+    parentNode = modifyCSS(parentNode, {
       position: 'relative'
     });
     // 创建html guide 的容器
@@ -92,8 +108,8 @@ class Html extends GuideBase {
     if (parentNode.getElementsByClassName('guideWapper').length > 0) {
       wrapperNode = parentNode.getElementsByClassName('guideWapper')[0];
     } else {
-      wrapperNode = DOMUtil.createDom('<div class="guideWapper"></div>');
-      wrapperNode = DOMUtil.modifyCSS(wrapperNode, {
+      wrapperNode = createDom('<div class="guideWapper"></div>');
+      wrapperNode = modifyCSS(wrapperNode, {
         position: 'absolute',
         top: 0,
         left: 0
@@ -103,8 +119,8 @@ class Html extends GuideBase {
     wrapperNode.appendChild(myNode);
 
     const { alignX, alignY, offsetX, offsetY } = self;
-    const width = DOMUtil.getWidth(myNode);
-    const height = DOMUtil.getHeight(myNode);
+    const width = Util.getWidth(myNode);
+    const height = Util.getHeight(myNode);
     const newOffset = getOffsetFromAlign(alignX, alignY, width, height);
     position.x = position.x + newOffset[0];
     position.y = position.y + newOffset[1];
@@ -117,7 +133,7 @@ class Html extends GuideBase {
       position.y += offsetY;
     }
 
-    DOMUtil.modifyCSS(myNode, {
+    modifyCSS(myNode, {
       top: Math.floor(position.y) + 'px',
       left: Math.floor(position.x) + 'px',
       visibility: 'visible'

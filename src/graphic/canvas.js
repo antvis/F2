@@ -1,7 +1,9 @@
 const Util = require('../util/common');
-const DOMUtil = require('../util/dom');
 const Container = require('./container');
 const Group = require('./group');
+
+/* global wx */
+const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function');
 
 class Canvas {
   get(name) {
@@ -24,14 +26,14 @@ class Canvas {
   _initPixelRatio() {
     const pixelRatio = this.get('pixelRatio');
     if (!pixelRatio) {
-      this.set('pixelRatio', DOMUtil.getPixelRatio());
+      this.set('pixelRatio', Util.getPixelRatio());
     }
   }
 
   _beforeDraw() {
     const context = this._attrs.context;
     const el = this._attrs.el;
-    context && context.clearRect(0, 0, el.width, el.height);
+    !isWx && context && context.clearRect(0, 0, el.width, el.height);
   }
 
   _initCanvas() {
@@ -43,7 +45,7 @@ class Canvas {
     if (context) { // CanvasRenderingContext2D
       canvas = context.canvas;
     } else if (Util.isString(el)) { // HTMLElement's id
-      canvas = DOMUtil.getDomById(el);
+      canvas = Util.getDomById(el);
     } else { // HTMLElement
       canvas = el;
     }
@@ -60,12 +62,12 @@ class Canvas {
 
     let width = self.get('width');
     if (!width) {
-      width = DOMUtil.getWidth(canvas);
+      width = Util.getWidth(canvas);
     }
 
     let height = self.get('height');
     if (!height) {
-      height = DOMUtil.getHeight(canvas);
+      height = Util.getHeight(canvas);
     }
 
     self.set('canvas', this);
@@ -145,6 +147,10 @@ class Canvas {
       for (let i = 0, len = children.length; i < len; i++) {
         const child = children[i];
         child.draw(context);
+      }
+
+      if (isWx) {
+        context.draw();
       }
     } catch (ev) { // 绘制时异常，中断重绘
       console.warn('error in draw canvas, detail as:');

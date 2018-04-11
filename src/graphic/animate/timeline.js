@@ -1,5 +1,5 @@
 const requestAnimationFrame = typeof window === 'object' && window.requestAnimationFrame ? window.requestAnimationFrame : function(fn) {
-  return setInterval(fn, 16);
+  return setTimeout(fn, 16);
 };
 // const cancelAnimationFrame = typeof window === 'object' && window.cancelAnimationFrame ? window.cancelAnimationFrame : function(id) {
 //   return clearInterval(id);
