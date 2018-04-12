@@ -29,6 +29,7 @@ $ npm install @antv/f2
 
 ## 正在建设中
 
+- ✔︎ 微信小程序支持，详见： https://github.com/antvis/wx-f2
 - [ ] 多平台支持
 - [ ] label 功能组件
 - [ ] 更精致的动画以及丰富的图表交互
