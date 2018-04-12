@@ -16,6 +16,7 @@ class GestureController {
     this.options = Util.deepMix(defaultOptions, options);
     this.hammerOptions = hammerOptions;
     this.chart = chart;
+    this._unbindEvent = {}; // 没有绑定事件
     if (!options) {
       this.hammerOptionsHack(gesture, this.hammer);
     }
@@ -42,10 +43,12 @@ class GestureController {
     for (const key in gesture) {
       // 基础的事件，hammer没提供，手动绑定。
       if ([ 'touchstart', 'touchmove', 'touchend' ].indexOf(key) !== -1) {
-        DomUtil.addEventListener(dom, key, event => {
+        const bindEvent = event => {
           const records = useCalculate ? this.getEventPostionRecords(event, true) : null;
           gesture[key](records, event);
-        });
+        };
+        DomUtil.addEventListener(dom, key, bindEvent);
+        this._unbindEvent[key] = bindEvent;
       } else {
         hammer.on(key, event => {
           const records = useCalculate ? this.getEventPostionRecords(event, false) : null;
@@ -83,6 +86,10 @@ class GestureController {
   }
   destroy() {
     this.hammer.destroy();
+    for (const key in this._unbindEvent) {
+      const event = this._unbindEvent[key];
+      DomUtil.removeEventListener(this.dom, key, event);
+    }
   }
 }
 
