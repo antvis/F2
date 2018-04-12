@@ -107,7 +107,7 @@ describe('Tooltip Plugin', function() {
     chart.destroy();
   });
 
-  it('custom tooltip', function(done) {
+  it.skip('custom tooltip', function(done) {
     data = [
       { label: 'Mon.', type: 'series1', value: 2800 },
       { label: 'Mon.', type: 'series2', value: 2260 },
