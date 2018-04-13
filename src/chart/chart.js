@@ -322,23 +322,21 @@ class Chart extends Base {
       self.set('canvas', canvas);
       self.set('width', canvas.get('width'));
       self.set('height', canvas.get('height'));
-    } catch (info) { // 绘制时异常，中断重绘
-      console.warn('error in init canvas');
-      console.warn(info);
+    } catch (error) { // canvas 创建发生异常
+      throw error;
     }
+    Chart.plugins.notify(self, 'afterCanvasInit');
     self._initLayout();
   }
 
   _initLayers() {
     const canvas = this.get('canvas');
-    this.set('backPlot', canvas.addGroup({
-      zIndex: 1
-    }));
+    this.set('backPlot', canvas.addGroup()); // 默认 zIndex 为 0
     this.set('middlePlot', canvas.addGroup({
-      zIndex: 2
+      zIndex: 10
     }));
     this.set('frontPlot', canvas.addGroup({
-      zIndex: 3
+      zIndex: 20
     }));
   }
 
@@ -357,8 +355,12 @@ class Chart extends Base {
     self.set('geoms', []);
     self.set('scaleController', new ScaleController());
     self.set('axisController', new AxisController({
-      frontPlot: self.get('frontPlot').addGroup(),
-      backPlot: self.get('backPlot').addGroup(),
+      frontPlot: self.get('frontPlot').addGroup({
+        className: 'axisContainer'
+      }),
+      backPlot: self.get('backPlot').addGroup({
+        className: 'axisContainer'
+      }),
       chart: self
     }));
     Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
@@ -426,36 +428,6 @@ class Chart extends Base {
   }
 
   /**
-   * 设置图例
-   * @chainable
-   * @param  {Boolean|String|Object} field Boolean 表示关闭开启图例，String 表示指定具体的图例，Object 表示为所有的图例设置
-   * @param  {Object|Boolean} cfg   图例的配置，Object 表示为对应的图例进行配置，Boolean 表示关闭对应的图例
-   * @return {Chart}       返回当前 chart 的引用
-   */
-  legend(field, cfg) {
-    const legendController = this.get('legendController');
-    if (!legendController) {
-      return this;
-    }
-
-    let legendCfg = legendController.legendCfg;
-    legendController.enable = true;
-
-    if (Util.isBoolean(field)) {
-      legendController.enable = field;
-      legendCfg = cfg || {};
-    } else if (Util.isObject(field)) {
-      legendCfg = field;
-    } else {
-      legendCfg[field] = cfg;
-    }
-
-    legendController.legendCfg = legendCfg;
-
-    return this;
-  }
-
-  /**
    * 设置坐标系配置项
    * @chainable
    * @param  {String} type 坐标系类型
@@ -482,35 +454,6 @@ class Chart extends Base {
     const filters = this.get('filters') || {};
     filters[field] = condition;
     this.set('filters', filters);
-  }
-
-  /**
-   * 配置 tooltip
-   * @param  {Boolean|Object} enable Boolean 表示是否开启tooltip，Object 则表示配置项
-   * @param  {Object} cfg 配置项
-   * @return {Chart} 返回 Chart 实例
-   */
-  tooltip(enable, cfg = {}) {
-    const tooltipController = this.get('tooltipController');
-    if (!tooltipController) {
-      return this;
-    }
-    if (Util.isObject(enable)) {
-      cfg = enable;
-      enable = true;
-    }
-    tooltipController.enable = enable;
-    tooltipController.cfg = cfg;
-
-    return this;
-  }
-
-  /**
-   * 为图表添加 guide
-   * @return {GuideController} 返回 guide 控制器
-   */
-  guide() {
-    return this.get('guideController');
   }
 
   /**
@@ -545,6 +488,7 @@ class Chart extends Base {
 
     Chart.plugins.notify(self, 'afterGeomDraw');
     canvas.sort();
+    this.get('frontPlot').sort();
     Chart.plugins.notify(self, 'beforeCanvasDraw');
     canvas.draw();
     return self;
@@ -602,27 +546,8 @@ class Chart extends Base {
     this.clear();
     const canvas = this.get('canvas');
     canvas.destroy();
+    Chart.plugins.notify(this, 'afterCanvasDestroyed');
     super.destroy();
-  }
-
-  /**
-   * 获取图例的 items
-   * [getLegendItems description]
-   * @return {[type]} [description]
-   */
-  getLegendItems() {
-    const result = {};
-    const legendController = this.get('legendController');
-    if (legendController) {
-      const legends = legendController.legends;
-      Util.each(legends, legendItems => {
-        Util.each(legendItems, legend => {
-          const { field, items } = legend;
-          result[field] = items;
-        });
-      });
-    }
-    return result;
   }
 
   /**
@@ -670,27 +595,6 @@ class Chart extends Base {
     const geom = this.get('geoms')[0];
     const data = geom.getSnapRecords(point);
     return data;
-  }
-
-  /**
-   * 根据坐标点显示对应的 tooltip
-   * @param  {Object} point 画布上的点
-   * @return {Chart}       返回 chart 实例
-   */
-  showTooltip(point) {
-    const tooltipController = this.get('tooltipController');
-    tooltipController && tooltipController.showTooltip(point);
-    return this;
-  }
-
-  /**
-   * 隐藏 tooltip
-  * @return {Chart}       返回 chart 实例
-   */
-  hideTooltip() {
-    const tooltipController = this.get('tooltipController');
-    tooltipController && tooltipController.hideTooltip();
-    return this;
   }
 
   /**

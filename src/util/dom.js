@@ -1,6 +1,4 @@
-/**
- * TODO: 这个会抽离至 platfrom，在 html5 环境下使用这个
- */
+
 let DomUtil;
 /**
  * Detects support for options object argument in addEventListener.
@@ -49,26 +47,13 @@ function fromNativeEvent(event, chart) { // TODO: chart 改成 dom
     point.y = event.clientY;
   }
   const canvas = chart.get('canvas');
-  // const canvasEl = canvas.get('el');
   const pos = DomUtil.getRelativePosition(point, canvas);
   return createEvent(type, chart, pos.x, pos.y, event);
 }
 
+let _dummyCtx;
+
 DomUtil = {
-  modifyCSS(DOM, CSS) {
-    for (const key in CSS) {
-      if (CSS.hasOwnProperty(key)) {
-        DOM.style[key] = CSS[key];
-      }
-    }
-    return DOM;
-  },
-  createDom(str) {
-    const container = document.createElement('div');
-    str = str.replace(/(^\s*)|(\s*$)/g, '');
-    container.innerHTML = '' + str;
-    return container.childNodes[0];
-  },
   getPixelRatio() {
     return window && window.devicePixelRatio || 1;
   },
@@ -122,9 +107,6 @@ DomUtil = {
       y: mouseY
     };
   },
-  createCanvas() {
-    return document.createElement('canvas');
-  },
   addEventListener(source, type, listener) {
     source.addEventListener(type, listener, eventListenerOptions);
   },
@@ -133,6 +115,14 @@ DomUtil = {
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);
+  },
+  measureText(text, font) {
+    if (!_dummyCtx) {
+      _dummyCtx = document.createElement('canvas').getContext('2d');
+    }
+
+    _dummyCtx.font = font || '12px sans-serif';
+    return _dummyCtx.measureText(text);
   }
 };
 

@@ -1,5 +1,6 @@
 const Base = require('./base');
 const Vector2 = require('../graphic/util/vector2');
+const Matrix = require('../graphic/util/matrix');
 
 class Polar extends Base {
   _initDefaultCfg() {
@@ -75,16 +76,18 @@ class Polar extends Base {
 
   invertPoint(point) {
     const self = this;
-    const center = self.center;
-    const transposed = self.transposed;
+    const { center, transposed, x, y } = self;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
-    const x = self.x;
-    const y = self.y;
 
-    const startV = [ 1, 0 ];
+    const m = [ 1, 0, 0, 1, 0, 0 ];
+    Matrix.rotate(m, m, x.start);
+
+    let startV = [ 1, 0 ];
+    Vector2.transformMat2d(startV, startV, m);
+    startV = [ startV[0], startV[1] ];
+
     const pointV = [ point.x - center.x, point.y - center.y ];
-
     if (Vector2.zero(pointV)) {
       return {
         x: 0,
@@ -92,12 +95,13 @@ class Polar extends Base {
       };
     }
 
-    let theta = Vector2.angleTo(startV, pointV);
-    while (theta > x.end) {
-      theta = theta - 2 * Math.PI;
+    let theta = Vector2.angleTo(startV, pointV, x.end < x.start);
+    if (Math.abs(theta - Math.PI * 2) < 0.001) {
+      theta = 0;
     }
     const l = Vector2.length(pointV);
-    const percentX = (theta - x.start) / (x.end - x.start);
+    let percentX = theta / (x.end - x.start);
+    percentX = x.end - x.start > 0 ? percentX : -percentX;
     const percentY = (l - y.start) / (y.end - y.start);
     const rst = {};
     rst[xDim] = percentX;
