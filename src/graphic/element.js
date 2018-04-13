@@ -257,12 +257,7 @@ class Element {
 
   setMatrix(m) {
     this._attrs.attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
-    // this.clearTotalMatrix();
   }
-
-  // cloneMatrix(m) {
-  //   return [ m[0], m[1], m[2], m[3], m[4], m[5] ];
-  // }
 
   /**
    * 平移、旋转、缩放
@@ -272,7 +267,6 @@ class Element {
   transform(actions) {
     const matrix = this._attrs.attrs.matrix;
     this._attrs.attrs.matrix = MatrixUtil.transform(matrix, actions);
-    // this.clearTotalMatrix();
     return this;
   }
 
@@ -284,19 +278,16 @@ class Element {
   translate(x, y) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.translate(matrix, matrix, [ x, y ]);
-    // this.clearTotalMatrix();
   }
 
   rotate(rad) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.rotate(matrix, matrix, rad);
-    // this.clearTotalMatrix();
   }
 
   scale(sx, sy) {
     const matrix = this._attrs.attrs.matrix;
     MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
-    // this.clearTotalMatrix();
   }
 
   /**
@@ -317,38 +308,6 @@ class Element {
     Vector2.transformMat2d(v, v, m);
     return this;
   }
-
-  /**
-   * 应用到当前元素上的总的矩阵
-   * @return {Matrix} 矩阵
-   */
-  // getTotalMatrix() {
-  //   let m = this._attrs.totalMatrix;
-  //   if (!m) {
-  //     m = [ 1, 0, 0, 1, 0, 0 ];
-  //     const parent = this._attrs.parent;
-  //     if (parent) {
-  //       const pm = parent.getTotalMatrix();
-  //       m = MatrixUtil.multiple(m, pm);
-  //     }
-
-  //     m = MatrixUtil.multiple(m, this._attrs.attrs.matrix);
-  //     this._attrs.totalMatrix = m;
-  //   }
-  //   return m;
-  // }
-
-  // 清除当前的矩阵
-  // clearTotalMatrix() { }
-
-  // invert(px, py) {
-  //   const m = this.getTotalMatrix();
-  //   const x = px;
-  //   const y = py;
-  //   px = x * m[0] + y * m[2] + m[4];
-  //   py = x * m[1] + y * m[3] + m[5];
-  //   return [ px, py ];
-  // }
 
   resetTransform(context) {
     const mo = this._attrs.attrs.matrix;

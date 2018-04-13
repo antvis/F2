@@ -325,7 +325,7 @@ class Chart extends Base {
     } catch (error) { // canvas 创建发生异常
       throw error;
     }
-
+    Chart.plugins.notify(self, 'afterCanvasInit');
     self._initLayout();
   }
 
@@ -546,6 +546,7 @@ class Chart extends Base {
     this.clear();
     const canvas = this.get('canvas');
     canvas.destroy();
+    Chart.plugins.notify(this, 'afterCanvasDestroyed');
     super.destroy();
   }
 

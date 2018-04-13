@@ -2,6 +2,7 @@
  * @fileOverview 基础工具类
  * @author dxq613@gmail.com
  */
+const DomUtil = require('./dom');
 const objectPrototype = Object.prototype;
 const toString = objectPrototype.toString;
 const MAX_LEVEL = 5;
@@ -354,5 +355,6 @@ Util.Array = {
   }
 };
 
+Util.mix(Util, DomUtil);
 
 module.exports = Util;

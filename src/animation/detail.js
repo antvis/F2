@@ -6,8 +6,8 @@ const Util = require('../util/common');
 const Shape = require('../graphic/shape');
 const Timeline = require('../graphic/animate/timeline');
 const Animator = require('../graphic/animate/animator');
-const timeline = Timeline.getGlobalInstance();
 
+let timeline;
 Shape.prototype.animate = function() {
   const attrs = this.get('attrs');
   return new Animator(this, attrs, timeline);
@@ -285,6 +285,10 @@ function addAnimate(cache, shapes, canvas) {
 }
 
 module.exports = {
+  afterCanvasInit(/* chart */) {
+    timeline = new Timeline();
+    timeline.play();
+  },
   beforeCanvasDraw(chart) {
     if (chart.get('animate') === false) {
       return;
@@ -346,5 +350,8 @@ module.exports = {
         }
       });
     }
+  },
+  afterCanvasDestroyed(/* chart */) {
+    timeline.stop();
   }
 };

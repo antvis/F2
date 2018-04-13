@@ -29,6 +29,7 @@ const rect = canvas.addShape('rect', {
 describe('Do Animation', function() {
   let animator;
   const timeline = new Timeline();
+  timeline.play();
   it('initial', function() {
     const initialAttrs = {
       height: 0
