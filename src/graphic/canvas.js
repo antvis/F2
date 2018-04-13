@@ -2,8 +2,9 @@ const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
 
-/* global wx */
-const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function');
+/* global wx, my */
+const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'); // weixin miniprogram
+const isMy = (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'); // ant miniprogram
 
 class Canvas {
   get(name) {
@@ -33,7 +34,7 @@ class Canvas {
   _beforeDraw() {
     const context = this._attrs.context;
     const el = this._attrs.el;
-    !isWx && context && context.clearRect(0, 0, el.width, el.height);
+    !isWx && !isMy && context && context.clearRect(0, 0, el.width, el.height);
   }
 
   _initCanvas() {
@@ -89,7 +90,7 @@ class Canvas {
     canvasDOM.width = width * pixelRatio;
     canvasDOM.height = height * pixelRatio;
 
-    if (pixelRatio !== 1) {
+    if (pixelRatio !== 1 && !isWx && !isMy) {
       const ctx = this.get('context');
       ctx.scale(pixelRatio, pixelRatio);
     }
@@ -149,7 +150,7 @@ class Canvas {
         child.draw(context);
       }
 
-      if (isWx) {
+      if (isWx || isMy) {
         context.draw();
       }
     } catch (ev) { // 绘制时异常，中断重绘
