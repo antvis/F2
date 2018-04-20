@@ -1,0 +1,117 @@
+[
+  {
+    "name": "geom/area",
+    "code": "require('./geom/area');",
+    "description": "面积图"
+  },
+  {
+    "name": "geom/interval",
+    "code": "require('./geom/interval');",
+    "description": "柱状图"
+  },
+  {
+    "name": "geom/line",
+    "code": "require('./geom/line');",
+    "description": "折线图"
+  },
+  {
+    "name": "geom/path",
+    "code": "require('./geom/path');",
+    "description": "路径图"
+  },
+  {
+    "name": "geom/point",
+    "code": "require('./geom/point');",
+    "description": "点图"
+  },
+  {
+    "name": "geom/polygon",
+    "code": "require('./geom/polygon');",
+    "description": "多边形"
+  },
+  {
+    "name": "geom/schema",
+    "code": "require('./geom/schema');",
+    "description": "K线图等"
+  },
+  {
+    "name": "geom/adjust/dodge",
+    "code": "require('./geom/adjust/dodge');",
+    "description": "dodge 数据调整"
+  },
+  {
+    "name": "geom/adjust/stack",
+    "code": "require('./geom/adjust/stack');",
+    "description": "stack 数据调整"
+  },
+  {
+    "name": "coord/polar",
+    "code": "require('./coord/polar');require('./component/axis/circle');",
+    "description": "极坐标系及极坐标系下的弧长坐标轴"
+  },
+  {
+    "name": "scale/time-cat",
+    "code": "require('./scale/time-cat');",
+    "description": "timeCat 类型的度量"
+  },
+  {
+    "name": "plugin/guide",
+    "code": "const Guide = F2.Plugin.Guide = require('./plugin/guide');F2.Chart.plugins.register([Guide]);",
+    "description": "Guide"
+  },
+  {
+    "name": "component/guide/arc",
+    "code": "require('./component/guide/arc');",
+    "description": "辅助圆弧（只在极坐标下使用）"
+  },
+  {
+    "name": "component/guide/html",
+    "code": "require('./component/guide/html');",
+    "description": "辅助 HTML"
+  },
+  {
+    "name": "component/guide/line",
+    "code": "require('./component/guide/line');",
+    "description": "辅助线"
+  },
+  {
+    "name": "component/guide/rect",
+    "code": "require('./component/guide/rect');",
+    "description": "辅助框"
+  },
+  {
+    "name": "component/guide/tag",
+    "code": "require('./component/guide/tag');",
+    "description": "辅助 Tag"
+  },
+  {
+    "name": "component/guide/text",
+    "code": "require('./component/guide/text');",
+    "description": "辅助文本"
+  },
+  {
+    "name": "plugin/tooltip",
+    "code": "const Tooltip = F2.Plugin.Tooltip = require('./plugin/tooltip');F2.Chart.plugins.register([Tooltip]);",
+    "description": "Tooltip"
+  },
+  {
+    "name": "plugin/legend",
+    "code": "const Legend = F2.Plugin.Legend = require('./plugin/legend');F2.Chart.plugins.register([Legend]);",
+    "description": "Legend"
+  },
+  {
+    "name": "animation/animate",
+    "code": "F2.Animate = require('./animation/animate');",
+    "description": "动画"
+  },
+  {
+    "name": "animation/detail",
+    "code": "const Animation = require('./animation/detail');F2.Chart.plugins.register([Animation]);",
+    "description": "使用精细动画"
+  },
+  {
+    "name": "animation/group",
+    "code": "const GroupAnimation = require('./animation/group');F2.Chart.plugins.register([GroupAnimation]);",
+    "description": "使用群组动画（仅包含第一次入场动画）"
+  }
+]

@@ -2,6 +2,9 @@
   "extends": [
     "egg"
   ],
+  "globals": {
+    "$": true
+  },
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module"
