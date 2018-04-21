@@ -429,7 +429,7 @@ class TooltipController {
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
     // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-    document && Util.addEventListener(document, 'touchstart', docMethod);
+    Util.isBrowser && Util.addEventListener(document, 'touchstart', docMethod);
   }
 
   unBindEvents() {
@@ -442,7 +442,7 @@ class TooltipController {
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
     // TODO: 当用户点击canvas 外的事件时 tooltip 消失
     const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-    document && Util.removeEventListener(document, 'touchstart', docMethod);
+    Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
   }
 }
 

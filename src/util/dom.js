@@ -51,9 +51,12 @@ function fromNativeEvent(event, chart) { // TODO: chart 改成 dom
   return createEvent(type, chart, pos.x, pos.y, event);
 }
 
-let _dummyCtx;
-
 DomUtil = {
+  /* global wx, my, module */
+  isWx: (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'),  // weixin miniprogram
+  isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
+  isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
+  isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined'), // in browser
   getPixelRatio() {
     return window && window.devicePixelRatio || 1;
   },
@@ -108,21 +111,21 @@ DomUtil = {
     };
   },
   addEventListener(source, type, listener) {
-    source.addEventListener(type, listener, eventListenerOptions);
+    DomUtil.isBrowser && source.addEventListener(type, listener, eventListenerOptions);
   },
   removeEventListener(source, type, listener) {
-    source.removeEventListener(type, listener, eventListenerOptions);
+    DomUtil.isBrowser && source.removeEventListener(type, listener, eventListenerOptions);
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);
   },
-  measureText(text, font) {
-    if (!_dummyCtx) {
-      _dummyCtx = document.createElement('canvas').getContext('2d');
+  measureText(text, font, ctx) {
+    if (!ctx) {
+      ctx = document.createElement('canvas').getContext('2d');
     }
 
-    _dummyCtx.font = font || '12px sans-serif';
-    return _dummyCtx.measureText(text);
+    ctx.font = font || '12px sans-serif';
+    return ctx.measureText(text);
   }
 };
 
