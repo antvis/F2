@@ -174,7 +174,8 @@ class AxisController {
           }, labelCfg),
           value: tick.value,
           textStyle,
-          top: labelCfg.top
+          top: labelCfg.top,
+          context: self.chart.get('canvas').get('context')
         });
         labels.push(axisLabel);
         const { width, height } = axisLabel.getBBox();

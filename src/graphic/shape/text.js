@@ -178,6 +178,7 @@ class Text extends Shape {
   _getTextWidth() {
     const attrs = this._attrs.attrs;
     const text = attrs.text;
+    const context = this.get('context');
 
     if (Util.isNil(text)) return undefined;
 
@@ -192,10 +193,10 @@ class Text extends Shape {
     if (textArr) {
       for (let i = 0, length = textArr.length; i < length; i++) {
         const subText = textArr[i];
-        width = Math.max(width, Util.measureText(subText, font).width);
+        width = Math.max(width, Util.measureText(subText, font, context).width);
       }
     } else {
-      width = Util.measureText(text, font).width;
+      width = Util.measureText(text, font, context).width;
     }
 
     if (textWidthCacheCounter > TEXT_CACHE_MAX) {

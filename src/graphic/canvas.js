@@ -2,10 +2,6 @@ const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
 
-/* global wx, my */
-const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'); // weixin miniprogram
-const isMy = (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'); // ant miniprogram
-
 class Canvas {
   get(name) {
     return this._attrs[name];
@@ -34,7 +30,7 @@ class Canvas {
   _beforeDraw() {
     const context = this._attrs.context;
     const el = this._attrs.el;
-    !isWx && !isMy && context && context.clearRect(0, 0, el.width, el.height);
+    !Util.isWx && !Util.isMy && context && context.clearRect(0, 0, el.width, el.height);
   }
 
   _initCanvas() {
@@ -85,12 +81,15 @@ class Canvas {
   changeSize(width, height) {
     const pixelRatio = this.get('pixelRatio');
     const canvasDOM = this.get('el');
-    canvasDOM.style.width = width + 'px';
-    canvasDOM.style.height = height + 'px';
-    canvasDOM.width = width * pixelRatio;
-    canvasDOM.height = height * pixelRatio;
 
-    if (pixelRatio !== 1 && !isWx && !isMy) {
+    if (Util.isBrowser) {
+      canvasDOM.style.width = width + 'px';
+      canvasDOM.style.height = height + 'px';
+      canvasDOM.width = width * pixelRatio;
+      canvasDOM.height = height * pixelRatio;
+    }
+
+    if (pixelRatio !== 1 && !Util.isWx && !Util.isMy) {
       const ctx = this.get('context');
       ctx.scale(pixelRatio, pixelRatio);
     }
@@ -150,7 +149,7 @@ class Canvas {
         child.draw(context);
       }
 
-      if (isWx || isMy) {
+      if (Util.isWx || Util.isMy) {
         context.draw();
       }
     } catch (ev) { // 绘制时异常，中断重绘
