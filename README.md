@@ -32,9 +32,10 @@ $ npm install @antv/f2
 - [ ] 多平台支持
   * ✔︎ 微信小程序支持，详见： https://github.com/antvis/wx-f2
   * ✔︎ 支付宝小程序支持，详见： https://github.com/antvis/my-f2
-  * ✔︎ node 服务端支持
+  * ✔︎ node 服务端支持，详见：https://antvis.github.io/f2/getting-started/platform.html
+- [ ] 图表交互支持
+- [ ] 动画接口加强
 - [ ] label 功能组件
-- [ ] 更精致的动画以及丰富的图表交互
 
 ## 文档
 
