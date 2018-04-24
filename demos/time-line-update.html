@@ -186,10 +186,13 @@ $.getJSON('./data/3nian.json', json => {
       line: {
         update: {
           animation: 'lineUpdate'
-        },
-        appear: false
+        }
       },
-      'axis-grid': false,
+      area: {
+        update: {
+          animation: 'lineUpdate'
+        }
+      },
       'axis-label': {
         enter: {
           animation: function(shape, animateCfg, coord) {
@@ -319,10 +322,7 @@ $.getJSON('./data/3nian.json', json => {
     chart.area({
       sortable: false,
       // startOnZero: false
-    }).position('reportDateTimestamp*rate')
-      .animate({
-        update: false
-      });
+    }).position('reportDateTimestamp*rate');
     chart.render();
   });
 </script>
