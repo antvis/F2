@@ -3,8 +3,6 @@ const F2 = require('../../../src/core');
 const Gesture = require('../../../src/plugin/gesture');
 const canvas = document.createElement('canvas');
 const EventSimulate = require('event-simulate');
-const TouchEmulator = require('hammer-touchemulator');
-TouchEmulator();
 
 canvas.width = 500;
 canvas.height = 500;
