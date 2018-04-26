@@ -1,8 +1,9 @@
 const assert = require('chai').assert;
+const Hammer = require('hammerjs');
 const F2 = require('../../../src/core');
 const Gesture = require('../../../src/plugin/gesture');
 const canvas = document.createElement('canvas');
-const EventSimulate = require('event-simulate');
+const { gestureSimulator } = require('../test-util');
 
 canvas.width = 500;
 canvas.height = 500;
@@ -33,7 +34,9 @@ const data = [
 ];
 
 describe('Gesture Plugin', function() {
-  it('chart gestureController', function() {
+  it('chart gestureController', async function() {
+    let isPress = false;
+    let isDataNull = true;
     const chart = new F2.Chart({
       id: 'gesture',
       width: 500,
@@ -44,23 +47,33 @@ describe('Gesture Plugin', function() {
     chart.pluginGesture({
       gesture: {
         touchmove(data) {
-          assert.isNotNull(data);
-          chart.clear();
+          assert.isNotNull(data[0]);
+          if (data[0].x) {
+            isDataNull = false;
+          }
+        },
+        press() {
+          isPress = true;
         }
+      },
+      hammerOptions: {
+        inputClass: Hammer.TouchInput // 强制开启touch事件模式，单测模式用到。 实际使用可以忽略
       }
     });
+
     chart.interval().position('name*count').color('#fd503f');
     chart.render();
-    EventSimulate.simulate(canvas, 'mousemove', {
-      clientX: 375,
-      clientY: 174
-    });
     const gestureController = chart.get('gestureController');
     assert.isNotEmpty(gestureController);
-
+    gestureSimulator(canvas, 'touchmove', { clientX: 375, clientY: 174 });
+    assert(isDataNull === false);
+    await gestureSimulator(canvas, 'press', { clientX: 375, clientY: 174 });
+    assert(isPress === true);
+    chart.clear();
   });
 
-  it('options useCalculate', function() {
+  it('options useCalculate', async function() {
+    let isdataNull = 'not null';
     const chart = new F2.Chart({
       id: 'gesture',
       width: 500,
@@ -70,21 +83,24 @@ describe('Gesture Plugin', function() {
     chart.source(data);
     chart.pluginGesture({
       gesture: {
-        touchmove(data) {
-          assert.isNull(data);
-          chart.clear();
+        tap(data) {
+          isdataNull = data;
         }
       },
       options: {
         useCalculate: false
+      },
+      hammerOptions: {
+        inputClass: Hammer.TouchInput // 强制开启touch事件模式，单测模式用到。 实际使用可以忽略
       }
     });
     chart.interval().position('name*count').color('#fd503f');
     chart.render();
-    EventSimulate.simulate(canvas, 'mousemove', {
-      clientX: 375,
-      clientY: 174
-    });
+
+    await gestureSimulator(canvas, 'tap', { clientX: 375, clientY: 174 });
+    assert.isNull(isdataNull);
+    chart.clear();
+
   });
 
   it('hammerOptions', function() {
@@ -133,3 +149,4 @@ describe('Gesture Plugin', function() {
   });
 
 });
+

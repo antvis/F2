@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const EventSimulate = require('event-simulate');
+const { gestureSimulator } = require('../unit/test-util');
 
 const F2 = require('../../src/core');
 require('../../src/geom/interval');
@@ -61,7 +61,7 @@ describe('getSnapRecords', () => {
       records = chart.getSnapRecords(point);
     };
 
-    EventSimulate.simulate(canvas, 'click', {
+    gestureSimulator(canvas, 'click', {
       clientX: 231,
       clientY: 61
     });
@@ -108,7 +108,7 @@ describe('getSnapRecords', () => {
       records = chart.getSnapRecords(point);
     };
 
-    EventSimulate.simulate(canvas, 'click', {
+    gestureSimulator(canvas, 'click', {
       clientX: 277,
       clientY: 71
     });
