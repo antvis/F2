@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const EventSimulate = require('event-simulate');
+const { gestureSimulator } = require('../test-util');
 const F2 = require('../../../src/core');
 require('../../../src/geom/interval');
 require('../../../src/geom/line');
@@ -290,7 +290,8 @@ describe('Legend Plugin', function() {
     chart.render();
     legendController = chart.get('legendController');
     legend = legendController.legends.top[0];
-    EventSimulate.simulate(canvas, 'click', {
+
+    gestureSimulator(canvas, 'click', {
       clientX: 244,
       clientY: 23
     });
@@ -354,7 +355,7 @@ describe('Legend Plugin', function() {
     chart.interval().position('genre*sold').color('genre');
     chart.render();
 
-    EventSimulate.simulate(canvas, 'click', {
+    gestureSimulator(canvas, 'click', {
       clientX: 39,
       clientY: 19
     });

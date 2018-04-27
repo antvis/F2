@@ -40,7 +40,6 @@
     "eslint-config-airbnb": "~15.0.1",
     "eslint-config-egg": "~4.2.0",
     "eslint-plugin-html": "~3.1.1",
-    "event-simulate": "^1.0.0",
     "get-port": "~3.1.0",
     "jquery": "^3.3.1",
     "jszip": "^3.1.5",
@@ -87,6 +86,7 @@
     "silent": false
   },
   "dependencies": {
-    "fecha": "~2.3.1"
+    "fecha": "~2.3.1",
+    "hammerjs": "^2.0.8"
   }
 }

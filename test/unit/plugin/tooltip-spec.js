@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
-const EventSimulate = require('event-simulate');
+const { gestureSimulator } = require('../test-util');
+
 const F2 = require('../../../src/core');
 require('../../../src/geom/interval');
 require('../../../src/geom/adjust');
@@ -147,7 +148,7 @@ describe('Tooltip Plugin', function() {
     const tooltipValue = [];
     // 配置 tooltip
     chart.tooltip({
-      triggerOn: 'mousemove',
+      triggerOn: 'touchmove',
       showTitle: true,
       onShow() {
         isShowCalled = true;
@@ -208,7 +209,7 @@ describe('Tooltip Plugin', function() {
     const legend = chart.get('legendController').legends.top[0];
     expect(legend.itemsGroup.get('children')[0].get('children').length).to.equal(2);
 
-    EventSimulate.simulate(canvas, 'mousemove', {
+    gestureSimulator(canvas, 'touchmove', {
       clientX: 375,
       clientY: 174
     });
@@ -220,11 +221,13 @@ describe('Tooltip Plugin', function() {
     expect(tooltipValue[0]).to.equal('900%');
     expect(tooltipValue[1]).to.equal('950%');
 
+
     setTimeout(function() {
-      EventSimulate.simulate(canvas, 'mousemove', {
+      gestureSimulator(canvas, 'touchmove', {
         clientX: 59,
         clientY: 295
       });
+
       expect(isHideCalled).to.be.true;
       document.body.removeChild(canvas);
       done();
