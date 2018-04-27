@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>带旋转的饼图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <style>
+    .wrapper {
+      position: relative;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .flag {
+      position: absolute;
+      bottom: 21px;
+      width: 24px;
+      height: 24px;
+      left: 50%;
+      margin-left: -12px;
+      background-image: url("https://gw.alipayobjects.com/zos/rmsportal/eCukcsfJoNgSIvKtFniY.png")
+    }
+  </style>
+</head>
+<body>
+<div>
+  <div class="wrapper">
+    <canvas id="pieRotate"></canvas>
+    <div class="flag"></div>
+  </div>
+    <div class="content"></div>
+
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2.js"></script>
+<script src="./assets/hammer.js"></script>
+<script>
+  // 差值函数
+  function interpolateNumber(a, b) {
+    a = +a;
+    b -= a;
+    return function(t) {
+      return a + b * t;
+    };
+  }
+  const data = [
+    { name: 'AAA', proportion: 0.3, a: '1' },
+    { name: 'BBB', proportion: 0.2, a: '1' },
+    { name: 'CCC', proportion: 0.1, a: '1' },
+    { name: 'DDD', proportion: 0.1, a: '1' },
+    { name: 'EEE', proportion: 0.1, a: '1' },
+    { name: 'FFF', proportion: 0.1, a: '1' }
+  ];
+  const chart = new F2.Chart({
+    id: 'pieRotate',
+    width: window.innerWidth,
+    height: window.innerWidth * 0.64,
+    pixelRatio: window.devicePixelRatio
+  });
+
+  chart.source(data);
+  chart.legend(false);
+  chart.coord('polar', {
+    transposed: true,
+    radius: 0.8
+  });
+  chart.axis(false);
+  chart.tooltip(false);
+
+  const geom = chart.interval()
+    .position('a*proportion')
+    .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0' ])
+    .adjust('stack')
+    .style({
+      lineWidth: 1,
+      stroke: '#fff'
+    });
+
+  chart.render();
+
+
+  function getShape(name) {
+    let result;
+
+    const shapes = geom.get('container').get('children');
+    F2.Util.each(shapes, shape => {
+      const origin = shape.get('origin')._origin;
+      if (origin.name === name) {
+        result = shape;
+        return false;
+      }
+    });
+
+    return result;
+  }
+
+
+  const { Matrix } = F2.G;
+  let coord = chart.get('coord');
+  const container = geom.get('container');
+  const center = coord.center;
+  const el = chart.get('canvas').get('el');
+  const hammer = new Hammer(el);
+
+
+  let totalRotate = 0;
+  let animating = false;
+
+  hammer.on('tap', e => {
+    if (animating) return;
+    let point = e.center;
+    const record = chart.getSnapRecords(point)[0];
+    const shape = getShape(record._origin.name);
+    if (record && shape) {
+      let startAngle = shape.attr('startAngle');
+      let endAngle = shape.attr('endAngle');
+      let middleAngle = (startAngle + endAngle) / 2;
+
+      if (startAngle > endAngle && endAngle <= 0) {
+        middleAngle = (Math.PI * 2 - Math.abs(startAngle - endAngle)) / 2 + startAngle;
+
+        if (middleAngle > 1.5 * Math.PI) {
+          middleAngle = middleAngle - 2 * Math.PI;
+        }
+      }
+
+      const rotateAngle = Math.PI / 2 - middleAngle;
+      const diff = interpolateNumber(0, rotateAngle);
+      if ( rotateAngle !== 0) {
+        const matrix = container.getMatrix();
+        container.animate().to({
+          duration: 800,
+          easing: 'backOut'
+        }).onFrame(t => {
+          animating = true;
+          const frameAngle = diff(t);
+          const frameMatrix = Matrix.transform(matrix, [
+            [ 't', center.x, center.y ],
+            [ 'r', frameAngle ],
+            [ 't', -center.x, -center.y ]
+          ]);
+          container.setMatrix(frameMatrix);  // 矩阵发生了变化
+
+          if (t === 1) {
+            animating = false;
+          }
+        }).onEnd(() => {
+          const coordStart = coord.startAngle + rotateAngle;
+          const coordEnd = coord.endAngle + rotateAngle;
+
+            chart.coord('polar', {
+              transposed: true,
+              radius: 0.8,
+              startAngle: coordStart,
+              endAngle: coordEnd
+            });
+            chart.animate(false);
+
+            chart.repaint();
+            coord = chart.get('coord');
+
+
+            animating = false;
+
+        })
+      }
+    }
+  });
+
+</script>
+</body>
+</html>
