@@ -1,5 +1,4 @@
 const Hammer = require('hammerjs'); // http://hammerjs.github.io/
-const DomUtil = require('../util/dom');
 const Util = require('../util/common');
 
 const defaultOptions = {
@@ -13,7 +12,7 @@ class GestureController {
     this.hammer = new Hammer(dom, hammerOptions);
     this.dom = dom;
     this.gesture = gesture;
-    this.options = Util.deepMix(defaultOptions, options);
+    this.options = Util.deepMix({}, defaultOptions, options);
     this.hammerOptions = hammerOptions;
     this.chart = chart;
     this._unbindEvent = {}; // 没有绑定事件
@@ -47,7 +46,7 @@ class GestureController {
           const records = useCalculate ? this.getEventPostionRecords(event, true) : null;
           gesture[key](records, event);
         };
-        DomUtil.addEventListener(dom, key, bindEvent);
+        Util.addEventListener(dom, key, bindEvent);
         this._unbindEvent[key] = bindEvent;
       } else {
         hammer.on(key, event => {
@@ -88,7 +87,7 @@ class GestureController {
     this.hammer.destroy();
     for (const key in this._unbindEvent) {
       const event = this._unbindEvent[key];
-      DomUtil.removeEventListener(this.dom, key, event);
+      Util.removeEventListener(this.dom, key, event);
     }
   }
 }

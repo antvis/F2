@@ -12,11 +12,11 @@ Gesture作为 F2 的插件，完整版不包含该手势插件，如果需要使
 const F2 = require('@antv/f2/lib/core');
 const Gesture = require('@antv/f2/lib/plugin/gesture');
 // 1.全局注册，也可以给 chart 的实例注册
-F2.Chart.plugins.register(Guide); 
+F2.Chart.plugins.register(Gesture); 
 // 2.给具体的 chart 实例注册
 const chart = new F2.Chart({
   id: 'canvas',
-  plugins: Guide
+  plugins: Gesture
 });
 ```
 
@@ -38,7 +38,7 @@ chart.gesture({
       回调事件的第二个参数，event是手势事件对象。三个基础手势事件放回的是[[touchEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/TouchEvent)]。hammer手势返回的事件是[[eventObject](http://hammerjs.github.io/api/#event-object)]。
 
 ```javascript
-gesture: {
+pluginGesture: {
   touchstart(data, event) {
     console.log('touchstart')
   },
