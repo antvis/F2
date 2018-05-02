@@ -50,7 +50,13 @@ class Animator {
     const delay = cfg.delay || 0;
     const attrs = cfg.attrs || {};
     const duration = cfg.duration || 1000;
-    const easing = Easing[cfg.easing] || Easing.linear;
+
+    let easing; // 缓动函数
+    if (typeof (cfg.easing) === 'function') {
+      easing = cfg.easing;
+    } else {
+      easing = Easing[cfg.easing] || Easing.linear;
+    }
 
     const animInfo = {
       shape: this.shape,
@@ -82,6 +88,16 @@ class Animator {
 
     this.timeline.anims.push(animInfo);
     this.animate = animInfo;
+    return this;
+  }
+
+  onFrame(callback) { // 自定义每一帧动画的动作
+    if (this.animate) {
+      this.animate.onFrame = function(frame) {
+        callback(frame);
+      };
+    }
+
     return this;
   }
 

@@ -2,6 +2,20 @@
 
 策略同： [自定义引用图表](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/package.html)
 
+为了方便用户，我们提供了 UI 化的按需打包工具，帮助用户自由选择所需图表和组件进行打包下载，使用方法如下：
+
+
+```bash
+# 进入项目根目录
+$ npm run bundler
+```
+
+在该界面中进行需要模块的勾选，最后打包下载即可。
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/RmUwBPLSWIbecmKEgoSw.png">
+
+相应包的说明如下：
+
 ## 核心包
 
 **必须引入**

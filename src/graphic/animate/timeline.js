@@ -62,23 +62,28 @@ class Timeline {
       let t = (currentTime - propertyAnim.startTime) / duration;
       t = Math.max(0, Math.min(t, 1));
       t = propertyAnim.easing(t);
-      for (const key in interpolate) {
-        const diff = interpolate[key];
-        const value = diff(t);
-        let newValue;
-        if (key === 'points') {
-          newValue = [];
-          const aLen = Math.max(startState.points.length, endState.points.length);
-          for (let j = 0; j < aLen; j += 2) {
-            newValue.push({
-              x: value[j],
-              y: value[j + 1]
-            });
+
+      if (propertyAnim.onFrame) {
+        propertyAnim.onFrame(t);
+      } else {
+        for (const key in interpolate) {
+          const diff = interpolate[key];
+          const value = diff(t);
+          let newValue;
+          if (key === 'points') {
+            newValue = [];
+            const aLen = Math.max(startState.points.length, endState.points.length);
+            for (let j = 0; j < aLen; j += 2) {
+              newValue.push({
+                x: value[j],
+                y: value[j + 1]
+              });
+            }
+          } else {
+            newValue = value;
           }
-        } else {
-          newValue = value;
+          shape._attrs.attrs[key] = newValue;
         }
-        shape._attrs.attrs[key] = newValue;
       }
 
       const canvas = shape.get('canvas');
