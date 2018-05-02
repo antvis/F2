@@ -13,8 +13,7 @@ const defaultAxis = {
   },
   line: {
     stroke: color1,
-    lineWidth: 1,
-    top: true
+    lineWidth: 1
   },
   grid: {
     stroke: color1,
