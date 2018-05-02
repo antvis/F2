@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const EventSimulate = require('event-simulate');
+const { gestureSimulator } = require('../unit/test-util');
 
 const F2 = require('../../src/core');
 require('../../src/geom/line');
@@ -85,7 +85,7 @@ describe('issue 83', () => {
       });
     };
 
-    EventSimulate.simulate(canvas, 'click', {
+    gestureSimulator(canvas, 'click', {
       clientX: 135,
       clientY: 99
     });
@@ -168,7 +168,7 @@ describe('issue 83', () => {
       });
     };
 
-    EventSimulate.simulate(canvas, 'click', {
+    gestureSimulator(canvas, 'click', {
       clientX: 192,
       clientY: 132
     });

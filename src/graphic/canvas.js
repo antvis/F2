@@ -85,13 +85,16 @@ class Canvas {
     if (Util.isBrowser) {
       canvasDOM.style.width = width + 'px';
       canvasDOM.style.height = height + 'px';
-      canvasDOM.width = width * pixelRatio;
-      canvasDOM.height = height * pixelRatio;
     }
 
-    if (pixelRatio !== 1 && !Util.isWx && !Util.isMy) {
-      const ctx = this.get('context');
-      ctx.scale(pixelRatio, pixelRatio);
+    if (!Util.isWx && !Util.isMy) {
+      canvasDOM.width = width * pixelRatio;
+      canvasDOM.height = height * pixelRatio;
+
+      if (pixelRatio !== 1) {
+        const ctx = this.get('context');
+        ctx.scale(pixelRatio, pixelRatio);
+      }
     }
 
     this.set('width', width);
