@@ -27,19 +27,17 @@ $ npm install @antv/f2
 - ✔︎ 绘制迅速：性能极致追求，针对移动设备做了大量的优化
 - ✔︎ 体积小巧：在支持丰富（45+）图表的基础上保持代码量的小巧
 
-## 正在建设中
+## 多端支持
 
-- [ ] 多平台支持
-  * ✔︎ 微信小程序支持，详见： https://github.com/antvis/wx-f2
-  * ✔︎ 支付宝小程序支持，详见： https://github.com/antvis/my-f2
-  * ✔︎ node 服务端支持
-- [ ] label 功能组件
-- [ ] 更精致的动画以及丰富的图表交互
+- Node：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
+- 微信小程序：https://github.com/antvis/wx-f2
+- 支付宝小程序：https://github.com/antvis/my-f2
 
 ## 文档
 
 - [使用教程](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
 - [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
+- [Gallery](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
 
 ## 快速开始
 

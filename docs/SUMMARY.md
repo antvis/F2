@@ -4,6 +4,7 @@
   * [安装 Installation](getting-started/installation.md)
   * [一分钟上手 F2 Your First Chart](getting-started/your-first-chart.md)
   * [按需引用 Require On Demand](getting-started/require-on-demand.md)
+  * [多平台使用说明 Platform](getting-started/platform.md)
 * [基础教程 Chart Concept](chart-concept/README.md)
   * [F2 图表组成 Understanding F2 Charts](chart-concept/understanding-f2-charts.md)
   * [数据 Data](chart-concept/data.md)

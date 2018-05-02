@@ -787,6 +787,10 @@ class Geom extends Base {
 
   clearInner() {
     const container = this.get('container');
+    if (container) {
+      container.clear();
+      container.setMatrix([ 1, 0, 0, 1, 0, 0 ]);
+    }
     container && container.clear();
     this.set('attrs', {});
     this.set('groupScales', null);

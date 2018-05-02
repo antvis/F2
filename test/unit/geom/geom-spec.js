@@ -133,7 +133,7 @@ describe('test geoms', function() {
       geom = new Geom({
         type: 'test',
         coord,
-        container: canvas,
+        container: canvas.addGroup(),
         data: newData,
         scales: { a: scaleA, b: scaleB, c: scaleC }
       });
@@ -207,7 +207,7 @@ describe('test geoms', function() {
         shapeType: 'point',
         coord,
         data: newData,
-        container: canvas,
+        container: canvas.addGroup(),
         generatePoints: true,
         scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed }
       });
@@ -279,7 +279,7 @@ describe('test geom point', function() {
   const geom = new Geom.Point({
     data,
     coord,
-    container: canvas,
+    container: canvas.addGroup(),
     scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed }
   });
   it('draw points', function() {
@@ -305,7 +305,7 @@ describe('test geom path', function() {
   const geom = new Geom.Path({
     data,
     coord,
-    container: canvas,
+    container: canvas.addGroup(),
     scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed }
   });
 
@@ -367,7 +367,7 @@ describe('test geom line', function() {
   const geom = new Geom.Line({
     data,
     coord,
-    container: canvas,
+    container: canvas.addGroup(),
     scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, smooth: ScaleSmooth }
   });
 
@@ -477,7 +477,7 @@ describe('test geom area', function() {
     geom = new Geom.Area({
       data,
       coord,
-      container: canvas,
+      container: canvas.addGroup(),
       scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, 10: ScaleTen }
     });
     expect(geom.get('type')).equal('area');
@@ -557,7 +557,7 @@ describe('test geom interval', function() {
   const geom = new Geom.Interval({
     data,
     coord,
-    container: canvas,
+    container: canvas.addGroup(),
     scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, 10: ScaleTen }
   });
   it('draw interval', function() {
@@ -719,7 +719,7 @@ describe('test polygon', function() {
   const geom = new Geom.Polygon({
     data,
     coord,
-    container: canvas,
+    container: canvas.addGroup(),
     scales: { x: scaleX, y: scaleY }
   });
   it('test init', () => {
@@ -744,7 +744,7 @@ describe('test polygon', function() {
     const geom1 = new Geom.Polygon({
       data: data1,
       coord,
-      container: canvas,
+      container: canvas.addGroup(),
       scales: { a: scaleA, b: scaleB, c: scaleC }
     });
     geom1.position('a*b').color('c');
@@ -782,7 +782,7 @@ describe('test schema', function() {
     const geom = new Geom.Schema({
       data,
       coord,
-      container: canvas,
+      container: canvas.addGroup(),
       scales: { x: scaleX, y: scaleY, candle: scaleCandle }
     });
 
