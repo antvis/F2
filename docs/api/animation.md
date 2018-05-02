@@ -2,10 +2,10 @@
 
 F2 默认提供了两种动画版本：
 
-1. 入场动画
-2. 精细动画，包含入场动画、更新动画以及销毁动画
+1. 群组入场动画
+2. 精细动画，以 shape 为对象单位的动画，包含 `appear`、`enter` 两种入场动画、`update` 更新动画以及 `leave` 销毁动画
 
-当图表仅用于展示时，为了缩减代码体量，用户可以选择第一种动画，即仅包含入场动画。如果需要更丰富的动画，可以选择第二种动画策略。
+当图表仅用于展示时，为了缩减代码体量，用户可以选择第一种动画策略，即仅包含入场动画。如果需要更丰富的动画，可以选择第二种动画策略。
 
 另外 F2 还提供了自定义动画机制，帮助用户定制更加生动、更具场景的动画。
 
@@ -13,7 +13,7 @@ F2 默认提供了两种动画版本：
 
 ## 如何按需引用
 
-1. 仅包含入场动画版本
+1. 群组入场动画
 
 ```js
 const GroupAnimation = require('@antv/f2/lib/animation/group');
@@ -35,16 +35,18 @@ Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 ch
 
 ### 动画分类
 
-在 F2 中，我们将图表生命周期中的动画划分为以下四种类型：
+在 F2 的动画中，围绕图表数据的变化，我们将图形元素的动画划分为以下四种类型：
 
-| 动画类型  | 解释  |
-| -------- | -------- |
-| appear     | 图表第一次加载时的入场动画     |
-| enter     | 图表绘制完成，数据发生变更后，产生的新图形的进场动画     |
-| update     | 图表绘制完成，数据发生变更后，有状态变更的图形的更新动画   |
-| leave     | 图表绘制完成，数据发生变更后，被销毁图形的销毁动画   |
+| 动画类型   | 解释  | 触发时机 |
+| -------- | -------- | -------- |
+| appear   | 图表第一次加载时的入场动画     |  第一次 `chart.render()`  |
+| enter    | 图表绘制完成，数据发生变更后，产生的新图形的进场动画     | `chart.changeData(data)` |
+| update   | 图表绘制完成，数据发生变更后，有状态变更的图形的更新动画   | `chart.changeData(data)` |
+| leave    | 图表绘制完成，数据发生变更后，被销毁图形的销毁动画   | `chart.changeData(data)` |
 
-如果用户使用的是仅包含入场动画版本的动画版本，那么仅提供了 `appear` 类型的动画。在精细动画版本中，完整提供了以上四种动画类型机制。具体的配置方法在下文进行说明。
+第一次 `chart.render()` 时会触发 `appear` 类型的动画，而 `chart.changeData(data)` 即数据发生变更时，会触发 `update`、`leave`、`enter` 类型的动画。
+
+如果用户使用的是仅包含群组入场动画版本，那么仅提供了 `appear` 类型的动画。在精细动画版本中，完整提供了以上四种动画类型机制。具体的配置方法在下文进行说明。
 
 ### chart.animate()
 
@@ -55,6 +57,8 @@ Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 ch
 关闭图表动画。
 
 2. `chart.animate(cfg)`
+
+对 chart 上的图形元素进行具体的动画配置。
 
 * 参数：`cfg`
 * 类型： Object
@@ -86,7 +90,7 @@ chart.animate({
 });
 ```
 
-对 chart 上的图形元素进行动画配置，目前对动画开放的图形元素包括：
+目前对动画开放的图形元素包括：
 
 | 图形元素名 | 解释 |
 | -------- | -------- |
@@ -116,7 +120,7 @@ appear: {
 
 - `animation`，类型：String/Function，定义动画的具体执行动作
 
-该属性用于定义动画执行函数，可以指定动画名称，该动画名称可以是 F2 默认提供的动画（见以下列表），也可以是用户通过[动画注册机制](todo)进行注册之后的动画名称。
+该属性用于定义动画执行函数，可以指定动画名称，该动画名称可以是 F2 默认提供的动画（见以下列表），也可以是用户通过[动画注册机制](#_动画注册机制)进行注册之后的动画名称。
 
 ```js
 // 指定动画名称
@@ -152,7 +156,6 @@ animation: (shape, animateCfg, coord) {
 | `shapesScaleInXY`  | 整体动画，不同于 groupScale，每个 shape 都会参与  |<img src="https://gw.alipayobjects.com/zos/skylark/cf2f660f-48d2-46e9-b7e2-e6b59f0333df/2018/gif/6d08442e-df89-4116-83e9-8a36c2459645.gif" style="width:50%;">  |
 | `fadeIn` | 单个 shape 的动画 | <img src="https://gw.alipayobjects.com/zos/skylark/1645e658-c007-43da-9d1f-baa326bcefef/2018/gif/2ea38ccf-8d7c-42c6-a1fb-7baf64026dd9.gif" style="width:50%;">  |
 
-
 - `easing`，类型：String/Function，定义动画的缓动函数
 
 使用 F2 默认提供的缓动函数名，或者直接传入缓动函数：
@@ -167,7 +170,6 @@ easing: (t) => {
 }
 ```
 
-
 默认提供的缓动函数名为：`linear` `quadraticIn` `quadraticOut` `quadraticInOut` `cubicIn` `cubicOut` `cubicInOut` `elasticIn` `elasticOut` `elasticInOut` `backIn` `backOut` `backInOut` `bounceIn` `bounceOut`  `bounceInOut`
 
 各个函数的缓动效果可参考：http://sole.github.io/tween.js/examples/03_graphs.html
@@ -177,6 +179,10 @@ easing: (t) => {
 该属性支持回调函数，回调函数的使用如下：
 
 ```js
+// 方式一，直接指定延迟时间，单位为 ms
+delay: 1000,
+
+// 方式二，使用回调函数
 /**
  * 返回动画延迟执行时间
  * @param  {Number} index      当前 shape 的索引值（相对于数据集中的顺序）
@@ -192,14 +198,14 @@ delay: (index, id) {
 
 ### geom.animate()
 
-为 geometry 图形元素进行动画配置，默认 F2 已针对各个 geometry 设定了动画类型以及配置，用户可以通过该接口进行动画的个性化配置。
+为 geometry 图形元素进行具体的动画配置，默认 F2 已针对各个 geometry 设定了动画类型以及配置，用户可以通过该接口进行动画的个性化配置。
 
 **注意：**
 1. 当用户调用 `chart.animate(false)` 关闭了图表动画之后，`geom.animate()` 方法上的配置不生效。
 2. 当用户在 `chart.animate()` 和 `geom.animate()` 两个接口上均对该 geometry 进行了动画配置时，以 `geom.animate()` 的配置为准。
 
 
-具体可配置的属性如下，`animation` `easing` `delay` `duration`  属性见上文：
+具体可配置的属性为 `animation` `easing` `delay` `duration`，具体的使用见上文：
 
 ```js
 geom.animate({
@@ -233,24 +239,29 @@ geom.animate({
 
 ### shape.animate()
 
-我们为每个 shape 提供了 animate 接口，用于为每个 shape 实例定义动画，具体使用如下
+我们为每个 shape 实例提供了 animate 接口，用于执行具体的动画行为，具体使用如下：
 
 ```js
-shape.animate().to({
-  attrs: {Object}, // shape 最终的图形属性
-  easing: {String} || {Function}, // 缓动函数
-  duration: {Number}, // 动画持续时间，单位为 ms
-  delay: {Number} // 动画延迟时间，单位为 ms
-}).onStart(function() {
-  // 动画开始的回调函数
-}).onUpdate(function() {
-  // 动画进行时的回调函数
-}).onEnd(function() {
-  // 动画结束时的回调函数
-}).onFrame(t => {
-  // t 为 0 - 1 范围的数字，表示当前执行的进度
-  // 用户自定义每一帧的动画操作
-});
+shape.animate()
+  .to({
+    attrs: {Object}, // shape 最终的图形属性
+    easing: {String} || {Function}, // 缓动函数
+    duration: {Number}, // 动画持续时间，单位为 ms
+    delay: {Number} // 动画延迟时间，单位为 ms
+  }) // 定义动画行为
+  .onStart(function() {
+    // 动画开始的回调函数
+  })
+  .onUpdate(function() {
+    // 动画进行时的回调函数
+  })
+  .onEnd(function() {
+    // 动画结束时的回调函数
+  })
+  .onFrame(t => {
+    // t 为 0 - 1 范围的数字，表示当前执行的进度
+    // 用户自定义每一帧的动画操作
+  });
 ```
 
 ## 动画注册机制
@@ -264,10 +275,10 @@ const Animate = require('@antv/f2/lib/animation/animate');
  * @param  {String} animationName   动画名称，用户自定义即可
  * @param  {Function} animationFun  动画执行函数
  **/
-Animate.registerAnimation('animationName', animationFun);
+Animate.registerAnimation('animationName', animationFun); // 注册名为 animationName 的动画函数
 
 
-// 如何使用上述注册的函数
+// 使用上述注册的函数
 chart.line().animate({
   appear: {
     animation: 'animationName'  // 对应上述注册的动画函数名
@@ -279,7 +290,7 @@ chart.line().animate({
 
 F2 提供了完善的动画自定义机制，用户可对任意支持动画的图形元素定制不同状态下的动画行为，这里所说的状态即为 appear enter leave update 这四种动画类型。
 
-在 F2 中执行的都是 [Shape(图形)]() 元素的动画，通过逐帧改变 shape 对象的图形属性来达到动画的效果，以下面圆的移动动画为例：
+在 F2 中执行的都是 [Shape(图形)](../developer/graphic.md#Shape) 元素的动画，通过逐帧改变 shape 对象的图形属性来达到动画的效果，以下面圆的移动动画为例：
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/VsphIrCJSqpILogoZTiS.gif" style="width: 50%;">
 
@@ -298,9 +309,9 @@ circle.animate().to({
 
 ```
 
-各类型 shape 的图形属性说明见 [graphic 图形 api](TODO)。
+各类型 shape 的图形属性说明见 [graphic 图形 api](./developer/graphic.md#Shape)。
 
-F2 会为用户自定义的动画函数传递三个参数，按照顺序，分别为 `shape` `animateCfg` `coord`
+F2 会为用户自定义的动画函数传递三个参数，按照顺序，分别为 `shape`、`animateCfg`、`coord`
 
 ```js
 chart.line().animate({
@@ -316,14 +327,14 @@ chart.line().animate({
 
 shape 对象具体提供了以下属性来帮助用户进行操作：
 
-| 属性名 | 获取方式 | 解释 | 
-| -------- | -------- | -------- |
-| `attrs` | shape.get('attrs')   | 获取 shape 全部的图形属性 |
-| `className`  | shape.get('className') | 获取当前 shape 的图形元素类型 |
-| `origin`  | shape.get('origin') | 获取当前 shape 的绘制数据以及对应的原始数据记录 |
-| `index`  | shape.get('index') | 获取当前 shape 的索引值，即顺序 |
+| 属性名 | 获取方式| 类型 | 解释 | 
+| -------- | -------- | -------- | -------- |
+| `attrs` | shape.get('attrs') | Object   | 获取 shape 全部的图形属性 |
+| `className`  | shape.get('className')| String | 获取当前 shape 的图形元素类型 |
+| `origin`  | shape.get('origin') | Object | 获取当前 shape 的绘制数据以及对应的原始数据记录 |
+| `index`  | shape.get('index') | Number | 获取当前 shape 的索引值，即顺序 |
 
-另外图形属性的获取还可以通过调用 `shape.attr(name)` 方法来获取，更多 shape 对象的方法请阅读 [Shape api](todo)。
+另外图形属性的获取还可以通过调用 `shape.attr(name)` 方法来获取，更多 shape 对象的方法请阅读 [Shape API](../developer/graphic.md#通用方法)。
 
 另外对于处理 `update` 更新状态下的 shape 对象，我们还会提供一个 `cacheShape` 属性，该属性为一个 Object 对象，存储的是当前 shape 在上一个状态（数据变更前）的内容，以便于用户进行变更动画的定制，该属性包含的内容如下：
 
@@ -347,9 +358,11 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
 }
 ```
 
-- `coord`，Coord 坐标系对象，表示当前 chart 的坐标系
+- `coord`，Coord 坐标系对象，表示当前 chart 的坐标系，该对象包含的属性详见 [Coordinate API](./coordinate.md#获取坐标系对象)
 
-下面的示例对柱状图的初始化出场动画进行了自定义：
+## 示例
+
+下面的示例对柱状图的初始化出场动画（appear）进行了自定义：
 
 ![column1.gif](https://gw.alipayobjects.com/zos/skylark/477ede4d-3496-42c9-97a6-f63195765dbd/2018/gif/2e743bec-fefb-46f1-96f3-cc0e965d4234.gif) 
 
@@ -406,8 +419,8 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
   }
   const chart = new Chart({
     id: 'mountNode',
-    width: window.innerWidth,
-    height: window.innerWidth * 0.64,
+    width: 375,
+    height: 200,
     pixelRatio: window.devicePixelRatio
   });
   chart.axis('x', false);
@@ -427,3 +440,4 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
     });
   chart.render();
 ```
+

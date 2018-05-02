@@ -31,8 +31,34 @@ chart.coord('polar', {
   innerRadius: {Number}, // 内环半径，数值为 0 - 1 范围
   radius: {Number} // 半径，数值为 0 - 1 范围
 });
-
 ```
+
+## 获取坐标系对象
+
+`chart.get('coord')` 返回坐标系对象。不同坐标系下该对象包含的属性不同，具体说明如下：
+
+1. 直角坐标系
+
+| 属性名 | 类型 | 解释 |
+| -------- | -------- | -------- |
+| start   | Object  | 坐标系的起始点，F2 图表的坐标系原点位于左下角 |
+| end     | Object  | 坐标系右上角的画布坐标 |
+| transposed | Boolean  | 是否发生转置，true 表示发生了转置 |
+| isRect  | Boolean  | 是否是直角坐标系，直角坐标系下为 true | 
+
+2. 极坐标系
+
+| 属性名 | 类型 | 解释 |
+| -------- | -------- | -------- |
+| startAngle | Number | 极坐标的起始角度，弧度制 | 
+| endAngle | Number | 极坐标的结束角度，弧度制 |
+| innerRadius | Number | 绘制环图时，设置内部空心半径，相对值，0 至 1 范围 |
+| radius | Number | 设置圆的半径，相对值，0 至 1 范围 |
+| isPolar | Boolean | 判断是否是极坐标，极坐标下为 true |
+| transposed | Boolean | 是否发生转置，true 表示发生了转置 |
+| center | Object | 极坐标的圆心所在的画布坐标 | 
+| circleRadius | Number | 极坐标的半径值 |
+
 
 ## 示例
 

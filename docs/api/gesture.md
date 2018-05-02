@@ -6,7 +6,7 @@
 ## 如何引入使用插件
 
 Gesture作为 F2 的插件，完整版不包含该手势插件，如果需要使用的话，需要先将该组件注册入 Chart 类或者 Chart 实例。
-`hammerjs`  压缩文件大小 20k。 GZIP后大小 7.3k
+`hammerjs`  压缩文件大小 20k。 GZIP 后大小 7.3k
 
 ```javascript
 const F2 = require('@antv/f2/lib/core');

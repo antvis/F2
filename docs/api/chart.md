@@ -226,6 +226,15 @@ chart.scale({
 });
 ```
 
+### `animate`
+
+`chart.animate()` 
+
+* 描述：配置图表的动画
+* 返回：当前 chart 实例
+
+详见 [Animation](./animation.md)。
+
 ### `coord`
 
 `chart.coord()` 

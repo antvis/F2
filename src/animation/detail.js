@@ -3,7 +3,7 @@
  * @author sima.zhang
  */
 const Util = require('../util/common');
-const { Shape, Group } = require('../graphic/');
+const Element = require('../graphic/element');
 const Timeline = require('../graphic/animate/timeline');
 const Animator = require('../graphic/animate/animator');
 const Animate = require('./animate');
@@ -12,15 +12,10 @@ const GroupAction = require('./group-action');
 const Chart = require('../chart/chart');
 
 let timeline;
-Shape.prototype.animate = function() {
+Element.prototype.animate = function() {
   const attrs = this.get('attrs');
   return new Animator(this, attrs, timeline);
 };
-Group.prototype.animate = function() {
-  const attrs = this.get('attrs');
-  return new Animator(this, attrs, timeline);
-};
-
 
 Chart.prototype.animate = function(cfg) {
   this.set('animate', cfg);
