@@ -155,6 +155,7 @@ describe('scale time cat', function() {
     expect(scale.type).to.be.equal('timeCat');
     expect(scale.mask).to.be.equal('YYYY/MM/DD');
     expect(scale.sortable).to.be.true;
+    expect(scale.isCategory).to.be.true;
   });
 
   it('translate', function() {
