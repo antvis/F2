@@ -64,6 +64,8 @@ Chart.plugins.register(Animation); // 这里进行全局注册，也可以给 ch
 * 类型： Object
 * 返回： 当前 chart 实例
 
+具体配置参考如下：
+
 ```js
 chart.animate({
   'axis-label': {
@@ -87,6 +89,24 @@ chart.animate({
   point: {} // 对点图进行动画配置，配置属性同 axis-label
   polygon: {} // 对多边形进行动画配置，配置属性同 axis-label
   schema: {} // 对自定义图形进行动画配置，配置属性同 axis-label
+});
+```
+
+关闭动画的方式如下：
+```js
+// 关闭图表所有动画
+chart.animate(false);
+
+// 关闭某种图形元素的动画，如线图 line
+chart.animate({
+  line: false // 关闭线图动画
+});
+
+// 关闭某种图形元素下某一类动画，如线图的出场动画
+chart.animate({
+  line: {
+    appear: false
+  }
 });
 ```
 
@@ -138,7 +158,7 @@ animation: 'groupWaveIn'
  * @return {null}              不需要返回
  */
 animation: (shape, animateCfg, coord) {
-  
+
 }
 ```
 
@@ -190,7 +210,7 @@ delay: 1000,
  * @return {Number}            返回延迟执行时间，单位为 ms
  */
 delay: (index, id) {
-  
+
 }
 ```
 
@@ -327,7 +347,7 @@ chart.line().animate({
 
 shape 对象具体提供了以下属性来帮助用户进行操作：
 
-| 属性名 | 获取方式| 类型 | 解释 | 
+| 属性名 | 获取方式| 类型 | 解释 |
 | -------- | -------- | -------- | -------- |
 | `attrs` | shape.get('attrs') | Object   | 获取 shape 全部的图形属性 |
 | `className`  | shape.get('className')| String | 获取当前 shape 的图形元素类型 |
@@ -354,7 +374,7 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
 {
   easing: , // 缓动函数配合
   duration: , // 动画执行时间
-  delay: // 动画延迟时间 
+  delay: // 动画延迟时间
 }
 ```
 
@@ -364,7 +384,7 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
 
 下面的示例对柱状图的初始化出场动画（appear）进行了自定义：
 
-![column1.gif](https://gw.alipayobjects.com/zos/skylark/477ede4d-3496-42c9-97a6-f63195765dbd/2018/gif/2e743bec-fefb-46f1-96f3-cc0e965d4234.gif) 
+![column1.gif](https://gw.alipayobjects.com/zos/skylark/477ede4d-3496-42c9-97a6-f63195765dbd/2018/gif/2e743bec-fefb-46f1-96f3-cc0e965d4234.gif)
 
 ```js
   const { Chart, Animate, Util, G } = F2;

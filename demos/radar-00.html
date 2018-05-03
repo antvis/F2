@@ -80,12 +80,14 @@
         top: true
       };
     },
-    grid(text, index) {
-      if (text === '120') {
-        return {
-          lineDash: null
-        };
-      }
+    grid: {
+      type: 'arc'
+    }
+  });
+  chart.axis('item', {
+    line: {
+      lineWidth: 1,
+      stroke: '#e8e8e8'
     }
   });
   chart.line().position('item*score').color('user').animate({
