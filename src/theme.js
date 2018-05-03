@@ -16,6 +16,7 @@ const defaultAxis = {
     lineWidth: 1
   },
   grid: {
+    type: 'line', // 默认使用线连接
     stroke: color1,
     lineWidth: 1,
     lineDash: [ 2 ]
