@@ -153,7 +153,7 @@ function getShapes(geoms, chart, coord) {
     const geomShapes = geomContainer.get('children'); // 获取几何标记的 shapes
     // const coord = geom.get('coord');
     const type = geom.get('type');
-    const animateCfg = geom.get('animateCfg') || _getAnimateCfgByShapeType(type, chart);
+    const animateCfg = Util.isNil(geom.get('animateCfg')) ? _getAnimateCfgByShapeType(type, chart) : geom.get('animateCfg');
     if (animateCfg !== false) {
       Util.each(geomShapes, (shape, index) => {
         if (shape.get('className') === type) {
@@ -238,7 +238,7 @@ function addAnimate(cache, shapes, canvas) {
     const { className, coord, _id, attrs, index, type } = deletedShape;
 
     animateCfg = getAnimateCfg(className, 'leave', deletedShape.animateCfg);
-    if (animateCfg === false) return false;
+    if (animateCfg === false) return true;
 
     animate = getAnimate(className, coord, 'leave', animateCfg.animation);
     if (Util.isFunction(animate)) {
@@ -258,7 +258,7 @@ function addAnimate(cache, shapes, canvas) {
     const className = updateShape.get('className');
 
     animateCfg = getAnimateCfg(className, 'update', updateShape.get('animateCfg'));
-    if (animateCfg === false) return false;
+    if (animateCfg === false) return true;
 
     const coord = updateShape.get('coord');
     const cacheAttrs = updateShape.get('cacheShape').attrs;
@@ -288,7 +288,7 @@ function addAnimate(cache, shapes, canvas) {
     const coord = newShape.get('coord');
 
     animateCfg = getAnimateCfg(className, 'enter', newShape.get('animateCfg'));
-    if (animateCfg === false) return false;
+    if (animateCfg === false) return true;
 
     animate = getAnimate(className, coord, 'enter', animateCfg.animation);
     if (Util.isFunction(animate)) {
@@ -355,7 +355,7 @@ module.exports = {
       let animate;
       Util.each(geoms, geom => {
         const type = geom.get('type');
-        const geomCfg = geom.get('animateCfg') || _getAnimateCfgByShapeType(type, chart);
+        const geomCfg = Util.isNil(geom.get('animateCfg')) ? _getAnimateCfgByShapeType(type, chart) : geom.get('animateCfg');
         if (geomCfg !== false) {
           animateCfg = getAnimateCfg(type, 'appear', geomCfg);
           animate = getAnimate(type, coord, 'appear', animateCfg.animation);
