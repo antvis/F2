@@ -80,8 +80,16 @@ class Text extends Shape {
     const textArr = attrs.textArr;
     const fontSize = attrs.fontSize * 1;
     const spaceingY = self._getSpaceingY();
-    const x = attrs.x;
-    const y = attrs.y;
+    let x = attrs.x;
+    let y = attrs.y;
+
+    if (attrs.rotate) { // 文本旋转
+      context.translate(x, y);
+      context.rotate(attrs.rotate);
+      x = 0;
+      y = 0;
+    }
+
     const textBaseline = attrs.textBaseline;
     let height;
     if (textArr) {
