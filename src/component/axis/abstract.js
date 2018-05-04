@@ -109,14 +109,7 @@ class Abastract {
         const container = self.getContainer(gridCfg.top);
         let shape;
 
-        if (type === 'line') {
-          shape = container.addShape('Polyline', {
-            className: 'axis-grid',
-            attrs: Util.mix({
-              points
-            }, gridCfg)
-          });
-        } else if (type === 'arc') {
+        if (type === 'arc') {
           const { center, startAngle, endAngle } = self;
           const radius = Vector2.length([ points[0].x - center.x, points[0].y - center.y ]);
           shape = container.addShape('Arc', {
@@ -127,6 +120,13 @@ class Abastract {
               startAngle,
               endAngle,
               r: radius
+            }, gridCfg)
+          });
+        } else {
+          shape = container.addShape('Polyline', {
+            className: 'axis-grid',
+            attrs: Util.mix({
+              points
             }, gridCfg)
           });
         }
