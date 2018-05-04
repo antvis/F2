@@ -130,7 +130,8 @@ function _getShapeId(geom, dataObj) {
   } else if (type === 'line' || type === 'area' || type === 'path') {
     id += '-' + type;
   } else {
-    id += '-' + xVal + '-' + yVal;
+    // 分类类型只需要判断 xVal
+    id += xScale.isCategory ? '-' + xVal : '-' + xVal + '-' + yVal;
   }
 
   const groupScales = geom._getGroupScales();
