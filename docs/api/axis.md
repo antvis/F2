@@ -41,7 +41,7 @@
 | -------- | -------- | -------- |
 | `line`     |   Object/null   |  坐标轴线的配置信息，设置 null 时不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)  |
 | `labelOffset`     |  Number    |   坐标轴文本距离轴线的距离  |
-| `grid`     |   Object/Function/null  |  坐标轴网格线的配置项，设置 null 时不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数   |
+| `grid`     |   Object/Function/null  |  坐标轴网格线的配置项，设置 null 时不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数，**另外在极坐标下，可以通过配置 `type: 'arc'` 将其绘制为圆弧** |
 | `tickLine`     |  Object/null    |  坐标轴刻度线的样式配置，设置 null 不显示，支持所有的 canvas 属性，参考[绘图属性](./canvas.md)   |
 | `label`     |   Object/Function/null   |  坐标轴文本配置，设置 null 不显示, 支持所有的 canvas 属性，参考[绘图属性](./canvas.md)，支持回调函数    |
 | `position`     | String     | 坐标轴显示位置配置，x 轴默认位于底部 'bottom'，y 轴可设置 position 为 'left'、'right' |
@@ -56,11 +56,11 @@
 chart.axis('field', {
   // 设置坐标轴线的样式，如果值为 null，则不显示坐标轴线，图形属性
   line: {
-    lineWidth: 1, 
-    stroke: '#ccc' 
-  }, 
+    lineWidth: 1,
+    stroke: '#ccc'
+  },
   // 坐标轴文本距离轴线的距离
-  labelOffset: 20, 
+  labelOffset: 20,
   // 坐标点对应的线，null 不显示，图形属性
   tickLine: {
     lineWidth: 1,

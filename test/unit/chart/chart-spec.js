@@ -345,9 +345,21 @@ describe('chart test', () => {
       const axisGroup = backPlot.get('children')[0];
       expect(axisGroup.get('className')).to.equal('axisContainer');
 
-      const xAxisLabel = axisGroup.get('children')[1]; // x 轴文本
+      const children = axisGroup.get('children');
+      let xAxisLabel;
+      let yAxisLabel;
+
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        if (child._id === 'axis-x-1') {
+          xAxisLabel = child;
+        }
+
+        if (child._id === 'axis-y0-0') {
+          yAxisLabel = child;
+        }
+      }
       const xAxisfont = xAxisLabel.attr('font');
-      const yAxisLabel = axisGroup.get('children')[10]; // y 轴文本
       const yAxisfont = yAxisLabel.attr('font');
       expect(xAxisfont).to.equal('normal normal normal 10px Arial'); // a 轴文本
       expect(yAxisfont).to.equal('normal normal normal 10px "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif'); // b 轴文本

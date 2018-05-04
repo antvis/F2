@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="chart-name" content="实时折线">
+  <title>Radial bar</title>
+</head>
+
+<body>
+  <div class="chart-wrapper">
+    <canvas id="mountNode" style="background-color: #50577D;"></canvas>
+  </div>
+  <script src="https://unpkg.com/@antv/f2"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+  <script>
+    const data = [
+      { name: 'Samsung', percent: 21.2 },
+      { name: 'Apple', percent: 14.6 },
+      { name: 'Huawei', percent: 9.5 },
+      { name: 'Oppo', percent: 6.8 },
+      { name: 'Vivo', percent: 5.3 },
+      { name: 'Others', percent: 42.7 }
+    ];
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.coord('polar', {
+      transposed: true,
+      endAngle: 2 * Math.PI,
+      startAngle: Math.PI / 2,
+      innerRadius: 0.3
+    });
+
+    chart.source(data.reverse(), {
+      percent: {
+        max: 100
+      }
+    });
+    chart.axis('name', {
+      grid: {
+        lineDash: null,
+        type: 'arc'
+      },
+      line: null,
+      label: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        fill: '#E5875B'
+      }
+    });
+    chart.axis('percent', false);
+    chart.tooltip(false);
+    chart.guide().html({
+      position: ['Samsung', 21.2],
+      html: '<div style="background: #50577D;font-size: 10px;color: #fff">21.2%</div>',
+      alignX: 'center',
+      alignY: 'bottom',
+      offsetY: -8,
+      offsetX: 2
+    });
+    chart.guide().html({
+      position: ['Others', 42.7],
+      html: '<div style="background: #50577D;font-size: 10px;color: #fff">42.7%</div>',
+      alignX: 'center',
+      alignY: 'bottom',
+      offsetY: -8,
+      offsetX: 2
+    });
+
+    chart
+      .interval()
+      .position('name*percent')
+      .color('#E5875B');
+
+    chart.render();
+  </script>
+</body>
+
+</html>

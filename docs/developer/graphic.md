@@ -138,7 +138,7 @@ changeSize(width, height)
  * 将窗口坐标转变成画布坐标
  * @param  {Number} clientX 窗口 x 坐标
  * @param  {Number} clientY 窗口 y 坐标
- * @return {Object} canvas 画布坐标坐标 
+ * @return {Object} canvas 画布坐标坐标
  */
 getPointByClient(clientX, clientY)
 ```
@@ -419,7 +419,7 @@ getBBox()
 
 ```js
 {
-  minX: 39.17999267578125, 
+  minX: 39.17999267578125,
   minY: 52.131654999999995,
   maxX: 211,
   maxY: 116.58097999999998,
@@ -463,7 +463,7 @@ getParent()
   * 获取当前矩阵
   * @return {Array} 返回当前矩阵
   */
-getMatrix() 
+getMatrix()
 ```
 
 ##### `setMatrix(m)`
@@ -473,7 +473,7 @@ getMatrix()
  * 设置矩阵
  * @param {Array} m 矩阵数组
  */
-setMatrix(m) 
+setMatrix(m)
 ```
 
 ##### `transform(actions)`
@@ -494,7 +494,7 @@ actions 支持的操作包含 't'（translate）、's'（scale）、'r'（rotate
 ]
 ```
 
-##### `translate(x, y)` 
+##### `translate(x, y)`
 
 ```js
 /**
@@ -505,7 +505,7 @@ actions 支持的操作包含 't'（translate）、's'（scale）、'r'（rotate
 translate(x, y)
 ```
 
-##### `rotate(radian)` 
+##### `rotate(radian)`
 
 ```js
 /**
@@ -543,7 +543,7 @@ actions 操作同 `transform(acitons` 方法。
   * 清除所有的元素
   * @return {Group} 返回自己
   */
-clear() 
+clear()
 ```
 
 ##### `remove(destroy)`
@@ -662,7 +662,7 @@ new Shape.Line({
 - [remove(destroy)](#__remove-destroy-)
 - [destroy()](#___destroy-)
 
-##### `attr()` 
+##### `attr()`
 
 获取/设置属性。
 
@@ -712,7 +712,7 @@ getBBox()
 
 ```js
 {
-  minX: 39.17999267578125, 
+  minX: 39.17999267578125,
   minY: 52.131654999999995,
   maxX: 211,
   maxY: 116.58097999999998,
@@ -756,7 +756,7 @@ getParent()
   * 获取当前矩阵
   * @return {Array} 返回当前矩阵
   */
-getMatrix() 
+getMatrix()
 ```
 
 ##### `setMatrix(m)`
@@ -766,7 +766,7 @@ getMatrix()
  * 设置矩阵
  * @param {Array} m 矩阵数组
  */
-setMatrix(m) 
+setMatrix(m)
 ```
 
 ##### `transform(actions)`
@@ -787,7 +787,7 @@ actions 支持的操作包含 't'（translate）、's'（scale）、'r'（rotate
 ]
 ```
 
-##### `translate(x, y)` 
+##### `translate(x, y)`
 
 ```js
 /**
@@ -798,7 +798,7 @@ actions 支持的操作包含 't'（translate）、's'（scale）、'r'（rotate
 translate(x, y)
 ```
 
-##### `rotate(radian)` 
+##### `rotate(radian)`
 
 ```js
 /**
@@ -951,8 +951,8 @@ new G.Shape.Rect({
 ```js
 new G.Shape.Sector({
   attrs: {
-    x: 100, // 圆心 x 坐标 
-    y: 150, // 圆心 y 坐标 
+    x: 100, // 圆心 x 坐标
+    y: 150, // 圆心 y 坐标
     r: 50, // 圆环外半径
     r0: 30, // 圆环内半径
     startAngle: -Math.PI / 3, // 起始弧度
@@ -977,6 +977,7 @@ new G.Shape.Text({
     fontVariant: 'normal',
     fill: 'red', // html5 canvas 绘图属性
     lineWidth: 1, // html5 canvas 绘图属性
+    rotate: Math.PI // 文本旋转弧度
   }
 });
 ```
@@ -1080,7 +1081,7 @@ translate(out, m, v)
 
 ```js
 /**
-  * 
+  *
   * @param  {Array} m        需要变换矩阵
   * @param  {Array} actions  变换操作集合
   * @return {Array}          返回结果

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="chart-name" content="实时折线">
+  <title> Line Chart dynamically updated over time</title>
+</head>
+
+<body>
+  <div class="chart-wrapper">
+    <canvas id="mountNode"></canvas>
+  </div>
+  <script src="https://unpkg.com/@antv/f2"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+  <script>
+    // 自定义线图变更动画
+    F2.Animate.registerAnimation('lineUpdate', function(updateShape, animateCfg) {
+      const cacheShape = updateShape.get('cacheShape'); // 该动画 shape 的前一个状态
+      const cacheAttrs = cacheShape.attrs; // 上一个 shape 属性
+      const oldPoints = cacheAttrs.points; // 上一个状态的关键点
+      const newPoints = updateShape.attr('points'); // 当前 shape 的关键点
+
+      const oldLength = oldPoints.length;
+      const newLength = newPoints.length;
+      const deltaLength = newLength - oldLength;
+
+      const firstPoint = oldPoints[0];
+      const lastPoint = newPoints[newPoints.length - 1];
+      for (let i = 0; i < deltaLength; i++) {
+        oldPoints.push(lastPoint);
+        // oldPoints.splice(0, 0, firstPoint);
+      }
+
+      updateShape.attr(cacheAttrs);
+      updateShape.animate().to({
+        attrs: {
+          points: newPoints
+        },
+        duration: 800,
+        easing: animateCfg.easing
+      });
+    });
+
+    const data = [];
+    // 添加数据，模拟数据，可以指定当前时间的偏移的秒
+    function getRecord(offset) {
+      offset = offset || 0;
+      return {
+        time: new Date().getTime() + offset * 1000,
+        value: Math.random() + 10
+      };
+    }
+
+    data.push(getRecord(-2));
+    data.push(getRecord(-1));
+    data.push(getRecord());
+
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
+      pixelRatio: window.devicePixelRatio
+    });
+
+    const defs = {
+      time: {
+        type: 'timeCat',
+        mask: 'HH:mm:ss',
+        range: [0, 1]
+      },
+      value: {
+        tickCount: 5,
+        min: 8
+      }
+    };
+    chart.source(data, defs);
+    chart.axis('time', {
+      label(text, index, total) {
+        const textCfg = {
+          text: ''
+        };
+        if (index === 0) {
+          textCfg.textAlign = 'left';
+          textCfg.text = text;
+        }
+        if (index === total - 1) {
+          textCfg.textAlign = 'right';
+          textCfg.text = text;
+        }
+        return textCfg;
+      }
+    });
+
+    chart
+      .line()
+      .position('time*value')
+      .animate({
+        update: {
+          animation: 'lineUpdate'
+        }
+      });
+
+    chart.render();
+
+    setInterval(function () {
+      data.push(getRecord());
+      chart.changeData(data);
+    }, 1000);
+  </script>
+</body>
+</html>
