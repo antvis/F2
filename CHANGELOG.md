@@ -1,3 +1,18 @@
+#### 3.1.5 (2018-05-04)
+
+##### New Features
+
+* Support for rotation of text shapes. ([8d01b4d6](https://github.com/antvis/f2/commit/8d01b4d6a18f330fb5a4df8a219f37c970cf4658))
+* Support polar coordinate grid lines can be drawn as arcs. ([e8178a99](https://github.com/antvis/f2/commit/e8178a99926e20103ed74cd8f2eb2c063869f5ae))
+
+##### Bug Fixes
+
+* Optimize shape's unique id generation strategy. ([09036bad](https://github.com/antvis/f2/commit/09036badea11bbab4d1213c3f45639b91f3e9a44))
+* add isCategory property for TimeCat scale. ([6299df3a](https://github.com/antvis/f2/commit/6299df3a8d60fd3117db48d830fe575cafb18441))
+* **animate:** fixed issue where geometry animation could not be closed. ([e0c39b2b](https://github.com/antvis/f2/commit/e0c39b2b229d57019c50e79105a12cdf71d61325))
+* **theme:** adjust axis-line's display position. ([423b05cc](https://github.com/antvis/f2/commit/423b05ccd7b52fa03e89bad4b519e686b6a9e621))
+
+
 #### 3.1.4 (2018-05-02)
 
 ##### Chores
@@ -150,9 +165,9 @@
     easing: 'elastic',
     success: function() {
       alert('ok');
-    } 
+    }
    });
-   
+
    // 3.0
    chart.animate({
     type: 'wavec',
@@ -160,10 +175,10 @@
     easing: 'elastic',
     success: function() {
       alert('ok');
-    } 
+    }
    });
   ```
-  
+
 * new chart() 时的配置项
   + margin 改成 padding
   为了升级方面，margin 还保留支持
@@ -177,10 +192,10 @@
     padding: 20
   });
   ```
-  
+
   + 增加 width, height 属性，可以不在 canvas 上指定宽高
   + 增加 pixelRatio 属性
-  
+
 * intevalStack,intervalDodge,areaStack 不再在chart 上支持 ==不兼容==
 
   F2 3.0 所有的geomety 都支持数据调整
@@ -190,7 +205,7 @@
   // 3.0
   chart.interval().position().adjust('stack')
   ```
-  
+
 * 自定义Shape 的接口，更改了函数名称，但是保留原先函数名的支持
   + registShape 改成  registerShape
   + getShapePoints 改成 getPoints
@@ -202,13 +217,13 @@
     getShapePoints(cfg) {},
   drawShape(cfg, canvas) {}
   });
-  
+
   G2.Shape.registerShape('interval', 'custom', {
     getPoints(cfg) {},
   draw(cfg, canvas) {}
   });
   ```
-  
+
 * 时间分类（timeCat) 类型数据的 mask 改成标准格式 ==不兼容==
     新的 mask 参考[fecha](https://github.com/taylorhakes/fecha)
 
