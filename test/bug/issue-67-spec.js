@@ -57,13 +57,14 @@ describe('getSnapRecords', () => {
 
     let records;
     canvas.onclick = ev => {
-      const point = chart.get('canvas').getPointByClient(ev.clientX, ev.clientY);
+      const point = F2.Util.getRelativePosition({ x: ev.clientX, y: ev.clientY }, chart.get('canvas'));
       records = chart.getSnapRecords(point);
+      console.log(records);
     };
 
     gestureSimulator(canvas, 'click', {
-      clientX: 231,
-      clientY: 61
+      clientX: 218,
+      clientY: 52
     });
 
     setTimeout(function() {

@@ -675,13 +675,16 @@ class Geom extends Base {
 
     // 特别针对饼图做处理
     if (this.hasAdjust('stack') && coord.isPolar && coord.transposed && xScale.values.length === 1) {
-      let yValue = yScale.invert(invertPoint.y);
-      yValue = self._getSnap(yScale, yValue, tmp);
-      tmp.forEach(function(obj) {
-        if (Util.isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
-          rst.push(obj);
-        }
-      });
+      if (invertPointX >= 0 && invertPointX <= 1) { // 精确拾取
+        let yValue = yScale.invert(invertPoint.y);
+        yValue = self._getSnap(yScale, yValue, tmp);
+        tmp.forEach(obj => {
+          if (Util.isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
+            rst.push(obj);
+          }
+        });
+      }
+
     } else {
       rst = tmp;
     }
