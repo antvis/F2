@@ -240,8 +240,8 @@ class LegendController {
     const self = this;
     const { tl, bl } = self.plotRange;
     const chart = self.chart;
-    const offsetX = legend.offsetX || 0;
-    const offsetY = legend.offsetY || 0;
+    let offsetX = legend.offsetX || 0;
+    let offsetY = legend.offsetY || 0;
     const chartWidth = chart.get('width');
     const chartHeight = chart.get('height');
     const appendPadding = chart.get('appendPadding');
@@ -278,6 +278,12 @@ class LegendController {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;
       }
+    }
+    if (position === 'bottom' && offsetY > 0) {
+      offsetY = 0;
+    }
+    if (position === 'right' && offsetX > 0) {
+      offsetX = 0;
     }
     legend.moveTo(x + offsetX, y + offsetY);
   }
@@ -457,8 +463,14 @@ module.exports = {
         const height = legend.getHeight();
         if (position === 'top' || position === 'bottom') {
           padding = Math.max(padding, height);
+          if (legend.offsetY > 0) {
+            padding += legend.offsetY;
+          }
         } else {
           padding = Math.max(padding, width);
+          if (legend.offsetX > 0) {
+            padding += legend.offsetX;
+          }
         }
       });
       legendRange[position] = padding + appendPadding;
