@@ -68,13 +68,16 @@ class GuideController {
 
   paint(coord) {
     const self = this;
-    const guides = self.guides;
-    const xScale = self.xScale;
-    const yScales = self.yScales;
+    const { chart, guides, xScale, yScales } = self;
     Util.each(guides, function(guide) {
       guide.xScale = xScale;
       guide.yScales = yScales;
-      const container = guide.top ? self.frontPlot : self.backPlot;
+      let container;
+      if (guide.type === 'regionFilter') {
+        guide.chart = chart;
+      } else {
+        container = guide.top ? self.frontPlot : self.backPlot;
+      }
       guide.render(coord, container);
     });
   }
@@ -121,6 +124,10 @@ class GuideController {
   tag(cfg = {}) {
     return this._createGuide('tag', cfg);
   }
+
+  regionFilter(cfg = {}) {
+    return this._createGuide('regionFilter', cfg);
+  }
 }
 
 module.exports = {
@@ -153,6 +160,7 @@ module.exports = {
     const coord = chart.get('coord');
     guideController.xScale = xScale;
     guideController.yScales = yScales;
+    guideController.chart = chart; // 为了绘制 region-filter
     guideController.paint(coord);
   },
   clear(chart) {

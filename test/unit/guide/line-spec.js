@@ -5,6 +5,11 @@ const { Line } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
 describe('Guide.Line', function() {
+
+  const canvas1 = document.createElement('canvas');
+  canvas1.id = 'guide';
+  document.body.appendChild(canvas1);
+
   const coord = new Coord.Rect({
     start: { x: 60, y: 460 },
     end: { x: 460, y: 60 }
