@@ -69,6 +69,7 @@ temp
 .idea
 #demos/assets/screenshots
 demos/index.html
+demos/debug.html
 
 *.sw*
 *.un~

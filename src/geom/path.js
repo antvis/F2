@@ -34,12 +34,7 @@ class Path extends Geom {
     Util.each(splitArray, function(subData, splitedIndex) {
       cfg.splitedIndex = splitedIndex; // 传入分割片段索引 用于生成id
       cfg.points = subData;
-      const gShape = shapeFactory.drawShape(cfg.shape, cfg, container);
-      if (gShape) {
-        Util.each([].concat(gShape), s => {
-          s.set('origin', data[0]); // todo
-        });
-      }
+      self.drawShape(cfg.shape, data[0], cfg, container, shapeFactory);
     });
   }
 }
