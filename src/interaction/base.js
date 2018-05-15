@@ -11,44 +11,14 @@ class Interaction {
       startEvent: 'touchstart',
       processingEvent: 'touchmove',
       endEvent: 'touchend',
-      resetEvent: 'touchstart'
+      onReset: 'touchstart'
     };
   }
 
-  _start(ev) {
-    this.preStart && this.preStart(ev);
-    this.start(ev);
-    this.onStart && this.onStart(ev);
-  }
-  _process(ev) {
-    this.preProcess && this.preProcess(ev);
-    this.process(ev);
-    this.onProcess && this.onProcess(ev);
-  }
-  _end(ev) {
-    this.preEnd && this.preEnd(ev);
-    this.end(ev);
-    this.onEnd && this.onEnd(ev);
-  }
-
-  _reset(ev) {
-    this.preReset && this.preReset(ev);
-    this.reset(ev);
-    this.onReset && this.onReset(ev);
-  }
-
-  // override
-  start() {}
-  // override
-  process() {}
-  // override
-  end() {}
-  // override
-  reset() {}
-  // override
-  bindEvents() {}
-  // override
-  clearEvents() {}
+  onStart() {}
+  onProcessing() {}
+  onEnd() {}
+  onReset() {}
 
   constructor(cfg, chart) {
     const defaultCfg = this.getDefaultCfg();
@@ -56,19 +26,21 @@ class Interaction {
     this.chart = chart;
     this.canvas = chart.get('canvas');
     this.el = chart.get('canvas').get('el'); // TODO 必须保证能够获取到 canvas 和对应的 dom
-    this._bindEvents(); // TODO
-  }
-
-  _bindEvents() {
-    this.clearEvents();
     this.bindEvents();
   }
+
+  bindEvents() {
+
+  }
+
+  clearEvents() {}
 
   destroy() {
     this.clearEvents();
   }
 }
 
+// TODO: 这里需要好好考虑清楚
 Chart._Interactions = {};
 Chart.registerInteraction = function(type, constructor) {
   Chart._Interactions[type] = constructor;
@@ -77,25 +49,32 @@ Chart.getInteraction = function(type) {
   return Chart._Interactions[type];
 };
 
-Chart.plugins.register({
-  init(chart) {
-    chart.interact = function(type, cfg) {
-      const Ctor = Chart.getInteraction(type);
-      const interact = new Ctor(cfg, this);
-      const interactions = this._interactions || {};
-      interactions[type] = interactions[type] || []; // 同名
-      interactions[type].push(interact);
-      this._interactions = interactions;
-      return this;
-    };
-  },
-  afterCanvasDestroyed(chart) {
-    const interactions = chart._interactions;
-    Util.each(interactions, collection => {
-      (collection || []).forEach(interact => {
-        interact.destroy();
-      });
-    });
-  }
-});
+// View.prototype.clearInteraction = function (type) {
+//   const me = this;
+//   const interactions = me.getInteractions();
+//   if (type) {
+//     (interactions[type] || []).forEach(interact => {
+//       interact.destroy();
+//     });
+//   } else {
+//     Util.each(interactions, collection => {
+//       (collection || []).forEach(interact => {
+//         interact.destroy();
+//       });
+//     });
+//   }
+// };
+Chart.prototype.interact = function(type, cfg) {
+  const me = this;
+  const Ctor = Chart.getInteraction(type);
+  const interact = new Ctor(cfg, me);
+  const interactions = me.get('interactions') || {};
+  interactions[type] = interactions[type] || []; // 同名
+  interactions[type].push(interact);
+  me.set('interactions', interactions);
+  return me;
+};
+
+// TODO: 如何摧毁事件
+
 module.exports = Interaction;
