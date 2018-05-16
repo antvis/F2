@@ -13,6 +13,9 @@ require('./scale/time-cat'); // timeCat 类型的度量
 
 require('./component/guide'); // 加载 guide 组件
 
+// 交互行为
+require('./interaction');
+
 const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');
 const Legend = require('./plugin/legend');
