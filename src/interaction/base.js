@@ -5,6 +5,10 @@
 const Util = require('../util/common');
 const Chart = require('../chart/chart');
 
+// TODO
+// 支持手势注册
+// 将 touch 的坐标转换为 canvas 的相对坐标
+
 class Interaction {
   getDefaultCfg() {
     return {
@@ -26,12 +30,15 @@ class Interaction {
     this.chart = chart;
     this.canvas = chart.get('canvas');
     this.el = chart.get('canvas').get('el'); // TODO 必须保证能够获取到 canvas 和对应的 dom
+    this._bindEvents();
+  }
+
+  _bindEvents() {
+    this.clearEvents();
     this.bindEvents();
   }
 
-  bindEvents() {
-
-  }
+  bindEvents() {}
 
   clearEvents() {}
 
@@ -76,5 +83,4 @@ Chart.prototype.interact = function(type, cfg) {
 };
 
 // TODO: 如何摧毁事件
-
 module.exports = Interaction;
