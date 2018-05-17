@@ -297,6 +297,18 @@ describe('chart test', () => {
       const backPlot = chart.get('backPlot');
       expect(frontPlot.get('children').length).to.equal(1);
       expect(backPlot.get('children').length).to.equal(1);
+
+      // chart be cleared, check the robustness of getSnapRecords method
+      let data;
+      const throwFn = () => {
+        try {
+          data = chart.getSnapRecords({ x: 250, y: 150 });
+        } catch (err) {
+          throw new Error(err);
+        }
+      };
+      expect(throwFn).to.not.throw();
+      expect(data).to.be.an('array').that.is.empty;
     });
 
     it('change coord', function() {

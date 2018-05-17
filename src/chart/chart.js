@@ -593,7 +593,10 @@ class Chart extends Base {
   **/
   getSnapRecords(point) {
     const geom = this.get('geoms')[0];
-    const data = geom.getSnapRecords(point);
+    let data = [];
+    if (geom) { // need to judge
+      data = geom.getSnapRecords(point);
+    }
     return data;
   }
 
