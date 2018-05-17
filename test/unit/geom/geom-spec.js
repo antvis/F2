@@ -287,6 +287,7 @@ describe('test geom point', function() {
     geom.position('a*b').color('c');
     geom.init();
     geom.paint();
+    expect(geom.get('dataArray').length).to.equal(2);
   });
   it('draw points y is array', function() {
     data = [{ a: 4, b: [ 3, 5 ], c: '1' }, { a: 5, b: [ 2, 4 ], c: '2' }];
@@ -297,6 +298,18 @@ describe('test geom point', function() {
     });
     geom.init();
     geom.paint();
+    expect(geom.get('dataArray').length).to.equal(1);
+    expect(geom.get('dataArray')[0].length).to.equal(2);
+  });
+  it('has stack adjust', function() {
+    data = [{ a: 4, b: 3, c: '1' }, { a: 4, b: 2, c: '2' }];
+    geom.reset();
+    geom.set('data', data);
+    geom.position('a*b').color('c').adjust('stack');
+    geom.init();
+    geom.paint();
+    expect(geom.hasAdjust('stack')).to.be.true;
+    expect(geom.get('dataArray').length).to.equal(2);
   });
 });
 
@@ -452,10 +465,6 @@ describe('test geom line', function() {
     clearCanvas(canvas);
   });
 });
-
-// function equal(v1, v2) {
-//   return Math.abs(v1 - v2) < 0.001;
-// }
 
 describe('test geom area', function() {
   const data = [

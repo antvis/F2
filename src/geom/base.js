@@ -480,13 +480,18 @@ class Geom extends Base {
       obj.index = index;
       const cfg = self.getDrawCfg(obj);
       const shape = obj.shape;
-      const gShape = shapeFactory.drawShape(shape, cfg, container);
-      if (gShape) {
-        Util.each([].concat(gShape), s => {
-          s.set('origin', obj); // todo
-        });
-      }
+      self.drawShape(shape, obj, cfg, container, shapeFactory);
     });
+  }
+
+  drawShape(shape, shapeData, cfg, container, shapeFactory) {
+    const gShape = shapeFactory.drawShape(shape, cfg, container);
+
+    if (gShape) {
+      Util.each([].concat(gShape), s => {
+        s.set('origin', shapeData); // todo
+      });
+    }
   }
 
   _generatePoints(data) {
