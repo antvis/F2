@@ -27,7 +27,7 @@ class Rect extends Shape {
 
     context.beginPath();
     let radius = attrs.radius;
-    if (!radius) {
+    if (!radius || !(width * height)) {
       context.rect(x, y, width, height);
     } else {
       radius = Util.parsePadding(radius);

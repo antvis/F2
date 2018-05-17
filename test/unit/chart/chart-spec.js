@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 const Chart = require('../../../src/chart/chart');
 const Tooltip = require('../../../src/plugin/tooltip');
+const Legend = require('../../../src/plugin/legend');
+
 require('../../../src/geom/index');
 require('../../../src/geom/shape/index');
 require('../../../src/geom/adjust/index');
@@ -106,18 +108,29 @@ describe('chart test', () => {
     });
 
     it('test plugin', function() {
-      Chart.plugins.register(Tooltip); // 注册 guide 插件
+      Chart.plugins.register(Tooltip);
       expect(Chart.plugins.count()).to.equal(1);
-      // 重复注册 guide 插件
+      // 重复注册 Tooltip 插件
       Chart.plugins.register(Tooltip);
       expect(Chart.plugins.count()).to.equal(1);
       expect(Chart.plugins.getAll()).to.eql([ Tooltip ]);
+      const cacheId = Chart.plugins._cacheId;
 
+      // chart 实例化之后注册插件
+      chart.registerPlugins([ Tooltip, Legend, Legend ]);
+      expect(Chart.plugins.count()).to.equal(1);
+      expect(Chart.plugins.getAll()).to.eql([ Tooltip ]);
+      expect(chart.get('plugins').length).to.equal(2);
+      expect(chart.tooltip).to.be.a('function');
+      expect(chart.legend).to.be.a('function');
+      expect(Chart.plugins._cacheId).to.equal(cacheId + 1);
       Chart.plugins.unregister(Tooltip);
       expect(Chart.plugins.count()).to.equal(0);
-
       Chart.plugins.clear();
       expect(Chart.plugins.count()).to.equal(0);
+
+      // 需不需要在 chart 实例上提供 unregister?
+      // 感觉没有必要....
     });
 
     it('test plot', function() {
@@ -284,6 +297,18 @@ describe('chart test', () => {
       const backPlot = chart.get('backPlot');
       expect(frontPlot.get('children').length).to.equal(1);
       expect(backPlot.get('children').length).to.equal(1);
+
+      // chart be cleared, check the robustness of getSnapRecords method
+      let data;
+      const throwFn = () => {
+        try {
+          data = chart.getSnapRecords({ x: 250, y: 150 });
+        } catch (err) {
+          throw new Error(err);
+        }
+      };
+      expect(throwFn).to.not.throw();
+      expect(data).to.be.an('array').that.is.empty;
     });
 
     it('change coord', function() {
@@ -345,9 +370,21 @@ describe('chart test', () => {
       const axisGroup = backPlot.get('children')[0];
       expect(axisGroup.get('className')).to.equal('axisContainer');
 
-      const xAxisLabel = axisGroup.get('children')[1]; // x 轴文本
+      const children = axisGroup.get('children');
+      let xAxisLabel;
+      let yAxisLabel;
+
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        if (child._id === 'axis-x-1') {
+          xAxisLabel = child;
+        }
+
+        if (child._id === 'axis-y0-0') {
+          yAxisLabel = child;
+        }
+      }
       const xAxisfont = xAxisLabel.attr('font');
-      const yAxisLabel = axisGroup.get('children')[10]; // y 轴文本
       const yAxisfont = yAxisLabel.attr('font');
       expect(xAxisfont).to.equal('normal normal normal 10px Arial'); // a 轴文本
       expect(yAxisfont).to.equal('normal normal normal 10px "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif'); // b 轴文本
@@ -361,5 +398,4 @@ describe('chart test', () => {
       }, 1500);
     });
   });
-
 });

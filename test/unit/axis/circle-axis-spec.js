@@ -97,7 +97,9 @@ describe('circle axis', function() {
       expect(axis.getTextAlignInfo(point, -5)).eql({ textAlign: 'left', textBaseline: 'middle' });
     });
 
+    it('test grid', function() {
+      const grid = axis.grid;
+      expect(grid.type === 'line');
+    });
   });
-
-
 });

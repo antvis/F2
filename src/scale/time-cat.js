@@ -41,6 +41,11 @@ class TimeCategory extends Category {
      * @type {Array}
      */
     this.values = [];
+    /**
+     * 是否分类度量
+     * @type {Boolean}
+     */
+    this.isCategory = true;
   }
 
   init() {

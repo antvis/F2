@@ -1,13 +1,14 @@
 {
   "name": "@antv/f2",
-  "version": "3.1.4",
-  "description": "A canvas library which providing 2d draw for G2.",
+  "version": "3.1.7",
+  "description": "Charts for mobile visualization.",
   "keywords": [
     "canvas",
     "f2",
     "2d draw",
     "mobile visualization",
-    "charts"
+    "charts",
+    "mobile"
   ],
   "main": "build/f2.js",
   "browser": "build/f2.js",

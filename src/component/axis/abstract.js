@@ -104,13 +104,33 @@ class Abastract {
       }
 
       if (gridCfg) {
+        const type = gridCfg.type; // grid 的类型，包含 'line' 以及 'arc'
+        const points = subPoints.points;
         const container = self.getContainer(gridCfg.top);
-        const shape = container.addShape('Polyline', {
-          className: 'axis-grid',
-          attrs: Util.mix({
-            points: subPoints.points
-          }, gridCfg)
-        });
+        let shape;
+
+        if (type === 'arc') {
+          const { center, startAngle, endAngle } = self;
+          const radius = Vector2.length([ points[0].x - center.x, points[0].y - center.y ]);
+          shape = container.addShape('Arc', {
+            className: 'axis-grid',
+            attrs: Util.mix({
+              x: center.x,
+              y: center.y,
+              startAngle,
+              endAngle,
+              r: radius
+            }, gridCfg)
+          });
+        } else {
+          shape = container.addShape('Polyline', {
+            className: 'axis-grid',
+            attrs: Util.mix({
+              points
+            }, gridCfg)
+          });
+        }
+
         shape._id = subPoints._id;
       }
     });

@@ -1,6 +1,7 @@
 /**
  * @fileOverview 面积图
- * @author dxq613@gmail.com
+ * @author dxq613 @gmail.com
+ * @author sima.zhang1990@gmail.com
  */
 
 const Geom = require('./base');
@@ -36,12 +37,7 @@ class Area extends Geom {
         return obj.points;
       });
       cfg.points = points;
-      const gShape = shapeFactory.drawShape(cfg.shape, cfg, container);
-      if (gShape) {
-        Util.each([].concat(gShape), s => {
-          s.set('origin', data[0]); // todo
-        });
-      }
+      self.drawShape(cfg.shape, data[0], cfg, container, shapeFactory);
     });
   }
 }

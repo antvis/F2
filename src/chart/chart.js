@@ -24,7 +24,7 @@ class Chart extends Base {
       _cacheId: 0,
       register(plugins) {
         const p = this._plugins;
-        ([]).concat(plugins).forEach(function(plugin) {
+        ([]).concat(plugins).forEach(plugin => {
           if (p.indexOf(plugin) === -1) {
             p.push(plugin);
           }
@@ -34,7 +34,7 @@ class Chart extends Base {
       },
       unregister(plugins) {
         const p = this._plugins;
-        ([]).concat(plugins).forEach(function(plugin) {
+        ([]).concat(plugins).forEach(plugin => {
           const idx = p.indexOf(plugin);
           if (idx !== -1) {
             p.splice(idx, 1);
@@ -85,7 +85,7 @@ class Chart extends Base {
         const plugins = [];
         const descriptors = [];
 
-        this._plugins.concat((chart && chart.get('plugins')) || []).forEach(function(plugin) {
+        this._plugins.concat((chart && chart.get('plugins')) || []).forEach(plugin => {
           const idx = plugins.indexOf(plugin);
           if (idx !== -1) {
             return;
@@ -593,7 +593,10 @@ class Chart extends Base {
   **/
   getSnapRecords(point) {
     const geom = this.get('geoms')[0];
-    const data = geom.getSnapRecords(point);
+    let data = [];
+    if (geom) { // need to judge
+      data = geom.getSnapRecords(point);
+    }
     return data;
   }
 
@@ -661,6 +664,22 @@ class Chart extends Base {
       }
     });
     return rst;
+  }
+
+  // 注册插件
+  registerPlugins(plugins) {
+    const self = this;
+    const chartPlugins = [];
+    plugins = [].concat(plugins);
+
+    plugins.concat(self.get('plugins') || []).forEach(plugin => {
+      if (chartPlugins.indexOf(plugin) === -1) {
+        plugin.init && plugin.init(self); // 进行初始化
+        chartPlugins.push(plugin);
+      }
+    });
+    Chart.plugins._cacheId++;
+    self.set('plugins', chartPlugins);
   }
 
   _renderAxis() {
