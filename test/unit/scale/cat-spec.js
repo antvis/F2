@@ -168,7 +168,7 @@ describe('scale time cat', function() {
   it('scale', function() {
     expect(scale.scale(1441296000000)).to.be.equal(0);
     expect(scale.scale(2)).to.be.equal(1);
-    expect(scale.scale('2015/10/06')).to.be.equal(0);
+    expect(scale.scale('2015/10/06')).to.be.NaN;
   });
 
   it('invert', function() {
@@ -229,5 +229,14 @@ describe('scale time cat', function() {
     });
     const text = scale.getText('1519084800000');
     expect(text).to.be.equal('time is 1519084800000'); // 原始值
+  });
+
+  it('scale scale a value not in scale values', () => {
+    const scale = new Scale.TimeCat({
+      values: [ 1519084800000, 1519171200000, 1519257600000 ]
+    });
+
+    const scaledValue = scale.scale(1441296000000);
+    expect(scaledValue).to.be.NaN;
   });
 });
