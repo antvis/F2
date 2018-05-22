@@ -129,6 +129,23 @@ describe('chart test', () => {
       Chart.plugins.clear();
       expect(Chart.plugins.count()).to.equal(0);
 
+      // 不可重复初始化插件
+      let count = 0;
+      const aPlugin = {
+        init() {
+          count++;
+        }
+      };
+      chart.set('plugins', aPlugin); // 已经注册了
+      chart.registerPlugins(aPlugin);
+      expect(count).to.equal(0);
+
+      chart.set('plugins', null);
+      chart.registerPlugins(aPlugin);
+      chart.registerPlugins([ aPlugin ]);
+      expect(count).to.equal(1);
+
+
       // 需不需要在 chart 实例上提供 unregister?
       // 感觉没有必要....
     });
