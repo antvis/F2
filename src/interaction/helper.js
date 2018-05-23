@@ -25,7 +25,7 @@ module.exports = {
       if (type === 'timeCat') {
         max = scale._toTimeStamp(max); // 转换为时间戳
       }
-      if (max < value) {
+      if (max <= value) {
         return true;
       }
     }
@@ -45,7 +45,7 @@ module.exports = {
       if (type === 'timeCat') {
         min = scale._toTimeStamp(min); // 转换为时间戳
       }
-      if (min > value) {
+      if (min >= value) {
         return true;
       }
     }
