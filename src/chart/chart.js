@@ -670,10 +670,11 @@ class Chart extends Base {
   registerPlugins(plugins) {
     const self = this;
     let chartPlugins = self.get('plugins') || [];
-    chartPlugins = [].concat(chartPlugins);
-    plugins = [].concat(plugins);
+    if (!Util.isArray(chartPlugins)) {
+      chartPlugins = [ chartPlugins ];
+    }
 
-    plugins.forEach(plugin => {
+    ([]).concat(plugins).forEach(plugin => {
       if (chartPlugins.indexOf(plugin) === -1) {
         plugin.init && plugin.init(self); // 进行初始化
         chartPlugins.push(plugin);
