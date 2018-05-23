@@ -28,7 +28,8 @@ const DEFAULT_CFG = {
   },
   unCheckColor: '#bfbfbf',
   itemWidth: 'auto',
-  wordSpace: 6
+  wordSpace: 6,
+  selectedMode: 'multiple' // 'multiple' or 'single'
 };
 
 // Register the default configuration for Legend
@@ -334,22 +335,31 @@ class LegendController {
     const clicked = findItem(x, y);
     if (clicked && clicked.clickedLegend.clickable !== false) {
       const { clickedItem, clickedLegend } = clicked;
-      if (clickedLegend.onClick) {
+      if (clickedLegend.onClick) { // 用户自定义点击行为
         ev.clickedItem = clickedItem;
         clickedLegend.onClick(ev);
-      } else if (!clickedLegend.custom) {
-        const filterVals = clickedLegend.filterVals;
-        const field = clickedLegend.field;
+      } else if (!clickedLegend.custom) { // 进入组件默认事件处理逻辑
         const checked = clickedItem.get('checked');
         const value = clickedItem.get('dataValue');
-        if (!checked) {
-          filterVals.push(value);
+        const { filterVals, field, selectedMode } = clickedLegend;
+        const isSingeSelected = selectedMode === 'single';
+
+        if (isSingeSelected) {
+          chart.filter(field, val => {
+            return val === value;
+          });
         } else {
-          Util.Array.remove(filterVals, value);
+          if (!checked) {
+            filterVals.push(value);
+          } else {
+            Util.Array.remove(filterVals, value);
+          }
+
+          chart.filter(field, val => {
+            return filterVals.indexOf(val) !== -1;
+          });
         }
-        chart.filter(field, val => {
-          return filterVals.indexOf(val) !== -1;
-        });
+
         chart.repaint();
       }
     }
