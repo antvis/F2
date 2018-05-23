@@ -63,7 +63,7 @@ const Helpers = {
   },
   getClip(coord) {
     const { start, end, width, height } = Helpers.getCoordInfo(coord);
-    const margin = 200;
+    const margin = 0;
     let clip;
 
     if (coord.isPolar) {

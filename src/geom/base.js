@@ -304,6 +304,9 @@ class Geom extends Base {
     if (xScale.type !== 'identity' && xScale.values.length > 1) {
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
+          if (xScale.type === 'timeCat') {
+            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][xField]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][xField]);
+          }
           return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
         });
       });

@@ -11,23 +11,25 @@ class PieSelect extends Interaction {
       appendRadius: 8, // 光环的大小
       style: {
         fillOpacity: 0.5
-      },
-      onselected: null // 选中的结果
+      }
+      // onSelected: null // 选中的结果
     });
   }
 
   bindEvents() {
-    const { el, startEvent } = this;
-    this.startEventListener = Util.addEventListener(el, startEvent, Util.wrapBehavior(this, 'onStart'));
+    const { el, startEvent, endEvent } = this;
+    this.startEventListener = Util.addEventListener(el, startEvent, Util.wrapBehavior(this, '_start'));
+    this.endEventListener = Util.addEventListener(el, endEvent, Util.wrapBehavior(this, '_end'));
   }
 
   clearEvents() {
     this.startEventListener && this.startEventListener.remove();
+    this.endEventListener && this.endEventListener.remove();
   }
 
-  onStart(ev) {
+  start(ev) {
     const chart = this.chart;
-    const { x, y } = Util.createEvent(ev, chart); // TODO, 更加通用的转换方法
+    const { x, y } = Util.createEvent(ev, chart);
 
     this.halo && this.halo.remove(true);
 
@@ -84,13 +86,13 @@ class PieSelect extends Interaction {
         this.canvas.draw();
       }
     }
+  }
 
-    if (this.onselected) {
-      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
-      ev.shapeInfo = selectedShape.get('origin');
-      ev.shape = selectedShape;
-      this.onselected(ev);
-    }
+  end(ev) {
+    const selectedShape = this.lastShape;
+    ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
+    ev.shapeInfo = selectedShape.get('origin');
+    ev.shape = selectedShape;
   }
 }
 
