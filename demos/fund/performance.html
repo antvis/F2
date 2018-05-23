@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <title>某基业绩走势图</title>
+  <!-- <link rel="stylesheet" href="./assets/common.css"> -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div>
+  <canvas id="mountNode" style="position: relative;">
+  </canvas>
+</div>
+<script src="../assets/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
+<script src="../../build/f2.js"></script>
+<script>
+  const colorMap = {
+    '本基金': '#1890FF',
+    '沪深300': '#5CDBD3',
+    '同类平均': '#B37FEB'
+  };
+  const sizeMap = {
+    '本基金': 2,
+    '沪深300': 1,
+    '同类平均': 1
+  };
+  // 处理数据
+  $.getJSON('./data/performance/one-month.json', json => {
+    const source = [];
+    json.forEach(obj => {
+      const { name, data } = obj;
+      data.forEach(item => {
+        const obj = {};
+        obj.name = name;
+        obj.reportDateTimestamp = item[0]; // 时间
+        obj.reportDate = moment(item[0]).format('YYYY-MM-DD');
+        obj.rate = item[1]; // 收益率
+        source.push(obj);
+      });
+    });
+
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: 269,
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.source(source, {
+      reportDate: {
+        type: 'timeCat',
+        tickCount: 3,
+        range: [ 0, 1 ],
+        mask: 'MM-DD'
+      },
+      rate: {
+        tickCount: 5
+      },
+      name: {
+        values: [ '本基金', '沪深300', '同类平均' ]
+      }
+    });
+    chart.axis('reportDate', {
+      line: null,
+      label(text, index, total) {
+        const cfg = {};
+        if (index === 0) {
+          cfg.textAlign = 'start';
+        } else if (index === (total - 1)) {
+          cfg.textAlign = 'end';
+        }
+        return cfg;
+      }
+    });
+    chart.axis('rate', {
+      label(text) {
+        text = text * 1;
+        const cfg = {
+          text: text.toFixed(2) + '%'
+        };
+        if (text > 0) {
+          cfg.text = '+' + cfg.text;
+        } else if (text === 0) {
+          cfg.fill = '#000';
+          cfg.fontWeight = 'bold';
+        }
+        return cfg;
+      },
+      grid(text, index) {
+        if (text == 0) {
+          return {
+            lineDash: null
+          };
+        }
+      }
+    });
+    chart.legend({
+      marker(x, y, r, ctx) {
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.moveTo(x - 3, y);
+        ctx.lineTo(x + 3, y);
+        ctx.stroke();
+      }
+    });
+    chart.tooltip({
+      custom: true,
+      onChange: function onChange(obj) {
+        var legend = chart.get('legendController').legends.top[0];
+        var tooltipItems = obj.items;
+        var legendItems = legend.items;
+        var map = {};
+        legendItems.map(function (item) {
+          map[item.name] = _.clone(item);
+        });
+        tooltipItems.map(function (item) {
+          var name = item.name;
+          var value = item.value;
+          if (map[name]) {
+            map[name].value = value > 0 ? '+' + value + '%' : value + '%';
+          }
+        });
+        legend.setItems(_.values(map));
+      },
+      onHide: function onHide() {
+        var legend = chart.get('legendController').legends.top[0];
+        legend.setItems(chart.getLegendItems().country);
+      }
+    });
+    chart.line()
+      .position('reportDate*rate')
+      .color('name', val => {
+        return colorMap[val];
+      })
+      .size('name', val => {
+        return sizeMap[val];
+      });
+    chart.render();
+  });
+</script>
+</body>
+</html>

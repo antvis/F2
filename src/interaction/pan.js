@@ -21,6 +21,7 @@ class Pan extends Interaction {
       currentDeltaX: null,
       currentDeltaY: null,
       panning: false
+      // animate: null // TODO
     });
   }
 
@@ -69,6 +70,13 @@ class Pan extends Interaction {
     const self = this;
     self.currentDeltaX = null;
     self.currentDeltaY = null;
+    const chart = self.chart;
+    if (chart.get('animate') !== false) {
+      chart.animate({
+        'axis-grid': false
+      });
+    }
+
     // setTimeout(() => {
     //   self.panning = false;
     //   if (self.onPanend) {
@@ -107,7 +115,13 @@ class Pan extends Interaction {
         isScaled = self._panScale(yScale, deltaY, range, 'y');
       });
     }
-    isScaled && chart.repaint();
+    if (isScaled) {
+      chart.animate({
+        'axis-grid': false
+      });
+      chart.repaint();
+    }
+    // isScaled && chart.repaint();
   }
 
   _panScale(scale, delta, range, flag) {
