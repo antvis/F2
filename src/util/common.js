@@ -306,38 +306,46 @@ Util.Array = {
     }
     return rst;
   },
-  group(data, condition) {
-    if (!condition) {
+  group(data, fields, appendConditions = {}) {
+    if (!fields) {
       return [ data ];
     }
-    const groups = Util.Array.groupToMap(data, condition);
+    const groups = Util.Array.groupToMap(data, fields);
     const array = [];
-    for (const i in groups) {
-      array.push(groups[i]);
+    // 这里就默认按照第一个指定了 values 的列进行排序
+    if (fields.length === 1 && appendConditions[fields[0]]) {
+      const values = appendConditions[fields[0]];
+      Util.each(values, value => {
+        value = '_' + value;
+        array.push(groups[value]);
+      });
+    } else {
+      for (const i in groups) {
+        array.push(groups[i]);
+      }
     }
+
     return array;
   },
-  groupToMap(data, condition) {
-    if (!condition) {
+  groupToMap(data, fields) {
+    if (!fields) {
       return {
         0: data
       };
     }
-    if (!Util.isFunction(condition)) {
-      const paramsCondition = Util.isArray(condition) ? condition : condition.replace(/\s+/g, '').split('*');
-      condition = function(row) {
-        let unique = '_'; // 避免出现数字作为Key的情况，会进行按照数字的排序
-        for (let i = 0, l = paramsCondition.length; i < l; i++) {
-          unique += row[paramsCondition[i]] && row[paramsCondition[i]].toString();
-        }
-        return unique;
-      };
-    }
+
+    const callback = function(row) {
+      let unique = '_'; // 避免出现数字作为Key的情况，会进行按照数字的排序
+      for (let i = 0, l = fields.length; i < l; i++) {
+        unique += row[fields[i]] && row[fields[i]].toString();
+      }
+      return unique;
+    };
 
     const groups = {};
     for (let i = 0, len = data.length; i < len; i++) {
       const row = data[i];
-      const key = condition(row);
+      const key = callback(row);
       if (groups[key]) {
         groups[key].push(row);
       } else {
