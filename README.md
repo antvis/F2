@@ -1,45 +1,61 @@
-# F2: 基于 HTML5 Canvas，开箱即用的移动端可视化解决方案
+# F2: Mobile data visualization solution, pure in JavaScript
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2)
+[![Package Quality](http://npm.packagequality.com/badge/@antv/f2.png)](http://packagequality.com/#?package=@antv/f2)
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
-F2（Fast & Flexible），是专为移动端定制的一套开箱即用的可视化解决方案，基于图形语法理论，具有精简、高性能、易扩展的特性，适用于对性能、大小、扩展性要求严苛的场景。
+F2 is a out-of-box visualization solution tailored to the **mobile devices**. F2 is based on [**the grammar of graphics**](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), and it is light-weighted, high-performance and easily expandable. F2 is designed for harsh scenarios where performance, size and scalability is extremely high demand.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
 
-**在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
+**Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.**
 
-## 安装
+## Installation
 
 ```bash
 $ npm install @antv/f2
 ```
 
-## 特性
+## Features
 
-- ✔︎ 体验优雅：基于 AntV 完整的移动端可视化设计体系
-- ✔︎ 扩展灵活：可自定义 Shape、动画，图表组件灵活可配，满足无限创意
-- ✔︎ 绘制迅速：性能极致追求，针对移动设备做了大量的优化
-- ✔︎ 体积小巧：在支持丰富（45+）图表的基础上保持代码量的小巧
+- ✔︎ Elegant user experience: Designed for mobile experience
+- ✔︎ Flexible: Customizable shapes and animations, flexible charting components, infinite creativity
+- ✔︎ High performance: F2 pursues the utltimate performance for drawing, lots of optimization have been done for mobile devices
+- ✔︎ Light-weighed: F2 maintains a compact code size while supporting more than 45 kinds of charts
 
-## 多端支持
+## Other runtime 
 
-- Node：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
-- 微信小程序：https://github.com/antvis/wx-f2
-- 支付宝小程序：https://github.com/antvis/my-f2
+- F2 on **Node.js** ：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
+- F2 on [WebChart miniprogram](https://mp.weixin.qq.com/cgi-bin/wx): https://github.com/antvis/wx-f2
+- F2 on [Ant miniprogram](https://mini.open.alipay.com/channel/miniIndex.htm): https://github.com/antvis/my-f2
 
-## 文档
+## Website && Documentations
 
-- [使用教程](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
-- [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
-- [Gallery](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
+- [Website](https://antv.alipay.com/zh-cn/f2/3.x/index.html)
 
-## 快速开始
+* Chinese documents
+  - [Tutorials](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
+  - [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
+
+* English documents (beta version)
+  - [Tutorials]()
+  - [API]()
+
+## Demos
+
+- [Chart Demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
+- [Gallery](https://codepen.io/collection/AOpMaW/)
+
+**Or see demos in mobile:**
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
+
+
+## Getting Started
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/vNBNIGvCiIwqLwaYjWUy.png" width="375">
 
@@ -72,36 +88,30 @@ chart.interval().position('year*sales');
 chart.render();
 ```
 
-更多示例：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)。
 
-**手机扫码观看 demos**
-
-<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
-
-
-## 本地开发
+## Development
 
 ```bash
 $ npm install
 
-# 跑测试用例
+# run test case
 $ npm run test-live
 
-# 监听文件变化构建，并打开 demo 页面
+# build watching file changes and run demos
 $ npm run dev
 
-# 打开 demo
+# run demos
 $ npm run demos
 
-# 按需打包
+# run pack
 $ npm run bundler
 ```
 
-## 如何贡献
+## How to Contribute
 
-如果您在使用的过程中碰到问题，可以先通过 [issues](https://github.com/antvis/f2/issues) 看看有没有类似的 bug 或者建议。
+Please let us know how can we help. Do check out [issues](https://github.com/antvis/f2/issues) for bug reports or suggestions first.
 
-如需提交代码，请遵从我们的[贡献指南](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md)。
+To become a contributor, please follow our [contributing guide](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md).
 
 ## License
 
