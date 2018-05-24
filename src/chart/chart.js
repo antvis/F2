@@ -265,10 +265,12 @@ class Chart extends Base {
   _initGeoms(geoms) {
     const coord = this.get('coord');
     const data = this.get('filteredData');
+    const colDefs = this.get('colDefs');
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
       geom.set('data', data);
       geom.set('coord', coord);
+      geom.set('colDefs', colDefs);
       geom.init();
     }
   }

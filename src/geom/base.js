@@ -109,8 +109,7 @@ class Geom extends Base {
   // 分组数据
   _groupData(data) {
     const self = this;
-    const chart = self.get('chart');
-    const colDefs = chart.get('colDefs');
+    const colDefs = self.get('colDefs');
     const groupScales = self._getGroupScales();
     if (groupScales.length) {
       const appendConditions = {};
@@ -119,7 +118,7 @@ class Geom extends Base {
         const field = scale.field;
         names.push(field);
         if (colDefs && colDefs[field] && colDefs[field].values) { // 用户指定了顺序
-          appendConditions[scale.field] = scale.values;
+          appendConditions[scale.field] = colDefs[field].values;
         }
       });
       return Util.Array.group(data, names, appendConditions);
