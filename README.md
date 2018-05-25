@@ -5,9 +5,10 @@
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2)
-[![Package Quality](http://npm.packagequality.com/badge/@antv/f2.png)](http://packagequality.com/#?package=@antv/f2)
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
+
+[中文 README](./README.zh-CN.md)
 
 F2 is a out-of-box visualization solution tailored to the **mobile devices**. F2 is based on [**the grammar of graphics**](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), and it is light-weighted, high-performance and easily expandable. F2 is designed for harsh scenarios where performance, size and scalability is extremely high demand.
 
@@ -23,12 +24,12 @@ $ npm install @antv/f2
 
 ## Features
 
-- ✔︎ Elegant user experience: Designed for mobile experience
-- ✔︎ Flexible: Customizable shapes and animations, flexible charting components, infinite creativity
-- ✔︎ High performance: F2 pursues the utltimate performance for drawing, lots of optimization have been done for mobile devices
-- ✔︎ Light-weighed: F2 maintains a compact code size while supporting more than 45 kinds of charts
+- ✔︎ **Elegant user experience**: Designed for mobile experience
+- ✔︎ **Flexible**: Customizable shapes and animations, flexible charting components, infinite creativity
+- ✔︎ **High performance**: F2 pursues the utltimate performance for drawing, lots of optimization have been done for mobile devices
+- ✔︎ **Light-weighed**: F2 maintains a compact code size while supporting more than 45 kinds of charts
 
-## Other runtime 
+## Other runtime
 
 - F2 on **Node.js** ：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
 - F2 on [WebChart miniprogram](https://mp.weixin.qq.com/cgi-bin/wx): https://github.com/antvis/wx-f2
@@ -42,9 +43,7 @@ $ npm install @antv/f2
   - [Tutorials](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
   - [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
 
-* English documents (beta version)
-  - [Tutorials]()
-  - [API]()
+* English documents: on the way!
 
 ## Demos
 
@@ -52,7 +51,8 @@ $ npm install @antv/f2
 - [Gallery](https://codepen.io/collection/AOpMaW/)
 
 **Or see demos in mobile:**
-<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">
 
 
 ## Getting Started
