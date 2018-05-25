@@ -2,31 +2,288 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
   <title>某基业绩走势图</title>
-  <!-- <link rel="stylesheet" href="./assets/common.css"> -->
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif
+    }
+    .hidden {
+      display: none;
+    }
+    body {
+      background-color: #F4F6F9;
+    }
+    canvas {
+      width: 100%;
+      height: 174px;
+    }
+
+    .chart-card {
+      padding: 0;
+      margin: 12px 0;
+      background: #fff;
+    }
+    .chart-card-title {
+      width: 100%;
+      height: 45px;
+      box-shadow: 0 1px 0 0 #E8E8E8;
+      padding: 0 16px;
+      color: rgba(0, 0, 0, .65);
+      font-size: 16px;
+      line-height: 45px;
+      vertical-align: middle;
+    }
+    .chart-legend {
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      vertical-align: middle;
+      padding: 0 16px;
+      font-size: 12px;
+      color: #808080;
+    }
+    .item {
+      display: inline;
+      padding-right: 4px;
+    }
+    .item span {
+      display: inline;
+    }
+
+    .item span.item-marker {
+      display: inline-block;
+      width: 6px;
+      height: 2px;
+      margin-right: 2px;
+      margin-top: -1px;
+      border-radius: 3px;
+      vertical-align: middle;
+      opacity: 0.5;
+    }
+    .item-value {
+      color: #2E2E2E;
+    }
+    .tab {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      vertical-align: middle;
+      overflow-x: hidden;
+      box-shadow: 0 1px 0 0 #E8E8E8;
+    }
+    .tab .time-button {
+      font-size: 0.8125rem;
+      color: #808080;
+      background-color: #FBFBFC;
+      width: 20%;
+      text-align: center;
+      float: left;
+      font-weight: 400;
+      white-space: nowrap;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid #E8E8E8;
+    }
+    .tab .time-button.focus, .tab .time-button:focus {
+      outline: 0;
+    }
+    .tab .time-button:focus, .tab .time-button:hover {
+      text-decoration: none;
+    }
+    .tab .time-button.active {
+      background: #fff;
+      color: #2e2e2e;
+      border-top: 1px solid #FFFFFF;
+      border-left: 1px solid #e8e8e8;
+      border-right: 1px solid #e8e8e8;
+    }
+    .tab .time-button.active:first-child {
+      border-left: 1px solid #FFFFFF;
+    }
+    .tab .time-button.active:last-child {
+      border-right: 1px solid #FFFFFF;
+    }
+    .chart-wrapper {
+      position: relative;
+    }
+
+    .tooltip-wrapper {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: #E9F1FF;
+      padding: 12px 15px 0;
+      z-index: 10;
+    }
+
+    .tooltip-title {
+      font-size: 12px;
+      line-height: 1;
+      color: #2e2e2e;
+      margin-bottom: 8px;
+    }
+
+    .tooltip-content {
+      font-size: 12px;
+      color: #808080;
+    }
+
+  </style>
 </head>
 <body>
-<div>
-  <canvas id="mountNode" style="position: relative;">
-  </canvas>
+<div class="container-fluid chart-card">
+  <div class="chart-card-title">
+    业绩走势
+  </div>
+  <!-- Content here -->
+  <div class="chart-wrapper">
+    <div class="tooltip-wrapper hidden">
+      <div class="tooltip-title" id="tooltipTitle"></div>
+      <div class="tooltip-content" id="tooltip">
+        <div class="item">
+          <span class="item-marker" style="background: #1890ff"></span>
+          <span>本基金:</span>
+          <span class="item-value" data-type="本基金">--</span>
+        </div>
+        <div class="item">
+          <span class="item-marker" style="background: #5CDBD3"></span>
+          <span>同类均值:</span>
+          <span class="item-value" data-type="同类平均">--</span>
+        </div>
+        <div class="item" style="padding-right: 0;">
+          <span class="item-marker" style="background: #B37FEB"></span>
+          <span>沪深300:</span>
+          <span class="item-value" data-type="沪深300">--</span>
+        </div>
+      </div>
+    </div>
+    <!-- 自定义 html 图表图例 -->
+    <div class="chart-legend" id="chartLegend">
+        <div class="item">
+          <span class="item-marker" style="background: #1890ff"></span>
+          <span>本基金:</span>
+          <span class="item-value" data-type="本基金">--</span>
+        </div>
+        <div class="item">
+          <span class="item-marker" style="background: #5CDBD3"></span>
+          <span>同类均值:</span>
+          <span class="item-value" data-type="同类平均">--</span>
+        </div>
+        <div class="item" style="padding-right: 0;">
+          <span class="item-marker" style="background: #B37FEB"></span>
+          <span>沪深300:</span>
+          <span class="item-value" data-type="沪深300">--</span>
+        </div>
+    </div>
+    <!-- 图表主题 -->
+    <canvas id="mountNode"></canvas>
+    <!-- 时间切换 按钮 -->
+    <div class="tab">
+      <button class="time-button active" id="one-month">近 1 月</button>
+      <button class="time-button" id="three-month">近 3 月</button>
+      <button class="time-button" id="six-month">近 6 月</button>
+      <button class="time-button" id="one-year">近 1 年</button>
+      <button class="time-button" id="three-year">近 3 年</button>
+    </div>
+  </div>
 </div>
-<script src="../assets/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
 <script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
+<script src="../assets/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="../../build/f2.js"></script>
 <script>
+  const { Animate, Util, Chart } = F2;
+  // 自定义线图变更动画
+  Animate.registerAnimation('lineUpdate', function(updateShape, animateCfg) {
+    var cacheShape = updateShape.get('cacheShape'); // 该动画 shape 的前一个状态
+    var cacheAttrs = cacheShape.attrs; // 上一个 shape 属性
+    // var geomType = cacheShape.geomType; // 图形类型
+
+    var oldPoints = cacheAttrs.points; // 上一个状态的关键点
+    var newPoints = updateShape.attr('points'); // 当前 shape 的关键点
+
+    var oldLength = oldPoints.length;
+    var newLength = newPoints.length;
+    // var deltaLength = (geomType === 'area') ? (oldLength - newLength) / 2 : (oldLength - newLength);
+    var deltaLength = oldLength - newLength;
+
+    if (deltaLength > 0 ) {
+      var firstPoint = newPoints[0];
+      var lastPoint = newPoints[newPoints.length - 1];
+
+      for (var i =0; i< deltaLength; i++) {
+        newPoints.splice(0, 0, firstPoint);
+      }
+    } else {
+      deltaLength = Math.abs(deltaLength);
+      var firstPoint1 = oldPoints[0];
+      var lastPoint1 = oldPoints[oldPoints.length - 1];
+
+      for (var k =0; k < deltaLength; k++) {
+        oldPoints.splice(0, 0, firstPoint1);
+      }
+      cacheAttrs.points = oldPoints;
+    }
+    updateShape.attr(cacheAttrs);
+    updateShape.animate().to(Util.mix({
+      attrs: {
+        points: newPoints
+      }
+    }, animateCfg));
+  });
+
   const colorMap = {
     '本基金': '#1890FF',
-    '沪深300': '#5CDBD3',
-    '同类平均': '#B37FEB'
+    '沪深300': 'rgba(92, 219, 211, 0.5)',
+    '同类平均': 'rgba(179, 127, 235, 0.5)'
   };
   const sizeMap = {
     '本基金': 2,
     '沪深300': 1,
     '同类平均': 1
   };
+
+  // 昨天的收益率，用于图例的绘制，无论时间切换维度多少，默认都会显示昨天的收益率
+  const yesterdayRates = {
+    '本基金': 14.12,
+    '沪深300': 3.71,
+    '同类平均': 3.54
+  };
+
+  // 图表绘制完成之后绘制图例
+  $('#chartLegend .item-value').each((index, ele) => {
+    const type = $(ele).data('type');
+    let value = yesterdayRates[type];
+    let color;
+    if (value > 0) {
+      value = '+' + value;
+      color = '#F5222D';
+    }
+    if (value < 0) {
+      color = '#53BC20';
+    }
+    $(ele).css({ color });
+    $(ele).text(value + '%');
+  });
+
+  const chart = new Chart({
+    id: 'mountNode',
+    pixelRatio: window.devicePixelRatio,
+    padding: [ 14, 'auto', 'auto' ]
+  });
+
   // 处理数据
   $.getJSON('./data/performance/one-month.json', json => {
     const source = [];
@@ -41,13 +298,6 @@
         source.push(obj);
       });
     });
-
-    const chart = new F2.Chart({
-      id: 'mountNode',
-      width: window.innerWidth,
-      height: 269,
-      pixelRatio: window.devicePixelRatio
-    });
     chart.source(source, {
       reportDate: {
         type: 'timeCat',
@@ -59,13 +309,18 @@
         tickCount: 5
       },
       name: {
-        values: [ '本基金', '沪深300', '同类平均' ]
+        values: [ '沪深300', '同类平均', '本基金' ]
       }
+    });
+    chart.animate({
+      'axis-label': false
     });
     chart.axis('reportDate', {
       line: null,
       label(text, index, total) {
-        const cfg = {};
+        const cfg = {
+          textAlign: 'center'
+        };
         if (index === 0) {
           cfg.textAlign = 'start';
         } else if (index === (total - 1)) {
@@ -96,38 +351,39 @@
         }
       }
     });
-    chart.legend({
-      marker(x, y, r, ctx) {
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = ctx.fillStyle;
-        ctx.moveTo(x - 3, y);
-        ctx.lineTo(x + 3, y);
-        ctx.stroke();
-      }
-    });
+    chart.legend(false); // 不使用默认图例
     chart.tooltip({
-      custom: true,
-      onChange: function onChange(obj) {
-        var legend = chart.get('legendController').legends.top[0];
-        var tooltipItems = obj.items;
-        var legendItems = legend.items;
-        var map = {};
-        legendItems.map(function (item) {
-          map[item.name] = _.clone(item);
-        });
-        tooltipItems.map(function (item) {
-          var name = item.name;
-          var value = item.value;
-          if (map[name]) {
-            map[name].value = value > 0 ? '+' + value + '%' : value + '%';
-          }
-        });
-        legend.setItems(_.values(map));
+      crosshairsStyle: {
+        stroke: '#CAD7EF'
       },
-      onHide: function onHide() {
-        var legend = chart.get('legendController').legends.top[0];
-        legend.setItems(chart.getLegendItems().country);
+      custom: true,
+      onChange(obj) {
+        const items = obj.items;
+        const title = items[0].origin.reportDate;
+
+        const rates = {};
+        items.forEach(item => {
+          rates[item.name] = item.value * 1;
+        });
+        $('#tooltipTitle').text(title);
+        $('#tooltip .item-value').each((index, ele) => {
+          const type = $(ele).data('type');
+          let value = rates[type];
+          let color;
+          if (value > 0) {
+            value = '+' + value;
+            color = '#F5222D';
+          }
+          if (value < 0) {
+            color = '#53BC20';
+          }
+          $(ele).css({ color });
+          $(ele).text(value + '%');
+        });
+        $('.tooltip-wrapper').removeClass('hidden');
+      },
+      onHide() {
+        $('.tooltip-wrapper').addClass('hidden');
       }
     });
     chart.line()
@@ -137,9 +393,56 @@
       })
       .size('name', val => {
         return sizeMap[val];
+      })
+      .animate({
+        appear: {
+          duration: 500,
+        },
+        update: {
+          animation: 'lineUpdate',
+          duration: 500
+        }
       });
     chart.render();
   });
+
+  // button 点击操作
+  $('.tab button').click(e => {
+    const target = $(e.target);
+    const id = target.attr('id');
+    if (target.hasClass('active')) {
+      return;
+    }
+
+    const currentActive = $('.tab').find('button.active');
+    currentActive.removeClass('active');
+    target.addClass('active');
+
+    const url = `./data/performance/${id}.json`;
+    $.getJSON(url, json => {
+      const source = [];
+      json.forEach(obj => {
+        const { name, data } = obj;
+        data.forEach(item => {
+          const obj = {};
+          obj.name = name;
+          obj.reportDateTimestamp = item[0]; // 时间
+          obj.reportDate = moment(item[0]).format('YYYY-MM-DD');
+          obj.rate = item[1]; // 收益率
+          source.push(obj);
+        });
+      });
+      chart.changeData(source);
+    });
+  });
+
+  // tooltip 在停止 touch 一秒后消失
+  $('#mountNode').on('touchend', e => {
+    setTimeout(() => {
+      chart.hideTooltip();
+    }, 1000);
+  })
+
 </script>
 </body>
 </html>
