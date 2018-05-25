@@ -1,3 +1,13 @@
+#### 3.1.8 (2018-05-25)
+
+##### New Features
+
+*  chart legend support single select mode. ([ebf6db35](https://github.com/antvis/f2/commit/ebf6db35349b22b8b735a6f4f28afd1580ba9074))
+
+##### Bug Fixes
+
+*  prevent same plugins repeat init. ([89874884](https://github.com/antvis/f2/commit/89874884689bf282217349be2060eb1b4ab2c33b))
+
 #### 3.1.7 (2018-05-17)
 
 ##### New Features

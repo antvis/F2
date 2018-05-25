@@ -340,7 +340,7 @@ describe('Legend Plugin', function() {
     chart.destroy();
   });
 
-  it('handle event', function(done) {
+  it('handle event, selectedMode is multiple', function(done) {
     chart = new F2.Chart({
       id: 'chart-legend',
       width: 400,
@@ -364,6 +364,41 @@ describe('Legend Plugin', function() {
       const legendController = chart.get('legendController');
       const legend = legendController.legends.top[0];
       expect(legend.items[0].checked).to.be.false;
+      chart.destroy();
+      // document.body.removeChild(canvas);
+      done();
+    }, 1000);
+  });
+
+  it('handle event, selectedMode is single', function(done) {
+    chart = new F2.Chart({
+      id: 'chart-legend',
+      width: 400,
+      height: 300,
+      plugins: Legend,
+      pixelRatio: 2
+    });
+    chart.source(data);
+    chart.legend({
+      triggerOn: 'click',
+      selectedMode: 'single'
+    });
+    chart.interval().position('genre*sold').color('genre');
+    chart.render();
+
+    gestureSimulator(canvas, 'click', {
+      clientX: 39,
+      clientY: 19
+    });
+
+    setTimeout(function() {
+      const legendController = chart.get('legendController');
+      const legend = legendController.legends.top[0];
+      const legendItems = legend.items;
+      expect(legendItems[0].checked).to.be.true;
+      for (let i = 1; i < legendItems.length; i++) {
+        expect(legendItems[1].checked).to.be.false;
+      }
       chart.destroy();
       document.body.removeChild(canvas);
       done();
