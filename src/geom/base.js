@@ -165,13 +165,6 @@ class Geom extends Base {
         }
         if (type === 'position') {
           const yScale = scales[1];
-          if (self.get('type') === 'interval') { // 柱状图起始点从0点开始
-            if (yScale.values.length) {
-              yScale.change({
-                min: Math.min(0, yScale.min)
-              });
-            }
-          }
           // 饼图需要填充满整个空间
           if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {

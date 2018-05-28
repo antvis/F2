@@ -217,6 +217,20 @@ class Chart extends Base {
         scale.range = range;
       }
     });
+
+    const geoms = this.get('geoms');
+    for (let i = 0; i < geoms.length; i++) {
+      const geom = geoms[i];
+      if (geom.get('type') === 'interval') {
+        const yScale = geom.getYScale();
+        const field = yScale.field;
+        if (!(colDefs[field] && colDefs[field].min) && yScale.min > 0 && yScale.type !== 'time') {
+          yScale.change({
+            min: 0
+          });
+        }
+      }
+    }
   }
 
   _removeGeoms() {
