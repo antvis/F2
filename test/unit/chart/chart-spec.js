@@ -411,6 +411,7 @@ describe('chart test', () => {
       setTimeout(function() {
         chart.destroy();
         expect(chart.destroyed).equal(true);
+        document.body.removeChild(canvas);
         done();
       }, 1500);
     });

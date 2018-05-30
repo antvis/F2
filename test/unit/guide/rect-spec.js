@@ -7,7 +7,7 @@ const Scale = require('../../../src/scale/index');
 describe('Guide.Rect', function() {
 
   const canvas1 = document.createElement('canvas');
-  canvas1.id = 'guide';
+  canvas1.id = 'guideRect';
   document.body.appendChild(canvas1);
 
   const coord = new Coord.Rect({
@@ -16,7 +16,7 @@ describe('Guide.Rect', function() {
   });
 
   const canvas = new Canvas({
-    el: 'guide',
+    el: 'guideRect',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -55,5 +55,6 @@ describe('Guide.Rect', function() {
     expect(children[0].attr('height')).to.equal(200);
     expect(children[0].attr('x')).to.equal(60);
     expect(children[0].attr('y')).to.equal(193.33333333333337);
+    document.body.removeChild(canvas1);
   });
 });

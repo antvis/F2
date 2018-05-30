@@ -49,6 +49,7 @@ describe('Polygon', function() {
   it('destroy', function() {
     polygon.destroy();
     expect(canvas.get('children').length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

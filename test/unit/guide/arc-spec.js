@@ -4,9 +4,9 @@ const Coord = require('../../../src/coord/index');
 const { Arc } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
-const canvas = document.createElement('canvas');
-canvas.id = 'guide';
-document.body.appendChild(canvas);
+const dom = document.createElement('canvas');
+dom.id = 'guideArc';
+document.body.appendChild(dom);
 
 describe('Guide.Arc', function() {
   const coord = new Coord.Polar({
@@ -17,7 +17,7 @@ describe('Guide.Arc', function() {
   });
 
   const canvas = new Canvas({
-    el: 'guide',
+    el: 'guideArc',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -53,5 +53,6 @@ describe('Guide.Arc', function() {
     expect(children[0].attr('r')).to.equal(200);
     expect(children[0].attr('startAngle')).to.equal(2.7488935718910694);
     expect(children[0].attr('endAngle')).to.equal(0.39269908169872403);
+    document.body.removeChild(dom);
   });
 });

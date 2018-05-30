@@ -7,7 +7,7 @@ const Scale = require('../../../src/scale/index');
 describe('Guide.Line', function() {
 
   const canvas1 = document.createElement('canvas');
-  canvas1.id = 'guide';
+  canvas1.id = 'guideLine';
   document.body.appendChild(canvas1);
 
   const coord = new Coord.Rect({
@@ -16,7 +16,7 @@ describe('Guide.Line', function() {
   });
 
   const canvas = new Canvas({
-    el: 'guide',
+    el: 'guideLine',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -72,5 +72,6 @@ describe('Guide.Line', function() {
     const children = group.get('children');
     const textShape = children[0];
     expect(textShape.attr('x2') - textShape.attr('x1')).to.equal(200);
+    document.body.removeChild(canvas1);
   });
 });

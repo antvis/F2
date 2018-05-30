@@ -48,6 +48,7 @@ describe('Sector', function() {
   it('destroy', function() {
     sector.destroy();
     expect(canvas.get('children').length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

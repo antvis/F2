@@ -836,6 +836,7 @@ describe('test schema', function() {
     it('destroy', function() {
       geom.destroy();
       expect(geom.destroyed).equal(true);
+      document.body.removeChild(dom);
     });
   });
 });

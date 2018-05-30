@@ -146,6 +146,7 @@ describe('Canvas', function() {
     expect(canvas.get('children')).to.be.an('array').that.is.empty;
     canvas.destroy();
     expect(canvas.get('destroyed')).to.be.true;
+    document.body.removeChild(dom);
   });
 });
 

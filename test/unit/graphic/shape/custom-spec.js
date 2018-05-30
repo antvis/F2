@@ -67,6 +67,7 @@ describe('Custom', function() {
   it('destroy', function() {
     house.destroy();
     expect(canvas.get('children').length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

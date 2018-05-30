@@ -69,6 +69,7 @@ describe('Rect', function() {
     canvas.add(rect);
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+    document.body.removeChild(dom);
   });
 });
 
