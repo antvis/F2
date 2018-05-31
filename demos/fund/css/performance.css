@@ -2,10 +2,6 @@
    font-family: "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif
  }
 
- .hidden {
-   display: none;
- }
-
  body {
    background-color: #F4F6F9;
  }
@@ -27,12 +23,21 @@
    height: 45px;
    box-shadow: 0 1px 0 0 #E8E8E8;
    padding: 0 16px;
-   color: rgba(0, 0, 0, .65);
+   color: rgba(0, 0, 0, .85);
    font-size: 16px;
-   font-weight: bold;
+   /* font-weight: bold; */
    line-height: 45px;
    vertical-align: middle;
  }
+
+.chart-card-footer {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  box-shadow: 0 1px 0 0 #E8E8E8, 0 -1px 0 0 #E8E8E8;
+  background-color: #FBFBFC;
+}
 
  .chart-legend {
    height: 45px;
@@ -143,6 +148,7 @@
 
  .tooltip-wrapper {
    position: absolute;
+   visibility: hidden;
    top: 0;
    bottom: 0;
    width: 100%;
@@ -150,6 +156,7 @@
    background: #E9F1FF;
    padding: 12px 12px 0;
    z-index: 10;
+  transition: visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1);
  }
 
  .tooltip-title {
@@ -170,10 +177,7 @@
  #dealMoney {
    display: none;
  }
-
-
  /*iPhone 6 横屏*/
-
  @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) {
    .chart-card {
      margin: 0;

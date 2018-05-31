@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>同类排名</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/performance.css">
+  <style>
+    .chart-header-wrapper {
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      vertical-align: middle;
+      font-size: 12px;
+      color: #808080;
+      padding: 0 16px;
+    }
+
+    .header-item {
+      float: left;
+    }
+
+    .header-item:nth-child(1) {
+      width: 40%;
+    }
+
+    .header-item:nth-child(2) {
+      width: 35%;
+    }
+
+    .header-item:nth-child(3) {
+      width: 25%;
+    }
+
+    #chartTooltip {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 30px;
+      line-height: 30px;
+      background: #E9F1FF;
+      z-index: 10;
+      transition: visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    /* ------------ */
+    .tab .time-button {
+      width: 25%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      同类排名
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <div class="chart-header-wrapper" id="chartTooltip">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="float: right;text-align: right">
+          <span>排名:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <div class="chart-header-wrapper" id="chartLegend">
+        <div class="header-item">
+          <span class="item-value">2016-12-28（昨日）</span>
+        </div>
+        <div class="header-item" style="text-align: center;">
+          <span>同类排名:</span>
+          <span class="item-value">
+            <span style="color: rgba(0, 0, 0, 0.85)">234</span>
+            <span style="color: rgba(0, 0, 0, 0.45)">/300</span>
+          </span>
+        </div>
+        <div class="header-item" style="padding-right: 0;">
+          <span>排名变动:</span>
+          <span class="item-value" style="color: #F5222D">+217</span>
+        </div>
+      </div>
+      <!-- 图表主题 -->
+      <canvas id="mountNode"></canvas>
+      <!-- 时间切换 按钮 -->
+      <div class="tab">
+        <button class="time-button active" id="one-month">近 1 月</button>
+        <button class="time-button" id="three-month">近 3 月</button>
+        <button class="time-button" id="six-month">近 6 月</button>
+        <button class="time-button" id="one-year">近 1 年</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
+  <script src="../assets/jquery-3.2.1.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="../../build/f2.js"></script>
+  <script>
+    const { Chart, Util, Animate } = F2;
+    // 自定义线图变更动画
+    Animate.registerAnimation('lineUpdate', function (updateShape, animateCfg) {
+      var cacheShape = updateShape.get('cacheShape'); // 该动画 shape 的前一个状态
+      var cacheAttrs = cacheShape.attrs; // 上一个 shape 属性
+      var geomType = cacheShape.geomType; // 图形类型
+
+      var oldPoints = cacheAttrs.points; // 上一个状态的关键点
+      var newPoints = updateShape.attr('points'); // 当前 shape 的关键点
+
+      var oldLength = oldPoints.length;
+      var newLength = newPoints.length;
+      var deltaLength = geomType === 'area' ? (oldLength - newLength) / 2 : oldLength - newLength;
+
+      if (deltaLength > 0) {
+        var firstPoint = newPoints[0];
+        var lastPoint = newPoints[newPoints.length - 1];
+
+        for (var i = 0; i < deltaLength; i++) {
+          newPoints.splice(0, 0, firstPoint);
+        }
+
+        if (geomType === 'area') {
+          for (var j = 0; j < deltaLength; j++) {
+            newPoints.push(lastPoint);
+          }
+        }
+      } else {
+        deltaLength = Math.abs(deltaLength);
+        var firstPoint1 = oldPoints[0];
+        var lastPoint1 = oldPoints[oldPoints.length - 1];
+
+        for (var k = 0; k < deltaLength; k++) {
+          oldPoints.splice(0, 0, firstPoint1);
+        }
+
+        if (geomType === 'area') {
+          for (var p = 0; p < deltaLength; p++) {
+            oldPoints.push(lastPoint1);
+          }
+        }
+
+        cacheAttrs.points = oldPoints;
+      }
+      updateShape.attr(cacheAttrs);
+      updateShape.animate().to(Util.mix({
+        attrs: {
+          points: newPoints
+        }
+      }, animateCfg));
+    });
+
+    const chart = new Chart({
+      id: 'mountNode',
+      pixelRatio: window.devicePixelRatio,
+      padding: [14, 'auto', 'auto']
+    });
+
+    // 处理数据
+    $.getJSON('./data/rank/one-month.json', data => {
+      chart.source(data, {
+        date: {
+          type: 'timeCat',
+          tickCount: 3,
+          range: [0, 1]
+        },
+        rank: {
+          tickCount: 5,
+          scale(value) {
+            // TODO
+            if (value === null || value === undefined) {
+              return NaN;
+            }
+            const max = this.max;
+            const min = this.min;
+            if (max === min) {
+              return 0;
+            }
+
+            const percent = (value - min) / (max - min);
+            const rangeMin = this.rangeMin();
+            const rangeMax = this.rangeMax();
+            return 1 - (rangeMin + percent * (rangeMax - rangeMin));
+          }
+        }
+      });
+
+      chart.axis('date', {
+        label(text, index, total) {
+          const cfg = {
+            textAlign: 'center'
+          };
+          if (index === 0) {
+            cfg.textAlign = 'start';
+          } else if (index === (total - 1)) {
+            cfg.textAlign = 'end';
+          }
+
+          const arr = text.split('-');
+          if (arr[0] === '2018') {
+            cfg.text = arr[1] + '-' + arr[2];
+          }
+          return cfg;
+        }
+      });
+
+      chart.tooltip({
+        showCrosshairs: true,
+        crosshairsStyle: {
+          stroke: '#CAD7EF'
+        },
+        custom: true,
+        onChange(obj) {
+          const items = obj.items;
+          const { date, rank } = items[0].origin;
+          $('#chartTooltip .item-value').each((index, ele) => {
+            const type = $(ele).data('type');
+            if (type === 'time') {
+              $(ele).text(date);
+            } else if (type === 'value') {
+              $(ele).text(rank);
+            }
+          });
+
+          $('#chartTooltip').css('visibility', 'visible');
+        },
+        onHide() {
+          $('#chartTooltip').css('visibility', 'hidden');
+        }
+      });
+      chart.line().position('date*rank').animate({
+        update: {
+          animation: 'lineUpdate'
+        }
+      });
+      chart.render();
+    });
+
+    // button 点击操作
+    $('.tab button').click(e => {
+      const target = $(e.target);
+      const id = target.attr('id');
+      if (target.hasClass('active')) {
+        return;
+      }
+
+      const currentActive = $('.tab').find('button.active');
+      currentActive.removeClass('active');
+      target.addClass('active');
+
+      const url = `./data/rank/${id}.json`;
+      $.getJSON(url, json => {
+        chart.changeData(json);
+      });
+    });
+
+  </script>
+</body>
+
+</html>

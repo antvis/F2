@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>某基业绩走势图(带有用户交易行为)</title>
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/performance.css">
@@ -56,7 +57,7 @@
   <!-- Content here -->
   <div class="chart-wrapper">
     <!-- 自定义 tooltip -->
-    <div class="tooltip-wrapper hidden">
+    <div class="tooltip-wrapper">
       <div class="tooltip-title" id="tooltipTitle"></div>
       <div class="tooltip-content" id="tooltip">
         <div class="item" id="dealMoney">
@@ -125,7 +126,9 @@
 <script src="../../build/f2.js"></script>
 <script src="./js/util.js"></script>
 <script>
-  const { Animate, Util, Chart } = F2;
+  var Animate = F2.Animate;
+  var Util = F2.Util;
+  var Chart = F2.Chart;
   // 自定义线图变更动画
   Animate.registerAnimation('lineUpdate', function(updateShape, animateCfg) {
     var cacheShape = updateShape.get('cacheShape'); // 该动画 shape 的前一个状态
@@ -165,7 +168,7 @@
     }, animateCfg));
   });
   Animate.registerAnimation('pointZoom', function (shape, animateCfg) {
-    const r = shape.attr('r');
+    var r = shape.attr('r');
     shape.attr('r', 0);
     shape.animate().to(Util.mix({
       attrs: {
@@ -175,12 +178,12 @@
   });
    // 给数据打标，标记存在交易行为的数据，tag: 0 表示不存在交易，tag: 1 表示买入，tag: 2 表示卖出
   function mockData(data) {
-    const buyDates = [ '2018-03-23', '2018-04-03', '2018-04-26', '2018-05-02'  ];
-    const sellDates = [ '2018-05-07', '2018-05-10', '2018-05-15' ];
+    var buyDates = [ '2018-03-23', '2018-04-03', '2018-04-26', '2018-05-02'  ];
+    var sellDates = [ '2018-05-07', '2018-05-10', '2018-05-15' ];
 
-    data.forEach(item => {
-      const date = item.reportDate;
-      const name = item.name;
+    data.forEach(function(item) {
+      var date = item.reportDate;
+      var name = item.name;
       if (name === '本基金') {
         if (buyDates.indexOf(date) !== -1) {
           item.tag = 1;
@@ -197,33 +200,52 @@
     return data;
   }
 
-  const colorMap = {
+  var colorMap = {
     '本基金': '#1890FF',
     '沪深300': 'rgba(92, 219, 211, 0.5)',
     '同类平均': 'rgba(179, 127, 235, 0.5)'
   };
-  const sizeMap = {
+  var sizeMap = {
     '本基金': 2,
     '沪深300': 1,
     '同类平均': 1
   };
-  const tagImageMap = {
+  var tagImageMap = {
     1: 'https://gw.alipayobjects.com/zos/rmsportal/ueFdchLiHajoHkuQIslH.png',
     2: 'https://gw.alipayobjects.com/zos/rmsportal/LnOYhcIVlbunHkgpoCLB.png'
   };
 
   // 昨天的收益率，用于图例的绘制，无论时间切换维度多少，默认都会显示昨天的收益率
-  const yesterdayRates = {
+  var yesterdayRates = {
     '本基金': 14.12,
     '沪深300': 3.71,
     '同类平均': 3.54
   };
 
-  const yesterday = '2018-05-22（昨日）';
+  var RANGE = {
+    'one-year': {
+      rangeMin: {
+        x: '2017-05-22'
+      },
+      rangeMax: {
+        x: '2018-05-22'
+      }
+    },
+    'three-year': {
+      rangeMax: {
+        x: '2018-05-22'
+      },
+      rangeMin: {
+        x: '2016-09-29'
+      }
+    }
+  };
+
+  var yesterday = '2018-05-22（昨日）';
   // 图表绘制完成之后绘制图例
   $('#chartLegend .chart-legend-title').text(yesterday);
-  $('#chartLegend .item-value').each((index, ele) => {
-    const type = $(ele).data('type');
+  $('#chartLegend .item-value').each(function(index, ele) {
+    var type = $(ele).data('type');
     let value = yesterdayRates[type];
     let color;
     if (value > 0) {
@@ -237,25 +259,26 @@
     $(ele).text(value + '%');
   });
 
-  const landscape = window.innerWidth > window.innerHeight ? true : false;
-  const xTickCount = landscape ? 5 : 3;
+  var landscape = window.innerWidth > window.innerHeight ? true : false;
+  var xTickCount = landscape ? 5 : 3;
 
-  const chart = new Chart({
+  var chart = new Chart({
     id: 'mountNode',
     pixelRatio: window.devicePixelRatio,
     padding: [ 14, 'auto', 'auto' ]
   });
 
+  var reportDateDef = {
+    type: 'timeCat',
+    tickCount: xTickCount,
+    range: [ 0, 1 ],
+    mask: 'YYYY-MM-DD'
+  };
+
   // 处理数据
-  $.getJSON('./data/performance/one-month.json', json => {
+  $.getJSON('./data/performance/one-month.json', function(json) {
     json = mockData(json);
     chart.source(json, {
-      reportDate: {
-        type: 'timeCat',
-        tickCount: xTickCount,
-        range: [ 0, 1 ],
-        mask: 'YYYY-MM-DD'
-      },
       rate: {
         tickCount: 5
       },
@@ -263,13 +286,14 @@
         values: [ '沪深300', '同类平均', '本基金' ]
       }
     });
+    chart.scale('reportDate', reportDateDef);
     chart.animate({
       'axis-label': false
     });
     chart.axis('reportDate', {
       line: null,
-      label(text, index, total) {
-        const cfg = {
+      label: function(text, index, total) {
+        var cfg = {
           textAlign: 'center'
         };
         if (index === 0) {
@@ -278,7 +302,7 @@
           cfg.textAlign = 'end';
         }
 
-        const arr = text.split('-');
+        var arr = text.split('-');
         if (arr[0] === '2018') {
           cfg.text = arr[1] + '-' + arr[2];
         }
@@ -286,9 +310,9 @@
       }
     });
     chart.axis('rate', {
-      label(text) {
+      label: function(text) {
         text = text * 1;
-        const cfg = {
+        var cfg = {
           text: text.toFixed(2) + '%'
         };
         if (text > 0) {
@@ -299,8 +323,8 @@
         }
         return cfg;
       },
-      grid(text, index) {
-        if (text == 0) {
+      grid: function(text, index) {
+        if (text === 0) {
           return {
             lineDash: null
           };
@@ -314,13 +338,13 @@
         stroke: '#CAD7EF'
       },
       custom: true,
-      onChange(obj) {
-        const items = obj.items;
-        const title = items[0].origin.reportDate;
-        const rates = {};
+      onChange: function(obj) {
+        var items = obj.items;
+        var title = items[0].origin.reportDate;
+        var rates = {};
         let tag;
         let dealMoney;
-        items.forEach(item => {
+        items.forEach(function(item) {
           rates[item.name] = item.value * 1;
           if (item.origin.tag) {
             tag = item.origin.tag;
@@ -330,8 +354,8 @@
 
         let titleContent;
         if (tag) { // 用户有交易操作
-          titleContent = title + `<img src="${tagImageMap[tag]}" style="width: 27.5px;height: 15px;margin-left: 8px;" />`;
-          const dealInfo = (tag === 1 ? '买入: ' : '卖出: ') + dealMoney + '元';
+          titleContent = title + '<img src="' + tagImageMap[tag] + '" style="width: 27.5px;height: 15px;margin-left: 8px;" />';
+          var dealInfo = (tag === 1 ? '买入: ' : '卖出: ') + dealMoney + '元';
           $('#dealMoney').html(dealInfo);
         } else {
           titleContent = title;
@@ -340,8 +364,8 @@
 
         $('#tooltipTitle').html(titleContent);
 
-        $('#tooltip .item-value').each((index, ele) => {
-          const type = $(ele).data('type');
+        $('#tooltip .item-value').each(function(index, ele) {
+          var type = $(ele).data('type');
           let value = rates[type];
           let color;
           if (value > 0) {
@@ -356,19 +380,19 @@
           $(ele).text(value + '%');
         });
 
-        $('.tooltip-wrapper').removeClass('hidden');
+        $('.tooltip-wrapper').css('visibility', 'visible');
       },
-      onHide() {
-        $('.tooltip-wrapper').addClass('hidden');
+      onHide: function() {
+        $('.tooltip-wrapper').css('visibility', 'hidden');
       }
     });
 
     chart.line()
       .position('reportDate*rate')
-      .color('name', val => {
+      .color('name', function(val) {
         return colorMap[val];
       })
-      .size('name', val => {
+      .size('name', function(val)  {
         return sizeMap[val];
       })
       .animate({
@@ -413,19 +437,49 @@
   });
 
   // button 点击操作
-  $('.tab button').on('touchstart', e => {
-    const target = $(e.target);
-    const id = target.attr('id');
+  $('.tab button').on('touchstart', function(e) {
+    var target = $(e.target);
+    var id = target.attr('id');
     if (target.hasClass('active')) {
       return;
     }
 
-    const currentActive = $('.tab').find('button.active');
+    var currentActive = $('.tab').find('button.active');
     currentActive.removeClass('active');
     target.addClass('active');
 
-    const url = `./data/performance/${id}.json`;
-    $.getJSON(url, json => {
+    var url = './data/performance/' + id + '.json';
+    $.getJSON(url, function(json) {
+      if (landscape) { // 横屏下的交互
+        chart.scale('reportDate', reportDateDef);
+        chart.clearInteraction(); // 先要将交互行为清楚
+        if (id === 'one-year' || id === 'three-year') {
+          chart.tooltip(false);
+          chart
+          .interact('pan', Util.mix({
+            mode: 'x',
+            preStart: function() {
+              chart.animate(false);
+            },
+            end: function() {
+              chart.animate(true);
+            }
+          }, RANGE[id]))
+          .interact('zoom', {
+            mode: 'x',
+            preStart: function() {
+              chart.animate(false);
+            },
+            end: function(){
+              chart.animate(true);
+            }
+          });
+        } else {
+          chart.tooltip(true);
+          chart.animate(true);
+        }
+      }
+
       json = mockData(json);
       chart.changeData(json);
     });
