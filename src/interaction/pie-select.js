@@ -18,13 +18,14 @@ class PieSelect extends Interaction {
 
   bindEvents() {
     const { el, startEvent, endEvent } = this;
-    this.startEventListener = Util.addEventListener(el, startEvent, Util.wrapBehavior(this, '_start'));
-    this.endEventListener = Util.addEventListener(el, endEvent, Util.wrapBehavior(this, '_end'));
+    startEvent && Util.addEventListener(el, startEvent, Util.wrapBehavior(this, '_start'));
+    endEvent && Util.addEventListener(el, endEvent, Util.wrapBehavior(this, '_end'));
   }
 
   clearEvents() {
-    this.startEventListener && this.startEventListener.remove();
-    this.endEventListener && this.endEventListener.remove();
+    const { el, startEvent, endEvent } = this;
+    startEvent && Util.removeEventListener(el, startEvent, Util.getWrapBehavior(this, '_start'));
+    endEvent && Util.removeEventListener(el, endEvent, Util.getWrapBehavior(this, '_end'));
   }
 
   start(ev) {
@@ -52,7 +53,7 @@ class PieSelect extends Interaction {
     });
     const lastShape = this.lastShape;
 
-    if (selectedShape !== lastShape) { // 没有被选中
+    if (selectedShape && selectedShape !== lastShape) { // 没有被选中
       this.lastShape = selectedShape;
       const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
       const frontPlot = chart.get('frontPlot');
@@ -90,9 +91,11 @@ class PieSelect extends Interaction {
 
   end(ev) {
     const selectedShape = this.lastShape;
-    ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
-    ev.shapeInfo = selectedShape.get('origin');
-    ev.shape = selectedShape;
+    if (selectedShape && !selectedShape.get('destroyed')) {
+      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
+      ev.shapeInfo = selectedShape.get('origin');
+      ev.shape = selectedShape;
+    }
   }
 }
 

@@ -259,6 +259,7 @@
           $(tooltipID).css('visibility', 'visible');
         },
         onHide() {
+          const tooltipID = '#chartTooltip_' + id;
           $(tooltipID).css('visibility', 'hidden');
         }
       });

@@ -23,9 +23,7 @@ class Zoom extends Interaction {
 
   bindEvents() {
     const el = this.el;
-    const hammer = new Hammer(el, {
-      domEvents: true
-    });
+    const hammer = new Hammer(el);
     hammer.get('pinch').set({
       enable: true
     });
@@ -35,18 +33,37 @@ class Zoom extends Interaction {
     processingEvent && hammer.on(processingEvent, Util.wrapBehavior(this, '_process'));
     endEvent && hammer.on(endEvent, Util.wrapBehavior(this, '_end'));
     resetEvent && hammer.on(resetEvent, Util.wrapBehavior(this, '_reset'));
+
+    // TODO
+    hammer.on('press', Util.wrapBehavior(this, '_press'));
+    Util.addEventListener(el, 'touchend', Util.wrapBehavior(this, 'ontouchend'));
+    // TODO
+
     this.hammer = hammer;
   }
 
   clearEvents() {
     const hammer = this.hammer;
     if (hammer) {
-      const { startEvent, processingEvent, endEvent, resetEvent } = this;
-      startEvent && hammer.remove(startEvent);
-      processingEvent && hammer.remove(processingEvent);
-      endEvent && hammer.remove(endEvent);
-      resetEvent && hammer.remove(resetEvent);
+      hammer.destroy();
+      // TODO
+      Util.removeEventListener(this.el, 'touchend', Util.getWrapBehavior(this, 'ontouchend'));
+      // TODO
     }
+  }
+
+  _press(e) {
+    this.pressed = true;
+    const center = e.center;
+    this.chart.tooltip(true);
+    this.chart.showTooltip(center);
+  }
+
+  ontouchend() {
+    const self = this;
+    self.pressed = false;
+    this.chart.hideTooltip();
+    self.chart.tooltip(false);
   }
 
   start() {
@@ -96,7 +113,6 @@ class Zoom extends Interaction {
 
     // Keep track of overall scale
     this.currentPinchScaling = e.scale;
-    this.chart.repaint();
   }
 
   _doZoom(diff, center, whichAxes) {
@@ -111,24 +127,28 @@ class Zoom extends Interaction {
     } else {
       _whichAxes = 'xy';
     }
-    let isScaled;
+    let isXScaled;
+    let isYScaled;
+
     if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
-      isScaled = self._zoomScale(xScale, diff, center, 'x');
+      isXScaled = self._zoomScale(xScale, diff, center, 'x');
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
-        isScaled = self._zoomScale(yScale, diff, center, 'y');
+        isYScaled = self._zoomScale(yScale, diff, center, 'y');
       });
     }
-
-    isScaled && chart.repaint();
+    if (isXScaled || isYScaled) {
+      chart.repaint();
+    }
   }
 
   _zoomScale(scale, zoom, center, flag) {
     const { type, field } = scale;
+    const { rangeMin, rangeMax } = this;
 
     // 超过用户设置的限制
     if (zoom > 1 && Helper.isReachMax(this.rangeMax, scale, flag)) return false; // 放大
@@ -149,13 +169,14 @@ class Zoom extends Interaction {
       const percent = flag === 'x' ? offsetPoint.x : offsetPoint.y;
       const minDelta = newDiff * percent;
       const maxDelta = newDiff * (1 - percent);
-
-      chart.scale(field, Util.mix(colDef, {
-        min: min + minDelta,
-        max: max - maxDelta,
+      const newMax = Helper.limitRangeMax(rangeMax, scale, flag, max - maxDelta);
+      const newMin = Helper.limitRangeMin(rangeMin, scale, flag, min + minDelta);
+      chart.scale(field, Util.mix({}, colDef, {
+        min: newMin,
+        max: newMax,
         nice: false
       }));
-    } else if (type === 'timeCat') { // 时间类型，往前缩放
+    } else if (type === 'timeCat') { // 时间类型，往前缩放 TODO 还是有问题
       const values = scale.values;
       const ticks = scale.ticks;
 
@@ -173,6 +194,7 @@ class Zoom extends Interaction {
       const tickGap = (ticks.length > 1) ? ticks[1] - ticks[0] : 86400000;
 
       let diffCount = Math.ceil(values.length * Math.abs(zoom - 1));
+      // diffCount = Math.max(1, diffCount);
       if (zoom > 1) {
         if (diffCount >= values.length) {
           diffCount = values.length - 2;
@@ -186,7 +208,7 @@ class Zoom extends Interaction {
       } else if (zoom < 1) {
         const headValue = values[0];
         for (let i = 1; i <= diffCount; i++) {
-          if (values.length >= this.originValuesLen) {
+          if (values.length === this.originValuesLen) {
             break;
           }
           const newMin = headValue - gap * i;
@@ -197,10 +219,11 @@ class Zoom extends Interaction {
         }
       }
 
-      chart.scale(field, Util.mix(colDef, {
+      chart.scale(field, Util.mix({}, colDef, {
         values,
         ticks
       }));
+      return true;
     }
   }
 }

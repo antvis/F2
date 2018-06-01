@@ -167,7 +167,7 @@ class TooltipController {
   render() {
     const self = this;
 
-    if (self.tooltip || !self.enable) {
+    if (self.tooltip /* || !self.enable */) {
       return;
     }
 
@@ -380,6 +380,7 @@ class TooltipController {
   }
 
   handleShowEvent(ev) {
+    if (!this.enable) return;
     const chart = this.chart;
     const plot = chart.get('plotRange');
     const { x, y } = Util.createEvent(ev, chart);
@@ -396,10 +397,14 @@ class TooltipController {
   }
 
   handleHideEvent() {
+    if (!this.enable) return;
+
     this.hideTooltip();
   }
 
   handleDocEvent(ev) {
+    if (!this.enable) return;
+
     const canvasDom = this.canvasDom;
     if (ev.target !== canvasDom) {
       this.hideTooltip();
@@ -458,13 +463,16 @@ module.exports = {
      * @param  {Object} cfg 配置项
      * @return {Chart} 返回 Chart 实例
      */
-    chart.tooltip = function(enable, cfg = {}) {
+    chart.tooltip = function(enable, cfg) {
       if (Util.isObject(enable)) {
         cfg = enable;
         enable = true;
       }
       tooltipController.enable = enable;
-      tooltipController.cfg = cfg;
+      if (cfg) {
+        tooltipController.cfg = cfg;
+      }
+      // cfg && tooltipController.cfg = cfg;
 
       return this;
     };

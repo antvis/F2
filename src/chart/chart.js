@@ -342,13 +342,13 @@ class Chart extends Base {
     }));
   }
 
-  initColDefs() {
-    const colDefs = this.get('colDefs');
-    if (colDefs) {
-      const scaleController = this.get('scaleController');
-      Util.mix(scaleController.defs, colDefs);
-    }
-  }
+  // initColDefs() {
+  //   const colDefs = this.get('colDefs');
+  //   if (colDefs) {
+  //     const scaleController = this.get('scaleController');
+  //     Util.mix(scaleController.defs, colDefs);
+  //   }
+  // }
 
   _init() {
     const self = this;
@@ -407,7 +407,10 @@ class Chart extends Base {
     }
 
     this.set('colDefs', colDefs);
-    this.initColDefs();
+    // this.initColDefs();
+    const scaleController = this.get('scaleController');
+    scaleController.defs = colDefs;
+
     return this;
   }
 

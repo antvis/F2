@@ -88,6 +88,24 @@ Chart.plugins.register({
       this._interactions = interactions;
       return this;
     };
+    chart.clearInteraction = function(type) {
+      const interactions = this._interactions;
+      if (!interactions) return;
+      if (type) {
+        (interactions[type] || []).forEach(interact => {
+          interact.destroy();
+        });
+        delete interactions[type];
+      } else {
+        Util.each(interactions, (collection, key) => {
+          (collection || []).forEach(interact => {
+            interact.destroy();
+          });
+          delete interactions[key];
+        });
+      }
+    };
+
   },
   afterCanvasDestroyed(chart) {
     const interactions = chart._interactions;

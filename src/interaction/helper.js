@@ -25,7 +25,7 @@ module.exports = {
       if (type === 'timeCat') {
         max = scale._toTimeStamp(max); // 转换为时间戳
       }
-      if (max < value) {
+      if (max <= value) {
         return true;
       }
     }
@@ -45,11 +45,37 @@ module.exports = {
       if (type === 'timeCat') {
         min = scale._toTimeStamp(min); // 转换为时间戳
       }
-      if (min > value) {
+      if (min >= value) {
         return true;
       }
     }
     return false;
+  },
+  limitRangeMin(rangeMin, scale, flag, newMin) {
+    const type = scale.type;
+    if (rangeMin && rangeMin[flag]) {
+      let min = rangeMin[flag];
+      if (type === 'timeCat') {
+        min = scale._toTimeStamp(min); // 转换为时间戳
+      }
+      if (min >= newMin) {
+        newMin = min;
+      }
+    }
+    return newMin;
+  },
+  limitRangeMax(rangeMax, scale, flag, newMax) {
+    const type = scale.type;
+    if (rangeMax && rangeMax[flag]) {
+      let max = rangeMax[flag];
+      if (type === 'timeCat') {
+        max = scale._toTimeStamp(max); // 转换为时间戳
+      }
+      if (max <= newMax) {
+        newMax = max;
+      }
+    }
+    return newMax;
   },
   createClip(chart) {
     const middlePlot = chart.get('middlePlot');
