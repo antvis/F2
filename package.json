@@ -3,12 +3,14 @@
   "version": "3.1.8",
   "description": "Charts for mobile visualization.",
   "keywords": [
-    "canvas",
     "f2",
-    "2d draw",
-    "mobile visualization",
     "charts",
-    "mobile"
+    "mobile",
+    "visualization",
+    "data visualization",
+    "canvas",
+    "2d draw",
+    "mobile visualization"
   ],
   "main": "build/f2.js",
   "browser": "build/f2.js",
