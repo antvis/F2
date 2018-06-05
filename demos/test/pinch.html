@@ -43,7 +43,7 @@
     };
     const { Chart } = F2;
     let chart;
-    $.getJSON('../fund/data/performance/one-year.json', json => {
+    $.getJSON('../fund/data/performance/three-year.json', json => {
       chart = new Chart({
         id: 'mountNode',
         pixelRatio: window.devicePixelRatio,
@@ -97,37 +97,36 @@
         //   //   x: '2017-05-22'
         //   // }
         // })
-        .interact('zoom', {
-          mode: 'xy'
-        });
+        .interact('catPinch')
+        .interact('catPan');
 
       chart.render();
 
-let out = 0.5;
-let inV = -0.1;
-let scale1 = 1;
-let scale2 = 1;
+// let out = 0.5;
+// let inV = -0.1;
+// let scale1 = 1;
+// let scale2 = 1;
 
-const interactions = chart._interactions;
-const zoom = interactions.zoom[0];
-const coord = chart.get('coord');
-const xScale = chart.getXScale();
-const center = {
-  x: (coord.start.x + coord.end.x) / 2, // 170
-  y: (coord.start.y + coord.end.y) / 2  // 181
-};
+// const interactions = chart._interactions;
+// const zoom = interactions.zoom[0];
+// const coord = chart.get('coord');
+// const xScale = chart.getXScale();
+// const center = {
+//   x: (coord.start.x + coord.end.x) / 2, // 170
+//   y: (coord.start.y + coord.end.y) / 2  // 181
+// };
 
-$('#out').click(e => {
-  scale1 += out;
-  zoom._zoomScale(xScale, scale1, center, 'x');
-  chart.repaint();
-});
+// $('#out').click(e => {
+//   scale1 += out;
+//   zoom._zoomScale(xScale, scale1, center, 'x');
+//   chart.repaint();
+// });
 
-$('#in').click(e => {
-  scale2 += inV;
-  zoom._zoomScale(xScale, scale2, center, 'x');
-  chart.repaint();
-});
+// $('#in').click(e => {
+//   scale2 += inV;
+//   zoom._zoomScale(xScale, scale2, center, 'x');
+//   chart.repaint();
+// });
 
 
       // const el = chart.get('canvas').get('el');

@@ -312,14 +312,8 @@ firstDayArr.forEach(obj => {
   })
 })
 
-chart.interact('pan', {
+chart.interact('catPan', {
   mode: 'x',
-  rangeMax: {
-    x: '2018-05-22'
-  },
-  rangeMin: {
-    x: '2017-11-01'
-  },
   onProcess: () => {
   },
   onEnd: () => {

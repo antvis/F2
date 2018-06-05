@@ -524,6 +524,7 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
+    this.set('dataChanged', true);
     this.repaint();
   }
 
