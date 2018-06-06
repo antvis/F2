@@ -5,6 +5,15 @@
 const Util = require('../util/common');
 const Chart = require('../chart/chart');
 
+let Hammer = require('hammerjs');
+Hammer = typeof (Hammer) === 'function' ? Hammer : window.Hammer;
+
+const TOUCH_EVENTS = [
+  'touchstart',
+  'touchmove',
+  'touchend'
+];
+
 class Interaction {
   getDefaultCfg() {
     return {
@@ -30,7 +39,6 @@ class Interaction {
     this.end(ev);
     this.onEnd && this.onEnd(ev);
   }
-
   _reset(ev) {
     this.preReset && this.preReset(ev);
     this.reset(ev);
@@ -46,26 +54,63 @@ class Interaction {
   // override
   reset() {}
   // override
-  bindEvents() {}
-  // override
-  clearEvents() {}
+  // bindEvents() {}
+  // // override
+  // clearEvents() {}
 
   constructor(cfg, chart) {
     const defaultCfg = this.getDefaultCfg();
     Util.deepMix(this, defaultCfg, cfg);
     this.chart = chart;
     this.canvas = chart.get('canvas');
-    this.el = chart.get('canvas').get('el'); // TODO 必须保证能够获取到 canvas 和对应的 dom
-    this._bindEvents(); // TODO
+    this.el = chart.get('canvas').get('el');
+    this._bindEvents();
   }
 
   _bindEvents() {
-    this.clearEvents();
-    this.bindEvents();
+    this._clearEvents(); // clear events
+    const { startEvent, processingEvent, endEvent, resetEvent, el } = this;
+    const hammer = new Hammer(el);
+    this.hammer = hammer;
+    this._bindEvent(startEvent, '_start', hammer);
+    this._bindEvent(processingEvent, '_process', hammer);
+    this._bindEvent(endEvent, '_end', hammer);
+    this._bindEvent(resetEvent, '_reset', hammer);
+  }
+
+  _clearEvents() {
+    const hammer = this.hammer;
+    const { startEvent, processingEvent, endEvent, resetEvent } = this;
+
+    if (hammer) {
+      hammer.destroy();
+      this._clearTouchEvent(startEvent, '_start');
+      this._clearTouchEvent(processingEvent, '_process');
+      this._clearTouchEvent(endEvent, '_end');
+      this._clearTouchEvent(resetEvent, '_reset');
+    }
+  }
+
+  _bindEvent(eventName, methodName, hammer) {
+    const el = this.el;
+    if (eventName) {
+      if (TOUCH_EVENTS.indexOf(eventName) !== -1) {
+        Util.addEventListener(el, eventName, Util.wrapBehavior(this, methodName));
+      } else {
+        hammer.on(eventName, Util.wrapBehavior(this, methodName));
+      }
+    }
+  }
+
+  _clearTouchEvent(eventName, methodName) {
+    const el = this.el;
+    if (eventName && TOUCH_EVENTS.indexOf(eventName) !== -1) {
+      Util.removeEventListener(el, eventName, Util.getWrapBehavior(this, methodName));
+    }
   }
 
   destroy() {
-    this.clearEvents();
+    this._clearEvents();
   }
 }
 

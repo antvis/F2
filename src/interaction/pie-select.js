@@ -12,24 +12,15 @@ class PieSelect extends Interaction {
       style: {
         fillOpacity: 0.5
       }
-      // onSelected: null // 选中的结果
     });
-  }
-
-  bindEvents() {
-    const { el, startEvent, endEvent } = this;
-    startEvent && Util.addEventListener(el, startEvent, Util.wrapBehavior(this, '_start'));
-    endEvent && Util.addEventListener(el, endEvent, Util.wrapBehavior(this, '_end'));
-  }
-
-  clearEvents() {
-    const { el, startEvent, endEvent } = this;
-    startEvent && Util.removeEventListener(el, startEvent, Util.getWrapBehavior(this, '_start'));
-    endEvent && Util.removeEventListener(el, endEvent, Util.getWrapBehavior(this, '_end'));
   }
 
   start(ev) {
     const chart = this.chart;
+    if (ev.type === 'tap') {
+      ev.clientX = ev.center.x;
+      ev.clientY = ev.center.y;
+    }
     const { x, y } = Util.createEvent(ev, chart);
 
     this.halo && this.halo.remove(true);
@@ -100,5 +91,4 @@ class PieSelect extends Interaction {
 }
 
 Chart.registerInteraction('pie-select', PieSelect);
-
 module.exports = PieSelect;

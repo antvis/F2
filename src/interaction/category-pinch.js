@@ -1,12 +1,13 @@
+/**
+ * TODO:
+ * 1. 各个钩子的参数，当前数值的索引值 startIndex endIndex
+ */
 const Util = require('../util/common');
 const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 
-let Hammer = require('hammerjs');
-Hammer = typeof (Hammer) === 'function' ? Hammer : window.Hammer;
-
-class CatPinch extends Interaction {
+class CategoryPinch extends Interaction {
   getDefaultCfg() {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
@@ -14,61 +15,24 @@ class CatPinch extends Interaction {
       processingEvent: 'pinch',
       endEvent: 'pinchend',
       resetEvent: '',
-      mode: 'x', // 方向，可取值 x、y、xy
-      currentPinchScaling: null, // 当前
+      currentPinchScaling: null,
       originValues: null,
-      minScale: 1,
-      maxScale: 4
+      minScale: 1, // Minimum zoom
+      maxScale: 4 // Maximum zoom
     });
   }
 
-  bindEvents() {
-    const el = this.el;
-    const hammer = new Hammer(el);
-    hammer.get('pinch').set({
+  constructor(cfg, chart) {
+    super(cfg, chart);
+    const hammer = this.hammer;
+    hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
-
-    const { startEvent, processingEvent, endEvent, resetEvent } = this;
-    startEvent && hammer.on(startEvent, Util.wrapBehavior(this, '_start'));
-    processingEvent && hammer.on(processingEvent, Util.wrapBehavior(this, '_process'));
-    endEvent && hammer.on(endEvent, Util.wrapBehavior(this, '_end'));
-    resetEvent && hammer.on(resetEvent, Util.wrapBehavior(this, '_reset'));
-
-    // TODO
-    hammer.on('press', Util.wrapBehavior(this, '_press'));
-    Util.addEventListener(el, 'touchend', Util.wrapBehavior(this, 'ontouchend'));
-    // TODO
-
-    this.hammer = hammer;
-  }
-
-  clearEvents() {
-    const hammer = this.hammer;
-    if (hammer) {
-      hammer.destroy();
-      // TODO
-      Util.removeEventListener(this.el, 'touchend', Util.getWrapBehavior(this, 'ontouchend'));
-      // TODO
-    }
-  }
-
-  _press(e) {
-    this.pressed = true;
-    const center = e.center;
-    this.chart.tooltip(true);
-    this.chart.showTooltip(center);
-  }
-
-  ontouchend() {
-    const self = this;
-    self.pressed = false;
-    this.chart.hideTooltip();
-    self.chart.tooltip(false);
   }
 
   start() {
     const chart = this.chart;
+    // TODO，在 chart 上解决
     const middlePlot = chart.get('middlePlot');
     if (!middlePlot.attr('clip')) {
       Helper.createClip(chart);
@@ -102,12 +66,12 @@ class CatPinch extends Interaction {
   }
 
   _doZoom(diff, center) {
-    const self = this;
-    // const mode = self.mode;
-    const chart = self.chart;
+    const chart = this.chart;
     const xScale = chart.getXScale();
-    self._zoomScale(xScale, diff, center);
-    chart.repaint();
+    if (xScale.isCategory) {
+      this._zoomScale(xScale, diff, center);
+      chart.repaint();
+    }
   }
 
   _zoomScale(scale, zoom, center) {
@@ -167,5 +131,5 @@ class CatPinch extends Interaction {
 }
 
 
-Chart.registerInteraction('catPinch', CatPinch);
-module.exports = CatPinch;
+Chart.registerInteraction('category-pinch', CategoryPinch);
+module.exports = CategoryPinch;

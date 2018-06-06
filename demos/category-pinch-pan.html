@@ -25,9 +25,9 @@
     <canvas id="mountNode"></canvas>
   </div>
   </div>
-  <script src="../assets/jquery-3.2.1.min.js"></script>
-  <script src="../../build/f2.js"></script>
-  <script src="../fund/js/util.js"></script>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="../build/f2.js"></script>
+  <script src="./fund/js/util.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
   <script>
     let pressing = false;
@@ -43,7 +43,7 @@
     };
     const { Chart } = F2;
     let chart;
-    $.getJSON('../fund/data/performance/three-year.json', json => {
+    $.getJSON('./fund/data/performance/three-year.json', json => {
       chart = new Chart({
         id: 'mountNode',
         pixelRatio: window.devicePixelRatio,
@@ -97,8 +97,9 @@
         //   //   x: '2017-05-22'
         //   // }
         // })
-        .interact('catPinch')
-        .interact('catPan');
+        .interact('category-pinch')
+       .interact('category-pan');
+
 
       chart.render();
 

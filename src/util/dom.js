@@ -1,4 +1,3 @@
-
 let DomUtil;
 /**
  * Detects support for options object argument in addEventListener.

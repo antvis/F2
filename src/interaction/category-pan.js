@@ -1,14 +1,15 @@
+/**
+ * TODO:
+ * 1. 各个钩子的参数，当前数值的索引值 startIndex endIndex
+ */
 const Util = require('../util/common');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const Helper = require('./helper');
 
-let Hammer = require('hammerjs');
-Hammer = typeof (Hammer) === 'function' ? Hammer : window.Hammer;
-
 const DAY_TIMESTAMPS = 86400000;
 
-class CatPan extends Interaction {
+class CategoryPan extends Interaction {
   getDefaultCfg() {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
@@ -23,52 +24,16 @@ class CatPan extends Interaction {
     });
   }
 
-  bindEvents() {
-    const el = this.el;
-    const { startEvent, processingEvent, endEvent, resetEvent, threshold } = this;
-    const hammer = new Hammer(el);
-    hammer.get('pan').set({ threshold });
-
-    startEvent && hammer.on(startEvent, Util.wrapBehavior(this, '_start'));
-    processingEvent && hammer.on(processingEvent, Util.wrapBehavior(this, '_process'));
-    endEvent && hammer.on(endEvent, Util.wrapBehavior(this, '_end'));
-    resetEvent && hammer.on(resetEvent, Util.wrapBehavior(this, '_reset'));
-
-    // TODO
-    hammer.on('press', Util.wrapBehavior(this, '_press'));
-    Util.addEventListener(el, 'touchend', Util.wrapBehavior(this, 'ontouchend'));
-    // TODO
-
-    this.hammer = hammer;
-  }
-
-  clearEvents() {
+  constructor(cfg, chart) {
+    super(cfg, chart);
     const hammer = this.hammer;
-    if (hammer) {
-      hammer.destroy();
-      // TODO
-      Util.removeEventListener(this.el, 'touchend', Util.getWrapBehavior(this, 'ontouchend'));
-      // TODO
-    }
-  }
-
-  _press(e) {
-    this.pressed = true;
-    const center = e.center;
-    this.chart.tooltip(true);
-    this.chart.showTooltip(center);
-  }
-
-  ontouchend() {
-    const self = this;
-    self.pressed = false;
-    self.chart.hideTooltip();
-    self.chart.tooltip(false);
+    const threshold = this.threshold; // Minimal pan distance required before recognizing.
+    hammer.get('pan').set({ threshold });
   }
 
   start(e) {
-    if (this.pressed) return;
     const chart = this.chart;
+    // TODO, 在 chart 中支持
     const middlePlot = chart.get('middlePlot');
     if (!middlePlot.attr('clip')) {
       Helper.createClip(chart);
@@ -79,14 +44,11 @@ class CatPan extends Interaction {
   }
 
   process(e) {
-    if (this.pressed) return;
     this._handlePan(e);
   }
 
   end() {
-    if (this.pressed) return;
     this.currentDeltaX = null;
-    this.currentDeltaY = null;
   }
 
   _handlePan(e) {
@@ -104,9 +66,11 @@ class CatPan extends Interaction {
     const coord = chart.get('coord');
     const { start, end } = coord;
     const xScale = chart.getXScale();
-    const range = end.x - start.x; // 绘图区域宽度
-    this._panScale(xScale, deltaX, range);
-    chart.repaint();
+    if (xScale.isCategory) {
+      const range = end.x - start.x; // 绘图区域宽度
+      this._panScale(xScale, deltaX, range);
+      chart.repaint();
+    }
   }
 
   _panScale(scale, delta, range) {
@@ -135,8 +99,7 @@ class CatPan extends Interaction {
 
     const ratio = delta / range;
     const valueLength = values.length;
-    let deltaCount = Math.abs(parseInt(ratio * valueLength));
-    deltaCount = Math.max(1, deltaCount); // 变动的个数
+    const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength))); // 变动的个数
 
     let firstIndex = this.originValues.indexOf(values[0]);
     let lastIndex = this.originValues.indexOf(values[valueLength - 1]);
@@ -184,5 +147,5 @@ class CatPan extends Interaction {
   }
 }
 
-Chart.registerInteraction('catPan', CatPan);
-module.exports = CatPan;
+Chart.registerInteraction('category-pan', CategoryPan);
+module.exports = CategoryPan;

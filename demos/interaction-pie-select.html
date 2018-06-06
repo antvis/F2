@@ -59,15 +59,18 @@ chart.guide().html({
 });
 
 chart.interact('pie-select', {
+  startEvent: 'tap',
   animate: {
     duration: 300,
     easing: 'backOut'
   },
   onEnd(ev) {
-   const { shape, data, shapeInfo} = ev;
-    $('#number').css('color', shapeInfo.color);
-    $('#number').text(data.percent * 100 + '%');
-    $('#name').text(data.name);
+    const { shape, data, shapeInfo} = ev;
+    if (shape) {
+      $('#number').css('color', shapeInfo.color);
+      $('#number').text(data.percent * 100 + '%');
+      $('#name').text(data.name);
+    }
   }
 });
 

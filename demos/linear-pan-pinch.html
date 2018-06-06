@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>线性平移缩放交互</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+
+<body>
+  <div>
+    <canvas id="mountNode"></canvas>
+  </div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="../build/f2.js"></script>
+  <script>
+    // Generate sample data
+    const data = [];
+    const step = Math.PI / 4;
+    for (let x = -25; x < 25; x += step) {
+      data.push({ x: x, y: Math.sin(x) });
+    }
+
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: window.innerWidth,
+      height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(data);
+    chart.axis('x', {
+      grid(text) {
+        if (text == 0) {
+          return {
+            lineDash: null
+          };
+        }
+      }
+    });
+    chart.axis('y', {
+      grid(text) {
+        if (text == 0) {
+          return {
+            lineDash: null
+          };
+        }
+      }
+    });
+    chart.tooltip(false);
+    chart.interact('linear-pan', {
+      limitRange: {
+        x: {
+          min: -100,
+          max: 100
+        }
+      }
+    });
+    chart.interact('linear-pinch', {
+      maxScale: 5,
+      minScale: 1,
+      onEnd() {
+        console.log(chart.getXScale())
+      }
+    });
+    chart.line().position('x*y').shape('smooth');
+    chart.render();
+  </script>
+</body>
+
+</html>
+

@@ -10,73 +10,73 @@ module.exports = {
 
     return false;
   },
-  isReachMax(rangeMax, scale, flag) {
-    const type = scale.type;
+  // isReachMax(rangeMax, scale, flag) {
+  //   const type = scale.type;
 
-    let value;
-    if (type === 'timeCat') {
-      value = scale.values[scale.values.length - 1];
-    } else {
-      value = scale.max;
-    }
+  //   let value;
+  //   if (type === 'timeCat') {
+  //     value = scale.values[scale.values.length - 1];
+  //   } else {
+  //     value = scale.max;
+  //   }
 
-    if (rangeMax && rangeMax[flag]) {
-      let max = rangeMax[flag];
-      if (type === 'timeCat') {
-        max = scale._toTimeStamp(max); // 转换为时间戳
-      }
-      if (max <= value) {
-        return true;
-      }
-    }
-    return false;
-  },
-  isReachMin(rangeMin, scale, flag) {
-    const type = scale.type;
-    let value;
-    if (type === 'timeCat') {
-      value = scale.values[0];
-    } else {
-      value = scale.min;
-    }
+  //   if (rangeMax && rangeMax[flag]) {
+  //     let max = rangeMax[flag];
+  //     if (type === 'timeCat') {
+  //       max = scale._toTimeStamp(max); // 转换为时间戳
+  //     }
+  //     if (max <= value) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // },
+  // isReachMin(rangeMin, scale, flag) {
+  //   const type = scale.type;
+  //   let value;
+  //   if (type === 'timeCat') {
+  //     value = scale.values[0];
+  //   } else {
+  //     value = scale.min;
+  //   }
 
-    if (rangeMin && rangeMin[flag]) {
-      let min = rangeMin[flag];
-      if (type === 'timeCat') {
-        min = scale._toTimeStamp(min); // 转换为时间戳
-      }
-      if (min >= value) {
-        return true;
-      }
-    }
-    return false;
-  },
-  limitRangeMin(rangeMin, scale, flag, newMin) {
-    const type = scale.type;
-    if (rangeMin && rangeMin[flag]) {
-      let min = rangeMin[flag];
-      if (type === 'timeCat') {
-        min = scale._toTimeStamp(min); // 转换为时间戳
-      }
-      if (min >= newMin) {
-        newMin = min;
-      }
-    }
-    return newMin;
-  },
-  limitRangeMax(rangeMax, scale, flag, newMax) {
-    const type = scale.type;
-    if (rangeMax && rangeMax[flag]) {
-      let max = rangeMax[flag];
-      if (type === 'timeCat') {
-        max = scale._toTimeStamp(max); // 转换为时间戳
-      }
-      if (max <= newMax) {
-        newMax = max;
-      }
-    }
-    return newMax;
-  },
+  //   if (rangeMin && rangeMin[flag]) {
+  //     let min = rangeMin[flag];
+  //     if (type === 'timeCat') {
+  //       min = scale._toTimeStamp(min); // 转换为时间戳
+  //     }
+  //     if (min >= value) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // },
+  // limitRangeMin(rangeMin, scale, flag, newMin) {
+  //   const type = scale.type;
+  //   if (rangeMin && rangeMin[flag]) {
+  //     let min = rangeMin[flag];
+  //     if (type === 'timeCat') {
+  //       min = scale._toTimeStamp(min); // 转换为时间戳
+  //     }
+  //     if (min >= newMin) {
+  //       newMin = min;
+  //     }
+  //   }
+  //   return newMin;
+  // },
+  // limitRangeMax(rangeMax, scale, flag, newMax) {
+  //   const type = scale.type;
+  //   if (rangeMax && rangeMax[flag]) {
+  //     let max = rangeMax[flag];
+  //     if (type === 'timeCat') {
+  //       max = scale._toTimeStamp(max); // 转换为时间戳
+  //     }
+  //     if (max <= newMax) {
+  //       newMax = max;
+  //     }
+  //   }
+  //   return newMax;
+  // },
   createClip(chart) {
     const middlePlot = chart.get('middlePlot');
     const coord = chart.get('coord');

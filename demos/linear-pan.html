@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>线性平移操作</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+
+<body>
+  <div>
+    <canvas id="mountNode"></canvas>
+  </div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="../build/f2.js"></script>
+  <script>
+    $.getJSON('./data/linear-pan.json', data => {
+      const years = []
+      data.map(obj => {
+        years.push(obj.release);
+      });
+      const min = Math.min.apply(null, years);
+      const max = Math.min.apply(null, years);
+
+      const chart = new F2.Chart({
+        id: 'mountNode',
+        width: window.innerWidth,
+        height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
+        pixelRatio: window.devicePixelRatio
+      });
+      chart.source(data, {
+        release: {
+          min: 1990,
+          max: 2010
+        }
+      });
+      // chart.tooltip({
+      //   showTitle: true
+      // });
+      chart.line().position('release*count');
+      chart.render();
+
+    })
+  </script>
+</body>
+
+</html>
+
