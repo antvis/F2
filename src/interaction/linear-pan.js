@@ -25,16 +25,10 @@ class LinearPan extends Interaction {
     const hammer = this.hammer;
     const threshold = this.threshold; // Minimal pan distance required before recognizing.
     hammer.get('pan').set({ threshold });
+    chart.set('limitInPlot', true);
   }
 
   start(e) {
-    const chart = this.chart;
-    // TODO 在 chart 上进行处理
-    const middlePlot = chart.get('middlePlot');
-    if (!middlePlot.attr('clip')) {
-      Helper.createClip(chart);
-    }
-
     this.currentDeltaX = 0;
     this.currentDeltaY = 0;
     this._handlePan(e);
@@ -99,11 +93,11 @@ class LinearPan extends Interaction {
     let newMin = flag === 'x' ? min - panValue : min + panValue;
 
     const limitRange = this.limitRange;
-    if (limitRange[field].min && newMin <= limitRange[field].min) {
+    if (limitRange[field] && limitRange[field].min && newMin <= limitRange[field].min) {
       newMin = limitRange[field].min;
       newMax = (max - min) + newMin;
     }
-    if (limitRange[field].max && newMax >= limitRange[field].max) {
+    if (limitRange[field] && limitRange[field].max && newMax >= limitRange[field].max) {
       newMax = limitRange[field].max;
       newMin = newMax - (max - min);
     }

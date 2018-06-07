@@ -1,9 +1,4 @@
-/**
- * TODO:
- * 1. 各个钩子的参数，当前数值的索引值 startIndex endIndex
- */
 const Util = require('../util/common');
-const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 
@@ -28,15 +23,10 @@ class CategoryPinch extends Interaction {
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
+    chart.set('limitInPlot', true);
   }
 
   start() {
-    const chart = this.chart;
-    // TODO，在 chart 上解决
-    const middlePlot = chart.get('middlePlot');
-    if (!middlePlot.attr('clip')) {
-      Helper.createClip(chart);
-    }
     this.currentPinchScaling = 1;
   }
 
@@ -100,8 +90,11 @@ class CategoryPinch extends Interaction {
       this.originTicks = scale.ticks;
     }
 
-    const minCount = this.originValues.length / this.maxScale;
-    const maxCount = this.originValues.length / this.minScale;
+    const originTicks = this.originTicks;
+    const originValues = this.originValues;
+    const originValuesLen = originValues.length;
+    const minCount = originValuesLen / this.maxScale;
+    const maxCount = originValuesLen / this.minScale;
 
     const valuesLength = values.length;
     const offsetPoint = coord.invertPoint(center);
@@ -114,17 +107,17 @@ class CategoryPinch extends Interaction {
       const newValues = values.slice(minDelta, valuesLength - maxDelta);
       chart.scale(field, Util.mix({}, colDef, {
         values: newValues,
-        ticks: this.originTicks
+        ticks: originTicks
       }));
     } else if (zoom < 1 && valuesLength <= maxCount) { // 缩小
-      const firstIndex = this.originValues.indexOf(values[0]);
-      const lastIndex = this.originValues.indexOf(values[valuesLength - 1]);
+      const firstIndex = originValues.indexOf(values[0]);
+      const lastIndex = originValues.indexOf(values[valuesLength - 1]);
       const minIndex = Math.max(0, firstIndex - minDelta);
-      const maxIndex = Math.min(lastIndex + maxDelta, this.originValues.length);
-      const newValues = this.originValues.slice(minIndex, maxIndex);
+      const maxIndex = Math.min(lastIndex + maxDelta, originValuesLen);
+      const newValues = originValues.slice(minIndex, maxIndex);
       chart.scale(field, Util.mix({}, colDef, {
         values: newValues,
-        ticks: this.originTicks
+        ticks: originTicks
       }));
     }
   }

@@ -18,8 +18,6 @@
 </head>
 
 <body>
-<button id="out">zoom out</button>
-<button id="in">zoom in</button>
   <div class="container-fluid chart-card">
     <!-- 图表主题 -->
     <canvas id="mountNode"></canvas>
@@ -88,78 +86,9 @@
         });
 
       chart
-        // .interact('pan', {
-        //   mode: 'x',
-        //   // rangeMax: {
-        //   //   x: '2018-05-22'
-        //   // },
-        //   // rangeMin: {
-        //   //   x: '2017-05-22'
-        //   // }
-        // })
         .interact('category-pinch')
-       .interact('category-pan');
-
-
+        .interact('category-pan');
       chart.render();
-
-// let out = 0.5;
-// let inV = -0.1;
-// let scale1 = 1;
-// let scale2 = 1;
-
-// const interactions = chart._interactions;
-// const zoom = interactions.zoom[0];
-// const coord = chart.get('coord');
-// const xScale = chart.getXScale();
-// const center = {
-//   x: (coord.start.x + coord.end.x) / 2, // 170
-//   y: (coord.start.y + coord.end.y) / 2  // 181
-// };
-
-// $('#out').click(e => {
-//   scale1 += out;
-//   zoom._zoomScale(xScale, scale1, center, 'x');
-//   chart.repaint();
-// });
-
-// $('#in').click(e => {
-//   scale2 += inV;
-//   zoom._zoomScale(xScale, scale2, center, 'x');
-//   chart.repaint();
-// });
-
-
-      // const el = chart.get('canvas').get('el');
-      // const hammer = new Hammer(el);
-
-      // hammer.on('press', el => {
-      //   pressing = true;
-      //   chart.get('tooltipController').enable = true;
-      //   chart.clearInteraction('pan');
-      //   chart.tooltip(true, {
-      //     onShow() {
-      //       console.log(222);
-      //     },
-      //     onHide() {
-      //       pressing = false;
-      //       chart.interact('pan', {
-      //         mode: 'x'
-      //       });
-      //       chart.tooltip(false);
-      //     }
-      //   });
-      // });
-
-      // if (!pressing) {
-      //   chart.interact('pan', {
-      //     mode: 'x'
-      //   });
-      //   chart.tooltip(false);
-      // } else {
-      //   chart.tooltip(true);
-      //   chart.clearInteraction('pan');
-      // }
     });
   </script>
 </body>

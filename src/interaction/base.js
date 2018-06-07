@@ -53,10 +53,6 @@ class Interaction {
   end() {}
   // override
   reset() {}
-  // override
-  // bindEvents() {}
-  // // override
-  // clearEvents() {}
 
   constructor(cfg, chart) {
     const defaultCfg = this.getDefaultCfg();

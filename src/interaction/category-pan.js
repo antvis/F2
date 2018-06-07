@@ -1,12 +1,6 @@
-/**
- * TODO:
- * 1. 各个钩子的参数，当前数值的索引值 startIndex endIndex
- */
 const Util = require('../util/common');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
-const Helper = require('./helper');
-
 const DAY_TIMESTAMPS = 86400000;
 
 class CategoryPan extends Interaction {
@@ -29,16 +23,10 @@ class CategoryPan extends Interaction {
     const hammer = this.hammer;
     const threshold = this.threshold; // Minimal pan distance required before recognizing.
     hammer.get('pan').set({ threshold });
+    chart.set('limitInPlot', true);
   }
 
   start(e) {
-    const chart = this.chart;
-    // TODO, 在 chart 中支持
-    const middlePlot = chart.get('middlePlot');
-    if (!middlePlot.attr('clip')) {
-      Helper.createClip(chart);
-    }
-
     this.currentDeltaX = 0;
     this._handlePan(e);
   }
@@ -96,20 +84,19 @@ class CategoryPan extends Interaction {
       });
       this.originValues = originValues;
     }
-
+    const originValues = this.originValues;
     const ratio = delta / range;
     const valueLength = values.length;
     const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength))); // 变动的个数
 
-    let firstIndex = this.originValues.indexOf(values[0]);
-    let lastIndex = this.originValues.indexOf(values[valueLength - 1]);
+    let firstIndex = originValues.indexOf(values[0]);
+    let lastIndex = originValues.indexOf(values[valueLength - 1]);
     if (delta > 0 && firstIndex >= 0) { // 右移
       for (let i = 0; i < deltaCount && firstIndex > 0; i++) {
         firstIndex -= 1;
         lastIndex -= 1;
       }
-      const newValues = this.originValues.slice(firstIndex, lastIndex + 1);
-
+      const newValues = originValues.slice(firstIndex, lastIndex + 1);
       let newTicks = null;
       if (type === 'timeCat') {
         const tickGap = ticks.length > 2 ? ticks[1] - ticks[0] : DAY_TIMESTAMPS;
@@ -123,12 +110,12 @@ class CategoryPan extends Interaction {
         values: newValues,
         ticks: newTicks
       }));
-    } else if (delta < 0 && lastIndex <= this.originValues.length - 1) { // 左移
-      for (let i = 0; i < deltaCount && lastIndex < this.originValues.length - 1; i++) {
+    } else if (delta < 0 && lastIndex <= originValues.length - 1) { // 左移
+      for (let i = 0; i < deltaCount && lastIndex < originValues.length - 1; i++) {
         firstIndex += 1;
         lastIndex += 1;
       }
-      const newValues = this.originValues.slice(firstIndex, lastIndex + 1);
+      const newValues = originValues.slice(firstIndex, lastIndex + 1);
 
       let newTicks = null;
       if (type === 'timeCat') {

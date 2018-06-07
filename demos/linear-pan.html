@@ -21,13 +21,13 @@
         years.push(obj.release);
       });
       const min = Math.min.apply(null, years);
-      const max = Math.min.apply(null, years);
-
+      const max = Math.max.apply(null, years);
       const chart = new F2.Chart({
         id: 'mountNode',
         width: window.innerWidth,
         height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
-        pixelRatio: window.devicePixelRatio
+        pixelRatio: window.devicePixelRatio,
+        limitInPlot: true
       });
       chart.source(data, {
         release: {
@@ -35,13 +35,20 @@
           max: 2010
         }
       });
-      // chart.tooltip({
-      //   showTitle: true
-      // });
+      chart.tooltip(false);
       chart.line().position('release*count');
-      chart.render();
+      chart.point().position('release*count');
 
-    })
+      chart.interact('linear-pan', {
+        limitRange: {
+          release: {
+            min,
+            max
+          }
+        }
+      });
+      chart.render();
+    });
   </script>
 </body>
 

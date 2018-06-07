@@ -25,15 +25,10 @@ class LinearPinch extends Interaction {
       enable: true
     });
     this._originRange = {};
+    chart.set('limitInPlot', true);
   }
 
   start() {
-    const chart = this.chart;
-    // TODO 在 chart 中做掉
-    const middlePlot = chart.get('middlePlot');
-    if (!middlePlot.attr('clip')) {
-      Helper.createClip(chart);
-    }
     this.currentPinchScaling = 1;
   }
 
@@ -126,7 +121,6 @@ class LinearPinch extends Interaction {
     if (this.minScale && zoom < 1) { // 缩小
       const maxRange = this._originRange[field] / this.minScale;
       newDiff = Math.max(valueRange - maxRange, newDiff);
-
     }
 
     if (this.maxScale && zoom >= 1) { // 放大
