@@ -13,7 +13,8 @@ class CategoryPinch extends Interaction {
       currentPinchScaling: null,
       originValues: null,
       minScale: 1, // Minimum zoom
-      maxScale: 4 // Maximum zoom
+      maxScale: 4, // Maximum zoom
+      _timestamp: 0
     });
   }
 
@@ -49,7 +50,12 @@ class CategoryPinch extends Interaction {
       x: offsetX,
       y: offsetY
     };
-    this._doZoom(diff, center);
+    const lastTimestamp = this._timestamp;
+    const now = +new Date();
+    if ((now - lastTimestamp) > 16) {
+      this._doZoom(diff, center);
+      this._timestamp = now;
+    }
 
     // Keep track of overall scale
     this.currentPinchScaling = e.scale;

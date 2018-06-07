@@ -16,7 +16,8 @@ class LinearPan extends Interaction {
       currentDeltaX: null,
       currentDeltaY: null,
       panning: false,
-      limitRange: {} // 限制范围
+      limitRange: {}, // 限制范围
+      _timestamp: 0
     });
   }
 
@@ -51,7 +52,13 @@ class LinearPan extends Interaction {
       const deltaY = e.deltaY - currentDeltaY;
       this.currentDeltaX = e.deltaX;
       this.currentDeltaY = e.deltaY;
-      this._doPan(deltaX, deltaY);
+
+      const lastTimestamp = this._timestamp;
+      const now = +new Date();
+      if ((now - lastTimestamp) > 16) {
+        this._doPan(deltaX, deltaY);
+        this._timestamp = now;
+      }
     }
   }
 

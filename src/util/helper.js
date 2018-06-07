@@ -1,4 +1,4 @@
-const { Shape } = require('../graphic/');
+const { Shape } = require('../graphic/index');
 module.exports = {
   getClip(coord) {
     const start = coord.start;

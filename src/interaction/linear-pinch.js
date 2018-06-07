@@ -14,7 +14,8 @@ class LinearPinch extends Interaction {
       mode: 'x', // 方向，可取值 x、y、xy
       currentPinchScaling: null, // 当前
       minScale: null,
-      maxScale: null
+      maxScale: null,
+      _timestamp: 0
     });
   }
 
@@ -66,7 +67,12 @@ class LinearPinch extends Interaction {
     } else {
       xy = 'y';
     }
-    this._doZoom(diff, center, xy);
+    const lastTimestamp = this._timestamp;
+    const now = +new Date();
+    if ((now - lastTimestamp) > 16) {
+      this._doZoom(diff, center, xy);
+      this._timestamp = now;
+    }
 
     // Keep track of overall scale
     this.currentPinchScaling = e.scale;

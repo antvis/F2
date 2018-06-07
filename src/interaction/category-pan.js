@@ -14,7 +14,8 @@ class CategoryPan extends Interaction {
       threshold: 10, // Minimal pan distance required before recognizing.
       currentDeltaX: null,
       panning: false,
-      originValues: null
+      originValues: null,
+      _timestamp: 0
     });
   }
 
@@ -45,7 +46,13 @@ class CategoryPan extends Interaction {
       this.panning = true;
       const deltaX = e.deltaX - currentDeltaX;
       this.currentDeltaX = e.deltaX;
-      this._doPan(deltaX);
+
+      const lastTimestamp = this._timestamp;
+      const now = +new Date();
+      if ((now - lastTimestamp) > 16) {
+        this._doPan(deltaX);
+        this._timestamp = now;
+      }
     }
   }
 
