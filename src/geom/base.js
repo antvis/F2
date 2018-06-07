@@ -5,7 +5,7 @@ const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
-const Shape = require('./shape/shape');
+const GeometryShape = require('./shape/shape');
 const Adjust = require('./adjust/base');
 
 function parseFields(field) {
@@ -349,7 +349,7 @@ class Geom extends Base {
     let shapeFactory = this.get('shapeFactory');
     if (!shapeFactory) {
       const shapeType = this.get('shapeType');
-      shapeFactory = Shape.getShapeFactory(shapeType);
+      shapeFactory = GeometryShape.getShapeFactory(shapeType);
       this.set('shapeFactory', shapeFactory);
     }
     return shapeFactory;

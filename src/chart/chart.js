@@ -7,6 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
+const Helper = require('../util/helper');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -484,6 +485,15 @@ class Chart extends Base {
     // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
+
+    // 将 geom 限制在绘图区域内
+    if (self.get('limitInPlot')) {
+      const middlePlot = self.get('middlePlot');
+      const coord = self.get('coord');
+      const clip = Helper.getClip(coord);
+      clip.set('canvas', middlePlot.get('canvas'));
+      middlePlot.attr('clip', clip);
+    }
 
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
