@@ -11,7 +11,7 @@ canvas.id = 'issue-145';
 // canvas.style.left = 0;
 document.body.appendChild(canvas);
 
-describe('issue 140', function() {
+describe('issue 145', function() {
   it('calculate padding after changeData', function(done) {
     const data = [
       { v: 4.23522199232294, t: '200712', d: [] },
@@ -34,7 +34,7 @@ describe('issue 140', function() {
     chart.render();
 
     expect(chart.get('padding')).to.equal('auto');
-    expect(chart.get('_padding')).to.eql([ 30, 15, 32.5, 28.05999755859375 ]);
+    expect(parseInt(chart.get('_padding')[3])).to.eql(28);
 
 
     const newData = [
@@ -53,7 +53,7 @@ describe('issue 140', function() {
     setTimeout(function() {
       chart.changeData(newData);
       expect(chart.get('padding')).to.equal('auto');
-      expect(chart.get('_padding')).to.eql([ 30, 15, 32.5, 72.53997802734375 ]);
+      expect(parseInt(chart.get('_padding')[3])).to.eql(72);
       expect(chart.get('dataChanged')).to.be.true;
       chart.repaint();
       expect(chart.get('dataChanged')).to.be.undefined;
