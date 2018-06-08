@@ -524,7 +524,8 @@ class Chart extends Base {
     return this;
   }
 
-  repaint() {
+  repaint(isDataChanged) {
+    this.set('dataChanged', isDataChanged);
     this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
@@ -533,7 +534,7 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
-    this.repaint();
+    this.repaint(true);
   }
 
   changeSize(width, height) {
@@ -708,6 +709,9 @@ class Chart extends Base {
   }
 
   _isAutoPadding() {
+    if (this.get('_padding')) {
+      return false;
+    }
     const padding = this.get('padding');
     if (Util.isArray(padding)) {
       return padding.indexOf('auto') !== -1;
