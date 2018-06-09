@@ -57,7 +57,12 @@ class List {
        * 布局方式
        * @type {String}
        */
-      layout: 'horizontal'
+      layout: 'horizontal',
+      /**
+       * name 和 value 的连接字符串
+       * @type {String}
+       */
+      joinString: ': '
     };
   }
 
@@ -189,7 +194,8 @@ class List {
     let nameText;
     let name = item.name;
     if (name) {
-      name = value ? name + ': ' : name;
+      const joinString = this.joinString || '';
+      name = value ? name + joinString : name;
       nameText = itemGroup.addShape('text', {
         className: 'name',
         attrs: Util.mix({
