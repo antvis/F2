@@ -9,6 +9,12 @@ const SCALE_TYPES_MAP = {
 };
 
 function getRange(values) {
+  if (!values.length) { // 空数组需要手动设置 min:0 max:0，否则 linear scale 会报错
+    return {
+      min: 0,
+      max: 0
+    };
+  }
   const max = Math.max.apply(null, values);
   const min = Math.min.apply(null, values);
   return {
@@ -67,7 +73,7 @@ class ScaleController {
     return cfg;
   }
 
-  createScale(field, data, sortable) {
+  createScale(field, data) {
     const self = this;
     const def = self._getDef(field);
     let scale;
@@ -106,7 +112,6 @@ class ScaleController {
       if (def) {
         Util.mix(cfg, def);
       }
-      cfg.sortable = sortable;
       scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
     }
     return scale;

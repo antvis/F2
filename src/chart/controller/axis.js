@@ -235,7 +235,7 @@ class AxisController {
 
     const axes = this.axes;
     const chart = self.chart;
-    if (chart._isAutoPadding()) {
+    if (chart._isAutoPadding() || chart.get('dataChanged')) { // 数据变更时需要重新计算
       const userPadding = Util.parsePadding(chart.get('padding'));
       const appendPadding = chart.get('appendPadding');
       const legendRange = chart.get('legendRange') || {
@@ -277,7 +277,7 @@ class AxisController {
           padding[2] += maxHeight + labelOffset;
         }
       }
-      chart.set('padding', padding); // TODO, 需要判断下，changeData 时不变换
+      chart.set('_padding', padding); // 不改变原始的 padding 属性值，将计算后的 padding 存储在 _padding 属性中
       chart._updateLayout(padding);
     }
 
