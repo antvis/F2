@@ -74,7 +74,8 @@ class Geom extends Base {
        * 否则从最小值开始
        * @type {Boolean}
       */
-      startOnZero: true
+      startOnZero: true,
+      visible: true
     };
   }
 
@@ -826,6 +827,21 @@ class Geom extends Base {
     super.destroy();
   }
 
+  _display(visible) {
+    this.set('visible', visible);
+    const container = this.get('container');
+    const canvas = container.get('canvas');
+    container.set('visible', visible);
+    canvas.draw();
+  }
+
+  show() {
+    this._display(true);
+  }
+
+  hide() {
+    this._display(false);
+  }
 }
 
 module.exports = Geom;
