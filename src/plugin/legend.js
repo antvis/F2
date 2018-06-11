@@ -26,7 +26,9 @@ const DEFAULT_CFG = {
     textAlign: 'start',
     textBaseline: 'middle'
   },
-  unCheckColor: '#bfbfbf',
+  unCheckStyle: {
+    fill: '#bfbfbf'
+  },
   itemWidth: 'auto',
   wordSpace: 6,
   selectedMode: 'multiple' // 'multiple' or 'single'

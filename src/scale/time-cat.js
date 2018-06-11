@@ -55,7 +55,7 @@ class TimeCategory extends Category {
     Util.each(values, function(v, i) {
       values[i] = self._toTimeStamp(v);
     });
-    if (this.sortable) {
+    if (this.sortable) { // 允许排序
       values.sort(function(v1, v2) {
         return v1 - v2;
       });

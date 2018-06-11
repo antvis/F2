@@ -176,9 +176,9 @@ class Chart extends Base {
     return fields;
   }
 
-  _createScale(field, data, sortable) {
+  _createScale(field, data) {
     const scaleController = this.get('scaleController');
-    return scaleController.createScale(field, data, sortable);
+    return scaleController.createScale(field, data);
   }
 
   _adjustScale() {
@@ -218,6 +218,20 @@ class Chart extends Base {
         scale.range = range;
       }
     });
+
+    const geoms = this.get('geoms');
+    for (let i = 0; i < geoms.length; i++) {
+      const geom = geoms[i];
+      if (geom.get('type') === 'interval') {
+        const yScale = geom.getYScale();
+        const field = yScale.field;
+        if (!(colDefs[field] && colDefs[field].min) && yScale.min > 0 && yScale.type !== 'time') {
+          yScale.change({
+            min: 0
+          });
+        }
+      }
+    }
   }
 
   _removeGeoms() {
@@ -525,7 +539,8 @@ class Chart extends Base {
     return this;
   }
 
-  repaint() {
+  repaint(isDataChanged) {
+    this.set('dataChanged', isDataChanged);
     this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
@@ -534,8 +549,7 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
-    this.set('dataChanged', true);
-    this.repaint();
+    this.repaint(true);
   }
 
   changeSize(width, height) {
@@ -619,10 +633,9 @@ class Chart extends Base {
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
-   * @param  {Boolean} sortable 是否需要排序
    * @return {Scale} 度量
    */
-  createScale(field, sortable) {
+  createScale(field) {
     let data = this.get('data');
     const filteredData = this.get('filteredData');
     // 过滤导致数据为空时，需要使用全局数据
@@ -636,7 +649,7 @@ class Chart extends Base {
 
     const scales = this.get('scales');
     if (!scales[field]) {
-      scales[field] = this._createScale(field, data, sortable);
+      scales[field] = this._createScale(field, data);
     }
     return scales[field];
   }
@@ -710,6 +723,9 @@ class Chart extends Base {
   }
 
   _isAutoPadding() {
+    if (this.get('_padding')) {
+      return false;
+    }
     const padding = this.get('padding');
     if (Util.isArray(padding)) {
       return padding.indexOf('auto') !== -1;

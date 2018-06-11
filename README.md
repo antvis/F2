@@ -10,7 +10,7 @@
 
 [中文 README](./README.zh-CN.md)
 
-F2 is a out-of-box visualization solution tailored to the **mobile devices**. F2 is based on [**the grammar of graphics**](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), and it is light-weighted, high-performance and easily expandable. F2 is designed for harsh scenarios where performance, size and scalability is extremely high demand.
+F2 is a powerful **mobile** data visualization solution, pure in javascript. F2 is based on [**the grammar of graphics**](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), and it is light-weighted, high-performance and easily expandable. Also, F2 charts are well desigbed for mobile.
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
 
@@ -29,7 +29,7 @@ $ npm install @antv/f2
 - ✔︎ **High performance**: F2 pursues the utltimate performance for drawing, lots of optimization have been done for mobile devices
 - ✔︎ **Light-weighed**: F2 maintains a compact code size while supporting more than 45 kinds of charts
 
-## Other runtime
+## Other runtime support
 
 - F2 on **Node.js** ：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
 - F2 on [WebChart miniprogram](https://mp.weixin.qq.com/cgi-bin/wx): https://github.com/antvis/wx-f2

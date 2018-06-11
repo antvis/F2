@@ -54,6 +54,9 @@ class Text extends Shape {
 
   _getTextHeight() {
     const attrs = this._attrs.attrs;
+    if (attrs.height) {
+      return attrs.height;
+    }
     const lineCount = attrs.lineCount;
     const fontSize = attrs.fontSize * 1;
     if (lineCount > 1) {
@@ -185,6 +188,9 @@ class Text extends Shape {
 
   _getTextWidth() {
     const attrs = this._attrs.attrs;
+    if (attrs.width) {
+      return attrs.width;
+    }
     const text = attrs.text;
     const context = this.get('context');
 

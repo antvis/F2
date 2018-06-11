@@ -86,7 +86,7 @@ class Timeline {
       }
 
       if (propertyAnim.onUpdate) {
-        propertyAnim.onUpdate();
+        propertyAnim.onUpdate(t);
       }
 
       if (currentTime >= propertyAnim.endTime && !propertyAnim.hasEnded) {

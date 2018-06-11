@@ -96,6 +96,17 @@
       legend.setItems(chart.getLegendItems().country);
     }
   });
+  chart.legend({
+    marker(x, y, r, ctx) {
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = ctx.fillStyle;
+      ctx.moveTo(x - r - 3, y);
+      ctx.lineTo(x + r + 3, y);
+      ctx.stroke();
+      ctx.arc(x, y, r - 1, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
+  });
   chart.area()
     .position('year*percent')
     .color('country')

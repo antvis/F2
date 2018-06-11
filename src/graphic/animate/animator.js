@@ -113,8 +113,8 @@ class Animator {
 
   onUpdate(callback) {
     if (this.animate) {
-      this.animate.onUpdate = function() {
-        callback();
+      this.animate.onUpdate = function(frame) {
+        callback(frame);
       };
     }
 
