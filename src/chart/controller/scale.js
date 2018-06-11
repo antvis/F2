@@ -73,7 +73,7 @@ class ScaleController {
     return cfg;
   }
 
-  createScale(field, data, sortable) {
+  createScale(field, data) {
     const self = this;
     const def = self._getDef(field);
     let scale;
@@ -112,7 +112,6 @@ class ScaleController {
       if (def) {
         Util.mix(cfg, def);
       }
-      cfg.sortable = sortable;
       scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
     }
     return scale;

@@ -185,11 +185,10 @@ class Geom extends Base {
   }
 
   _createScale(field) {
-    const sortable = this.get('sortable');
     const scales = this.get('scales');
     let scale = scales[field];
     if (!scale) {
-      scale = this.get('chart').createScale(field, sortable);
+      scale = this.get('chart').createScale(field);
       scales[field] = scale;
     }
     return scale;
