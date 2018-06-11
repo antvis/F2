@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const Global = require('../global');
 const Tooltip = require('../component/tooltip');
+const Helper = require('../util/helper');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
@@ -385,15 +386,16 @@ class TooltipController {
     if (!this.enable) return;
     const chart = this.chart;
     const plot = chart.get('plotRange');
-    const { x, y } = Util.createEvent(ev, chart);
-    if (!(x >= plot.tl.x && x <= plot.tr.x && y >= plot.tl.y && y <= plot.br.y)) { // not in chart plot
+    const point = Util.createEvent(ev, chart);
+    if (!Helper.isPointInPlot(point, plot)) { // not in chart plot
       this.hideTooltip();
       return;
     }
+
     const lastTimeStamp = this.timeStamp;
     const timeStamp = +new Date();
     if ((timeStamp - lastTimeStamp) > 16) {
-      this.showTooltip({ x, y });
+      this.showTooltip(point);
       this.timeStamp = timeStamp;
     }
   }

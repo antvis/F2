@@ -33,6 +33,7 @@ class PieSelect extends Interaction {
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
+    // 饼图的 bbox 范围查找不精确，所以使用数据比对
     Util.each(children, child => {
       if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
