@@ -175,9 +175,9 @@ class Chart extends Base {
     return fields;
   }
 
-  _createScale(field, data, sortable) {
+  _createScale(field, data) {
     const scaleController = this.get('scaleController');
-    return scaleController.createScale(field, data, sortable);
+    return scaleController.createScale(field, data);
   }
 
   _adjustScale() {
@@ -618,10 +618,9 @@ class Chart extends Base {
   /**
    * 创建度量
    * @param  {String} field 度量对应的名称
-   * @param  {Boolean} sortable 是否需要排序
    * @return {Scale} 度量
    */
-  createScale(field, sortable) {
+  createScale(field) {
     let data = this.get('data');
     const filteredData = this.get('filteredData');
     // 过滤导致数据为空时，需要使用全局数据
@@ -635,7 +634,7 @@ class Chart extends Base {
 
     const scales = this.get('scales');
     if (!scales[field]) {
-      scales[field] = this._createScale(field, data, sortable);
+      scales[field] = this._createScale(field, data);
     }
     return scales[field];
   }

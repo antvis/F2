@@ -33,11 +33,6 @@ class List {
        */
       itemMarginBottom: 12,
       /**
-       * 记录项置灰的颜色
-       * @type {String}
-       */
-      unCheckColor: '#bfbfbf',
-      /**
        * 记录项文本格式化
        * @type {[type]}
        */
@@ -62,7 +57,12 @@ class List {
        * 布局方式
        * @type {String}
        */
-      layout: 'horizontal'
+      layout: 'horizontal',
+      /**
+       * name 和 value 的连接字符串
+       * @type {String}
+       */
+      joinString: ': '
     };
   }
 
@@ -164,9 +164,13 @@ class List {
       dataValue: item.dataValue, // 图例项对应原始数据中的数值
       checked: item.checked
     });
-    const { unCheckColor, nameStyle, valueStyle, wordSpace } = this;
+    const { unCheckStyle, unCheckColor, nameStyle, valueStyle, wordSpace } = this;
     const { marker, value } = item;
     let startX = 0;
+
+    if (unCheckColor) { // unCheckColor 属性兼容，建议使用 unCheckStyle
+      unCheckStyle.fill = unCheckColor;
+    }
 
     if (marker) { // 如果有 marker 添加 marker, 格式： { radius, symbol, fill / stroke }
       const radius = marker.radius || MARKER_RADIUS;
@@ -176,12 +180,7 @@ class List {
       }, marker);
 
       if (item.checked === false) {
-        if (markerAttrs.fill) {
-          markerAttrs.fill = unCheckColor;
-        }
-        // if (markerAttrs.stroke) {
-        //   markerAttrs.stroke = unCheckColor;
-        // }
+        Util.mix(markerAttrs, unCheckStyle);
       }
 
       const markerShape = new Marker({
@@ -195,14 +194,15 @@ class List {
     let nameText;
     let name = item.name;
     if (name) {
-      name = value ? name + ': ' : name;
+      const joinString = this.joinString || '';
+      name = value ? name + joinString : name;
       nameText = itemGroup.addShape('text', {
         className: 'name',
         attrs: Util.mix({
           x: startX,
           y: this._titleHeight,
           text: this._formatItemValue(name)
-        }, nameStyle, item.checked === false ? { fill: unCheckColor } : null)
+        }, nameStyle, item.checked === false ? unCheckStyle : null)
       });
     }
 
@@ -218,7 +218,7 @@ class List {
           x: valueX,
           y: this._titleHeight,
           text: value
-        }, valueStyle, item.checked === false ? { fill: unCheckColor } : null)
+        }, valueStyle, item.checked === false ? unCheckStyle : null)
       });
     }
     return itemGroup;
