@@ -1,3 +1,14 @@
+#### 3.1.10 (2018-06-11)
+
+##### New Features
+
+* add joinString property for legend. ([7bc76763](https://github.com/antvis/f2/commit/7bc76763a95f47363062e56650286af7ef56f3de))
+* add unCheckStyle for legend. ([bab731bd](https://github.com/antvis/f2/commit/bab731bd85c826fb475ba69c70670eb625a3c6ae))
+
+##### Bug Fixes
+
+* make sure timeCat scale to sort by default. Closed [#151](https://github.com/antvis/f2/pull/151). ([a9e7fee6](https://github.com/antvis/f2/commit/a9e7fee68e020d07b1eaafa8042c4a28f7408c32))
+
 #### 3.1.9 (2018-06-08)
 
 ##### Chores
