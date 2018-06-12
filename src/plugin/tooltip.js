@@ -418,9 +418,7 @@ class TooltipController {
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
     Util.each([].concat(methodName), aMethod => {
-      if (Util.isFunction(aMethod)) {
-        aMethod(method, action); // TODO： 测试，供用户自己绑定事件
-      } else if (action === 'bind') {
+      if (action === 'bind') {
         Util.addEventListener(canvasDom, aMethod, method);
       } else {
         Util.removeEventListener(canvasDom, aMethod, method);
