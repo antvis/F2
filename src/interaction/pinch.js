@@ -3,16 +3,17 @@ const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 
-class LinearPinch extends Interaction {
+class Pinch extends Interaction {
   getDefaultCfg() {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
       startEvent: 'pinchstart',
       processingEvent: 'pinch',
       endEvent: 'pinchend',
-      resetEvent: '',
+      // resetEvent: '',
       mode: 'x', // 方向，可取值 x、y、xy
       currentPinchScaling: null, // 当前
+      originValues: null, // 保存分类度量的原始 values
       minScale: null,
       maxScale: null,
       _timestamp: 0
@@ -93,20 +94,24 @@ class LinearPinch extends Interaction {
 
     if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
-      self._zoomScale(xScale, diff, center, 'x');
+      if (xScale.isCategory) { // 横轴为分类类型
+        self._zoomCatScale(xScale, diff, center);
+      } else if (xScale.isLinear) {
+        self._zoomLinearScale(xScale, diff, center, 'x');
+      }
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
-        self._zoomScale(yScale, diff, center, 'y');
+        yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
     }
 
     chart.repaint();
   }
 
-  _zoomScale(scale, zoom, center, flag) {
+  _zoomLinearScale(scale, zoom, center, flag) {
     const type = scale.type;
     if (type !== 'linear') return;
     const field = scale.field;
@@ -118,10 +123,7 @@ class LinearPinch extends Interaction {
     }
 
     const coord = chart.get('coord');
-    let colDef = {};
-    if (chart.get('colDefs') && chart.get('colDefs')[field]) {
-      colDef = chart.get('colDefs')[field];
-    }
+    const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
     if (this.minScale && zoom < 1) { // 缩小
@@ -147,7 +149,64 @@ class LinearPinch extends Interaction {
       nice: false
     }));
   }
+
+  _zoomCatScale(scale, zoom, center) {
+    const { type, field, values } = scale;
+    const chart = this.chart;
+    const coord = chart.get('coord');
+    const colDef = Helper.getColDef(chart, field);
+
+    if (!this.originValues || chart.get('dataChanged')) {
+      const data = chart.get('data');
+      const originValues = [];
+      data.map(obj => {
+        let value = obj[field];
+        if (type === 'timeCat') {
+          value = scale._toTimeStamp(value);
+        }
+        if (originValues.indexOf(value) === -1) {
+          originValues.push(value);
+        }
+        return obj;
+      });
+      this.originValues = originValues;
+      this.originTicks = scale.ticks;
+    }
+
+    const originTicks = this.originTicks;
+    const originValues = this.originValues;
+    const originValuesLen = originValues.length;
+    const maxScale = this.maxScale || 4;
+    const minScale = this.minScale || 1;
+    const minCount = originValuesLen / maxScale;
+    const maxCount = originValuesLen / minScale;
+
+    const valuesLength = values.length;
+    const offsetPoint = coord.invertPoint(center);
+    const percent = offsetPoint.x;
+    const deltaCount = parseInt(valuesLength * Math.abs(zoom - 1));
+    const minDelta = parseInt(deltaCount * (percent));
+    const maxDelta = deltaCount - minDelta;
+
+    if (zoom >= 1 && valuesLength >= minCount) { // 放大
+      const newValues = values.slice(minDelta, valuesLength - maxDelta);
+      chart.scale(field, Util.mix({}, colDef, {
+        values: newValues,
+        ticks: originTicks
+      }));
+    } else if (zoom < 1 && valuesLength <= maxCount) { // 缩小
+      const firstIndex = originValues.indexOf(values[0]);
+      const lastIndex = originValues.indexOf(values[valuesLength - 1]);
+      const minIndex = Math.max(0, firstIndex - minDelta);
+      const maxIndex = Math.min(lastIndex + maxDelta, originValuesLen);
+      const newValues = originValues.slice(minIndex, maxIndex);
+      chart.scale(field, Util.mix({}, colDef, {
+        values: newValues,
+        ticks: originTicks
+      }));
+    }
+  }
 }
 
-Chart.registerInteraction('linear-pinch', LinearPinch);
-module.exports = LinearPinch;
+Chart.registerInteraction('pinch', Pinch);
+module.exports = Pinch;

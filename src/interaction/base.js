@@ -17,10 +17,10 @@ const TOUCH_EVENTS = [
 class Interaction {
   getDefaultCfg() {
     return {
-      startEvent: 'touchstart',
-      processingEvent: 'touchmove',
-      endEvent: 'touchend',
-      resetEvent: 'touchstart'
+      startEvent: TOUCH_EVENTS[0],
+      processingEvent: TOUCH_EVENTS[1],
+      endEvent: TOUCH_EVENTS[2],
+      resetEvent: null
     };
   }
 
@@ -84,6 +84,7 @@ class Interaction {
       this._clearTouchEvent(processingEvent, '_process');
       this._clearTouchEvent(endEvent, '_end');
       this._clearTouchEvent(resetEvent, '_reset');
+      this.hammer = null;
     }
   }
 
@@ -118,43 +119,31 @@ Chart.getInteraction = function(type) {
   return Chart._Interactions[type];
 };
 
-Chart.plugins.register({
-  init(chart) {
-    chart.interact = function(type, cfg) {
-      const Ctor = Chart.getInteraction(type);
-      const interact = new Ctor(cfg, this);
-      const interactions = this._interactions || {};
-      interactions[type] = interactions[type] || []; // 同名
-      interactions[type].push(interact);
-      this._interactions = interactions;
-      return this;
-    };
-    chart.clearInteraction = function(type) {
-      const interactions = this._interactions;
-      if (!interactions) return;
-      if (type) {
-        (interactions[type] || []).forEach(interact => {
-          interact.destroy();
-        });
-        delete interactions[type];
-      } else {
-        Util.each(interactions, (collection, key) => {
-          (collection || []).forEach(interact => {
-            interact.destroy();
-          });
-          delete interactions[key];
-        });
-      }
-    };
-
-  },
-  afterCanvasDestroyed(chart) {
-    const interactions = chart._interactions;
-    Util.each(interactions, collection => {
-      (collection || []).forEach(interact => {
-        interact.destroy();
-      });
+Chart.prototype.interaction = function(type, cfg) {
+  const interactions = this._interactions || {};
+  if (interactions[type]) { // 如果重复注册，会将上一个交互实例销毁删除
+    interactions[type].destroy();
+  }
+  const Ctor = Chart.getInteraction(type);
+  const interact = new Ctor(cfg, this);
+  interactions[type] = interact;
+  this._interactions = interactions;
+  return this;
+};
+Chart.prototype.clearInteraction = function(type) {
+  const interactions = this._interactions;
+  if (!interactions) return;
+  if (type) {
+    interactions[type] && interactions[type].destroy();
+    delete interactions[type];
+  } else {
+    Util.each(interactions, (interaction, key) => {
+      interaction.destroy();
+      delete interactions[key];
     });
   }
-});
+
+  return this;
+};
+
 module.exports = Interaction;

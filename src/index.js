@@ -13,6 +13,7 @@ require('./scale/time-cat'); // timeCat 类型的度量
 
 require('./component/guide'); // 加载 guide 组件
 
+// TODO: 添加到 f2-all 中
 // 交互行为
 require('./interaction');
 

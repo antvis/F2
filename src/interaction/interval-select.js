@@ -9,7 +9,6 @@ class IntervalSelect extends Interaction {
     return Util.mix({}, defaultCfg, {
       startEvent: 'tap',
       processingEvent: null,
-      resetEvent: null,
       selectStyle: {
         fillOpacity: 1
       }, // 被选中图形的样式
@@ -101,6 +100,10 @@ class IntervalSelect extends Interaction {
       ev.shapeInfo = selectedShape.get('origin');
       ev.shape = selectedShape;
     }
+  }
+
+  reset() {
+    this._reset();
   }
 }
 

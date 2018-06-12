@@ -577,6 +577,13 @@ class Chart extends Base {
     const canvas = this.get('canvas');
     canvas.destroy();
     Chart.plugins.notify(this, 'afterCanvasDestroyed');
+
+    if (this._interactions) {
+      Util.each(this._interactions, interaction => {
+        interaction.destroy();
+      });
+    }
+
     super.destroy();
   }
 

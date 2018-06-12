@@ -1,20 +1,22 @@
 const Util = require('../util/common');
+const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const DAY_TIMESTAMPS = 86400000;
 
-class CategoryPan extends Interaction {
+class Pan extends Interaction {
   getDefaultCfg() {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
       startEvent: 'panstart',
       processingEvent: 'panmove',
       endEvent: 'panend',
-      resetEvent: '',
+      mode: 'x', // 方向，可取值 x、y、xy
       threshold: 10, // Minimal pan distance required before recognizing.
       currentDeltaX: null,
+      currentDeltaY: null,
       panning: false,
-      originValues: null,
+      limitRange: {}, // 限制范围
       _timestamp: 0
     });
   }
@@ -23,12 +25,15 @@ class CategoryPan extends Interaction {
     super(cfg, chart);
     const hammer = this.hammer;
     const threshold = this.threshold; // Minimal pan distance required before recognizing.
-    hammer.get('pan').set({ threshold });
+    hammer.get('pan').set({
+      threshold
+    });
     chart.set('limitInPlot', true);
   }
 
   start(e) {
     this.currentDeltaX = 0;
+    this.currentDeltaY = 0;
     this._handlePan(e);
   }
 
@@ -38,45 +43,85 @@ class CategoryPan extends Interaction {
 
   end() {
     this.currentDeltaX = null;
+    this.currentDeltaY = null;
   }
 
   _handlePan(e) {
-    const currentDeltaX = this.currentDeltaX;
-    if (currentDeltaX !== null) {
+    const { currentDeltaX, currentDeltaY } = this;
+    if (currentDeltaX !== null && currentDeltaY !== null) {
       this.panning = true;
       const deltaX = e.deltaX - currentDeltaX;
+      const deltaY = e.deltaY - currentDeltaY;
       this.currentDeltaX = e.deltaX;
+      this.currentDeltaY = e.deltaY;
 
       const lastTimestamp = this._timestamp;
       const now = +new Date();
       if ((now - lastTimestamp) > 16) {
-        this._doPan(deltaX);
+        this._doPan(deltaX, deltaY);
         this._timestamp = now;
       }
     }
   }
 
-  _doPan(deltaX) {
-    const chart = this.chart;
+  _doPan(deltaX, deltaY) {
+    const self = this;
+    const { mode, chart } = self;
     const coord = chart.get('coord');
     const { start, end } = coord;
-    const xScale = chart.getXScale();
-    if (xScale.isCategory) {
-      const range = end.x - start.x; // 绘图区域宽度
-      this._panScale(xScale, deltaX, range);
-      chart.repaint();
+    if (Helper.directionEnabled(mode, 'x') && deltaX !== 0) {
+      const xScale = chart.getXScale();
+      const coordWidth = end.x - start.x; // 绘图区域宽度
+
+      if (xScale.isCategory) { // 横轴为分类类型
+        self._panCatScale(xScale, deltaX, coordWidth);
+      } else if (xScale.isLinear) {
+        self._panLinearScale(xScale, deltaX, coordWidth, 'x');
+      }
     }
+
+    if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
+      const coordHeight = start.y - end.y; // 绘图区域高度
+      const yScales = chart.getYScales();
+      Util.each(yScales, yScale => {
+        yScale.isLinear && self._panLinearScale(yScale, deltaY, coordHeight, 'y');
+      });
+    }
+    chart.repaint();
   }
 
-  _panScale(scale, delta, range) {
+  _panLinearScale(scale, delta, range, flag) {
+    const { field, min, max } = scale;
+
+    const chart = this.chart;
+    const ratio = delta / range;
+    const panValue = ratio * (max - min);
+    let newMax = flag === 'x' ? max - panValue : max + panValue;
+    let newMin = flag === 'x' ? min - panValue : min + panValue;
+
+    const limitRange = this.limitRange;
+    if (limitRange[field] && limitRange[field].min && newMin <= limitRange[field].min) {
+      newMin = limitRange[field].min;
+      newMax = (max - min) + newMin;
+    }
+    if (limitRange[field] && limitRange[field].max && newMax >= limitRange[field].max) {
+      newMax = limitRange[field].max;
+      newMin = newMax - (max - min);
+    }
+    const colDef = Helper.getColDef(chart, field);
+    chart.scale(field, Util.mix({}, colDef, {
+      min: newMin,
+      max: newMax,
+      nice: false
+    }));
+  }
+
+  _panCatScale(scale, delta, range) {
     const chart = this.chart;
     const { type, field, values, ticks } = scale;
-    let colDef = {};
-    if (chart.get('colDefs') && chart.get('colDefs')[field]) {
-      colDef = chart.get('colDefs')[field];
-    }
+    const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originValues || chart.get('dataChanged')) {
+    if (!this.limitRange[field] || chart.get('dataChanged')) { // 缓存原始数据
       const data = chart.get('data');
       const originValues = [];
       data.map(obj => {
@@ -89,9 +134,10 @@ class CategoryPan extends Interaction {
         }
         return obj;
       });
-      this.originValues = originValues;
+      this.limitRange[field] = originValues;
     }
-    const originValues = this.originValues;
+
+    const originValues = this.limitRange[field];
     const ratio = delta / range;
     const valueLength = values.length;
     const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength))); // 变动的个数
@@ -141,5 +187,5 @@ class CategoryPan extends Interaction {
   }
 }
 
-Chart.registerInteraction('category-pan', CategoryPan);
-module.exports = CategoryPan;
+Chart.registerInteraction('pan', Pan);
+module.exports = Pan;
