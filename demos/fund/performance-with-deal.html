@@ -453,7 +453,7 @@
         if (id === 'one-year' || id === 'three-year') {
           chart.tooltip(false);
           chart
-          .interact('catPan', Util.mix({
+          .interaction('pan', Util.mix({
             mode: 'x',
             preStart: function() {
               chart.animate(false);
@@ -462,7 +462,7 @@
               chart.animate(true);
             }
           }, RANGE[id]))
-          .interact('catPinch', {
+          .interaction('pinch', {
             mode: 'x',
             preStart: function() {
               chart.animate(false);

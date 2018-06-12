@@ -49,7 +49,7 @@
       }
     });
     chart.tooltip(false);
-    chart.interact('linear-pan', {
+    chart.interaction('pan', {
       limitRange: {
         x: {
           min: -100,
@@ -57,7 +57,7 @@
         }
       }
     });
-    chart.interact('linear-pinch', {
+    chart.interaction('pinch', {
       maxScale: 5,
       minScale: 1,
       onEnd() {
