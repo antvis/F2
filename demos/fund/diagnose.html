@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
   <title>基金诊断</title>
-  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
   <link rel="stylesheet" href="./css/performance.css">
   <style>
     canvas {
@@ -27,13 +25,11 @@
       left: 0;
       visibility: hidden;
       max-width: 200px;
-      /* transition: 'visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1), left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1)', */
     }
     .chart-tooltip:after, .chart-tooltip:before {
       border: solid transparent;
       content: ' ';
       height: 0;
-      /* left: 100%; */
       position: absolute;
       width: 0;
       top: 100%;
@@ -41,7 +37,6 @@
     .chart-tooltip:before {
       border-width: 7px;
       border-top-color: #1890ff;
-      /* top: 10px; */
       left: 50%;
       margin-left: -7px;
       margin-top: 1px;
@@ -49,7 +44,6 @@
     .chart-tooltip:after {
       border-width: 7px;
       border-top-color: #ECF3FE;
-      /* top: 15px; */
       left: 50%;
       margin-left: -7px;
     }
@@ -82,10 +76,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
   <script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
   <script src="../assets/jquery-3.2.1.min.js"></script>
-  <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
   <script src="../../build/f2.js"></script>
   <script>
     const data = [
