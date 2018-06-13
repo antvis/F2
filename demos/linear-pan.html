@@ -13,7 +13,7 @@
     <canvas id="mountNode"></canvas>
   </div>
   <script src="./assets/jquery-3.2.1.min.js"></script>
-  <script src="../build/f2.js"></script>
+  <script src="../build/f2-all.js"></script>
   <script>
     $.getJSON('./data/linear-pan.json', data => {
       const years = []
@@ -39,7 +39,7 @@
       chart.line().position('release*count');
       chart.point().position('release*count');
 
-      chart.interaction('linear-pan', {
+      chart.interaction('pan', {
         limitRange: {
           release: {
             min,
