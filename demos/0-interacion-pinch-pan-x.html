@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-  <title>线性平移缩放交互</title>
+  <title>x 轴平移缩放</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
-
 <body>
-  <div>
-    <canvas id="mountNode"></canvas>
-  </div>
-  <script src="./assets/jquery-3.2.1.min.js"></script>
-  <script src="../build/f2-all.js"></script>
-  <script>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p style="text-align: center;">缩放手势需要在手机端操作，请在手机上操作</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
     // Generate sample data
     const data = [];
     const step = Math.PI / 4;
@@ -24,8 +23,6 @@
 
     const chart = new F2.Chart({
       id: 'mountNode',
-      width: window.innerWidth,
-      height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
       pixelRatio: window.devicePixelRatio
     });
 
@@ -48,26 +45,24 @@
         }
       }
     });
-    // chart.tooltip(false);
-    // chart.interaction('pan', {
-    //   limitRange: {
-    //     x: {
-    //       min: -100,
-    //       max: 100
-    //     }
-    //   }
-    // });
+    chart.tooltip(false);
+    chart.interaction('pan', {
+      limitRange: {
+        x: {
+          min: -100,
+          max: 100
+        }
+      }
+    });
     chart.interaction('pinch', {
       maxScale: 5,
       minScale: 1,
       onEnd() {
-        console.log(chart.getXScale())
+        // console.log(chart.getXScale());
       }
     });
     chart.line().position('x*y').shape('smooth');
     chart.render();
-  </script>
+</script>
 </body>
-
 </html>
-

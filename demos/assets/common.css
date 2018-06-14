@@ -6,3 +6,9 @@ html, body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 69vw;
+}

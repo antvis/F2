@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>柱状图选中交互 demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>柱状图选中</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
 <div>
-  <canvas id="mountNode" style="position: relative;">
-  </canvas>
+  <canvas id="mountNode"></canvas>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
 <script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
 <script>
   var data = [
     { year: '1951 年', sales: 38 },
@@ -25,8 +27,6 @@
   ];
   var chart = new F2.Chart({
     id: 'mountNode',
-    width: window.innerWidth,
-    height: window.innerWidth > window.innerHeight ? (window.innerHeight - 54) : window.innerWidth * 0.707,
     pixelRatio: window.devicePixelRatio
   });
 
@@ -44,8 +44,7 @@
       stroke: '#000',
       lineWidth: 1
     },
-    // unSelectStyle: null
-    // selectStyle: null
+    // unSelectStyle:null
   });
 </script>
 </body>

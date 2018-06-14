@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>x 轴平移</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p>手机上体验效果更佳</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
+$.getJSON('./data/linear-pan.json', function(data) {
+  const years = [];
+  data.map(obj => {
+    years.push(obj.release);
+  });
+  const min = Math.min.apply(null, years);
+  const max = Math.max.apply(null, years);
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    pixelRatio: window.devicePixelRatio,
+    limitInPlot: true
+  });
+  chart.source(data, {
+    release: {
+      min: 1990,
+      max: 2010
+    }
+  });
+  chart.tooltip({
+    showCrosshairs: true,
+    showItemMarker: false,
+    background: {
+      radius: 2,
+      fill: '#1890FF',
+      padding: [3, 5]
+    },
+    nameStyle: {
+      fill: '#fff'
+    },
+    onShow(ev) {
+      const items = ev.items;
+      items[0].name = items[0].title;
+    }
+  });
+  chart.line().position('release*count');
+  chart.point().position('release*count');
+
+  chart.interaction('pan', {
+    limitRange: {
+      release: {
+        min,
+        max
+      }
+    }
+  });
+  chart.render();
+});
+</script>
+</body>
+</html>
