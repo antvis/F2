@@ -1,3 +1,23 @@
+### 3.2.0-beta.1(2018-06-14)
+
+##### New Features
+
+* add bar chart && column chart select interaction. ([f2242424](https://github.com/antvis/f2/commit/f22424249f81f2c9760a1780ddd2466dcc34d90e))
+* add show() and hide() methods for Geometry instance. ([652ce741](https://github.com/antvis/f2/commit/652ce741d44087bec8a00de79608ec2913ed34b8))
+* add pinch and pan interaction. ([9ac5a54e](https://github.com/antvis/f2/commit/9ac5a54ecc6a5824035f038c8d0c56e4a9c192ca))
+* add limitInPlot property for chart, to limit the drawing area of geometrys. ([74e53218](https://github.com/antvis/f2/commit/74e53218e9bc970feeab5e79ffb62310c31444cf))
+* the drawing order of geoms can be decided by scale values. ([1f2993e6](https://github.com/antvis/f2/commit/1f2993e6ba818d795108522b56f9d5949a8b7d2c))
+* add chart.guide().regionFilter({}). ([334d3ca3](https://github.com/antvis/f2/commit/334d3ca358140c135ca163f7fefe904afbaaad78))
+
+##### Bug Fixes
+
+* The position of the canvas in the parent container needs to be considered when calculating the Guide.Html position. ([512e025d](https://github.com/antvis/f2/commit/512e025d6d60a4e9837722b6585b7ac296a73a9e))
+* timeCat type scale setting values caused an error in chart drawing. ([d1391bd3](https://github.com/antvis/f2/commit/d1391bd33440e5d817e984a333da268bba8e6a27))
+
+##### Other Changes
+
+* add 16ms delay for canvas draw. ([012c9fcc](https://github.com/antvis/f2/commit/012c9fcc51a0fae11eca797741e941df31aed89d))
+
 #### 3.1.10 (2018-06-11)
 
 ##### New Features
