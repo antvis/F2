@@ -11,8 +11,11 @@ class Pan extends Interaction {
       startEvent: 'panstart',
       processingEvent: 'panmove',
       endEvent: 'panend',
+      resetEvent: 'touchend',
       mode: 'x', // 方向，可取值 x、y、xy
-      threshold: 10, // Minimal pan distance required before recognizing.
+      panThreshold: 10, // Minimal pan distance required before recognizing
+      pressThreshold: 9, // Minimal movement that is allowed while pressing
+      pressTime: 251, // Minimal press time in ms
       currentDeltaX: null,
       currentDeltaY: null,
       panning: false,
@@ -23,27 +26,54 @@ class Pan extends Interaction {
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const hammer = this.hammer;
-    const threshold = this.threshold; // Minimal pan distance required before recognizing.
+    const { hammer, panThreshold, pressThreshold, pressTime } = this;
     hammer.get('pan').set({
-      threshold
+      threshold: panThreshold
     });
     chart.set('limitInPlot', true);
+
+    const tooltipController = chart.get('tooltipController');
+    if (tooltipController.enable) { // 用户未关闭 tooltip
+      chart.tooltip(false);
+      hammer.get('press').set({
+        threshold: pressThreshold,
+        time: pressTime
+      });
+      hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
+    }
   }
 
   start(e) {
+    if (this.pressed) return;
     this.currentDeltaX = 0;
     this.currentDeltaY = 0;
     this._handlePan(e);
   }
 
   process(e) {
+    if (this.pressed) return;
     this._handlePan(e);
   }
 
   end() {
+    if (this.pressed) return;
+
     this.currentDeltaX = null;
     this.currentDeltaY = null;
+  }
+
+  reset() {
+    const self = this;
+    self.pressed = false;
+    self.chart.hideTooltip();
+    self.chart.tooltip(false);
+  }
+
+  _handlePress(e) {
+    this.pressed = true;
+    const center = e.center;
+    this.chart.tooltip(true);
+    this.chart.showTooltip(center);
   }
 
   _handlePan(e) {

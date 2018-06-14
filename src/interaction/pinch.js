@@ -10,7 +10,9 @@ class Pinch extends Interaction {
       startEvent: 'pinchstart',
       processingEvent: 'pinch',
       endEvent: 'pinchend',
-      // resetEvent: '',
+      resetEvent: 'touchend',
+      pressThreshold: 9, // Minimal movement that is allowed while pressing
+      pressTime: 251, // Minimal press time in ms
       mode: 'x', // 方向，可取值 x、y、xy
       currentPinchScaling: null, // 当前
       originValues: null, // 保存分类度量的原始 values
@@ -22,25 +24,52 @@ class Pinch extends Interaction {
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const hammer = this.hammer;
+    const { hammer, pressThreshold, pressTime } = this;
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
     this._originRange = {};
     chart.set('limitInPlot', true);
+
+    const tooltipController = chart.get('tooltipController');
+    if (tooltipController.enable) { // 用户未关闭 tooltip
+      chart.tooltip(false);
+      hammer.get('press').set({
+        threshold: pressThreshold,
+        time: pressTime
+      });
+      hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
+    }
   }
 
   start() {
+    if (this.pressed) return;
     this.currentPinchScaling = 1;
   }
 
   process(e) {
+    if (this.pressed) return;
     this._handlePinch(e);
   }
 
   end(e) {
+    if (this.pressed) return;
     this._handlePinch(e);
     this.currentPinchScaling = null; // reset
+  }
+
+  reset() {
+    const self = this;
+    self.pressed = false;
+    self.chart.hideTooltip();
+    self.chart.tooltip(false);
+  }
+
+  _handlePress(e) {
+    this.pressed = true;
+    const center = e.center;
+    this.chart.tooltip(true);
+    this.chart.showTooltip(center);
   }
 
   _handlePinch(e) {
