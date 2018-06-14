@@ -7,6 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
+const Helper = require('../util/helper');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -279,10 +280,12 @@ class Chart extends Base {
   _initGeoms(geoms) {
     const coord = this.get('coord');
     const data = this.get('filteredData');
+    const colDefs = this.get('colDefs');
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
       geom.set('data', data);
       geom.set('coord', coord);
+      geom.set('colDefs', colDefs);
       geom.init();
     }
   }
@@ -354,13 +357,13 @@ class Chart extends Base {
     }));
   }
 
-  initColDefs() {
-    const colDefs = this.get('colDefs');
-    if (colDefs) {
-      const scaleController = this.get('scaleController');
-      Util.mix(scaleController.defs, colDefs);
-    }
-  }
+  // initColDefs() {
+  //   const colDefs = this.get('colDefs');
+  //   if (colDefs) {
+  //     const scaleController = this.get('scaleController');
+  //     Util.mix(scaleController.defs, colDefs);
+  //   }
+  // }
 
   _init() {
     const self = this;
@@ -419,7 +422,10 @@ class Chart extends Base {
     }
 
     this.set('colDefs', colDefs);
-    this.initColDefs();
+    // this.initColDefs();
+    const scaleController = this.get('scaleController');
+    scaleController.defs = colDefs;
+
     return this;
   }
 
@@ -494,6 +500,15 @@ class Chart extends Base {
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
 
+    // 将 geom 限制在绘图区域内
+    if (self.get('limitInPlot')) {
+      const middlePlot = self.get('middlePlot');
+      const coord = self.get('coord');
+      const clip = Helper.getClip(coord);
+      clip.set('canvas', middlePlot.get('canvas'));
+      middlePlot.attr('clip', clip);
+    }
+
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
@@ -562,6 +577,13 @@ class Chart extends Base {
     const canvas = this.get('canvas');
     canvas.destroy();
     Chart.plugins.notify(this, 'afterCanvasDestroyed');
+
+    if (this._interactions) {
+      Util.each(this._interactions, interaction => {
+        interaction.destroy();
+      });
+    }
+
     super.destroy();
   }
 

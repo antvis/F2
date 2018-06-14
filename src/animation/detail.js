@@ -205,7 +205,7 @@ function getAnimate(geomType, coord, animationType, animationName) {
 }
 
 function getAnimateCfg(geomType, animationType, animateCfg) {
-  if (animateCfg && (animateCfg[animationType] === false)) {
+  if (animateCfg === false || (Util.isObject(animateCfg) && (animateCfg[animationType] === false))) {
     return false;
   }
 
@@ -307,8 +307,11 @@ function addAnimate(cache, shapes, canvas) {
 function _getAnimateCfgByShapeType(type, chart) {
   const animateCfg = chart.get('animate');
 
-  if (animateCfg) {
+  if (Util.isObject(animateCfg)) {
     return animateCfg[type];
+  }
+  if (animateCfg === false) {
+    return false;
   }
 
   return null;

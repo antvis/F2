@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const Global = require('../global');
 const Tooltip = require('../component/tooltip');
+const Helper = require('../util/helper');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
@@ -167,7 +168,7 @@ class TooltipController {
   render() {
     const self = this;
 
-    if (self.tooltip || !self.enable) {
+    if (self.tooltip /* || !self.enable */) {
       return;
     }
 
@@ -319,37 +320,39 @@ class TooltipController {
     const coord = chart.get('coord');
 
     Util.each(geoms, geom => {
-      const type = geom.get('type');
-      const records = geom.getSnapRecords(point);
-      Util.each(records, record => {
-        if (record.x && record.y) {
-          const { x, y, _origin, color } = record;
-          const tooltipItem = {
-            x,
-            y: Util.isArray(y) ? y[1] : y,
-            color: color || Global.defaultColor,
-            origin: _origin,
-            name: getTooltipName(geom, _origin),
-            value: getTooltipValue(geom, _origin),
-            title: getTooltipTitle(geom, _origin)
-          };
-          if (marker) {
-            tooltipItem.marker = Util.mix({
-              fill: color || Global.defaultColor
-            }, marker);
-          }
-          items.push(tooltipItem);
+      if (geom.get('visible')) {
+        const type = geom.get('type');
+        const records = geom.getSnapRecords(point);
+        Util.each(records, record => {
+          if (record.x && record.y) {
+            const { x, y, _origin, color } = record;
+            const tooltipItem = {
+              x,
+              y: Util.isArray(y) ? y[1] : y,
+              color: color || Global.defaultColor,
+              origin: _origin,
+              name: getTooltipName(geom, _origin),
+              value: getTooltipValue(geom, _origin),
+              title: getTooltipTitle(geom, _origin)
+            };
+            if (marker) {
+              tooltipItem.marker = Util.mix({
+                fill: color || Global.defaultColor
+              }, marker);
+            }
+            items.push(tooltipItem);
 
-          if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
-            tooltipMarkerType = 'circle';
-            tooltipMarkerItems.push(tooltipItem);
-          } else if (type === 'interval' && coord.type === 'cartesian') {
-            tooltipMarkerType = 'rect';
-            tooltipItem.width = geom.getSize(record._origin);
-            tooltipMarkerItems.push(tooltipItem);
+            if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
+              tooltipMarkerType = 'circle';
+              tooltipMarkerItems.push(tooltipItem);
+            } else if (type === 'interval' && coord.type === 'cartesian') {
+              tooltipMarkerType = 'rect';
+              tooltipItem.width = geom.getSize(record._origin);
+              tooltipMarkerItems.push(tooltipItem);
+            }
           }
-        }
-      });
+        });
+      }
     });
 
     if (items.length) {
@@ -380,26 +383,32 @@ class TooltipController {
   }
 
   handleShowEvent(ev) {
+    if (!this.enable) return;
     const chart = this.chart;
     const plot = chart.get('plotRange');
-    const { x, y } = Util.createEvent(ev, chart);
-    if (!(x >= plot.tl.x && x <= plot.tr.x && y >= plot.tl.y && y <= plot.br.y)) { // not in chart plot
+    const point = Util.createEvent(ev, chart);
+    if (!Helper.isPointInPlot(point, plot)) { // not in chart plot
       this.hideTooltip();
       return;
     }
+
     const lastTimeStamp = this.timeStamp;
     const timeStamp = +new Date();
     if ((timeStamp - lastTimeStamp) > 16) {
-      this.showTooltip({ x, y });
+      this.showTooltip(point);
       this.timeStamp = timeStamp;
     }
   }
 
   handleHideEvent() {
+    if (!this.enable) return;
+
     this.hideTooltip();
   }
 
   handleDocEvent(ev) {
+    if (!this.enable) return;
+
     const canvasDom = this.canvasDom;
     if (ev.target !== canvasDom) {
       this.hideTooltip();
@@ -409,9 +418,7 @@ class TooltipController {
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
     Util.each([].concat(methodName), aMethod => {
-      if (Util.isFunction(aMethod)) {
-        aMethod(method, action); // TODO： 测试，供用户自己绑定事件
-      } else if (action === 'bind') {
+      if (action === 'bind') {
         Util.addEventListener(canvasDom, aMethod, method);
       } else {
         Util.removeEventListener(canvasDom, aMethod, method);
@@ -458,13 +465,16 @@ module.exports = {
      * @param  {Object} cfg 配置项
      * @return {Chart} 返回 Chart 实例
      */
-    chart.tooltip = function(enable, cfg = {}) {
+    chart.tooltip = function(enable, cfg) {
       if (Util.isObject(enable)) {
         cfg = enable;
         enable = true;
       }
       tooltipController.enable = enable;
-      tooltipController.cfg = cfg;
+      if (cfg) {
+        tooltipController.cfg = cfg;
+      }
+      // cfg && tooltipController.cfg = cfg;
 
       return this;
     };

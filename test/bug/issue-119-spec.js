@@ -43,5 +43,6 @@ describe('issue 119', () => {
       expect(y).to.equal(origin.y[1]);
       return shape;
     });
+    document.body.removeChild(canvas);
   });
 });

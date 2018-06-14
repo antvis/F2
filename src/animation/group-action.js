@@ -2,11 +2,12 @@
  * 整体动画
  * @author sima.zhang
  */
-const Helpers = require('./util');
+const Util = require('./util');
+const Helper = require('../util/helper');
 const { Shape } = require('../graphic/index');
 
 function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
-  const { start, end, width, height } = Helpers.getCoordInfo(coord);
+  const { start, end, width, height } = Util.getCoordInfo(coord);
   let x;
   let y;
 
@@ -35,7 +36,7 @@ function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
     }
   }
 
-  const endMatrix = Helpers.getScaledMatrix(clip, [ x, y ], type);
+  const endMatrix = Util.getScaledMatrix(clip, [ x, y ], type);
   clip.isClip = true;
   clip.endState = {
     matrix: endMatrix
@@ -47,7 +48,7 @@ function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
     container.attr('clip', null);
     clip.remove(true);
   };
-  Helpers.doAnimation(clip, clip.endState, animateCfg, onEnd);
+  Util.doAnimation(clip, clip.endState, animateCfg, onEnd);
 }
 
 function _shapeScale(container, animateCfg, type) {
@@ -61,8 +62,8 @@ function _shapeScale(container, animateCfg, type) {
     const box = shape.getBBox();
     x = (box.minX + box.maxX) / 2;
     y = (box.minY + box.maxY) / 2;
-    endMatrix = Helpers.getScaledMatrix(shape, [ x, y ], type);
-    Helpers.doAnimation(shape, { matrix: endMatrix }, animateCfg);
+    endMatrix = Util.getScaledMatrix(shape, [ x, y ], type);
+    Util.doAnimation(shape, { matrix: endMatrix }, animateCfg);
   }
 }
 
@@ -91,14 +92,34 @@ function shapesScaleInXY(container, animateCfg) {
 }
 
 function groupWaveIn(container, animateCfg, coord) {
-  const clip = Helpers.getClip(coord);
+  const clip = Helper.getClip(coord);
   clip.set('canvas', container.get('canvas'));
   container.attr('clip', clip);
   const onEnd = function() {
     container.attr('clip', null);
     clip.remove(true);
   };
-  Helpers.doAnimation(clip, clip.endState, animateCfg, onEnd);
+
+  const endState = {};
+  if (coord.isPolar) {
+    const { startAngle, endAngle } = coord;
+    endState.endAngle = endAngle;
+    clip.attr('endAngle', startAngle);
+  } else {
+    const { start, end } = coord;
+    const width = Math.abs(start.x - end.x);
+    const height = Math.abs(start.y - end.y);
+
+    if (coord.isTransposed) {
+      clip.attr('height', 0);
+      endState.height = height;
+    } else {
+      clip.attr('width', 0);
+      endState.width = width;
+    }
+  }
+
+  Util.doAnimation(clip, endState, animateCfg, onEnd);
 }
 
 module.exports = {

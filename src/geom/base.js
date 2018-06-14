@@ -5,7 +5,7 @@ const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
-const Shape = require('./shape/shape');
+const GeometryShape = require('./shape/shape');
 const Adjust = require('./adjust/base');
 
 function parseFields(field) {
@@ -74,7 +74,8 @@ class Geom extends Base {
        * 否则从最小值开始
        * @type {Boolean}
       */
-      startOnZero: true
+      startOnZero: true,
+      visible: true
     };
   }
 
@@ -109,13 +110,19 @@ class Geom extends Base {
   // 分组数据
   _groupData(data) {
     const self = this;
+    const colDefs = self.get('colDefs');
     const groupScales = self._getGroupScales();
     if (groupScales.length) {
+      const appendConditions = {};
       const names = [];
-      Util.each(groupScales, function(scale) {
-        names.push(scale.field);
+      Util.each(groupScales, scale => {
+        const field = scale.field;
+        names.push(field);
+        if (colDefs && colDefs[field] && colDefs[field].values) { // 用户指定了顺序
+          appendConditions[scale.field] = colDefs[field].values;
+        }
       });
-      return Util.Array.group(data, names);
+      return Util.Array.group(data, names, appendConditions);
     }
     return [ data ];
 
@@ -296,6 +303,9 @@ class Geom extends Base {
     if (xScale.type !== 'identity' && xScale.values.length > 1) {
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
+          if (xScale.type === 'timeCat') {
+            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][xField]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][xField]);
+          }
           return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
         });
       });
@@ -332,7 +342,7 @@ class Geom extends Base {
     let shapeFactory = this.get('shapeFactory');
     if (!shapeFactory) {
       const shapeType = this.get('shapeType');
-      shapeFactory = Shape.getShapeFactory(shapeType);
+      shapeFactory = GeometryShape.getShapeFactory(shapeType);
       this.set('shapeFactory', shapeFactory);
     }
     return shapeFactory;
@@ -809,6 +819,21 @@ class Geom extends Base {
     super.destroy();
   }
 
+  _display(visible) {
+    this.set('visible', visible);
+    const container = this.get('container');
+    const canvas = container.get('canvas');
+    container.set('visible', visible);
+    canvas.draw();
+  }
+
+  show() {
+    this._display(true);
+  }
+
+  hide() {
+    this._display(false);
+  }
 }
 
 module.exports = Geom;

@@ -117,8 +117,8 @@ describe('Guide Plugin', function() {
     expect(frontPlot.get('children').length).to.equal(2);
     expect(backPlot.get('children').length).to.equal(2);
 
-    const frontGuideContainer = frontPlot.get('children')[1];
-    const backGuideContainer = backPlot.get('children')[1];
+    const frontGuideContainer = guideController.frontPlot;
+    const backGuideContainer = guideController.backPlot;
 
     expect(guideController.guides.length).to.equal(6);
     expect(frontGuideContainer.get('children').length).to.equal(4);
@@ -136,8 +136,8 @@ describe('Guide Plugin', function() {
     expect(frontPlot.get('children').length).to.equal(2);
     expect(backPlot.get('children').length).to.equal(2);
 
-    const frontGuideContainer = frontPlot.get('children')[1];
-    const backGuideContainer = backPlot.get('children')[1];
+    const frontGuideContainer = guideController.frontPlot;
+    const backGuideContainer = guideController.backPlot;
 
     expect(frontGuideContainer.get('children').length).to.equal(4);
     expect(backGuideContainer.get('children').length).to.equal(1);
@@ -155,13 +155,74 @@ describe('Guide Plugin', function() {
     expect(frontPlot.get('children').length).to.equal(2);
     expect(backPlot.get('children').length).to.equal(2);
 
-    const frontGuideContainer = frontPlot.get('children')[1];
-    const backGuideContainer = backPlot.get('children')[1];
+    const frontGuideContainer = guideController.frontPlot;
+    const backGuideContainer = guideController.backPlot;
 
     expect(frontGuideContainer.get('children').length).to.equal(0);
     expect(backGuideContainer.get('children').length).to.equal(0);
     const guideWrapper = document.getElementsByClassName('guideWapper');
     expect(guideWrapper.length).to.equal(0);
+    chart.destroy();
+    // document.body.removeChild(canvas);
+  });
+
+  it('chart.guide().regionFilter()', () => {
+    const source = [
+      { time: '00:00', usage: 300 },
+      { time: '01:15', usage: 280 },
+      { time: '02:30', usage: 250 },
+      { time: '03:45', usage: 260 },
+      { time: '05:00', usage: 270 },
+      { time: '06:15', usage: 300 },
+      { time: '07:30', usage: 550 },
+      { time: '08:45', usage: 500 },
+      { time: '10:00', usage: 400 },
+      { time: '11:15', usage: 390 },
+      { time: '13:45', usage: 380 },
+      { time: '15:00', usage: 390 },
+      { time: '16:15', usage: 400 },
+      { time: '17:30', usage: 500 },
+      { time: '18:45', usage: 600 },
+      { time: '20:00', usage: 750 },
+      { time: '21:15', usage: 800 },
+      { time: '22:30', usage: 700 },
+      { time: '23:45', usage: 600 }
+    ];
+
+    chart = new F2.Chart({
+      id: 'chart-guide',
+      pixelRatio: 2,
+      plugins: Guide
+    });
+    chart.source(source);
+    const geom = chart.line().position('time*usage');
+    chart.guide().regionFilter({
+      end: [ 'max', 400 ],
+      start: [ 'min', 550 ],
+      color: 'red'
+    });
+
+    chart.guide().regionFilter({
+      end: [ 'max', 900 ],
+      start: [ 'min', 700 ],
+      color: 'yellow'
+    });
+    chart.render();
+
+    const guideController = chart.get('guideController');
+    const { frontPlot, backPlot } = guideController;
+    // const frontPlot = chart.get('frontPlot');
+    // const backPlot = chart.get('backPlot');
+
+    expect(frontPlot.get('children').length).to.equal(0);
+    expect(backPlot.get('children').length).to.equal(0);
+
+    const geomContainer = geom.get('container');
+    expect(geomContainer.get('children').length).to.equal(3);
+
+    chart.guide().clear(); // 清除 guide
+    expect(geomContainer.get('children').length).to.equal(1);
+
     chart.destroy();
     document.body.removeChild(canvas);
   });

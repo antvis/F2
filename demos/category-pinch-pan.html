@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>手势缩放 demo</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <style>
+    canvas {
+      display: block;
+      height: 265px;
+      width: 100%;
+      margin-top: 55px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid chart-card">
+    <!-- 图表主题 -->
+    <canvas id="mountNode"></canvas>
+  </div>
+  </div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="../build/f2-all.js"></script>
+  <script src="./fund/js/util.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+  <script>
+    let pressing = false;
+    const colorMap = {
+      '本基金': '#1890FF',
+      '沪深300': 'rgba(92, 219, 211, 0.5)',
+      '同类平均': 'rgba(179, 127, 235, 0.5)'
+    };
+    const sizeMap = {
+      '本基金': 2,
+      '沪深300': 1,
+      '同类平均': 1
+    };
+    const { Chart } = F2;
+    let chart;
+    $.getJSON('./fund/data/performance/three-year.json', json => {
+      chart = new Chart({
+        id: 'mountNode',
+        pixelRatio: window.devicePixelRatio,
+        padding: [14, 'auto', 'auto'],
+        animate: false
+      });
+      chart.source(json, {
+        reportDate: {
+          type: 'timeCat',
+          tickCount: 5,
+          range: [0, 1],
+          mask: 'YYYY-MM-DD'
+        },
+        rate: {
+          // tickCount: 5
+        },
+        name: {
+          values: ['沪深300', '同类平均', '本基金']
+        }
+      });
+      // chart.animate(false);
+      chart.legend(false); // 不使用默认图例
+      chart.tooltip(false);  // 初始状态关闭 tooltip
+      chart.line({
+        sortable: false
+      })
+        .position('reportDate*rate')
+        .color('name', val => {
+          return colorMap[val];
+        })
+        .size('name', val => {
+          return sizeMap[val];
+        })
+        .animate({
+          appear: {
+            duration: 500,
+          },
+          update: {
+            animation: 'lineUpdate',
+            duration: 500
+          }
+        });
+
+      chart
+        .interaction('pinch')
+        .interaction('pan');
+      chart.render();
+    });
+  </script>
+</body>
+
+</html>
+

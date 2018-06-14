@@ -111,9 +111,9 @@ class TimeCategory extends Category {
     const rangeMin = this.rangeMin();
     const rangeMax = this.rangeMax();
     const index = this.translate(value);
-    let percent;
 
-    if (this.values.length === 1) {
+    let percent;
+    if (this.values.length === 1 || isNaN(index)) { // is index is NAN should not be set as 0
       percent = index;
     } else if (index > -1) {
       percent = (index) / (this.values.length - 1);

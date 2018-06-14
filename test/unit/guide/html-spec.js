@@ -5,11 +5,14 @@ const { Html } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
 const canva1s = document.createElement('canvas');
-canva1s.id = 'guide';
+canva1s.id = 'guideHTML';
+canva1s.style.position = 'fixed';
+canva1s.style.top = 0;
+canva1s.style.left = 0;
 document.body.appendChild(canva1s);
 
 const canvas = new Canvas({
-  el: 'guide',
+  el: 'guideHTML',
   width: 500,
   height: 500,
   pixelRatio: 2
@@ -195,5 +198,6 @@ describe('Guide.Html', function() {
     const top = Math.floor(position.y);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[9].style.left)).eql(Math.floor(left - 20));
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[9].style.top)).eql(Math.floor(top - 20));
+    document.body.removeChild(canva1s);
   });
 });
