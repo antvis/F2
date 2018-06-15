@@ -448,17 +448,17 @@
     var url = './data/performance/' + id + '.json';
     $.getJSON(url, function(json) {
       if (landscape) { // 横屏下的交互
+        chart.tooltip(true);
         chart.scale('reportDate', reportDateDef);
         chart.clearInteraction(); // 先要将交互行为清楚
         if (id === 'one-year' || id === 'three-year') {
-          chart.tooltip(false);
           chart
           .interaction('pan', Util.mix({
             mode: 'x',
             preStart: function() {
               chart.animate(false);
             },
-            end: function() {
+            onEnd: function() {
               chart.animate(true);
             }
           }, RANGE[id]))
@@ -467,12 +467,11 @@
             preStart: function() {
               chart.animate(false);
             },
-            end: function(){
+            onEnd: function(){
               chart.animate(true);
             }
           });
         } else {
-          chart.tooltip(true);
           chart.animate(true);
         }
       }
