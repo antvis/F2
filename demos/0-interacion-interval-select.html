@@ -44,7 +44,11 @@
       stroke: '#000',
       lineWidth: 1
     },
-    // unSelectStyle:null
+    unSelectStyle: null,
+    cancelable: false,
+    onEnd(ev) {
+      console.log(ev.data, ev.selected)
+    }
   });
 </script>
 </body>
