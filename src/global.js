@@ -5,6 +5,8 @@ const Util = require('./util/common');
  * @class 全局配置项
  */
 const Global = {
+  version: '3.1.11-beta.1',
+  trackable: true,
   // 预先定义的度量
   scales: {
     nice: true

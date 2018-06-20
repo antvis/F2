@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const resolve = require('path').resolve;
-const pkg = require('./package.json');
 
 module.exports = {
   entry: {
@@ -23,16 +22,6 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             babelrc: true
-          }
-        }
-      },
-      {
-        test: /core\.js$/,
-        use: {
-          loader: 'string-replace-loader',
-          options: {
-            search: '____F2_VERSION____',
-            replace: pkg.version
           }
         }
       }
