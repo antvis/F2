@@ -14,11 +14,15 @@ class IntervalSelect extends Interaction {
       }, // 被选中图形的样式
       unSelectStyle: {
         fillOpacity: 0.4
-      } // 未被选中图形的样式
+      }, // 未被选中图形的样式
+      cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
   }
 
   _reset() {
+    if (!this.selectedShape) {
+      return;
+    }
     const chart = this.chart;
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
@@ -30,6 +34,7 @@ class IntervalSelect extends Interaction {
         child._attrs.attrs = originAttrs;
         child.set('_originAttrs', null);
       }
+      child.set('_selected', false);
     });
     this.canvas.draw();
   }
@@ -63,42 +68,50 @@ class IntervalSelect extends Interaction {
       }
     });
 
-    const lastShape = this.lastShape;
-    if (selectedShape && selectedShape !== lastShape) { // 没有被选中
-      const { selectStyle, unSelectStyle } = this;
+    if (selectedShape) { // 有图形被选中
+      this.selectedShape = selectedShape;
+      if (selectedShape.get('_selected')) { // 已经被选中
+        if (!this.cancelable) { // 不允许取消选中则不处理
+          return;
+        }
+        this._reset(); // 允许取消选中
+      } else { // 未被选中
+        const { selectStyle, unSelectStyle } = this;
 
-      if (!selectedShape.get('_originAttrs')) {
-        const originAttrs = Object.assign({}, selectedShape.attr());
-        selectedShape.set('_originAttrs', originAttrs);
-      }
-
-      selectedShape.attr(selectStyle);
-
-      Util.each(unSelectedShapes, child => {
-        if (!child.get('_originAttrs')) {
-          const originAttrs = Object.assign({}, child.attr());
-          child.set('_originAttrs', originAttrs);
-        } else {
-          child.attr(child.get('_originAttrs'));
+        if (!selectedShape.get('_originAttrs')) {
+          const originAttrs = Object.assign({}, selectedShape.attr());
+          selectedShape.set('_originAttrs', originAttrs);
         }
 
-        unSelectStyle && child.attr(unSelectStyle);
-      });
+        selectedShape.attr(selectStyle);
 
-      this.lastShape = selectedShape;
-      this.canvas.draw();
-    } else {
-      this.lastShape = null;
+        Util.each(unSelectedShapes, child => {
+          if (!child.get('_originAttrs')) {
+            const originAttrs = Object.assign({}, child.attr());
+            child.set('_originAttrs', originAttrs);
+          } else {
+            child.attr(child.get('_originAttrs'));
+          }
+          child.set('_selected', false);
+          unSelectStyle && child.attr(unSelectStyle);
+        });
+
+        selectedShape.set('_selected', true);
+        this.canvas.draw();
+      }
+    } else { // 没有选中图形，恢复原态
       this._reset();
+      this.selectedShape = null;
     }
   }
 
   end(ev) {
-    const selectedShape = this.lastShape;
+    const selectedShape = this.selectedShape;
     if (selectedShape && !selectedShape.get('destroyed')) {
       ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
       ev.shapeInfo = selectedShape.get('origin');
       ev.shape = selectedShape;
+      ev.selected = !!selectedShape.get('_selected'); // 返回选中的状态
     }
   }
 

@@ -11,7 +11,8 @@ class PieSelect extends Interaction {
       appendRadius: 8, // 光环的大小
       style: {
         fillOpacity: 0.5
-      }
+      },
+      cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
   }
 
@@ -26,7 +27,11 @@ class PieSelect extends Interaction {
     this.halo && this.halo.remove(true);
 
     const records = chart.getSnapRecords({ x, y });
-    if (!records.length) return;
+    if (!records.length) {
+      this.selected = false;
+      this.selectedShape = null;
+      return;
+    }
 
     let selectedShape;
     const data = records[0]._origin;
@@ -37,15 +42,23 @@ class PieSelect extends Interaction {
     Util.each(children, child => {
       if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
-        if (Object.is(shapeData, data)) {
+        if (Object.is(shapeData, data)) { // 判断是否相同
           selectedShape = child;
           return false;
         }
       }
     });
     const lastShape = this.lastShape;
-
-    if (selectedShape && selectedShape !== lastShape) { // 没有被选中
+    this.selectedShape = selectedShape;
+    this.selected = true;
+    if (selectedShape === lastShape) { // 上去被选中的
+      if (!this.cancelable) { // 不允许取消选中
+        return;
+      }
+      this.halo && this.halo.remove(true);
+      this.lastShape = null;
+      this.selected = false;
+    } else {
       this.lastShape = selectedShape;
       const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
       const frontPlot = chart.get('frontPlot');
@@ -75,18 +88,19 @@ class PieSelect extends Interaction {
             r: r + offset + appendRadius
           }
         }, animate));
-      } else {
-        this.canvas.draw();
       }
     }
+
+    this.canvas.draw();
   }
 
   end(ev) {
-    const selectedShape = this.lastShape;
+    const selectedShape = this.selectedShape;
     if (selectedShape && !selectedShape.get('destroyed')) {
       ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
       ev.shapeInfo = selectedShape.get('origin');
       ev.shape = selectedShape;
+      ev.selected = !!this.selected;
     }
   }
 }

@@ -68,12 +68,18 @@ chart.interaction('pie-select', {
     duration: 300,
     easing: 'backOut'
   },
+  cancelable: true,
   onEnd(ev) {
-    const { shape, data, shapeInfo} = ev;
+    const { shape, data, shapeInfo, selected } = ev;
     if (shape) {
-      $('#number').css('color', shapeInfo.color);
-      $('#number').text(data.percent * 100 + '%');
-      $('#name').text(data.name);
+      if (selected) {
+        $('#number').css('color', shapeInfo.color);
+        $('#number').text(data.percent * 100 + '%');
+        $('#name').text(data.name);
+      } else {
+        $('#number').text('');
+        $('#name').text('');
+      }
     }
   }
 });
