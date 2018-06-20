@@ -1,8 +1,8 @@
-#### 3.1.11 (2018-06-20)
+#### 3.1.12 (2018-06-20)
 
 ##### New Features
 
-* add f2 track, [issue](https://github.com/antvis/f2/issues/156). ([a301f3ab](https://github.com/antvis/f2/commit/a301f3ab164ee002f5f486a3b1064a605caeb7a4))
+* add f2 track, [issue #156](https://github.com/antvis/f2/issues/156). ([a301f3ab](https://github.com/antvis/f2/commit/a301f3ab164ee002f5f486a3b1064a605caeb7a4))
 
 ##### Bug Fixes
 
