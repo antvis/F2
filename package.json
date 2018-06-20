@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.2.0-beta.3",
+  "version": "3.2.0-beta.4",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -53,7 +53,6 @@
     "pre-commit": "~1.2.2",
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
-    "string-replace-loader": "~1.3.0",
     "uglify-js": "~3.0.15",
     "webpack": "~3.4.1"
   },
