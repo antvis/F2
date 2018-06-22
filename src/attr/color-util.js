@@ -1,4 +1,4 @@
-const Util = require('./common');
+const Util = require('../util/common');
 
 // 获取颜色之间的插值
 function getValue(start, end, percent, index) {

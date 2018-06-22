@@ -89,8 +89,9 @@
     "silent": false
   },
   "dependencies": {
+    "@antv/attr": "0.0.1-beta.2",
+    "@antv/util": "~1.0.6",
     "fecha": "~2.3.1",
-    "hammerjs": "^2.0.8",
-    "@antv/util": "~1.0.4"
+    "hammerjs": "^2.0.8"
   }
 }
