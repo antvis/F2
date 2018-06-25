@@ -33,14 +33,14 @@ describe('The position calculate of Guide.HTML', () => {
 
     chart.guide().html({
       position: [ '周三', 350 ],
-      html: '<div id="guide" style="width: 30px;height: 30px;border-radius: 50%;font-size: 12px;text-align: center;">350</div>'
+      html: '<div id="guide" style="width: 30px;height: 30px;line-height: 30px;background-color: #1890ff;color: #fff;border-radius: 50%;font-size: 12px;text-align: center;">350</div>'
     });
     chart.line().position('day*value');
     chart.render();
 
     const guideEle = $('#guide');
-    expect(guideEle.position().top).to.eql(251);
-    expect(guideEle.position().left).to.eql(176);
+    expect(guideEle.position().top).to.eql(216);
+    expect(guideEle.position().left).to.eql(172);
     const wrapper = $('#chartWrapper')[0];
     document.body.removeChild(wrapper);
   });

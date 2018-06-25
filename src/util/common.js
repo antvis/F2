@@ -18,19 +18,6 @@ const Util = {
   deepMix: require('@antv/util/src/deepMix'),
   mix: require('@antv/util/src/mix'),
   each: require('@antv/util/src/each'),
-  // TODO: scale 模块中使用
-  fixedBase(v, base) {
-    const str = base.toString();
-    const index = str.indexOf('.');
-    if (index === -1) {
-      return Math.round(v);
-    }
-    let length = str.substr(index + 1).length;
-    if (length > 20) {
-      length = 20;
-    }
-    return parseFloat(v.toFixed(length));
-  },
   /**
    * 封装事件，便于使用上下文this,和便于解除事件时使用
    * @protected

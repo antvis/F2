@@ -1,11 +1,7 @@
-/**
- * @fileOverview Scale entry, used to reference all the scales
- * @author dxq613@gmail.com
- */
-const Scale = require('./base');
+const Scale = require('@antv/scale/src/base');
 
-require('./linear');
-require('./identity');
-require('./category');
+require('@antv/scale/src/linear');
+require('@antv/scale/src/identity');
+require('@antv/scale/src/category');
 
 module.exports = Scale;
