@@ -57,6 +57,9 @@ describe('issue 145', function() {
       expect(chart.get('dataChanged')).to.be.true;
       chart.repaint();
       expect(chart.get('dataChanged')).to.be.undefined;
+
+      chart.destroy();
+      document.body.removeChild(canvas);
       done();
     }, 500);
 
