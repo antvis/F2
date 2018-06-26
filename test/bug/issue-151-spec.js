@@ -58,5 +58,8 @@ describe('issue 151', function() {
       return obj;
     });
     expect(tickLabels).to.eql([ '2007-12-01', '2011-12-01', '2015-12-01' ]);
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

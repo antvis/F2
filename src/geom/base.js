@@ -75,7 +75,11 @@ class Geom extends Base {
        * @type {Boolean}
       */
       startOnZero: true,
-      visible: true
+      visible: true,
+      /**
+       * 是否连接空数据，对 area、line、path 生效
+       */
+      connectNulls: false
     };
   }
 
