@@ -39,5 +39,8 @@ describe('issue 136', () => {
 
     const yScale = interval.getYScale();
     expect(yScale.min).to.equal(30);
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

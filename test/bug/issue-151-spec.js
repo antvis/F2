@@ -58,5 +58,8 @@ describe('issue 145', function() {
       return obj;
     });
     expect(tickLabels).to.eql([ '2007-12-01', '2012-12-01', '2016-12-01' ]);
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });
