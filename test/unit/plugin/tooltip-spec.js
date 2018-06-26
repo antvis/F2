@@ -275,5 +275,7 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items.length).to.equal(1);
     expect(tooltip.items[0].name).to.equal('score');
     expect(tooltip.items[0].value).to.equal('148');
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

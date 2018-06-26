@@ -8,15 +8,12 @@ const Global = {
   version: '3.2.0-beta.5',
   trackable: true,
   // 预先定义的度量
-  scales: {
-    nice: true
-  },
+  scales: {},
   // 宽度
   widthRatio: { // 宽度所占的分类的比例
     column: 1 / 2, // 一般的柱状图占比 1/2
     rose: 0.999999,
-    multiplePie: 3 / 4,
-    dodgeMargin: 0
+    multiplePie: 3 / 4
   },
   // 虚线配置
   lineDash: [ 4, 4 ]

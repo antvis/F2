@@ -1,6 +1,4 @@
-const Adjust = require('./base');
-
-require('./dodge');
-require('./stack');
-
-module.exports = Adjust;
+module.exports = {
+  Stack: require('./stack'),
+  Dodge: require('./dodge')
+};

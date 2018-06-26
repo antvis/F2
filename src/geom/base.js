@@ -6,7 +6,7 @@ const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
 const GeometryShape = require('./shape/shape');
-const Adjust = require('./adjust/base');
+const Adjust = require('@antv/adjust/src/base');
 
 function parseFields(field) {
   if (Util.isArray(field)) {

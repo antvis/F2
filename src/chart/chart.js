@@ -695,7 +695,7 @@ class Chart extends Base {
 
     Util.each(geoms, function(geom) {
       const yScale = geom.getYScale();
-      if (Util.indexOf(rst, yScale) === -1) {
+      if (rst.indexOf(yScale) === -1) {
         rst.push(yScale);
       }
     });

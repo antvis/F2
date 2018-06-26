@@ -145,7 +145,7 @@ class TooltipController {
     const shapes = [];
     Util.each(geoms, geom => {
       const type = geom.get('type');
-      if (Util.indexOf(shapes, type) === -1) {
+      if (shapes.indexOf(type) === -1) {
         shapes.push(type);
       }
     });
