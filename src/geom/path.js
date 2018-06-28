@@ -26,7 +26,8 @@ class Path extends Geom {
     const self = this;
     const container = self.get('container');
     const yScale = self.getYScale();
-    const splitArray = ShapeUtil.splitArray(data, yScale.field);
+    const connectNulls = self.get('connectNulls');
+    const splitArray = ShapeUtil.splitArray(data, yScale.field, connectNulls);
 
     const cfg = this.getDrawCfg(data[0]);
     cfg.origin = data; // path,line 等图的origin 是整个序列

@@ -74,7 +74,11 @@ class Geom extends Base {
        * 否则从最小值开始
        * @type {Boolean}
       */
-      startOnZero: true
+      startOnZero: true,
+      /**
+       * 是否连接空数据，对 area、line、path 生效
+       */
+      connectNulls: false
     };
   }
 

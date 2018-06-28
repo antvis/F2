@@ -20,20 +20,26 @@ const ShapeUtil = {
     });
     return points;
   },
-  splitArray(data, yField) {
+  splitArray(data, yField, connectNulls) {
     if (!data.length) return [];
     const arr = [];
     let tmp = [];
     let yValue;
     Util.each(data, function(obj) {
       yValue = obj._origin ? obj._origin[yField] : obj[yField];
-      if ((Util.isArray(yValue) && Util.isNil(yValue[0])) || Util.isNil(yValue)) {
-        if (tmp.length) {
-          arr.push(tmp);
-          tmp = [];
+      if (connectNulls) {
+        if (!Util.isNil(yValue)) {
+          tmp.push(obj);
         }
       } else {
-        tmp.push(obj);
+        if ((Util.isArray(yValue) && Util.isNil(yValue[0])) || Util.isNil(yValue)) {
+          if (tmp.length) {
+            arr.push(tmp);
+            tmp = [];
+          }
+        } else {
+          tmp.push(obj);
+        }
       }
     });
 

@@ -39,6 +39,9 @@ describe('issue 140', () => {
     chart.changeData(data);
     const newValueScale = line.getYScale();
     expect(newValueScale.type).eql('identity');
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });
 

@@ -1,3 +1,13 @@
+#### 3.1.13 (2018-06-28)
+
+##### New Features
+
+* add connectNulls for geometry to connect null points. Closed [#171](https://github.com/antvis/f2/pull/171). ([8729e8ce](https://github.com/antvis/f2/commit/8729e8ce77bc2dc87a222c0f787ec15e4108ae1f))
+
+##### Bug Fixes
+
+* filter null values when draw stacked point chart. Closed [#173](https://github.com/antvis/f2/pull/173). ([662e1632](https://github.com/antvis/f2/commit/662e1632057a245d6cd63fc2f8452299e84461e1))
+
 #### 3.1.12 (2018-06-20)
 
 ##### New Features
