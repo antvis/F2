@@ -129,14 +129,6 @@ class Chart extends Base {
        */
       scales: {},
       /**
-       * 坐标系的配置信息
-       * @private
-       * @type {Object}
-       */
-      coordCfg: {
-        type: 'cartesian'
-      },
-      /**
        * @private
        * 图层对应的图形
        * @type {Array}
@@ -292,11 +284,13 @@ class Chart extends Base {
 
   _initCoord() {
     const plot = this.get('plotRange');
-    const coordCfg = Util.mix({}, this.get('coordCfg'), {
+    const coordCfg = Util.mix({
+      type: 'cartesian'
+    }, this.get('coordCfg'), {
       plot
     });
     const type = coordCfg.type;
-    const C = Coord[Util.upperFirst(type)] || Coord.Cartesian;
+    const C = Coord[Util.upperFirst(type)];
     const coord = new C(coordCfg);
     this.set('coord', coord);
   }
@@ -455,15 +449,12 @@ class Chart extends Base {
    * @return {Chart} 返回当前 chart 的引用
    */
   coord(type, cfg) {
-    if (!type) {
-      return;
-    }
     let coordCfg;
     if (Util.isObject(type)) {
       coordCfg = type;
     } else {
       coordCfg = cfg || {};
-      coordCfg.type = type;
+      coordCfg.type = type || 'cartesian';
     }
     this.set('coordCfg', coordCfg);
 

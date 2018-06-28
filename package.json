@@ -90,7 +90,7 @@
   "dependencies": {
     "@antv/attr": "~0.0.3",
     "@antv/scale": "~0.0.1",
-    "@antv/adjust": "~0.0.2",
+    "@antv/adjust": "~0.0.3",
     "@antv/util": "~1.0.6",
     "hammerjs": "^2.0.8"
   }
