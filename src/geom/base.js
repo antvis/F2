@@ -544,11 +544,15 @@ class Geom extends Base {
    */
   getYMinValue() {
     const yScale = this.getYScale();
-    const min = yScale.min;
+    const { min, max } = yScale;
     let value;
 
     if (this.get('startOnZero')) {
-      value = min >= 0 ? min : 0;
+      if (max <= 0 && min <= 0) { // 当值全部为负时，需要在现有范围内绘制
+        value = max;
+      } else {
+        value = min >= 0 ? min : 0;
+      }
     } else {
       value = min;
     }

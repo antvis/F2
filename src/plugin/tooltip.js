@@ -7,6 +7,7 @@ const Helper = require('../util/helper');
 Global.tooltip = Util.deepMix({
   triggerOn: [ 'touchstart', 'touchmove' ],
   // triggerOff: 'touchend',
+  alwaysShow: false, // 当移出触发区域，是否仍显示提示框内容，默认为 false，移出触发区域 tooltip 消失，设置为 true 可以保证一直显示提示框内容
   showTitle: false,
   showCrosshairs: false,
   crosshairsStyle: {
@@ -387,7 +388,7 @@ class TooltipController {
     const chart = this.chart;
     const plot = chart.get('plotRange');
     const point = Util.createEvent(ev, chart);
-    if (!Helper.isPointInPlot(point, plot)) { // not in chart plot
+    if (!Helper.isPointInPlot(point, plot) && !this.cfg.alwaysShow) { // not in chart plot
       this.hideTooltip();
       return;
     }
@@ -427,29 +428,34 @@ class TooltipController {
   }
 
   bindEvents() {
-    const triggerOn = this.cfg.triggerOn;
-    const triggerOff = this.cfg.triggerOff;
+    const cfg = this.cfg;
+    const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
-    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
-    const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-    Util.isBrowser && Util.addEventListener(document, 'touchstart', docMethod);
+    // TODO: 当用户点击 canvas 外的事件时 tooltip 消失
+    if (!alwaysShow) {
+      const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
+      Util.isBrowser && Util.addEventListener(document, 'touchstart', docMethod);
+    }
   }
 
   unBindEvents() {
-    const triggerOn = this.cfg.triggerOn;
-    const triggerOff = this.cfg.triggerOff;
+    const cfg = this.cfg;
+    const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
-    // TODO: 当用户点击canvas 外的事件时 tooltip 消失
-    const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-    Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
+
+    // TODO: 当用户点击 canvas 外的事件时 tooltip 消失
+    if (!alwaysShow) {
+      const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
+      Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
+    }
   }
 }
 
