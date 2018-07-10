@@ -20,64 +20,42 @@ function equalsCenter(points, center) {
   return eqls;
 }
 
-function drawCircleArea(topPoints, bottomPoints, container, style, isSmooth) {
-  const shape = container.addShape('Polyline', {
-    className: 'area',
-    attrs: Util.mix({
-      points: topPoints,
-      smooth: isSmooth
-    }, style)
-  });
-  if (bottomPoints.length) {
-    const bottomShape = container.addShape('Polyline', {
-      className: 'area',
-      attrs: Util.mix({
-        points: bottomPoints,
-        smooth: isSmooth
-      }, style)
-    });
-    return [ shape, bottomShape ];
-  }
-  return shape;
-}
-
 function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
   let shape;
+  const points = topPoints.concat(bottomPoints);
   if (isSmooth) {
     shape = container.addShape('Custom', {
       className: 'area',
-      attrs: Util.mix({
-        points: topPoints.concat(bottomPoints)
-      }, style),
+      attrs: style,
       createPath(context) {
         const constaint = [ // 范围
           [ 0, 0 ],
           [ 1, 1 ]
         ];
-        const points = this._attrs.attrs.points;
-        const topSps = Smooth.smooth(points.slice(0, points.length / 2), false, constaint);
-        const bottomSps = Smooth.smooth(points.slice(points.length / 2, points.length), false, constaint);
-
+        const topSps = Smooth.smooth(topPoints, false, constaint);
         context.beginPath();
         context.moveTo(topPoints[0].x, topPoints[0].y);
         for (let i = 0, n = topSps.length; i < n; i++) {
           const sp = topSps[i];
           context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
         }
-        context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
-        for (let i = 0, n = bottomSps.length; i < n; i++) {
-          const sp = bottomSps[i];
-          context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+
+        if (bottomPoints.length) {
+          const bottomSps = Smooth.smooth(bottomPoints, false, constaint);
+          context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
+          for (let i = 0, n = bottomSps.length; i < n; i++) {
+            const sp = bottomSps[i];
+            context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+          }
         }
         context.closePath();
       }
     });
   } else {
-    topPoints = topPoints.concat(bottomPoints);
     shape = container.addShape('Polyline', {
       className: 'area',
       attrs: Util.mix({
-        points: topPoints
+        points
       }, style)
     });
   }
@@ -96,14 +74,16 @@ function drawShape(cfg, container, isSmooth) {
   const style = Util.mix({
     fillStyle: cfg.color
   }, Global.shape.area, cfg.style);
+
   bottomPoints.reverse(); // 下面
   topPoints = self.parsePoints(topPoints);
   bottomPoints = self.parsePoints(bottomPoints);
   if (cfg.isInCircle) {
+    topPoints.push(topPoints[0]); // 闭合路径
+    bottomPoints.unshift(bottomPoints[bottomPoints.length - 1]); // 闭合路径
     if (equalsCenter(bottomPoints, cfg.center)) { // 如果内部点等于圆心，不绘制
       bottomPoints = [];
     }
-    return drawCircleArea(topPoints, bottomPoints, container, style, isSmooth);
   }
 
   return drawRectShape(topPoints, bottomPoints, container, style, isSmooth);
