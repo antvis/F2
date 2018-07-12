@@ -80,12 +80,13 @@ class Interaction {
 
     if (hammer) {
       hammer.destroy();
-      this._clearTouchEvent(startEvent, '_start');
-      this._clearTouchEvent(processingEvent, '_process');
-      this._clearTouchEvent(endEvent, '_end');
-      this._clearTouchEvent(resetEvent, '_reset');
       this.hammer = null;
     }
+
+    this._clearTouchEvent(startEvent, '_start');
+    this._clearTouchEvent(processingEvent, '_process');
+    this._clearTouchEvent(endEvent, '_end');
+    this._clearTouchEvent(resetEvent, '_reset');
   }
 
   _bindEvent(eventName, methodName, hammer) {
