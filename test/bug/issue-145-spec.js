@@ -54,9 +54,9 @@ describe('issue 145', function() {
       chart.changeData(newData);
       expect(chart.get('padding')).to.equal('auto');
       expect(parseInt(chart.get('_padding')[3])).to.eql(72);
-      expect(chart.get('dataChanged')).to.be.true;
+      expect(chart.get('rePadding')).to.be.true;
       chart.repaint();
-      expect(chart.get('dataChanged')).to.be.undefined;
+      expect(chart.get('rePadding')).to.be.undefined;
 
       chart.destroy();
       document.body.removeChild(canvas);
