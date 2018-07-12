@@ -302,8 +302,12 @@ class Chart extends Base {
   }
 
   _initLayout() {
-    let padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
-    padding = Util.parsePadding(padding);
+    let padding = this.get('_padding');
+    if (!padding) {
+      padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
+      padding = Util.parsePadding(padding);
+    }
+
     const top = padding[0] === 'auto' ? 0 : padding[0];
     const right = padding[1] === 'auto' ? 0 : padding[1];
     const bottom = padding[2] === 'auto' ? 0 : padding[2];
@@ -536,8 +540,12 @@ class Chart extends Base {
     return this;
   }
 
-  repaint(isDataChanged) {
-    this.set('dataChanged', isDataChanged);
+  /**
+   * 重绘 chart
+   * @param {Boolean} rePadding 是否需要重新计算 padding
+   */
+  repaint(rePadding) {
+    this.set('rePadding', rePadding);
     this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();

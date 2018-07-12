@@ -18,6 +18,14 @@
 
 * add 16ms delay for canvas draw. ([012c9fcc](https://github.com/antvis/f2/commit/012c9fcc51a0fae11eca797741e941df31aed89d))
 
+
+#### 3.1.15 (2018-07-12)
+
+##### Bug Fixes
+
+* fix the padding value error when chart.changeSize() been called. Closed [#186](https://github.com/antvis/f2/pull/186) ([9edb3a91](https://github.com/antvis/f2/commit/9edb3a91ef45a6d40fdd5274f140945d9290670b))
+
+
 #### 3.1.14 (2018-07-10)
 
 ##### New Features
