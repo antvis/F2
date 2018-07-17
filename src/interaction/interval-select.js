@@ -9,6 +9,10 @@ class IntervalSelect extends Interaction {
     return Util.mix({}, defaultCfg, {
       startEvent: 'tap',
       processingEvent: null,
+      selectAxis: true, // 是否高亮坐标轴文本
+      selectAxisStyle: {
+        fontWeight: 'bold'
+      },
       selectStyle: {
         fillOpacity: 1
       }, // 被选中图形的样式
@@ -19,24 +23,33 @@ class IntervalSelect extends Interaction {
     });
   }
 
+  _resetShape(shape) {
+    const originAttrs = shape.get('_originAttrs');
+    if (originAttrs) {
+      shape._attrs.attrs = originAttrs;
+      shape.set('_originAttrs', null);
+    }
+  }
+
   _reset() {
-    if (!this.selectedShape) {
+    const self = this;
+    if (!self.selectedShape) {
       return;
     }
-    const chart = this.chart;
+    const chart = self.chart;
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
 
     Util.each(children, child => {
-      const originAttrs = child.get('_originAttrs');
-      if (originAttrs) {
-        child._attrs.attrs = originAttrs;
-        child.set('_originAttrs', null);
-      }
+      self._resetShape(child);
       child.set('_selected', false);
     });
-    this.canvas.draw();
+
+    if (self.selectedAxisShape) {
+      self._resetShape(self.selectedAxisShape);
+    }
+    self.canvas.draw();
   }
 
   start(ev) {
@@ -52,7 +65,7 @@ class IntervalSelect extends Interaction {
       return;
     }
 
-    // 查找被点击的 shapw
+    // 查找被点击的 shape
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
@@ -76,7 +89,7 @@ class IntervalSelect extends Interaction {
         }
         this._reset(); // 允许取消选中
       } else { // 未被选中
-        const { selectStyle, unSelectStyle } = this;
+        const { selectStyle, unSelectStyle, selectAxisStyle } = this;
 
         if (!selectedShape.get('_originAttrs')) {
           const originAttrs = Object.assign({}, selectedShape.attr());
@@ -97,11 +110,38 @@ class IntervalSelect extends Interaction {
         });
 
         selectedShape.set('_selected', true);
+
+        if (this.selectAxis) { // 坐标轴高亮
+          if (this.selectedAxisShape) {
+            this._resetShape(this.selectedAxisShape);
+          }
+          // 查找 坐标轴 shape
+          const xScale = geom.getXScale();
+          const origin = selectedShape.get('origin')._origin;
+          const {
+            frontPlot,
+            backPlot
+          } = chart.get('axisController');
+
+          let axisShape;
+
+          Util.each(frontPlot.get('children').concat(backPlot.get('children')), s => {
+            if (s.get('value') === xScale.scale(origin[xScale.field])) {
+              axisShape = s;
+              return false;
+            }
+          });
+          this.selectedAxisShape = axisShape;
+          axisShape.set('_originAttrs', Object.assign({}, axisShape.attr()));
+          axisShape.attr(selectAxisStyle);
+        }
+
         this.canvas.draw();
       }
     } else { // 没有选中图形，恢复原态
       this._reset();
       this.selectedShape = null;
+      this.selectedAxisShape = null;
     }
   }
 

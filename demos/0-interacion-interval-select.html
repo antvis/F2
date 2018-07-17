@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>柱状图选中</title>
   <link rel="stylesheet" href="./assets/common.css">
+  <style>
+    .chart-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: normal;
+      color: #808080;
+    }
+  </style>
 </head>
 <body>
 <div>
@@ -37,6 +45,17 @@
   });
   chart.tooltip(false);
   chart.interval().position('year*sales');
+
+  // 绘制 guide
+  data.map(obj => {
+    chart.guide().html({
+      position: [ obj.year, obj.sales ],
+      html: `<div data-year="${obj.year}" class="chart-label">${obj.sales}</div>`,
+      alignX: 'center',
+      alignY: 'bottom'
+    });
+  });
+
   chart.render();
 
   chart.interaction('interval-select', {
@@ -44,10 +63,37 @@
       stroke: '#000',
       lineWidth: 1
     },
-    unSelectStyle: null,
-    cancelable: false,
+    // unSelectStyle: null,
+    // cancelable: true,
+    selectAxisStyle: {
+      fill: '#000',
+      fontWeight: 'bold'
+    },
     onEnd(ev) {
       console.log(ev.data, ev.selected)
+      const { data, selected } = ev;
+      if (selected) {
+        $('.chart-label').each((index, el) => {
+          el = $(el);
+          if (el.data('year') === data.year) {
+            el.css({
+              color: '#000',
+            });
+          } else {
+            el.css({
+              color: '#808080',
+            });
+          }
+        });
+      } else {
+        $('.chart-label').each((index, el) => {
+          el = $(el);
+
+          el.css({
+            color: '#808080'
+          });
+        });
+      }
     }
   });
 </script>
