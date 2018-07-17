@@ -66,21 +66,26 @@
             endAngle
           }, style)
         });
-        const text = container.addShape('text', {
-          attrs: {
-            x: numbricCenter.x,
-            y: numbricCenter.y,
-            fontFamily: 'iconfont',
-            textAlign: 'center',
-            textBaseline: 'middle',
-            fontSize,
-            text: cfg.origin._origin.iconfont,
-            fill: '#fff',
-            fontWeight: '400'
-          }
-        });
 
-        return [ sector, text ];
+        const sectorBBox = sector.getBBox();
+        if (sectorBBox.width >= fontSize && sectorBBox.height >= fontSize ) { // 确定扇形部分可以放下 iconfont
+          const text = container.addShape('text', {
+            attrs: {
+              x: numbricCenter.x,
+              y: numbricCenter.y,
+              fontFamily: 'iconfont',
+              textAlign: 'center',
+              textBaseline: 'middle',
+              fontSize,
+              text: cfg.origin._origin.iconfont,
+              fill: '#fff',
+              fontWeight: '400'
+            }
+          });
+
+          return [ sector, text ];
+        }
+        return sector;
       }
     }
   });
@@ -90,7 +95,7 @@
     { name: '拳击', percent: 25, a: '1', iconfont: '&#xe650;' },
     { name: '跑步机', percent: 15, a: '1', iconfont: '&#xe64f;' },
     { name: '跳绳', percent: 15, a: '1', iconfont: '&#xe651;' },
-    { name: '杠铃', percent: 15, a: '1', iconfont: '&#xe64c;' }
+    { name: '杠铃', percent: 3, a: '1', iconfont: '&#xe64c;' }
   ];
 
   var map = {};
