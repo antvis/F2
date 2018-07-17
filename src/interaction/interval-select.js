@@ -19,7 +19,7 @@ class IntervalSelect extends Interaction {
       unSelectStyle: {
         fillOpacity: 0.4
       }, // 未被选中图形的样式
-      cancelable: true// 选中之后是否允许取消选中，默认允许取消选中
+      cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
   }
 
