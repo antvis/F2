@@ -1,2 +1,2 @@
-const TimeCat = require('@antv/scale/src/time-cat');
+const TimeCat = require('@antv/scale/lib/time-cat');
 module.exports = TimeCat;

@@ -1,6 +1,6 @@
 const Util = require('../util/common');
 const ColorUtil = require('./color-util');
-const Base = require('@antv/attr/src/base'); // Attr 的基类
+const Base = require('@antv/attr/lib/base'); // Attr 的基类
 
 class Color extends Base {
 

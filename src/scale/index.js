@@ -1,7 +1,7 @@
-const Scale = require('@antv/scale/src/base');
+const Scale = require('@antv/scale/lib/base');
 
-require('@antv/scale/src/linear');
-require('@antv/scale/src/identity');
-require('@antv/scale/src/category');
+require('@antv/scale/lib/linear');
+require('@antv/scale/lib/identity');
+require('@antv/scale/lib/category');
 
 module.exports = Scale;

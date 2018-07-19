@@ -1,2 +1,2 @@
-const Stack = require('@antv/adjust/src/stack');
+const Stack = require('@antv/adjust/lib/stack');
 module.exports = Stack;

@@ -4,20 +4,20 @@
  */
 const DomUtil = require('./dom');
 const Util = {
-  upperFirst: require('@antv/util/src/string/upperFirst'),
-  lowerFirst: require('@antv/util/src/string/lowerFirst'),
-  isString: require('@antv/util/src/type/isString'),
-  isNumber: require('@antv/util/src/type/isNumber'),
-  isBoolean: require('@antv/util/src/type/isBoolean'),
-  isFunction: require('@antv/util/src/type/isFunction'),
-  isDate: require('@antv/util/src/type/isDate'),
-  isArray: require('@antv/util/src/type/isArray'),
-  isNil: require('@antv/util/src/type/isNil'),
-  isObject: require('@antv/util/src/type/isObject'),
-  isPlainObject: require('@antv/util/src/type/isPlainObject'),
-  deepMix: require('@antv/util/src/deepMix'),
-  mix: require('@antv/util/src/mix'),
-  each: require('@antv/util/src/each'),
+  upperFirst: require('@antv/util/lib/string/upperFirst'),
+  lowerFirst: require('@antv/util/lib/string/lowerFirst'),
+  isString: require('@antv/util/lib/type/isString'),
+  isNumber: require('@antv/util/lib/type/isNumber'),
+  isBoolean: require('@antv/util/lib/type/isBoolean'),
+  isFunction: require('@antv/util/lib/type/isFunction'),
+  isDate: require('@antv/util/lib/type/isDate'),
+  isArray: require('@antv/util/lib/type/isArray'),
+  isNil: require('@antv/util/lib/type/isNil'),
+  isObject: require('@antv/util/lib/type/isObject'),
+  isPlainObject: require('@antv/util/lib/type/isPlainObject'),
+  deepMix: require('@antv/util/lib/deepMix'),
+  mix: require('@antv/util/lib/mix'),
+  each: require('@antv/util/lib/each'),
   /**
    * 封装事件，便于使用上下文this,和便于解除事件时使用
    * @protected
