@@ -56,6 +56,19 @@ describe('Guide Base', function() {
     expect(result3.y).to.be.equal(400);
   });
 
+  it('limitInPlot', function() {
+    const point = [ '九月', 600 ];
+    const cfg = {
+      xScale,
+      yScales: [ yScale ],
+      limitInPlot: true
+    };
+    const guide = new Guide(cfg);
+
+    const result = guide.parsePoint(coord, point);
+    expect(result).to.be.null;
+  });
+
   it('Base class method: render()', function() {
     const guide = new Guide();
     expect(guide.render).be.an.instanceof(Function);

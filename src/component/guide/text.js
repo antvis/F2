@@ -36,6 +36,9 @@ class Text extends GuideBase {
   render(coord, container) {
     const position = this.position;
     const point = this.parsePoint(coord, position);
+    if (!point) {
+      return;
+    }
     const { content, style, offsetX, offsetY } = this;
 
     if (offsetX) {

@@ -71,6 +71,9 @@ class Tag extends GuideBase {
 
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
+    if (!position) {
+      return;
+    }
     const { content, background, textStyle } = this;
 
     const wrapperContainer = container.addGroup({

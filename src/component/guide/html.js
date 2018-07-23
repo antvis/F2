@@ -91,6 +91,9 @@ class Html extends GuideBase {
   render(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
+    if (!position) {
+      return;
+    }
     let myNode = createDom(self.html);
     myNode = modifyCSS(myNode, {
       position: 'absolute',
