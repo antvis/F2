@@ -28,6 +28,9 @@ class Arc extends GuideBase {
     const self = this;
     const start = self.parsePoint(coord, self.start);
     const end = self.parsePoint(coord, self.end);
+    if (!start || !end) {
+      return;
+    }
     const coordCenter = coord.center;
     const radius = Math.sqrt((start.x - coordCenter.x) * (start.x - coordCenter.x)
       + (start.y - coordCenter.y) * (start.y - coordCenter.y));

@@ -14,7 +14,9 @@ class RegionFilter extends GuideBase {
   render(coord) {
     const start = this.parsePoint(coord, this.start);
     const end = this.parsePoint(coord, this.end);
-
+    if (!start || !end) {
+      return;
+    }
     const clip = new Rect({
       attrs: {
         x: Math.min(start.x, end.x),

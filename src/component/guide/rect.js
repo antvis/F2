@@ -15,6 +15,9 @@ class Rect extends GuideBase {
   render(coord, container) {
     const start = this.parsePoint(coord, this.start);
     const end = this.parsePoint(coord, this.end);
+    if (!start || !end) {
+      return;
+    }
     const shape = container.addShape('rect', {
       className: 'guide-rect',
       attrs: Util.mix({

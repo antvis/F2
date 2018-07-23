@@ -303,14 +303,14 @@ class Geom extends Base {
   _sort(mappedArray) {
     const self = this;
     const xScale = self.getXScale();
-    const xField = xScale.field;
-    if (xScale.type !== 'identity' && xScale.values.length > 1) {
+    const { field, type, isLinear } = xScale;
+    if ((isLinear || type === 'timeCat') && xScale.values.length > 1) { // 只对 linear 和 timeCat 类型数据进行排序
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
-          if (xScale.type === 'timeCat') {
-            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][xField]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][xField]);
+          if (type === 'timeCat') {
+            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][field]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][field]);
           }
-          return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+          return xScale.translate(obj1[FIELD_ORIGIN][field]) - xScale.translate(obj2[FIELD_ORIGIN][field]);
         });
       });
     }
