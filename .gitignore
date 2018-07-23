@@ -67,8 +67,8 @@ temp
 .DS_Store
 .vscode
 .idea
-demos/assets/screenshots
 demos/index.html
+demos/assets/screenshots
 demos/debug.html
 
 *.sw*

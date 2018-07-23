@@ -168,5 +168,6 @@ describe('Text', function() {
     expect(bbox.width).to.equal(28.67578125);
     expect(bbox.height).to.equal(48);
     canvas.draw();
+    document.body.removeChild(dom);
   });
 });

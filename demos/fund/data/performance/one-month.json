@@ -1,0 +1,301 @@
+[{
+  "name": "本基金",
+  "reportDateTimestamp": 1524412800000,
+  "reportDate": "2018-04-23",
+  "rate": 0
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1524499200000,
+  "reportDate": "2018-04-24",
+  "rate": 1.46
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1524585600000,
+  "reportDate": "2018-04-25",
+  "rate": 5.49
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1524672000000,
+  "reportDate": "2018-04-26",
+  "rate": 3.37
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1524758400000,
+  "reportDate": "2018-04-27",
+  "rate": 6.29
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525190400000,
+  "reportDate": "2018-05-02",
+  "rate": 6.95
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525276800000,
+  "reportDate": "2018-05-03",
+  "rate": 6.22
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525363200000,
+  "reportDate": "2018-05-04",
+  "rate": 8.27
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525622400000,
+  "reportDate": "2018-05-07",
+  "rate": 10.53
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525708800000,
+  "reportDate": "2018-05-08",
+  "rate": 9.22
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525795200000,
+  "reportDate": "2018-05-09",
+  "rate": 9.36
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525881600000,
+  "reportDate": "2018-05-10",
+  "rate": 12.8
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1525968000000,
+  "reportDate": "2018-05-11",
+  "rate": 9.14
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526227200000,
+  "reportDate": "2018-05-14",
+  "rate": 9.14
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526313600000,
+  "reportDate": "2018-05-15",
+  "rate": 12.29
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526400000000,
+  "reportDate": "2018-05-16",
+  "rate": 13.24
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526486400000,
+  "reportDate": "2018-05-17",
+  "rate": 11.19
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526572800000,
+  "reportDate": "2018-05-18",
+  "rate": 11.7
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526832000000,
+  "reportDate": "2018-05-21",
+  "rate": 11.63
+}, {
+  "name": "本基金",
+  "reportDateTimestamp": 1526918400000,
+  "reportDate": "2018-05-22",
+  "rate": 14.12
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1524412800000,
+  "reportDate": "2018-04-23",
+  "rate": 0
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1524499200000,
+  "reportDate": "2018-04-24",
+  "rate": 1.49
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1524585600000,
+  "reportDate": "2018-04-25",
+  "rate": 1.6
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1524672000000,
+  "reportDate": "2018-04-26",
+  "rate": 0.55
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1524758400000,
+  "reportDate": "2018-04-27",
+  "rate": 0.68
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525190400000,
+  "reportDate": "2018-05-02",
+  "rate": 0.87
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525276800000,
+  "reportDate": "2018-05-03",
+  "rate": 1.34
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525363200000,
+  "reportDate": "2018-05-04",
+  "rate": 1.33
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525622400000,
+  "reportDate": "2018-05-07",
+  "rate": 2.5
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525708800000,
+  "reportDate": "2018-05-08",
+  "rate": 2.86
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525795200000,
+  "reportDate": "2018-05-09",
+  "rate": 2.76
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525881600000,
+  "reportDate": "2018-05-10",
+  "rate": 3.01
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1525968000000,
+  "reportDate": "2018-05-11",
+  "rate": 2.47
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526227200000,
+  "reportDate": "2018-05-14",
+  "rate": 2.71
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526313600000,
+  "reportDate": "2018-05-15",
+  "rate": 3.3
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526400000000,
+  "reportDate": "2018-05-16",
+  "rate": 3.06
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526486400000,
+  "reportDate": "2018-05-17",
+  "rate": 2.51
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526572800000,
+  "reportDate": "2018-05-18",
+  "rate": 2.88
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526832000000,
+  "reportDate": "2018-05-21",
+  "rate": 3.41
+}, {
+  "name": "同类平均",
+  "reportDateTimestamp": 1526918400000,
+  "reportDate": "2018-05-22",
+  "rate": 3.54
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1524412800000,
+  "reportDate": "2018-04-23",
+  "rate": 0
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1524499200000,
+  "reportDate": "2018-04-24",
+  "rate": 2.05
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1524585600000,
+  "reportDate": "2018-04-25",
+  "rate": 1.66
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1524672000000,
+  "reportDate": "2018-04-26",
+  "rate": -0.29
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1524758400000,
+  "reportDate": "2018-04-27",
+  "rate": -0.25
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525190400000,
+  "reportDate": "2018-05-02",
+  "rate": -0.07
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525276800000,
+  "reportDate": "2018-05-03",
+  "rate": 0.71
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525363200000,
+  "reportDate": "2018-05-04",
+  "rate": 0.22
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525622400000,
+  "reportDate": "2018-05-07",
+  "rate": 1.8
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525708800000,
+  "reportDate": "2018-05-08",
+  "rate": 2.98
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525795200000,
+  "reportDate": "2018-05-09",
+  "rate": 2.8
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525881600000,
+  "reportDate": "2018-05-10",
+  "rate": 3.36
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1525968000000,
+  "reportDate": "2018-05-11",
+  "rate": 2.83
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526227200000,
+  "reportDate": "2018-05-14",
+  "rate": 3.8
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526313600000,
+  "reportDate": "2018-05-15",
+  "rate": 4.19
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526400000000,
+  "reportDate": "2018-05-16",
+  "rate": 3.36
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526486400000,
+  "reportDate": "2018-05-17",
+  "rate": 2.59
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526572800000,
+  "reportDate": "2018-05-18",
+  "rate": 3.63
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526832000000,
+  "reportDate": "2018-05-21",
+  "rate": 4.11
+}, {
+  "name": "沪深300",
+  "reportDateTimestamp": 1526918400000,
+  "reportDate": "2018-05-22",
+  "rate": 3.71
+}]

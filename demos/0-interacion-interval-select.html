@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>柱状图选中</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <style>
+    .chart-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: normal;
+      color: #808080;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
+  var data = [
+    { year: '1951 年', sales: 38 },
+    { year: '1952 年', sales: 52 },
+    { year: '1956 年', sales: 61 },
+    { year: '1957 年', sales: 145 },
+    { year: '1958 年', sales: 48 },
+    { year: '1959 年', sales: 38 },
+    { year: '1960 年', sales: 38 },
+    { year: '1962 年', sales: 38 },
+  ];
+  var chart = new F2.Chart({
+    id: 'mountNode',
+    pixelRatio: window.devicePixelRatio
+  });
+
+  chart.source(data, {
+    sales: {
+      tickCount: 5
+    }
+  });
+  chart.tooltip(false);
+  chart.interval().position('year*sales');
+
+  // 绘制 guide
+  data.map(obj => {
+    chart.guide().html({
+      position: [ obj.year, obj.sales ],
+      html: `<div data-year="${obj.year}" class="chart-label">${obj.sales}</div>`,
+      alignX: 'center',
+      alignY: 'bottom'
+    });
+  });
+
+  chart.render();
+
+  chart.interaction('interval-select', {
+    selectStyle: {
+      stroke: '#000',
+      lineWidth: 1
+    },
+    // unSelectStyle: null,
+    // cancelable: true,
+    selectAxisStyle: {
+      fill: '#000',
+      fontWeight: 'bold'
+    },
+    onEnd(ev) {
+      console.log(ev.data, ev.selected)
+      const { data, selected } = ev;
+      if (selected) {
+        $('.chart-label').each((index, el) => {
+          el = $(el);
+          if (el.data('year') === data.year) {
+            el.css({
+              color: '#000',
+            });
+          } else {
+            el.css({
+              color: '#808080',
+            });
+          }
+        });
+      } else {
+        $('.chart-label').each((index, el) => {
+          el = $(el);
+
+          el.css({
+            color: '#808080'
+          });
+        });
+      }
+    }
+  });
+</script>
+</body>
+</html>

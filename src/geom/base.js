@@ -5,8 +5,8 @@ const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
-const Shape = require('./shape/shape');
-const Adjust = require('./adjust/base');
+const GeometryShape = require('./shape/shape');
+const Adjust = require('@antv/adjust/lib/base');
 
 function parseFields(field) {
   if (Util.isArray(field)) {
@@ -75,6 +75,7 @@ class Geom extends Base {
        * @type {Boolean}
       */
       startOnZero: true,
+      visible: true,
       /**
        * 是否连接空数据，对 area、line、path 生效
        */
@@ -113,13 +114,19 @@ class Geom extends Base {
   // 分组数据
   _groupData(data) {
     const self = this;
+    const colDefs = self.get('colDefs');
     const groupScales = self._getGroupScales();
     if (groupScales.length) {
+      const appendConditions = {};
       const names = [];
-      Util.each(groupScales, function(scale) {
-        names.push(scale.field);
+      Util.each(groupScales, scale => {
+        const field = scale.field;
+        names.push(field);
+        if (colDefs && colDefs[field] && colDefs[field].values) { // 用户指定了顺序
+          appendConditions[scale.field] = colDefs[field].values;
+        }
       });
-      return Util.Array.group(data, names);
+      return Util.Array.group(data, names, appendConditions);
     }
     return [ data ];
 
@@ -296,11 +303,14 @@ class Geom extends Base {
   _sort(mappedArray) {
     const self = this;
     const xScale = self.getXScale();
-    const xField = xScale.field;
-    if (xScale.type !== 'identity' && xScale.values.length > 1) {
+    const { field, type, isLinear } = xScale;
+    if ((isLinear || type === 'timeCat') && xScale.values.length > 1) { // 只对 linear 和 timeCat 类型数据进行排序
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
-          return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+          if (type === 'timeCat') {
+            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][field]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][field]);
+          }
+          return xScale.translate(obj1[FIELD_ORIGIN][field]) - xScale.translate(obj2[FIELD_ORIGIN][field]);
         });
       });
     }
@@ -336,7 +346,7 @@ class Geom extends Base {
     let shapeFactory = this.get('shapeFactory');
     if (!shapeFactory) {
       const shapeType = this.get('shapeType');
-      shapeFactory = Shape.getShapeFactory(shapeType);
+      shapeFactory = GeometryShape.getShapeFactory(shapeType);
       this.set('shapeFactory', shapeFactory);
     }
     return shapeFactory;
@@ -817,6 +827,21 @@ class Geom extends Base {
     super.destroy();
   }
 
+  _display(visible) {
+    this.set('visible', visible);
+    const container = this.get('container');
+    const canvas = container.get('canvas');
+    container.set('visible', visible);
+    canvas.draw();
+  }
+
+  show() {
+    this._display(true);
+  }
+
+  hide() {
+    this._display(false);
+  }
 }
 
 module.exports = Geom;

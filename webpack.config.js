@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     f2: './src/index.js',
     'f2-simple': './src/index-simple.js',
-    'f2-common': './src/index-common.js'
+    'f2-common': './src/index-common.js',
+    'f2-all': './src/index-all.js'
   },
   output: {
     filename: '[name].js',

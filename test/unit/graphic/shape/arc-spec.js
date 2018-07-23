@@ -57,5 +57,6 @@ describe('Arc', function() {
     expect(arc.get('destroyed')).to.equal(true);
     canvas.clear();
     canvas.draw();
+    document.body.removeChild(dom);
   });
 });

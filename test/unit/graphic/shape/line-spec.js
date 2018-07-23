@@ -82,6 +82,7 @@ describe('Line', function() {
   it('destroy', function() {
     line.destroy();
     expect(canvas.get('children').length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

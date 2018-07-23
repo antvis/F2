@@ -173,12 +173,37 @@ describe('test geoms', function() {
       expect(geom.get('attrs')).eqls({});
       // expect(geom.get('adjusts')).eqls(null);
     });
+
     it('test total init', function() {
       geom.position('a*b').color('c');
       geom.init();
       const dataArray = geom.get('dataArray');
       expect(dataArray[0][0].b).eqls(2);
       expect(dataArray[1][0].b).eqls(3);
+    });
+
+    it('test group data with values setting in colDefs', function() {
+      geom.reset();
+      geom.set('colDefs', {
+        c: {
+          values: [ '2', '1' ]
+        }
+      });
+      geom.position('a*b').color('c');
+      geom._initAttrs();
+
+      const geomData = [
+        { a: 1, b: 2, c: '1' },
+        { a: 1, b: 3, c: '2' },
+        { a: 2, b: 1, c: '1' },
+        { a: 2, b: 4, c: '2' },
+        { a: 3, b: 5, c: '1' },
+        { a: 3, b: 1, c: '2' }
+      ];
+      const arr = geom._groupData(geomData);
+      expect(arr.length).equal(2);
+      expect(arr[0][0].c).equal('2');
+      expect(arr[1][0].c).equal('1');
     });
 
     it('destroy', function() {
@@ -811,6 +836,7 @@ describe('test schema', function() {
     it('destroy', function() {
       geom.destroy();
       expect(geom.destroyed).equal(true);
+      document.body.removeChild(dom);
     });
   });
 });

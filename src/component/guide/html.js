@@ -91,6 +91,9 @@ class Html extends GuideBase {
   render(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
+    if (!position) {
+      return;
+    }
     let myNode = createDom(self.html);
     myNode = modifyCSS(myNode, {
       position: 'absolute',
@@ -99,7 +102,8 @@ class Html extends GuideBase {
       visibility: 'hidden'
     });
 
-    let parentNode = container.get('canvas').get('el').parentNode;
+    const canvasDom = container.get('canvas').get('el');
+    let parentNode = canvasDom.parentNode;
     parentNode = modifyCSS(parentNode, {
       position: 'relative'
     });
@@ -118,12 +122,15 @@ class Html extends GuideBase {
     }
     wrapperNode.appendChild(myNode);
 
+    // 需要考虑 canvas 元素在父容器中的相对位置
+    const canvasOffsetTop = canvasDom.offsetTop;
+    const canvasOffsetLeft = canvasDom.offsetLeft;
     const { alignX, alignY, offsetX, offsetY } = self;
     const width = Util.getWidth(myNode);
     const height = Util.getHeight(myNode);
     const newOffset = getOffsetFromAlign(alignX, alignY, width, height);
-    position.x = position.x + newOffset[0];
-    position.y = position.y + newOffset[1];
+    position.x = position.x + newOffset[0] + canvasOffsetLeft;
+    position.y = position.y + newOffset[1] + canvasOffsetTop;
 
     if (offsetX) {
       position.x += offsetX;

@@ -69,6 +69,7 @@ class ScaleController {
       const { min, max } = getRange(values);
       cfg.min = min;
       cfg.max = max;
+      cfg.nice = true; // 默认数值类型 linear 开启 nice
     }
     return cfg;
   }
