@@ -147,7 +147,7 @@ class Pinch extends Interaction {
     const chart = this.chart;
     const { min, max } = scale;
     const valueRange = max - min;
-    if (!this._originRange[field] || chart.get('dataChanged')) {
+    if (!this._originRange[field] || chart.get('rePadding')) {
       this._originRange[field] = valueRange;
     }
 
@@ -185,7 +185,7 @@ class Pinch extends Interaction {
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originValues || chart.get('dataChanged')) {
+    if (!this.originValues || chart.get('rePadding')) {
       const data = chart.get('data');
       const originValues = [];
       data.map(obj => {

@@ -151,7 +151,7 @@ class Pan extends Interaction {
     const { type, field, values, ticks } = scale;
     const colDef = Helper.getColDef(chart, field);
 
-    if (!this.limitRange[field] || chart.get('dataChanged')) { // 缓存原始数据
+    if (!this.limitRange[field] || chart.get('rePadding')) { // 缓存原始数据
       const data = chart.get('data');
       const originValues = [];
       data.map(obj => {
