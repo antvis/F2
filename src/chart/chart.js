@@ -17,6 +17,26 @@ function isFullCircle(coord) {
   return true;
 }
 
+function compare(a, b) {
+  return a - b;
+}
+
+function _isScaleExist(scales, compareScale) {
+  let flag = false;
+  Util.each(scales, scale => {
+    const scaleValues = [].concat(scale.values);
+    const compareScaleValues = [].concat(compareScale.values);
+    if (scale.type === compareScale.type &&
+      scale.field === compareScale.field &&
+      scaleValues.sort(compare).toString() === compareScaleValues.sort(compare).toString()) {
+      flag = true;
+      return;
+    }
+  });
+
+  return flag;
+}
+
 class Chart extends Base {
   static initPlugins() {
     return {
@@ -257,6 +277,7 @@ class Chart extends Base {
 
   _clearInner() {
     this.set('scales', {});
+    this.set('legendItems', null);
     this._clearGeoms();
 
     Chart.plugins.notify(this, 'clearInner'); // TODO
@@ -692,6 +713,56 @@ class Chart extends Base {
       }
     });
     return rst;
+  }
+
+  getLegendItems() {
+    if (this.get('legendItems')) {
+      return this.get('legendItems');
+    }
+    const legendItems = {};
+    const scales = [];
+
+    const geoms = this.get('geoms');
+    Util.each(geoms, geom => {
+      const colorAttr = geom.getAttr('color');
+      if (colorAttr) {
+        const scale = colorAttr.getScale('color');
+        if (scale.type !== 'identity' && !_isScaleExist(scales, scale)) {
+          scales.push(scale);
+
+          const field = scale.field;
+          const ticks = scale.getTicks();
+          const items = [];
+          Util.each(ticks, tick => {
+            const text = tick.text;
+            const name = text;
+            const scaleValue = tick.value;
+            const value = scale.invert(scaleValue);
+            const color = colorAttr.mapping(value).join('') || Global.defaultColor;
+
+            const marker = {
+              fill: color,
+              radius: 3,
+              symbol: 'circle',
+              stroke: '#fff'
+            };
+
+            items.push({
+              name, // 图例项显示文本的内容
+              dataValue: value, // 图例项对应原始数据中的数值
+              checked: true,
+              marker
+            });
+          });
+
+          legendItems[field] = items;
+        }
+      }
+    });
+
+    this.set('legendItems', legendItems);
+
+    return legendItems;
   }
 
   // 注册插件

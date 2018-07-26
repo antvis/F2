@@ -54,24 +54,27 @@ Global.legend = Util.deepMix({
   }, DEFAULT_CFG)
 }, Global.legend || {});
 
-function compare(a, b) {
-  return a - b;
-}
+function getPaddingByPos(pos, appendPadding) {
+  let padding = 0;
+  appendPadding = Util.parsePadding(appendPadding);
+  switch (pos) {
+    case 'top':
+      padding = appendPadding[0];
+      break;
+    case 'right':
+      padding = appendPadding[1];
+      break;
+    case 'bottom':
+      padding = appendPadding[2];
+      break;
+    case 'left':
+      padding = appendPadding[3];
+      break;
+    default:
+      break;
+  }
 
-function _isScaleExist(scales, compareScale) {
-  let flag = false;
-  Util.each(scales, scale => {
-    const scaleValues = [].concat(scale.values);
-    const compareScaleValues = [].concat(compareScale.values);
-    if (scale.type === compareScale.type
-        && scale.field === compareScale.field
-        && scaleValues.sort(compare).toString() === compareScaleValues.sort(compare).toString()) {
-      flag = true;
-      return;
-    }
-  });
-
-  return flag;
+  return padding;
 }
 
 class LegendController {
@@ -85,7 +88,7 @@ class LegendController {
     this.clear();
   }
 
-  addLegend(scale, attr, filterVals) {
+  addLegend(scale, items, filterVals) {
     const self = this;
     const legendCfg = self.legendCfg;
     const field = scale.field;
@@ -103,7 +106,7 @@ class LegendController {
         position = fieldCfg.position;
       }
       if (scale.isCategory) { // 目前只支持分类
-        self._addCategroyLegend(scale, attr, position, filterVals);
+        self._addCategoryLegend(scale, items, position, filterVals);
       }
     }
   }
@@ -143,7 +146,6 @@ class LegendController {
       items,
       parent: container
     }));
-    // container.add(legend.container);
     legends[position].push(legend);
   }
 
@@ -161,7 +163,6 @@ class LegendController {
 
   _isFiltered(scale, values, value) {
     let rst = false;
-    value = scale.invert(value);
     Util.each(values, val => {
       rst = rst || scale.getText(val) === scale.getText(value);
       if (rst) {
@@ -173,16 +174,17 @@ class LegendController {
 
   _getMaxLength(position) {
     const chart = this.chart;
-    const appendPadding = chart.get('appendPadding') * 2;
-    return (position === 'right' || position === 'left') ? (chart.get('height') - appendPadding) : (chart.get('width') - appendPadding);
+    const appendPadding = Util.parsePadding(chart.get('appendPadding'));
+
+    return (position === 'right' || position === 'left') ?
+      chart.get('height') - (appendPadding[0] + appendPadding[2]) :
+      chart.get('width') - (appendPadding[1] + appendPadding[3]);
   }
 
-  _addCategroyLegend(scale, attr, position, filterVals) {
+  _addCategoryLegend(scale, items, position, filterVals) {
     const self = this;
-    const { legendCfg, legends, container } = self;
-    const items = [];
+    const { legendCfg, legends, container, chart } = self;
     const field = scale.field;
-    const ticks = scale.getTicks();
     legends[position] = legends[position] || [];
 
     let symbol = 'circle';
@@ -192,33 +194,20 @@ class LegendController {
       symbol = legendCfg.marker;
     }
 
-    Util.each(ticks, tick => {
-      const text = tick.text;
-      const name = text;
-      const scaleValue = tick.value;
-      const value = scale.invert(scaleValue);
-      const color = attr.mapping(value).join('') || Global.defaultColor;
-
-      const marker = {
-        fill: color,
-        radius: 3,
-        symbol: 'circle',
-        stroke: '#fff'
-      };
-
+    Util.each(items, item => {
       if (Util.isPlainObject(symbol)) {
-        Util.mix(marker, symbol);
+        Util.mix(item.marker, symbol);
       } else {
-        marker.symbol = symbol;
+        item.marker.symbol = symbol;
       }
 
-      items.push({
-        name, // 图例项显示文本的内容
-        dataValue: value, // 图例项对应原始数据中的数值
-        checked: filterVals ? self._isFiltered(scale, filterVals, scaleValue) : true,
-        marker
-      });
+      if (filterVals) {
+        item.checked = self._isFiltered(scale, filterVals, item.dataValue);
+      }
     });
+    // 需要更新图例信息
+    const legendItems = chart.get('legendItems');
+    legendItems[field] = items;
 
     const lastCfg = Util.deepMix({}, Global.legend[position], legendCfg[field] || legendCfg, {
       maxLength: self._getMaxLength(position),
@@ -234,7 +223,6 @@ class LegendController {
     }
 
     const legend = new List(lastCfg);
-    // container.add(legend.container);
     legends[position].push(legend);
     return legend;
   }
@@ -247,7 +235,7 @@ class LegendController {
     let offsetY = legend.offsetY || 0;
     const chartWidth = chart.get('width');
     const chartHeight = chart.get('height');
-    const appendPadding = chart.get('appendPadding');
+    const appendPadding = Util.parsePadding(chart.get('appendPadding'));
     const legendHeight = legend.getHeight();
     const legendWidth = legend.getWidth();
 
@@ -256,7 +244,7 @@ class LegendController {
     if (position === 'left' || position === 'right') { // position 为 left、right，默认图例整体居中对齐
       const verticalAlign = legend.verticalAlign || 'middle'; // 图例垂直方向上的对齐方式
       const height = Math.abs(tl.y - bl.y);
-      x = (position === 'left') ? appendPadding : (chartWidth - legendWidth - appendPadding);
+      x = (position === 'left') ? appendPadding[3] : (chartWidth - legendWidth - appendPadding[1]);
       y = (height - legendHeight) / 2 + tl.y;
       if (verticalAlign === 'top') {
         y = tl.y;
@@ -269,14 +257,14 @@ class LegendController {
       }
     } else { // position 为 top、bottom，图例整体居左对齐
       const align = legend.align || 'left'; // 图例水平方向上的对齐方式
-      x = appendPadding;
+      x = appendPadding[3];
 
       if (align === 'center') {
         x = chartWidth / 2 - legendWidth / 2;
       } else if (align === 'right') {
-        x = chartWidth - (legendWidth + appendPadding);
+        x = chartWidth - (legendWidth + appendPadding[1]);
       }
-      y = (position === 'top') ? appendPadding + Math.abs(legend.container.getBBox().minY) : (chartHeight - legendHeight);
+      y = (position === 'top') ? appendPadding[0] + Math.abs(legend.container.getBBox().minY) : (chartHeight - legendHeight);
       if (pre) {
         const preWidth = pre.getWidth();
         x = pre.x + preWidth + LEGEND_GAP;
@@ -427,32 +415,24 @@ module.exports = {
     const legendController = chart.get('legendController');
     if (!legendController.enable) return null; // legend is not displayed
 
-    const geoms = chart.get('geoms');
     const legendCfg = legendController.legendCfg;
-    const scales = [];
 
     if (legendCfg && legendCfg.custom) { // 用户自定义图例
       legendController.addCustomLegend();
     } else {
-      Util.each(geoms, geom => {
-        const colorAttr = geom.getAttr('color');
-        if (colorAttr) {
-          const type = colorAttr.type;
-          const scale = colorAttr.getScale(type);
-          if (scale.type !== 'identity' && !_isScaleExist(scales, scale)) {
-            scales.push(scale);
-            // Get filtered values
-            const { field, values } = scale;
-            const filters = chart.get('filters');
-            let filterVals;
-            if (filters && filters[field]) {
-              filterVals = values.filter(filters[field]);
-            } else {
-              filterVals = values.slice(0);
-            }
-            legendController.addLegend(scale, colorAttr, filterVals);
-          }
+      const legendItems = chart.getLegendItems();
+      const scales = chart.get('scales');
+      const filters = chart.get('filters');
+      Util.each(legendItems, (items, field) => {
+        const scale = scales[field];
+        const values = scale.values;
+        let filterVals;
+        if (filters && filters[field]) {
+          filterVals = values.filter(filters[field]);
+        } else {
+          filterVals = values.slice(0);
         }
+        legendController.addLegend(scale, items, filterVals);
       });
     }
 
@@ -467,7 +447,6 @@ module.exports = {
       bottom: 0,
       left: 0
     };
-    const appendPadding = chart.get('appendPadding');
     Util.each(legends, (legendItems, position) => {
       let padding = 0;
       Util.each(legendItems, legend => {
@@ -485,30 +464,13 @@ module.exports = {
           }
         }
       });
-      legendRange[position] = padding + appendPadding;
+      legendRange[position] = padding + getPaddingByPos(position, chart.get('appendPadding'));
     });
     chart.set('legendRange', legendRange);
   },
   afterGeomDraw(chart) {
     const legendController = chart.get('legendController');
     legendController.alignLegends();
-
-    /**
-     * 获取图例的 items
-     * [getLegendItems description]
-     * @return {[type]} [description]
-     */
-    chart.getLegendItems = function() {
-      const result = {};
-      const legends = legendController.legends;
-      Util.each(legends, legendItems => {
-        Util.each(legendItems, legend => {
-          const { field, items } = legend;
-          result[field] = items;
-        });
-      });
-      return result;
-    };
   },
   clearInner(chart) {
     const legendController = chart.get('legendController');
