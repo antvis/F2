@@ -89,9 +89,6 @@ DomUtil = {
     const canvasDom = canvas.get('el');
     const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
 
-    // Scale mouse coordinates into canvas coordinates
-    // by following the pattern laid out by 'jerryj' in the comments of
-    // http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
     const paddingLeft = parseFloat(this.getStyle(canvasDom, 'padding-left'));
     const paddingTop = parseFloat(this.getStyle(canvasDom, 'padding-top'));
     const paddingRight = parseFloat(this.getStyle(canvasDom, 'padding-right'));
@@ -100,10 +97,9 @@ DomUtil = {
     const height = bottom - top - paddingTop - paddingBottom;
     const pixelRatio = canvas.get('pixelRatio');
 
-    // We divide by the current device pixel ratio, because the canvas is scaled up by that amount in each direction. However
-    // the backend model is in unscaled coordinates. Since we are going to deal with our model coordinates, we go back here
-    const mouseX = Math.round((point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio);
-    const mouseY = Math.round((point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio);
+    // 为了保证数据查找的精度，这里不要取整
+    const mouseX = (point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio;
+    const mouseY = (point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio;
 
     return {
       x: mouseX,
