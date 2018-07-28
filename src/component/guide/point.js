@@ -26,7 +26,7 @@ class Point extends GuideBase {
       className: 'guide-point-point',
       attrs: Util.mix({
         x: position.x + this.offsetX,
-        y: position.y + this.offsetY,
+        y: position.y + this.offsetY
       }, this.pointStyle)
     });
 

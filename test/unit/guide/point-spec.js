@@ -36,14 +36,14 @@ describe('Guide.Point', function() {
   });
 
   it('guide point', function() {
-    let point = new Point({
+    const point = new Point({
       xScale,
       yScales: [ yScale ],
       position: [ 0, 'min' ]
     });
     point.render(coord, group);
     canvas.draw();
-    circle = group.get('children')[0].get('children')[0];
+    const circle = group.get('children')[0].get('children')[0];
     expect(circle.attr('x')).to.equal(60);
     expect(circle.attr('y')).to.equal(400);
     canvas.destroy();
