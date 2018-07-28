@@ -37,7 +37,7 @@ describe('Guide Plugin', function() {
 
     guideController = chart.get('guideController');
     expect(guideController).not.to.be.empty;
-    expect(F2.Global.guide).to.have.all.keys('line', 'text', 'rect', 'arc', 'html', 'tag');
+    expect(F2.Global.guide).to.have.all.keys('line', 'text', 'rect', 'arc', 'html', 'tag', 'point');
     expect(F2.Global.guide.line).to.eql({
       style: {
         stroke: '#a3a3a3',

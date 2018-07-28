@@ -5,5 +5,6 @@ module.exports = {
   Rect: require('./rect'),
   Html: require('./html'),
   Tag: require('./tag'),
+  Point: require('./point'),
   RegionFilter: require('./region-filter')
 };

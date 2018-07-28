@@ -61,7 +61,7 @@ describe('Text', function() {
     const bbox = text.getBBox();
     expect(bbox.x).to.equal(30);
     expect(bbox.y).to.equal(18);
-    expect(bbox.width).to.equal(26.23046875);
+    expect(bbox.width).to.equal(30);
     expect(bbox.height).to.equal(12);
   });
 
