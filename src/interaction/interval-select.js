@@ -157,6 +157,8 @@ class IntervalSelect extends Interaction {
 
   reset() {
     this._reset();
+    this.selectedShape = null;
+    this.selectedAxisShape = null;
   }
 }
 
