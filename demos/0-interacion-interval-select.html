@@ -69,7 +69,7 @@
       fill: '#000',
       fontWeight: 'bold'
     },
-    onEnd(ev) {
+    onStart(ev) {
       console.log(ev.data, ev.selected)
       const { data, selected } = ev;
       if (selected) {
@@ -94,6 +94,19 @@
           });
         });
       }
+    },
+    onEnd(ev) {
+      const self = this;
+      setTimeout(() => {
+        self.reset();
+        $('.chart-label').each((index, el) => {
+          el = $(el);
+
+          el.css({
+            color: '#808080'
+          });
+        });
+      }, 200);
     }
   });
 </script>
