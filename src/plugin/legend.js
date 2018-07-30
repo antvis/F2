@@ -359,22 +359,14 @@ class LegendController {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.wrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'bind');
-    } else {
-      Util.addEventListener(this.canvasDom, triggerOn, method);
-    }
+    Util.addEventListener(this.canvasDom, triggerOn, method);
   }
 
   unBindEvents() {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.getWrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'unBind');
-    } else {
-      Util.removeEventListener(this.canvasDom, triggerOn, method);
-    }
+    Util.removeEventListener(this.canvasDom, triggerOn, method);
   }
 }
 module.exports = {
