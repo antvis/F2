@@ -72,19 +72,21 @@ class Tag extends GuideBase {
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
     const { content, background, textStyle } = this;
+    const shapes = [];
 
     const wrapperContainer = container.addGroup({
       className: 'guide-tag'
     });
 
     if (this.withPoint) {
-      wrapperContainer.addShape('Circle', {
+      const pointShape = wrapperContainer.addShape('Circle', {
         className: 'guide-tag-point',
         attrs: Util.mix({
           x: position.x,
           y: position.y
         }, this.pointStyle)
       });
+      shapes.push(pointShape);
     }
 
     const tagContainer = wrapperContainer.addGroup();
@@ -98,6 +100,7 @@ class Tag extends GuideBase {
         text: content
       }, textStyle)
     });
+    shapes.push(tagText);
 
     // 绘制背景框
     const textBBox = tagText.getBBox();
@@ -116,6 +119,7 @@ class Tag extends GuideBase {
         height: tagHeight
       }, background)
     });
+    shapes.push(tagBg);
     const direct = this._getDirect(container, position, tagWidth, tagHeight);
     const side = this.side;
     let x = position.x + this.offsetX;
@@ -193,19 +197,22 @@ class Tag extends GuideBase {
       y = y - tagHeight - side;
     }
 
-    tagContainer.addShape('Polygon', {
+    const sideShape = tagContainer.addShape('Polygon', {
+      className: 'guide-tag-side',
       zIndex: 0,
       attrs: {
         points: arrowPoints,
         fill: background.fill
       }
     });
+    shapes.push(sideShape);
 
     tagBg.attr('radius', radius);
     tagContainer.moveTo(x - xMin, y - yMin);
     tagContainer.sort();
 
     this.element = wrapperContainer;
+    return shapes;
   }
 }
 
