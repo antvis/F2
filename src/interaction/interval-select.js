@@ -143,9 +143,11 @@ class IntervalSelect extends Interaction {
       this.selectedShape = null;
       this.selectedAxisShape = null;
     }
+
+    this._setEventData(ev);
   }
 
-  end(ev) {
+  _setEventData(ev) {
     const selectedShape = this.selectedShape;
     if (selectedShape && !selectedShape.get('destroyed')) {
       ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
@@ -155,8 +157,14 @@ class IntervalSelect extends Interaction {
     }
   }
 
+  end(ev) {
+    this._setEventData(ev);
+  }
+
   reset() {
     this._reset();
+    this.selectedShape = null;
+    this.selectedAxisShape = null;
   }
 }
 
