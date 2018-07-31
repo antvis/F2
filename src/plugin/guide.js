@@ -55,6 +55,17 @@ Global.guide = Util.deepMix({
       textAlign: 'center',
       textBaseline: 'middle'
     }
+  },
+  point: {
+    top: true,
+    offsetX: 0, // X 轴偏移
+    offsetY: 0, // Y 轴偏移
+    style: {
+      fill: '#1890FF',
+      r: 3,
+      lineWidth: 1,
+      stroke: '#fff'
+    }
   }
 }, Global.guide || {});
 
@@ -123,6 +134,10 @@ class GuideController {
 
   tag(cfg = {}) {
     return this._createGuide('tag', cfg);
+  }
+
+  point(cfg = {}) {
+    return this._createGuide('point', cfg);
   }
 
   regionFilter(cfg = {}) {
