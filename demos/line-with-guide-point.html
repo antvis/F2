@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>多条折线(HighCharts)</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+
+<script>
+  const data = [
+    { name: 'Installation', value: 43934, year: '2010' },
+    { name: 'Installation', value: 52503, year: '2011' },
+    { name: 'Installation', value: 57177, year: '2012' },
+    { name: 'Installation', value: 69658, year: '2013' },
+    { name: 'Installation', value: 97031, year: '2014' },
+    { name: 'Installation', value: 119931, year: '2015' },
+    { name: 'Installation', value: 137133, year: '2016' },
+    { name: 'Installation', value: 154175, year: '2017' },
+    { name: 'Manufacturing', value: 24916, year: '2010' },
+    { name: 'Manufacturing', value: 24064, year: '2011' },
+    { name: 'Manufacturing', value: 29742, year: '2012' },
+    { name: 'Manufacturing', value: 29851, year: '2013' },
+    { name: 'Manufacturing', value: 32490, year: '2014' },
+    { name: 'Manufacturing', value: 30282, year: '2015' },
+    { name: 'Manufacturing', value: 38121, year: '2016' },
+    { name: 'Manufacturing', value: 40434, year: '2017' },
+    { name: 'Sales & Distribution', value: 11744, year: '2010' },
+    { name: 'Sales & Distribution', value: 17722, year: '2011' },
+    { name: 'Sales & Distribution', value: 16005, year: '2012' },
+    { name: 'Sales & Distribution', value: 19771, year: '2013' },
+    { name: 'Sales & Distribution', value: 20185, year: '2014' },
+    { name: 'Sales & Distribution', value: 24377, year: '2015' },
+    { name: 'Sales & Distribution', value: 32147, year: '2016' },
+    { name: 'Sales & Distribution', value: 39387, year: '2017' },
+    { name: 'Project Development', value: 10300, year: '2010' },
+    { name: 'Project Development', value: 24377, year: '2011' },
+    { name: 'Project Development', value: 7988, year: '2012' },
+    { name: 'Project Development', value: 12169, year: '2013' },
+    { name: 'Project Development', value: 15112, year: '2014' },
+    { name: 'Project Development', value: 22452, year: '2015' },
+    { name: 'Project Development', value: 34400, year: '2016' },
+    { name: 'Project Development', value: 34227, year: '2017' },
+    { name: 'Other', value: 12908, year: '2010' },
+    { name: 'Other', value: 5948, year: '2011' },
+    { name: 'Other', value: 8105, year: '2012' },
+    { name: 'Other', value: 11248, year: '2013' },
+    { name: 'Other', value: 8989, year: '2014' },
+    { name: 'Other', value: 11816, year: '2015' },
+    { name: 'Other', value: 18274, year: '2016' },
+    { name: 'Other', value: 18111, year: '2017' }
+  ];
+
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    width: window.innerWidth,
+    height: window.innerWidth * 0.8,
+    pixelRatio: window.devicePixelRatio
+  });
+
+  chart.source(data, {
+    value: {
+      tickCount: 5,
+      min: 0
+    },
+    year: {
+      range: [ 0, 1 ]
+    }
+  });
+  chart.legend({
+    position: 'bottom'
+  });
+  chart.tooltip(false);
+  chart.axis('year', {
+    label(text, index, total) {
+      const textCfg = {};
+      if (index === 0) {
+        textCfg.textAlign = 'left';
+      }
+      if (index === total - 1) {
+        textCfg.textAlign = 'right';
+      }
+      return textCfg;
+    }
+  });
+  chart.line().position('year*value').color('name');
+
+  // 添加辅助点标记
+  chart.guide().point({
+    position: ["2011", 5948],
+    offsetY: 0,
+    style: {
+      fill: '#8659AF',
+      r: 10,
+    }
+  });
+
+  chart.render();
+</script>
+</body>
+</html>
