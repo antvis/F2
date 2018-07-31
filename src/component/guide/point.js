@@ -7,7 +7,7 @@ class Point extends GuideBase {
     this.position = null;
     this.offsetX = 0;
     this.offsetY = 0;
-    this.pointStyle = {
+    this.style = {
       fill: '#1890FF',
       r: 3,
       lineWidth: 1,
@@ -18,19 +18,14 @@ class Point extends GuideBase {
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
 
-    const wrapperContainer = container.addGroup({
-      className: 'guide-point'
-    });
-
-    wrapperContainer.addShape('Circle', {
-      className: 'guide-point-point',
+    const shape = container.addShape('Circle', {
+      className: 'guide-point',
       attrs: Util.mix({
         x: position.x + this.offsetX,
         y: position.y + this.offsetY
-      }, this.pointStyle)
+      }, this.style)
     });
-
-    this.element = wrapperContainer;
+    this.element = shape;
   }
 }
 

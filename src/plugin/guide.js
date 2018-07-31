@@ -60,7 +60,7 @@ Global.guide = Util.deepMix({
     top: true,
     offsetX: 0, // X 轴偏移
     offsetY: 0, // Y 轴偏移
-    pointStyle: {
+    style: {
       fill: '#1890FF',
       r: 3,
       lineWidth: 1,

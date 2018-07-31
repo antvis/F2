@@ -43,9 +43,17 @@ describe('Guide.Point', function() {
     });
     point.render(coord, group);
     canvas.draw();
-    const circle = group.get('children')[0].get('children')[0];
-    expect(circle.attr('x')).to.equal(60);
-    expect(circle.attr('y')).to.equal(400);
+    // const circle = group.get('children')[0].get('children')[0];
+    // expect(circle.attr('x')).to.equal(60);
+    // expect(circle.attr('y')).to.equal(400);
+
+    const children = group.get('children');
+    expect(children.length).to.equal(1);
+    expect(children[0].get('className')).to.equal('guide-point');
+    expect(children[0].attr('x')).to.equal(60);
+    expect(children[0].attr('y')).to.equal(400);
+    expect(children[0].attr('r')).to.equal(3);
+
     canvas.destroy();
     document.body.removeChild(canvas1);
 
