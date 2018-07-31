@@ -130,11 +130,11 @@ class Pan extends Interaction {
     let newMin = flag === 'x' ? min - panValue : min + panValue;
 
     const limitRange = this.limitRange;
-    if (limitRange[field] && limitRange[field].min && newMin <= limitRange[field].min) {
+    if (limitRange[field] && !Util.isNil(limitRange[field].min) && newMin <= limitRange[field].min) {
       newMin = limitRange[field].min;
       newMax = (max - min) + newMin;
     }
-    if (limitRange[field] && limitRange[field].max && newMax >= limitRange[field].max) {
+    if (limitRange[field] && !Util.isNil(limitRange[field].max) && newMax >= limitRange[field].max) {
       newMax = limitRange[field].max;
       newMin = newMax - (max - min);
     }
