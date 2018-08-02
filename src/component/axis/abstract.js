@@ -84,7 +84,7 @@ class Abastract {
         x,
         y
       }, self.getTextAlignInfo(start, labelOffset), labelShape.get('textStyle')));
-      labelShape._id = self._id + '-' + labelShape.get('tickValue');
+      labelShape._id = self._id + '-' + labelShape.attr('text');
       container.add(labelShape);
     });
   }

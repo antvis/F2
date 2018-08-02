@@ -173,7 +173,6 @@ class AxisController {
             fontFamily: self.chart.get('canvas').get('fontFamily') // 保持字体一致
           }, labelCfg),
           value: tick.value,
-          tickValue: tick.tickValue,
           textStyle,
           top: labelCfg.top,
           context: self.chart.get('canvas').get('context')
