@@ -56,7 +56,7 @@ class GuideBase {
     const y = self._getNormalizedValue(position[1], yScales[0]);
 
     const point = coord.convertPoint({ x, y });
-    if (self.limitInPlot) {
+    if (self.limitInPlot) { // limit in chart plotRange
       if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
         return point;
       }

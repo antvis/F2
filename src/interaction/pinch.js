@@ -29,7 +29,6 @@ class Pinch extends Interaction {
       enable: true
     });
     this._originRange = {};
-    chart.set('limitInPlot', true);
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip

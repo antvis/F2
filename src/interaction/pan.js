@@ -30,7 +30,6 @@ class Pan extends Interaction {
     hammer.get('pan').set({
       threshold: panThreshold
     });
-    chart.set('limitInPlot', true);
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip
