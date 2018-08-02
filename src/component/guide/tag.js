@@ -7,7 +7,7 @@ class Tag extends GuideBase {
     this.position = null;
     this.content = null;
     this.direct = 'tl'; // 默认 tag 位置
-    this.autoDirect = true; // 当 tag 出轨时，拉它一把，悬崖勒马
+    this.autoAdjust = true; // 当 tag 出轨时，拉它一把，悬崖勒马
     this.offsetX = 0;
     this.offsetY = 0;
     this.side = 4; //  三角标的边长
@@ -117,7 +117,7 @@ class Tag extends GuideBase {
       }, background)
     });
     shapes.push(tagBg);
-    const direct = this.autoDirect ? this._getDirect(container, position, tagWidth, tagHeight) : this.direct;
+    const direct = this.autoAdjust ? this._getDirect(container, position, tagWidth, tagHeight) : this.direct;
     const side = this.side;
     let x = position.x + this.offsetX;
     let y = position.y + this.offsetY;
