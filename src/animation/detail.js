@@ -259,7 +259,6 @@ function addAnimate(cache, shapes, canvas) {
 
     animateCfg = getAnimateCfg(className, 'update', updateShape.get('animateCfg'));
     if (animateCfg === false) return true;
-
     const coord = updateShape.get('coord');
     const cacheAttrs = updateShape.get('cacheShape').attrs;
     const endState = diff(cacheAttrs, updateShape._attrs.attrs); // 判断如果属性相同的话就不进行变换
@@ -344,19 +343,13 @@ module.exports = {
     if (chart.get('guideController')) {
       guideShapes = chart.get('guideController').guideShapes;
     }
+    const componentShapes = [];
     axisShapes.concat(guideShapes).forEach(s => {
       const className = s.get('className');
       const animateCfg = _getAnimateCfgByShapeType(className, chart);
       s.set('coord', coord);
       s.set('animateCfg', animateCfg);
-      if (!isUpdate && animateCfg && animateCfg.appear) { // 首次入场动画
-        const defaultCfg = Animate.getAnimateCfg(className, 'appear');
-        const appearCfg = Util.deepMix({}, defaultCfg, animateCfg.appear);
-        const animate = getAnimate(className, coord, 'appear', appearCfg.animation);
-        if (Util.isFunction(animate)) {
-          animate(s, appearCfg, coord);
-        }
-      }
+      componentShapes.push(s);
       cacheShapes.push(s);
     });
     canvas.set('caches', cache(cacheShapes));
@@ -388,6 +381,20 @@ module.exports = {
 
             const container = geom.get('container');
             animate && animate(container, animateCfg, coord, zeroY);
+          }
+        }
+      });
+
+      // 组件元素的入场动画
+      Util.each(componentShapes, shape => {
+        const animateCfg = shape.get('animateCfg');
+        const className = shape.get('className');
+        if (animateCfg && animateCfg.appear) { // 如有配置入场动画
+          const defaultCfg = Animate.getAnimateCfg(className, 'appear');
+          const appearCfg = Util.deepMix({}, defaultCfg, animateCfg.appear);
+          const animate = getAnimate(className, coord, 'appear', appearCfg.animation);
+          if (Util.isFunction(animate)) {
+            animate(shape, appearCfg, coord);
           }
         }
       });
