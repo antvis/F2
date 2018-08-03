@@ -41,14 +41,15 @@ class Tooltip {
 
     if (!this.custom) { // custom 表示用户使用自定义 tooltip
       const container = new Container(Util.mix({
-        parent: frontPlot
+        parent: frontPlot,
+        zIndex: 3
       }, cfg));
       this.container = container;
       if (!this.fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
           visible: false,
-          zIndex: -1,
+          zIndex: 2,
           attrs: {
             points: [],
             fill: this.background.fill
@@ -230,6 +231,7 @@ class Tooltip {
         markerGroup = this.frontPlot.addGroup({
           zIndex: 1
         });
+        this.frontPlot.sort();
       } else {
         markerGroup = this.backPlot.addGroup();
       }
