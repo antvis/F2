@@ -1,7 +1,7 @@
 /**
  * 动画工具
  */
-const { Matrix } = require('../graphic/index');
+const { Shape, Matrix } = require('../graphic/index');
 const Util = require('../util/common');
 
 const Helpers = {
@@ -90,6 +90,48 @@ const Helpers = {
         callback();
       });
     }
+  },
+  getClip(coord) {
+    const { start, end, width, height } = Helpers.getCoordInfo(coord);
+    let clip;
+
+    if (coord.isPolar) {
+      const { circleRadius, center, startAngle, endAngle } = coord;
+      clip = new Shape.Sector({
+        attrs: {
+          x: center.x,
+          y: center.y,
+          r: circleRadius,
+          r0: 0,
+          startAngle,
+          endAngle: startAngle
+        }
+      });
+      clip.endState = {
+        endAngle
+      };
+    } else {
+      clip = new Shape.Rect({
+        attrs: {
+          x: start.x,
+          y: end.y,
+          width: coord.isTransposed ? width : 0,
+          height: coord.isTransposed ? 0 : height
+        }
+      });
+
+      if (coord.isTransposed) {
+        clip.endState = {
+          height
+        };
+      } else {
+        clip.endState = {
+          width
+        };
+      }
+    }
+    clip.isClip = true;
+    return clip;
   }
 };
 

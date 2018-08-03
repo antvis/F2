@@ -7,7 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
-const Helper = require('../util/helper');
+const TimeUtil = require('@antv/scale/lib/time-util');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -300,9 +300,42 @@ class Chart extends Base {
     const coord = this.get('coord');
     const data = this.get('filteredData');
     const colDefs = this.get('colDefs');
+
+    const fields = [];
+    Util.each(colDefs, (def, key) => {
+      if (def && (def.values || def.min || def.max)) {
+        fields.push(key);
+      }
+    });
+    const geomData = [];
+    Util.each(data, obj => {
+      let flag = true;
+      Util.each(fields, field => {
+        let value = obj[field];
+        if (value) {
+          const colDef = colDefs[field];
+          if (colDef.type === 'timeCat') { // 时间格式有可能 values 为时间戳
+            const values = colDef.values;
+            if (Util.isNumber(values[0])) {
+              value = TimeUtil.toTimeStamp(value);
+            }
+          }
+
+          if ((colDef.values && colDef.values.indexOf(value) === -1)
+            || (colDef.min && (value < colDef.min))
+            || (colDef.max && (value > colDef.max))) {
+            flag = false;
+          }
+        }
+      });
+      if (flag) {
+        geomData.push(obj);
+      }
+    });
+
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
-      geom.set('data', data);
+      geom.set('data', geomData);
       geom.set('coord', coord);
       geom.set('colDefs', colDefs);
       geom.init();
@@ -521,15 +554,6 @@ class Chart extends Base {
     // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
-
-    // 将 geom 限制在绘图区域内
-    if (self.get('limitInPlot')) {
-      const middlePlot = self.get('middlePlot');
-      const coord = self.get('coord');
-      const clip = Helper.getClip(coord);
-      clip.set('canvas', middlePlot.get('canvas'));
-      middlePlot.attr('clip', clip);
-    }
 
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
