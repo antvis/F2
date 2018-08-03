@@ -63,7 +63,30 @@ class GuideController {
     this.guides = [];
     this.xScale = null;
     this.yScales = null;
+    this.guideShapes = [];
     Util.mix(this, cfg);
+  }
+
+  _toString(position) {
+    if (Util.isFunction(position)) {
+      position = position(this.xScale, this.yScales);
+    }
+    position = position.toString();
+    return position;
+  }
+
+  _getId(shape, guide) { // 用于标定每一个 guide shape 的 id，主要用于动画
+    let id = guide.id;
+    if (!id) { // 用户未指定
+      const type = guide.type;
+      if (type === 'arc' || type === 'line' || type === 'rect') {
+        id = this._toString(guide.start) + '-' + this._toString(guide.end);
+      } else {
+        id = this._toString(guide.position);
+      }
+    }
+
+    return id;
   }
 
   paint(coord) {
@@ -71,12 +94,28 @@ class GuideController {
     const guides = self.guides;
     const xScale = self.xScale;
     const yScales = self.yScales;
-    Util.each(guides, function(guide) {
+    const guideShapes = [];
+    // const ids = [];
+    Util.each(guides, function(guide, idx) {
       guide.xScale = xScale;
       guide.yScales = yScales;
       const container = guide.top ? self.frontPlot : self.backPlot;
-      guide.render(coord, container);
+      const shape = guide.render(coord, container);
+      if (shape) {
+        const id = self._getId(shape, guide);
+        // if (ids.indexOf(id) === -1) { // 防止 ID 重复
+        //   ids.push(id);
+        // } else {
+        //   id += idx;
+        // }
+        [].concat(shape).forEach(s => {
+          s._id = s.get('className') + '-' + id;
+          s.set('index', idx);
+          guideShapes.push(s);
+        });
+      }
     });
+    self.guideShapes = guideShapes; // TODO: 变量命名
   }
 
   clear() {

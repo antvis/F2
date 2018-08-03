@@ -5,7 +5,7 @@ const Util = require('./util/common');
  * @class 全局配置项
  */
 const Global = {
-  version: '3.1.16',
+  version: '3.1.17',
   trackable: true,
   // 预先定义的度量
   scales: {
@@ -23,7 +23,7 @@ const Global = {
 };
 
 Global.setTheme = function(theme) {
-  Util.mix(this, theme);
+  Util.deepMix(this, theme);
 };
 
 Global.setTheme(Theme);
