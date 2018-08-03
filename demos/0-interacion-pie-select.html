@@ -8,6 +8,7 @@
 <body>
 <div>
   <canvas id="mountNode"></canvas>
+  <button id="changeBtn"> changeData </button>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2-all.js"></script>
@@ -85,6 +86,11 @@ chart.interaction('pie-select', {
 });
 
 chart.render();
+
+var btn = document.querySelector('#changeBtn')
+btn.onclick = function() {
+	chart.changeData([ {  name: 'test1', percent: 0.1, a: '1'}, {  name: 'test2', percent: 0.1, a: '1'} ])
+}
 </script>
 </body>
 </html>
