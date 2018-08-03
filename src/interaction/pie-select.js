@@ -16,6 +16,19 @@ class PieSelect extends Interaction {
     });
   }
 
+  constructor(cfg, chart) {
+    super(cfg, chart);
+    const self = this;
+    chart.registerPlugins({
+      clearInner() {
+        self.halo && self.halo.remove(true);
+        self.selected = false;
+        self.selectedShape = null;
+        self.lastShape = null;
+      }
+    });
+  }
+
   start(ev) {
     const chart = this.chart;
     if (ev.type === 'tap') {
