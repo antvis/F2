@@ -25,6 +25,7 @@ class Rect extends GuideBase {
       }, this.style)
     });
     this.element = shape;
+    return shape;
   }
 }
 

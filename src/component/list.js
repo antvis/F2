@@ -74,7 +74,9 @@ class List {
   }
 
   _init() {
-    const container = new Group();
+    const container = new Group({
+      zIndex: this.zIndex || 0
+    });
     this.container = container;
     const wrapper = container.addGroup();
     this.wrapper = wrapper;

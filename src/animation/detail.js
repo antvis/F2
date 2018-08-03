@@ -152,7 +152,6 @@ function getShapes(geoms, chart, coord) {
   Util.each(geoms, geom => {
     const geomContainer = geom.get('container');
     const geomShapes = geomContainer.get('children'); // 获取几何标记的 shapes
-    // const coord = geom.get('coord');
     const type = geom.get('type');
     const animateCfg = Util.isNil(geom.get('animateCfg')) ? _getAnimateCfgByShapeType(type, chart) : geom.get('animateCfg');
     if (animateCfg !== false) {
@@ -260,7 +259,6 @@ function addAnimate(cache, shapes, canvas) {
 
     animateCfg = getAnimateCfg(className, 'update', updateShape.get('animateCfg'));
     if (animateCfg === false) return true;
-
     const coord = updateShape.get('coord');
     const cacheAttrs = updateShape.get('cacheShape').attrs;
     const endState = diff(cacheAttrs, updateShape._attrs.attrs); // 判断如果属性相同的话就不进行变换
@@ -307,6 +305,10 @@ function addAnimate(cache, shapes, canvas) {
 function _getAnimateCfgByShapeType(type, chart) {
   const animateCfg = chart.get('animate');
 
+  if (type.indexOf('guide-tag') > -1) {
+    type = 'guide-tag'; // 因为 guide.tag 包含多个 shape，但是对外它们是一体的
+  }
+
   if (animateCfg) {
     return animateCfg[type];
   }
@@ -334,19 +336,22 @@ module.exports = {
       isUpdate = false;
     }
 
-    const shapes = getShapes(geoms, chart, coord); // geom 上的图形
-
+    const cacheShapes = getShapes(geoms, chart, coord);
     const { frontPlot, backPlot } = chart.get('axisController');
-    const axisShapes = [];
-    // get axes' shapes
-    frontPlot.get('children').concat(backPlot.get('children')).forEach(s => {
+    const axisShapes = frontPlot.get('children').concat(backPlot.get('children'));
+    let guideShapes = [];
+    if (chart.get('guideController')) {
+      guideShapes = chart.get('guideController').guideShapes;
+    }
+    const componentShapes = [];
+    axisShapes.concat(guideShapes).forEach(s => {
       const className = s.get('className');
+      const animateCfg = _getAnimateCfgByShapeType(className, chart);
       s.set('coord', coord);
-      s.set('animateCfg', _getAnimateCfgByShapeType(className, chart));
-      axisShapes.push(s);
+      s.set('animateCfg', animateCfg);
+      componentShapes.push(s);
+      cacheShapes.push(s);
     });
-
-    const cacheShapes = shapes.concat(axisShapes);
     canvas.set('caches', cache(cacheShapes));
 
     if (isUpdate) {
@@ -376,6 +381,20 @@ module.exports = {
 
             const container = geom.get('container');
             animate && animate(container, animateCfg, coord, zeroY);
+          }
+        }
+      });
+
+      // 组件元素的入场动画
+      Util.each(componentShapes, shape => {
+        const animateCfg = shape.get('animateCfg');
+        const className = shape.get('className');
+        if (animateCfg && animateCfg.appear) { // 如有配置入场动画
+          const defaultCfg = Animate.getAnimateCfg(className, 'appear');
+          const appearCfg = Util.deepMix({}, defaultCfg, animateCfg.appear);
+          const animate = getAnimate(className, coord, 'appear', appearCfg.animation);
+          if (Util.isFunction(animate)) {
+            animate(shape, appearCfg, coord);
           }
         }
       });
