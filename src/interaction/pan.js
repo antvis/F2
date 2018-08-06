@@ -1,8 +1,9 @@
 const Util = require('../util/common');
-const Helper = require('./helper');
+const Helper = require('./util/helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const DAY_TIMESTAMPS = 86400000;
+const Plugin = require('./util/plugin');
 
 class Pan extends Interaction {
   getDefaultCfg() {
@@ -20,7 +21,8 @@ class Pan extends Interaction {
       currentDeltaY: null,
       panning: false,
       limitRange: {}, // 限制范围
-      _timestamp: 0
+      _timestamp: 0,
+      showBar: true
     });
   }
 
@@ -30,6 +32,8 @@ class Pan extends Interaction {
     hammer.get('pan').set({
       threshold: panThreshold
     });
+
+    chart.registerPlugins(Plugin);
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip
@@ -121,14 +125,15 @@ class Pan extends Interaction {
 
   _panLinearScale(scale, delta, range, flag) {
     const { field, min, max } = scale;
+    const limitRange = this.limitRange;
+
+    if (min === limitRange[field].min && max === limitRange[field].max) return;
 
     const chart = this.chart;
     const ratio = delta / range;
     const panValue = ratio * (max - min);
     let newMax = flag === 'x' ? max - panValue : max + panValue;
     let newMin = flag === 'x' ? min - panValue : min + panValue;
-
-    const limitRange = this.limitRange;
     if (limitRange[field] && !Util.isNil(limitRange[field].min) && newMin <= limitRange[field].min) {
       newMin = limitRange[field].min;
       newMax = (max - min) + newMin;
@@ -149,22 +154,6 @@ class Pan extends Interaction {
     const chart = this.chart;
     const { type, field, values, ticks } = scale;
     const colDef = Helper.getColDef(chart, field);
-
-    if (!this.limitRange[field] || chart.get('rePadding')) { // 缓存原始数据
-      const data = chart.get('data');
-      const originValues = [];
-      data.map(obj => {
-        let value = obj[field];
-        if (type === 'timeCat') {
-          value = scale._toTimeStamp(value);
-        }
-        if (originValues.indexOf(value) === -1) {
-          originValues.push(value);
-        }
-        return obj;
-      });
-      this.limitRange[field] = originValues;
-    }
 
     const originValues = this.limitRange[field];
     const ratio = delta / range;

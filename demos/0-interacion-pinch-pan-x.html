@@ -47,6 +47,7 @@
     });
     chart.tooltip(false);
     chart.interaction('pan', {
+      showBar: false,
       limitRange: {
         x: {
           min: -100,
@@ -55,6 +56,7 @@
       }
     });
     chart.interaction('pinch', {
+      showBar: false,
       maxScale: 5,
       minScale: 1,
       onEnd() {

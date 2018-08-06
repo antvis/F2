@@ -1,7 +1,8 @@
 const Util = require('../util/common');
-const Helper = require('./helper');
+const Helper = require('./util/helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
+const Plugin = require('./util/plugin');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -18,7 +19,9 @@ class Pinch extends Interaction {
       originValues: null, // 保存分类度量的原始 values
       minScale: null,
       maxScale: null,
-      _timestamp: 0
+      _timestamp: 0,
+      limitRange: {},
+      showBar: true
     });
   }
 
@@ -28,7 +31,8 @@ class Pinch extends Interaction {
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
-    this._originRange = {};
+
+    chart.registerPlugins(Plugin);
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip
@@ -146,21 +150,20 @@ class Pinch extends Interaction {
     const chart = this.chart;
     const { min, max } = scale;
     const valueRange = max - min;
-    if (!this._originRange[field] || chart.get('rePadding')) {
-      this._originRange[field] = valueRange;
-    }
+    const limitRange = this.limitRange;
+    const originRange = limitRange[field].max - limitRange[field].min;
 
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
     if (this.minScale && zoom < 1) { // 缩小
-      const maxRange = this._originRange[field] / this.minScale;
+      const maxRange = originRange / this.minScale;
       newDiff = Math.max(valueRange - maxRange, newDiff);
     }
 
     if (this.maxScale && zoom >= 1) { // 放大
-      const minRange = this._originRange[field] / this.maxScale;
+      const minRange = originRange / this.maxScale;
       newDiff = Math.min(valueRange - minRange, newDiff);
     }
 
@@ -179,30 +182,17 @@ class Pinch extends Interaction {
   }
 
   _zoomCatScale(scale, zoom, center) {
-    const { type, field, values } = scale;
+    const { field, values } = scale;
     const chart = this.chart;
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originValues || chart.get('rePadding')) {
-      const data = chart.get('data');
-      const originValues = [];
-      data.map(obj => {
-        let value = obj[field];
-        if (type === 'timeCat') {
-          value = scale._toTimeStamp(value);
-        }
-        if (originValues.indexOf(value) === -1) {
-          originValues.push(value);
-        }
-        return obj;
-      });
-      this.originValues = originValues;
+    if (!this.originTicks || chart.get('rePadding')) {
       this.originTicks = scale.ticks;
     }
 
     const originTicks = this.originTicks;
-    const originValues = this.originValues;
+    const originValues = this.limitRange[field];
     const originValuesLen = originValues.length;
     const maxScale = this.maxScale || 4;
     const minScale = this.minScale || 1;

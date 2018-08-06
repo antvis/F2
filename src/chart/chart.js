@@ -599,6 +599,7 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
+    Chart.plugins.notify(this, 'changeData');
     this.repaint(true);
   }
 
