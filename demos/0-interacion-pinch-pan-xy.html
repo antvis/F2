@@ -31,9 +31,15 @@ $.getJSON('./data/cereal.json', function(data) {
     fillOpacity: 0.6
   });
   chart.interaction('pan', {
-    mode: 'xy'
+    mode: 'xy',
+    onEnd() {
+      console.log('pan', this.xRange, this.yRange);
+    }
   }).interaction('pinch', {
-    mode: 'xy'
+    mode: 'xy',
+    onEnd() {
+      console.log('pinch', this.xRange, this.yRange);
+    }
   });
   chart.render();
 });

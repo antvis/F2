@@ -28,25 +28,6 @@ function _getLimitRange(data, field, type, scale) {
   return result;
 }
 
-function _getFieldRange(scale, limitRange) {
-  const { type } = scale;
-  let minRatio = 0;
-  let maxRatio = 0;
-  if (type === 'linear') {
-    const { min, max } = limitRange;
-    minRatio = (scale.min - min) / (max - min);
-    maxRatio = (scale.max - min) / (max - min);
-  } else {
-    const originValues = limitRange;
-    const values = scale.values;
-    const firstIndex = originValues.indexOf(values[0]);
-    const lastIndex = originValues.indexOf(values[values.length - 1]);
-    minRatio = firstIndex / (originValues.length - 1);
-    maxRatio = lastIndex / (originValues.length - 1);
-  }
-  return [ minRatio, maxRatio ];
-}
-
 module.exports = {
   clearInner(chart) {
     const hBar = chart.get('_horizontalBar');
@@ -139,7 +120,7 @@ module.exports = {
     const barSize = 4;
 
     if (range[xField]) { // x 轴
-      const currentRange = _getFieldRange(xScale, range[xField]);
+      const currentRange = Helper._getFieldRange(xScale, range[xField]);
       let horizontalBar = chart.get('_horizontalBar');
       if (horizontalBar) {
         const progressLine = horizontalBar.get('children')[1];
@@ -159,7 +140,7 @@ module.exports = {
             x2: plotRange.br.x,
             y2: canvasHeight - barSize / 2,
             lineWidth: barSize,
-            stroke: 'rgba(202, 215, 239, 0.2)',
+            stroke: 'rgba(202, 215, 239, 0.5)',
             lineCap: 'round'
           }
         });
@@ -170,7 +151,7 @@ module.exports = {
             x2: Math.min(plotRange.bl.x + plotRange.width * currentRange[1], plotRange.br.x),
             y2: canvasHeight - barSize / 2,
             lineWidth: barSize,
-            stroke: 'rgba(202, 215, 239, 0.5)',
+            stroke: 'rgba(202, 215, 239, 1)',
             lineCap: 'round'
           }
         });
@@ -179,7 +160,7 @@ module.exports = {
     }
 
     if (range[yField]) { // y 轴
-      const currentRange = _getFieldRange(yScales[0], range[yField]);
+      const currentRange = Helper._getFieldRange(yScales[0], range[yField]);
       let verticalBar = chart.get('_verticalBar');
       if (verticalBar) {
         const progressLine = verticalBar.get('children')[1];
@@ -199,7 +180,7 @@ module.exports = {
             x2: barSize / 2,
             y2: plotRange.bl.y,
             lineWidth: barSize,
-            stroke: 'rgba(202, 215, 239, 0.2)',
+            stroke: 'rgba(202, 215, 239, 0.5)',
             lineCap: 'round'
           }
         });
@@ -210,7 +191,7 @@ module.exports = {
             x2: barSize / 2,
             y2: Math.min(plotRange.tl.y + plotRange.height * currentRange[1], plotRange.bl.y),
             lineWidth: barSize,
-            stroke: 'rgba(202, 215, 239, 0.5)',
+            stroke: 'rgba(202, 215, 239, 1)',
             lineCap: 'round'
           }
         });

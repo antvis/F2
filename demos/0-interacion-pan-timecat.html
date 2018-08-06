@@ -117,6 +117,11 @@ $.getJSON('./data/steps.json', function(data) {
 
   chart.interaction('pan', {
     mode: 'x',
+    onProcess(e) {
+      const center = e.center;
+      const position = F2.Util.getRelativePosition(center, chart.get('canvas'));
+      chart.showTooltip(position);
+    },
     onEnd: () => {
       const xScale = chart.getXScale();
       // timeCat 类型

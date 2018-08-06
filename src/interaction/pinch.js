@@ -113,8 +113,7 @@ class Pinch extends Interaction {
 
   _doZoom(diff, center, whichAxes) {
     const self = this;
-    const mode = self.mode;
-    const chart = self.chart;
+    const { mode, chart, limitRange } = self;
     // Which axe should be modified when figers were used.
     let _whichAxes;
     if (mode === 'xy' && whichAxes !== undefined) {
@@ -131,6 +130,8 @@ class Pinch extends Interaction {
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
+
+      self.xRange = Helper._getFieldRange(xScale, limitRange[xScale.field]);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
@@ -138,6 +139,7 @@ class Pinch extends Interaction {
       Util.each(yScales, yScale => {
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
+      self.yRange = Helper._getFieldRange(yScales[0], limitRange[yScales[0].field]);
     }
 
     chart.repaint();

@@ -60,7 +60,6 @@ class Pan extends Interaction {
 
   end() {
     if (this.pressed) return;
-
     this.currentDeltaX = null;
     this.currentDeltaY = null;
   }
@@ -99,7 +98,7 @@ class Pan extends Interaction {
 
   _doPan(deltaX, deltaY) {
     const self = this;
-    const { mode, chart } = self;
+    const { mode, chart, limitRange } = self;
     const coord = chart.get('coord');
     const { start, end } = coord;
     if (Helper.directionEnabled(mode, 'x') && deltaX !== 0) {
@@ -111,6 +110,7 @@ class Pan extends Interaction {
       } else if (xScale.isLinear) {
         self._panLinearScale(xScale, deltaX, coordWidth, 'x');
       }
+      this.xRange = Helper._getFieldRange(xScale, limitRange[xScale.field]);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
@@ -119,6 +119,7 @@ class Pan extends Interaction {
       Util.each(yScales, yScale => {
         yScale.isLinear && self._panLinearScale(yScale, deltaY, coordHeight, 'y');
       });
+      this.yRange = Helper._getFieldRange(yScales[0], limitRange[yScales[0].field]);
     }
     chart.repaint();
   }
