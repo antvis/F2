@@ -1,9 +1,8 @@
 const Util = require('../util/common');
-const Helper = require('./util/helper');
+const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const DAY_TIMESTAMPS = 86400000;
-const Plugin = require('./util/plugin');
 
 class Pan extends Interaction {
   getDefaultCfg() {
@@ -21,19 +20,23 @@ class Pan extends Interaction {
       currentDeltaY: null,
       panning: false,
       limitRange: {}, // 限制范围
-      _timestamp: 0,
-      showBar: true
+      _timestamp: 0
     });
   }
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const { hammer, panThreshold, pressThreshold, pressTime } = this;
+    const self = this;
+    const { hammer, panThreshold, pressThreshold, pressTime } = self;
     hammer.get('pan').set({
       threshold: panThreshold
     });
 
-    chart.registerPlugins(Plugin);
+    chart.registerPlugins({
+      changeData() {
+        self.limitRange = {};
+      }
+    });
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip
@@ -101,8 +104,14 @@ class Pan extends Interaction {
     const { mode, chart, limitRange } = self;
     const coord = chart.get('coord');
     const { start, end } = coord;
+    const data = chart.get('data');
     if (Helper.directionEnabled(mode, 'x') && deltaX !== 0) {
       const xScale = chart.getXScale();
+      const xField = xScale.field;
+      if (!limitRange[xField]) {
+        limitRange[xField] = Helper._getLimitRange(data, xScale);
+      }
+
       const coordWidth = end.x - start.x; // 绘图区域宽度
 
       if (xScale.isCategory) { // 横轴为分类类型
@@ -110,13 +119,18 @@ class Pan extends Interaction {
       } else if (xScale.isLinear) {
         self._panLinearScale(xScale, deltaX, coordWidth, 'x');
       }
-      this.xRange = Helper._getFieldRange(xScale, limitRange[xScale.field]);
+      this.xRange = Helper._getFieldRange(xScale, limitRange[xField]);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
       const coordHeight = start.y - end.y; // 绘图区域高度
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
+        const yField = yScale.field;
+        if (!limitRange[yField]) {
+          limitRange[yField] = Helper._getLimitRange(data, yScale);
+        }
+
         yScale.isLinear && self._panLinearScale(yScale, deltaY, coordHeight, 'y');
       });
       this.yRange = Helper._getFieldRange(yScales[0], limitRange[yScales[0].field]);

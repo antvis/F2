@@ -114,14 +114,21 @@ $.getJSON('./data/steps.json', function(data) {
       offsetY: 20
     });
   });
-
+  chart.scrollBar({
+    mode: 'x',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
+    }
+  });
   chart.interaction('pan', {
     mode: 'x',
-    onProcess(e) {
-      const center = e.center;
-      const position = F2.Util.getRelativePosition(center, chart.get('canvas'));
-      chart.showTooltip(position);
-    },
+    // onProcess(e) {
+    //   const center = e.center;
+    //   const position = F2.Util.getRelativePosition(center, chart.get('canvas'));
+    //   chart.showTooltip(position);
+    // },
     onEnd: () => {
       const xScale = chart.getXScale();
       // timeCat 类型

@@ -70,7 +70,19 @@ $.getJSON('./data/linear-pan.json', function(data) {
   chart.line().position('release*count');
   // chart.point().position('release*count');
 
-  chart.interaction('pan');
+  chart.interaction('pan', {
+    onProcess() {
+      console.log(this.xRange);
+    }
+  });
+  chart.scrollBar({
+    mode: 'x',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
+    }
+  });
   chart.render();
 });
 </script>

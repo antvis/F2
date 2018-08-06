@@ -1,3 +1,6 @@
+const TimeUtil = require('@antv/scale/lib/time-util');
+const Util = require('../util/common');
+
 module.exports = {
   directionEnabled: (mode, dir) => {
     if (mode === undefined) {
@@ -32,5 +35,31 @@ module.exports = {
       maxRatio = lastIndex / (originValues.length - 1);
     }
     return [ minRatio, maxRatio ];
+  },
+  _getLimitRange(data, scale) {
+    let result;
+    const { field, type } = scale;
+    const values = Util.Array.values(data, field);
+    if (type === 'linear') {
+      result = Util.Array.getRange(values);
+      // 调整范围
+      if (scale.min < result.min) {
+        result.min = scale.min;
+      }
+      if (scale.max > result.max) {
+        result.max = scale.max;
+      }
+    } else if (type === 'timeCat') {
+      Util.each(values, (v, i) => {
+        values[i] = TimeUtil.toTimeStamp(v);
+      });
+      values.sort(function(v1, v2) {
+        return v1 - v2;
+      });
+      result = values;
+    } else {
+      result = values;
+    }
+    return result;
   }
 };

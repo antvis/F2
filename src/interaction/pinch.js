@@ -1,8 +1,7 @@
 const Util = require('../util/common');
-const Helper = require('./util/helper');
+const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
-const Plugin = require('./util/plugin');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -20,19 +19,24 @@ class Pinch extends Interaction {
       minScale: null,
       maxScale: null,
       _timestamp: 0,
-      limitRange: {},
-      showBar: true
+      limitRange: {}
     });
   }
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const { hammer, pressThreshold, pressTime } = this;
+    const self = this;
+    const { hammer, pressThreshold, pressTime } = self;
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
 
-    chart.registerPlugins(Plugin);
+    chart.registerPlugins({
+      changeData() {
+        self.limitRange = {};
+        self.originTicks = {};
+      }
+    });
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController.enable) { // 用户未关闭 tooltip
@@ -122,21 +126,30 @@ class Pinch extends Interaction {
     } else {
       _whichAxes = 'xy';
     }
-
+    const data = chart.get('data');
     if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
+      const xField = xScale.field;
+      if (!limitRange[xField]) {
+        limitRange[xField] = Helper._getLimitRange(data, xScale);
+      }
+
       if (xScale.isCategory) { // 横轴为分类类型
         self._zoomCatScale(xScale, diff, center);
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
 
-      self.xRange = Helper._getFieldRange(xScale, limitRange[xScale.field]);
+      self.xRange = Helper._getFieldRange(xScale, limitRange[xField]);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
+        const yField = yScale.field;
+        if (!limitRange[yField]) {
+          limitRange[yField] = Helper._getLimitRange(data, yScale);
+        }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
       self.yRange = Helper._getFieldRange(yScales[0], limitRange[yScales[0].field]);
@@ -189,7 +202,7 @@ class Pinch extends Interaction {
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originTicks || chart.get('rePadding')) {
+    if (!this.originTicks) { // Need to be optimized
       this.originTicks = scale.ticks;
     }
 

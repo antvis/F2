@@ -1,5 +1,5 @@
 const Util = require('../util/common');
-const Helper = require('../util/helper');
+const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 
