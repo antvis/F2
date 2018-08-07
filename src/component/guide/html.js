@@ -108,18 +108,8 @@ class Html extends GuideBase {
       position: 'relative'
     });
     // 创建html guide 的容器
-    let wrapperNode;
-    if (parentNode.getElementsByClassName('guideWapper').length > 0) {
-      wrapperNode = parentNode.getElementsByClassName('guideWapper')[0];
-    } else {
-      wrapperNode = createDom('<div class="guideWapper"></div>');
-      wrapperNode = modifyCSS(wrapperNode, {
-        position: 'absolute',
-        top: 0,
-        left: 0
-      });
-      parentNode.appendChild(wrapperNode);
-    }
+    const wrapperNode = createDom('<div class="guideWapper" style="position: absolute;top: 0; left: 0;"></div>');
+    parentNode.appendChild(wrapperNode);
     wrapperNode.appendChild(myNode);
 
     // 需要考虑 canvas 元素在父容器中的相对位置
@@ -150,7 +140,7 @@ class Html extends GuideBase {
 
   remove() {
     const element = this.element;
-    element && element.remove();
+    element && element.parentNode && element.parentNode.removeChild(element);
   }
 }
 
