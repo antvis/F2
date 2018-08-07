@@ -65,7 +65,9 @@
             duration: 500
           }
         });
-
+      chart.scrollBar({
+        mode: 'x'
+      });
       chart
         .interaction('pinch')
         .interaction('pan');

@@ -34,7 +34,7 @@ class Pinch extends Interaction {
     chart.registerPlugins({
       changeData() {
         self.limitRange = {};
-        self.originTicks = {};
+        self.originTicks = null;
       }
     });
 
