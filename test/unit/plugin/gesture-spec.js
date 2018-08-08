@@ -11,26 +11,11 @@ canvas.id = 'gesture';
 document.body.appendChild(canvas);
 
 const data = [
-  {
-    name: 'city1',
-    count: 1
-  },
-  {
-    name: 'city2',
-    count: 2
-  },
-  {
-    name: 'city3',
-    count: 3
-  },
-  {
-    name: 'city4',
-    count: 4
-  },
-  {
-    name: 'city5',
-    count: 5
-  }
+  { name: 'city1', count: 1 },
+  { name: 'city2', count: 2 },
+  { name: 'city3', count: 3 },
+  { name: 'city4', count: 4 },
+  { name: 'city5', count: 5 }
 ];
 
 describe('Gesture Plugin', function() {
