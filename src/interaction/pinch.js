@@ -147,8 +147,8 @@ class Pinch extends Interaction {
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
-      const colDefs = chart.get('colDefs');
-      self.xRange = Helper._getFieldRange(colDefs[xField], limitRange[xField], xScale.type);
+      const xDef = Helper.getColDef(chart, xField);
+      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
@@ -160,8 +160,8 @@ class Pinch extends Interaction {
         }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
-      const colDefs = chart.get('colDefs');
-      self.yRange = Helper._getFieldRange(colDefs[yScales[0].field], limitRange[yScales[0].field], yScales[0].type);
+      const yDef = Helper.getColDef(chart, yScales[0].field);
+      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
 
     chart.repaint();

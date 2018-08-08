@@ -12,13 +12,14 @@ module.exports = {
     return false;
   },
   getColDef(chart, field) {
-    let colDef = {};
+    let colDef;
     if (chart.get('colDefs') && chart.get('colDefs')[field]) {
       colDef = chart.get('colDefs')[field];
     }
     return colDef;
   },
   _getFieldRange(scale, limitRange, type) {
+    if (!scale) return [ 0, 1 ];
     let minRatio = 0;
     let maxRatio = 0;
     if (type === 'linear') {

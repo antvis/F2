@@ -572,8 +572,8 @@ class Chart extends Base {
     self._renderAxis();
 
     // 将 geom 限制在绘图区域内
-    if (self.get('limitInPlot')) {
-      const middlePlot = self.get('middlePlot');
+    const middlePlot = self.get('middlePlot');
+    if (self.get('limitInPlot') && !middlePlot.attr('clip')) {
       const coord = self.get('coord');
       const clip = Helper.getClip(coord);
       clip.set('canvas', middlePlot.get('canvas'));

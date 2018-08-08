@@ -160,8 +160,8 @@ class Pan extends Interaction {
       } else if (xScale.isLinear) {
         self._panLinearScale(xScale, deltaX, coordWidth, 'x');
       }
-      const colDefs = chart.get('colDefs');
-      this.xRange = Helper._getFieldRange(colDefs[xField], limitRange[xField], xScale.type);
+      const xDef = Helper.getColDef(chart, xField);
+      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
@@ -175,8 +175,8 @@ class Pan extends Interaction {
 
         yScale.isLinear && self._panLinearScale(yScale, deltaY, coordHeight, 'y');
       });
-      const colDefs = chart.get('colDefs');
-      this.yRange = Helper._getFieldRange(colDefs[yScales[0].field], limitRange[yScales[0].field], yScales[0].type);
+      const yDef = Helper.getColDef(chart, yScales[0].field);
+      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
     chart.repaint();
   }
