@@ -55,7 +55,7 @@ module.exports = {
       const xStyle = scrollBarCfg.xStyle;
       const xScale = chart.getXScale();
       const limitRange = Helper._getLimitRange(data, xScale);
-      const currentRange = Helper._getFieldRange(xScale, limitRange);
+      const currentRange = Helper._getFieldRange(xScale, limitRange, xScale.type);
       let horizontalBar = chart.get('_horizontalBar');
       if (horizontalBar) {
         const progressLine = horizontalBar.get('children')[1];
@@ -99,7 +99,7 @@ module.exports = {
       const yStyle = scrollBarCfg.yStyle;
       const yScale = chart.getYScales()[0];
       const limitRange = Helper._getLimitRange(data, yScale);
-      const currentRange = Helper._getFieldRange(yScale, limitRange);
+      const currentRange = Helper._getFieldRange(yScale, limitRange, yScale.type);
       let verticalBar = chart.get('_verticalBar');
       if (verticalBar) {
         const progressLine = verticalBar.get('children')[1];
