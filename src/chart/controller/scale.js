@@ -32,7 +32,10 @@ class ScaleController {
     return def;
   }
 
-  _getDefaultType(field, data) {
+  _getDefaultType(field, data, def) {
+    if (def && def.type) {
+      return def.type;
+    }
     let type = 'linear';
     let value = Util.Array.firstValue(data, field);
     if (Util.isArray(value)) {
@@ -44,18 +47,27 @@ class ScaleController {
     return type;
   }
 
-  _getScaleCfg(type, field, data) {
-    const cfg = {
-      field
-    };
-    const values = Util.Array.values(data, field);
-    cfg.values = values;
-    if (type !== 'cat' && type !== 'timeCat') {
-      const { min, max } = Util.Array.getRange(values);
-      cfg.min = min;
-      cfg.max = max;
-      cfg.nice = true; // 默认数值类型 linear 开启 nice
+  _getScaleCfg(type, field, data, def) {
+    let values;
+    if (def && def.values) {
+      values = def.values;
+    } else {
+      values = Util.Array.values(data, field);
     }
+    const cfg = {
+      field,
+      values
+    };
+
+    if (type !== 'cat' && type !== 'timeCat') {
+      if (!def || !(def.min && def.max)) {
+        const { min, max } = Util.Array.getRange(values);
+        cfg.min = min;
+        cfg.max = max;
+        cfg.nice = true; // 默认数值类型 linear 开启 nice
+      }
+    }
+
     return cfg;
   }
 
@@ -89,15 +101,9 @@ class ScaleController {
         values: [ field ]
       });
     } else { // 如果已经定义过这个度量
-      let type;
-      if (def) {
-        type = def.type;
-      }
-      type = type || self._getDefaultType(field, data);
-      const cfg = self._getScaleCfg(type, field, data);
-      if (def) {
-        Util.mix(cfg, def);
-      }
+      const type = self._getDefaultType(field, data, def);
+      const cfg = self._getScaleCfg(type, field, data, def);
+      def && Util.mix(cfg, def);
       scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
     }
     return scale;

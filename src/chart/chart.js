@@ -7,6 +7,7 @@ const ScaleController = require('./controller/scale');
 const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
+const Helper = require('../util/helper');
 const TimeUtil = require('@antv/scale/lib/time-util');
 
 function isFullCircle(coord) {
@@ -277,36 +278,31 @@ class Chart extends Base {
     this.get('axisController') && this.get('axisController').clear();
   }
 
-  _execFilter(data) {
-    const filters = this.get('filters');
-    if (filters) {
-      data = data.filter(function(obj) {
-        let rst = true;
-        Util.each(filters, function(fn, k) {
-          if (fn) {
-            rst = fn(obj[k], obj);
-            if (!rst) {
-              return false;
-            }
-          }
-        });
-        return rst;
-      });
-    }
-    return data;
-  }
-
-  _initGeoms(geoms) {
-    const coord = this.get('coord');
-    const data = this.get('filteredData');
+  _filterDataOutOfRange(data) {
+    // 优化绘制性能，过滤不再列定义范围内的数据，为了体验，area line path 图表例外
     const colDefs = this.get('colDefs');
+    if (!colDefs) return data;
+
+    const geoms = this.get('geoms');
+    let isSpecialGeom = false;
+    Util.each(geoms, geom => {
+      if ([ 'area', 'line', 'path' ].indexOf(geom.get('type')) !== -1) {
+        isSpecialGeom = true;
+        return false;
+      }
+    });
 
     const fields = [];
     Util.each(colDefs, (def, key) => {
-      if (def && (def.values || def.min || def.max)) {
+      if (!isSpecialGeom && def && (def.values || def.min || def.max)) {
         fields.push(key);
       }
     });
+
+    if (fields.length === 0) {
+      return data;
+    }
+
     const geomData = [];
     Util.each(data, obj => {
       let flag = true;
@@ -333,9 +329,37 @@ class Chart extends Base {
       }
     });
 
+    return geomData;
+  }
+
+  _execFilter(data) {
+    data = this._filterDataOutOfRange(data);
+    const filters = this.get('filters');
+    if (filters) {
+      data = data.filter(function(obj) {
+        let rst = true;
+        Util.each(filters, function(fn, k) {
+          if (fn) {
+            rst = fn(obj[k], obj);
+            if (!rst) {
+              return false;
+            }
+          }
+        });
+        return rst;
+      });
+    }
+    return data;
+  }
+
+  _initGeoms(geoms) {
+    const coord = this.get('coord');
+    const data = this.get('filteredData');
+    const colDefs = this.get('colDefs');
+
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
-      geom.set('data', geomData);
+      geom.set('data', data);
       geom.set('coord', coord);
       geom.set('colDefs', colDefs);
       geom.init();
@@ -414,14 +438,6 @@ class Chart extends Base {
       zIndex: 20
     }));
   }
-
-  // initColDefs() {
-  //   const colDefs = this.get('colDefs');
-  //   if (colDefs) {
-  //     const scaleController = this.get('scaleController');
-  //     Util.mix(scaleController.defs, colDefs);
-  //   }
-  // }
 
   _init() {
     const self = this;
@@ -554,6 +570,15 @@ class Chart extends Base {
     // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
+
+    // 将 geom 限制在绘图区域内
+    if (self.get('limitInPlot')) {
+      const middlePlot = self.get('middlePlot');
+      const coord = self.get('coord');
+      const clip = Helper.getClip(coord);
+      clip.set('canvas', middlePlot.get('canvas'));
+      middlePlot.attr('clip', clip);
+    }
 
     // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
