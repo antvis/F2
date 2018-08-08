@@ -8,7 +8,7 @@ class Pinch extends Interaction {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
       startEvent: 'pinchstart',
-      processingEvent: 'pinch',
+      processEvent: 'pinch',
       endEvent: 'pinchend',
       resetEvent: 'touchend',
       pressThreshold: 9, // Minimal movement that is allowed while pressing
@@ -18,20 +18,33 @@ class Pinch extends Interaction {
       originValues: null, // 保存分类度量的原始 values
       minScale: null,
       maxScale: null,
-      _timestamp: 0
+      _timestamp: 0,
+      limitRange: {}
     });
   }
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const { hammer, pressThreshold, pressTime } = this;
+    const self = this;
+    const { hammer, pressThreshold, pressTime } = self;
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
-    this._originRange = {};
+    chart.set('limitInPlot', true);
+
+    chart.registerPlugins({
+      changeData() {
+        self.limitRange = {};
+        self.originTicks = null;
+      },
+      clear() {
+        self.limitRange = {};
+        self.originTicks = null;
+      }
+    });
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController.enable) { // 用户未关闭 tooltip
+    if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip
       chart.tooltip(false);
       hammer.get('press').set({
         threshold: pressThreshold,
@@ -58,10 +71,12 @@ class Pinch extends Interaction {
   }
 
   reset() {
-    const self = this;
-    self.pressed = false;
-    self.chart.hideTooltip();
-    self.chart.tooltip(false);
+    const chart = this.chart;
+    if (chart.get('tooltipController')) {
+      this.pressed = false;
+      chart.hideTooltip();
+      chart.tooltip(false);
+    }
   }
 
   _handlePress(e) {
@@ -109,8 +124,7 @@ class Pinch extends Interaction {
 
   _doZoom(diff, center, whichAxes) {
     const self = this;
-    const mode = self.mode;
-    const chart = self.chart;
+    const { mode, chart, limitRange } = self;
     // Which axe should be modified when figers were used.
     let _whichAxes;
     if (mode === 'xy' && whichAxes !== undefined) {
@@ -119,21 +133,35 @@ class Pinch extends Interaction {
     } else {
       _whichAxes = 'xy';
     }
+    const data = chart.get('data');
 
     if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
+      const xField = xScale.field;
+      if (!limitRange[xField]) {
+        limitRange[xField] = Helper._getLimitRange(data, xScale);
+      }
+
       if (xScale.isCategory) { // 横轴为分类类型
         self._zoomCatScale(xScale, diff, center);
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
+      const xDef = Helper.getColDef(chart, xField);
+      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
+        const yField = yScale.field;
+        if (!limitRange[yField]) {
+          limitRange[yField] = Helper._getLimitRange(data, yScale);
+        }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
+      const yDef = Helper.getColDef(chart, yScales[0].field);
+      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
 
     chart.repaint();
@@ -146,21 +174,20 @@ class Pinch extends Interaction {
     const chart = this.chart;
     const { min, max } = scale;
     const valueRange = max - min;
-    if (!this._originRange[field] || chart.get('rePadding')) {
-      this._originRange[field] = valueRange;
-    }
+    const limitRange = this.limitRange;
+    const originRange = limitRange[field].max - limitRange[field].min;
 
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
     if (this.minScale && zoom < 1) { // 缩小
-      const maxRange = this._originRange[field] / this.minScale;
+      const maxRange = originRange / this.minScale;
       newDiff = Math.max(valueRange - maxRange, newDiff);
     }
 
     if (this.maxScale && zoom >= 1) { // 放大
-      const minRange = this._originRange[field] / this.maxScale;
+      const minRange = originRange / this.maxScale;
       newDiff = Math.min(valueRange - minRange, newDiff);
     }
 
@@ -179,30 +206,17 @@ class Pinch extends Interaction {
   }
 
   _zoomCatScale(scale, zoom, center) {
-    const { type, field, values } = scale;
+    const { field, values } = scale;
     const chart = this.chart;
     const coord = chart.get('coord');
     const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originValues || chart.get('rePadding')) {
-      const data = chart.get('data');
-      const originValues = [];
-      data.map(obj => {
-        let value = obj[field];
-        if (type === 'timeCat') {
-          value = scale._toTimeStamp(value);
-        }
-        if (originValues.indexOf(value) === -1) {
-          originValues.push(value);
-        }
-        return obj;
-      });
-      this.originValues = originValues;
+    if (!this.originTicks) { // Need to be optimized
       this.originTicks = scale.ticks;
     }
 
     const originTicks = this.originTicks;
-    const originValues = this.originValues;
+    const originValues = this.limitRange[field];
     const originValuesLen = originValues.length;
     const maxScale = this.maxScale || 4;
     const minScale = this.minScale || 1;

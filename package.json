@@ -60,7 +60,7 @@
     "build": "webpack",
     "build-lib": "babel src --out-dir lib",
     "bundler": "electron ./bundler/app.js",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test-all",
     "compress": "sh ./bin/compress.sh",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-generator": "torch --compile --coverage --renderer --source-pattern src/*.js,src/**/*.js --recursive test/unit",
@@ -73,17 +73,17 @@
     "lint-fix": "eslint --fix ./",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
-    "test": "npm run test-unit && npm run test-bug",
+    "test-all": "npm run test && npm run test-bug",
+    "test": "torch --compile --renderer --recursive ./test/unit",
     "test-bug": "torch --compile --renderer --recursive ./test/bug",
     "test-bug-live": "torch --compile --interactive --recursive ./test/bug",
-    "test-unit": "torch --compile --renderer --recursive ./test/unit",
-    "test-unit-live": "torch --compile --interactive --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
     "run": [
       "lint",
-      "test"
+      "test-all"
     ],
     "silent": false
   },

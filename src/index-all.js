@@ -17,10 +17,11 @@ const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');
 const Legend = require('./plugin/legend');
 const Animation = require('./animation/detail'); // 使用精细动画
+const ScrollBar = require('./plugin/scroll-bar');
 
 F2.Animate = require('./animation/animate');
 // 注册插件
-F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
+F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar ]);
 
 // 添加交互
 require('./interaction');

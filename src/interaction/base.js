@@ -5,8 +5,10 @@
 const Util = require('../util/common');
 const Chart = require('../chart/chart');
 
-let Hammer = require('hammerjs');
-Hammer = typeof (Hammer) === 'function' ? Hammer : window.Hammer;
+let Hammer;
+if (!Util.isWx && !Util.isMy) {
+  Hammer = require('hammerjs');
+}
 
 const TOUCH_EVENTS = [
   'touchstart',
@@ -18,7 +20,7 @@ class Interaction {
   getDefaultCfg() {
     return {
       startEvent: TOUCH_EVENTS[0],
-      processingEvent: TOUCH_EVENTS[1],
+      processEvent: TOUCH_EVENTS[1],
       endEvent: TOUCH_EVENTS[2],
       resetEvent: null
     };
@@ -65,37 +67,37 @@ class Interaction {
 
   _bindEvents() {
     this._clearEvents(); // clear events
-    const { startEvent, processingEvent, endEvent, resetEvent, el } = this;
-    const hammer = new Hammer(el);
-    this.hammer = hammer;
-    this._bindEvent(startEvent, '_start', hammer);
-    this._bindEvent(processingEvent, '_process', hammer);
-    this._bindEvent(endEvent, '_end', hammer);
-    this._bindEvent(resetEvent, '_reset', hammer);
+    const { startEvent, processEvent, endEvent, resetEvent, el } = this;
+    if (Hammer) {
+      this.hammer = new Hammer(el);
+    }
+    this._bindEvent(startEvent, '_start');
+    this._bindEvent(processEvent, '_process');
+    this._bindEvent(endEvent, '_end');
+    this._bindEvent(resetEvent, '_reset');
   }
 
   _clearEvents() {
-    const hammer = this.hammer;
-    const { startEvent, processingEvent, endEvent, resetEvent } = this;
+    const { startEvent, processEvent, endEvent, resetEvent } = this;
 
-    if (hammer) {
-      hammer.destroy();
+    if (this.hammer) {
+      this.hammer.destroy();
       this.hammer = null;
     }
 
     this._clearTouchEvent(startEvent, '_start');
-    this._clearTouchEvent(processingEvent, '_process');
+    this._clearTouchEvent(processEvent, '_process');
     this._clearTouchEvent(endEvent, '_end');
     this._clearTouchEvent(resetEvent, '_reset');
   }
 
-  _bindEvent(eventName, methodName, hammer) {
+  _bindEvent(eventName, methodName) {
     const el = this.el;
     if (eventName) {
       if (TOUCH_EVENTS.indexOf(eventName) !== -1) {
         Util.addEventListener(el, eventName, Util.wrapBehavior(this, methodName));
-      } else {
-        hammer.on(eventName, Util.wrapBehavior(this, methodName));
+      } else if (this.hammer) {
+        this.hammer.on(eventName, Util.wrapBehavior(this, methodName));
       }
     }
   }

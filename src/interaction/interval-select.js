@@ -5,10 +5,10 @@ const Chart = require('../chart/chart');
 
 class IntervalSelect extends Interaction {
   getDefaultCfg() {
-    const defaultCfg = super.getDefaultCfg();
-    return Util.mix({}, defaultCfg, {
+    let defaultCfg = super.getDefaultCfg();
+    defaultCfg = Util.mix({}, defaultCfg, {
       startEvent: 'tap',
-      processingEvent: null,
+      processEvent: null,
       selectAxis: true, // 是否高亮坐标轴文本
       selectAxisStyle: {
         fontWeight: 'bold'
@@ -22,6 +22,13 @@ class IntervalSelect extends Interaction {
       }, // 未被选中图形的样式
       cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
+    if (Util.isWx || Util.isMy) { // 小程序
+      defaultCfg.startEvent = 'touchstart';
+      defaultCfg.endEvent = 'touchend';
+    }
+
+    return defaultCfg;
+
   }
 
   _resetShape(shape) {
@@ -118,6 +125,7 @@ class IntervalSelect extends Interaction {
       this.selectedShape = selectedShape;
       if (selectedShape.get('_selected')) { // 已经被选中
         if (!this.cancelable) { // 不允许取消选中则不处理
+          this._setEventData(ev);
           return;
         }
         this.reset(); // 允许取消选中

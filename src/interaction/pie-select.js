@@ -4,8 +4,10 @@ const Chart = require('../chart/chart');
 
 class PieSelect extends Interaction {
   getDefaultCfg() {
-    const defaultCfg = super.getDefaultCfg();
-    return Util.mix({}, defaultCfg, {
+    let defaultCfg = super.getDefaultCfg();
+    defaultCfg = Util.mix({}, defaultCfg, {
+      startEvent: 'tap',
+      processEvent: null,
       animate: false,
       offset: 1, // 间距
       appendRadius: 8, // 光环的大小
@@ -14,6 +16,12 @@ class PieSelect extends Interaction {
       },
       cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
+    if (Util.isWx || Util.isMy) { // 小程序
+      defaultCfg.startEvent = 'touchstart';
+      defaultCfg.endEvent = 'touchend';
+    }
+
+    return defaultCfg;
   }
 
   constructor(cfg, chart) {
@@ -25,6 +33,7 @@ class PieSelect extends Interaction {
         self.selected = false;
         self.selectedShape = null;
         self.lastShape = null;
+        self.halo = null;
       }
     });
   }

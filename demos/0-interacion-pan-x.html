@@ -15,12 +15,6 @@
 <script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
 <script>
 $.getJSON('./data/linear-pan.json', function(data) {
-  var years = [];
-  data.map(function(obj) {
-    years.push(obj.release);
-  });
-  var min = Math.min.apply(null, years);
-  var max = Math.max.apply(null, years);
   var chart = new F2.Chart({
     id: 'mountNode',
     pixelRatio: window.devicePixelRatio
@@ -77,11 +71,16 @@ $.getJSON('./data/linear-pan.json', function(data) {
   // chart.point().position('release*count');
 
   chart.interaction('pan', {
-    limitRange: {
-      release: {
-        min: min,
-        max: max
-      }
+    onProcess() {
+      console.log(this.xRange);
+    }
+  });
+  chart.scrollBar({
+    mode: 'x',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
     }
   });
   chart.render();

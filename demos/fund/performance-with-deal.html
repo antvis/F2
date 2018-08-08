@@ -452,8 +452,11 @@
         chart.scale('reportDate', reportDateDef);
         chart.clearInteraction(); // 先要将交互行为清楚
         if (id === 'one-year' || id === 'three-year') {
+          chart.scrollBar({
+            mode: 'x'
+          });
           chart
-          .interaction('pan', Util.mix({
+          .interaction('pan', {
             mode: 'x',
             preStart: function() {
               chart.animate(false);
@@ -461,7 +464,7 @@
             onEnd: function() {
               chart.animate(true);
             }
-          }, RANGE[id]))
+          })
           .interaction('pinch', {
             mode: 'x',
             preStart: function() {

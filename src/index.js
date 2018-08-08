@@ -11,7 +11,12 @@ require('./component/axis/circle'); // 极坐标系下的弧长坐标轴
 
 require('./scale/time-cat'); // timeCat 类型的度量
 
-require('./component/guide'); // 加载 guide 组件
+require('./component/guide/arc'); // 加载 guide 组件
+require('./component/guide/html'); // 加载 guide 组件
+require('./component/guide/line'); // 加载 guide 组件
+require('./component/guide/rect'); // 加载 guide 组件
+require('./component/guide/text'); // 加载 guide 组件
+require('./component/guide/tag'); // 加载 guide 组件
 
 const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');

@@ -169,6 +169,20 @@ Util.Array = {
     if (index !== -1) {
       arr.splice(index, 1);
     }
+  },
+  getRange(values) {
+    if (!values.length) { // 空数组需要手动设置 min:0 max:0，否则 linear scale 会报错
+      return {
+        min: 0,
+        max: 0
+      };
+    }
+    const max = Math.max.apply(null, values);
+    const min = Math.min.apply(null, values);
+    return {
+      min,
+      max
+    };
   }
 };
 
