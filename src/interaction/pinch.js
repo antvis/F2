@@ -8,7 +8,7 @@ class Pinch extends Interaction {
     const defaultCfg = super.getDefaultCfg();
     return Util.mix({}, defaultCfg, {
       startEvent: 'pinchstart',
-      processingEvent: 'pinch',
+      processEvent: 'pinch',
       endEvent: 'pinchend',
       resetEvent: 'touchend',
       pressThreshold: 9, // Minimal movement that is allowed while pressing
