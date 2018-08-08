@@ -30,6 +30,7 @@ class Pinch extends Interaction {
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
+    chart.set('limitInPlot', true);
 
     chart.registerPlugins({
       changeData() {
@@ -39,7 +40,7 @@ class Pinch extends Interaction {
     });
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController.enable) { // 用户未关闭 tooltip
+    if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip
       chart.tooltip(false);
       hammer.get('press').set({
         threshold: pressThreshold,
@@ -66,10 +67,12 @@ class Pinch extends Interaction {
   }
 
   reset() {
-    const self = this;
-    self.pressed = false;
-    self.chart.hideTooltip();
-    self.chart.tooltip(false);
+    const chart = this.chart;
+    if (chart.get('tooltipController')) {
+      this.pressed = false;
+      chart.hideTooltip();
+      chart.tooltip(false);
+    }
   }
 
   _handlePress(e) {
@@ -127,6 +130,7 @@ class Pinch extends Interaction {
       _whichAxes = 'xy';
     }
     const data = chart.get('data');
+
     if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
       const xField = xScale.field;
@@ -139,8 +143,8 @@ class Pinch extends Interaction {
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
-
-      self.xRange = Helper._getFieldRange(xScale, limitRange[xField]);
+      const colDefs = chart.get('colDefs');
+      self.xRange = Helper._getFieldRange(colDefs[xField], limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
@@ -152,7 +156,8 @@ class Pinch extends Interaction {
         }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
-      self.yRange = Helper._getFieldRange(yScales[0], limitRange[yScales[0].field]);
+      const colDefs = chart.get('colDefs');
+      self.yRange = Helper._getFieldRange(colDefs[yScales[0].field], limitRange[yScales[0].field], yScales[0].type);
     }
 
     chart.repaint();

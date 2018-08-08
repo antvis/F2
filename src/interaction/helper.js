@@ -18,8 +18,7 @@ module.exports = {
     }
     return colDef;
   },
-  _getFieldRange(scale, limitRange) {
-    const { type } = scale;
+  _getFieldRange(scale, limitRange, type) {
     let minRatio = 0;
     let maxRatio = 0;
     if (type === 'linear') {
