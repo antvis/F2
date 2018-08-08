@@ -68,6 +68,9 @@ class Pan extends Interaction {
     chart.registerPlugins({
       changeData() {
         self.limitRange = {};
+      },
+      clear() {
+        self.limitRange = {};
       }
     });
   }

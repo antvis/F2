@@ -22,6 +22,7 @@ const DEFAULT_CFG = {
 
 module.exports = {
   init(chart) {
+    chart.set('_limitRange', {});
     chart.scrollBar = function(cfg) {
       if (cfg === true) {
         cfg = DEFAULT_CFG;
@@ -30,6 +31,12 @@ module.exports = {
       }
       this.set('_scrollBarCfg', cfg);
     };
+  },
+  clear(chart) {
+    chart.set('_limitRange', {});
+  },
+  changeData(chart) {
+    chart.set('_limitRange', {});
   },
   clearInner(chart) {
     const hBar = chart.get('_horizontalBar');
@@ -48,14 +55,20 @@ module.exports = {
     const backPlot = chart.get('backPlot');
     const canvas = chart.get('canvas');
     const canvasHeight = canvas.get('height');
+    const limitRange = chart.get('_limitRange');
 
     const mode = scrollBarCfg.mode;
 
     if (Helper.directionEnabled(mode, 'x')) {
       const xStyle = scrollBarCfg.xStyle;
       const xScale = chart.getXScale();
-      const limitRange = Helper._getLimitRange(data, xScale);
-      const currentRange = Helper._getFieldRange(xScale, limitRange, xScale.type);
+      let xLimitRange = limitRange[xScale.field];
+      if (!xLimitRange) {
+        xLimitRange = Helper._getLimitRange(data, xScale);
+        limitRange[xScale.field] = xLimitRange;
+      }
+
+      const currentRange = Helper._getFieldRange(xScale, xLimitRange, xScale.type);
       let horizontalBar = chart.get('_horizontalBar');
       if (horizontalBar) {
         const progressLine = horizontalBar.get('children')[1];
@@ -92,14 +105,19 @@ module.exports = {
         });
         chart.set('_horizontalBar', horizontalBar);
       }
-
     }
 
     if (Helper.directionEnabled(mode, 'y')) {
       const yStyle = scrollBarCfg.yStyle;
       const yScale = chart.getYScales()[0];
-      const limitRange = Helper._getLimitRange(data, yScale);
-      const currentRange = Helper._getFieldRange(yScale, limitRange, yScale.type);
+
+      let yLimitRange = limitRange[yScale.field];
+      if (!yLimitRange) {
+        yLimitRange = Helper._getLimitRange(data, yScale);
+        limitRange[yScale.field] = yLimitRange;
+      }
+
+      const currentRange = Helper._getFieldRange(yScale, yLimitRange, yScale.type);
       let verticalBar = chart.get('_verticalBar');
       if (verticalBar) {
         const progressLine = verticalBar.get('children')[1];

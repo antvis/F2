@@ -36,6 +36,10 @@ class Pinch extends Interaction {
       changeData() {
         self.limitRange = {};
         self.originTicks = null;
+      },
+      clear() {
+        self.limitRange = {};
+        self.originTicks = null;
       }
     });
 
