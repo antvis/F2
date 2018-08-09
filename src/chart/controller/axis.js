@@ -235,7 +235,7 @@ class AxisController {
 
     const axes = this.axes;
     const chart = self.chart;
-    if (chart._isAutoPadding() || chart.get('rePadding')) { // 数据变更时需要重新计算
+    if (chart._isAutoPadding()) { // 数据变更时需要重新计算
       const userPadding = Util.parsePadding(chart.get('padding'));
       const appendPadding = Util.parsePadding(chart.get('appendPadding'));
       const legendRange = chart.get('legendRange') || {
