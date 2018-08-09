@@ -18,6 +18,12 @@
 
 * add 16ms delay for canvas draw. ([012c9fcc](https://github.com/antvis/f2/commit/012c9fcc51a0fae11eca797741e941df31aed89d))
 
+#### 3.1.18 (2018-08-09)
+
+##### Bug Fixes
+
+* when chart.clear() be called, the padding should be recalculated. Closed [#228](https://github.com/antvis/f2/pull/228). ([dd1a0137](https://github.com/antvis/f2/commit/dd1a01375620839b437911a9978e7b1364651e0f))
+
 #### 3.1.17 (2018-08-03)
 
 ##### New Features
