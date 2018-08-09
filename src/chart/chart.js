@@ -550,17 +550,13 @@ class Chart extends Base {
     this._clearInner();
     this.set('filters', null);
     this.set('isUpdate', false);
+    this.set('_padding', null);
     const canvas = this.get('canvas');
     canvas.draw();
     return this;
   }
 
-  /**
-   * 重绘 chart
-   * @param {Boolean} rePadding 是否需要重新计算 padding
-   */
-  repaint(rePadding) {
-    this.set('rePadding', rePadding);
+  repaint() {
     this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
@@ -569,7 +565,8 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
-    this.repaint(true);
+    this.set('_padding', null);
+    this.repaint();
   }
 
   changeSize(width, height) {
