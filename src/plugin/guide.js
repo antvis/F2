@@ -36,7 +36,7 @@ Global.guide = Util.deepMix({
   html: {
     offsetX: 0,
     offsetY: 0,
-    alignX: 'middle',
+    alignX: 'center',
     alignY: 'middle'
   },
   tag: {
@@ -61,10 +61,10 @@ Global.guide = Util.deepMix({
     offsetX: 0, // X 轴偏移
     offsetY: 0, // Y 轴偏移
     style: {
-      fill: '#1890FF',
+      fill: '#fff',
       r: 3,
-      lineWidth: 1,
-      stroke: '#fff'
+      lineWidth: 2,
+      stroke: '#1890ff'
     }
   }
 }, Global.guide || {});
