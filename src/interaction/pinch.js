@@ -2,6 +2,7 @@ const Util = require('../util/common');
 const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
+const FilterPlugin = require('../plugin/filter');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -32,7 +33,7 @@ class Pinch extends Interaction {
     });
     chart.set('limitInPlot', true);
 
-    chart.registerPlugins({
+    chart.registerPlugins([ FilterPlugin, {
       changeData() {
         self.limitRange = {};
         self.originTicks = null;
@@ -41,7 +42,7 @@ class Pinch extends Interaction {
         self.limitRange = {};
         self.originTicks = null;
       }
-    });
+    }]);
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip

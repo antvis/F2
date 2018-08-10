@@ -1,0 +1,62 @@
+/**
+ * 过滤不在 scale 定义范围内的数据
+ */
+const Util = require('../util/common');
+const TimeUtil = require('@antv/scale/lib/time-util');
+
+module.exports = {
+  beforeGeomInit(chart) {
+    // 优化绘制性能，过滤不再列定义范围内的数据，为了体验，area line path 图表例外
+    const data = chart.get('data');
+    const colDefs = chart.get('colDefs');
+    if (!colDefs) return data;
+
+    const geoms = chart.get('geoms');
+    let isSpecialGeom = false;
+    Util.each(geoms, geom => {
+      if ([ 'area', 'line', 'path' ].indexOf(geom.get('type')) !== -1) {
+        isSpecialGeom = true;
+        return false;
+      }
+    });
+
+    const fields = [];
+    Util.each(colDefs, (def, key) => {
+      if (!isSpecialGeom && def && (def.values || def.min || def.max)) {
+        fields.push(key);
+      }
+    });
+
+    if (fields.length === 0) {
+      return data;
+    }
+
+    const geomData = [];
+    Util.each(data, obj => {
+      let flag = true;
+      Util.each(fields, field => {
+        let value = obj[field];
+        if (value) {
+          const colDef = colDefs[field];
+          if (colDef.type === 'timeCat') { // 时间格式有可能 values 为时间戳
+            const values = colDef.values;
+            if (Util.isNumber(values[0])) {
+              value = TimeUtil.toTimeStamp(value);
+            }
+          }
+
+          if ((colDef.values && colDef.values.indexOf(value) === -1)
+            || (colDef.min && (value < colDef.min))
+            || (colDef.max && (value > colDef.max))) {
+            flag = false;
+          }
+        }
+      });
+      if (flag) {
+        geomData.push(obj);
+      }
+    });
+
+    chart.set('filteredData', geomData);
+  }
+};

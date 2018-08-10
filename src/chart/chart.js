@@ -8,7 +8,6 @@ const AxisController = require('./controller/axis');
 const Global = require('../global');
 const { Canvas } = require('../graphic/index');
 const Helper = require('../util/helper');
-const TimeUtil = require('@antv/scale/lib/time-util');
 
 function isFullCircle(coord) {
   const startAngle = coord.startAngle;
@@ -278,62 +277,7 @@ class Chart extends Base {
     this.get('axisController') && this.get('axisController').clear();
   }
 
-  _filterDataOutOfRange(data) {
-    // 优化绘制性能，过滤不再列定义范围内的数据，为了体验，area line path 图表例外
-    const colDefs = this.get('colDefs');
-    if (!colDefs) return data;
-
-    const geoms = this.get('geoms');
-    let isSpecialGeom = false;
-    Util.each(geoms, geom => {
-      if ([ 'area', 'line', 'path' ].indexOf(geom.get('type')) !== -1) {
-        isSpecialGeom = true;
-        return false;
-      }
-    });
-
-    const fields = [];
-    Util.each(colDefs, (def, key) => {
-      if (!isSpecialGeom && def && (def.values || def.min || def.max)) {
-        fields.push(key);
-      }
-    });
-
-    if (fields.length === 0) {
-      return data;
-    }
-
-    const geomData = [];
-    Util.each(data, obj => {
-      let flag = true;
-      Util.each(fields, field => {
-        let value = obj[field];
-        if (value) {
-          const colDef = colDefs[field];
-          if (colDef.type === 'timeCat') { // 时间格式有可能 values 为时间戳
-            const values = colDef.values;
-            if (Util.isNumber(values[0])) {
-              value = TimeUtil.toTimeStamp(value);
-            }
-          }
-
-          if ((colDef.values && colDef.values.indexOf(value) === -1)
-            || (colDef.min && (value < colDef.min))
-            || (colDef.max && (value > colDef.max))) {
-            flag = false;
-          }
-        }
-      });
-      if (flag) {
-        geomData.push(obj);
-      }
-    });
-
-    return geomData;
-  }
-
   _execFilter(data) {
-    data = this._filterDataOutOfRange(data);
     const filters = this.get('filters');
     if (filters) {
       data = data.filter(function(obj) {
@@ -562,6 +506,9 @@ class Chart extends Base {
     this.set('filteredData', filteredData);
     // 初始化坐标系
     self._initCoord();
+
+    Chart.plugins.notify(self, 'beforeGeomInit');
+
     // 初始化 geoms
     self._initGeoms(geoms);
     // 调整度量

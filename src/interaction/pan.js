@@ -2,6 +2,7 @@ const Util = require('../util/common');
 const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
+const FilterPlugin = require('../plugin/filter');
 const DAY_TIMESTAMPS = 86400000;
 
 const TOUCH_EVENTS = [
@@ -65,14 +66,14 @@ class Pan extends Interaction {
     }
 
     chart.set('limitInPlot', true);
-    chart.registerPlugins({
+    chart.registerPlugins([ FilterPlugin, {
       changeData() {
         self.limitRange = {};
       },
       clear() {
         self.limitRange = {};
       }
-    });
+    }]);
   }
 
   start(e) {
