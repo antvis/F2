@@ -60,7 +60,7 @@ module.exports = {
     const mode = scrollBarCfg.mode;
 
     if (Helper.directionEnabled(mode, 'x')) {
-      const xStyle = scrollBarCfg.xStyle;
+      const { offsetX, offsetY, lineCap, backgroundColor, fillerColor, size } = scrollBarCfg.xStyle;
       const xScale = chart.getXScale();
       let xLimitRange = limitRange[xScale.field];
       if (!xLimitRange) {
@@ -70,12 +70,13 @@ module.exports = {
 
       const currentRange = Helper._getFieldRange(xScale, xLimitRange, xScale.type);
       let horizontalBar = chart.get('_horizontalBar');
+      const yPos = canvasHeight - (size / 2) + offsetY;
       if (horizontalBar) {
         const progressLine = horizontalBar.get('children')[1];
 
         progressLine.attr({
-          x1: Math.max(plotRange.bl.x + plotRange.width * currentRange[0], plotRange.bl.x),
-          x2: Math.min(plotRange.bl.x + plotRange.width * currentRange[1], plotRange.br.x)
+          x1: Math.max(plotRange.bl.x + plotRange.width * currentRange[0] + offsetX, plotRange.bl.x),
+          x2: Math.min(plotRange.bl.x + plotRange.width * currentRange[1] + offsetX, plotRange.br.x)
         });
       } else {
         horizontalBar = backPlot.addGroup({
@@ -83,24 +84,24 @@ module.exports = {
         });
         horizontalBar.addShape('line', {
           attrs: {
-            x1: plotRange.bl.x,
-            y1: canvasHeight - xStyle.size / 2,
-            x2: plotRange.br.x,
-            y2: canvasHeight - xStyle.size / 2,
-            lineWidth: xStyle.size,
-            stroke: xStyle.backgroundColor,
-            lineCap: xStyle.lineCap
+            x1: plotRange.bl.x + offsetX,
+            y1: yPos,
+            x2: plotRange.br.x + offsetX,
+            y2: yPos,
+            lineWidth: size,
+            stroke: backgroundColor,
+            lineCap
           }
         });
         horizontalBar.addShape('line', {
           attrs: {
-            x1: Math.max(plotRange.bl.x + plotRange.width * currentRange[0], plotRange.bl.x),
-            y1: canvasHeight - xStyle.size / 2,
-            x2: Math.min(plotRange.bl.x + plotRange.width * currentRange[1], plotRange.br.x),
-            y2: canvasHeight - xStyle.size / 2,
-            lineWidth: xStyle.size,
-            stroke: xStyle.fillerColor,
-            lineCap: xStyle.lineCap
+            x1: Math.max(plotRange.bl.x + plotRange.width * currentRange[0] + offsetX, plotRange.bl.x),
+            y1: yPos,
+            x2: Math.min(plotRange.bl.x + plotRange.width * currentRange[1] + offsetX, plotRange.br.x),
+            y2: yPos,
+            lineWidth: size,
+            stroke: fillerColor,
+            lineCap
           }
         });
         chart.set('_horizontalBar', horizontalBar);
@@ -108,7 +109,7 @@ module.exports = {
     }
 
     if (Helper.directionEnabled(mode, 'y')) {
-      const yStyle = scrollBarCfg.yStyle;
+      const { offsetX, offsetY, lineCap, backgroundColor, fillerColor, size } = scrollBarCfg.yStyle;
       const yScale = chart.getYScales()[0];
 
       let yLimitRange = limitRange[yScale.field];
@@ -119,12 +120,13 @@ module.exports = {
 
       const currentRange = Helper._getFieldRange(yScale, yLimitRange, yScale.type);
       let verticalBar = chart.get('_verticalBar');
+      const xPos = (size / 2) + offsetX;
       if (verticalBar) {
         const progressLine = verticalBar.get('children')[1];
 
         progressLine.attr({
-          y1: Math.max(plotRange.tl.y + plotRange.height * currentRange[0], plotRange.tl.y),
-          y2: Math.min(plotRange.tl.y + plotRange.height * currentRange[1], plotRange.bl.y)
+          y1: Math.max(plotRange.tl.y + plotRange.height * currentRange[0] + offsetY, plotRange.tl.y),
+          y2: Math.min(plotRange.tl.y + plotRange.height * currentRange[1] + offsetY, plotRange.bl.y)
         });
       } else {
         verticalBar = backPlot.addGroup({
@@ -132,24 +134,24 @@ module.exports = {
         });
         verticalBar.addShape('line', {
           attrs: {
-            x1: yStyle.size / 2,
-            y1: plotRange.tl.y,
-            x2: yStyle.size / 2,
-            y2: plotRange.bl.y,
-            lineWidth: yStyle.size,
-            stroke: yStyle.backgroundColor,
-            lineCap: yStyle.lineCap
+            x1: xPos,
+            y1: plotRange.tl.y + offsetY,
+            x2: xPos,
+            y2: plotRange.bl.y + offsetY,
+            lineWidth: size,
+            stroke: backgroundColor,
+            lineCap
           }
         });
         verticalBar.addShape('line', {
           attrs: {
-            x1: yStyle.size / 2,
-            y1: Math.max(plotRange.tl.y + plotRange.height * currentRange[0], plotRange.tl.y),
-            x2: yStyle.size / 2,
-            y2: Math.min(plotRange.tl.y + plotRange.height * currentRange[1], plotRange.bl.y),
-            lineWidth: yStyle.size,
-            stroke: yStyle.fillerColor,
-            lineCap: yStyle.lineCap
+            x1: xPos,
+            y1: Math.max(plotRange.tl.y + plotRange.height * currentRange[0] + offsetY, plotRange.tl.y),
+            x2: xPos,
+            y2: Math.min(plotRange.tl.y + plotRange.height * currentRange[1] + offsetY, plotRange.bl.y),
+            lineWidth: size,
+            stroke: fillerColor,
+            lineCap
           }
         });
         chart.set('_verticalBar', verticalBar);
