@@ -24,7 +24,7 @@ describe('Text', function() {
         lineWidth: 1
       }
     });
-
+    expect(text.getType()).to.equal('text');
     expect(text.attr('x')).to.equal(30);
     expect(text.attr('y')).to.equal(30);
     expect(text.attr('text')).to.be.undefined;

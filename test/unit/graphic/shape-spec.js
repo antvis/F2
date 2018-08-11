@@ -7,8 +7,8 @@ describe('Shape', function() {
   });
 
   it('constructor', function() {
-    expect(s.get('isShape')).to.be.true;
-    expect(s.get('visible')).to.be.true;
+    expect(s.isShape()).to.be.true;
+    expect(s.isVisible()).to.be.true;
   });
 
   it('calculateBox', function() {

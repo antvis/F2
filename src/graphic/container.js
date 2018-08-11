@@ -14,6 +14,10 @@ module.exports = {
 
   getGroupClass() {},
 
+  getChildren() {
+    return this.get('children');
+  },
+
   /**
    * 创建并添加 Shape
    * @param {String} type 添加的 shape 类型

@@ -25,6 +25,7 @@ describe('Rect', function() {
   });
 
   it('init attr', function() {
+    expect(rect.getType()).to.equal('rect');
     expect(rect.get('canStroke')).to.be.true;
     expect(rect.get('canFill')).to.be.true;
     expect(rect.attr('x')).to.equal(50);

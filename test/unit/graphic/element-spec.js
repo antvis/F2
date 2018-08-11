@@ -15,7 +15,7 @@ describe('Element', function() {
 
     expect(e._attrs).not.to.be.undefined;
     expect(e.get('className')).to.equal('aElement');
-    expect(e.get('visible')).to.be.true;
+    expect(e.isVisible()).to.be.true;
     expect(e.attr('width')).to.equal(20);
     expect(e.attr('height')).to.equal(30);
     expect(e.attr('stroke')).to.equal('#231');
@@ -77,12 +77,12 @@ describe('Element', function() {
 
   it('hide()', function() {
     e.hide();
-    expect(e.get('visible')).to.be.false;
+    expect(e.isVisible()).to.be.false;
   });
 
   it('show()', function() {
     e.show();
-    expect(e.get('visible')).to.be.true;
+    expect(e.isVisible()).to.be.true;
   });
 
   it('getBBox()', function() {
@@ -153,7 +153,7 @@ describe('Element', function() {
 
   it('destroy()', function() {
     e.destroy();
-    expect(e.get('destroyed')).to.equal(true);
+    expect(e.isDestroyed()).to.equal(true);
     expect(e.attr()).to.be.null;
     expect(e.destroy()).to.be.null;
   });

@@ -26,6 +26,7 @@ describe('Sector', function() {
   });
 
   it('init attr', function() {
+    expect(sector.getType()).to.equal('sector');
     expect(sector.attr('lineWidth')).to.equal(0);
     expect(sector.attr('stroke')).to.be.undefined;
     expect(sector.attr('fill')).to.equal('#223273');
