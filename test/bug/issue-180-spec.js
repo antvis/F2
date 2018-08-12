@@ -1,4 +1,4 @@
-// const expect = require('chai').expect;
+const expect = require('chai').expect;
 const F2 = require('../../src/core');
 require('../../src/geom/area');
 require('../../src/coord/polar');
@@ -35,10 +35,18 @@ describe('issue 180', () => {
       }
     });
 
-    chart.area().position('item*score').color('user')
+    const geom = chart.area().position('item*score').color('user')
       .shape('smooth');
     chart.render();
 
     // TODO: 这里需要进行图像测试
+    const geomContainer = geom.get('container');
+    const areaShapeA = geomContainer.get('children')[0];
+    const areaShapeB = geomContainer.get('children')[1];
+    expect(areaShapeA.attr('points')).to.be.an.instanceof(Array);
+    expect(areaShapeA.attr('points').length).to.equal(10);
+
+    expect(areaShapeB.attr('points')).to.be.an.instanceof(Array);
+    expect(areaShapeB.attr('points').length).to.equal(10);
   });
 });
