@@ -26,12 +26,18 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
   if (isSmooth) {
     shape = container.addShape('Custom', {
       className: 'area',
-      attrs: style,
+      attrs: Util.mix({
+        points
+      }, style),
       createPath(context) {
         const constaint = [ // 范围
           [ 0, 0 ],
           [ 1, 1 ]
         ];
+        const points = this._attrs.attrs.points;
+        const pointsLen = points.length;
+        const topPoints = points.slice(0, pointsLen / 2);
+        const bottomPoints = points.slice(pointsLen / 2, pointsLen);
         const topSps = Smooth.smooth(topPoints, false, constaint);
         context.beginPath();
         context.moveTo(topPoints[0].x, topPoints[0].y);

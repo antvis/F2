@@ -149,7 +149,8 @@ class TooltipController {
         shapes.push(type);
       }
     });
-    if (geoms.length && chart.get('coord').type === 'cartesian') {
+    const coordType = chart.get('coord').type;
+    if (geoms.length && (coordType === 'cartesian' || coordType === 'rect')) {
       if (shapes.length === 1 && [ 'line', 'area', 'path', 'point' ].indexOf(shapes[0]) !== -1) {
         Util.mix(defaultCfg, {
           showCrosshairs: true
@@ -344,7 +345,7 @@ class TooltipController {
           if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
             tooltipMarkerType = 'circle';
             tooltipMarkerItems.push(tooltipItem);
-          } else if (type === 'interval' && coord.type === 'cartesian') {
+          } else if (type === 'interval' && (coord.type === 'cartesian' || coord.type === 'rect')) {
             tooltipMarkerType = 'rect';
             tooltipItem.width = geom.getSize(record._origin);
             tooltipMarkerItems.push(tooltipItem);
