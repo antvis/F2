@@ -17,6 +17,11 @@
 ##### Other Changes
 
 * add 16ms delay for canvas draw. ([012c9fcc](https://github.com/antvis/f2/commit/012c9fcc51a0fae11eca797741e941df31aed89d))
+#### 3.1.20 (2018-08-13)
+
+##### Bug Fixes
+
+* fix the error caused by empty data.Closed [#238](https://github.com/antvis/f2/pull/238). ([09de7614](https://github.com/antvis/f2/commit/09de7614ff239e5717dcdc53a05a4468e13bfb7a))
 
 #### 3.1.19 (2018-08-12)
 
