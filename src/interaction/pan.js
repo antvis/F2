@@ -8,7 +8,10 @@ const DAY_TIMESTAMPS = 86400000;
 const TOUCH_EVENTS = [
   'touchstart',
   'touchmove',
-  'touchend'
+  'touchend',
+  'touchStart',
+  'touchMove',
+  'touchEnd'
 ];
 
 class Pan extends Interaction {
@@ -80,7 +83,7 @@ class Pan extends Interaction {
     if (this.pressed) return;
     this.currentDeltaX = 0;
     this.currentDeltaY = 0;
-    if (e.type === 'touchstart') {
+    if (e.type === 'touchstart' || e.type === 'touchStart') {
       this.lastPoint = e.touches[0];
     }
     this._handlePan(e);
