@@ -5,7 +5,7 @@ const Util = require('./util/common');
  * @class 全局配置项
  */
 const Global = {
-  version: '3.1.19',
+  version: '3.1.20',
   trackable: true,
   // 预先定义的度量
   scales: {
