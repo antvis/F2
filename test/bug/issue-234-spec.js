@@ -41,5 +41,8 @@ describe('issue 234', () => {
 
     const tooltipMarker = markerGroup.get('children')[0];
     expect(tooltipMarker.get('type')).to.equal('rect');
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

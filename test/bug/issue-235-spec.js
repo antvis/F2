@@ -33,5 +33,8 @@ describe('issue 235', () => {
     const areaShape = geomContainer.get('children')[0];
     expect(areaShape.attr('points')).to.be.an.instanceof(Array);
     expect(areaShape.attr('points').length).to.equal(14);
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });
