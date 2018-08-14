@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.2.0-beta.21",
+  "version": "3.2.0-beta.22",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -10,7 +10,8 @@
     "data visualization",
     "canvas",
     "2d draw",
-    "mobile visualization"
+    "mobile visualization",
+    "interactive"
   ],
   "main": "lib/index.js",
   "browser": "build/f2.js",
@@ -89,7 +90,7 @@
   },
   "dependencies": {
     "@antv/attr": "~0.0.3",
-    "@antv/scale": "~0.0.1",
+    "@antv/scale": "~0.0.6",
     "@antv/adjust": "~0.0.3",
     "@antv/util": "~1.0.6",
     "hammerjs": "^2.0.8"

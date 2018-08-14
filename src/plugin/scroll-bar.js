@@ -3,19 +3,19 @@ const Util = require('../util/common');
 const DEFAULT_CFG = {
   mode: 'x',
   xStyle: {
-    backgroundColor: 'rgba(202, 215, 239, 0.5)',
-    fillerColor: 'rgb(202, 215, 239)',
+    backgroundColor: 'rgba(202, 215, 239, .2)',
+    fillerColor: 'rgba(202, 215, 239, .5)',
     size: 4,
     lineCap: 'round',
     offsetX: 0,
-    offsetY: 0
+    offsetY: 8
   },
   yStyle: {
-    backgroundColor: 'rgba(202, 215, 239, 0.5)',
-    fillerColor: 'rgb(202, 215, 239)',
+    backgroundColor: 'rgba(202, 215, 239, .2)',
+    fillerColor: 'rgba(202, 215, 239, .5)',
     size: 4,
     lineCap: 'round',
-    offsetX: 0,
+    offsetX: 8,
     offsetY: 0
   }
 };
