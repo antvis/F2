@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.2.0-beta.21",
+  "version": "3.2.0",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -10,7 +10,8 @@
     "data visualization",
     "canvas",
     "2d draw",
-    "mobile visualization"
+    "mobile visualization",
+    "interactive"
   ],
   "main": "lib/index.js",
   "browser": "build/f2.js",
