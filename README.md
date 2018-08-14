@@ -43,7 +43,7 @@ $ npm install @antv/f2
   - [Tutorials](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
   - [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
 
-* English documents: on the way!
+* English documents: https://antv.gitbook.io/f2/
 
 ## Demos
 
