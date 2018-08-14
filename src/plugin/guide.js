@@ -113,6 +113,9 @@ class GuideController {
       } else {
         container = guide.top ? self.frontPlot : self.backPlot;
       }
+      guide.coord = coord;
+      guide.container = container;
+      guide.canvas = chart.get('canvas');
       const shape = guide.render(coord, container);
       if (shape) {
         const id = self._getId(shape, guide);
@@ -142,7 +145,7 @@ class GuideController {
     const ClassName = Util.upperFirst(type);
     const guide = new Guide[ClassName](Util.deepMix({}, Global.guide[type], cfg));
     this.guides.push(guide);
-    return this;
+    return guide;
   }
 
   line(cfg = {}) {

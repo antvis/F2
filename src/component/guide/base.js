@@ -72,6 +72,15 @@ class GuideBase {
    */
   render(/* coord,group */) {}
 
+  repaint() {
+    this.remove();
+    const { coord, container, canvas } = this;
+    if (container && !container.isDestroyed()) {
+      this.render(coord, container);
+      canvas.draw();
+    }
+  }
+
   remove() {
     const { element } = this;
     element && element.remove(true);
