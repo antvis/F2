@@ -68,6 +68,10 @@ class ScaleController {
       }
     }
 
+    if (type === 'cat' || type === 'timeCat') {
+      cfg.isRounding = false; // 用于tickCount 计算
+    }
+
     return cfg;
   }
 
