@@ -222,8 +222,45 @@ describe('Guide Plugin', function() {
 
     chart.guide().clear(); // 清除 guide
     expect(geomContainer.get('children').length).to.equal(1);
+  });
 
-    chart.destroy();
-    document.body.removeChild(canvas);
+  it('guide.repaint()', done => {
+    const data = [
+      { month: 'Jan.', value: 20 },
+      { month: 'Feb.', value: 5 },
+      { month: 'Mar.', value: 10 },
+      { month: 'Apr.', value: 15 }
+    ];
+    chart = new F2.Chart({
+      id: 'chart-guide',
+      plugins: Guide,
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.source(data);
+    chart.area().position('month*value');
+    const text = chart.guide().text({
+      position: [ 'Feb.', 5 ],
+      content: '5'
+    });
+
+    chart.render();
+
+    const oldShape = text.element;
+    expect(oldShape.attr('text')).to.equal('5');
+    const lastX = oldShape.attr('x');
+    const lastY = oldShape.attr('y');
+
+    setTimeout(() => {
+      text.content = 15;
+      text.repaint();
+
+      const newShape = text.element;
+      expect(newShape.attr('text')).to.equal(15);
+      expect(newShape.attr('x')).to.equal(lastX);
+      expect(newShape.attr('y')).to.equal(lastY);
+      chart.destroy();
+      document.body.removeChild(canvas);
+      done();
+    }, 1000);
   });
 });
