@@ -2,7 +2,8 @@ const Util = require('../util/common');
 const { Group } = require('../graphic/index');
 const Marker = require('./marker');
 const MARKER_RADIUS = 3;
-const MULTIPLE = 1.05;
+const MULTIPLE_W = 1.05;
+const MULTIPLE_H = 1.375;
 
 class List {
   getDefaultCfg() {
@@ -305,8 +306,8 @@ class List {
       legendHitBoxes.push({
         x: rowWidth,
         y: row * height + titleHeight - childHeight / 2,
-        width: childWidth * MULTIPLE,
-        height: childHeight * MULTIPLE
+        width: childWidth * MULTIPLE_W,
+        height: childHeight * MULTIPLE_H
       });
       rowWidth += width + itemGap;
     }
@@ -346,16 +347,16 @@ class List {
         legendHitBoxes.push({
           x: totalWidth,
           y: titleHeight - height / 2,
-          width: width * MULTIPLE,
-          height: height * MULTIPLE
+          width: width * MULTIPLE_W,
+          height: height * MULTIPLE_H
         });
       } else {
         child.moveTo(totalWidth, colHeight);
         legendHitBoxes.push({
           x: totalWidth,
           y: colHeight - height / 2 + titleHeight,
-          width: width * MULTIPLE,
-          height: height * MULTIPLE
+          width: width * MULTIPLE_W,
+          height: height * MULTIPLE_H
         });
       }
 
