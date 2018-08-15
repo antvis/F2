@@ -2,14 +2,24 @@ const Util = require('../util/common');
 const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
+const FilterPlugin = require('../plugin/filter');
 const DAY_TIMESTAMPS = 86400000;
+
+const TOUCH_EVENTS = [
+  'touchstart',
+  'touchmove',
+  'touchend',
+  'touchStart',
+  'touchMove',
+  'touchEnd'
+];
 
 class Pan extends Interaction {
   getDefaultCfg() {
-    const defaultCfg = super.getDefaultCfg();
-    return Util.mix({}, defaultCfg, {
+    let defaultCfg = super.getDefaultCfg();
+    defaultCfg = Util.mix({}, defaultCfg, {
       startEvent: 'panstart',
-      processingEvent: 'panmove',
+      processEvent: 'panmove',
       endEvent: 'panend',
       resetEvent: 'touchend',
       mode: 'x', // 方向，可取值 x、y、xy
@@ -20,33 +30,62 @@ class Pan extends Interaction {
       currentDeltaY: null,
       panning: false,
       limitRange: {}, // 限制范围
-      _timestamp: 0
+      _timestamp: 0,
+      lastPoint: null
     });
+
+    if (Util.isWx || Util.isMy) { // 小程序
+      defaultCfg.startEvent = 'touchstart';
+      defaultCfg.processEvent = 'touchmove';
+      defaultCfg.endEvent = 'touchend';
+    }
+
+    return defaultCfg;
   }
 
   constructor(cfg, chart) {
     super(cfg, chart);
-    const { hammer, panThreshold, pressThreshold, pressTime } = this;
-    hammer.get('pan').set({
-      threshold: panThreshold
-    });
-    chart.set('limitInPlot', true);
+    const self = this;
+    const { hammer, panThreshold, pressThreshold, pressTime } = self;
+
+    if (hammer) { // 基于 hammer 手势
+      hammer.get('pan').set({
+        threshold: panThreshold
+      });
+    }
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController.enable) { // 用户未关闭 tooltip
+    if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip
       chart.tooltip(false);
-      hammer.get('press').set({
-        threshold: pressThreshold,
-        time: pressTime
-      });
-      hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
+      if (hammer) {
+        hammer.get('press').set({
+          threshold: pressThreshold,
+          time: pressTime
+        });
+        hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
+      } else {
+        Util.addEventListener(this.el, 'press', Util.wrapBehavior(this, '_handlePress'));
+      }
     }
+
+    chart.set('limitInPlot', true);
+    chart.registerPlugins([ FilterPlugin, {
+      changeData() {
+        self.limitRange = {};
+      },
+      clear() {
+        self.limitRange = {};
+      }
+    }]);
   }
 
   start(e) {
     if (this.pressed) return;
     this.currentDeltaX = 0;
     this.currentDeltaY = 0;
+    if (e.type === 'touchstart' || e.type === 'touchStart') {
+      this.lastPoint = e.touches[0];
+    }
     this._handlePan(e);
   }
 
@@ -57,34 +96,45 @@ class Pan extends Interaction {
 
   end() {
     if (this.pressed) return;
-
     this.currentDeltaX = null;
     this.currentDeltaY = null;
+    this.lastPoint = null;
   }
 
   reset() {
-    const self = this;
-    self.pressed = false;
-    self.chart.hideTooltip();
-    self.chart.tooltip(false);
+    const chart = this.chart;
+    if (chart.get('tooltipController')) {
+      this.pressed = false;
+      chart.hideTooltip();
+      chart.tooltip(false);
+    }
   }
 
   _handlePress(e) {
     this.pressed = true;
-    const center = e.center;
+    const center = e.center || e.touches[0];
     this.chart.tooltip(true);
     this.chart.showTooltip(center);
   }
 
   _handlePan(e) {
-    const { currentDeltaX, currentDeltaY } = this;
-    if (currentDeltaX !== null && currentDeltaY !== null) {
+    const { currentDeltaX, currentDeltaY, lastPoint } = this;
+    let deltaX;
+    let deltaY;
+    if (TOUCH_EVENTS.indexOf(e.type) !== -1) {
+      const currentPoint = e.touches[0];
+      deltaX = currentPoint.x - lastPoint.x;
+      deltaY = currentPoint.y - lastPoint.y;
+      this.lastPoint = currentPoint;
+    } else if (currentDeltaX !== null && currentDeltaY !== null) { // hammer 的 pan 手势
       this.panning = true;
-      const deltaX = e.deltaX - currentDeltaX;
-      const deltaY = e.deltaY - currentDeltaY;
+      deltaX = e.deltaX - currentDeltaX;
+      deltaY = e.deltaY - currentDeltaY;
       this.currentDeltaX = e.deltaX;
       this.currentDeltaY = e.deltaY;
+    }
 
+    if (!Util.isNil(deltaX) || !Util.isNil(deltaY)) {
       const lastTimestamp = this._timestamp;
       const now = +new Date();
       if ((now - lastTimestamp) > 16) {
@@ -96,11 +146,17 @@ class Pan extends Interaction {
 
   _doPan(deltaX, deltaY) {
     const self = this;
-    const { mode, chart } = self;
+    const { mode, chart, limitRange } = self;
     const coord = chart.get('coord');
     const { start, end } = coord;
+    const data = chart.get('data');
     if (Helper.directionEnabled(mode, 'x') && deltaX !== 0) {
       const xScale = chart.getXScale();
+      const xField = xScale.field;
+      if (!limitRange[xField]) {
+        limitRange[xField] = Helper._getLimitRange(data, xScale);
+      }
+
       const coordWidth = end.x - start.x; // 绘图区域宽度
 
       if (xScale.isCategory) { // 横轴为分类类型
@@ -108,33 +164,43 @@ class Pan extends Interaction {
       } else if (xScale.isLinear) {
         self._panLinearScale(xScale, deltaX, coordWidth, 'x');
       }
+      const xDef = Helper.getColDef(chart, xField);
+      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
       const coordHeight = start.y - end.y; // 绘图区域高度
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
+        const yField = yScale.field;
+        if (!limitRange[yField]) {
+          limitRange[yField] = Helper._getLimitRange(data, yScale);
+        }
+
         yScale.isLinear && self._panLinearScale(yScale, deltaY, coordHeight, 'y');
       });
+      const yDef = Helper.getColDef(chart, yScales[0].field);
+      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
     chart.repaint();
   }
 
   _panLinearScale(scale, delta, range, flag) {
     const { field, min, max } = scale;
+    const limitRange = this.limitRange;
+
+    if (min === limitRange[field].min && max === limitRange[field].max) return;
 
     const chart = this.chart;
     const ratio = delta / range;
     const panValue = ratio * (max - min);
     let newMax = flag === 'x' ? max - panValue : max + panValue;
     let newMin = flag === 'x' ? min - panValue : min + panValue;
-
-    const limitRange = this.limitRange;
-    if (limitRange[field] && limitRange[field].min && newMin <= limitRange[field].min) {
+    if (limitRange[field] && !Util.isNil(limitRange[field].min) && newMin <= limitRange[field].min) {
       newMin = limitRange[field].min;
       newMax = (max - min) + newMin;
     }
-    if (limitRange[field] && limitRange[field].max && newMax >= limitRange[field].max) {
+    if (limitRange[field] && !Util.isNil(limitRange[field].max) && newMax >= limitRange[field].max) {
       newMax = limitRange[field].max;
       newMin = newMax - (max - min);
     }
@@ -150,22 +216,6 @@ class Pan extends Interaction {
     const chart = this.chart;
     const { type, field, values, ticks } = scale;
     const colDef = Helper.getColDef(chart, field);
-
-    if (!this.limitRange[field] || chart.get('rePadding')) { // 缓存原始数据
-      const data = chart.get('data');
-      const originValues = [];
-      data.map(obj => {
-        let value = obj[field];
-        if (type === 'timeCat') {
-          value = scale._toTimeStamp(value);
-        }
-        if (originValues.indexOf(value) === -1) {
-          originValues.push(value);
-        }
-        return obj;
-      });
-      this.limitRange[field] = originValues;
-    }
 
     const originValues = this.limitRange[field];
     const ratio = delta / range;

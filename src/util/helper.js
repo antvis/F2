@@ -6,7 +6,6 @@ module.exports = {
     const width = end.x - start.x;
     const height = Math.abs(end.y - start.y);
     let clip;
-
     if (coord.isPolar) {
       const { circleRadius, center, startAngle, endAngle } = coord;
       clip = new Shape.Sector({

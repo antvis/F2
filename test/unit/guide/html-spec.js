@@ -56,6 +56,7 @@ describe('Guide.Html', function() {
     const top = Math.floor(position.y);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left + 40);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top + 40);
+    guide.remove();
   });
   it('default', function() {
     const guide = new Html({
@@ -68,8 +69,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '九月', 900 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[1].style.left)).eql(left - 10);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[1].style.top)).eql(top - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top - 10);
+    guide.remove();
   });
   it('rc', function() {
     const guide = new Html({
@@ -84,8 +86,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '八月', 800 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[2].style.left)).eql(left - 20);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[2].style.top)).eql(top - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left - 20);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top - 10);
+    guide.remove();
   });
   it('lc', function() {
     const guide = new Html({
@@ -100,8 +103,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '六月', 600 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[3].style.left)).eql(left);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[3].style.top)).eql(top - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top - 10);
+    guide.remove();
   });
   it('tc', function() {
     const guide = new Html({
@@ -116,8 +120,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '四月', 400 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[4].style.left)).eql(left - 10);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[4].style.top)).eql(top);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top);
+    guide.remove();
   });
   it('bc', function() {
     const guide = new Html({
@@ -132,8 +137,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '二月', 200 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[5].style.left)).eql(left - 10);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[5].style.top)).eql(top - 20);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left - 10);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top - 20);
+    guide.remove();
   });
   it('tl', function() {
     const guide = new Html({
@@ -148,8 +154,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '一月', 100 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[6].style.left)).eql(left);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[6].style.top)).eql(top);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top);
+    guide.remove();
   });
   it('tr', function() {
     const guide = new Html({
@@ -164,8 +171,9 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '三月', 300 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[7].style.left)).eql(left - 20);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[7].style.top)).eql(top);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left - 20);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top);
+    guide.remove();
   });
   it('bl', function() {
     const guide = new Html({
@@ -180,8 +188,10 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '五月', 500 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[8].style.left)).eql(left);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[8].style.top)).eql(top - 20);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(left);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(top - 20);
+    guide.remove();
+
   });
   it('br', function() {
     const guide = new Html({
@@ -196,8 +206,8 @@ describe('Guide.Html', function() {
     const position = guide.parsePoint(coord, [ '七月', 700 ]);
     const left = Math.floor(position.x);
     const top = Math.floor(position.y);
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[9].style.left)).eql(Math.floor(left - 20));
-    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[9].style.top)).eql(Math.floor(top - 20));
-    document.body.removeChild(canva1s);
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(Math.floor(left - 20));
+    expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(Math.floor(top - 20));
+    guide.remove();
   });
 });

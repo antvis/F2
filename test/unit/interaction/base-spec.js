@@ -35,14 +35,14 @@ describe('Interaction', () => {
   it('Creat an interaction of touchEvents', () => {
     aInteraction = new Interaction({}, chart);
     expect(aInteraction.startEvent).to.equal('touchstart');
-    expect(aInteraction.processingEvent).to.equal('touchmove');
+    expect(aInteraction.processEvent).to.equal('touchmove');
     expect(aInteraction.endEvent).to.equal('touchend');
   });
 
   it('Register interaction', () => {
     F2.Chart.registerInteraction('try', Interaction);
 
-    expect(F2.Chart._Interactions).to.have.all.keys('try');
+    expect(F2.Chart._Interactions.try).not.to.be.undefined;
   });
 
   it('getInteraction', () => {
@@ -52,20 +52,20 @@ describe('Interaction', () => {
 
   it('call', () => {
     chart.interaction('try', {
-      processingEvent: 'press'
+      processEvent: 'press'
     });
 
     expect(chart._interactions).to.be.an.instanceof(Object);
     expect(chart._interactions.try).to.be.an.instanceOf(Interaction);
-    expect(chart._interactions.try.processingEvent).to.equal('press');
+    expect(chart._interactions.try.processEvent).to.equal('press');
   });
 
   it('repeat call', () => {
     chart.interaction('try', {
-      processingEvent: 'pressAagin'
+      processEvent: 'pressAagin'
     });
     expect(Object.keys(chart._interactions).length).to.equal(1);
-    expect(chart._interactions.try.processingEvent).to.equal('pressAagin');
+    expect(chart._interactions.try.processEvent).to.equal('pressAagin');
   });
 
   it('clearInteraction', () => {

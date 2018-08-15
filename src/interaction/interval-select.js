@@ -5,14 +5,15 @@ const Chart = require('../chart/chart');
 
 class IntervalSelect extends Interaction {
   getDefaultCfg() {
-    const defaultCfg = super.getDefaultCfg();
-    return Util.mix({}, defaultCfg, {
+    let defaultCfg = super.getDefaultCfg();
+    defaultCfg = Util.mix({}, defaultCfg, {
       startEvent: 'tap',
-      processingEvent: null,
+      processEvent: null,
       selectAxis: true, // 是否高亮坐标轴文本
       selectAxisStyle: {
         fontWeight: 'bold'
       },
+      mode: 'shape', // 选中模式，按照 shape 集中还是一定的范围内选取
       selectStyle: {
         fillOpacity: 1
       }, // 被选中图形的样式
@@ -21,6 +22,13 @@ class IntervalSelect extends Interaction {
       }, // 未被选中图形的样式
       cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
     });
+    if (Util.isWx || Util.isMy) { // 小程序
+      defaultCfg.startEvent = 'touchstart';
+      defaultCfg.endEvent = 'touchend';
+    }
+
+    return defaultCfg;
+
   }
 
   _resetShape(shape) {
@@ -31,7 +39,17 @@ class IntervalSelect extends Interaction {
     }
   }
 
-  _reset() {
+  _setEventData(ev) {
+    const selectedShape = this.selectedShape;
+    if (selectedShape && !selectedShape.get('destroyed')) {
+      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
+      ev.shapeInfo = selectedShape.get('origin');
+      ev.shape = selectedShape;
+      ev.selected = !!selectedShape.get('_selected'); // 返回选中的状态
+    }
+  }
+
+  reset() {
     const self = this;
     if (!self.selectedShape) {
       return;
@@ -50,6 +68,8 @@ class IntervalSelect extends Interaction {
       self._resetShape(self.selectedAxisShape);
     }
     self.canvas.draw();
+    self.selectedShape = null;
+    self.selectedAxisShape = null;
   }
 
   start(ev) {
@@ -59,35 +79,56 @@ class IntervalSelect extends Interaction {
       ev.clientY = ev.center.y;
     }
     const { x, y } = Util.createEvent(ev, chart);
-    const plot = chart.get('plotRange');
-    if (!Helper.isPointInPlot({ x, y }, plot)) { // 不在绘图区域
-      this._reset();
-      return;
-    }
 
     // 查找被点击的 shape
+    const mode = this.mode;
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
     let selectedShape;
     const unSelectedShapes = [];
-
-    Util.each(children, child => {
-      const box = child.getBBox();
-      if (x >= box.x && x <= (box.x + box.width) && y >= box.y && y <= (box.height + box.y)) { // inbox
-        selectedShape = child;
-      } else {
-        unSelectedShapes.push(child);
+    if (mode === 'shape') {
+      const plot = chart.get('plotRange');
+      if (!Helper.isPointInPlot({ x, y }, plot)) { // 不在绘图区域
+        this.reset();
+        return;
       }
-    });
+      Util.each(children, child => {
+        const box = child.getBBox();
+        if (x >= box.x && x <= (box.x + box.width) && y >= box.y && y <= (box.height + box.y)) { // inbox
+          selectedShape = child;
+        } else {
+          unSelectedShapes.push(child);
+        }
+      });
+    } else if (mode === 'range') {
+      const records = chart.getSnapRecords({ x, y });
+      if (!records.length) {
+        this.reset();
+        return;
+      }
+
+      const data = records[0]._origin;
+      Util.each(children, child => {
+        if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
+          const shapeData = child.get('origin')._origin;
+          if (Object.is(shapeData, data)) { // 判断是否相同
+            selectedShape = child;
+          } else {
+            unSelectedShapes.push(child);
+          }
+        }
+      });
+    }
 
     if (selectedShape) { // 有图形被选中
       this.selectedShape = selectedShape;
       if (selectedShape.get('_selected')) { // 已经被选中
         if (!this.cancelable) { // 不允许取消选中则不处理
+          this._setEventData(ev);
           return;
         }
-        this._reset(); // 允许取消选中
+        this.reset(); // 允许取消选中
       } else { // 未被选中
         const { selectStyle, unSelectStyle, selectAxisStyle } = this;
 
@@ -139,24 +180,14 @@ class IntervalSelect extends Interaction {
         this.canvas.draw();
       }
     } else { // 没有选中图形，恢复原态
-      this._reset();
-      this.selectedShape = null;
-      this.selectedAxisShape = null;
+      this.reset();
     }
+
+    this._setEventData(ev);
   }
 
   end(ev) {
-    const selectedShape = this.selectedShape;
-    if (selectedShape && !selectedShape.get('destroyed')) {
-      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
-      ev.shapeInfo = selectedShape.get('origin');
-      ev.shape = selectedShape;
-      ev.selected = !!selectedShape.get('_selected'); // 返回选中的状态
-    }
-  }
-
-  reset() {
-    this._reset();
+    this._setEventData(ev);
   }
 }
 

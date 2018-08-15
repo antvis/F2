@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const { Canvas } = require('../../../src/graphic/index');
 const Coord = require('../../../src/coord/index');
-const { Point } = require('../../../src/component/guide/index');
+const { Point } = require('../../../src/component/guide/point');
 const Scale = require('../../../src/scale/index');
 
 const canvas1 = document.createElement('canvas');

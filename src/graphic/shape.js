@@ -12,6 +12,10 @@ class Shape extends Element {
     };
   }
 
+  getType() {
+    return this._attrs.type;
+  }
+
   drawInner(context) {
     const self = this;
     const attrs = self.get('attrs');

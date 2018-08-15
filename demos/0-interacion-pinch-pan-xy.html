@@ -31,9 +31,28 @@ $.getJSON('./data/cereal.json', function(data) {
     fillOpacity: 0.6
   });
   chart.interaction('pan', {
-    mode: 'xy'
+    mode: 'xy',
+    onEnd() {
+      console.log('pan', this.xRange, this.yRange);
+    }
   }).interaction('pinch', {
-    mode: 'xy'
+    mode: 'xy',
+    onEnd() {
+      console.log('pinch', this.xRange, this.yRange);
+    }
+  });
+  chart.scrollBar({
+    mode: 'xy',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
+    },
+    yStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetX: 2
+    }
   });
   chart.render();
 });

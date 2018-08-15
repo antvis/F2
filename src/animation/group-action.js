@@ -99,7 +99,6 @@ function groupWaveIn(container, animateCfg, coord) {
     container.attr('clip', null);
     clip.remove(true);
   };
-
   const endState = {};
   if (coord.isPolar) {
     const { startAngle, endAngle } = coord;
@@ -109,7 +108,6 @@ function groupWaveIn(container, animateCfg, coord) {
     const { start, end } = coord;
     const width = Math.abs(start.x - end.x);
     const height = Math.abs(start.y - end.y);
-
     if (coord.isTransposed) {
       clip.attr('height', 0);
       endState.height = height;
@@ -118,7 +116,6 @@ function groupWaveIn(container, animateCfg, coord) {
       endState.width = width;
     }
   }
-
   Util.doAnimation(clip, endState, animateCfg, onEnd);
 }
 

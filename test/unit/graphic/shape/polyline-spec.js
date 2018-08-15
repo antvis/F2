@@ -28,6 +28,7 @@ describe('Polyline', function() {
   });
 
   it('init attr', function() {
+    expect(polyline.getType()).to.equal('polyline');
     expect(polyline.get('canStroke')).to.be.true;
     expect(polyline.attr('points').length).to.equal(5);
     expect(polyline.attr('strokeStyle')).to.equal('red');

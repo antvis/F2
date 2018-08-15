@@ -193,6 +193,10 @@ class Canvas {
     this._attrs = {};
     this.set('destroyed', true);
   }
+
+  isDestroyed() {
+    return this.get('destroyed');
+  }
 }
 
 Util.mix(Canvas.prototype, Container, {

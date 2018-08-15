@@ -62,6 +62,14 @@ class Element {
     this._attrs[name] = value;
   }
 
+  isGroup() {
+    return this.get('isGroup');
+  }
+
+  isShape() {
+    return this.get('isShape');
+  }
+
   initAttrs(attrs) {
     this.attr(Util.mix(this.getDefaultAttrs(), attrs));
   }
@@ -199,6 +207,10 @@ class Element {
     return this;
   }
 
+  isVisible() {
+    return this.get('visible');
+  }
+
   _removeFromParent() {
     const parent = this.get('parent');
     if (parent) {
@@ -315,6 +327,10 @@ class Element {
     if (!isUnchanged(mo)) {
       context.transform(mo[0], mo[1], mo[2], mo[3], mo[4], mo[5]);
     }
+  }
+
+  isDestroyed() {
+    return this.get('destroyed');
   }
 }
 

@@ -47,6 +47,7 @@ class Arc extends GuideBase {
       }, self.style)
     });
     self.element = shape;
+    return shape;
   }
 }
 

@@ -235,9 +235,9 @@ class AxisController {
 
     const axes = this.axes;
     const chart = self.chart;
-    if (chart._isAutoPadding() || chart.get('rePadding')) { // 数据变更时需要重新计算
+    if (chart._isAutoPadding()) { // 数据变更时需要重新计算
       const userPadding = Util.parsePadding(chart.get('padding'));
-      const appendPadding = chart.get('appendPadding');
+      const appendPadding = Util.parsePadding(chart.get('appendPadding'));
       const legendRange = chart.get('legendRange') || {
         top: 0,
         right: 0,
@@ -246,10 +246,10 @@ class AxisController {
       };
 
       const padding = [
-        userPadding[0] === 'auto' ? legendRange.top + appendPadding * 2 : userPadding[0],
-        userPadding[1] === 'auto' ? legendRange.right + appendPadding : userPadding[1],
-        userPadding[2] === 'auto' ? legendRange.bottom + appendPadding : userPadding[2],
-        userPadding[3] === 'auto' ? legendRange.left + appendPadding : userPadding[3]
+        userPadding[0] === 'auto' ? legendRange.top + appendPadding[0] * 2 : userPadding[0],
+        userPadding[1] === 'auto' ? legendRange.right + appendPadding[1] : userPadding[1],
+        userPadding[2] === 'auto' ? legendRange.bottom + appendPadding[2] : userPadding[2],
+        userPadding[3] === 'auto' ? legendRange.left + appendPadding[3] : userPadding[3]
       ];
 
       if (coord.isPolar) { // 极坐标

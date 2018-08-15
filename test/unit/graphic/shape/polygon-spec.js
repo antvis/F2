@@ -27,6 +27,7 @@ describe('Polygon', function() {
   });
 
   it('init attr', function() {
+    expect(polygon.getType()).to.equal('polygon');
     expect(polygon.get('canFill')).to.be.true;
     expect(polygon.attr('points').length).to.equal(5);
     expect(polygon.attr('fillStyle')).to.equal('red');

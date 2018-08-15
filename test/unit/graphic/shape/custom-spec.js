@@ -21,6 +21,7 @@ describe('Custom', function() {
   });
 
   it('init attr', function() {
+    expect(house.getType()).to.equal('custom');
     expect(house.attr('lineWidth')).to.equal(2);
     expect(house.attr('strokeStyle')).to.equal('#CCC');
     expect(house.attr('fillStyle')).to.equal('#2FC25B');

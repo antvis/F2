@@ -300,6 +300,7 @@ class Chart extends Base {
     const coord = this.get('coord');
     const data = this.get('filteredData');
     const colDefs = this.get('colDefs');
+
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
       geom.set('data', data);
@@ -381,14 +382,6 @@ class Chart extends Base {
       zIndex: 20
     }));
   }
-
-  // initColDefs() {
-  //   const colDefs = this.get('colDefs');
-  //   if (colDefs) {
-  //     const scaleController = this.get('scaleController');
-  //     Util.mix(scaleController.defs, colDefs);
-  //   }
-  // }
 
   _init() {
     const self = this;
@@ -513,6 +506,9 @@ class Chart extends Base {
     this.set('filteredData', filteredData);
     // 初始化坐标系
     self._initCoord();
+
+    Chart.plugins.notify(self, 'beforeGeomInit');
+
     // 初始化 geoms
     self._initGeoms(geoms);
     // 调整度量
@@ -523,8 +519,8 @@ class Chart extends Base {
     self._renderAxis();
 
     // 将 geom 限制在绘图区域内
-    if (self.get('limitInPlot')) {
-      const middlePlot = self.get('middlePlot');
+    const middlePlot = self.get('middlePlot');
+    if (self.get('limitInPlot') && !middlePlot.attr('clip')) {
       const coord = self.get('coord');
       const clip = Helper.getClip(coord);
       clip.set('canvas', middlePlot.get('canvas'));
@@ -556,17 +552,13 @@ class Chart extends Base {
     this._clearInner();
     this.set('filters', null);
     this.set('isUpdate', false);
+    this.set('_padding', null);
     const canvas = this.get('canvas');
     canvas.draw();
     return this;
   }
 
-  /**
-   * 重绘 chart
-   * @param {Boolean} rePadding 是否需要重新计算 padding
-   */
-  repaint(rePadding) {
-    this.set('rePadding', rePadding);
+  repaint() {
     this.set('isUpdate', true);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
@@ -575,7 +567,9 @@ class Chart extends Base {
 
   changeData(data) {
     this.set('data', data);
-    this.repaint(true);
+    Chart.plugins.notify(this, 'changeData');
+    this.set('_padding', null);
+    this.repaint();
   }
 
   changeSize(width, height) {

@@ -46,14 +46,7 @@
       }
     });
     chart.tooltip(false);
-    chart.interaction('pan', {
-      limitRange: {
-        x: {
-          min: -100,
-          max: 100
-        }
-      }
-    });
+    chart.interaction('pan');
     chart.interaction('pinch', {
       maxScale: 5,
       minScale: 1,

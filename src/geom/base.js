@@ -325,16 +325,15 @@ class Geom extends Base {
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
-    // let shapes = [];
     for (let i = 0, len = dataArray.length; i < len; i++) {
       let data = dataArray[i];
-      data = self._mapping(data);
-      mappedArray.push(data);
-      self.draw(data, shapeFactory);
-      // shapes = shapes.concat(drawedShapes);
+      if (data.length) {
+        data = self._mapping(data);
+        mappedArray.push(data);
+        self.draw(data, shapeFactory);
+      }
     }
     self.set('dataArray', mappedArray);
-    // self.set('shapes', shapes);
   }
 
   /**

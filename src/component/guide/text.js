@@ -58,6 +58,7 @@ class Text extends GuideBase {
       }, style)
     });
     this.element = shape;
+    return shape;
   }
 }
 
