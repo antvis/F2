@@ -41,13 +41,13 @@ Global.guide = Util.deepMix({
   },
   tag: {
     top: true,
-    offsetX: 0, // X 轴偏移
-    offsetY: 0, // Y 轴偏移
-    side: 4, //  三角标的边长
+    offsetX: 0,
+    offsetY: 0,
+    side: 4,
     background: {
-      padding: 5, // tag 内边距
-      radius: 2, // tag 圆角
-      fill: '#1890FF' // tag 背景色
+      padding: 5,
+      radius: 2,
+      fill: '#1890FF'
     },
     textStyle: {
       fontSize: 12,
@@ -58,8 +58,8 @@ Global.guide = Util.deepMix({
   },
   point: {
     top: true,
-    offsetX: 0, // X 轴偏移
-    offsetY: 0, // Y 轴偏移
+    offsetX: 0,
+    offsetY: 0,
     style: {
       fill: '#fff',
       r: 3,
@@ -86,9 +86,9 @@ class GuideController {
     return position;
   }
 
-  _getId(shape, guide) { // 用于标定每一个 guide shape 的 id，主要用于动画
+  _getId(shape, guide) {
     let id = guide.id;
-    if (!id) { // 用户未指定
+    if (!id) {
       const type = guide.type;
       if (type === 'arc' || type === 'line' || type === 'rect') {
         id = this._toString(guide.start) + '-' + this._toString(guide.end);
@@ -103,12 +103,12 @@ class GuideController {
   paint(coord) {
     const self = this;
     const { chart, guides, xScale, yScales } = self;
-    const guideShapes = []; // 存储每一个 guide shape
+    const guideShapes = [];
     Util.each(guides, function(guide, idx) {
       guide.xScale = xScale;
       guide.yScales = yScales;
       let container;
-      if (guide.type === 'regionFilter') { // TODO: RegionFilter 是否支持动画？
+      if (guide.type === 'regionFilter') { // TODO: RegionFilter support animation
         guide.chart = chart;
       } else {
         container = guide.top ? self.frontPlot : self.backPlot;
@@ -126,7 +126,7 @@ class GuideController {
         });
       }
     });
-    self.guideShapes = guideShapes; // TODO: 变量命名
+    self.guideShapes = guideShapes;
   }
 
   clear() {
@@ -211,7 +211,7 @@ module.exports = {
     const coord = chart.get('coord');
     guideController.xScale = xScale;
     guideController.yScales = yScales;
-    guideController.chart = chart; // 为了绘制 region-filter
+    guideController.chart = chart; // for regionFilter
     guideController.paint(coord);
   },
   clear(chart) {

@@ -1,6 +1,6 @@
 /**
- * 整体动画版本
- * @author sima.zhang
+ * Group animation
+ * @author sima.zhang1990@gmail.com
  */
 const Util = require('../util/common');
 
@@ -41,9 +41,9 @@ Animate.defaultCfg = {
   },
   interval(coord) {
     let result;
-    if (coord.isPolar) { // 极坐标
-      result = Action.groupScaleInXY; // 南丁格尔玫瑰图
-      if (coord.transposed) { // 饼图
+    if (coord.isPolar) {
+      result = Action.groupScaleInXY;
+      if (coord.transposed) {
         result = Action.groupWaveIn;
       }
     } else {
@@ -94,9 +94,9 @@ module.exports = {
       if (geom.get('animateCfg') !== false) {
         animateCfg = getAnimateCfg(type, geom.get('animateCfg'));
         animate = getAnimate(type, coord, animateCfg.animation);
-        if (Util.isFunction(animate)) { // 用户指定了动画类型
+        if (Util.isFunction(animate)) {
           animate(container, animateCfg);
-        } else if (Animate.defaultCfg[type]) { // 默认进行整体动画
+        } else if (Animate.defaultCfg[type]) {
           animate = Animate.defaultCfg[type](coord);
           const yScale = geom.getYScale();
           const zeroY = coord.convertPoint({

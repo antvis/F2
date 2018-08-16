@@ -14,9 +14,9 @@ class Pinch extends Interaction {
       resetEvent: 'touchend',
       pressThreshold: 9, // Minimal movement that is allowed while pressing
       pressTime: 251, // Minimal press time in ms
-      mode: 'x', // 方向，可取值 x、y、xy
-      currentPinchScaling: null, // 当前
-      originValues: null, // 保存分类度量的原始 values
+      mode: 'x',
+      currentPinchScaling: null,
+      originValues: null,
       minScale: null,
       maxScale: null,
       _timestamp: 0,
@@ -45,7 +45,7 @@ class Pinch extends Interaction {
     }]);
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip
+    if (tooltipController && tooltipController.enable) {
       chart.tooltip(false);
       hammer.get('press').set({
         threshold: pressThreshold,
@@ -182,12 +182,12 @@ class Pinch extends Interaction {
     const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
-    if (this.minScale && zoom < 1) { // 缩小
+    if (this.minScale && zoom < 1) { // zoom in
       const maxRange = originRange / this.minScale;
       newDiff = Math.max(valueRange - maxRange, newDiff);
     }
 
-    if (this.maxScale && zoom >= 1) { // 放大
+    if (this.maxScale && zoom >= 1) { // zoom out
       const minRange = originRange / this.maxScale;
       newDiff = Math.min(valueRange - minRange, newDiff);
     }
@@ -231,13 +231,13 @@ class Pinch extends Interaction {
     const minDelta = parseInt(deltaCount * (percent));
     const maxDelta = deltaCount - minDelta;
 
-    if (zoom >= 1 && valuesLength >= minCount) { // 放大
+    if (zoom >= 1 && valuesLength >= minCount) { // zoom out
       const newValues = values.slice(minDelta, valuesLength - maxDelta);
       chart.scale(field, Util.mix({}, colDef, {
         values: newValues,
         ticks: originTicks
       }));
-    } else if (zoom < 1 && valuesLength <= maxCount) { // 缩小
+    } else if (zoom < 1 && valuesLength <= maxCount) { // zoom in
       const firstIndex = originValues.indexOf(values[0]);
       const lastIndex = originValues.indexOf(values[valuesLength - 1]);
       const minIndex = Math.max(0, firstIndex - minDelta);

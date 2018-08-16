@@ -4,11 +4,6 @@ const Util = require('../util/common');
 require('./shape/line');
 
 class Path extends Geom {
-  /**
-   * 获取默认的配置属性
-   * @protected
-   * @return {Object} 默认属性
-   */
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
     cfg.type = 'path';
@@ -30,10 +25,10 @@ class Path extends Geom {
     const splitArray = ShapeUtil.splitArray(data, yScale.field, connectNulls);
 
     const cfg = this.getDrawCfg(data[0]);
-    cfg.origin = data; // path,line 等图的origin 是整个序列
+    cfg.origin = data;
 
     Util.each(splitArray, function(subData, splitedIndex) {
-      cfg.splitedIndex = splitedIndex; // 传入分割片段索引 用于生成id
+      cfg.splitedIndex = splitedIndex;
       cfg.points = subData;
       self.drawShape(cfg.shape, data[0], cfg, container, shapeFactory);
     });

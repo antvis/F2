@@ -4,20 +4,18 @@ const Abstract = require('./abstract');
 class Circle extends Abstract {
   _initDefaultCfg() {
     super._initDefaultCfg();
-    this.startAngle = -Math.PI / 2; // 起始角度，弧度
-    this.endAngle = Math.PI * 3 / 2; // 结束角度，弧度
-    this.radius = null; // 半径
-    this.center = null; // 圆心
+    this.startAngle = -Math.PI / 2; // start angle，in radian
+    this.endAngle = Math.PI * 3 / 2; // end angle, in radian
+    this.radius = null; // radius
+    this.center = null; // center
   }
 
-  // 获取坐标轴上的点
   getOffsetPoint(value) {
     const { startAngle, endAngle } = this;
     const angle = startAngle + (endAngle - startAngle) * value;
     return this._getCirclePoint(angle);
   }
 
-  // 获取圆上的点
   _getCirclePoint(angle, radius) {
     const self = this;
     const center = self.center;
@@ -51,7 +49,6 @@ class Circle extends Abstract {
     };
   }
 
-  // 获取坐标轴上点的向量，极坐标下覆盖此方法
   getAxisVector(point) {
     const center = this.center;
     const factor = this.offsetFactor;

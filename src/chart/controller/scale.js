@@ -20,7 +20,6 @@ class ScaleController {
     let def = null;
     if (Global.scales[field] || defs[field]) {
       def = Util.mix({}, Global.scales[field]);
-      // 处理覆盖属性的问题
       Util.each(defs[field], function(v, k) {
         if (Util.isNil(v)) {
           delete def[k];
@@ -64,12 +63,12 @@ class ScaleController {
         const { min, max } = Util.Array.getRange(values);
         cfg.min = min;
         cfg.max = max;
-        cfg.nice = true; // 默认数值类型 linear 开启 nice
+        cfg.nice = true;
       }
     }
 
     if (type === 'cat' || type === 'timeCat') {
-      cfg.isRounding = false; // 用于tickCount 计算
+      cfg.isRounding = false; // used for tickCount calculation
     }
 
     return cfg;
@@ -79,7 +78,6 @@ class ScaleController {
     const self = this;
     const def = self._getDef(field);
     let scale;
-    // 如果数据为空直接返回常量度量
     if (!data || !data.length) {
       if (def && def.type) {
         scale = new Scale[SCALE_TYPES_MAP[def.type]](def);
@@ -104,7 +102,7 @@ class ScaleController {
         field: field.toString(),
         values: [ field ]
       });
-    } else { // 如果已经定义过这个度量
+    } else {
       const type = self._getDefaultType(field, data, def);
       const cfg = self._getScaleCfg(type, field, data, def);
       def && Util.mix(cfg, def);

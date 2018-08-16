@@ -35,9 +35,9 @@ class Plot {
   }
 
   /**
-   * 重置
-   * @param  {Object} start 起始点
-   * @param  {Object} end  结束点
+   * reset
+   * @param  {Object} start start point
+   * @param  {Object} end end point
    */
   reset(start, end) {
     this.start = start;
@@ -46,10 +46,10 @@ class Plot {
   }
 
   /**
-   * 点是否在图表的绘制区域内
-   * @param  {Nubmer}  x x坐标点
-   * @param  {[type]}  y y坐标点
-   * @return {Boolean} 是否在绘制区域内
+   * check the point is in the range of plot
+   * @param  {Nubmer}  x x value
+   * @param  {[type]}  y y value
+   * @return {Boolean} return the result
    */
   isInRange(x, y) {
     if (Util.isObject(x)) {

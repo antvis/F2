@@ -23,7 +23,6 @@ Shape.registerShape('polygon', 'polygon', {
       fill: cfg.color,
       points
     }, cfg.style);
-    // G.drawLines(points, canvas, style);
     return container.addShape('Polygon', {
       className: 'polygon',
       attrs: style

@@ -42,7 +42,6 @@ module.exports = {
     const values = Util.Array.values(data, field);
     if (type === 'linear') {
       result = Util.Array.getRange(values);
-      // 调整范围
       if (scale.min < result.min) {
         result.min = scale.min;
       }

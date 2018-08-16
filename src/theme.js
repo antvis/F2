@@ -1,10 +1,10 @@
 /**
- * @fileOverview 默认皮肤
+ * @fileOverview default theme
  * @author dxq613@gail.com
  */
 const Util = require('./util/common');
-const color1 = '#E8E8E8'; // 坐标轴线、坐标轴网格线的颜色
-const color2 = '#808080'; // 字体颜色
+const color1 = '#E8E8E8'; // color of axis-line and axis-grid
+const color2 = '#808080'; // color of axis label
 
 const defaultAxis = {
   label: {
@@ -16,7 +16,7 @@ const defaultAxis = {
     lineWidth: 1
   },
   grid: {
-    type: 'line', // 默认使用线连接
+    type: 'line',
     stroke: color1,
     lineWidth: 1,
     lineDash: [ 2 ]
@@ -65,13 +65,13 @@ const Theme = {
   },
   shape: {
     line: {
-      lineWidth: 2, // 线的默认宽度
+      lineWidth: 2,
       lineJoin: 'round',
       lineCap: 'round'
     },
     point: {
       lineWidth: 0,
-      size: 3 // 圆的默认半径
+      size: 3
     },
     area: {
       fillOpacity: 0.1

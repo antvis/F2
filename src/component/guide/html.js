@@ -56,32 +56,32 @@ class Html extends GuideBase {
   _initDefaultCfg() {
     this.type = 'html';
     /**
-     * dom 显示位置点
+     * dom position
      * @type {Object | Array}
      */
     this.position = null;
     /**
-      * 水平方向对齐方式，可取值 'left'、'center'、'right'
+      * alignment for horizontal direction，can be 'left','center','right'
       * @type {String}
       */
     this.alignX = 'center';
     /**
-      * 垂直方向对齐方式，可取值 'top'、'middle'、'bottom'
+      * alignment for vertical direction，can be 'top', 'middle', 'bottom'
       * @type {String}
       */
     this.alignY = 'middle';
     /**
-      * x 方向的偏移量
+      * offset for horizontal direction
       * @type {Number}
       */
     this.offsetX = null;
     /**
-      * y 方向的偏移量
+      * offset for vertical direction
       * @type {Number}
       */
     this.offsetY = null;
     /**
-    * html内容
+    * the html string
     *@type {String | Function}
     */
     this.html = null;
@@ -107,12 +107,11 @@ class Html extends GuideBase {
     parentNode = modifyCSS(parentNode, {
       position: 'relative'
     });
-    // 创建html guide 的容器
+
     const wrapperNode = createDom('<div class="guideWapper" style="position: absolute;top: 0; left: 0;"></div>');
     parentNode.appendChild(wrapperNode);
     wrapperNode.appendChild(myNode);
 
-    // 需要考虑 canvas 元素在父容器中的相对位置
     const canvasOffsetTop = canvasDom.offsetTop;
     const canvasOffsetLeft = canvasDom.offsetLeft;
     const { alignX, alignY, offsetX, offsetY } = self;

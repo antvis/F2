@@ -1,16 +1,13 @@
 /**
- * 一些小的图标，用于 tooltip 和 legend 的 marker
- * @type {Object}
+ * marker shapes，used for tooltip and legend
  */
 const Util = require('../util/common');
 const { Shape } = require('../graphic/index');
 
 const SYMBOLS = {
-  // 圆
   circle(x, y, r, ctx) {
     ctx.arc(x, y, r, 0, Math.PI * 2, false);
   },
-  // 正方形
   square(x, y, r, ctx) {
     ctx.moveTo(x - r, y - r);
     ctx.lineTo(x + r, y - r);

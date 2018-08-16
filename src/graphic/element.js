@@ -2,7 +2,6 @@ const Util = require('../util/common');
 const MatrixUtil = require('./util/matrix');
 const Vector2 = require('./util/vector2');
 
-// 是否未改变
 function isUnchanged(m) {
   return m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1 && m[4] === 0 && m[5] === 0;
 }
@@ -47,11 +46,11 @@ class Element {
     Util.mix(this._attrs, cfg);
 
     const attrs = this._attrs.attrs;
-    if (attrs) { // 初始化图形属性
+    if (attrs) {
       this.initAttrs(attrs);
     }
 
-    this.initTransform(); // 初始化变换
+    this.initTransform();
   }
 
   get(name) {
@@ -118,7 +117,7 @@ class Element {
     }
 
     if (Util.isObject(name)) {
-      this._attrs.bbox = null; // attr 改变了有可能会导致 bbox 改变，故在此清除
+      this._attrs.bbox = null;
       for (const k in name) {
         self._setAttr(k, name[k]);
       }
@@ -173,7 +172,7 @@ class Element {
     const elAttrs = this._attrs.attrs;
     if (!this.get('isGroup')) {
       for (const k in elAttrs) {
-        if (SHAPE_ATTRS.indexOf(k) > -1) { // 非canvas属性不附加
+        if (SHAPE_ATTRS.indexOf(k) > -1) {
           const v = elAttrs[k];
           if (k === 'lineDash' && context.setLineDash && v) {
             context.setLineDash(v);
@@ -221,10 +220,6 @@ class Element {
     return this;
   }
 
-  /**
-   * 移除
-   * @param  {Boolean} destroy true 表示将自己移除的同时销毁自己，false 表示仅移除自己
-   */
   remove(destroy) {
     if (destroy) {
       this.destroy();
@@ -233,7 +228,7 @@ class Element {
     }
   }
 
-  destroy() { // 销毁并将自己从父元素中移除（如果有父元素的话）
+  destroy() {
     const destroyed = this.get('destroyed');
 
     if (destroyed) {
@@ -271,11 +266,6 @@ class Element {
     this._attrs.attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
   }
 
-  /**
-   * 平移、旋转、缩放
-   * @param  {Array} actions 操作集合
-   * @return {Element}         返回自身
-   */
   transform(actions) {
     const matrix = this._attrs.attrs.matrix;
     this._attrs.attrs.matrix = MatrixUtil.transform(matrix, actions);
@@ -302,14 +292,9 @@ class Element {
     MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
   }
 
-  /**
-   * 移动的到位置
-   * @param  {Number} x 移动到x
-   * @param  {Number} y 移动到y
-   */
   moveTo(x, y) {
-    const cx = this._attrs.x || 0; // 当前的x
-    const cy = this._attrs.y || 0; // 当前的y
+    const cx = this._attrs.x || 0;
+    const cy = this._attrs.y || 0;
     this.translate(x - cx, y - cy);
     this.set('x', x);
     this.set('y', y);
@@ -323,7 +308,6 @@ class Element {
 
   resetTransform(context) {
     const mo = this._attrs.attrs.matrix;
-    // 不改变时
     if (!isUnchanged(mo)) {
       context.transform(mo[0], mo[1], mo[2], mo[3], mo[4], mo[5]);
     }

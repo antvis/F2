@@ -1,5 +1,5 @@
 /**
- * @fileOverview 基础工具类
+ * @fileOverview Utility for F2
  * @author dxq613@gmail.com
  */
 const DomUtil = require('./dom');
@@ -18,13 +18,6 @@ const Util = {
   deepMix: require('@antv/util/lib/deepMix'),
   mix: require('@antv/util/lib/mix'),
   each: require('@antv/util/lib/each'),
-  /**
-   * 封装事件，便于使用上下文this,和便于解除事件时使用
-   * @protected
-   * @param  {Object} obj   对象
-   * @param  {String} action 事件名称
-   * @return {Function}        返回事件处理函数
-   */
   wrapBehavior(obj, action) {
     if (obj['_wrap_' + action]) {
       return obj['_wrap_' + action];
@@ -35,13 +28,6 @@ const Util = {
     obj['_wrap_' + action] = method;
     return method;
   },
-  /**
-   * 获取封装的事件
-   * @protected
-   * @param  {Object} obj   对象
-   * @param  {String} action 事件名称
-   * @return {Function}        返回事件处理函数
-   */
   getWrapBehavior(obj, action) {
     return obj['_wrap_' + action];
   },
@@ -118,7 +104,6 @@ Util.Array = {
     }
     const groups = Util.Array.groupToMap(data, fields);
     const array = [];
-    // 这里就默认按照第一个指定了 values 的列进行排序
     if (fields.length === 1 && appendConditions[fields[0]]) {
       const values = appendConditions[fields[0]];
       Util.each(values, value => {
@@ -141,7 +126,7 @@ Util.Array = {
     }
 
     const callback = function(row) {
-      let unique = '_'; // 避免出现数字作为Key的情况，会进行按照数字的排序
+      let unique = '_';
       for (let i = 0, l = fields.length; i < l; i++) {
         unique += row[fields[i]] && row[fields[i]].toString();
       }
@@ -171,7 +156,7 @@ Util.Array = {
     }
   },
   getRange(values) {
-    if (!values.length) { // 空数组需要手动设置 min:0 max:0，否则 linear scale 会报错
+    if (!values.length) {
       return {
         min: 0,
         max: 0

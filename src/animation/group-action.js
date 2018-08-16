@@ -1,6 +1,6 @@
 /**
- * 整体动画
- * @author sima.zhang
+ * Group animate functions
+ * @author sima.zhang1990@gmail.com
  */
 const Util = require('./util');
 const Helper = require('../util/helper');

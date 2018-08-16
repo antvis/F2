@@ -1,29 +1,29 @@
 /**
- * 完整版
+ * all
  */
 const F2 = require('./core');
 
 require('./geom/');
 require('./geom/adjust/');
 
-require('./coord/polar'); // 极坐标系
-require('./component/axis/circle'); // 极坐标系下的弧长坐标轴
+require('./coord/polar'); // polar coordinate
+require('./component/axis/circle'); // the axis for polar coordinate
 
-require('./scale/time-cat'); // timeCat 类型的度量
+require('./scale/time-cat'); // timeCat scale
 
-require('./component/guide'); // 加载 guide 组件
+require('./component/guide'); // guide components
 
 const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');
 const Legend = require('./plugin/legend');
-const Animation = require('./animation/detail'); // 使用精细动画
+const Animation = require('./animation/detail');
 const ScrollBar = require('./plugin/scroll-bar');
 
 F2.Animate = require('./animation/animate');
-// 注册插件
+// register plugins
 F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar ]);
 
-// 添加交互
+// add interaction
 require('./interaction');
 F2.Interaction = require('./interaction/base');
 

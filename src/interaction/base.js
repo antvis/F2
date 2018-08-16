@@ -1,5 +1,5 @@
 /**
- * Interaction 基类
+ * The parent class of interaction
  * @author sima.zhang1990@gmail.com
  */
 const Util = require('../util/common');
@@ -124,7 +124,7 @@ Chart.getInteraction = function(type) {
 
 Chart.prototype.interaction = function(type, cfg) {
   const interactions = this._interactions || {};
-  if (interactions[type]) { // 如果重复注册，会将上一个交互实例销毁删除
+  if (interactions[type]) { // if reprated, destroy last
     interactions[type].destroy();
   }
   const Ctor = Chart.getInteraction(type);

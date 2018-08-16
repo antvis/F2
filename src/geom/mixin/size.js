@@ -1,5 +1,5 @@
 /**
- * @fileOverview 需要计算所占x轴上的宽度的辅助类
+ * @fileOverview Utility for calculate the with ratui in x axis
  * @author sima.zhang1990@gmail.com
  * @author dxq613@gmail.com
  */
@@ -20,7 +20,7 @@ const SizeMixin = {
       let widthRatio = 1;
 
       if (coord && coord.isPolar) {
-        if (coord.transposed && count > 1) { // 极坐标下多层环图
+        if (coord.transposed && count > 1) {
           widthRatio = Global.widthRatio.multiplePie;
         } else {
           widthRatio = Global.widthRatio.rose;
@@ -29,7 +29,7 @@ const SizeMixin = {
         if (xScale.isLinear) {
           normalizeSize *= (range[1] - range[0]);
         }
-        widthRatio = Global.widthRatio.column; // 柱状图要除以2
+        widthRatio = Global.widthRatio.column;
       }
       normalizeSize *= widthRatio;
       if (this.hasAdjust('dodge')) {
@@ -60,10 +60,10 @@ const SizeMixin = {
     let width = this.get('_width');
     if (!width) {
       const coord = this.get('coord');
-      if (coord && coord.isPolar && !coord.transposed) { // 极坐标下 width 为弧长
+      if (coord && coord.isPolar && !coord.transposed) {
         width = (coord.endAngle - coord.startAngle) * coord.circleRadius;
       } else {
-        width = this.getDimWidth('x'); // 不需要判断transpose
+        width = this.getDimWidth('x');
       }
       this.set('_width', width);
     }

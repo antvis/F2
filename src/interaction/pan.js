@@ -22,14 +22,14 @@ class Pan extends Interaction {
       processEvent: 'panmove',
       endEvent: 'panend',
       resetEvent: 'touchend',
-      mode: 'x', // 方向，可取值 x、y、xy
+      mode: 'x',
       panThreshold: 10, // Minimal pan distance required before recognizing
       pressThreshold: 9, // Minimal movement that is allowed while pressing
       pressTime: 251, // Minimal press time in ms
       currentDeltaX: null,
       currentDeltaY: null,
       panning: false,
-      limitRange: {}, // 限制范围
+      limitRange: {},
       _timestamp: 0,
       lastPoint: null
     });
@@ -48,14 +48,14 @@ class Pan extends Interaction {
     const self = this;
     const { hammer, panThreshold, pressThreshold, pressTime } = self;
 
-    if (hammer) { // 基于 hammer 手势
+    if (hammer) {
       hammer.get('pan').set({
         threshold: panThreshold
       });
     }
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController && tooltipController.enable) { // 用户未关闭 tooltip
+    if (tooltipController && tooltipController.enable) {
       chart.tooltip(false);
       if (hammer) {
         hammer.get('press').set({
@@ -126,7 +126,7 @@ class Pan extends Interaction {
       deltaX = currentPoint.x - lastPoint.x;
       deltaY = currentPoint.y - lastPoint.y;
       this.lastPoint = currentPoint;
-    } else if (currentDeltaX !== null && currentDeltaY !== null) { // hammer 的 pan 手势
+    } else if (currentDeltaX !== null && currentDeltaY !== null) {
       this.panning = true;
       deltaX = e.deltaX - currentDeltaX;
       deltaY = e.deltaY - currentDeltaY;
@@ -157,9 +157,9 @@ class Pan extends Interaction {
         limitRange[xField] = Helper._getLimitRange(data, xScale);
       }
 
-      const coordWidth = end.x - start.x; // 绘图区域宽度
+      const coordWidth = end.x - start.x;
 
-      if (xScale.isCategory) { // 横轴为分类类型
+      if (xScale.isCategory) {
         self._panCatScale(xScale, deltaX, coordWidth);
       } else if (xScale.isLinear) {
         self._panLinearScale(xScale, deltaX, coordWidth, 'x');
@@ -169,7 +169,7 @@ class Pan extends Interaction {
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
-      const coordHeight = start.y - end.y; // 绘图区域高度
+      const coordHeight = start.y - end.y;
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
         const yField = yScale.field;
@@ -220,11 +220,11 @@ class Pan extends Interaction {
     const originValues = this.limitRange[field];
     const ratio = delta / range;
     const valueLength = values.length;
-    const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength))); // 变动的个数
+    const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength)));
 
     let firstIndex = originValues.indexOf(values[0]);
     let lastIndex = originValues.indexOf(values[valueLength - 1]);
-    if (delta > 0 && firstIndex >= 0) { // 右移
+    if (delta > 0 && firstIndex >= 0) { // right
       for (let i = 0; i < deltaCount && firstIndex > 0; i++) {
         firstIndex -= 1;
         lastIndex -= 1;
@@ -243,7 +243,7 @@ class Pan extends Interaction {
         values: newValues,
         ticks: newTicks
       }));
-    } else if (delta < 0 && lastIndex <= originValues.length - 1) { // 左移
+    } else if (delta < 0 && lastIndex <= originValues.length - 1) { // left
       for (let i = 0; i < deltaCount && lastIndex < originValues.length - 1; i++) {
         firstIndex += 1;
         lastIndex += 1;

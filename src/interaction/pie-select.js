@@ -9,12 +9,12 @@ class PieSelect extends Interaction {
       startEvent: 'tap',
       processEvent: null,
       animate: false,
-      offset: 1, // 间距
-      appendRadius: 8, // 光环的大小
+      offset: 1,
+      appendRadius: 8,
       style: {
         fillOpacity: 0.5
       },
-      cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
+      cancelable: true
     });
     if (Util.isWx || Util.isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
@@ -60,11 +60,10 @@ class PieSelect extends Interaction {
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
-    // 饼图的 bbox 范围查找不精确，所以使用数据比对
     Util.each(children, child => {
       if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
-        if (Object.is(shapeData, data)) { // 判断是否相同
+        if (Object.is(shapeData, data)) {
           selectedShape = child;
           return false;
         }
@@ -73,8 +72,8 @@ class PieSelect extends Interaction {
     const lastShape = this.lastShape;
     this.selectedShape = selectedShape;
     this.selected = true;
-    if (selectedShape === lastShape) { // 上去被选中的
-      if (!this.cancelable) { // 不允许取消选中
+    if (selectedShape === lastShape) {
+      if (!this.cancelable) {
         return;
       }
       this.halo && this.halo.remove(true);
@@ -119,7 +118,7 @@ class PieSelect extends Interaction {
   end(ev) {
     const selectedShape = this.selectedShape;
     if (selectedShape && !selectedShape.get('destroyed')) {
-      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
+      ev.data = selectedShape.get('origin')._origin;
       ev.shapeInfo = selectedShape.get('origin');
       ev.shape = selectedShape;
       ev.selected = !!this.selected;

@@ -86,7 +86,7 @@ class Text extends Shape {
     let x = attrs.x;
     let y = attrs.y;
 
-    if (attrs.rotate) { // 文本旋转
+    if (attrs.rotate) { // do rotation
       context.translate(x, y);
       context.rotate(attrs.rotate);
       x = 0;
@@ -148,7 +148,6 @@ class Text extends Shape {
     const { x, y, textAlign, textBaseline } = attrs;
     const width = self._getTextWidth(); // attrs.width
     if (!width) {
-      // 如果width不存在，四点共其实点
       return {
         minX: x,
         minY: y,

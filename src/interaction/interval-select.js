@@ -9,18 +9,18 @@ class IntervalSelect extends Interaction {
     defaultCfg = Util.mix({}, defaultCfg, {
       startEvent: 'tap',
       processEvent: null,
-      selectAxis: true, // 是否高亮坐标轴文本
+      selectAxis: true,
       selectAxisStyle: {
         fontWeight: 'bold'
       },
-      mode: 'shape', // 选中模式，按照 shape 集中还是一定的范围内选取
+      mode: 'shape',
       selectStyle: {
         fillOpacity: 1
-      }, // 被选中图形的样式
+      },
       unSelectStyle: {
         fillOpacity: 0.4
-      }, // 未被选中图形的样式
-      cancelable: true // 选中之后是否允许取消选中，默认允许取消选中
+      },
+      cancelable: true
     });
     if (Util.isWx || Util.isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
@@ -42,10 +42,10 @@ class IntervalSelect extends Interaction {
   _setEventData(ev) {
     const selectedShape = this.selectedShape;
     if (selectedShape && !selectedShape.get('destroyed')) {
-      ev.data = selectedShape.get('origin')._origin; // 绘制数据，包含原始数据啊
+      ev.data = selectedShape.get('origin')._origin;
       ev.shapeInfo = selectedShape.get('origin');
       ev.shape = selectedShape;
-      ev.selected = !!selectedShape.get('_selected'); // 返回选中的状态
+      ev.selected = !!selectedShape.get('_selected');
     }
   }
 
@@ -80,7 +80,6 @@ class IntervalSelect extends Interaction {
     }
     const { x, y } = Util.createEvent(ev, chart);
 
-    // 查找被点击的 shape
     const mode = this.mode;
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
@@ -89,7 +88,7 @@ class IntervalSelect extends Interaction {
     const unSelectedShapes = [];
     if (mode === 'shape') {
       const plot = chart.get('plotRange');
-      if (!Helper.isPointInPlot({ x, y }, plot)) { // 不在绘图区域
+      if (!Helper.isPointInPlot({ x, y }, plot)) {
         this.reset();
         return;
       }
@@ -112,7 +111,7 @@ class IntervalSelect extends Interaction {
       Util.each(children, child => {
         if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
           const shapeData = child.get('origin')._origin;
-          if (Object.is(shapeData, data)) { // 判断是否相同
+          if (Object.is(shapeData, data)) {
             selectedShape = child;
           } else {
             unSelectedShapes.push(child);
@@ -121,15 +120,15 @@ class IntervalSelect extends Interaction {
       });
     }
 
-    if (selectedShape) { // 有图形被选中
+    if (selectedShape) {
       this.selectedShape = selectedShape;
-      if (selectedShape.get('_selected')) { // 已经被选中
-        if (!this.cancelable) { // 不允许取消选中则不处理
+      if (selectedShape.get('_selected')) {
+        if (!this.cancelable) {
           this._setEventData(ev);
           return;
         }
-        this.reset(); // 允许取消选中
-      } else { // 未被选中
+        this.reset();
+      } else {
         const { selectStyle, unSelectStyle, selectAxisStyle } = this;
 
         if (!selectedShape.get('_originAttrs')) {
@@ -152,11 +151,11 @@ class IntervalSelect extends Interaction {
 
         selectedShape.set('_selected', true);
 
-        if (this.selectAxis) { // 坐标轴高亮
+        if (this.selectAxis) {
           if (this.selectedAxisShape) {
             this._resetShape(this.selectedAxisShape);
           }
-          // 查找 坐标轴 shape
+
           const xScale = geom.getXScale();
           const origin = selectedShape.get('origin')._origin;
           const {
@@ -179,7 +178,7 @@ class IntervalSelect extends Interaction {
 
         this.canvas.draw();
       }
-    } else { // 没有选中图形，恢复原态
+    } else {
       this.reset();
     }
 

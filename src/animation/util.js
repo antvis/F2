@@ -1,5 +1,6 @@
 /**
- * 动画工具
+ * Utility
+ * @author sima.zhang1990@gmail.com
  */
 const { Matrix } = require('../graphic/index');
 const Util = require('../util/common');
@@ -18,7 +19,7 @@ const Helpers = {
   getScaledMatrix(shape, v, direct) {
     let scaledMatrix;
 
-    shape.apply(v); // shape 原先可能做了变化
+    shape.apply(v);
     const x = v[0];
     const y = v[1];
 
@@ -69,9 +70,6 @@ const Helpers = {
     result.easing = animateCfg.easing;
     result.duration = animateCfg.duration;
     result.delay = animateCfg.delay;
-    // result.onStart = animateCfg.onStart;
-    // result.onUpdate = animateCfg.onUpdate;
-    // result.onEnd = animateCfg.onEnd;
     return result;
   },
   doAnimation(shape, endState, animateCfg, callback) {
