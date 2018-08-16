@@ -74,11 +74,6 @@ class Canvas {
     self.changeSize(width, height);
   }
 
-  /**
-   * 改变 canvas 的宽高
-   * @param  {Number} width  宽度
-   * @param  {Number} height 高度
-   */
   changeSize(width, height) {
     const pixelRatio = this.get('pixelRatio');
     const canvasDOM = this.get('el');
@@ -102,32 +97,18 @@ class Canvas {
     this.set('height', height);
   }
 
-  /**
-   * 获取 canvas 对应 dom 元素的宽度
-   * @return {Number} 返回宽度
-   */
   getWidth() {
     const pixelRatio = this.get('pixelRatio');
     const width = this.get('width');
     return width * pixelRatio;
   }
 
-  /**
-   * 获取 canvas 对应 dom 元素的高度
-   * @return {Number} 返回高度
-   */
   getHeight() {
     const pixelRatio = this.get('pixelRatio');
     const height = this.get('height');
     return height * pixelRatio;
   }
 
-  /**
-   * 将窗口坐标转变成 canvas 坐标
-   * @param  {Number} clientX 窗口x坐标
-   * @param  {Number} clientY 窗口y坐标
-   * @return {Object} canvas坐标
-   */
   getPointByClient(clientX, clientY) {
     const el = this.get('el');
     const bbox = el.getBoundingClientRect();
@@ -167,7 +148,7 @@ class Canvas {
         if (Util.isWx || Util.isMy) {
           context.draw();
         }
-      } catch (ev) { // 绘制时异常，中断重绘
+      } catch (ev) {
         console.warn('error in draw canvas, detail as:');
         console.warn(ev);
         self._endDraw();

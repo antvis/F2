@@ -66,9 +66,9 @@ class GuideBase {
   }
 
   /**
-   * 绘制辅助元素
-   * @param  {Coord} coord  坐标系
-   * @param  {Canvas.Group} group 绘制到的容器
+   * render the guide component
+   * @param  {Coord} coord  coordinate instance
+   * @param  {Canvas.Group} group the container
    */
   render(/* coord,group */) {}
 

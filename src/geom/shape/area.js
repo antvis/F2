@@ -3,12 +3,10 @@ const Shape = require('./shape');
 const Smooth = require('../../graphic/util/smooth');
 const Global = require('../../global');
 
-// 是否相等
 function equals(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;
 }
 
-// 是否等于圆心的点
 function equalsCenter(points, center) {
   let eqls = true;
   Util.each(points, function(point) {
@@ -30,7 +28,7 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
         points
       }, style),
       createPath(context) {
-        const constaint = [ // 范围
+        const constaint = [
           [ 0, 0 ],
           [ 1, 1 ]
         ];
@@ -71,8 +69,8 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
 function drawShape(cfg, container, isSmooth) {
   const self = this;
   const points = cfg.points;
-  let topPoints = []; // 区域图上面的点
-  let bottomPoints = []; // 区域图下面的点
+  let topPoints = [];
+  let bottomPoints = [];
   Util.each(points, function(point) {
     bottomPoints.push(point[0]);
     topPoints.push(point[1]);
@@ -81,13 +79,13 @@ function drawShape(cfg, container, isSmooth) {
     fillStyle: cfg.color
   }, Global.shape.area, cfg.style);
 
-  bottomPoints.reverse(); // 下面
+  bottomPoints.reverse();
   topPoints = self.parsePoints(topPoints);
   bottomPoints = self.parsePoints(bottomPoints);
   if (cfg.isInCircle) {
-    topPoints.push(topPoints[0]); // 闭合路径
-    bottomPoints.unshift(bottomPoints[bottomPoints.length - 1]); // 闭合路径
-    if (equalsCenter(bottomPoints, cfg.center)) { // 如果内部点等于圆心，不绘制
+    topPoints.push(topPoints[0]);
+    bottomPoints.unshift(bottomPoints[bottomPoints.length - 1]);
+    if (equalsCenter(bottomPoints, cfg.center)) {
       bottomPoints = [];
     }
   }
@@ -97,11 +95,10 @@ function drawShape(cfg, container, isSmooth) {
 
 const Area = Shape.registerFactory('area', {
   defaultShapeType: 'area',
-  // 如果存在多个点，分割成单个的点, 不考虑多个x对应一个y的情况
   getDefaultPoints(obj) {
     const x = obj.x;
     let y = obj.y;
-    const y0 = obj.y0; // 最小值
+    const y0 = obj.y0;
     y = Util.isArray(y) ? y : [ y0, y ];
 
     const points = [];

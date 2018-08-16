@@ -1,17 +1,16 @@
 const Util = require('../util/common');
 
-// 获取颜色之间的插值
+// Get the interpolation between colors
 function getValue(start, end, percent, index) {
   const value = start[index] + (end[index] - start[index]) * percent;
   return value;
 }
 
-// 数组转换成颜色
+// convert to hex
 function arr2hex(arr) {
   return '#' + toRGBValue(arr[0]) + toRGBValue(arr[1]) + toRGBValue(arr[2]);
 }
 
-// 将数值从 0-255 转换成16进制字符串
 function toRGBValue(value) {
   value = Math.round(value);
   value = value.toString(16);
@@ -35,7 +34,6 @@ function calColor(colors, percent) {
   return rgb;
 }
 
-// rgb 颜色转换成数组
 function hex2arr(str) {
   const arr = [];
   arr.push(parseInt(str.substr(1, 2), 16));
@@ -59,9 +57,9 @@ const colorCache = {
 
 const ColorUtil = {
   /**
-   * 将颜色转换到 hex 的格式
-   * @param  {String} color 颜色
-   * @return {String} 将颜色转换到 '#ffffff' 的格式
+   * Returns a hexadecimal string representing this color in RGB space, such as #f7eaba.
+   * @param  {String} color color value
+   * @return {String} Returns a hexadecimal string
    */
   toHex(color) {
     if (colorCache[color]) {
@@ -91,9 +89,9 @@ const ColorUtil = {
   hex2arr,
 
   /**
-   * 获取渐变函数
-   * @param  {Array} colors 多个颜色
-   * @return {String} 颜色值
+   * handle the gradient color
+   * @param  {Array} colors the colors
+   * @return {String} return the color value
    */
   gradient(colors) {
     const points = [];

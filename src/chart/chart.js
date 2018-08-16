@@ -128,40 +128,40 @@ class Chart extends Base {
   getDefaultCfg() {
     return {
       /**
-       * 画布的Id
+       * the id of canvas
        * @type {String}
        */
       id: null,
       /**
-       * 画布中绘制图形的边距
+       * padding
        * @type {Array|Number}
        */
       padding: Global.padding,
 
       /**
-       * 数据
+       * data
        * @type {Array}
        */
       data: null,
       /**
-       * chart 保有的度量
+       * scales of chart
        * @type {Object}
        */
       scales: {},
       /**
        * @private
-       * 图层对应的图形
+       * geometry instances
        * @type {Array}
        */
       geoms: null,
       /**
-       * 列定义
+       * scale configuration
        * @type {Object}
        */
       colDefs: null,
       pixelRatio: Global.pixelRatio,
       /**
-       * 过滤设置
+       * filter options
        * @type {Object}
        */
       filters: null,
@@ -210,7 +210,7 @@ class Chart extends Base {
         const count = scale.values.length;
         let range;
         if (count === 1) {
-          range = [ 0.5, 1 ]; // 只有一个分类时,防止计算出现 [0.5,0.5]的状态
+          range = [ 0.5, 1 ];
         } else {
           let widthRatio = 1;
           let offset = 0;
@@ -223,8 +223,8 @@ class Chart extends Base {
               range = [ offset / 2, 1 - offset / 2 ];
             }
           } else {
-            offset = 1 / count * 1 / 2; // 两边留下分类空间的一半
-            range = [ offset, 1 - offset ]; // 坐标轴最前面和最后面留下空白防止绘制柱状图时
+            offset = 1 / count * 1 / 2;
+            range = [ offset, 1 - offset ];
           }
         }
         scale.range = range;
@@ -242,7 +242,7 @@ class Chart extends Base {
             yScale.change({
               min: 0
             });
-          } else if (max <= 0) { // 当柱状图全为负值时也需要从 0 开始生长
+          } else if (max <= 0) {
             yScale.change({
               max: 0
             });
@@ -273,7 +273,7 @@ class Chart extends Base {
     this.set('legendItems', null);
     this._clearGeoms();
 
-    Chart.plugins.notify(this, 'clearInner'); // TODO
+    Chart.plugins.notify(this, 'clearInner');
     this.get('axisController') && this.get('axisController').clear();
   }
 
@@ -326,7 +326,7 @@ class Chart extends Base {
   _initLayout() {
     let padding = this.get('_padding');
     if (!padding) {
-      padding = this.get('margin') || this.get('padding'); // 兼容margin 的写法
+      padding = this.get('margin') || this.get('padding');
       padding = Util.parsePadding(padding);
     }
 
@@ -365,7 +365,7 @@ class Chart extends Base {
       self.set('canvas', canvas);
       self.set('width', canvas.get('width'));
       self.set('height', canvas.get('height'));
-    } catch (error) { // canvas 创建发生异常
+    } catch (error) {
       throw error;
     }
     Chart.plugins.notify(self, 'afterCanvasInit');
@@ -374,7 +374,7 @@ class Chart extends Base {
 
   _initLayers() {
     const canvas = this.get('canvas');
-    this.set('backPlot', canvas.addGroup()); // 默认 zIndex 为 0
+    this.set('backPlot', canvas.addGroup());
     this.set('middlePlot', canvas.addGroup({
       zIndex: 10
     }));
@@ -398,12 +398,11 @@ class Chart extends Base {
       }),
       chart: self
     }));
-    Chart.plugins.notify(self, 'init'); // TODO: beforeInit afterInit
+    Chart.plugins.notify(self, 'init');
   }
 
   constructor(cfg) {
     super(cfg);
-    // 附加各种 geometry 对应的方法
     const self = this;
     Util.each(Geom, function(geomConstructor, className) {
       const methodName = Util.lowerFirst(className);
@@ -417,11 +416,11 @@ class Chart extends Base {
   }
 
   /**
-   * 设置数据源和数据字段定义
+   * set data and some scale configuration
    * @chainable
-   * @param  {Array} data 数据集合
-   * @param  {Object} colDefs 数据字段定义
-   * @return {Chart} 返回当前 chart 的引用
+   * @param  {Array} data the dataset to visualize
+   * @param  {Object} colDefs the configuration for scales
+   * @return {Chart} return the chart instance
    */
   source(data, colDefs) {
     this.set('data', data);
@@ -440,7 +439,6 @@ class Chart extends Base {
     }
 
     this.set('colDefs', colDefs);
-    // this.initColDefs();
     const scaleController = this.get('scaleController');
     scaleController.defs = colDefs;
 
@@ -448,11 +446,11 @@ class Chart extends Base {
   }
 
   /**
-   * 设置坐标轴配置项
+   * configure the axis
    * @chainable
-   * @param  {String|Boolean} field 坐标轴对应的字段
-   * @param  {Object} cfg 坐标轴的配置信息
-   * @return {Chart} 返回当前 chart 的引用
+   * @param  {String|Boolean} field the field name of data
+   * @param  {Object} cfg configuration for axis
+   * @return {Chart} return the chart instance
    */
   axis(field, cfg) {
     const axisController = this.get('axisController');
@@ -466,11 +464,11 @@ class Chart extends Base {
   }
 
   /**
-   * 设置坐标系配置项
+   * configure the coordinate
    * @chainable
-   * @param  {String} type 坐标系类型
-   * @param  {Object} cfg 配置项
-   * @return {Chart} 返回当前 chart 的引用
+   * @param  {String} type set the type of coodinate
+   * @param  {Object} cfg configuration for coordinate
+   * @return {Chart} return the chart instance
    */
   coord(type, cfg) {
     let coordCfg;
@@ -492,33 +490,31 @@ class Chart extends Base {
   }
 
   /**
-   * 图表绘制
+   * render the chart
    * @chainable
-   * @return {Chart} 返回当前 chart 的引用
+   * @return {Chart} return the chart instance
    */
   render() {
     const self = this;
     const canvas = self.get('canvas');
     const geoms = self.get('geoms');
-    // 处理数据
+    // processing the data
     const data = this.get('data') || [];
     const filteredData = this._execFilter(data);
     this.set('filteredData', filteredData);
-    // 初始化坐标系
+    // init the coordinate instance
     self._initCoord();
 
     Chart.plugins.notify(self, 'beforeGeomInit');
 
-    // 初始化 geoms
+    // init all geometry instances
     self._initGeoms(geoms);
-    // 调整度量
+    // do some adjust for data
     self._adjustScale();
 
-    // 绘制坐标轴
     Chart.plugins.notify(self, 'beforeGeomDraw');
     self._renderAxis();
 
-    // 将 geom 限制在绘图区域内
     const middlePlot = self.get('middlePlot');
     if (self.get('limitInPlot') && !middlePlot.attr('clip')) {
       const coord = self.get('coord');
@@ -527,7 +523,6 @@ class Chart extends Base {
       middlePlot.attr('clip', clip);
     }
 
-    // 绘制 geom
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
       geom.paint();
@@ -542,12 +537,12 @@ class Chart extends Base {
   }
 
   /**
-   * 清空图表上面的图层
+   * clear the chart, include geometris and all the shapes
    * @chainable
-   * @return {Chart} 返回当前 chart 的引用
+   * @return {Chart} return the chart
    */
   clear() {
-    Chart.plugins.notify(this, 'clear'); // TODO: beforeClear afterClear
+    Chart.plugins.notify(this, 'clear');
     this._removeGeoms();
     this._clearInner();
     this.set('filters', null);
@@ -608,15 +603,15 @@ class Chart extends Base {
   }
 
   /**
-   * 获取数据对应在画布空间的坐标
-   * @param  {Object} record 原始数据
-   * @return {Object} 返回对应的画布上的坐标点
+   * calculate dataset's position on canvas
+   * @param  {Object} record the dataset
+   * @return {Object} return the position
    */
   getPosition(record) {
     const self = this;
     const coord = self.get('coord');
     const xScale = self.getXScale();
-    const yScale = self.getYScales()[0]; // 暂时只取第一个y轴，忽视多轴的情况
+    const yScale = self.getYScales()[0];
     const xField = xScale.field;
     const x = xScale.scale(record[xField]);
     const yField = yScale.field;
@@ -628,9 +623,9 @@ class Chart extends Base {
   }
 
   /**
-   * 获取画布上坐标对应的数据值
-   * @param  {Object} point 画布坐标的x,y的值
-   * @return {Object} 当前坐标系的数据值
+   * get the data item of the point
+   * @param  {Object} point canvas position
+   * @return {Object} return the data item
    */
   getRecord(point) {
     const self = this;
@@ -644,9 +639,9 @@ class Chart extends Base {
     return record;
   }
   /**
-   * 根据画布坐标获取对应数据集
-   * @param  {Object} point 画布坐标的x,y的值
-   * @return {Array} 纵向切割交点对应数据集
+   * get the dataset of the point
+   * @param  {Object} point canvas position
+   * @return {Array} return the dataset
   **/
   getSnapRecords(point) {
     const geom = this.get('geoms')[0];
@@ -658,15 +653,13 @@ class Chart extends Base {
   }
 
   /**
-   * 创建度量
-   * @param  {String} field 度量对应的名称
-   * @return {Scale} 度量
+   * creat scale instances
+   * @param  {String} field field name of data
+   * @return {Scale} return the scale
    */
   createScale(field) {
     let data = this.get('data');
     const filteredData = this.get('filteredData');
-    // 过滤导致数据为空时，需要使用全局数据
-    // 参与过滤的字段的度量也根据全局数据来生成
     if (filteredData.length) {
       const legendFields = this._getFieldsForLegend();
       if (legendFields.indexOf(field) === -1) {
@@ -683,8 +676,8 @@ class Chart extends Base {
 
   /**
    * @protected
-   * 添加几何标记
-   * @param {Geom} geom 几何标记
+   * add geometry instance to geoms
+   * @param {Geom} geom geometry instance
    */
   addGeom(geom) {
     const geoms = this.get('geoms');
@@ -695,8 +688,8 @@ class Chart extends Base {
   }
 
   /**
-   * 获取 x 对应的度量
-   * @return {Scale} x 对应的度量
+   * get the scale of x axis
+   * @return {Scale} return the scale
    */
   getXScale() {
     const self = this;
@@ -706,8 +699,8 @@ class Chart extends Base {
   }
 
   /**
-   * 获取 y 对应的度量
-   * @return {Array} 返回所有 y 的度量
+   * get the scale of y axis
+   * @return {Array} return the scale
    */
   getYScales() {
     const geoms = this.get('geoms');
@@ -755,8 +748,8 @@ class Chart extends Base {
             };
 
             items.push({
-              name, // 图例项显示文本的内容
-              dataValue: value, // 图例项对应原始数据中的数值
+              name, // for display
+              dataValue: value, // the origin value
               checked: true,
               marker
             });
@@ -772,7 +765,7 @@ class Chart extends Base {
     return legendItems;
   }
 
-  // 注册插件
+  // register the plugins
   registerPlugins(plugins) {
     const self = this;
     let chartPlugins = self.get('plugins') || [];
@@ -782,7 +775,7 @@ class Chart extends Base {
 
     ([]).concat(plugins).forEach(plugin => {
       if (chartPlugins.indexOf(plugin) === -1) {
-        plugin.init && plugin.init(self); // 进行初始化
+        plugin.init && plugin.init(self); // init
         chartPlugins.push(plugin);
       }
     });

@@ -1,25 +1,25 @@
 /**
- * 动画获取以及注册机制
- * @author sima.zhang
+ * Animate configuration and register
+ * @author sima.zhang1990@gmail.com
  */
 const Util = require('../util/common');
 const defaultAnimationCfg = {
   appear: {
     duration: 450,
     easing: 'quadraticOut'
-  }, // 初始入场动画配置
+  }, // 'appear' animation options
   update: {
     duration: 300,
     easing: 'quadraticOut'
-  }, // 更新时发生变更的动画配置
+  }, // 'update' animation options
   enter: {
     duration: 300,
     easing: 'quadraticOut'
-  }, // 更新时新增元素的入场动画配置
+  }, // 'enter' animation options
   leave: {
     duration: 350,
     easing: 'quadraticIn'
-  } // 更新时销毁动画配置
+  } // 'leave' animation options
 };
 
 const Animate = {

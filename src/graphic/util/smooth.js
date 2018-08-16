@@ -1,5 +1,5 @@
 /**
- * @fileOverview 将折线转换成平滑曲线
+ * @fileOverview convert the line to curve
  * @author dxq613@gmail.com
  */
 const Vector2 = require('./vector2');

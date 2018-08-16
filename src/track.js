@@ -6,9 +6,8 @@ const Global = require('./global');
 const Util = require('./util/common');
 const SERVER_URL = 'https://kcart.alipay.com/web/bi.do';
 
-// 延迟发送请求
 setTimeout(function() {
-  if (Global.trackable && Util.isBrowser) { // 只对 h5 环境下进行统计
+  if (Global.trackable && Util.isBrowser) { // Only works for H5 env
     const image = new Image();
     const newObj = {
       pg: document.URL,

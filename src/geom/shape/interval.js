@@ -6,10 +6,6 @@ const Global = require('../../global');
 function getRectPoints(cfg) {
   const { x, y, y0, size } = cfg;
 
-  // 有3种情况，
-  // 1. y，x都不是数组
-  // 2. y是数组，x不是
-  // 3. x是数组，y不是
   let ymin = y0;
   let ymax = y;
   if (Util.isArray(y)) {

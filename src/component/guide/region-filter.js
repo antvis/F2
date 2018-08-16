@@ -8,7 +8,7 @@ class RegionFilter extends GuideBase {
     this.start = [];
     this.end = [];
     this.color = null;
-    this.style = null; // 附加的样式
+    this.style = null;
   }
 
   render(coord) {
@@ -36,7 +36,7 @@ class RegionFilter extends GuideBase {
     geoms.map(geom => {
       const geomContainer = geom.get('container');
       const children = geomContainer.get('children');
-      // 需要参与动画
+
       const group = geomContainer.addGroup({
         zIndex: 10,
         className: 'guide-region-filter'

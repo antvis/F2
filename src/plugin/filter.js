@@ -1,12 +1,11 @@
 /**
- * 过滤不在 scale 定义范围内的数据
+ * filter the data out of scale' range
  */
 const Util = require('../util/common');
 const TimeUtil = require('@antv/scale/lib/time-util');
 
 module.exports = {
   beforeGeomInit(chart) {
-    // 优化绘制性能，过滤不再列定义范围内的数据，为了体验，area line path 图表例外
     const data = chart.get('data');
     const colDefs = chart.get('colDefs');
     if (!colDefs) return data;
@@ -38,7 +37,7 @@ module.exports = {
         let value = obj[field];
         if (value) {
           const colDef = colDefs[field];
-          if (colDef.type === 'timeCat') { // 时间格式有可能 values 为时间戳
+          if (colDef.type === 'timeCat') {
             const values = colDef.values;
             if (Util.isNumber(values[0])) {
               value = TimeUtil.toTimeStamp(value);

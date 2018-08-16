@@ -96,7 +96,7 @@ class Timeline {
         }
       }
 
-      if (t === 1) { // 结束
+      if (t === 1) { // end
         this.anims.splice(i, 1);
         i--;
       }

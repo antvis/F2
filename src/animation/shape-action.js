@@ -1,6 +1,6 @@
 /**
- * @fileOverview 单个 shape 的默认动画库
- * @author sima.zhang
+ * Animation functions for shape
+ * @author sima.zhang1990@gmail.com
  */
 const Util = require('../util/common');
 const Helpers = require('./util');
@@ -60,7 +60,6 @@ function fadeIn(shape, animateCfg) {
   Helpers.doAnimation(shape, endState, animateCfg);
 }
 
-// 默认动画库
 module.exports = {
   // waveIn,
   // scaleInX,
