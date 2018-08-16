@@ -1,4 +1,4 @@
-#### 3.2.0 (2018-08-14)
+#### 3.2.0 (2018-08-16)
 
 ##### New Features
 
@@ -6,6 +6,7 @@
 * add chart.guide().regionFilter({}).
 * add chart.guide().point({}).
 * add scrollBar plugin for pan and pinch interaction. ([08b18c38](https://github.com/antvis/f2/commit/08b18c388242bb19fa38831942c1c8a8aa86834a))
+* add guide.repaint() method. ([e626def6](https://github.com/antvis/f2/commit/e626def63607f86b2ef2cfb6ebd12defa1f7a570))
 * Guide component add `limitInPlot` property to limit guide draw in chart plot area. Closed [#203](https://github.com/antvis/f2/pull/203) ([05bf832c](https://github.com/antvis/f2/commit/05bf832c195338973bc76104dfe7480708f42ed5))
 * add show() and hide() methods for `Geometry` instance. ([652ce741](https://github.com/antvis/f2/commit/652ce741d44087bec8a00de79608ec2913ed34b8))
 * add `limitInPlot` property for chart, to limit the drawing area of geometrys. ([74e53218](https://github.com/antvis/f2/commit/74e53218e9bc970feeab5e79ffb62310c31444cf))
