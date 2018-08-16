@@ -41,16 +41,16 @@
       start: [ 'min', 95 ],
       end: [ 'max', 'max' ],
       color: '#FF4D4F'
-    })
-    .line({
+    });
+  chart.guide().line({
       start: [ 'min', 95 ],
       end: [ 'max', 95 ],
       style: {
         stroke: '#FF4D4F',
         lineDash: [ 2 ]
       }
-    })
-    .text({
+    });
+  chart.guide().text({
       position: [ 'max', 95 ],
       content: '预警值： 95',
       offsetY: -5,

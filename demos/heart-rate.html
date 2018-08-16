@@ -91,16 +91,16 @@ chart.guide()
     start: [ 'min', 'min' ],
     end: [ 'max', 60 ],
     color: '#1AC44D'
-  })
-  .rect({
+  });
+chart.guide().rect({
     start: [ 'min', 'min' ],
     end: [ 'max', 60 ],
     style: {
       fill: '#e8e8e8',
       opacity: 0.2
     }
-  })
-  .text({
+  });
+chart.guide().text({
     position: [ 'max', 50 ],
     content: '心率过低',
     offsetX: -5,
@@ -116,16 +116,16 @@ chart.guide()
     start: [ 'min', 100 ],
     end: [ 'max', 'max' ],
     color: '#FF7875'
-  })
-  .rect({
+  });
+chart.guide().rect({
     start: [ 'min', 100 ],
     end: [ 'max', 'max' ],
     style: {
       fill: '#e8e8e8',
       opacity: 0.2
     }
-  })
-  .text({
+  });
+chart.guide().text({
     position: [ 'max', 130 ],
     content: '心率过高',
     offsetX: -5,

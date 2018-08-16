@@ -77,7 +77,8 @@ chart.guide()
     start: [ '10:00', 1000 ],
     end: [ '13:00', 'max' ],
     color: '#fff'
-  }).regionFilter({
+  });
+chart.guide().regionFilter({
     start: [ '10:00', 1000 ],
     end: [ '13:00', 'max' ],
     color: '#FF4D4F',
@@ -101,8 +102,8 @@ chart.guide()
         lineDash: [ 2, 1 ],
         stroke: '#FF4D4F'
       }
-    })
-    .text({
+    });
+  chart.guide().text({
       position: [ 'min', 1000 ],
       content: '预警线',
       style: {

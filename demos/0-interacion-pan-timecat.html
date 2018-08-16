@@ -103,7 +103,8 @@ $.getJSON('./data/steps.json', function(data) {
         lineWidth: 1,
         stroke: '#A4A4A4'
       }
-    }).text({
+    });
+    chart.guide().text({
       position: [ obj.date, 'min' ],
       content: moment(obj.date).format('YYYY-MM'),
       style: {
