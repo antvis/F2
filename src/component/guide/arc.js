@@ -5,17 +5,17 @@ class Arc extends GuideBase {
   _initDefaultCfg() {
     this.type = 'arc';
     /**
-     * 起点
+     * start point
      * @type {Array | Function}
      */
     this.start = [];
     /**
-     * 终点
+     * end point
      * @type {Array | Function}
      */
     this.end = [];
     /**
-     * 辅助文本的样式配置
+     * style configuration
      * @type {Object}
      */
     this.style = {
@@ -28,6 +28,9 @@ class Arc extends GuideBase {
     const self = this;
     const start = self.parsePoint(coord, self.start);
     const end = self.parsePoint(coord, self.end);
+    if (!start || !end) {
+      return;
+    }
     const coordCenter = coord.center;
     const radius = Math.sqrt((start.x - coordCenter.x) * (start.x - coordCenter.x)
       + (start.y - coordCenter.y) * (start.y - coordCenter.y));

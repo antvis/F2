@@ -1,4 +1,3 @@
-
 let DomUtil;
 /**
  * Detects support for options object argument in addEventListener.
@@ -34,7 +33,7 @@ function createEvent(type, chart, x, y, nativeEvent) {
   };
 }
 
-function fromNativeEvent(event, chart) { // TODO: chart 改成 dom
+function fromNativeEvent(event, chart) {
   const type = event.type;
 
   const point = {};
@@ -97,7 +96,6 @@ DomUtil = {
     const height = bottom - top - paddingTop - paddingBottom;
     const pixelRatio = canvas.get('pixelRatio');
 
-    // 为了保证数据查找的精度，这里不要取整
     const mouseX = (point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio;
     const mouseY = (point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio;
 

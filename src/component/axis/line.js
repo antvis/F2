@@ -7,7 +7,7 @@ class Line extends Abstract {
     this.start = null;
     this.end = null;
   }
-  // 获取坐标轴上的点
+
   getOffsetPoint(value) {
     const { start, end } = this;
     return {
@@ -16,7 +16,6 @@ class Line extends Abstract {
     };
   }
 
-  // 获取坐标轴上点的向量，极坐标下覆盖此方法
   getAxisVector() {
     const { start, end } = this;
     return [ end.x - start.x, end.y - start.y ];

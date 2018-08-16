@@ -1,10 +1,4 @@
-const requestAnimationFrame = typeof window === 'object' && window.requestAnimationFrame ? window.requestAnimationFrame : function(fn) {
-  return setTimeout(fn, 16);
-};
-// const cancelAnimationFrame = typeof window === 'object' && window.cancelAnimationFrame ? window.cancelAnimationFrame : function(id) {
-//   return clearInterval(id);
-// };
-
+const { requestAnimationFrame } = require('../util/requestAnimationFrame');
 const clock = typeof performance === 'object' && performance.now ? performance : Date;
 
 class Timeline {
@@ -102,7 +96,7 @@ class Timeline {
         }
       }
 
-      if (t === 1) { // 结束
+      if (t === 1) { // end
         this.anims.splice(i, 1);
         i--;
       }
@@ -115,12 +109,5 @@ class Timeline {
     this.time = clock.now();
   }
 }
-
-// Timeline.getGlobalInstance = function() {
-//   if (!Timeline.globalInstance) {
-//     Timeline.globalInstance = new Timeline();
-//   }
-//   return Timeline.globalInstance;
-// };
 
 module.exports = Timeline;

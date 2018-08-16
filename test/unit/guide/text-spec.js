@@ -5,7 +5,7 @@ const { Text } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
 const canvas1 = document.createElement('canvas');
-canvas1.id = 'guide';
+canvas1.id = 'guideText';
 document.body.appendChild(canvas1);
 
 
@@ -16,7 +16,7 @@ describe('Guide.Text', function() {
   });
 
   const canvas = new Canvas({
-    el: 'guide',
+    el: 'guideText',
     width: 500,
     height: 500,
     pixelRatio: 2
@@ -77,5 +77,6 @@ describe('Guide.Text', function() {
     expect(children[0].attr('x')).to.equal(360);
     expect(children[0].attr('y')).to.equal(160);
     // expect(children[0].attr('rotate')).to.equal(Math.PI);
+    document.body.removeChild(canvas1);
   });
 });

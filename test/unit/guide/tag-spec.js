@@ -5,7 +5,7 @@ const { Tag } = require('../../../src/component/guide/index');
 const Scale = require('../../../src/scale/index');
 
 const canvas1 = document.createElement('canvas');
-canvas1.id = 'guide';
+canvas1.id = 'guideTag';
 canvas1.style.position = 'fixed';
 canvas1.style.top = 0;
 canvas1.style.left = 0;
@@ -18,7 +18,7 @@ describe('Guide.Tag', function() {
   });
 
   const canvas = new Canvas({
-    el: 'guide',
+    el: 'guideTag',
     width: 500,
     height: 500,
     pixelRatio: 2

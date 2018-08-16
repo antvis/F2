@@ -55,18 +55,31 @@ class GuideBase {
     const x = self._getNormalizedValue(position[0], xScale);
     const y = self._getNormalizedValue(position[1], yScales[0]);
 
-    return coord.convertPoint({
-      x,
-      y
-    });
+    const point = coord.convertPoint({ x, y });
+    if (self.limitInPlot) { // limit in chart plotRange
+      if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+        return point;
+      }
+      return null;
+    }
+    return point;
   }
 
   /**
-   * 绘制辅助元素
-   * @param  {Coord} coord  坐标系
-   * @param  {Canvas.Group} group 绘制到的容器
+   * render the guide component
+   * @param  {Coord} coord  coordinate instance
+   * @param  {Canvas.Group} group the container
    */
   render(/* coord,group */) {}
+
+  repaint() {
+    this.remove();
+    const { coord, container, canvas } = this;
+    if (container && !container.isDestroyed()) {
+      this.render(coord, container);
+      canvas.draw();
+    }
+  }
 
   remove() {
     const { element } = this;

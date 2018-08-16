@@ -5,8 +5,8 @@ const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
 const Attr = require('../attr/index');
-const Shape = require('./shape/shape');
-const Adjust = require('./adjust/base');
+const GeometryShape = require('./shape/shape');
+const Adjust = require('@antv/adjust/lib/base');
 
 function parseFields(field) {
   if (Util.isArray(field)) {
@@ -19,7 +19,7 @@ function parseFields(field) {
 }
 
 /**
- * 图形的基类
+ * The parent class for Geometry
  * @class Geom
  */
 class Geom extends Base {
@@ -27,17 +27,17 @@ class Geom extends Base {
   getDefaultCfg() {
     return {
       /**
-       * core的类型
+       * geometry type
        * @type {String}
        */
       type: null,
       /**
-       * 图形的数据集合
+       * the data of geometry
        * @type {Array}
        */
       data: null,
       /**
-       * 属性的键值对
+       * the attrs of geo,etry
        * @type {Object}
        */
       attrs: {},
@@ -45,12 +45,12 @@ class Geom extends Base {
       scales: {},
 
       /**
-       * 画布
+       * group for storing the shapes
        * @type {Canvas}
        */
       container: null,
       /**
-       * 图形样式
+       * style options
        * @type {Object}
        */
       styleOptions: null,
@@ -60,7 +60,7 @@ class Geom extends Base {
       shapeType: '',
 
       /**
-       * 是否生成多个点来绘制图形
+       * wether to generate key points for each shape
        * @protected
        * @type {Boolean}
        */
@@ -69,15 +69,8 @@ class Geom extends Base {
       attrOptions: {},
 
       sortable: false,
-      /**
-       * 图形的底边是否从 0 开始，默认为 0，即从 0 开始，
-       * 否则从最小值开始
-       * @type {Boolean}
-      */
       startOnZero: true,
-      /**
-       * 是否连接空数据，对 area、line、path 生效
-       */
+      visible: true,
       connectNulls: false
     };
   }
@@ -92,7 +85,6 @@ class Geom extends Base {
     self.set('dataArray', dataArray);
   }
 
-  // 获取分组的度量
   _getGroupScales() {
     const self = this;
     const scales = [];
@@ -110,22 +102,26 @@ class Geom extends Base {
     return scales;
   }
 
-  // 分组数据
   _groupData(data) {
     const self = this;
+    const colDefs = self.get('colDefs');
     const groupScales = self._getGroupScales();
     if (groupScales.length) {
+      const appendConditions = {};
       const names = [];
-      Util.each(groupScales, function(scale) {
-        names.push(scale.field);
+      Util.each(groupScales, scale => {
+        const field = scale.field;
+        names.push(field);
+        if (colDefs && colDefs[field] && colDefs[field].values) { // users have defined
+          appendConditions[scale.field] = colDefs[field].values;
+        }
       });
-      return Util.Array.group(data, names);
+      return Util.Array.group(data, names, appendConditions);
     }
     return [ data ];
 
   }
 
-  // 设置属性配置信息
   _setAttrOptions(attrName, attrCfg) {
     const options = this.get('attrOptions');
     options[attrName] = attrCfg;
@@ -146,7 +142,6 @@ class Geom extends Base {
     this._setAttrOptions(attrName, attrCfg);
   }
 
-   // step 1: init attrs
   _initAttrs() {
     const self = this;
     const attrs = self.get('attrs');
@@ -169,7 +164,6 @@ class Geom extends Base {
         }
         if (type === 'position') {
           const yScale = scales[1];
-          // 饼图需要填充满整个空间
           if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {
               yScale.change({
@@ -198,7 +192,6 @@ class Geom extends Base {
     return scale;
   }
 
-  // 处理数据
   _processData() {
     const self = this;
     const data = this.get('data');
@@ -229,7 +222,6 @@ class Geom extends Base {
     return rst;
   }
 
-  // step 2.3 将分类数据翻译成数据, 仅对位置相关的度量进行数字化处理
   _numberic(data) {
     const positionAttr = this.getAttr('position');
     const scales = positionAttr.scales;
@@ -246,7 +238,6 @@ class Geom extends Base {
     }
   }
 
-  // 进行数据调整
   _adjustData(dataArray) {
     const self = this;
     const adjust = self.get('adjust');
@@ -296,11 +287,14 @@ class Geom extends Base {
   _sort(mappedArray) {
     const self = this;
     const xScale = self.getXScale();
-    const xField = xScale.field;
-    if (xScale.type !== 'identity' && xScale.values.length > 1) {
+    const { field, type, isLinear } = xScale;
+    if ((isLinear || type === 'timeCat') && xScale.values.length > 1) { // sort only for linear and timeCat type.
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
-          return xScale.translate(obj1[FIELD_ORIGIN][xField]) - xScale.translate(obj2[FIELD_ORIGIN][xField]);
+          if (type === 'timeCat') {
+            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][field]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][field]);
+          }
+          return xScale.translate(obj1[FIELD_ORIGIN][field]) - xScale.translate(obj2[FIELD_ORIGIN][field]);
         });
       });
     }
@@ -326,22 +320,16 @@ class Geom extends Base {
     self.set('dataArray', mappedArray);
   }
 
-  /**
-   * @protected
-   * 获取图形的工厂类
-   * @return {Object} 工厂类对象
-   */
   getShapeFactory() {
     let shapeFactory = this.get('shapeFactory');
     if (!shapeFactory) {
       const shapeType = this.get('shapeType');
-      shapeFactory = Shape.getShapeFactory(shapeType);
+      shapeFactory = GeometryShape.getShapeFactory(shapeType);
       this.set('shapeFactory', shapeFactory);
     }
     return shapeFactory;
   }
 
-  // step 3.2 mapping
   _mapping(data) {
     const self = this;
     const attrs = self.get('attrs');
@@ -359,11 +347,11 @@ class Geom extends Base {
           const attr = attrs[k];
           const names = attr.names;
           const values = self._getAttrValues(attr, record);
-          if (names.length > 1) { // position 之类的生成多个字段的属性
+          if (names.length > 1) {
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
-              newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val; // 只有一个值时返回第一个属性值
+              newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
             newRecord[names[0]] = values.length === 1 ? values[0] : values;
@@ -376,7 +364,6 @@ class Geom extends Base {
     return mappedData;
   }
 
-  // 获取属性映射的值
   _getAttrValues(attr, record) {
     const scales = attr.scales;
     const params = [];
@@ -405,7 +392,7 @@ class Geom extends Base {
 
   _beforeMapping(dataArray) {
     const self = this;
-    if (self.get('sortable')) { // 需要排序
+    if (self.get('sortable')) {
       self._sort(dataArray);
     }
     if (self.get('generatePoints')) {
@@ -484,7 +471,7 @@ class Geom extends Base {
 
     if (gShape) {
       Util.each([].concat(gShape), s => {
-        s.set('origin', shapeData); // todo
+        s.set('origin', shapeData);
       });
     }
   }
@@ -503,16 +490,16 @@ class Geom extends Base {
   }
 
   /**
-   * 获取图形对应点的配置项
+   * get the info of each shape
    * @protected
-   * @param  {Object} obj 数据对象
-   * @return {Object} cfg 获取图形对应点的配置项
+   * @param  {Object} obj the data item
+   * @return {Object} cfg return the result
    */
   createShapePointsCfg(obj) {
     const xScale = this.getXScale();
     const yScale = this.getYScale();
     const x = this._normalizeValues(obj[xScale.field], xScale);
-    let y; // 存在没有 y 的情况
+    let y;
 
     if (yScale) {
       y = this._normalizeValues(obj[yScale.field], yScale);
@@ -527,17 +514,13 @@ class Geom extends Base {
     };
   }
 
-  /**
-   * @protected
-   * @return {Number} y 轴上的最小值
-   */
   getYMinValue() {
     const yScale = this.getYScale();
     const { min, max } = yScale;
     let value;
 
     if (this.get('startOnZero')) {
-      if (max <= 0 && min <= 0) { // 当值全部为负时，需要在现有范围内绘制
+      if (max <= 0 && min <= 0) {
         value = max;
       } else {
         value = min >= 0 ? min : 0;
@@ -549,7 +532,6 @@ class Geom extends Base {
     return value;
   }
 
-  // 将数据归一化
   _normalizeValues(values, scale) {
     let rst = [];
     if (Util.isArray(values)) {
@@ -563,28 +545,14 @@ class Geom extends Base {
     return rst;
   }
 
-  /**
-   * 获取属性
-   * @protected
-   * @param {String} name 属性名
-   * @return {Scale} 度量
-   */
   getAttr(name) {
     return this.get('attrs')[name];
   }
 
-  /**
-   * 获取 x 对应的度量
-   * @return {Scale} x 对应的度量
-   */
   getXScale() {
     return this.getAttr('position').scales[0];
   }
 
-  /**
-   * 获取 y 对应的度量
-   * @return {Scale} y 对应的度量
-   */
   getYScale() {
     return this.getAttr('position').scales[1];
   }
@@ -637,11 +605,6 @@ class Geom extends Base {
     return result;
   }
 
-  /**
-   * 根据画布坐标获取切割线对应数据集
-   * @param  {Object} point 画布坐标的x,y的值
-   * @return {Array} 切割交点对应数据集
-  **/
   getSnapRecords(point) {
     const self = this;
     const coord = self.get('coord');
@@ -658,7 +621,7 @@ class Geom extends Base {
     const invertPoint = coord.invertPoint(point);
     let invertPointX = invertPoint.x;
     if (self.isInCircle() && !coord.transposed && invertPointX > (1 + xScale.rangeMax()) / 2) {
-      invertPointX = xScale.rangeMin(); // 极坐标下，scale 的 range 被做过特殊处理 see chart.js#L183
+      invertPointX = xScale.rangeMin();
     }
 
     let xValue = xScale.invert(invertPointX);
@@ -677,9 +640,9 @@ class Geom extends Base {
       });
     });
 
-    // 特别针对饼图做处理
+    // special for pie chart
     if (this.hasAdjust('stack') && coord.isPolar && coord.transposed && xScale.values.length === 1) {
-      if (invertPointX >= 0 && invertPointX <= 1) { // 精确拾取
+      if (invertPointX >= 0 && invertPointX <= 1) {
         let yValue = yScale.invert(invertPoint.y);
         yValue = self._getSnap(yScale, yValue, tmp);
         tmp.forEach(obj => {
@@ -703,12 +666,6 @@ class Geom extends Base {
     return value === originValue;
   }
 
-  /**
-   * 位置属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @return {Geom} geom 当前几何标记
-   */
   position(field) {
     this._setAttrOptions('position', {
       field
@@ -716,37 +673,16 @@ class Geom extends Base {
     return this;
   }
 
-  /**
-   * 颜色属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @param  {Array|Function} values 颜色的数组或者回调函数
-   * @return {Geom} geom 当前几何标记
-   */
   color(field, values) {
     this._createAttrOption('color', field, values, Global.colors);
     return this;
   }
 
-  /**
-   * 大小属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @param  {Array|Function} values 大小的数组或者回调函数
-   * @return {Geom} geom 当前几何标记
-   */
   size(field, values) {
     this._createAttrOption('size', field, values, Global.sizes);
     return this;
   }
 
-  /**
-   * 形状属性映射
-   * @chainable
-   * @param  {String} field 字段名
-   * @param  {Array|Function} values 大小的数组或者回调函数
-   * @return {Geom} geom 当前几何标记
-   */
   shape(field, values) {
     const type = this.get('type');
     const shapes = Global.shapes[type] || [];
@@ -811,11 +747,24 @@ class Geom extends Base {
 
   destroy() {
     this.clear();
-    // const container = this.get('container');
-    // container && container.remove();
     super.destroy();
   }
 
+  _display(visible) {
+    this.set('visible', visible);
+    const container = this.get('container');
+    const canvas = container.get('canvas');
+    container.set('visible', visible);
+    canvas.draw();
+  }
+
+  show() {
+    this._display(true);
+  }
+
+  hide() {
+    this._display(false);
+  }
 }
 
 module.exports = Geom;

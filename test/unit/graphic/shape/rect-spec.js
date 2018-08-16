@@ -25,6 +25,7 @@ describe('Rect', function() {
   });
 
   it('init attr', function() {
+    expect(rect.getType()).to.equal('rect');
     expect(rect.get('canStroke')).to.be.true;
     expect(rect.get('canFill')).to.be.true;
     expect(rect.attr('x')).to.equal(50);
@@ -69,6 +70,7 @@ describe('Rect', function() {
     canvas.add(rect);
     canvas.draw();
     expect(canvas.get('children').length).to.equal(1);
+    document.body.removeChild(dom);
   });
 });
 

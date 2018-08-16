@@ -1,12 +1,13 @@
 const Util = require('../util/common');
 const Global = require('../global');
 const Tooltip = require('../component/tooltip');
+const Helper = require('../util/helper');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
   triggerOn: [ 'touchstart', 'touchmove' ],
   // triggerOff: 'touchend',
-  alwaysShow: false, // 当移出触发区域，是否仍显示提示框内容，默认为 false，移出触发区域 tooltip 消失，设置为 true 可以保证一直显示提示框内容
+  alwaysShow: false,
   showTitle: false,
   showCrosshairs: false,
   crosshairsStyle: {
@@ -68,7 +69,7 @@ function getTooltipName(geom, origin) {
   let name;
   let nameScale;
   const groupScales = geom._getGroupScales();
-  if (groupScales.length) { // 如果存在分组类型，取第一个分组类型
+  if (groupScales.length) {
     Util.each(groupScales, function(scale) {
       nameScale = scale;
       return false;
@@ -107,7 +108,6 @@ function _indexOfArray(items, item) {
   return rst;
 }
 
-// 去除重复的值, 去除不同图形相同数据，只展示一份即可
 function _uniqItems(items) {
   const tmp = [];
   Util.each(items, function(item) {
@@ -145,7 +145,7 @@ class TooltipController {
     const shapes = [];
     Util.each(geoms, geom => {
       const type = geom.get('type');
-      if (Util.indexOf(shapes, type) === -1) {
+      if (shapes.indexOf(type) === -1) {
         shapes.push(type);
       }
     });
@@ -169,7 +169,7 @@ class TooltipController {
   render() {
     const self = this;
 
-    if (self.tooltip || !self.enable) {
+    if (self.tooltip /* || !self.enable */) {
       return;
     }
 
@@ -259,9 +259,9 @@ class TooltipController {
     const tooltip = this.tooltip;
     const cfg = this.cfg;
 
-    items = _uniqItems(items); // 过滤重复的记录项
+    items = _uniqItems(items);
 
-    if (cfg.onShow) { // tooltip 展示
+    if (cfg.onShow) {
       cfg.onShow({
         x: point.x,
         y: point.y,
@@ -275,7 +275,7 @@ class TooltipController {
     }
     this._lastActive = items;
 
-    if (cfg.onChange || Util.isFunction(cfg.custom)) { // 兼容之前的写法
+    if (cfg.onChange || Util.isFunction(cfg.custom)) {
       const onChange = cfg.onChange || cfg.custom;
       onChange({
         x: point.x,
@@ -321,37 +321,39 @@ class TooltipController {
     const coord = chart.get('coord');
 
     Util.each(geoms, geom => {
-      const type = geom.get('type');
-      const records = geom.getSnapRecords(point);
-      Util.each(records, record => {
-        if (record.x && record.y) {
-          const { x, y, _origin, color } = record;
-          const tooltipItem = {
-            x,
-            y: Util.isArray(y) ? y[1] : y,
-            color: color || Global.defaultColor,
-            origin: _origin,
-            name: getTooltipName(geom, _origin),
-            value: getTooltipValue(geom, _origin),
-            title: getTooltipTitle(geom, _origin)
-          };
-          if (marker) {
-            tooltipItem.marker = Util.mix({
-              fill: color || Global.defaultColor
-            }, marker);
-          }
-          items.push(tooltipItem);
+      if (geom.get('visible')) {
+        const type = geom.get('type');
+        const records = geom.getSnapRecords(point);
+        Util.each(records, record => {
+          if (record.x && record.y) {
+            const { x, y, _origin, color } = record;
+            const tooltipItem = {
+              x,
+              y: Util.isArray(y) ? y[1] : y,
+              color: color || Global.defaultColor,
+              origin: _origin,
+              name: getTooltipName(geom, _origin),
+              value: getTooltipValue(geom, _origin),
+              title: getTooltipTitle(geom, _origin)
+            };
+            if (marker) {
+              tooltipItem.marker = Util.mix({
+                fill: color || Global.defaultColor
+              }, marker);
+            }
+            items.push(tooltipItem);
 
-          if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
-            tooltipMarkerType = 'circle';
-            tooltipMarkerItems.push(tooltipItem);
-          } else if (type === 'interval' && (coord.type === 'cartesian' || coord.type === 'rect')) {
-            tooltipMarkerType = 'rect';
-            tooltipItem.width = geom.getSize(record._origin);
-            tooltipMarkerItems.push(tooltipItem);
+            if ([ 'line', 'area', 'path' ].indexOf(type) !== -1) {
+              tooltipMarkerType = 'circle';
+              tooltipMarkerItems.push(tooltipItem);
+            } else if (type === 'interval' && (coord.type === 'cartesian' || coord.type === 'rect')) {
+              tooltipMarkerType = 'rect';
+              tooltipItem.width = geom.getSize(record._origin);
+              tooltipMarkerItems.push(tooltipItem);
+            }
           }
-        }
-      });
+        });
+      }
     });
 
     if (items.length) {
@@ -382,26 +384,32 @@ class TooltipController {
   }
 
   handleShowEvent(ev) {
+    if (!this.enable) return;
     const chart = this.chart;
     const plot = chart.get('plotRange');
-    const { x, y } = Util.createEvent(ev, chart);
-    if (!(x >= plot.tl.x && x <= plot.tr.x && y >= plot.tl.y && y <= plot.br.y) && !this.cfg.alwaysShow) { // not in chart plot
+    const point = Util.createEvent(ev, chart);
+    if (!Helper.isPointInPlot(point, plot) && !this.cfg.alwaysShow) { // not in chart plot
       this.hideTooltip();
       return;
     }
+
     const lastTimeStamp = this.timeStamp;
     const timeStamp = +new Date();
     if ((timeStamp - lastTimeStamp) > 16) {
-      this.showTooltip({ x, y });
+      this.showTooltip(point);
       this.timeStamp = timeStamp;
     }
   }
 
   handleHideEvent() {
+    if (!this.enable) return;
+
     this.hideTooltip();
   }
 
   handleDocEvent(ev) {
+    if (!this.enable) return;
+
     const canvasDom = this.canvasDom;
     if (ev.target !== canvasDom) {
       this.hideTooltip();
@@ -443,7 +451,6 @@ class TooltipController {
     triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
 
-    // TODO: 当用户点击 canvas 外的事件时 tooltip 消失
     if (!alwaysShow) {
       const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
       Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
@@ -457,20 +464,16 @@ module.exports = {
       chart
     });
     chart.set('tooltipController', tooltipController);
-    /**
-     * 配置 tooltip
-     * @param  {Boolean|Object} enable Boolean 表示是否开启tooltip，Object 则表示配置项
-     * @param  {Object} cfg 配置项
-     * @return {Chart} 返回 Chart 实例
-     */
-    chart.tooltip = function(enable, cfg = {}) {
+
+    chart.tooltip = function(enable, cfg) {
       if (Util.isObject(enable)) {
         cfg = enable;
         enable = true;
       }
       tooltipController.enable = enable;
-      tooltipController.cfg = cfg;
-
+      if (cfg) {
+        tooltipController.cfg = cfg;
+      }
       return this;
     };
   },
@@ -478,20 +481,11 @@ module.exports = {
     const tooltipController = chart.get('tooltipController');
     tooltipController.render();
 
-    /**
-     * 根据坐标点显示对应的 tooltip
-     * @param  {Object} point 画布上的点
-     * @return {Chart}       返回 chart 实例
-     */
     chart.showTooltip = function(point) {
       tooltipController.showTooltip(point);
       return this;
     };
 
-    /**
-     * 隐藏 tooltip
-     * @return {Chart}       返回 chart 实例
-     */
     chart.hideTooltip = function() {
       tooltipController.hideTooltip();
       return this;

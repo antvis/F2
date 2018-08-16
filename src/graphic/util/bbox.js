@@ -64,12 +64,6 @@ function cubicBezierBounds(c) {
 }
 
 module.exports = {
-  /**
-   * 从顶点数组中计算最小包围盒
-   * @param  {Array} points 顶点数组
-   * @param  {Number} lineWidth 线宽
-   * @return {Object}        最小包围盒的范围
-   */
   getBBoxFromPoints(points) {
     if (points.length === 0) {
       return;
@@ -96,15 +90,6 @@ module.exports = {
       maxY: bottom
     };
   },
-  /**
-   * 计算线的最小包围盒
-   * @param  {Number} x0 线段的起点 x
-   * @param  {Number} y0 线段的起点 y
-   * @param  {Number} x1 线段的终点 x
-   * @param  {Number} y1 线段的终点 y
-   * @param  {Number} lineWidth 线宽
-   * @return {Object}    线段的最小包围盒
-   */
   getBBoxFromLine(x0, y0, x1, y1) {
     return {
       minX: Math.min(x0, x1),

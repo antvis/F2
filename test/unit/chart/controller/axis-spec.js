@@ -252,4 +252,5 @@ describe('axis controller circle transposed', function() {
   // it('createAxis', function() {
   //   controller.createAxis(circle, cat, [ linear, otherLinear ]);
   // });
+  document.body.removeChild(canvas);
 });

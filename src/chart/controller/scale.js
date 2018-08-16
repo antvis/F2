@@ -8,21 +8,6 @@ const SCALE_TYPES_MAP = {
   identity: 'Identity'
 };
 
-function getRange(values) {
-  if (!values.length) { // 空数组需要手动设置 min:0 max:0，否则 linear scale 会报错
-    return {
-      min: 0,
-      max: 0
-    };
-  }
-  const max = Math.max.apply(null, values);
-  const min = Math.min.apply(null, values);
-  return {
-    min,
-    max
-  };
-}
-
 class ScaleController {
   constructor(cfg) {
     // defs 列定义
@@ -35,7 +20,6 @@ class ScaleController {
     let def = null;
     if (Global.scales[field] || defs[field]) {
       def = Util.mix({}, Global.scales[field]);
-      // 处理覆盖属性的问题
       Util.each(defs[field], function(v, k) {
         if (Util.isNil(v)) {
           delete def[k];
@@ -47,7 +31,10 @@ class ScaleController {
     return def;
   }
 
-  _getDefaultType(field, data) {
+  _getDefaultType(field, data, def) {
+    if (def && def.type) {
+      return def.type;
+    }
     let type = 'linear';
     let value = Util.Array.firstValue(data, field);
     if (Util.isArray(value)) {
@@ -59,17 +46,31 @@ class ScaleController {
     return type;
   }
 
-  _getScaleCfg(type, field, data) {
-    const cfg = {
-      field
-    };
-    const values = Util.Array.values(data, field);
-    cfg.values = values;
-    if (type !== 'cat' && type !== 'timeCat') {
-      const { min, max } = getRange(values);
-      cfg.min = min;
-      cfg.max = max;
+  _getScaleCfg(type, field, data, def) {
+    let values;
+    if (def && def.values) {
+      values = def.values;
+    } else {
+      values = Util.Array.values(data, field);
     }
+    const cfg = {
+      field,
+      values
+    };
+
+    if (type !== 'cat' && type !== 'timeCat') {
+      if (!def || !(def.min && def.max)) {
+        const { min, max } = Util.Array.getRange(values);
+        cfg.min = min;
+        cfg.max = max;
+        cfg.nice = true;
+      }
+    }
+
+    if (type === 'cat' || type === 'timeCat') {
+      cfg.isRounding = false; // used for tickCount calculation
+    }
+
     return cfg;
   }
 
@@ -77,7 +78,6 @@ class ScaleController {
     const self = this;
     const def = self._getDef(field);
     let scale;
-    // 如果数据为空直接返回常量度量
     if (!data || !data.length) {
       if (def && def.type) {
         scale = new Scale[SCALE_TYPES_MAP[def.type]](def);
@@ -102,16 +102,10 @@ class ScaleController {
         field: field.toString(),
         values: [ field ]
       });
-    } else { // 如果已经定义过这个度量
-      let type;
-      if (def) {
-        type = def.type;
-      }
-      type = type || self._getDefaultType(field, data);
-      const cfg = self._getScaleCfg(type, field, data);
-      if (def) {
-        Util.mix(cfg, def);
-      }
+    } else {
+      const type = self._getDefaultType(field, data, def);
+      const cfg = self._getScaleCfg(type, field, data, def);
+      def && Util.mix(cfg, def);
       scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
     }
     return scale;

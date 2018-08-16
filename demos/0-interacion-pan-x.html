@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>x 轴平移</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p>手机上体验效果更佳</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
+$.getJSON('./data/linear-pan.json', function(data) {
+  var chart = new F2.Chart({
+    id: 'mountNode',
+    pixelRatio: window.devicePixelRatio
+  });
+  chart.source(data, {
+    release: {
+      min: 2000,
+      max: 2010
+    }
+  });
+  chart.animate({
+    'axis-label': false,
+    'axis-grid': false
+  });
+  data.map(function (obj) {
+    chart.guide().tag({
+      // top: false,
+      position: [obj.release, obj.count],
+      content: obj.count == 0 ? '0' : obj.count,
+      direct: 'tc',
+      limitInPlot: true,
+      background: {
+        padding: [2, 3], // tag 内边距，使用同 css 盒模型的 padding
+        radius: 2, // tag 圆角
+        fill: '#999', // tag 背景色
+      },
+      textStyle: {
+        fontSize: 12,
+        fill: '#fff'
+      }, // tag 文本样式
+      withPoint: true,
+      offsetX: 0, // x 方向的偏移量
+      offsetY: -6 // y 方向偏移量
+    });
+  });
+  chart.tooltip({
+    showCrosshairs: true,
+    showItemMarker: false,
+    background: {
+      radius: 2,
+      fill: '#1890FF',
+      padding: [3, 5]
+    },
+    nameStyle: {
+      fill: '#fff'
+    },
+    onShow: function onShow(ev) {
+      var items = ev.items;
+      items[0].name = items[0].title;
+    }
+  });
+
+  chart.line().position('release*count');
+  // chart.point().position('release*count');
+
+  chart.interaction('pan', {
+    onProcess() {
+      console.log(this.xRange);
+    }
+  });
+  chart.scrollBar({
+    mode: 'x',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
+    }
+  });
+  chart.render();
+});
+</script>
+</body>
+</html>

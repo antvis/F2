@@ -6,9 +6,9 @@ const Shape = {};
 const ShapeBase = {
   _coord: null,
   /**
-   * 绘制图形
-   * @param {Object} cfg 配置项
-   * @param {Object} container 容器
+   * draw the shape
+   * @param {Object} cfg options
+   * @param {Object} container container to store the shapes
    */
   draw(cfg, container) {
     if (this.drawShape) {
@@ -16,16 +16,16 @@ const ShapeBase = {
     }
   },
   /**
-   * 设置坐标系
-   * @param {Coord} coord 坐标系
+   * set the coordinate instance
+   * @param {Coord} coord coordinate instance
    */
   setCoord(coord) {
     this._coord = coord;
   },
   /**
-   * 0～1 point 转 画布 point
-   * @param  {point} point 转换的点
-   * @return {point} point 转换结果
+   * convert the normalized value to the canvas position
+   * @param  {point} point the point to convert
+   * @return {point} point return the result
    */
   parsePoint(point) {
     const coord = this._coord;
@@ -36,9 +36,9 @@ const ShapeBase = {
     return coord.convertPoint(point);
   },
   /**
-   * 0～1 points 转 画布 points
-   * @param  {points} points 转换的多个点
-   * @return {points} points 转换结果
+   * convert the normalized value to the canvas position
+   * @param  {points} points the array that store the points
+   * @return {points} points return the result
    */
   parsePoints(points) {
     if (!points) return false;
@@ -83,7 +83,6 @@ const ShapeFactoryBase = {
   }
 };
 
-// 注册 Geometry 获取图形的入口
 Shape.registerFactory = function(factoryName, cfg) {
   const className = Util.upperFirst(factoryName);
   const geomObj = Util.mix({}, ShapeFactoryBase, cfg);
@@ -92,7 +91,6 @@ Shape.registerFactory = function(factoryName, cfg) {
   return geomObj;
 };
 
-// 注册图形
 Shape.registerShape = function(factoryName, shapeType, cfg) {
   const className = Util.upperFirst(factoryName);
   const factory = Shape[className];
@@ -103,7 +101,6 @@ Shape.registerShape = function(factoryName, shapeType, cfg) {
 
 Shape.registShape = Shape.registerShape;
 
-// 获得Geom 对应的 shapeFactory
 Shape.getShapeFactory = function(factoryName) {
   const self = this;
   factoryName = factoryName || 'point';

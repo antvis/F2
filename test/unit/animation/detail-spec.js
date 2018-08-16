@@ -77,6 +77,7 @@ describe('Group animation', function() {
         expect(Object.keys(chart.get('canvas').get('caches')).length).to.equal(18);
         expect(chart.get('isUpdate')).to.be.true;
         Chart.plugins.unregister(Animation);
+        document.body.removeChild(canvas);
         done();
       }, 500);
     }, 500);

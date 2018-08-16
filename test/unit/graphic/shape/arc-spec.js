@@ -27,6 +27,7 @@ describe('Arc', function() {
   it('init attr', function() {
     expect(arc._attrs).not.to.be.undefined;
     expect(arc.get('className')).to.equal('arc');
+    expect(arc.getType()).to.equal('arc');
     expect(arc.attr('x')).to.equal(20);
     expect(arc.attr('y')).to.equal(20);
     expect(arc.attr('r')).to.equal(50);
@@ -40,7 +41,7 @@ describe('Arc', function() {
   it('draw', function() {
     canvas.add(arc);
     canvas.draw();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.getChildren().length).to.equal(1);
   });
 
   it('getBBox', function() {
@@ -53,9 +54,10 @@ describe('Arc', function() {
 
   it('destroy', function() {
     arc.destroy();
-    expect(canvas.get('children').length).to.equal(0);
-    expect(arc.get('destroyed')).to.equal(true);
+    expect(canvas.getChildren().length).to.equal(0);
+    expect(arc.isDestroyed()).to.equal(true);
     canvas.clear();
     canvas.draw();
+    document.body.removeChild(dom);
   });
 });

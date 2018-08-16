@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>散点图缩放平移</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p style="text-align: center;">缩放手势需要在手机端操作，请在手机上操作</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+
+<script>
+$.getJSON('./data/cereal.json', function(data) {
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    pixelRatio: window.devicePixelRatio
+  });
+  chart.source(data);
+  chart.legend({
+    position: 'bottom',
+    itemWidth: null,
+    align: 'center'
+  });
+  chart.tooltip(false);
+  chart.point().position('Calories*Potassium').color('Manufacturer').style({
+    fillOpacity: 0.6
+  });
+  chart.interaction('pan', {
+    mode: 'xy',
+    onEnd() {
+      console.log('pan', this.xRange, this.yRange);
+    }
+  }).interaction('pinch', {
+    mode: 'xy',
+    onEnd() {
+      console.log('pinch', this.xRange, this.yRange);
+    }
+  });
+  chart.scrollBar({
+    mode: 'xy',
+    xStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetY: -2
+    },
+    yStyle: {
+      backgroundColor: '#e8e8e8',
+      fillerColor: '#808080',
+      offsetX: 2
+    }
+  });
+  chart.render();
+});
+</script>
+</body>
+</html>

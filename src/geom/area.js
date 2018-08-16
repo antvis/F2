@@ -1,5 +1,5 @@
 /**
- * @fileOverview 面积图
+ * @fileOverview area geometry
  * @author dxq613 @gmail.com
  * @author sima.zhang1990@gmail.com
  */
@@ -11,9 +11,9 @@ require('./shape/area');
 
 class Area extends Geom {
   /**
-   * 获取默认的配置属性
+   * get the default configuration
    * @protected
-   * @return {Object} 默认属性
+   * @return {Object} return the result
    */
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
@@ -31,9 +31,9 @@ class Area extends Geom {
     const yScale = self.getYScale();
     const connectNulls = self.get('connectNulls');
     const splitArray = ShapeUtil.splitArray(data, yScale.field, connectNulls);
-    cfg.origin = data; // path,line,area 等图的origin 是整个序列
+    cfg.origin = data;
     Util.each(splitArray, function(subData, splitedIndex) {
-      cfg.splitedIndex = splitedIndex; // 传入分割片段索引 用于生成id
+      cfg.splitedIndex = splitedIndex;
       const points = subData.map(obj => {
         return obj.points;
       });

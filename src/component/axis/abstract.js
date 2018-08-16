@@ -5,32 +5,32 @@ const Vector2 = require('../../graphic/util/vector2');
 class Abastract {
   _initDefaultCfg() {
     /**
-     * 坐标点
+     * ticks
      * @type {Array}
      */
     this.ticks = [];
     /**
-     * tick 的配置信息
+     * the configuration for tickLine
      * @type {Object}
      */
     this.tickLine = {};
     /**
-     * 文本、tick跟坐标轴线的方向，默认是顺时针方向
+     * the direction of ticks, 1 means clockwise
      * @type {Number}
      */
     this.offsetFactor = 1;
     /**
-     * 上层图层
+     * the top container
      * @type {container}
      */
     this.frontContainer = null;
     /**
-     * 下层图层
+     * the back container
      * @type {[type]}
      */
     this.backContainer = null;
     /**
-     * 绘制栅格的点
+     * points for draw grid line
      * @type {Array}
      */
     this.gridPoints = [];
@@ -45,16 +45,16 @@ class Abastract {
   draw() {
     const { line, tickLine, label, grid } = this;
 
-    grid && this.drawGrid(grid); // 渲染网格
-    tickLine && this.drawTicks(tickLine); // 渲染刻度线
-    line && this.drawLine(line); // 渲染轴线
-    label && this.drawLabels(); // 渲染坐标轴文本
+    grid && this.drawGrid(grid); // draw the grid lines
+    tickLine && this.drawTicks(tickLine); // draw the tickLine
+    line && this.drawLine(line); // draw axis line
+    label && this.drawLabels(); // draw ticks
   }
 
   drawTicks(tickCfg) {
     const self = this;
     const ticks = self.ticks;
-    const length = tickCfg.length; // Change: value 改为 length， 同 G2 统一
+    const length = tickCfg.length;
     const container = self.getContainer(tickCfg.top);
     Util.each(ticks, function(tick) {
       const start = self.getOffsetPoint(tick.value);
@@ -104,7 +104,7 @@ class Abastract {
       }
 
       if (gridCfg) {
-        const type = gridCfg.type; // grid 的类型，包含 'line' 以及 'arc'
+        const type = gridCfg.type; // has two types: 'line' and 'arc'
         const points = subPoints.points;
         const container = self.getContainer(gridCfg.top);
         let shape;
@@ -136,13 +136,9 @@ class Abastract {
     });
   }
 
-  // 获取坐标轴上的点
   getOffsetPoint() {}
-
-  // 获取坐标轴上点的向量，极坐标下覆盖此方法
   getAxisVector() {}
 
-  // 获取偏移位置的向量
   getOffsetVector(point, offset) {
     const self = this;
     const axisVector = self.getAxisVector(point);
@@ -152,7 +148,6 @@ class Abastract {
     return Vector2.scale([], verticalVector, offset);
   }
 
-  // 获取坐标轴边上的点
   getSidePoint(point, offset) {
     const self = this;
     const offsetVector = self.getOffsetVector(point, offset);
@@ -162,7 +157,6 @@ class Abastract {
     };
   }
 
-  // 获取文本，水平和垂直方向的对齐方式
   getTextAlignInfo(point, offset) {
     const self = this;
     const offsetVector = self.getOffsetVector(point, offset);

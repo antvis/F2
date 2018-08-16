@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
+const { requestAnimationFrame } = require('./util/requestAnimationFrame');
 
 class Canvas {
   get(name) {
@@ -27,7 +28,7 @@ class Canvas {
     }
   }
 
-  _beforeDraw() {
+  beforeDraw() {
     const context = this._attrs.context;
     const el = this._attrs.el;
     !Util.isWx && !Util.isMy && context && context.clearRect(0, 0, el.width, el.height);
@@ -73,11 +74,6 @@ class Canvas {
     self.changeSize(width, height);
   }
 
-  /**
-   * 改变 canvas 的宽高
-   * @param  {Number} width  宽度
-   * @param  {Number} height 高度
-   */
   changeSize(width, height) {
     const pixelRatio = this.get('pixelRatio');
     const canvasDOM = this.get('el');
@@ -101,32 +97,18 @@ class Canvas {
     this.set('height', height);
   }
 
-  /**
-   * 获取 canvas 对应 dom 元素的宽度
-   * @return {Number} 返回宽度
-   */
   getWidth() {
     const pixelRatio = this.get('pixelRatio');
     const width = this.get('width');
     return width * pixelRatio;
   }
 
-  /**
-   * 获取 canvas 对应 dom 元素的高度
-   * @return {Number} 返回高度
-   */
   getHeight() {
     const pixelRatio = this.get('pixelRatio');
     const height = this.get('height');
     return height * pixelRatio;
   }
 
-  /**
-   * 将窗口坐标转变成 canvas 坐标
-   * @param  {Number} clientX 窗口x坐标
-   * @param  {Number} clientY 窗口y坐标
-   * @return {Object} canvas坐标
-   */
   getPointByClient(clientX, clientY) {
     const el = this.get('el');
     const bbox = el.getBoundingClientRect();
@@ -138,26 +120,49 @@ class Canvas {
     };
   }
 
+  _beginDraw() {
+    this._attrs.toDraw = true;
+  }
+  _endDraw() {
+    this._attrs.toDraw = false;
+  }
+
   draw() {
     const self = this;
-    if (self._attrs.destroyed) {
+    function drawInner() {
+      self.set('animateHandler', requestAnimationFrame(() => {
+        self.set('animateHandler', undefined);
+        if (self.get('toDraw')) {
+          drawInner();
+        }
+      }));
+      self.beforeDraw();
+      try {
+        const context = self._attrs.context;
+        const children = self._attrs.children;
+        for (let i = 0, len = children.length; i < len; i++) {
+          const child = children[i];
+          child.draw(context);
+        }
+
+        if (Util.isWx || Util.isMy) {
+          context.draw();
+        }
+      } catch (ev) {
+        console.warn('error in draw canvas, detail as:');
+        console.warn(ev);
+        self._endDraw();
+      }
+      self._endDraw();
+    }
+
+    if (self.get('destroyed')) {
       return;
     }
-    self._beforeDraw();
-    try {
-      const context = self._attrs.context;
-      const children = self._attrs.children;
-      for (let i = 0, len = children.length; i < len; i++) {
-        const child = children[i];
-        child.draw(context);
-      }
-
-      if (Util.isWx || Util.isMy) {
-        context.draw();
-      }
-    } catch (ev) { // 绘制时异常，中断重绘
-      console.warn('error in draw canvas, detail as:');
-      console.warn(ev);
+    if (self.get('animateHandler')) {
+      this._beginDraw();
+    } else {
+      drawInner();
     }
   }
 
@@ -168,6 +173,10 @@ class Canvas {
     this.clear();
     this._attrs = {};
     this.set('destroyed', true);
+  }
+
+  isDestroyed() {
+    return this.get('destroyed');
   }
 }
 

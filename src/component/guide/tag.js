@@ -6,29 +6,29 @@ class Tag extends GuideBase {
     this.type = 'tag';
     this.position = null;
     this.content = null;
-    this.direct = 'tl'; // 默认 tag 位置
-    this.autoAdjust = true; // 当 tag 出轨时，拉它一把，悬崖勒马
+    this.direct = 'tl';
+    this.autoAdjust = true;
     this.offsetX = 0;
     this.offsetY = 0;
-    this.side = 4; //  三角标的边长
+    this.side = 4;
     this.background = {
-      padding: 5, // tag 内边距
-      radius: 2, // tag 圆角
-      fill: '#1890FF' // tag 背景色
-    }; // tag 背景框样式
+      padding: 5,
+      radius: 2,
+      fill: '#1890FF'
+    };
     this.textStyle = {
       fontSize: 12,
       fill: '#fff',
       textAlign: 'center',
       textBaseline: 'middle'
-    }; // 文本样式
-    this.withPoint = true; // 是否带点
+    };
+    this.withPoint = true;
     this.pointStyle = {
       fill: '#1890FF',
       r: 3,
       lineWidth: 1,
       stroke: '#fff'
-    }; // 点的样式
+    };
   }
 
   _getDirect(container, point, tagWidth, tagHeight) {
@@ -42,13 +42,13 @@ class Tag extends GuideBase {
     let vertical = direct[0];
     let horizontal = direct[1];
 
-    // 垂直方向位置调整
+    // adjust for vertical direction
     if (vertical === 't' && (y - side - tagHeight) < 0) {
       vertical = 'b';
     } else if (vertical === 'b' && (y + side + tagHeight) > clientHeight) {
       vertical = 't';
     }
-    // 水平方向位置调整
+    // adjust for horizontal direction
     const diff = vertical === 'c' ? side : 0;
     if (horizontal === 'l' && (x - diff - tagWidth) < 0) {
       horizontal = 'r';
@@ -68,6 +68,9 @@ class Tag extends GuideBase {
 
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
+    if (!position) {
+      return;
+    }
     const { content, background, textStyle } = this;
     const shapes = [];
 
@@ -87,7 +90,7 @@ class Tag extends GuideBase {
     }
 
     const tagContainer = wrapperContainer.addGroup();
-    // 绘制文本
+    // create a text shape
     const tagText = tagContainer.addShape('text', {
       className: 'guide-tag-text',
       zIndex: 1,
@@ -99,7 +102,7 @@ class Tag extends GuideBase {
     });
     shapes.push(tagText);
 
-    // 绘制背景框
+    // create background box
     const textBBox = tagText.getBBox();
     const padding = Util.parsePadding(background.padding);
     const tagWidth = textBBox.width + padding[1] + padding[3];

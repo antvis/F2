@@ -3,11 +3,6 @@ const Util = require('../util/common');
 require('./shape/polygon');
 
 class Polygon extends Geom {
-  /**
-   * 获取默认的配置属性
-   * @protected
-   * @return {Object} 默认属性
-   */
   getDefaultCfg() {
     const cfg = super.getDefaultCfg();
     cfg.type = 'polygon';
@@ -22,21 +17,21 @@ class Polygon extends Geom {
     let x = cfg.x;
     let y = cfg.y;
     let temp;
-    if (!(Util.isArray(x) && Util.isArray(y))) { // x y 都是数组时，不做处理
+    if (!(Util.isArray(x) && Util.isArray(y))) {
       const xScale = self.getXScale();
       const yScale = self.getYScale();
       const xCount = xScale.values ? xScale.values.length : xScale.ticks.length;
       const yCount = yScale.values ? yScale.values.length : yScale.ticks.length;
       const xOffset = 0.5 * 1 / xCount;
       const yOffset = 0.5 * 1 / yCount;
-      if (xScale.isCategory && yScale.isCategory) { // 如果x,y都是分类
+      if (xScale.isCategory && yScale.isCategory) {
         x = [ x - xOffset, x - xOffset, x + xOffset, x + xOffset ];
         y = [ y - yOffset, y + yOffset, y + yOffset, y - yOffset ];
-      } else if (Util.isArray(x)) { // x 是数组
+      } else if (Util.isArray(x)) {
         temp = x;
         x = [ temp[0], temp[0], temp[1], temp[1] ];
         y = [ y - yOffset / 2, y + yOffset / 2, y + yOffset / 2, y - yOffset / 2 ];
-      } else if (Util.isArray(y)) { // y 是数组
+      } else if (Util.isArray(y)) {
         temp = y;
         y = [ temp[0], temp[1], temp[1], temp[0] ];
         x = [ x - xOffset / 2, x - xOffset / 2, x + xOffset / 2, x + xOffset / 2 ];

@@ -4,5 +4,7 @@ module.exports = {
   Arc: require('./arc'),
   Rect: require('./rect'),
   Html: require('./html'),
-  Tag: require('./tag')
+  Tag: require('./tag'),
+  Point: require('./point'),
+  RegionFilter: require('./region-filter')
 };

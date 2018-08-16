@@ -1,8 +1,7 @@
 const Shape = require('./shape');
 const Util = require('../../util/common');
-// START candle shape
+
 function _sortValue(value) {
-  // 从大到小排序
   const sorted = value.sort(function(a, b) {
     return a < b ? 1 : -1;
   });
@@ -17,7 +16,7 @@ function _sortValue(value) {
   return sorted;
 }
 
-// 方向：左下角顺时针连接
+// from left bottom corner, and clockwise
 function getCandlePoints(x, y, width) {
   const yValues = _sortValue(y);
   const points = [{
@@ -51,11 +50,9 @@ function getCandlePoints(x, y, width) {
 const Schema = Shape.registerFactory('schema', {});
 
 Shape.registerShape('schema', 'candle', {
-  // 获取构建k线图的点
   getPoints(cfg) {
     return getCandlePoints(cfg.x, cfg.y, cfg.size);
   },
-  // 绘制k线图
   draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
     const style = Util.mix({

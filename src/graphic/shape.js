@@ -12,6 +12,10 @@ class Shape extends Element {
     };
   }
 
+  getType() {
+    return this._attrs.type;
+  }
+
   drawInner(context) {
     const self = this;
     const attrs = self.get('attrs');
@@ -41,7 +45,6 @@ class Shape extends Element {
 
   getBBox() {
     let bbox = this._attrs.bbox;
-    // 延迟计算
     if (!bbox) {
       bbox = this.calculateBox();
       if (bbox) {
@@ -55,11 +58,6 @@ class Shape extends Element {
     return bbox;
   }
 
-  /**
-   * @protected
-   * 计算包围盒
-   * @return {Object} 包围盒
-   */
   calculateBox() {
     return null;
   }

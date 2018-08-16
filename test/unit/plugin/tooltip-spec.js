@@ -3,6 +3,7 @@ const { gestureSimulator } = require('../test-util');
 
 const F2 = require('../../../src/core');
 require('../../../src/geom/interval');
+require('../../../src/geom/line');
 require('../../../src/geom/adjust');
 
 const Tooltip = require('../../../src/plugin/tooltip');
@@ -229,8 +230,52 @@ describe('Tooltip Plugin', function() {
       });
 
       expect(isHideCalled).to.be.true;
-      document.body.removeChild(canvas);
+      // document.body.removeChild(canvas);
       done();
     }, 500);
+  });
+
+  it('get tooltip items when one geom is hide', function() {
+    const data = [
+      { name: 'Jon Nicoll', score: 282, avgScore: 94 },
+      { name: 'Aaron Maxwell', score: 208, avgScore: 41.6 },
+      { name: 'Warren Clunes', score: 186, avgScore: 46.5 },
+      { name: 'David Bolton', score: 184, avgScore: 30.67 },
+      { name: 'Joel Robindon', score: 177, avgScore: 44.25 },
+      { name: 'Kyle Buckley', score: 150, avgScore: 50 },
+      { name: 'Jordan Lawrence', score: 148, avgScore: 24.67 },
+      { name: 'Jack Carey', score: 138, avgScore: 34.5 },
+      { name: 'Kuldeep Pegu', score: 130, avgScore: 32.5 },
+      { name: 'Max Hillier', score: 128, avgScore: 32 },
+      { name: 'Angus Le Lievre', score: 127, avgScore: 62.5 }
+    ];
+    const chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+
+    chart.source(data);
+    chart.interval().position('name*score');
+    const line = chart.line().position('name*avgScore');
+    chart.render();
+
+    line.hide();
+
+    const point = chart.getPosition({
+      name: 'Jordan Lawrence',
+      score: 148
+    });
+
+    chart.showTooltip(point);
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    expect(tooltip.items.length).to.equal(1);
+    expect(tooltip.items[0].name).to.equal('score');
+    expect(tooltip.items[0].value).to.equal('148');
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

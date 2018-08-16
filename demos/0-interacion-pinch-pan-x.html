@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>x 轴平移缩放</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p style="text-align: center;">缩放手势需要在手机端操作，请在手机上操作</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
+    // Generate sample data
+    const data = [];
+    const step = Math.PI / 4;
+    for (let x = -25; x < 25; x += step) {
+      data.push({ x: x, y: Math.sin(x) });
+    }
+
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(data);
+    chart.axis('x', {
+      grid(text) {
+        if (text == 0) {
+          return {
+            lineDash: null
+          };
+        }
+      }
+    });
+    chart.axis('y', {
+      grid(text) {
+        if (text == 0) {
+          return {
+            lineDash: null
+          };
+        }
+      }
+    });
+    chart.tooltip(false);
+    chart.interaction('pan');
+    chart.interaction('pinch', {
+      maxScale: 5,
+      minScale: 1,
+      onEnd() {
+        // console.log(chart.getXScale());
+      }
+    });
+    chart.line().position('x*y').shape('smooth');
+    chart.render();
+</script>
+</body>
+</html>

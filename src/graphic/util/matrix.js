@@ -1,10 +1,4 @@
 const Matrix = {
-  /**
-   * 两个矩阵相乘
-   * @param  {Array} m1 左矩阵
-   * @param  {Array} m2 右矩阵
-   * @return {Array}    返回结果
-   */
   multiply(m1, m2) {
     const m11 = m1[0] * m2[0] + m1[2] * m2[1];
     const m12 = m1[1] * m2[0] + m1[3] * m2[1];
@@ -17,21 +11,6 @@ const Matrix = {
 
     return [ m11, m12, m21, m22, dx, dy ];
   },
-  /**
-   * 矩阵反转
-   * @param  {Array} m 参数
-   * @return {Array}   返回结果
-   */
-  // invert(m) {
-  //   const d = 1 / (m[0] * m[3] - m[1] * m[2]);
-  //   const m0 = m[3] * d;
-  //   const m1 = -m[1] * d;
-  //   const m2 = -m[2] * d;
-  //   const m3 = m[0] * d;
-  //   const m4 = d * (m[2] * m[5] - m[3] * m[4]);
-  //   const m5 = d * (m[1] * m[4] - m[0] * m[5]);
-  //   return [ m0, m1, m2, m3, m4, m5 ];
-  // },
   scale(out, m, v) {
     out[0] = m[0] * v[0];
     out[1] = m[1] * v[0];

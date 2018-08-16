@@ -30,10 +30,10 @@ describe('Group', function() {
       className: 'groupOne'
     });
 
-    expect(g.get('isGroup')).to.be.true;
-    expect(g.get('children')).not.to.be.undefined;
-    expect(g.get('children').length).to.equal(0);
-    expect(g.get('visible')).to.be.true;
+    expect(g.isGroup()).to.be.true;
+    expect(g.getChildren()).not.to.be.undefined;
+    expect(g.getChildren().length).to.equal(0);
+    expect(g.isVisible()).to.be.true;
   });
 
   it('addGroup', function() {
@@ -42,7 +42,7 @@ describe('Group', function() {
     parent.addGroup({
       className: 'groupTwo'
     });
-    const children = parent.get('children');
+    const children = parent.getChildren();
     expect(children.length).to.equal(2);
     expect(children[0].get('parent')).to.eql(parent);
     expect(children[1].get('className')).to.equal('groupTwo');
@@ -55,7 +55,7 @@ describe('Group', function() {
     });
     group.add(child);
 
-    expect(group.get('children').length).to.equal(1);
+    expect(group.getChildren().length).to.equal(1);
     expect(child.get('parent')).to.eql(group);
   });
 
@@ -74,8 +74,8 @@ describe('Group', function() {
       }
     });
     group.add(arc);
-    expect(group.get('children').length).to.equal(1);
-    expect(group.get('children')[0]).to.eql(arc);
+    expect(group.getChildren().length).to.equal(1);
+    expect(group.getChildren()[0]).to.eql(arc);
   });
 
   it('add(Shape), the shape is belonged to another group', function() {
@@ -95,8 +95,8 @@ describe('Group', function() {
     group1.add(arc);
     const group2 = new Group();
     group2.add(arc);
-    expect(group1.get('children').length).to.equal(0);
-    expect(group2.get('children').length).to.equal(1);
+    expect(group1.getChildren().length).to.equal(0);
+    expect(group2.getChildren().length).to.equal(1);
     expect(arc.get('parent')).to.eql(group2);
   });
 
@@ -124,7 +124,7 @@ describe('Group', function() {
     line.attr('clip', rect);
 
     group.add(line);
-    expect(group.get('children').length).to.equal(1);
+    expect(group.getChildren().length).to.equal(1);
     expect(line.get('parent')).to.eql(group);
     expect(rect.get('parent')).to.eql(group);
     expect(rect.get('context')).to.eql(group.get('context'));
@@ -140,7 +140,7 @@ describe('Group', function() {
     });
     group.add([ child1, child2 ]);
 
-    expect(group.get('children').length).to.equal(2);
+    expect(group.getChildren().length).to.equal(2);
     expect(child1.get('parent')).to.eql(group);
     expect(child2.get('parent')).to.eql(group);
   });
@@ -174,9 +174,9 @@ describe('Group', function() {
 
     group.add([ circle3, circle1, circle2 ]);
     group.sort();
-    expect(group.get('children')[0].get('className')).to.equal('circle1');
-    expect(group.get('children')[1].get('className')).to.equal('circle2');
-    expect(group.get('children')[2].get('className')).to.equal('circle3');
+    expect(group.getChildren()[0].get('className')).to.equal('circle1');
+    expect(group.getChildren()[1].get('className')).to.equal('circle2');
+    expect(group.getChildren()[2].get('className')).to.equal('circle3');
   });
 
   it('remove', function() {
@@ -212,22 +212,22 @@ describe('Group', function() {
 
     g2.add(g1);
 
-    expect(g2.get('children').length).to.equal(1);
-    expect(g1.get('children').length).to.equal(5);
+    expect(g2.getChildren().length).to.equal(1);
+    expect(g1.getChildren().length).to.equal(5);
     e1.remove(true);
-    expect(g1.get('children').length).to.equal(4);
-    expect(e1.get('destroyed')).to.be.true;
+    expect(g1.getChildren().length).to.equal(4);
+    expect(e1.isDestroyed()).to.be.true;
     e2.remove();
-    expect(g1.get('children').length).to.equal(3);
-    expect(e2.get('destroyed')).to.be.false;
+    expect(g1.getChildren().length).to.equal(3);
+    expect(e2.isDestroyed()).to.be.false;
     e3.remove(false);
-    expect(g1.get('children').length).to.equal(2);
-    expect(e3.get('destroyed')).to.be.false;
+    expect(g1.getChildren().length).to.equal(2);
+    expect(e3.isDestroyed()).to.be.false;
     g2.add(g1);
-    expect(g2.get('children').length).to.equal(1);
+    expect(g2.getChildren().length).to.equal(1);
     g1.remove();
-    expect(g2.get('children').length).to.equal(0);
-    expect(g1.get('destroyed')).to.be.false;
+    expect(g2.getChildren().length).to.equal(0);
+    expect(g1.isDestroyed()).to.be.false;
   });
 
   it('clear', function() {
@@ -249,10 +249,10 @@ describe('Group', function() {
     g.add(e2);
     g.add(e3);
 
-    expect(g.get('children').length).to.equal(3);
+    expect(g.getChildren().length).to.equal(3);
     g.clear();
-    expect(g.get('children').length).to.equal(0);
-    expect(e1.get('destroyed')).to.be.true;
+    expect(g.getChildren().length).to.equal(0);
+    expect(e1.isDestroyed()).to.be.true;
   });
 
   it('destroy', function() {
@@ -273,18 +273,18 @@ describe('Group', function() {
     g.add(e1);
     g.add(e2);
     g.add(e3);
-    expect(g.get('children').length).to.equal(3);
+    expect(g.getChildren().length).to.equal(3);
     g.destroy();
 
-    expect(g.get('children')).to.undefined;
-    expect(g.get('destroyed')).to.be.true;
-    expect(e1.get('destroyed')).to.be.true;
-    expect(e2.get('destroyed')).to.be.true;
-    expect(e3.get('destroyed')).to.be.true;
+    expect(g.getChildren()).to.undefined;
+    expect(g.isDestroyed()).to.be.true;
+    expect(e1.isDestroyed()).to.be.true;
+    expect(e2.isDestroyed()).to.be.true;
+    expect(e3.isDestroyed()).to.be.true;
 
     g.destroy();
-    expect(g.get('children')).to.undefined;
-    expect(g.get('destroyed')).to.be.true;
+    expect(g.getChildren()).to.undefined;
+    expect(g.isDestroyed()).to.be.true;
   });
 
   it('getBBox()', function() {
@@ -340,8 +340,8 @@ describe('Group', function() {
 
     const bbox = group.getBBox();
     canvas.draw();
-    expect(group.get('children').length).to.equal(4);
-    expect(canvas.get('children').length).to.equal(1);
+    expect(group.getChildren().length).to.equal(4);
+    expect(canvas.getChildren().length).to.equal(1);
     expect(bbox.x).to.equal(10);
     expect(bbox.y).to.equal(10);
     expect(bbox.width).to.equal(109.1171875);
@@ -367,5 +367,6 @@ describe('Group', function() {
 
     group.scale(0.5, 0.5);
     expect(group.attr('matrix')).to.eql([ 0.5, 0, 0, 0.5, 0, 0 ]);
+    document.body.removeChild(dom);
   });
 });

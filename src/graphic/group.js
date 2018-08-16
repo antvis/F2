@@ -15,7 +15,6 @@ class Group extends Element {
   }
 
   drawInner(context) {
-    // context = context || this.get('context');
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
@@ -24,10 +23,6 @@ class Group extends Element {
     return this;
   }
 
-  /**
-   * 获取最小包围盒
-   * @return {Object} 返回包围盒
-   */
   getBBox() {
     const self = this;
     let minX = Infinity;

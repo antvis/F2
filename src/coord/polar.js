@@ -12,7 +12,7 @@ class Polar extends Base {
     this.isPolar = true;
     this.transposed = false;
     this.center = null;
-    this.radius = null; // 相对半径
+    this.radius = null; // relative, 0 ~ 1
   }
 
   init(start, end) {
@@ -37,7 +37,7 @@ class Polar extends Base {
       };
     }
 
-    const radius = self.radius; // 相对半径
+    const radius = self.radius;
     if (radius > 0 && radius <= 1) {
       maxRadius = maxRadius * radius;
     }
@@ -52,7 +52,7 @@ class Polar extends Base {
       end: maxRadius
     };
     this.center = center;
-    this.circleRadius = maxRadius; // 绝对半径
+    this.circleRadius = maxRadius; // the radius value in px
   }
 
   convertPoint(point) {
