@@ -20,7 +20,8 @@ class IntervalSelect extends Interaction {
       unSelectStyle: {
         fillOpacity: 0.4
       },
-      cancelable: true
+      cancelable: true,
+      defaultSelected: null // set the default selected shape
     });
     if (Util.isWx || Util.isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
@@ -28,7 +29,16 @@ class IntervalSelect extends Interaction {
     }
 
     return defaultCfg;
+  }
 
+  constructor(cfg, chart) {
+    super(cfg, chart);
+    const defaultSelected = this.defaultSelected;
+    if (Util.isObject(defaultSelected)) {
+      const { selectedShape, unSelectedShapes } = this._selectShapesByData(defaultSelected);
+      selectedShape && this._selectShapes(selectedShape, unSelectedShapes);
+      this.selectedShape = selectedShape;
+    }
   }
 
   _resetShape(shape) {
@@ -47,6 +57,77 @@ class IntervalSelect extends Interaction {
       ev.shape = selectedShape;
       ev.selected = !!selectedShape.get('_selected');
     }
+  }
+
+  _selectShapesByData(data) {
+    const chart = this.chart;
+    const geom = chart.get('geoms')[0];
+    const container = geom.get('container');
+    const children = container.get('children');
+    let selectedShape = null;
+    const unSelectedShapes = [];
+    Util.each(children, child => {
+      if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
+        const shapeData = child.get('origin')._origin;
+        if (Util.isObjectValueEqual(shapeData, data)) {
+          selectedShape = child;
+        } else {
+          unSelectedShapes.push(child);
+        }
+      }
+    });
+
+    return {
+      selectedShape,
+      unSelectedShapes
+    };
+  }
+
+  _selectShapes(selectedShape, unSelectedShapes) {
+    const { selectStyle, unSelectStyle, selectAxisStyle, chart } = this;
+    if (!selectedShape.get('_originAttrs')) {
+      const originAttrs = Object.assign({}, selectedShape.attr());
+      selectedShape.set('_originAttrs', originAttrs);
+    }
+
+    selectedShape.attr(selectStyle);
+
+    Util.each(unSelectedShapes, child => {
+      if (!child.get('_originAttrs')) {
+        const originAttrs = Object.assign({}, child.attr());
+        child.set('_originAttrs', originAttrs);
+      } else {
+        child.attr(child.get('_originAttrs'));
+      }
+      child.set('_selected', false);
+      unSelectStyle && child.attr(unSelectStyle);
+    });
+
+    selectedShape.set('_selected', true);
+
+    if (this.selectAxis) {
+      if (this.selectedAxisShape) {
+        this._resetShape(this.selectedAxisShape);
+      }
+      const geom = chart.get('geoms')[0];
+      const xScale = geom.getXScale();
+      const origin = selectedShape.get('origin')._origin;
+      const { frontPlot, backPlot } = chart.get('axisController');
+
+      let axisShape;
+
+      Util.each(frontPlot.get('children').concat(backPlot.get('children')), s => {
+        if (s.get('value') === xScale.scale(origin[xScale.field])) {
+          axisShape = s;
+          return false;
+        }
+      });
+      this.selectedAxisShape = axisShape;
+      axisShape.set('_originAttrs', Object.assign({}, axisShape.attr()));
+      axisShape.attr(selectAxisStyle);
+    }
+
+    this.canvas.draw();
   }
 
   reset() {
@@ -85,7 +166,7 @@ class IntervalSelect extends Interaction {
     const container = geom.get('container');
     const children = container.get('children');
     let selectedShape;
-    const unSelectedShapes = [];
+    let unSelectedShapes = [];
     if (mode === 'shape') {
       const plot = chart.get('plotRange');
       if (!Helper.isPointInPlot({ x, y }, plot)) {
@@ -108,16 +189,9 @@ class IntervalSelect extends Interaction {
       }
 
       const data = records[0]._origin;
-      Util.each(children, child => {
-        if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
-          const shapeData = child.get('origin')._origin;
-          if (Object.is(shapeData, data)) {
-            selectedShape = child;
-          } else {
-            unSelectedShapes.push(child);
-          }
-        }
-      });
+      const result = this._selectShapesByData(data);
+      selectedShape = result.selectedShape;
+      unSelectedShapes = result.unSelectedShapes;
     }
 
     if (selectedShape) {
@@ -129,54 +203,7 @@ class IntervalSelect extends Interaction {
         }
         this.reset();
       } else {
-        const { selectStyle, unSelectStyle, selectAxisStyle } = this;
-
-        if (!selectedShape.get('_originAttrs')) {
-          const originAttrs = Object.assign({}, selectedShape.attr());
-          selectedShape.set('_originAttrs', originAttrs);
-        }
-
-        selectedShape.attr(selectStyle);
-
-        Util.each(unSelectedShapes, child => {
-          if (!child.get('_originAttrs')) {
-            const originAttrs = Object.assign({}, child.attr());
-            child.set('_originAttrs', originAttrs);
-          } else {
-            child.attr(child.get('_originAttrs'));
-          }
-          child.set('_selected', false);
-          unSelectStyle && child.attr(unSelectStyle);
-        });
-
-        selectedShape.set('_selected', true);
-
-        if (this.selectAxis) {
-          if (this.selectedAxisShape) {
-            this._resetShape(this.selectedAxisShape);
-          }
-
-          const xScale = geom.getXScale();
-          const origin = selectedShape.get('origin')._origin;
-          const {
-            frontPlot,
-            backPlot
-          } = chart.get('axisController');
-
-          let axisShape;
-
-          Util.each(frontPlot.get('children').concat(backPlot.get('children')), s => {
-            if (s.get('value') === xScale.scale(origin[xScale.field])) {
-              axisShape = s;
-              return false;
-            }
-          });
-          this.selectedAxisShape = axisShape;
-          axisShape.set('_originAttrs', Object.assign({}, axisShape.attr()));
-          axisShape.attr(selectAxisStyle);
-        }
-
-        this.canvas.draw();
+        this._selectShapes(selectedShape, unSelectedShapes);
       }
     } else {
       this.reset();

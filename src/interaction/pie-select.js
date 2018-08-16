@@ -14,7 +14,8 @@ class PieSelect extends Interaction {
       style: {
         fillOpacity: 0.5
       },
-      cancelable: true
+      cancelable: true,
+      defaultSelected: null // set the default selected shape
     });
     if (Util.isWx || Util.isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
@@ -34,8 +35,67 @@ class PieSelect extends Interaction {
         self.selectedShape = null;
         self.lastShape = null;
         self.halo = null;
+        self.defaultSelected = null;
       }
     });
+    const defaultSelected = self.defaultSelected;
+    if (Util.isObject(defaultSelected)) {
+      const selectedShape = self._getSelectedShapeByData(defaultSelected);
+      selectedShape && self._selectedShape(selectedShape);
+      this.canvas.draw();
+    }
+  }
+
+  _getSelectedShapeByData(data) {
+    let selectedShape = null;
+    const chart = this.chart;
+    const geom = chart.get('geoms')[0];
+    const container = geom.get('container');
+    const children = container.get('children');
+    Util.each(children, child => {
+      if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
+        const shapeData = child.get('origin')._origin;
+        if (Util.isObjectValueEqual(shapeData, data)) {
+          selectedShape = child;
+          return false;
+        }
+      }
+    });
+    return selectedShape;
+  }
+
+  _selectedShape(selectedShape) {
+    const { offset, style, appendRadius, chart } = this;
+
+    this.lastShape = selectedShape;
+    const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
+    const frontPlot = chart.get('frontPlot');
+    const halo = frontPlot.addShape('sector', {
+      attrs: Util.mix({
+        x,
+        y,
+        r: r + offset + appendRadius,
+        r0: r + offset,
+        fill,
+        startAngle,
+        endAngle
+      }, style)
+    });
+    this.halo = halo;
+    let animate = this.animate;
+    if (animate) {
+      if (animate === true) {
+        animate = {
+          duration: 300
+        };
+      }
+      halo.attr('r', r + offset);
+      halo.animate().to(Util.mix({
+        attrs: {
+          r: r + offset + appendRadius
+        }
+      }, animate));
+    }
   }
 
   start(ev) {
@@ -55,20 +115,8 @@ class PieSelect extends Interaction {
       return;
     }
 
-    let selectedShape;
     const data = records[0]._origin;
-    const geom = chart.get('geoms')[0];
-    const container = geom.get('container');
-    const children = container.get('children');
-    Util.each(children, child => {
-      if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
-        const shapeData = child.get('origin')._origin;
-        if (Object.is(shapeData, data)) {
-          selectedShape = child;
-          return false;
-        }
-      }
-    });
+    const selectedShape = this._getSelectedShapeByData(data);
     const lastShape = this.lastShape;
     this.selectedShape = selectedShape;
     this.selected = true;
@@ -80,36 +128,7 @@ class PieSelect extends Interaction {
       this.lastShape = null;
       this.selected = false;
     } else {
-      this.lastShape = selectedShape;
-      const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
-      const frontPlot = chart.get('frontPlot');
-      const { offset, style, appendRadius } = this;
-      const halo = frontPlot.addShape('sector', {
-        attrs: Util.mix({
-          x,
-          y,
-          r: r + offset + appendRadius,
-          r0: r + offset,
-          fill,
-          startAngle,
-          endAngle
-        }, style)
-      });
-      this.halo = halo;
-      let animate = this.animate;
-      if (animate) {
-        if (animate === true) {
-          animate = {
-            duration: 300
-          };
-        }
-        halo.attr('r', r + offset);
-        halo.animate().to(Util.mix({
-          attrs: {
-            r: r + offset + appendRadius
-          }
-        }, animate));
-      }
+      this._selectedShape(selectedShape);
     }
 
     this.canvas.draw();

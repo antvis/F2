@@ -31,7 +31,6 @@ class Pinch extends Interaction {
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
-    chart.set('limitInPlot', true);
 
     chart.registerPlugins([ FilterPlugin, {
       changeData() {
