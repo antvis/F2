@@ -68,7 +68,6 @@ class Pan extends Interaction {
       }
     }
 
-    chart.set('limitInPlot', true);
     chart.registerPlugins([ FilterPlugin, {
       changeData() {
         self.limitRange = {};

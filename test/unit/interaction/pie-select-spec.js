@@ -29,6 +29,46 @@ describe('Pie-Select', function() {
     expect(Chart._Interactions['pie-select']).not.to.be.undefined;
   });
 
+  it('default selected', function() {
+    const chart = new F2.Chart({
+      id: 'pieSelect',
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.source(data);
+    chart.coord('polar', {
+      transposed: true,
+      radius: 0.85,
+      innerRadius: 0.618
+    });
+    chart.axis(false);
+    chart
+      .interval()
+      .position('a*percent')
+      .color('name')
+      .adjust('stack')
+      .style({
+        lineWidth: 1,
+        stroke: '#fff',
+        lineJoin: 'round',
+        lineCap: 'round'
+      });
+    chart.render();
+
+    chart.interaction('pie-select', {
+      startEvent: 'touchstart',
+      cancelable: true,
+      defaultSelected: { name: '妖猫传', percent: 0.2, a: '1' }
+    });
+
+    const interaction = chart._interactions['pie-select'];
+    const { halo, lastShape } = interaction;
+
+    expect(halo).not.to.be.empty;
+    expect(lastShape.get('origin')._origin.name).to.equal('妖猫传');
+
+    chart.destroy();
+  });
+
   it('touchstart', function() {
     let preStartCalled;
     let onStartCalled;
@@ -57,6 +97,7 @@ describe('Pie-Select', function() {
         lineJoin: 'round',
         lineCap: 'round'
       });
+    chart.render();
 
     chart.interaction('pie-select', {
       startEvent: 'touchstart',
@@ -75,7 +116,6 @@ describe('Pie-Select', function() {
         selectInfo = ev;
       }
     });
-    chart.render();
 
     gestureSimulator(canvas, 'touchstart', {
       clientX: 394.6130065917969,
@@ -141,12 +181,11 @@ describe('Pie-Select', function() {
         lineJoin: 'round',
         lineCap: 'round'
       });
-
+    chart.render();
     chart.interaction('pie-select', {
       startEvent: 'tap',
       cancelable: false
     });
-    chart.render();
 
     // 第一次点击未击中扇形
     const interaction = chart._interactions['pie-select'];
@@ -218,11 +257,11 @@ describe('Pie-Select', function() {
         lineCap: 'round'
       });
 
+    chart.render();
     chart.interaction('pie-select', {
       startEvent: 'tap',
       cancelable: false
     });
-    chart.render();
 
     // 此次击中
     const interaction = chart._interactions['pie-select'];
