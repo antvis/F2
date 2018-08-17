@@ -287,8 +287,8 @@ class Geom extends Base {
   _sort(mappedArray) {
     const self = this;
     const xScale = self.getXScale();
-    const { field, type, isLinear } = xScale;
-    if ((isLinear || type === 'timeCat') && xScale.values.length > 1) { // sort only for linear and timeCat type.
+    const { field, type } = xScale;
+    if (type !== 'identity' && xScale.values.length > 1) {
       Util.each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
           if (type === 'timeCat') {
@@ -298,6 +298,7 @@ class Geom extends Base {
         });
       });
     }
+
     self.set('hasSorted', true);
     self.set('dataArray', mappedArray);
   }
