@@ -6,6 +6,8 @@ const TimeUtil = require('@antv/scale/lib/time-util');
 
 module.exports = {
   beforeGeomInit(chart) {
+    chart.set('limitInPlot', true);
+
     const data = chart.get('data');
     const colDefs = chart.get('colDefs');
     if (!colDefs) return data;

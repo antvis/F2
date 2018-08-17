@@ -4,7 +4,6 @@ const F2 = require('../../../src/core');
 require('../../../src/geom/interval');
 const { gestureSimulator } = require('../test-util');
 
-
 const canvas = document.createElement('canvas');
 canvas.width = 500;
 canvas.height = 500;
@@ -29,6 +28,29 @@ describe('Interval-Select', function() {
   it('Register successfully', function() {
     const Chart = F2.Chart;
     expect(Chart._Interactions['interval-select']).not.to.be.undefined;
+  });
+
+  it('defaultSelected', function() {
+    const chart = new F2.Chart({
+      id: 'intervalSelect',
+      pixelRatio: window.devicePixelRatio
+    });
+    chart.source(data);
+    chart.interval().position('year*sales');
+    chart.render();
+
+    chart.interaction('interval-select', {
+      startEvent: 'touchstart',
+      defaultSelected: { year: '1956 年', sales: 61 }
+    });
+
+    const interaction = chart._interactions['interval-select'];
+    const { selectedAxisShape, selectedShape } = interaction;
+
+    expect(selectedAxisShape.attr('text')).to.equal('1956 年');
+    expect(selectedShape.get('origin')._origin.year).to.equal('1956 年');
+
+    chart.destroy();
   });
 
   it('touch', function() {

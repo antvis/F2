@@ -18,6 +18,23 @@ const Util = {
   deepMix: require('@antv/util/lib/deepMix'),
   mix: require('@antv/util/lib/mix'),
   each: require('@antv/util/lib/each'),
+  isObjectValueEqual(a, b) {
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
+
+    if (aProps.length !== bProps.length) {
+      return false;
+    }
+
+    for (let i = 0, len = aProps.length; i < len; i++) {
+      const propName = aProps[i];
+
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+    return true;
+  },
   wrapBehavior(obj, action) {
     if (obj['_wrap_' + action]) {
       return obj['_wrap_' + action];

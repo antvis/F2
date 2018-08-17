@@ -2,7 +2,7 @@ const TimeUtil = require('@antv/scale/lib/time-util');
 const Util = require('../util/common');
 
 module.exports = {
-  directionEnabled: (mode, dir) => {
+  directionEnabled(mode, dir) {
     if (mode === undefined) {
       return true;
     } else if (typeof mode === 'string') {
