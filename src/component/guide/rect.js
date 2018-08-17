@@ -15,16 +15,20 @@ class Rect extends GuideBase {
   render(coord, container) {
     const start = this.parsePoint(coord, this.start);
     const end = this.parsePoint(coord, this.end);
+    if (!start || !end) {
+      return;
+    }
     const shape = container.addShape('rect', {
       className: 'guide-rect',
       attrs: Util.mix({
-        x: start.x,
-        y: start.y,
+        x: Math.min(start.x, end.x),
+        y: Math.min(start.y, end.y),
         width: Math.abs(end.x - start.x),
         height: Math.abs(start.y - end.y)
       }, this.style)
     });
     this.element = shape;
+    return shape;
   }
 }
 

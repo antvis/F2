@@ -8,58 +8,46 @@ class List {
     return {
       showTitle: false,
       /**
-       * 标题文本
+       * title string
        * @type {?String}
        */
       title: null,
       /**
-       * 记录项的集合
+       * items array
        * @type {?Array}
        */
       items: null,
       /**
-       * 标题距离记录项的间距
+       * offset between title and items
        * @type {Number}
        */
       titleGap: 12,
       /**
-       * 各个记录项水平方向的间距
+       * offset between each item
        * @type {Number}
        */
       itemGap: 10,
       /**
-       * 各个记录项水平方向的间距
+       * the offset between each item in vertical direaction
        * @type {Number}
        */
       itemMarginBottom: 12,
       /**
-       * 记录项文本格式化
+       * the formatter for item text
        * @type {[type]}
        */
       itemFormatter: null,
       itemWidth: null,
       /**
-       * marker 和文字的距离
+       * offset between marker and text
        * @type {Number}
        */
       wordSpace: 6,
-      /**
-       * 在画布上的位置
-       * @type {[type]}
-       */
       x: 0,
-      /**
-       * 在画布上的位置
-       * @type {[type]}
-       */
       y: 0,
-      /**
-       * 布局方式
-       * @type {String}
-       */
       layout: 'horizontal',
       /**
-       * name 和 value 的连接字符串
+       * the join string of `name` and `value`
        * @type {String}
        */
       joinString: ': '
@@ -74,7 +62,9 @@ class List {
   }
 
   _init() {
-    const container = new Group();
+    const container = new Group({
+      zIndex: this.zIndex || 0
+    });
     this.container = container;
     const wrapper = container.addGroup();
     this.wrapper = wrapper;
@@ -83,7 +73,7 @@ class List {
     });
     this.itemsGroup = itemsGroup;
 
-    if (this.parent) { // 如果传入了父容器
+    if (this.parent) {
       this.parent.add(container);
     }
   }
@@ -125,7 +115,7 @@ class List {
     if (items.length > 1) {
       this._adjustItems();
     }
-    this._renderBackground(); // 渲染背景
+    this._renderBackground();
   }
 
   _renderBackground() {
@@ -160,19 +150,19 @@ class List {
     const itemsGroup = this.itemsGroup;
     const itemGroup = itemsGroup.addGroup({
       name: item.name,
-      value: item.value, // 显示的内容
-      dataValue: item.dataValue, // 图例项对应原始数据中的数值
+      value: item.value,
+      dataValue: item.dataValue,
       checked: item.checked
     });
     const { unCheckStyle, unCheckColor, nameStyle, valueStyle, wordSpace } = this;
     const { marker, value } = item;
     let startX = 0;
 
-    if (unCheckColor) { // unCheckColor 属性兼容，建议使用 unCheckStyle
+    if (unCheckColor) {
       unCheckStyle.fill = unCheckColor;
     }
 
-    if (marker) { // 如果有 marker 添加 marker, 格式： { radius, symbol, fill / stroke }
+    if (marker) {
       const radius = marker.radius || MARKER_RADIUS;
       const markerAttrs = Util.mix({
         x: radius,
@@ -239,7 +229,7 @@ class List {
     if (Util.isNumber(itemWidth) || Util.isNil(itemWidth)) {
       return itemWidth;
     }
-    // 采用默认的栅栏布局
+
     if (itemWidth === 'auto') {
       const itemsGroup = this.itemsGroup;
       const children = itemsGroup.get('children');
@@ -259,7 +249,7 @@ class List {
       } else {
         // 1. max <= 3Avg, 3Avg
         // 2. 3Avg < max && max < 2avg, 2avg
-        // 3. max > 2avg, max, 一列布局
+        // 3. max > 2avg, max, one column
         if (maxItemWidth <= threeAvgWidth) {
           width = threeAvgWidth;
         } else if (maxItemWidth <= twoAvgWidth) {
@@ -312,7 +302,7 @@ class List {
   }
 
   _adjustVertical() {
-    const { maxLength, itemsGroup } = this; // 垂直布局，则 maxLength 代表容器的高度
+    const { maxLength, itemsGroup } = this;
     const { itemGap, itemMarginBottom, itemWidth } = this;
     const titleHeight = this._titleHeight;
     const children = itemsGroup.get('children');

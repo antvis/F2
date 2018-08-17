@@ -115,7 +115,7 @@ describe('Canvas', function() {
       }
     });
     canvas.draw();
-    expect(canvas.get('children').length).to.equal(2);
+    expect(canvas.getChildren().length).to.equal(2);
     canvas.destroy();
   });
 
@@ -140,12 +140,13 @@ describe('Canvas', function() {
       pixelRatio: 1
     });
     canvas.add(new Group());
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.getChildren().length).to.equal(1);
 
     canvas.clear();
-    expect(canvas.get('children')).to.be.an('array').that.is.empty;
+    expect(canvas.getChildren()).to.be.an('array').that.is.empty;
     canvas.destroy();
-    expect(canvas.get('destroyed')).to.be.true;
+    expect(canvas.isDestroyed()).to.be.true;
+    document.body.removeChild(dom);
   });
 });
 

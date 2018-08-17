@@ -10,7 +10,7 @@
   <canvas id="mountNode"></canvas>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
-<script src="../build/f2.js"></script>
+<script src="../build/f2-all.js"></script>
 <script>
   const data = [
     { date: "2000-06-05", value: 116 },
@@ -79,7 +79,8 @@
     date: {
       type: 'timeCat',
       range: [ 0, 1 ],
-      tickCount: 3
+      tickCount: 3,
+      isRounding: true
     }
   });
   chart.tooltip({

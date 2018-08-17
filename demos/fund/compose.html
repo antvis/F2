@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>持仓占比</title>
+  <link rel="stylesheet" href="./css/performance.css">
+  <style>
+    canvas {
+      height: 215px;
+    }
+    canvas#barChart {
+      height: 280px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      资产配置
+      <span style="font-size: 12px;color: rgba(0,0,0,0.45)">( 2018 第一季度，数据更新至 2018-03-31 )</span>
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <!-- 图表主题 -->
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+  <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      行业配置
+      <span style="font-size: 12px;color: rgba(0,0,0,0.45)">( 2018 第一季度，数据更新至 2018-03-31 )</span>
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <!-- 图表主题 -->
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
+  <script src="../assets/jquery-3.2.1.min.js"></script>
+  <script src="../../build/f2-all.js"></script>
+  <script>
+    function drawPieChart() {
+      var data = [
+        { name: '股票', percent: 38.78, const: '1' },
+        { name: '债券', percent: 24.93, const: '1' },
+        { name: '现金', percent: 6.05, const: '1' },
+        { name: '其他', percent: 30.24, const: '1' }
+      ];
+
+      var map = {};
+      data.map(function (obj) {
+        map[obj.name] = obj.percent + '%';
+      });
+
+      var chart = new F2.Chart({
+        id: 'pieChart',
+        pixelRatio: window.devicePixelRatio,
+        padding: [ 0, 'auto', 0, 0]
+      });
+      chart.source(data, {
+        percent: {
+          formatter: function formatter(val) {
+            return val + '%';
+          }
+        }
+      });
+      chart.tooltip(false);
+      chart.legend({
+        position: 'right',
+        offsetX: -15,
+        itemFormatter: function itemFormatter(val) {
+          return val + '    ' + map[val];
+        }
+      });
+      chart.coord('polar', {
+        transposed: true,
+        innerRadius: 0.6,
+        radius: 0.75
+      });
+      chart.axis(false);
+      chart.interval()
+        .position('const*percent')
+        .color('name', ['#1890FF', '#2FC25B', '#FACC14','#F04864'])
+        .style({
+          lineWidth: 1,
+          stroke: '#fff',
+          fillOpacity: 0.85
+        })
+        .animate({
+          appear: {
+            duration: 800
+          }
+        })
+        .adjust('stack');
+
+      chart.interaction('pie-select', {
+        animate: {
+          duration: 300,
+          easing: 'backOut'
+        },
+        style: {
+          fillOpacity: 0.35
+        },
+        onEnd(ev) {
+          const { shape, data, shapeInfo } = ev;
+          if (shapeInfo) {
+            $('#number').css('color', shapeInfo.color);
+            $('#number').text(data.percent + '%');
+            $('#name').text(data.name);
+          }
+        }
+      });
+
+      chart.guide().html({
+        position: [ '50%', '50%' ],
+        html: '<div style="width: 85px;text-align: center;">'
+          + '<p id="number" style="font-size: 16px;font-weight: 400;color:rgba(0, 0, 0, .85);margin:0;">1.68 亿</p>'
+          + '<p id="name" style="font-size: 12px;color:rgba(0, 0, 0, .45);margin:0;"> 总资产 </p>'
+          + '</div>'
+      });
+      chart.render();
+    }
+
+    function drawBarChart() {
+      const data = [
+        { name: '制造业', percent: 28.85, const: 100 },
+        { name: '交通运输、仓储和邮政业', percent: 4.43, const: 100 },
+        { name: '批发和零售业', percent: 2.93, const: 100 },
+        { name: '电力、热力、燃气及水生产和供应业', percent: 2.90, const: 100 },
+        { name: '文化、体育和娱乐业', percent: 0.00, const: 100 },
+      ];
+
+      const chart = new F2.Chart({
+        id: 'barChart',
+        pixelRatio: window.devicePixelRatio
+      });
+      chart.source(data.reverse(), {
+        percent: {
+          min: 0,
+          max: 100,
+          nice: false
+        }
+      });
+      chart.coord({
+        transposed: true
+      });
+      chart.axis(false);
+      chart.tooltip(false);
+      chart.interval().position('name*const').color('#eee').size(10).animate(false); // 绘制背景条
+      chart.interval().position('name*percent').size(10).animate({
+        appear: {
+          duration: 1000
+        }
+      });
+
+      // 绘制文本
+      data.map(function (obj) {
+        chart.guide().text({
+          position: [obj.name, 'min'],
+          content: obj.name,
+          style: {
+            textAlign: 'start',
+            textBaseline: 'bottom'
+          },
+          offsetY: -8
+        });
+        chart.guide().text({
+          position: [obj.name, 'max'],
+          content: obj.percent.toFixed(2)+ '%',
+          style: {
+            textAlign: 'end',
+            textBaseline: 'bottom'
+          },
+          offsetY: -8
+        });
+      });
+      chart.render();
+    }
+
+    drawPieChart();
+    drawBarChart();
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>调试页面</title>
+  <title>双轴 Guide</title>
   <link rel="stylesheet" href="./assets/common.css">
 </head>
 <body>
@@ -10,7 +10,7 @@
   <canvas id="mountNode"></canvas>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
-<script src="../build/f2.js"></script>
+<script src="../build/f2-all.js"></script>
 <script>
 var data = [
   { time: "周一", tem: 6.9, rain: 10 },
@@ -40,6 +40,26 @@ chart.source(data, {
     max: 30
   }
 });
+chart.animate({
+  'guide-line': {
+    appear: {
+      animation(shape, animateCfg) {
+        const attrs = shape.attr();
+        console.log(shape.get('index'));
+        const { x1, x2, y1, y2 } = attrs;
+        shape.attr('x2', x1);
+
+        shape.animate().to(F2.Util.mix({
+          attrs: {
+            x2
+          }
+        }, animateCfg));
+      },
+      duration: 1000,
+      delay: 1000
+    }
+  }
+});
 
 // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
 chart.axis("time", {
@@ -51,7 +71,7 @@ chart.axis("time", {
 chart.axis("tem", {
   label: {
     fontSize: 14
-  }
+  },
 });
 chart.axis("rain", {
   label: {
@@ -74,10 +94,10 @@ chart.guide().line({
   start(xScale, yScales) {
     let sum = 0;
 
-    console.log(xScale, yScales);
+    // console.log(xScale, yScales);
     const yScale = yScales[1];
     yScale.values.forEach(v => (sum += 1 - v / 40));
-    console.log(sum / yScale.values.length);
+    // console.log(sum / yScale.values.length);
     return ["0%", sum / yScale.values.length * 100];
   },
   end(xScale, yScales) {
@@ -96,6 +116,7 @@ chart.guide().line({
 });
 
 chart.render();
+console.log(chart.get('canvas'));
 </script>
 </body>
 </html>

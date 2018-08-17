@@ -18,7 +18,7 @@ class Point extends Geom {
       const shape = obj.shape;
       const cfg = self.getDrawCfg(obj);
       if (Util.isArray(obj.y)) {
-        const hasStack = self.hasAdjust('stack'); // 判断是否存在 stack 层叠
+        const hasStack = self.hasAdjust('stack');
         Util.each(obj.y, (y, idx) => {
           cfg.y = y;
           if (!hasStack || idx !== 0) {

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>累计盈亏</title>
+  <link rel="stylesheet" href="./css/performance.css">
+  <style>
+    canvas {
+      height: 174px;
+    }
+    .chart-header-wrapper {
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      vertical-align: middle;
+      font-size: 12px;
+      color: #808080;
+      padding: 0 16px;
+    }
+    .header-item:nth-child(1) {
+      float: left;
+    }
+    .header-item:nth-child(2) {
+      float: right;
+    }
+    .chart-tooltip {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 30px;
+      line-height: 30px;
+      background: #E9F1FF;
+      z-index: 10;
+      transition: visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      累计盈亏(近一月)
+      <span style="font-size: 12px;color: rgba(0,0,0,0.45)">( 只在最终点进行颜色提示 )</span>
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <div class="chart-header-wrapper chart-tooltip" id="chartTooltip_typeOne">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="float: right;text-align: right">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <div class="chart-header-wrapper" id="chartLegend_typeOne">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="padding-right: 0;">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <!-- 图表主题 -->
+      <canvas id="typeOne"></canvas>
+    </div>
+  </div>
+
+   <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      累计盈亏(近一月)
+      <span style="font-size: 12px;color: rgba(0,0,0,0.45)">( 亏，整体颜色暗示 )</span>
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <div class="chart-header-wrapper chart-tooltip" id="chartTooltip_typeTwo">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="float: right;text-align: right">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <div class="chart-header-wrapper" id="chartLegend_typeTwo">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="padding-right: 0;">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <!-- 图表主题 -->
+      <canvas id="typeTwo"></canvas>
+    </div>
+  </div>
+
+   <div class="container-fluid chart-card">
+    <div class="chart-card-title">
+      累计盈亏(近一月)
+      <span style="font-size: 12px;color: rgba(0,0,0,0.45)">( 赚，整体颜色暗示 )</span>
+    </div>
+    <!-- Content here -->
+    <div class="chart-wrapper">
+      <div class="chart-header-wrapper chart-tooltip" id="chartTooltip_typeThree">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="float: right;text-align: right">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <div class="chart-header-wrapper" id="chartLegend_typeThree">
+        <div class="header-item">
+          <span class="item-value" data-type="time">--</span>
+        </div>
+        <div class="header-item" style="padding-right: 0;">
+          <span>累计收益:</span>
+          <span class="item-value" data-type="value">--</span>
+        </div>
+      </div>
+      <!-- 图表主题 -->
+      <canvas id="typeThree"></canvas>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/assets/lib/lodash-4.17.4.min.js"></script>
+  <script src="../assets/jquery-3.2.1.min.js"></script>
+  <script src="../../build/f2-all.js"></script>
+  <script>
+    function updateLegend(currentInfo, id) {
+      const { date, value } = currentInfo;
+      // 填充自定义图例内容
+      $('#' + id + ' .item-value').each((index, ele) => {
+        const type = $(ele).data('type');
+        if (type === 'time') {
+          $(ele).text(date + '（昨日）');
+        } else if (type === 'value') {
+          let color;
+          let text = value;
+          if (value < 0) {
+            color = '#53BC20';
+          } else if (value > 0) {
+            color = '#F5222D';
+            text = '+' + text;
+          } else {
+            color = 'rgba(0, 0, 0, .85)';
+          }
+          $(ele).css({ color });
+          $(ele).text(text);
+        }
+      });
+    }
+
+    function drawChart(data, color, id) {
+      const lastInfo = data[data.length - 1];
+      let tagColor;
+      if (lastInfo.value >= 0) {
+        tagColor = '#F5222D';
+      } else {
+        tagColor = '#53BC20';
+      }
+      const chart = new F2.Chart({
+        id,
+        pixelRatio: window.devicePixelRatio,
+        padding: [ 14, 'auto', 'auto' ]
+      });
+      chart.source(data, {
+        date: {
+          type: 'timeCat',
+          tickCount: 3,
+          range: [ 0, 1 ],
+          mask: 'MM-DD'
+        },
+        value: {
+          tickCount: 5
+        }
+      });
+      chart.axis('date', {
+        label(text, index, total) {
+          const cfg = {
+            textAlign: 'center'
+          };
+          if (index === 0) {
+            cfg.textAlign = 'start';
+          } else if (index === (total - 1)) {
+            cfg.textAlign = 'end';
+          }
+          return cfg;
+        }
+      });
+      chart.axis('value', {
+        label(text) {
+          text = text * 1;
+          const cfg = {
+            text: text.toFixed(2)
+          };
+          if (text === 0) {
+            cfg.fill = 'rgba(0, 0, 0, 0.85)';
+            cfg.fontWeight = 'bold';
+          }
+          return cfg;
+        },
+        grid(text, index) {
+          if (text == 0) {
+            return {
+              lineDash: null
+            };
+          }
+        }
+      });
+      chart.tooltip({
+        showCrosshairs: true,
+        crosshairsStyle: {
+          stroke: '#CAD7EF'
+        },
+        custom: true,
+        onChange(obj) {
+          const items = obj.items;
+          const { date, value } = items[0].origin;
+          const tooltipID = '#chartTooltip_' + id;
+          $(tooltipID + ' .item-value').each((index, ele) => {
+            const type = $(ele).data('type');
+            if (type === 'time') {
+              $(ele).text(date);
+            } else if (type === 'value') {
+              let color;
+              let text = value;
+              if (value < 0) {
+                color = '#53BC20';
+              } else if (value > 0) {
+                color = '#F5222D';
+                text = '+' + text;
+              } else {
+                color = 'rgba(0, 0, 0, .85)';
+              }
+              $(ele).css({ color });
+              $(ele).text(text);
+            }
+          });
+
+          $(tooltipID).css('visibility', 'visible');
+        },
+        onHide() {
+          const tooltipID = '#chartTooltip_' + id;
+          $(tooltipID).css('visibility', 'hidden');
+        }
+      });
+
+      chart.guide().tag({
+        position: [ lastInfo.date, lastInfo.value ],
+        content: lastInfo.value,
+        background: {
+          padding: [ 2, 3 ],
+          fill: tagColor // tag 背景色
+        },
+        textStyle: {
+          fontSize: 10,
+          fontWeight: 300
+        },
+        offsetY: -5,
+        pointStyle: {
+          fill: tagColor
+        }
+      });
+      chart.line({
+        startOnZero: false
+      }).position('date*value').color(color);
+      chart.area({
+        startOnZero: false
+      }).position('date*value').color(color);
+      chart.render();
+      updateLegend(data[data.length - 1], 'chartLegend_' + id);
+    }
+
+    const data1 = [
+      { "date": "2018-04-17", "value": -7.9 },
+      { "date": "2018-04-18", "value": -0.69 },
+      { "date": "2018-04-19", "value": 10.03 },
+      { "date": "2018-04-20", "value": 12.25 },
+      { "date": "2018-04-23", "value": 10.77 },
+      { "date": "2018-04-24", "value": 25.56 },
+      { "date": "2018-04-25", "value": 62.62 },
+      { "date": "2018-04-26", "value": 39.39 },
+      { "date": "2018-04-27", "value": 75.89 },
+      { "date": "2018-05-02", "value": 84.10 },
+      { "date": "2018-05-03", "value": 70.80 },
+      { "date": "2018-05-04", "value": 105.92 },
+      { "date": "2018-05-07", "value": 144.79 },
+      { "date": "2018-05-08", "value": 122.22 },
+      { "date": "2018-05-09", "value": 124.73 },
+      { "date": "2018-05-10", "value": 198.61 },
+      { "date": "2018-05-11", "value": 119.22 },
+      { "date": "2018-05-14", "value": 119.22 },
+      { "date": "2018-05-15", "value": 187.50 },
+      { "date": "2018-05-16", "value": 208.14 },
+      { "date": "2018-05-17", "value": 153.89 },
+      { "date": "2018-05-18", "value": 167.27 },
+      { "date": "2018-05-21", "value": 165.36 },
+      { "date": "2018-05-22", "value": 230.31 },
+      { "date": "2018-05-23", "value": 224.58 },
+      { "date": "2018-05-24", "value": 250.61 },
+      { "date": "2018-05-25", "value": 313.08 },
+      { "date": "2018-05-28", "value": 351.01 },
+      { "date": "2018-05-29", "value": 165.82 },
+      { "date": "2018-05-30", "value": 145.74 }
+    ];
+    const data2 = [
+      { "date": "2018-04-17", "value": -7.9 },
+      { "date": "2018-04-18", "value": -0.69 },
+      { "date": "2018-04-19", "value": 10.03 },
+      { "date": "2018-04-20", "value": 12.25 },
+      { "date": "2018-04-23", "value": 10.77 },
+      { "date": "2018-04-24", "value": 25.56 },
+      { "date": "2018-04-25", "value": 62.62 },
+      { "date": "2018-04-26", "value": 39.39 },
+      { "date": "2018-04-27", "value": 75.89 },
+      { "date": "2018-05-02", "value": 84.10 },
+      { "date": "2018-05-03", "value": 70.80 },
+      { "date": "2018-05-04", "value": 105.92 },
+      { "date": "2018-05-07", "value": 144.79 },
+      { "date": "2018-05-08", "value": 122.22 },
+      { "date": "2018-05-09", "value": 124.73 },
+      { "date": "2018-05-10", "value": 198.61 },
+      { "date": "2018-05-11", "value": 119.22 },
+      { "date": "2018-05-14", "value": 119.22 },
+      { "date": "2018-05-15", "value": 187.50 },
+      { "date": "2018-05-16", "value": 208.14 },
+      { "date": "2018-05-17", "value": 153.89 },
+      { "date": "2018-05-18", "value": 167.27 },
+      { "date": "2018-05-21", "value": 65.36 },
+      { "date": "2018-05-22", "value": -30.31 },
+      { "date": "2018-05-23", "value": -24.58 },
+      { "date": "2018-05-24", "value": -50.61 },
+      { "date": "2018-05-25", "value": -13.08 },
+      { "date": "2018-05-28", "value": -51.01 },
+      { "date": "2018-05-29", "value": -65.82 },
+      { "date": "2018-05-30", "value": -45.74 }
+    ];
+
+    drawChart(data1, '#1890FF', 'typeOne'); // 状况一
+    drawChart(data2, '#53BC20', 'typeTwo'); // 状况二： 亏啦
+    drawChart(data1, '#F5222D', 'typeThree'); // 状况三：赚啦
+
+  </script>
+</body>
+</html>

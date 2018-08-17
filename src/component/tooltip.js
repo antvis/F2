@@ -7,12 +7,12 @@ class Tooltip {
   getDefaultCfg() {
     return {
       /**
-       * 是否显示 tooltip 辅助线配置，默认不展示
+       * wether show the crosshairs
        * @type {Object}
        */
       showCrosshairs: false,
       /**
-       * tooltip 辅助线显示样式
+       * the style for crosshairs
        * @type {Object}
        */
       crosshairsStyle: {
@@ -20,12 +20,12 @@ class Tooltip {
         lineWidth: 1
       },
       /**
-       * tooltip 容器的样式
+       * the style for tooltip container's background
        * @type {Object}
        */
       background: null,
       /**
-       * 布局方式，horizontal 或者 vertical
+       * layout, can be horizontal or vertical
        * @type {String}
        */
       layout: 'horizontal',
@@ -39,16 +39,17 @@ class Tooltip {
     const frontPlot = this.frontPlot;
     const plotRange = this.plotRange;
 
-    if (!this.custom) { // custom 表示用户使用自定义 tooltip
+    if (!this.custom) { // custom means user do customize
       const container = new Container(Util.mix({
-        parent: frontPlot
+        parent: frontPlot,
+        zIndex: 3
       }, cfg));
       this.container = container;
       if (!this.fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
           visible: false,
-          zIndex: -1,
+          zIndex: 2,
           attrs: {
             points: [],
             fill: this.background.fill
@@ -86,7 +87,7 @@ class Tooltip {
 
   setPosition(items) {
     const { container, plotRange, offsetX, offsetY, crosshairsShape, fixed, tooltipArrow } = this;
-    crosshairsShape && crosshairsShape.moveTo(items[0].x, 0); // 移动辅助线
+    crosshairsShape && crosshairsShape.moveTo(items[0].x, 0);
 
     if (!container) {
       return;
@@ -97,7 +98,7 @@ class Tooltip {
 
     const { tl, tr } = plotRange;
     let posX = 0;
-    const posY = tl.y - height - GAP + offsetY; // 垂直方向贴着图表绘图区域上方边缘
+    const posY = tl.y - height - GAP + offsetY;
 
     if (fixed) {
       const x = (tl.x + tr.x) / 2;
@@ -110,17 +111,12 @@ class Tooltip {
         x = items[0].x;
       }
       posX = x - (width / 2) + offsetX;
-      // 调整位置，始终位于图表范围内
       if (posX < tl.x) {
         posX = tl.x;
       }
       if (posX + width > tr.x) {
         posX = tr.x - width;
       }
-
-      // if (posY < 0) {
-      //   posY = 0;
-      // }
 
       if (tooltipArrow) {
         tooltipArrow.attr('points', [
@@ -230,6 +226,7 @@ class Tooltip {
         markerGroup = this.frontPlot.addGroup({
           zIndex: 1
         });
+        this.frontPlot.sort();
       } else {
         markerGroup = this.backPlot.addGroup();
       }

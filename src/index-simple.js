@@ -1,14 +1,13 @@
 /**
- * 仅包含简单的折、柱、饼
+ * Only support simple bar chart, line chart and pie chart
  */
 const F2 = require('./core');
 
-require('./geom/line'); // 折线图
-require('./geom/interval'); // 柱状图
+require('./geom/line');
+require('./geom/interval');
 
-require('./geom/adjust/'); // 数据调整
+require('./geom/adjust/');
 
-require('./coord/polar'); // 极坐标系
-
+require('./coord/polar');
 
 module.exports = F2;

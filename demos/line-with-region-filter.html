@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>带标域的线图</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode" style="position: relative;">
+  </canvas>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script>
+const data = [
+  { reportDate: "00:00", value: 393 },
+  { reportDate: "01:00", value: 190 },
+  { reportDate: "02:00", value: 244 },
+  { reportDate: "03:00", value: 90 },
+  { reportDate: "04:00", value: 97 },
+  { reportDate: "05:00", value: 79 },
+  { reportDate: "06:00", value: 401 },
+  { reportDate: "07:00", value: 799 },
+  { reportDate: "08:00", value: 683 },
+  { reportDate: "09:00", value: 608 },
+  { reportDate: "10:00", value: 1004 },
+  { reportDate: "11:00", value: 1061 },
+  { reportDate: "12:00", value: 1299 },
+  { reportDate: "13:00", value: 911 },
+  { reportDate: "14:00", value: 608 },
+  { reportDate: "15:00", value: 708 },
+  { reportDate: "16:00", value: 632 },
+  { reportDate: "17:00", value: 1017 },
+  { reportDate: "18:00", value: 1059 },
+  { reportDate: "19:00", value: 1091 },
+  { reportDate: "20:00", value: 1125 },
+  { reportDate: "21:00", value: 1140 },
+  { reportDate: "22:00", value: 1040 },
+  { reportDate: "23:00", value: 1091 }
+];
+
+const chart = new F2.Chart({
+  id: 'mountNode',
+  width: window.innerWidth,
+  height: window.innerWidth * 0.64,
+  pixelRatio: window.devicePixelRatio // 指定分辨率
+});
+
+chart.source(data, {
+  reportDate: {
+    tickCount: 5
+  }
+});
+chart.axis('reportDate', {
+  label: function(text, index, total) {
+    if (index === 0) { // 第一个文本左对齐
+      return {
+        textAlign: 'start'
+      };
+    }
+
+    if (index === (total - 1)) { // 最后一个文本右对齐
+      return {
+        textAlign: 'end'
+      }
+    }
+
+    return {};
+  }
+});
+
+chart.line().position('reportDate*value');
+
+chart.guide()
+  .regionFilter({
+    start: [ '10:00', 1000 ],
+    end: [ '13:00', 'max' ],
+    color: '#fff'
+  });
+chart.guide().regionFilter({
+    start: [ '10:00', 1000 ],
+    end: [ '13:00', 'max' ],
+    color: '#FF4D4F',
+    style: {
+      lineDash: [ 2, 3 ]
+    }
+  });
+
+  chart.guide()
+    .regionFilter({
+      start: [ '17:00', 1000 ],
+      end: [ 'max', 'max' ],
+      color: '#FF4D4F'
+    });
+
+  chart.guide()
+    .line({
+      start: [ 'min', 1000 ],
+      end: [ 'max', 1000 ],
+      style: {
+        lineDash: [ 2, 1 ],
+        stroke: '#FF4D4F'
+      }
+    });
+  chart.guide().text({
+      position: [ 'min', 1000 ],
+      content: '预警线',
+      style: {
+        textAlign: 'start',
+        textBaseline: 'bottom',
+        fill: '#FF4D4F'
+      }
+    });
+chart.render();
+</script>
+</body>
+</html>

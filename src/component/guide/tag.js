@@ -6,14 +6,15 @@ class Tag extends GuideBase {
     this.type = 'tag';
     this.position = null;
     this.content = null;
-    this.direct = 'auto'; // 默认自动计算，如果用户设置了就按照用户设置的渲染
+    this.direct = 'tl';
+    this.autoAdjust = true;
     this.offsetX = 0;
     this.offsetY = 0;
-    this.side = 4; //  三角标的边长
+    this.side = 4;
     this.background = {
-      padding: 5, // tag 内边距
-      radius: 2, // tag 圆角
-      fill: '#1890FF' // tag 背景色
+      padding: 5,
+      radius: 2,
+      fill: '#1890FF'
     };
     this.textStyle = {
       fontSize: 12,
@@ -32,63 +33,64 @@ class Tag extends GuideBase {
 
   _getDirect(container, point, tagWidth, tagHeight) {
     let direct = this.direct;
-    if (direct === 'auto') { // 自动计算
-      const side = this.side;
-      const canvas = container.get('canvas');
-      const clientWidth = canvas.getWidth();
-      const clientHeight = canvas.getHeight();
-      const { x, y } = point;
+    const side = this.side;
+    const canvas = container.get('canvas');
+    const clientWidth = canvas.get('width');
+    const clientHeight = canvas.get('height');
+    const { x, y } = point;
 
-      let vertical = 't';
-      let horizontal = 'l';
+    let vertical = direct[0];
+    let horizontal = direct[1];
 
-      if (y - side - tagHeight < 0) {
-        vertical = 'b';
-      }
-
-      if (vertical === 'b') {
-        if (y + side + tagHeight > clientHeight) {
-          vertical = 't';
-        }
-      }
-
-      const diff = vertical === 'c' ? side : 0;
-      if (x - diff - tagWidth < 0) {
+    // adjust for vertical direction
+    if (vertical === 't' && (y - side - tagHeight) < 0) {
+      vertical = 'b';
+    } else if (vertical === 'b' && (y + side + tagHeight) > clientHeight) {
+      vertical = 't';
+    }
+    // adjust for horizontal direction
+    const diff = vertical === 'c' ? side : 0;
+    if (horizontal === 'l' && (x - diff - tagWidth) < 0) {
+      horizontal = 'r';
+    } else if (horizontal === 'r' && (x + diff + tagWidth) > clientWidth) {
+      horizontal = 'l';
+    } else if (horizontal === 'c') {
+      if (tagWidth / 2 + x + diff > clientWidth) {
+        horizontal = 'l';
+      } else if (x - (tagWidth / 2) - diff < 0) {
         horizontal = 'r';
       }
-      if (horizontal === 'r') {
-        const diff = vertical === 'c' ? side : 0;
-        if (x + diff + tagWidth > clientWidth) {
-          horizontal = 'l';
-        }
-      }
-      direct = vertical + horizontal;
-      this.direct = direct;
     }
 
+    direct = vertical + horizontal;
     return direct;
   }
 
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
+    if (!position) {
+      return;
+    }
     const { content, background, textStyle } = this;
+    const shapes = [];
 
     const wrapperContainer = container.addGroup({
       className: 'guide-tag'
     });
 
     if (this.withPoint) {
-      wrapperContainer.addShape('Circle', {
+      const pointShape = wrapperContainer.addShape('Circle', {
         className: 'guide-tag-point',
         attrs: Util.mix({
           x: position.x,
           y: position.y
         }, this.pointStyle)
       });
+      shapes.push(pointShape);
     }
 
     const tagContainer = wrapperContainer.addGroup();
-    // 绘制文本
+    // create a text shape
     const tagText = tagContainer.addShape('text', {
       className: 'guide-tag-text',
       zIndex: 1,
@@ -98,8 +100,9 @@ class Tag extends GuideBase {
         text: content
       }, textStyle)
     });
+    shapes.push(tagText);
 
-    // 绘制背景框
+    // create background box
     const textBBox = tagText.getBBox();
     const padding = Util.parsePadding(background.padding);
     const tagWidth = textBBox.width + padding[1] + padding[3];
@@ -116,7 +119,8 @@ class Tag extends GuideBase {
         height: tagHeight
       }, background)
     });
-    const direct = this._getDirect(container, position, tagWidth, tagHeight);
+    shapes.push(tagBg);
+    const direct = this.autoAdjust ? this._getDirect(container, position, tagWidth, tagHeight) : this.direct;
     const side = this.side;
     let x = position.x + this.offsetX;
     let y = position.y + this.offsetY;
@@ -124,7 +128,7 @@ class Tag extends GuideBase {
     const radius = Util.parsePadding(background.radius);
     if (direct === 'tl') {
       arrowPoints = [
-        { x: tagWidth - side + xMin, y: tagHeight + yMin - 1 }, // 这个 1 是为了防止出现白边
+        { x: tagWidth + xMin - side - 1, y: tagHeight + yMin - 1 }, // 这个 1 是为了防止出现白边
         { x: tagWidth + xMin, y: tagHeight + yMin - 1 },
         { x: tagWidth + xMin, y: tagHeight + side + yMin }
       ];
@@ -133,8 +137,8 @@ class Tag extends GuideBase {
       y = y - side - tagHeight;
     } else if (direct === 'cl') {
       arrowPoints = [
-        { x: tagWidth + xMin - 1, y: (tagHeight - side) / 2 + yMin },
-        { x: tagWidth + xMin - 1, y: (tagHeight + side) / 2 + yMin },
+        { x: tagWidth + xMin - 1, y: (tagHeight - side) / 2 + yMin - 1 },
+        { x: tagWidth + xMin - 1, y: (tagHeight + side) / 2 + yMin + 1 },
         { x: tagWidth + side + xMin, y: tagHeight / 2 + yMin }
       ];
 
@@ -143,7 +147,7 @@ class Tag extends GuideBase {
     } else if (direct === 'bl') {
       arrowPoints = [
         { x: tagWidth + xMin, y: -side + yMin },
-        { x: tagWidth - side + xMin, y: yMin + 1 },
+        { x: tagWidth + xMin - side - 1, y: yMin + 1 },
         { x: tagWidth + xMin, y: yMin + 1 }
       ];
       radius[1] = 0;
@@ -153,59 +157,62 @@ class Tag extends GuideBase {
     } else if (direct === 'bc') {
       arrowPoints = [
         { x: tagWidth / 2 + xMin, y: -side + yMin },
-        { x: (tagWidth - side) / 2 + xMin, y: yMin + 1 },
-        { x: (tagWidth + side) / 2 + xMin, y: yMin + 1 }
+        { x: (tagWidth - side) / 2 + xMin - 1, y: yMin + 1 },
+        { x: (tagWidth + side) / 2 + xMin + 1, y: yMin + 1 }
       ];
       x = x - tagWidth / 2;
       y = y + side;
     } else if (direct === 'br') {
       arrowPoints = [
-        { x: xMin, y: -side + yMin },
+        { x: xMin, y: yMin - side },
         { x: xMin, y: yMin + 1 },
-        { x: side + xMin, y: yMin + 1 }
+        { x: xMin + side + 1, y: yMin + 1 }
       ];
       radius[0] = 0;
       y = y + side;
     } else if (direct === 'cr') {
       arrowPoints = [
-        { x: -side + xMin, y: tagHeight / 2 + yMin },
-        { x: xMin + 1, y: (tagHeight - side) / 2 + yMin },
-        { x: xMin + 1, y: (tagHeight + side) / 2 + yMin }
+        { x: xMin - side, y: tagHeight / 2 + yMin },
+        { x: xMin + 1, y: (tagHeight - side) / 2 + yMin - 1 },
+        { x: xMin + 1, y: (tagHeight + side) / 2 + yMin + 1 }
       ];
       x = x + side;
       y = y - tagHeight / 2;
     } else if (direct === 'tr') {
       arrowPoints = [
-        { x: 0 + xMin, y: tagHeight + side + yMin },
-        { x: 0 + xMin, y: tagHeight + yMin - 1 },
-        { x: side + xMin, y: tagHeight + yMin - 1 }
+        { x: xMin, y: tagHeight + side + yMin },
+        { x: xMin, y: tagHeight + yMin - 1 },
+        { x: side + xMin + 1, y: tagHeight + yMin - 1 }
       ];
       radius[3] = 0;
 
       y = y - tagHeight - side;
     } else if (direct === 'tc') {
       arrowPoints = [
-        { x: (tagWidth - side) / 2 + xMin, y: tagHeight + yMin - 1 },
-        { x: (tagWidth + side) / 2 + xMin, y: tagHeight + yMin - 1 },
+        { x: (tagWidth - side) / 2 + xMin - 1, y: tagHeight + yMin - 1 },
+        { x: (tagWidth + side) / 2 + xMin + 1, y: tagHeight + yMin - 1 },
         { x: tagWidth / 2 + xMin, y: tagHeight + side + yMin }
       ];
       x = x - tagWidth / 2;
       y = y - tagHeight - side;
     }
 
-    tagContainer.addShape('Polygon', {
+    const sideShape = tagContainer.addShape('Polygon', {
+      className: 'guide-tag-side',
       zIndex: 0,
       attrs: {
         points: arrowPoints,
         fill: background.fill
       }
     });
+    shapes.push(sideShape);
 
     tagBg.attr('radius', radius);
     tagContainer.moveTo(x - xMin, y - yMin);
     tagContainer.sort();
 
     this.element = wrapperContainer;
+    return shapes;
   }
 }
 

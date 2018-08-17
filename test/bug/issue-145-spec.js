@@ -6,9 +6,6 @@ const canvas = document.createElement('canvas');
 canvas.width = 500;
 canvas.height = 500;
 canvas.id = 'issue-145';
-// canvas.style.position = 'fixed';
-// canvas.style.top = 0;
-// canvas.style.left = 0;
 document.body.appendChild(canvas);
 
 describe('issue 145', function() {
@@ -32,7 +29,6 @@ describe('issue 145', function() {
     chart.source(data);
     chart.interval().position('t*v');
     chart.render();
-
     expect(chart.get('padding')).to.equal('auto');
     expect(parseInt(chart.get('_padding')[3])).to.eql(28);
 
@@ -54,9 +50,9 @@ describe('issue 145', function() {
       chart.changeData(newData);
       expect(chart.get('padding')).to.equal('auto');
       expect(parseInt(chart.get('_padding')[3])).to.eql(72);
-      expect(chart.get('rePadding')).to.be.true;
       chart.repaint();
-      expect(chart.get('rePadding')).to.be.undefined;
+      expect(chart.get('_padding')).not.to.be.null;
+      expect(parseInt(chart.get('_padding')[3])).to.eql(72);
 
       chart.destroy();
       document.body.removeChild(canvas);

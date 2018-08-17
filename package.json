@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.1.16",
+  "version": "3.2.0",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -10,7 +10,8 @@
     "data visualization",
     "canvas",
     "2d draw",
-    "mobile visualization"
+    "mobile visualization",
+    "interactive"
   ],
   "main": "lib/index.js",
   "browser": "build/f2.js",
@@ -60,10 +61,10 @@
     "build": "webpack",
     "build-lib": "babel src --out-dir lib",
     "bundler": "electron ./bundler/app.js",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test-all",
     "compress": "sh ./bin/compress.sh",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
-    "coverage-generator": "torch --coverage --compile --renderer --recursive test/unit",
+    "coverage-generator": "torch --compile --coverage --renderer --source-pattern src/*.js,src/**/*.js --recursive test/unit",
     "coverage-viewer": "torch-coverage",
     "demos": "electron ./demos/app.js",
     "demos-web": "node ./demos/app.js --web --port 2048",
@@ -73,22 +74,25 @@
     "lint-fix": "eslint --fix ./",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
-    "test": "npm run test-unit && npm run test-bug",
+    "test-all": "npm run test && npm run test-bug",
+    "test": "torch --compile --renderer --recursive ./test/unit",
     "test-bug": "torch --compile --renderer --recursive ./test/bug",
     "test-bug-live": "torch --compile --interactive --recursive ./test/bug",
-    "test-unit": "torch --compile --renderer --recursive ./test/unit",
-    "test-unit-live": "torch --compile --interactive --recursive ./test/unit",
+    "test-live": "torch --compile --interactive --recursive ./test/unit",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
     "run": [
       "lint",
-      "test"
+      "test-all"
     ],
     "silent": false
   },
   "dependencies": {
-    "fecha": "~2.3.1",
+    "@antv/attr": "~0.0.3",
+    "@antv/scale": "~0.0.6",
+    "@antv/adjust": "~0.0.3",
+    "@antv/util": "~1.0.6",
     "hammerjs": "^2.0.8"
   }
 }

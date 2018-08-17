@@ -5,29 +5,29 @@ class Text extends GuideBase {
   _initDefaultCfg() {
     this.type = 'text';
     /**
-     * 辅助文本的位置
+     * the position of text
      * @type {Function | Array}
      */
     this.position = null;
     /**
-     * 辅助文本的显示文字
+     * the display content
      * @type {String}
      */
     this.content = null;
     /**
-     * 辅助文本的样式配置
+     * style configuration for text
      * @type {Object}
      */
     this.style = {
       fill: '#000'
     };
     /**
-     * x 方向的偏移量
+     * offset of horizontal direction
      * @type {Number}
      */
     this.offsetX = 0;
     /**
-     * y 方向的偏移量
+     * offset of vertical direction
      * @type {Number}
      */
     this.offsetY = 0;
@@ -36,6 +36,9 @@ class Text extends GuideBase {
   render(coord, container) {
     const position = this.position;
     const point = this.parsePoint(coord, position);
+    if (!point) {
+      return;
+    }
     const { content, style, offsetX, offsetY } = this;
 
     if (offsetX) {
@@ -55,6 +58,7 @@ class Text extends GuideBase {
       }, style)
     });
     this.element = shape;
+    return shape;
   }
 }
 

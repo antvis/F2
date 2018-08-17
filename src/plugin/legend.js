@@ -94,18 +94,18 @@ class LegendController {
     const field = scale.field;
     const fieldCfg = legendCfg[field];
 
-    if (fieldCfg === false) { // 如果不显示此图例
+    if (fieldCfg === false) {
       return null;
     }
 
-    if (fieldCfg && fieldCfg.custom) { // 自定义图例逻辑
+    if (fieldCfg && fieldCfg.custom) {
       self.addCustomLegend(field);
     } else {
       let position = legendCfg.position || self.position;
-      if (fieldCfg && fieldCfg.position) { // 如果对某个图例单独设置 position，则以该 position 为准
+      if (fieldCfg && fieldCfg.position) {
         position = fieldCfg.position;
       }
-      if (scale.isCategory) { // 目前只支持分类
+      if (scale.isCategory) {
         self._addCategoryLegend(scale, items, position, filterVals);
       }
     }
@@ -139,7 +139,7 @@ class LegendController {
         item.marker.radius = item.marker.radius || MARKER_SIZE;
       }
       item.checked = Util.isNil(item.checked) ? true : item.checked;
-      item.name = item.name || item.value; // 兼容 value 的写法
+      item.name = item.name || item.value;
     });
     const legend = new List(Util.deepMix({}, Global.legend[position], legendCfg, {
       maxLength: self._getMaxLength(position),
@@ -188,7 +188,7 @@ class LegendController {
     legends[position] = legends[position] || [];
 
     let symbol = 'circle';
-    if (legendCfg[field] && legendCfg[field].marker) { // 用户为 field 对应的图例定义了 marker
+    if (legendCfg[field] && legendCfg[field].marker) {
       symbol = legendCfg[field].marker;
     } else if (legendCfg.marker) {
       symbol = legendCfg.marker;
@@ -205,7 +205,7 @@ class LegendController {
         item.checked = self._isFiltered(scale, filterVals, item.dataValue);
       }
     });
-    // 需要更新图例信息
+
     const legendItems = chart.get('legendItems');
     legendItems[field] = items;
 
@@ -241,8 +241,8 @@ class LegendController {
 
     let x = 0;
     let y = 0;
-    if (position === 'left' || position === 'right') { // position 为 left、right，默认图例整体居中对齐
-      const verticalAlign = legend.verticalAlign || 'middle'; // 图例垂直方向上的对齐方式
+    if (position === 'left' || position === 'right') {
+      const verticalAlign = legend.verticalAlign || 'middle';
       const height = Math.abs(tl.y - bl.y);
       x = (position === 'left') ? appendPadding[3] : (chartWidth - legendWidth - appendPadding[1]);
       y = (height - legendHeight) / 2 + tl.y;
@@ -255,8 +255,8 @@ class LegendController {
       if (pre) {
         y = pre.get('y') - legendHeight - LEGEND_GAP;
       }
-    } else { // position 为 top、bottom，图例整体居左对齐
-      const align = legend.align || 'left'; // 图例水平方向上的对齐方式
+    } else {
+      const align = legend.align || 'left';
       x = appendPadding[3];
 
       if (align === 'center') {
@@ -325,10 +325,10 @@ class LegendController {
     const clicked = findItem(x, y);
     if (clicked && clicked.clickedLegend.clickable !== false) {
       const { clickedItem, clickedLegend } = clicked;
-      if (clickedLegend.onClick) { // 用户自定义点击行为
+      if (clickedLegend.onClick) {
         ev.clickedItem = clickedItem;
         clickedLegend.onClick(ev);
-      } else if (!clickedLegend.custom) { // 进入组件默认事件处理逻辑
+      } else if (!clickedLegend.custom) {
         const checked = clickedItem.get('checked');
         const value = clickedItem.get('dataValue');
         const { filterVals, field, selectedMode } = clickedLegend;
@@ -359,22 +359,14 @@ class LegendController {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.wrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'bind');
-    } else {
-      Util.addEventListener(this.canvasDom, triggerOn, method);
-    }
+    Util.addEventListener(this.canvasDom, triggerOn, method);
   }
 
   unBindEvents() {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
     const method = Util.getWrapBehavior(this, 'handleEvent');
-    if (Util.isFunction(triggerOn)) {
-      triggerOn(method, 'unBind');
-    } else {
-      Util.removeEventListener(this.canvasDom, triggerOn, method);
-    }
+    Util.removeEventListener(this.canvasDom, triggerOn, method);
   }
 }
 module.exports = {
@@ -386,13 +378,6 @@ module.exports = {
     });
     chart.set('legendController', legendController);
 
-    /**
-     * 设置图例
-     * @chainable
-     * @param  {Boolean|String|Object} field Boolean 表示关闭开启图例，String 表示指定具体的图例，Object 表示为所有的图例设置
-     * @param  {Object|Boolean} cfg   图例的配置，Object 表示为对应的图例进行配置，Boolean 表示关闭对应的图例
-     * @return {Chart}       返回当前 chart 的引用
-     */
     chart.legend = function(field, cfg) {
       let legendCfg = legendController.legendCfg;
       legendController.enable = true;
@@ -417,7 +402,7 @@ module.exports = {
 
     const legendCfg = legendController.legendCfg;
 
-    if (legendCfg && legendCfg.custom) { // 用户自定义图例
+    if (legendCfg && legendCfg.custom) {
       legendController.addCustomLegend();
     } else {
       const legendItems = chart.getLegendItems();

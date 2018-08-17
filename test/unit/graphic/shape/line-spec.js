@@ -29,6 +29,7 @@ describe('Line', function() {
   canvas.add(line);
 
   it('init attr', function() {
+    expect(line.getType()).to.equal('line');
     expect(line.attr('stroke')).to.be.undefined;
     expect(line.attr('matrix')).to.eql([ 1, 0, 0, 1, 5, 5 ]);
   });
@@ -82,6 +83,7 @@ describe('Line', function() {
   it('destroy', function() {
     line.destroy();
     expect(canvas.get('children').length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

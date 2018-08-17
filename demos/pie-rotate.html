@@ -10,11 +10,11 @@
             position: relative;
             height: 100%;
         }
-        
+
         canvas {
             display: block;
         }
-        
+
         .flag {
             position: absolute;
             bottom: 30px;
@@ -42,7 +42,7 @@
 
     </div>
     <script src="./assets/jquery-3.2.1.min.js"></script>
-    <script src="../build/f2.js"></script>
+    <script src="../build/f2-all.js"></script>
     <script src="./assets/hammer.js"></script>
     <script>
         // 绘制饼图
@@ -50,11 +50,11 @@
         const Matrix = G.Matrix;
 
         const data = [
-          {name: 'A',proportion: 0.8,a: '1'}, 
-          {name: 'B',proportion: 0.5,a: '1'}, 
-          {name: 'C',proportion: 0.45,a: '1'}, 
-          {name: 'D',proportion: 0.15,a: '1'}, 
-          {name: 'E',proportion: 0.12,a: '1' }, 
+          {name: 'A',proportion: 0.8,a: '1'},
+          {name: 'B',proportion: 0.5,a: '1'},
+          {name: 'C',proportion: 0.45,a: '1'},
+          {name: 'D',proportion: 0.15,a: '1'},
+          {name: 'E',proportion: 0.12,a: '1' },
           {name: 'F',proportion: 0.1, a: '1' },
           {name: 'G',proportion: 0.03,a: '1'}
         ];
@@ -83,7 +83,7 @@
                 stroke: '#fff'
             });
         chart.render();
-      
+
 
         // 开始交互逻辑
         // 一些辅助工具类函数

@@ -1,6 +1,6 @@
 /**
- * 精细动画，包含入场、更新、出场
- * @author sima.zhang
+ * Handle the detail animations
+ * @author sima.zhang1990@gmail.com
  */
 const Util = require('../util/common');
 const Element = require('../graphic/element');
@@ -26,7 +26,7 @@ Animate.Action = ShapeAction;
 Animate.defaultCfg = {
   interval: {
     enter(coord) {
-      if (coord.isPolar && coord.transposed) { // 饼图特殊处理
+      if (coord.isPolar && coord.transposed) { // for pie chart
         return function(shape) {
           shape.set('zIndex', -1);
           const container = shape.get('parent');
@@ -82,9 +82,9 @@ const GROUP_ANIMATION = {
   },
   interval(coord) {
     let result;
-    if (coord.isPolar) { // 极坐标
-      result = GroupAction.groupScaleInXY; // 南丁格尔玫瑰图
-      if (coord.transposed) { // 饼图
+    if (coord.isPolar) { // polar coodinate
+      result = GroupAction.groupScaleInXY;
+      if (coord.transposed) { // pie chart
         result = GroupAction.groupWaveIn;
       }
     } else {
@@ -109,7 +109,7 @@ function diff(fromAttrs, toAttrs) {
   return endState;
 }
 
-// 给每个 shape 加上唯一的 id 标识
+// Add a unique id identifier to each shape
 function _getShapeId(geom, dataObj) {
   const type = geom.get('type');
   let id = 'geom-' + type;
@@ -130,7 +130,6 @@ function _getShapeId(geom, dataObj) {
   } else if (type === 'line' || type === 'area' || type === 'path') {
     id += '-' + type;
   } else {
-    // 分类类型只需要判断 xVal
     id += xScale.isCategory ? '-' + xVal : '-' + xVal + '-' + yVal;
   }
 
@@ -145,14 +144,13 @@ function _getShapeId(geom, dataObj) {
   return id;
 }
 
-// 获取图组内所有的shapes
+// get geometry's shapes
 function getShapes(geoms, chart, coord) {
   const shapes = [];
 
   Util.each(geoms, geom => {
     const geomContainer = geom.get('container');
-    const geomShapes = geomContainer.get('children'); // 获取几何标记的 shapes
-    // const coord = geom.get('coord');
+    const geomShapes = geomContainer.get('children');
     const type = geom.get('type');
     const animateCfg = Util.isNil(geom.get('animateCfg')) ? _getAnimateCfgByShapeType(type, chart) : geom.get('animateCfg');
     if (animateCfg !== false) {
@@ -179,8 +177,8 @@ function cache(shapes) {
     const id = shape._id;
     rst[id] = {
       _id: id,
-      type: shape.get('type'), // 图形形状
-      attrs: Util.mix({}, shape._attrs.attrs), // 原始属性
+      type: shape.get('type'), // the type of shape
+      attrs: Util.mix({}, shape._attrs.attrs), // the graphics attributes of shape
       className: shape.get('className'),
       geomType: shape.get('className'),
       index: shape.get('index'),
@@ -205,7 +203,7 @@ function getAnimate(geomType, coord, animationType, animationName) {
 }
 
 function getAnimateCfg(geomType, animationType, animateCfg) {
-  if (animateCfg && (animateCfg[animationType] === false)) {
+  if (animateCfg === false || (Util.isObject(animateCfg) && (animateCfg[animationType] === false))) {
     return false;
   }
 
@@ -220,9 +218,9 @@ function addAnimate(cache, shapes, canvas) {
   let animate;
   let animateCfg;
 
-  // 动画执行顺序: leave -> update -> enter
-  const updateShapes = []; // 存储的是 shapes
-  const newShapes = []; // 存储的是 shapes
+  // the order of animation: leave -> update -> enter
+  const updateShapes = [];
+  const newShapes = [];
   Util.each(shapes, shape => {
     const result = cache[shape._id];
     if (!result) {
@@ -234,7 +232,7 @@ function addAnimate(cache, shapes, canvas) {
     }
   });
 
-  // 执行销毁动画
+  // first do the leave animation
   Util.each(cache, deletedShape => {
     const { className, coord, _id, attrs, index, type } = deletedShape;
 
@@ -254,13 +252,12 @@ function addAnimate(cache, shapes, canvas) {
     }
   });
 
-  // 执行更新动画
+  // then do the update animation
   Util.each(updateShapes, updateShape => {
     const className = updateShape.get('className');
 
     animateCfg = getAnimateCfg(className, 'update', updateShape.get('animateCfg'));
     if (animateCfg === false) return true;
-
     const coord = updateShape.get('coord');
     const cacheAttrs = updateShape.get('cacheShape').attrs;
     const endState = diff(cacheAttrs, updateShape._attrs.attrs); // 判断如果属性相同的话就不进行变换
@@ -282,7 +279,7 @@ function addAnimate(cache, shapes, canvas) {
     }
   });
 
-  // 新进场 shape 动画
+  // last, enter animation
   Util.each(newShapes, newShape => {
     // 新图形元素的进场元素
     const className = newShape.get('className');
@@ -307,8 +304,16 @@ function addAnimate(cache, shapes, canvas) {
 function _getAnimateCfgByShapeType(type, chart) {
   const animateCfg = chart.get('animate');
 
-  if (animateCfg) {
+  if (type.indexOf('guide-tag') > -1) {
+    type = 'guide-tag';
+  }
+
+  if (Util.isObject(animateCfg)) {
     return animateCfg[type];
+  }
+
+  if (animateCfg === false) {
+    return false;
   }
 
   return null;
@@ -334,24 +339,27 @@ module.exports = {
       isUpdate = false;
     }
 
-    const shapes = getShapes(geoms, chart, coord); // geom 上的图形
-
+    const cacheShapes = getShapes(geoms, chart, coord);
     const { frontPlot, backPlot } = chart.get('axisController');
-    const axisShapes = [];
-    // get axes' shapes
-    frontPlot.get('children').concat(backPlot.get('children')).forEach(s => {
+    const axisShapes = frontPlot.get('children').concat(backPlot.get('children'));
+    let guideShapes = [];
+    if (chart.get('guideController')) {
+      guideShapes = chart.get('guideController').guideShapes;
+    }
+    const componentShapes = [];
+    axisShapes.concat(guideShapes).forEach(s => {
       const className = s.get('className');
+      const animateCfg = _getAnimateCfgByShapeType(className, chart);
       s.set('coord', coord);
-      s.set('animateCfg', _getAnimateCfgByShapeType(className, chart));
-      axisShapes.push(s);
+      s.set('animateCfg', animateCfg);
+      componentShapes.push(s);
+      cacheShapes.push(s);
     });
-
-    const cacheShapes = shapes.concat(axisShapes);
     canvas.set('caches', cache(cacheShapes));
 
     if (isUpdate) {
       addAnimate(caches, cacheShapes, canvas);
-    } else { // 初次入场动画
+    } else { // do the appear animation
       let animateCfg;
       let animate;
       Util.each(geoms, geom => {
@@ -360,12 +368,12 @@ module.exports = {
         if (geomCfg !== false) {
           animateCfg = getAnimateCfg(type, 'appear', geomCfg);
           animate = getAnimate(type, coord, 'appear', animateCfg.animation);
-          if (Util.isFunction(animate)) { // 用户指定了动画类型
+          if (Util.isFunction(animate)) {
             const shapes = geom.get('shapes');
             Util.each(shapes, shape => {
               animate(shape, animateCfg, coord);
             });
-          } else if (GROUP_ANIMATION[type]) { // 默认进行整体动画
+          } else if (GROUP_ANIMATION[type]) { // do the default animation
             animate = GroupAction[animateCfg.animation] || GROUP_ANIMATION[type](coord);
 
             const yScale = geom.getYScale();
@@ -376,6 +384,20 @@ module.exports = {
 
             const container = geom.get('container');
             animate && animate(container, animateCfg, coord, zeroY);
+          }
+        }
+      });
+
+      // do the animation of components
+      Util.each(componentShapes, shape => {
+        const animateCfg = shape.get('animateCfg');
+        const className = shape.get('className');
+        if (animateCfg && animateCfg.appear) { // if user configure
+          const defaultCfg = Animate.getAnimateCfg(className, 'appear');
+          const appearCfg = Util.deepMix({}, defaultCfg, animateCfg.appear);
+          const animate = getAnimate(className, coord, 'appear', appearCfg.animation);
+          if (Util.isFunction(animate)) {
+            animate(shape, appearCfg, coord);
           }
         }
       });

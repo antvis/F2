@@ -56,32 +56,32 @@ class Html extends GuideBase {
   _initDefaultCfg() {
     this.type = 'html';
     /**
-     * dom 显示位置点
+     * dom position
      * @type {Object | Array}
      */
     this.position = null;
     /**
-      * 水平方向对齐方式，可取值 'left'、'center'、'right'
+      * alignment for horizontal direction，can be 'left','center','right'
       * @type {String}
       */
     this.alignX = 'center';
     /**
-      * 垂直方向对齐方式，可取值 'top'、'middle'、'bottom'
+      * alignment for vertical direction，can be 'top', 'middle', 'bottom'
       * @type {String}
       */
     this.alignY = 'middle';
     /**
-      * x 方向的偏移量
+      * offset for horizontal direction
       * @type {Number}
       */
     this.offsetX = null;
     /**
-      * y 方向的偏移量
+      * offset for vertical direction
       * @type {Number}
       */
     this.offsetY = null;
     /**
-    * html内容
+    * the html string
     *@type {String | Function}
     */
     this.html = null;
@@ -91,6 +91,9 @@ class Html extends GuideBase {
   render(coord, container) {
     const self = this;
     const position = self.parsePoint(coord, self.position);
+    if (!position) {
+      return;
+    }
     let myNode = createDom(self.html);
     myNode = modifyCSS(myNode, {
       position: 'absolute',
@@ -99,31 +102,24 @@ class Html extends GuideBase {
       visibility: 'hidden'
     });
 
-    let parentNode = container.get('canvas').get('el').parentNode;
+    const canvasDom = container.get('canvas').get('el');
+    let parentNode = canvasDom.parentNode;
     parentNode = modifyCSS(parentNode, {
       position: 'relative'
     });
-    // 创建html guide 的容器
-    let wrapperNode;
-    if (parentNode.getElementsByClassName('guideWapper').length > 0) {
-      wrapperNode = parentNode.getElementsByClassName('guideWapper')[0];
-    } else {
-      wrapperNode = createDom('<div class="guideWapper"></div>');
-      wrapperNode = modifyCSS(wrapperNode, {
-        position: 'absolute',
-        top: 0,
-        left: 0
-      });
-      parentNode.appendChild(wrapperNode);
-    }
+
+    const wrapperNode = createDom('<div class="guideWapper" style="position: absolute;top: 0; left: 0;"></div>');
+    parentNode.appendChild(wrapperNode);
     wrapperNode.appendChild(myNode);
 
+    const canvasOffsetTop = canvasDom.offsetTop;
+    const canvasOffsetLeft = canvasDom.offsetLeft;
     const { alignX, alignY, offsetX, offsetY } = self;
     const width = Util.getWidth(myNode);
     const height = Util.getHeight(myNode);
     const newOffset = getOffsetFromAlign(alignX, alignY, width, height);
-    position.x = position.x + newOffset[0];
-    position.y = position.y + newOffset[1];
+    position.x = position.x + newOffset[0] + canvasOffsetLeft;
+    position.y = position.y + newOffset[1] + canvasOffsetTop;
 
     if (offsetX) {
       position.x += offsetX;
@@ -143,7 +139,7 @@ class Html extends GuideBase {
 
   remove() {
     const element = this.element;
-    element && element.remove();
+    element && element.parentNode && element.parentNode.removeChild(element);
   }
 }
 

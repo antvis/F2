@@ -28,11 +28,10 @@ class AxisController {
     this.axisCfg = {};
     this.frontPlot = null;
     this.backPlot = null;
-    this.axes = {}; // 存储各个坐标轴的配置
+    this.axes = {}; // store the axes's options
     Util.mix(this, cfg);
   }
 
-  // 对应的坐标轴是否隐藏
   _isHide(field) {
     const axisCfg = this.axisCfg;
     return !axisCfg || axisCfg[field] === false;
@@ -59,8 +58,8 @@ class AxisController {
   _getLineCfg(coord, dimType, position) {
     let start;
     let end;
-    let factor = 1; // 文本的对齐方式，是顺时针方向还是逆时针方向
-    if (dimType === 'x') { // x 轴的坐标轴，底部的横坐标
+    let factor = 1; // Mark clockwise or counterclockwise
+    if (dimType === 'x') {
       start = {
         x: 0,
         y: 0
@@ -69,8 +68,8 @@ class AxisController {
         x: 1,
         y: 0
       };
-    } else { // y轴坐标轴
-      if (position === 'right') { // 多轴的情况
+    } else {
+      if (position === 'right') { // there will be several y axes
         start = {
           x: 1,
           y: 0
@@ -79,7 +78,7 @@ class AxisController {
           x: 1,
           y: 1
         };
-      } else { // 单个y轴，或者第一个y轴
+      } else {
         start = {
           x: 0,
           y: 0
@@ -148,7 +147,7 @@ class AxisController {
     let labelCfg = label;
 
     Util.each(ticks, (tick, index) => {
-      if (Util.isFunction(label)) { // 文本的配置项动态可配置
+      if (Util.isFunction(label)) {
         const executedLabel = label(tick.text, index, count);
         if (executedLabel) {
           labelCfg = Util.mix({}, Global._defaultAxis.label, executedLabel);
@@ -170,7 +169,7 @@ class AxisController {
             x: 0,
             y: 0,
             text: tick.text,
-            fontFamily: self.chart.get('canvas').get('fontFamily') // 保持字体一致
+            fontFamily: self.chart.get('canvas').get('fontFamily')
           }, labelCfg),
           value: tick.value,
           textStyle,
@@ -197,24 +196,24 @@ class AxisController {
     let type;
     let key;
     let defaultCfg;
-    if (coordType === 'cartesian' || coordType === 'rect') { // 直角坐标系下
+    if (coordType === 'cartesian' || coordType === 'rect') {
       const position = self._getLinePosition(scale, dimType, index, transposed);
       defaultCfg = Global.axis[position];
       defaultCfg.position = position;
       type = 'Line';
       key = position;
-    } else { // 极坐标系下
-      if ((dimType === 'x' && !transposed) || (dimType === 'y' && transposed)) { // 圆形坐标轴
+    } else {
+      if ((dimType === 'x' && !transposed) || (dimType === 'y' && transposed)) {
         defaultCfg = Global.axis.circle;
         type = 'Circle';
         key = 'circle';
-      } else { // 半径坐标轴
+      } else {
         defaultCfg = Global.axis.radius;
         type = 'Line';
         key = 'radius';
       }
     }
-    const cfg = self._getAxisCfg(coord, scale, verticalScale, dimType, defaultCfg); // 坐标轴的配置项
+    const cfg = self._getAxisCfg(coord, scale, verticalScale, dimType, defaultCfg);
     cfg.type = type;
     cfg.dimType = dimType;
     cfg.verticalScale = verticalScale;
@@ -225,7 +224,7 @@ class AxisController {
   createAxis(coord, xScale, yScales) {
     const self = this;
     if (xScale && !self._isHide(xScale.field)) {
-      self._createAxis(coord, xScale, yScales[0], 'x'); // 绘制 x 轴
+      self._createAxis(coord, xScale, yScales[0], 'x');
     }
     Util.each(yScales, function(yScale, index) {
       if (!self._isHide(yScale.field)) {
@@ -235,7 +234,7 @@ class AxisController {
 
     const axes = this.axes;
     const chart = self.chart;
-    if (chart._isAutoPadding() || chart.get('rePadding')) { // 数据变更时需要重新计算
+    if (chart._isAutoPadding()) {
       const userPadding = Util.parsePadding(chart.get('padding'));
       const appendPadding = Util.parsePadding(chart.get('appendPadding'));
       const legendRange = chart.get('legendRange') || {
@@ -252,7 +251,7 @@ class AxisController {
         userPadding[3] === 'auto' ? legendRange.left + appendPadding[3] : userPadding[3]
       ];
 
-      if (coord.isPolar) { // 极坐标
+      if (coord.isPolar) {
         const circleAxis = axes.circle;
         if (circleAxis) {
           const { maxHeight, maxWidth, labelOffset } = circleAxis;
@@ -261,7 +260,7 @@ class AxisController {
           padding[2] += maxHeight + labelOffset;
           padding[3] += maxWidth + labelOffset;
         }
-      } else { // 直角坐标系
+      } else {
         if (axes.right && userPadding[1] === 'auto') {
           const { maxWidth, labelOffset } = axes.right;
           padding[1] += maxWidth + labelOffset;
@@ -277,7 +276,7 @@ class AxisController {
           padding[2] += maxHeight + labelOffset;
         }
       }
-      chart.set('_padding', padding); // 将计算后的 padding 存储在 _padding 属性中
+      chart.set('_padding', padding);
       chart._updateLayout(padding);
     }
 

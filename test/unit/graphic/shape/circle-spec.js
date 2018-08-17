@@ -21,6 +21,7 @@ describe('Circle', function() {
   });
 
   it('init attr', function() {
+    expect(circle.getType()).to.equal('circle');
     expect(circle.attr('lineWidth')).to.equal(0);
     expect(circle.attr('stroke')).to.be.undefined;
     expect(circle.attr('fill')).to.be.undefined;
@@ -48,7 +49,7 @@ describe('Circle', function() {
   it('draw', function() {
     canvas.add(circle);
     canvas.draw();
-    expect(canvas.get('children').length).to.equal(1);
+    expect(canvas.getChildren().length).to.equal(1);
   });
 
   it('getBBox', function() {
@@ -61,7 +62,8 @@ describe('Circle', function() {
 
   it('destroy', function() {
     circle.destroy();
-    expect(canvas.get('children').length).to.equal(0);
+    expect(canvas.getChildren().length).to.equal(0);
+    document.body.removeChild(dom);
   });
 });
 

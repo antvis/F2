@@ -24,7 +24,7 @@ describe('Text', function() {
         lineWidth: 1
       }
     });
-
+    expect(text.getType()).to.equal('text');
     expect(text.attr('x')).to.equal(30);
     expect(text.attr('y')).to.equal(30);
     expect(text.attr('text')).to.be.undefined;
@@ -168,5 +168,6 @@ describe('Text', function() {
     expect(bbox.width).to.equal(28.67578125);
     expect(bbox.height).to.equal(48);
     canvas.draw();
+    document.body.removeChild(dom);
   });
 });

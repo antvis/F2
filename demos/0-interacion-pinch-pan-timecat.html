@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>时间类型的平移缩放</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div>
+  <canvas id="mountNode"></canvas>
+  <p style="text-align: center;">缩放手势需要在手机端操作，请在手机上操作</p>
+</div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/f2-all.js"></script>
+<script src="https://gw.alipayobjects.com/os/rmsportal/NjNldKHIVQRozfbAOJUW.js"></script>
+<script>
+    const colorMap = {
+      '本基金': '#1890FF',
+      '沪深300': 'rgba(92, 219, 211, 0.5)',
+      '同类平均': 'rgba(179, 127, 235, 0.5)'
+    };
+    const sizeMap = {
+      '本基金': 2,
+      '沪深300': 1,
+      '同类平均': 1
+    };
+    const { Chart } = F2;
+    let chart;
+    $.getJSON('./data/performance-three-year.json', json => {
+      chart = new Chart({
+        id: 'mountNode',
+        pixelRatio: window.devicePixelRatio,
+        padding: [14, 'auto', 'auto'],
+        animate: false // 关闭动画
+      });
+      chart.source(json, {
+        reportDate: {
+          type: 'timeCat',
+          tickCount: 5,
+          range: [0, 1],
+          mask: 'YYYY-MM-DD'
+        },
+        name: {
+          values: ['沪深300', '同类平均', '本基金']
+        }
+      });
+      chart.legend(false); // 不使用默认图例
+      chart.tooltip(false);  // 初始状态关闭 tooltip
+      chart.line({
+        sortable: false
+      })
+        .position('reportDate*rate')
+        .color('name', val => {
+          return colorMap[val];
+        })
+        .size('name', val => {
+          return sizeMap[val];
+        })
+        .animate({
+          appear: {
+            duration: 500,
+          },
+          update: {
+            animation: 'lineUpdate',
+            duration: 500
+          }
+        });
+      chart.scrollBar({
+        mode: 'x'
+      });
+      chart
+        .interaction('pinch')
+        .interaction('pan');
+      chart.render();
+    });
+</script>
+</body>
+</html>

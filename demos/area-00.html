@@ -10,7 +10,7 @@
   <canvas id="mountNode"></canvas>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
-<script src="../build/f2.js"></script>
+<script src="../build/f2-all.js"></script>
 <script>
   const data = [
     { time: 'Jan.', tem: 1000 },
@@ -30,6 +30,15 @@
   });
 
   chart.source(data);
+  chart.animate({
+    'guide-tag': {
+      appear: {
+        animation: 'fadeIn',
+        duration: 450,
+        delay: 1000
+      }
+    }
+  });
   chart.scale({
     time: {
       range: [ 0, 1 ]
@@ -64,15 +73,59 @@
     offsetY: -5,
     direct: 'tl'
   });
+  chart.guide().tag({
+    position: [2, 2000],
+    content: '2000',
+    offsetY: -5,
+    direct: 'tc'
+  });
   chart.area().position('time*tem');
   chart.line().position('time*tem');
   chart.render();
 
-  const point = chart.getPosition({
-    time: 'Apr.',
-    tem: 2600
-  });
-  chart.showTooltip(point);
+  setTimeout(() => {
+    const newData = [
+      { time: 'Jan.', tem: 1000 },
+      { time: 'Feb.', tem: 2200 },
+      { time: 'Mar.', tem: 2000 },
+      { time: 'Apr.', tem: 2600 },
+      { time: 'May.', tem: 2000 },
+      { time: 'Jun.', tem: 2600 },
+      { time: 'Jul.', tem: 2800 },
+      { time: 'Aug.', tem: 2000 },
+      { time: 'SSS.', tem: 2300 },
+      { time: 'FSD.', tem: 1500 },
+      { time: '343.', tem: 3060 },
+      { time: 'IUE.', tem: 3000 },
+    ];
+    chart.guide().clear();
+    chart.guide().tag({
+      position: [6, 2800],
+      content: '最高点',
+      offsetY: -5,
+      direct: 'tl'
+    });
+    chart.guide().tag({
+      position: [2, 2000],
+      content: '2000',
+      offsetY: -5,
+      direct: 'tc'
+    });
+    chart.guide().tag({
+      position: ['IUE.', 3000],
+      content: '3000',
+      offsetY: -5,
+      direct: 'tl'
+    });
+    chart.changeData(newData);
+  }, 2000);
+  // console.log(chart.get('canvas'));
+
+  // const point = chart.getPosition({
+  //   time: 'Apr.',
+  //   tem: 2600
+  // });
+  // chart.showTooltip(point);
 </script>
 </body>
 </html>
