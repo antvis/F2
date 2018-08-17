@@ -169,6 +169,29 @@ class Chart extends Base {
     };
   }
 
+  _syncYScales() {
+    const geoms = this.get('geoms');
+    const syncScales = [];
+    let min = [];
+    let max = [];
+    Util.each(geoms, geom => {
+      const yScale = geom.getYScale();
+      if (yScale.isLinear) {
+        syncScales.push(yScale);
+        min.push(yScale.min);
+        max.push(yScale.max);
+      }
+    });
+
+    min = Math.min.apply(null, min);
+    max = Math.max.apply(null, max);
+
+    Util.each(syncScales, scale => {
+      scale.min = min;
+      scale.max = max;
+    });
+  }
+
   _getFieldsForLegend() {
     const fields = [];
     const geoms = this.get('geoms');
@@ -495,29 +518,29 @@ class Chart extends Base {
    * @return {Chart} return the chart instance
    */
   render() {
-    const self = this;
-    const canvas = self.get('canvas');
-    const geoms = self.get('geoms');
-    // processing the data
+    const canvas = this.get('canvas');
+    const geoms = this.get('geoms');
     const data = this.get('data') || [];
-    const filteredData = this._execFilter(data);
+
+    const filteredData = this._execFilter(data); // filter data
     this.set('filteredData', filteredData);
-    // init the coordinate instance
-    self._initCoord();
+    this._initCoord(); // initialization coordinate instance
 
-    Chart.plugins.notify(self, 'beforeGeomInit');
+    Chart.plugins.notify(this, 'beforeGeomInit');
 
-    // init all geometry instances
-    self._initGeoms(geoms);
-    // do some adjust for data
-    self._adjustScale();
 
-    Chart.plugins.notify(self, 'beforeGeomDraw');
-    self._renderAxis();
+    this._initGeoms(geoms); // init all geometry instances
 
-    const middlePlot = self.get('middlePlot');
-    if (self.get('limitInPlot') && !middlePlot.attr('clip')) {
-      const coord = self.get('coord');
+    this.get('syncY') && this._syncYScales();
+
+    this._adjustScale(); // do some adjust for data
+
+    Chart.plugins.notify(this, 'beforeGeomDraw');
+    this._renderAxis();
+
+    const middlePlot = this.get('middlePlot');
+    if (this.get('limitInPlot') && !middlePlot.attr('clip')) {
+      const coord = this.get('coord');
       const clip = Helper.getClip(coord);
       clip.set('canvas', middlePlot.get('canvas'));
       middlePlot.attr('clip', clip);
@@ -528,12 +551,12 @@ class Chart extends Base {
       geom.paint();
     }
 
-    Chart.plugins.notify(self, 'afterGeomDraw');
+    Chart.plugins.notify(this, 'afterGeomDraw');
     canvas.sort();
     this.get('frontPlot').sort();
-    Chart.plugins.notify(self, 'beforeCanvasDraw');
+    Chart.plugins.notify(this, 'beforeCanvasDraw');
     canvas.draw();
-    return self;
+    return this;
   }
 
   /**

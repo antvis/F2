@@ -44,7 +44,6 @@ describe('issue 257', () => {
     const geomData = geom.get('dataArray')[0];
 
     expect(geomData.length).to.equal(18);
-    console.log(geomData);
     geomData.map((obj, index) => {
       if (index < 3) {
         expect(obj._originY).to.equal(200);
