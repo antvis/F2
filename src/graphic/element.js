@@ -1,6 +1,7 @@
 const Util = require('../util/common');
 const MatrixUtil = require('./util/matrix');
 const Vector2 = require('./util/vector2');
+const StyleUtil = require('./util/style-parse');
 
 function isUnchanged(m) {
   return m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1 && m[4] === 0 && m[5] === 0;
@@ -170,11 +171,14 @@ class Element {
 
   resetContext(context) {
     const elAttrs = this._attrs.attrs;
-    if (!this.get('isGroup')) {
+    if (!this._attrs.isGroup) {
       for (const k in elAttrs) {
         if (SHAPE_ATTRS.indexOf(k) > -1) {
-          const v = elAttrs[k];
-          if (k === 'lineDash' && context.setLineDash && v) {
+          let v = elAttrs[k];
+          if (k === 'fillStyle' || k === 'strokeStyle') {
+            v = StyleUtil.parseStyle(v, this, context);
+          }
+          if (k === 'lineDash' && context.setLineDash && Util.isArray(v)) {
             context.setLineDash(v);
           } else {
             context[k] = v;
@@ -246,7 +250,9 @@ class Element {
       minX: 0,
       maxX: 0,
       minY: 0,
-      maxY: 0
+      maxY: 0,
+      width: 0,
+      height: 0
     };
   }
 
