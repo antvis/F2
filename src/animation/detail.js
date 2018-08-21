@@ -303,6 +303,9 @@ function addAnimate(cache, shapes, canvas) {
 }
 
 function _getAnimateCfgByShapeType(type, chart) {
+  if (!type) {
+    return null;
+  }
   const animateCfg = chart.get('animate');
 
   if (type.indexOf('guide-tag') > -1) {
