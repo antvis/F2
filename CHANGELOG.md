@@ -1,3 +1,9 @@
+#### 3.1.21 (2018-08-21)
+
+##### Bug Fixes
+
+* animate type undefined ([0e2b45f2](https://github.com/antvis/f2/commit/0e2b45f296532e39df74dcc0ad0c96bc99848987))
+
 #### 3.1.20 (2018-08-13)
 
 ##### Bug Fixes
