@@ -206,6 +206,7 @@ class TooltipController {
     tooltip && tooltip.destroy();
     this.tooltip = null;
     this.prePoint = null;
+    this._lastActive = null;
     this.unBindEvents();
   }
 
@@ -258,7 +259,6 @@ class TooltipController {
     const lastActive = this._lastActive;
     const tooltip = this.tooltip;
     const cfg = this.cfg;
-
     items = _uniqItems(items);
 
     if (cfg.onShow) {
@@ -369,7 +369,7 @@ class TooltipController {
 
   hideTooltip() {
     const cfg = this.cfg;
-    this._lastActive = [];
+    this._lastActive = null;
     const tooltip = this.tooltip;
     if (tooltip) {
       tooltip.hide();

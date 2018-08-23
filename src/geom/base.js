@@ -739,6 +739,7 @@ class Geom extends Base {
     this.set('attrs', {});
     this.set('groupScales', null);
     this.set('xDistance', null);
+    this.set('_width', null);
   }
 
   clear() {
