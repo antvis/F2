@@ -104,7 +104,10 @@ describe('Tooltip Plugin', function() {
 
     tooltipController = chart.get('tooltipController');
     tooltip = tooltipController.tooltip;
+    const { prePoint, _lastActive } = tooltipController;
     expect(tooltip).to.be.null;
+    expect(prePoint).to.be.null;
+    expect(_lastActive).to.be.null;
 
     chart.destroy();
   });
