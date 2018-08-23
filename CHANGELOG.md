@@ -3,11 +3,13 @@
 ##### New Features
 
 * support set gradient color in default. Closed [#243](https://github.com/antvis/f2/pull/243). ([20b18a90](https://github.com/antvis/f2/commit/20b18a90c42b75eb98b60c1fa31d72db20152ffc))
-* support syncY property to unify multiple Y-axis data ranges. Related to [#258](https://github.com/antvis/f2/pull/258). ([854685e8](https://github.com/antvis/f2/commit/854685e829b160583cf62ede0a9faf621a572e75))
+* support `syncY` property to unify multiple Y-axis data ranges. Related to [#258](https://github.com/antvis/f2/pull/258). ([854685e8](https://github.com/antvis/f2/commit/854685e829b160583cf62ede0a9faf621a572e75))
 * support set default selected shape for pie-select and interval-select interaction. Related to [#248](https://github.com/antvis/f2/pull/248). ([55364d59](https://github.com/antvis/f2/commit/55364d598065fbc414e6c4c39bb9d6e56bda1214))
 
 ##### Bug Fixes
 
+* when geom clear, the `_width` should be reset. Closed [#273](https://github.com/antvis/f2/pull/273). ([a36aa67f](https://github.com/antvis/f2/commit/a36aa67f7c5a36be81fdbcc1d38dd305973c596a))
+* when chart update, tooltip's `_lastActive` should be reset. Closed [#271](https://github.com/antvis/f2/pull/271). ([297ae475](https://github.com/antvis/f2/commit/297ae47518ecb73807aa51c1683a5a1bd02f8390))
 * define calculateBBox method for smooth area shape for getBBox(). ([ebf8539d](https://github.com/antvis/f2/commit/ebf8539d73a62f4ed720a11feda50410a3d10ca1))
 * Fix sorting problem for categorical data. Closed [#257](https://github.com/antvis/f2/pull/257). ([3a129289](https://github.com/antvis/f2/commit/3a129289515fff4a04e84823a517e38b2f103356))
 
