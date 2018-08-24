@@ -31,14 +31,14 @@ $ npm install @antv/f2
 <p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565525-21954400-a79b-11e8-8d69-cd95fa6b9a99.gif" width="600"></p>
 <p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565524-21954400-a79b-11e8-9aea-9e38d458e37b.gif" width="600" ></p>
 
-- **Performance**: small package size with great rendering performance.
+- **Performance**: small package size(version without interaction is 44k after gzip) with great rendering performance.
 
 - **Compatibility**: multi-end, Multi-runtime support. Besides H5 env, F2 can also run in [Node.js](https://antv.gitbook.io/f2/platform), [Weex rendering](https://github.com/weex-plugins/weex-chart) and [React Native](https://github.com/chenshuai2144/f2-demo), also [支付宝小程序](https://github.com/antvis/my-f2) and [微信小程序](https://github.com/antvis/wx-f2).
 
 <p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
 
 ### All the chart types you want
-With the power of grammar of graphics, F2 supports data-driven 50+ chart types(the amount can be even more, which is depended on you) including classical charts such as line, column/bar chart, pie chart, scatter plot, gauges, etc. Additionally, F2 also provides feature-riched chart components, such as Tooltip, Legend and Guide.
+With the power of grammar of graphics, F2 supports data-driven [50+ chart types](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)(the amount can be even more, which is depended on you) including classical charts such as line, column/bar chart, pie chart, scatter plot, gauges, etc. Additionally, F2 also provides feature-riched chart components, such as Tooltip, Legend and Guide.
 
 ### Flexible and Interactive
 We also provide developers with flexible extension mechanisms, including shape, animation, and interactive customization capabilities, as well as flexible styling to meet a variety of personalized charting requirements.
