@@ -1,4 +1,4 @@
-![](https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png)
+![](https://user-images.githubusercontent.com/6628666/44565549-4ab5d480-a79b-11e8-8d75-11420845efc0.png)
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -14,9 +14,9 @@
 
 F2 is **born for mobile**, developed for developers as well as designers. It is Html5 Canvas-based, and is also compatible with Node.js, Weex and React Native. Based on [the grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), F2 provides all the chart types you'll need. Our mobile design guidelines enable better user experience in mobile visualzation projects.
 
-<p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/VOuhiWQwNaCudfamtCTA.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/6628666/44565498-f4e12c80-a79a-11e8-98fc-73ee58547dc9.png" /></p>
 
-**Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.**
+> Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.
 
 ## Installation
 
@@ -28,9 +28,8 @@ $ npm install @antv/f2
 
 ### Born for mobile
 - **Design for mobile**: make data more alive and chart interactions more natural.
-
-<p align="left"><img src="https://gw.alipayobjects.com/zos/rmsportal/CtFiVYhCanZMyQVZUXkj.gif" width="600"></p>
-<p align="left"><img src="https://gw.alipayobjects.com/zos/rmsportal/NRHWbqpdRfLbMMHgxReS.gif" width="600" ></p>
+<p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565525-21954400-a79b-11e8-8d69-cd95fa6b9a99.gif" width="600"></p>
+<p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565524-21954400-a79b-11e8-9aea-9e38d458e37b.gif" width="600" ></p>
 
 - **Performance**: small package size with great rendering performance.
 
@@ -44,7 +43,7 @@ With the power of grammar of graphics, F2 supports data-driven 50+ chart types(t
 ### Flexible and Interactive
 We also provide developers with flexible extension mechanisms, including shape, animation, and interactive customization capabilities, as well as flexible styling to meet a variety of personalized charting requirements.
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/XIRVXeQsQdwvVONJJwIM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/frRXOAmIVZqwfJetLLRt.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/jIbXHPmAvMOsGuWJdjhq.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/MXayZupANTnFgmSzKlUG.gif" width="200">
+<img src="https://user-images.githubusercontent.com/6628666/44565579-6c16c080-a79b-11e8-9494-86f3ad477341.gif" width="200"><img src="https://user-images.githubusercontent.com/6628666/44565581-6c16c080-a79b-11e8-8210-f4e797480e87.gif" width="200"><img src="https://user-images.githubusercontent.com/6628666/44565580-6c16c080-a79b-11e8-956d-4d15455468a3.gif" width="200"><img src="https://user-images.githubusercontent.com/6628666/44565583-6caf5700-a79b-11e8-8e9e-a1fa12ddcbf1.gif" width="200">
 
 ## Links
 
