@@ -11,7 +11,7 @@ F2，一个专注于移动，开箱即用的可视化解决方案，完美支持
 
 <p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565820-c2d0ca00-a79c-11e8-93d8-6608d3e112ef.png" width="600" /></p>
 
-> 在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！**
+> 在此衷心感谢[《The Grammar of Graphics》](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html)的作者 [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson)，为 F2 的图形语法提供了理论基础！
 
 ## 安装
 
@@ -27,7 +27,7 @@ $ npm install @antv/f2
 <p align="left"><img src="https://user-images.githubusercontent.com/6628666/44565525-21954400-a79b-11e8-8d69-cd95fa6b9a99.gif" width="600"></p>
 <p align="left"><img src="https://user-images.githubusercontent.com/6628666/44566001-b436e280-a79d-11e8-869d-cbbffb0a3a30.gif" width="600" ></p>
 
-- **轻巧流畅**：F2 一直致力于追求极致的性能，针对移动设备做了大量的优化，在支持丰富（50+）图表的基础上同时保持代码量的小巧（不带交互版本 webpack uglify 压缩后 168k，带所有交互版本 212k），同时提供模块化的设计以支持动态加载，提供更优的大小。
+- **轻巧流畅**：F2 一直致力于追求极致的性能，针对移动设备做了大量的优化，在支持丰富（50+）图表的基础上同时保持代码量的小巧（不带交互版本 gzip 压缩后 44k，带所有交互版本 56k），同时提供模块化的设计以支持动态加载，提供更优的大小。
 
 - **多端异构**：在完美支持 H5 环境的同时，同时兼容 [Node.js](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html)，[支付宝小程序](https://github.com/antvis/my-f2)、[微信小程序](https://github.com/antvis/wx-f2)、[React Native](https://github.com/chenshuai2144/f2-demo)以及 [Weex 端](https://github.com/weex-plugins/weex-chart)的渲染，一份代码，多设备多环境渲染。
 <p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
@@ -88,7 +88,7 @@ chart.render();
 
 **手机扫码观看 demos**
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">  
+<img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">
 
 
 ## 本地开发
