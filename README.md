@@ -1,4 +1,4 @@
-<p align="center" style="margin: 0"><img src="https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png"></p>
+![](https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png)
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
@@ -27,63 +27,74 @@ $ npm install @antv/f2
 
 ## Features
 
-- ✔︎ **Elegant user experience**: Designed for mobile experience
-- ✔︎ **Flexible**: Customizable shapes and animations, flexible charting components, infinite creativity
-- ✔︎ **High performance**: F2 pursues the ultimate performance for drawing, lots of optimization have been done for mobile devices
-- ✔︎ **Light-weighed**: F2 maintains a compact code size while supporting more than 45 kinds of charts
+### Born for mobile
+- **Design for mobile**: make data more alive and chart interactions more natural.
 
-## Other runtime support
+<p align="left"><img src="https://gw.alipayobjects.com/zos/rmsportal/KSsHyhXNHHThfbWBXXWL.gif" width="600"></p>
+<p align="left"><img src="https://gw.alipayobjects.com/zos/rmsportal/KSYhTMsehmiaUoliBntm.gif" width="600" ></p>
 
-- F2 on **Node.js** ：https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html
-- F2 on [WebChart miniprogram](https://mp.weixin.qq.com/cgi-bin/wx): https://github.com/antvis/wx-f2
-- F2 on [Ant miniprogram](https://mini.open.alipay.com/channel/miniIndex.htm): https://github.com/antvis/my-f2
+- **Performance**: small package size with great rendering performance.
 
-## Website && Documentations
+- **Compatibility**: multi-end, Multi-runtime support. Besides H5 env, F2 can also run in [Node.js](https://antv.gitbook.io/f2/platform), [Weex rendering](https://github.com/weex-plugins/weex-chart) and [React Native](https://github.com/chenshuai2144/f2-demo), also [支付宝小程序](https://github.com/antvis/my-f2) and [微信小程序](https://github.com/antvis/wx-f2).
+
+<p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
+
+### All the chart types you want
+With the power of grammar of graphics, F2 supports data-driven 50+ chart types(the amount can be even more, which is depended on you) including classical charts such as line, column/bar chart, pie chart, scatter plot, gauges, etc. Additionally, F2 also provides feature-riched chart components, such as Tooltip, Legend and Guide.
+
+### Flexible and Interactive
+We also provide developers with flexible extension mechanisms, including shape, animation, and interactive customization capabilities, as well as flexible styling to meet a variety of personalized charting requirements.
+
+<img src="https://gw.alipayobjects.com/zos/rmsportal/XIRVXeQsQdwvVONJJwIM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/frRXOAmIVZqwfJetLLRt.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/jIbXHPmAvMOsGuWJdjhq.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/MXayZupANTnFgmSzKlUG.gif" width="200">
+
+## Links
 
 * [Website](https://antv.alipay.com/zh-cn/f2/3.x/index.html)
-
 * English documents: https://antv.gitbook.io/f2/
-
 * 中文文档: https://antv.alipay.com/zh-cn/f2/3.x/api/index.html
+
+## Other libraries base on F2
+* [ant-design-mobile-chart](https://github.com/ant-design/ant-design-mobile-chart): Ant Design Mobile Chart based on F2. (React).
+* [BizGoblin](https://github.com/alibaba/BizGoblin)：Data visualization library based F2 and React.
+* [VChart](https://doc.vux.li/zh-CN/components/v-chart.html): Mobile Chart Components based on vux and F2. (Vue).
+* [weex-chart](https://github.com/weex-plugins/weex-chart): Chart components based on Weex and F2.
 
 ## Demos
 
 - [Chart Demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
-- [Gallery](https://codepen.io/collection/AOpMaW/)
 
-**Or see demos in mobile:**
+**Or just scan the below qrcode to see demos in mobile:**
 
 <img src="https://gw.alipayobjects.com/zos/rmsportal/nzlxIzUBlBRVGMyaZigG.png" style="width:150px;">
 
 
 ## Getting Started
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/vNBNIGvCiIwqLwaYjWUy.png" width="375">
+<img src="https://gw.alipayobjects.com/zos/rmsportal/NhtfmoKOInnHYrdWTfqh.png" width="375">
 
 ```html
-<canvas id="c1"></canvas>
+<canvas id="mountNode"></canvas>
 ```
 
 ```js
 import F2 from '@antv/f2';
 
 const data = [
-  { year: '1951 年', sales: 38 },
-  { year: '1952 年', sales: 52 },
-  { year: '1956 年', sales: 61 },
-  { year: '1957 年', sales: 145 },
-  { year: '1958 年', sales: 48 },
-  { year: '1959 年', sales: 38 },
-  { year: '1960 年', sales: 38 },
-  { year: '1962 年', sales: 38 },
+  { year: '1951', sales: 38 },
+  { year: '1952', sales: 52 },
+  { year: '1956', sales: 61 },
+  { year: '1957', sales: 145 },
+  { year: '1958', sales: 48 },
+  { year: '1959', sales: 38 },
+  { year: '1960', sales: 38 },
+  { year: '1962', sales: 38 },
 ];
 const chart = new F2.Chart({
-  id: 'c1',
+  id: 'mountNode',
   width: 375,
   height: 265,
   pixelRatio: window.devicePixelRatio
 });
-
 chart.source(data);
 chart.interval().position('year*sales');
 chart.render();
