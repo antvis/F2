@@ -1,4 +1,4 @@
-<p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png"></p>
+<p align="center" style="margin: 0"><img src="https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png"></p>
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
