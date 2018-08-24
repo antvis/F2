@@ -1,4 +1,4 @@
-![]((https://user-images.githubusercontent.com/6628666/44565744-476f1880-a79c-11e8-802b-2477493162c7.png)
+![](https://user-images.githubusercontent.com/6628666/44565744-476f1880-a79c-11e8-802b-2477493162c7.png)
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
