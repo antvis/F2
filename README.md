@@ -1,18 +1,21 @@
-# F2: Mobile data visualization solution, pure in JavaScript
+<p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/gpWSuJZhFtQHNwrNgYIB.png"></p>
 
 [![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2)
 ![](https://img.shields.io/badge/language-javascript-red.svg)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
-
 [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2)
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 
+<p align="left">
+  <a href="https://twitter.com/intent/tweet?text=F2,%20an%20elegant,%20interactive%20and%20flexible%20charting%20library%20for%20mobile.&url=https://antv.alipay.com/zh-cn/f2/3.x/index.html&hashtags=javascript,mobile,charts,dataviz,visualizations,F2"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social"> </a>
+</p>
+
 [中文 README](./README.zh-CN.md)
 
-F2 is a powerful **mobile** data visualization solution, pure in javascript. F2 is based on [**the grammar of graphics**](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), and it is light-weighted, high-performance and flexible. Also, F2 charts are well designed for mobile.
+F2 is **born for mobile**, developed for developers as well as designers. It is Html5 Canvas-based, and is also compatible with Node.js, Weex and React Native. Based on [the grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), F2 provides all the chart types you'll need. Our mobile design guidelines enable better user experience in mobile visualzation projects.
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/wVwdXNiAQuoutCZYWnQh.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/CCJgoEHPhkRhYeNhSbHM.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/KumfgQonwUIWydfdgjhc.gif" width="200"><img src="https://gw.alipayobjects.com/zos/rmsportal/lXRXNwExVazcmpIJgbvR.gif" width="200">
+<p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/gWNgjKFInawkemLKzUjO.png"></p>
 
 **Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.**
 
