@@ -14,7 +14,7 @@
 
 F2 is **born for mobile**, developed for developers as well as designers. It is Html5 Canvas-based, and is also compatible with Node.js, Weex and React Native. Based on [the grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), F2 provides all the chart types you'll need. Our mobile design guidelines enable better user experience in mobile visualzation projects.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/6628666/44565498-f4e12c80-a79a-11e8-98fc-73ee58547dc9.png" /></p>
+<p align="center"><a href="https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html"><img src="https://user-images.githubusercontent.com/6628666/44565498-f4e12c80-a79a-11e8-98fc-73ee58547dc9.png" /></a></p>
 
 > Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.
 
@@ -49,6 +49,7 @@ We also provide developers with flexible extension mechanisms, including shape, 
 
 * [Website](https://antv.alipay.com/zh-cn/f2/3.x/index.html)
 * English documents: https://antv.gitbook.io/f2/
+* Chart demos: https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html
 * 中文文档: https://antv.alipay.com/zh-cn/f2/3.x/api/index.html
 
 ## Other libraries base on F2
