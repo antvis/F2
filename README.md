@@ -7,7 +7,7 @@
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 "Percentage of issues still open")
 <p align="left">
-  <a href="https://twitter.com/intent/tweet?text=F2,%20an%20elegant,%20interactive%20and%20flexible%20charting%20library%20for%20mobile.&url=https://antv.alipay.com/zh-cn/f2/3.x/index.html&hashtags=javascript,mobile,charts,dataviz,visualizations,F2"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social"> </a>
+  <a href="https://twitter.com/intent/tweet?text=Introducing%20F2,%20an%20elegant,%20interactive%20and%20flexible%20charting%20library%20for%20mobile.&url=https://medium.com/@SimaZwx/https-medium-com-simazwx-introducing-f2-c44fb4e74c2d&hashtags=javascript,mobile,charts,dataviz,visualization,F2"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social"> </a>
 </p>
 
 [中文 README](./README.zh-CN.md)
