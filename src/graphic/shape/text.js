@@ -77,7 +77,7 @@ class Text extends Shape {
     const self = this;
     const attrs = self._attrs.attrs;
     const text = attrs.text;
-    if (!text) {
+    if (Util.isNil(text)) { // text will be 0
       return;
     }
     const textArr = attrs.textArr;
