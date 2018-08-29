@@ -77,14 +77,14 @@ class Text extends Shape {
     const self = this;
     const attrs = self._attrs.attrs;
     const text = attrs.text;
-    if (Util.isNil(text)) { // text will be 0
+    let x = attrs.x;
+    let y = attrs.y;
+    if (Util.isNil(text) || isNaN(x) || isNaN(y)) { // text will be 0
       return;
     }
     const textArr = attrs.textArr;
     const fontSize = attrs.fontSize * 1;
     const spaceingY = self._getSpaceingY();
-    let x = attrs.x;
-    let y = attrs.y;
 
     if (attrs.rotate) { // do rotation
       context.translate(x, y);
