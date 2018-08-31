@@ -56,7 +56,6 @@ class Pan extends Interaction {
 
     const tooltipController = chart.get('tooltipController');
     if (tooltipController && tooltipController.enable) {
-      chart.tooltip(false);
       if (hammer) {
         hammer.get('press').set({
           threshold: pressThreshold,
@@ -118,6 +117,7 @@ class Pan extends Interaction {
 
   _handlePan(e) {
     const { currentDeltaX, currentDeltaY, lastPoint } = this;
+    const center = e.center || e.touches[0];
     let deltaX;
     let deltaY;
     if (TOUCH_EVENTS.indexOf(e.type) !== -1) {
@@ -138,6 +138,8 @@ class Pan extends Interaction {
       const now = +new Date();
       if ((now - lastTimestamp) > 16) {
         this._doPan(deltaX, deltaY);
+        this.chart.tooltip(true);
+        this.chart.showTooltip(center);
         this._timestamp = now;
       }
     }
