@@ -41,13 +41,14 @@ class Text extends Shape {
 
     if (attrs.text) {
       const text = attrs.text;
-      let textArr;
+      let textArr = null;
+      let lineCount = 1;
       if (Util.isString(text) && (text.indexOf('\n') !== -1)) {
         textArr = text.split('\n');
-        const lineCount = textArr.length;
-        attrs.lineCount = lineCount;
-        attrs.textArr = textArr;
+        lineCount = textArr.length;
       }
+      attrs.lineCount = lineCount;
+      attrs.textArr = textArr;
     }
     this.set('attrs', attrs);
   }
