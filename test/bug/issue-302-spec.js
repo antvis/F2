@@ -9,10 +9,6 @@ canvas.height = 260;
 canvas.id = 'issue302';
 document.body.appendChild(canvas);
 
-// function snapEqual(a, b) {
-//   return Math.abs(a - b) < 0.01;
-// }
-
 describe('issue 302', () => {
   it('Issue 302', () => {
     const data = [

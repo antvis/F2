@@ -13,7 +13,7 @@ const Chart = require('../chart/chart');
 
 let timeline;
 Element.prototype.animate = function() {
-  const attrs = this.get('attrs');
+  const attrs = Util.mix({}, this.get('attrs'));
   return new Animator(this, attrs, timeline);
 };
 
