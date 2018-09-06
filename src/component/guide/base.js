@@ -14,18 +14,29 @@ class GuideBase {
     Util.deepMix(this, cfg);
   }
 
-  _getNormalizedValue(val, scale, direct) {
+  _getNormalizedValue(val, scale) {
     let rst;
-
-    if (Util.isString(val) && val.indexOf('%') !== -1) { // percentage, like '50%'
-      val = parseFloat(val) / 100;
-      rst = direct === 'y' ? 1 - val : val;
-    } else if (Util.isNil(KEYWORDS_PERCENT[val])) {
+    if (Util.isNil(KEYWORDS_PERCENT[val])) {
       rst = scale.scale(val);
     } else {
       rst = KEYWORDS_PERCENT[val];
     }
     return rst;
+  }
+
+  parsePercentPoint(coord, position) {
+    const xPercent = parseFloat(position[0]) / 100;
+    const yPercent = parseFloat(position[1]) / 100;
+    const start = coord.start;
+    const end = coord.end;
+    const width = Math.abs(start.x - end.x);
+    const height = Math.abs(start.y - end.y);
+    const x = width * xPercent + Math.min(start.x, end.x);
+    const y = height * yPercent + Math.min(start.y, end.y);
+    return {
+      x,
+      y
+    };
   }
 
   parsePoint(coord, position) {
@@ -36,8 +47,13 @@ class GuideBase {
       position = position(xScale, yScales); // position 必须是对象
     }
 
+    // 如果数据格式是 ['50%', '50%'] 的格式
+    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1) {
+      return this.parsePercentPoint(coord, position);
+    }
+
     const x = self._getNormalizedValue(position[0], xScale);
-    const y = self._getNormalizedValue(position[1], yScales[0], 'y');
+    const y = self._getNormalizedValue(position[1], yScales[0]);
 
     const point = coord.convertPoint({ x, y });
     if (self.limitInPlot) { // limit in chart plotRange
