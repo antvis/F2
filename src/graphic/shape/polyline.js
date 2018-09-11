@@ -32,6 +32,8 @@ class Polyline extends Shape {
       }
     }
 
+    if (!filteredPoints.length) return;
+
     context.beginPath();
     context.moveTo(filteredPoints[0].x, filteredPoints[0].y);
     if (smooth) {
