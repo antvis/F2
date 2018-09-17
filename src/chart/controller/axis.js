@@ -316,7 +316,7 @@ class AxisController {
         });
         axis.gridPoints = gridPoints;
 
-        if (coord.isPolar && grid.type === 'arc') {
+        if (coord.isPolar) {
           axis.center = coord.center;
           axis.startAngle = coord.startAngle;
           axis.endAngle = coord.endAngle;
