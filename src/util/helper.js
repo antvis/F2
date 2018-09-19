@@ -5,6 +5,7 @@ module.exports = {
     const end = coord.end;
     const width = end.x - start.x;
     const height = Math.abs(end.y - start.y);
+    const margin = 10;
     let clip;
     if (coord.isPolar) {
       const { circleRadius, center, startAngle, endAngle } = coord;
@@ -22,9 +23,9 @@ module.exports = {
       clip = new Shape.Rect({
         attrs: {
           x: start.x,
-          y: end.y,
+          y: end.y - margin,
           width,
-          height
+          height: height + 2 * margin
         }
       });
     }
