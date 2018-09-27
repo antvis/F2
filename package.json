@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.2.2",
+  "version": "3.2.3-beta.4",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -92,7 +92,7 @@
     "@antv/adjust": "~0.0.3",
     "@antv/attr": "~0.0.3",
     "@antv/scale": "~0.0.6",
-    "@antv/util": "~1.0.6",
+    "@antv/util": "~1.2.5",
     "hammerjs": "^2.0.8"
   }
 }
