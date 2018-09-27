@@ -1,4 +1,8 @@
-#### 3.2.3-beta.4 (2018-09-26)
+#### 3.2.3-beta.5 (2018-09-27)
+
+##### Chores
+
+* upgrade @antv/util to 1.2.5 ([ff8eb0f7](https://github.com/antvis/f2/commit/ff8eb0f7036c216e5259cba7f6b3ec5d4e97526f))
 
 ##### Bug Fixes
 
