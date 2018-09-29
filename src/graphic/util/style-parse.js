@@ -3,7 +3,7 @@ const Util = require('../../util/common');
 function _addStop(steps, gradient) {
   Util.each(steps, item => {
     item = item.split(':');
-    gradient.addColorStop(item[0], item[1]);
+    gradient.addColorStop(Number(item[0]), item[1]);
   });
 }
 
