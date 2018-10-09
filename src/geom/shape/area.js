@@ -1,6 +1,7 @@
 const Util = require('../../util/common');
 const Shape = require('./shape');
 const Smooth = require('../../graphic/util/smooth');
+const bbox = require('../../graphic/util/bbox');
 const Global = require('../../global');
 
 function equals(v1, v2) {
@@ -53,6 +54,10 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
           }
         }
         context.closePath();
+      },
+      calculateBox() {
+        const points = this._attrs.attrs.points;
+        return bbox.getBBoxFromPoints(points);
       }
     });
   } else {

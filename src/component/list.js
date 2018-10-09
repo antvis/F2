@@ -80,20 +80,25 @@ class List {
 
   _renderTitle(title) {
     title = title || this.title;
-
+    let titleShape = this.titleShape;
     let titleHeight = 0;
+
     if (this.showTitle && title) {
-      const { wrapper, titleStyle } = this;
-      const titleShape = wrapper.addShape('text', {
-        className: 'title',
-        attrs: Util.mix({
-          x: 0,
-          y: 0,
-          text: title
-        }, titleStyle)
-      });
+      if (titleShape && !titleShape.get('destroyed')) {
+        titleShape.attr('text', title);
+      } else {
+        const { wrapper, titleStyle } = this;
+        titleShape = wrapper.addShape('text', {
+          className: 'title',
+          attrs: Util.mix({
+            x: 0,
+            y: 0,
+            text: title
+          }, titleStyle)
+        });
+        this.titleShape = titleShape;
+      }
       titleHeight = titleShape.getBBox().height + this.titleGap;
-      this.titleShape = titleShape;
     }
     this._titleHeight = titleHeight;
   }
@@ -375,12 +380,7 @@ class List {
   }
 
   setTitle(title) {
-    const titleShape = this.titleShape;
-    if (titleShape) {
-      titleShape.attr('text', title);
-    } else {
-      this._renderTitle(title);
-    }
+    this._renderTitle(title);
   }
 
   clearItems() {

@@ -129,7 +129,7 @@ class LegendController {
 
     const container = self.container;
     Util.each(items, item => {
-      if (!Util.isObject(item.marker)) {
+      if (!Util.isPlainObject(item.marker)) {
         item.marker = {
           symbol: item.marker || 'circle',
           fill: item.fill,

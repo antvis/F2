@@ -13,7 +13,7 @@ const Chart = require('../chart/chart');
 
 let timeline;
 Element.prototype.animate = function() {
-  const attrs = this.get('attrs');
+  const attrs = Util.mix({}, this.get('attrs'));
   return new Animator(this, attrs, timeline);
 };
 
@@ -110,9 +110,9 @@ function diff(fromAttrs, toAttrs) {
 }
 
 // Add a unique id identifier to each shape
-function _getShapeId(geom, dataObj) {
+function _getShapeId(geom, dataObj, geomIdx) {
   const type = geom.get('type');
-  let id = 'geom-' + type;
+  let id = 'geom' + geomIdx + '-' + type;
   const xScale = geom.getXScale();
   const yScale = geom.getYScale();
   const xField = xScale.field || 'x';
@@ -148,7 +148,7 @@ function _getShapeId(geom, dataObj) {
 function getShapes(geoms, chart, coord) {
   const shapes = [];
 
-  Util.each(geoms, geom => {
+  Util.each(geoms, (geom, geomIdx) => {
     const geomContainer = geom.get('container');
     const geomShapes = geomContainer.get('children');
     const type = geom.get('type');
@@ -156,7 +156,7 @@ function getShapes(geoms, chart, coord) {
     if (animateCfg !== false) {
       Util.each(geomShapes, (shape, index) => {
         if (shape.get('className') === type) {
-          shape._id = _getShapeId(geom, shape.get('origin')._origin);
+          shape._id = _getShapeId(geom, shape.get('origin')._origin, geomIdx);
           shape.set('coord', coord);
           shape.set('animateCfg', animateCfg);
           shape.set('index', index);
@@ -302,6 +302,9 @@ function addAnimate(cache, shapes, canvas) {
 }
 
 function _getAnimateCfgByShapeType(type, chart) {
+  if (!type) {
+    return null;
+  }
   const animateCfg = chart.get('animate');
 
   if (type.indexOf('guide-tag') > -1) {

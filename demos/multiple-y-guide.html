@@ -12,111 +12,39 @@
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2-all.js"></script>
 <script>
-var data = [
-  { time: "周一", tem: 6.9, rain: 10 },
-  { time: "周二", tem: 9.5, rain: 13 },
-  { time: "周三", tem: 14.5, rain: 14 },
-  { time: "周四", tem: 18.2, rain: 10 },
-  { time: "周五", tem: 21.5, rain: 12 },
-  { time: "周六", tem: 25.2, rain: 16 },
-  { time: "周日", tem: 26.5, rain: 13 }
-];
-var chart = new F2.Chart({
-  id: "mountNode",
-  width: window.innerWidth,
-  height: window.innerWidth * 0.64,
-  pixelRatio: window.devicePixelRatio
-});
+  let data = [
+    {year: '2013',manage: 100,netAmount: 200,name: "经营活动产生现金流"},
+    {year: '2014',manage: 110,netAmount: 150,name: "经营活动产生现金流"},
+    {year: '2015',manage: 115,netAmount: 123,name: "经营活动产生现金流"},
+    {year: '2016',manage: 230,netAmount: 250,name: "经营活动产生现金流"},
+    {year: '2017',manage: 180,netAmount: 280,name: "经营活动产生现金流"},
+    {year: '2018',manage: 160,netAmount: 230,name: "经营活动产生现金流"},
+    {year: '2013',manage: 200,netAmount: 200,name: "投资活动产生现金流"},
+    {year: '2014',manage: 140,netAmount: 150,name: "投资活动产生现金流"},
+    {year: '2015',manage: 150,netAmount: 123,name: "投资活动产生现金流"},
+    {year: '2016',manage: 230,netAmount: 250,name: "投资活动产生现金流"},
+    {year: '2017',manage: 196,netAmount: 280,name: "投资活动产生现金流"},
+    {year: '2018',manage: 150,netAmount: 230,name: "投资活动产生现金流"},
+    {year: '2013',manage: 200,netAmount: 200,name: "筹资活动产生现金流"},
+    {year: '2014',manage: 370,netAmount: 150,name: "筹资活动产生现金流"},
+    {year: '2015',manage: 400,netAmount: 123,name: "筹资活动产生现金流"},
+    {year: '2016',manage: -450,netAmount: 250,name: "筹资活动产生现金流"},
+    {year: '2017',manage: 260,netAmount: 280,name: "筹资活动产生现金流"},
+    {year: '2018',manage: 140,netAmount: 230,name: "筹资活动产生现金流"}]
+;
 
-chart.source(data, {
-  tem: {
-    tickCount: 5,
-    max: 30,
-    min: 0
-  },
-  rain: {
-    tickCount: 5,
-    min: 0,
-    max: 30
-  }
-});
-chart.animate({
-  'guide-line': {
-    appear: {
-      animation(shape, animateCfg) {
-        const attrs = shape.attr();
-        console.log(shape.get('index'));
-        const { x1, x2, y1, y2 } = attrs;
-        shape.attr('x2', x1);
+  const chart = new F2.Chart({
+    id: 'mountNode',
+    syncY: true,
+    pixelRatio: window.devicePixelRatio
+  });
 
-        shape.animate().to(F2.Util.mix({
-          attrs: {
-            x2
-          }
-        }, animateCfg));
-      },
-      duration: 1000,
-      delay: 1000
-    }
-  }
-});
+  chart.source(data);
+  chart.axis('netAmount', false); // 隐藏
 
-// 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
-chart.axis("time", {
-  label: {
-    fontSize: 14
-  },
-  grid: null
-});
-chart.axis("tem", {
-  label: {
-    fontSize: 14
-  },
-});
-chart.axis("rain", {
-  label: {
-    fontSize: 14
-  }
-});
-chart.interval().position("time*tem");
-chart
-  .line()
-  .position("time*rain")
-  .color("#5ed470")
-  .size(2)
-  .shape("smooth");
-chart
-  .point()
-  .position("time*rain")
-  .color("#5ed470");
-
-chart.guide().line({
-  start(xScale, yScales) {
-    let sum = 0;
-
-    // console.log(xScale, yScales);
-    const yScale = yScales[1];
-    yScale.values.forEach(v => (sum += 1 - v / 40));
-    // console.log(sum / yScale.values.length);
-    return ["0%", sum / yScale.values.length * 100];
-  },
-  end(xScale, yScales) {
-    let sum = 0;
-    const yScale = yScales[1];
-
-    yScale.values.forEach(v => (sum += 1 - v / 40));
-
-    return ["100%", sum / yScale.values.length * 100];
-  },
-  style: {
-    stroke: "#5ed470", // 线的颜色
-    lineDash: [0, 2, 2], // 虚线的设置
-    lineWidth: 1 // 线的宽度
-  } // 图形样式配置
-});
-
-chart.render();
-console.log(chart.get('canvas'));
+  chart.interval().position('year*manage').color('name').adjust('stack');
+  chart.line().position('year*netAmount');
+  chart.render();
 </script>
 </body>
 </html>

@@ -41,6 +41,20 @@ class IntervalSelect extends Interaction {
     }
   }
 
+  _getIntervalShapes() {
+    let children = [];
+    const chart = this.chart;
+    const geoms = chart.get('geoms');
+    geoms.forEach(geom => {
+      if (geom.get('type') === 'interval') { // only works for Interval geometry type
+        const container = geom.get('container');
+        children = children.concat(container.get('children'));
+      }
+    });
+
+    return children;
+  }
+
   _resetShape(shape) {
     const originAttrs = shape.get('_originAttrs');
     if (originAttrs) {
@@ -60,14 +74,12 @@ class IntervalSelect extends Interaction {
   }
 
   _selectShapesByData(data) {
-    const chart = this.chart;
-    const geom = chart.get('geoms')[0];
-    const container = geom.get('container');
-    const children = container.get('children');
+    const children = this._getIntervalShapes();
+
     let selectedShape = null;
     const unSelectedShapes = [];
     Util.each(children, child => {
-      if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
+      if (child.get('isShape') && (child.get('className') === 'interval')) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
         if (Util.isObjectValueEqual(shapeData, data)) {
           selectedShape = child;
@@ -109,8 +121,8 @@ class IntervalSelect extends Interaction {
       if (this.selectedAxisShape) {
         this._resetShape(this.selectedAxisShape);
       }
-      const geom = chart.get('geoms')[0];
-      const xScale = geom.getXScale();
+
+      const xScale = chart.getXScale();
       const origin = selectedShape.get('origin')._origin;
       const { frontPlot, backPlot } = chart.get('axisController');
 
@@ -135,11 +147,8 @@ class IntervalSelect extends Interaction {
     if (!self.selectedShape) {
       return;
     }
-    const chart = self.chart;
-    const geom = chart.get('geoms')[0];
-    const container = geom.get('container');
-    const children = container.get('children');
 
+    const children = self._getIntervalShapes();
     Util.each(children, child => {
       self._resetShape(child);
       child.set('_selected', false);
@@ -162,9 +171,8 @@ class IntervalSelect extends Interaction {
     const { x, y } = Util.createEvent(ev, chart);
 
     const mode = this.mode;
-    const geom = chart.get('geoms')[0];
-    const container = geom.get('container');
-    const children = container.get('children');
+    const children = this._getIntervalShapes();
+
     let selectedShape;
     let unSelectedShapes = [];
     if (mode === 'shape') {

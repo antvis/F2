@@ -52,10 +52,14 @@ class RegionFilter extends GuideBase {
           if (color && (attrs.stroke || attrs.strokeStyle)) {
             attrs.stroke = attrs.strokeStyle = color;
           }
-
-          group.addShape(type, {
+          const cfg = {
             attrs
-          });
+          };
+          if (type === 'custom' || type === 'Custom') { // custom 类型的 shape 会自定义绘制 path 的逻辑
+            cfg.createPath = c.get('createPath');
+            cfg.calculateBox = c.get('calculateBox');
+          }
+          group.addShape(type, cfg);
         }
         return c;
       });

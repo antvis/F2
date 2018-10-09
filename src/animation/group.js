@@ -10,7 +10,7 @@ const Animator = require('../graphic/animate/animator');
 
 let timeline;
 Shape.prototype.animate = function() {
-  const attrs = this.get('attrs');
+  const attrs = Util.mix({}, this.get('attrs'));
   return new Animator(this, attrs, timeline);
 };
 

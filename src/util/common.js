@@ -4,21 +4,24 @@
  */
 const DomUtil = require('./dom');
 const Util = {
-  upperFirst: require('@antv/util/lib/string/upperFirst'),
-  lowerFirst: require('@antv/util/lib/string/lowerFirst'),
-  isString: require('@antv/util/lib/type/isString'),
-  isNumber: require('@antv/util/lib/type/isNumber'),
-  isBoolean: require('@antv/util/lib/type/isBoolean'),
-  isFunction: require('@antv/util/lib/type/isFunction'),
-  isDate: require('@antv/util/lib/type/isDate'),
-  isArray: require('@antv/util/lib/type/isArray'),
-  isNil: require('@antv/util/lib/type/isNil'),
-  isObject: require('@antv/util/lib/type/isObject'),
-  isPlainObject: require('@antv/util/lib/type/isPlainObject'),
-  deepMix: require('@antv/util/lib/deepMix'),
+  upperFirst: require('@antv/util/lib/string/upper-first'),
+  lowerFirst: require('@antv/util/lib/string/lower-first'),
+  isString: require('@antv/util/lib/type/is-string'),
+  isNumber: require('@antv/util/lib/type/is-number'),
+  isBoolean: require('@antv/util/lib/type/is-boolean'),
+  isFunction: require('@antv/util/lib/type/is-function'),
+  isDate: require('@antv/util/lib/type/is-date'),
+  isArray: require('@antv/util/lib/type/is-array'),
+  isNil: require('@antv/util/lib/type/is-nil'),
+  isObject: require('@antv/util/lib/type/is-object'),
+  isPlainObject: require('@antv/util/lib/type/is-plain-object'),
+  deepMix: require('@antv/util/lib/deep-mix'),
   mix: require('@antv/util/lib/mix'),
   each: require('@antv/util/lib/each'),
   isObjectValueEqual(a, b) {
+    // for vue
+    a = Object.assign({}, a);
+    b = Object.assign({}, b);
     const aProps = Object.getOwnPropertyNames(a);
     const bProps = Object.getOwnPropertyNames(b);
 

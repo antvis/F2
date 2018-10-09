@@ -41,13 +41,14 @@ class Text extends Shape {
 
     if (attrs.text) {
       const text = attrs.text;
-      let textArr;
+      let textArr = null;
+      let lineCount = 1;
       if (Util.isString(text) && (text.indexOf('\n') !== -1)) {
         textArr = text.split('\n');
-        const lineCount = textArr.length;
-        attrs.lineCount = lineCount;
-        attrs.textArr = textArr;
+        lineCount = textArr.length;
       }
+      attrs.lineCount = lineCount;
+      attrs.textArr = textArr;
     }
     this.set('attrs', attrs);
   }
@@ -77,14 +78,14 @@ class Text extends Shape {
     const self = this;
     const attrs = self._attrs.attrs;
     const text = attrs.text;
-    if (!text) {
+    let x = attrs.x;
+    let y = attrs.y;
+    if (Util.isNil(text) || isNaN(x) || isNaN(y)) { // text will be 0
       return;
     }
     const textArr = attrs.textArr;
     const fontSize = attrs.fontSize * 1;
     const spaceingY = self._getSpaceingY();
-    let x = attrs.x;
-    let y = attrs.y;
 
     if (attrs.rotate) { // do rotation
       context.translate(x, y);

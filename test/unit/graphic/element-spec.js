@@ -1,6 +1,11 @@
 const expect = require('chai').expect;
 const Element = require('../../../src/graphic/element');
 
+const dom = document.createElement('canvas');
+dom.id = 'element';
+document.body.appendChild(dom);
+const context = dom.getContext('2d');
+
 describe('Element', function() {
   let e;
   it('constructor', function() {
@@ -28,6 +33,7 @@ describe('Element', function() {
   });
 
   it('attr(key, value), fill', function() {
+
     e.attr('fill', '#333333');
     expect(e.attr('fill')).to.equal('#333333');
     expect(e.get('attrs').fillStyle).to.equal('#333333');
@@ -45,6 +51,28 @@ describe('Element', function() {
     e.attr('stroke', '#999');
     expect(e.attr('stroke')).to.equal('#999');
     expect(e.get('attrs').strokeStyle).to.equal('#999');
+  });
+
+  it('attr(key, value), fill a radial gradient', function() {
+    e.attr('fill', 'r(0,0,1) 0:#ffffff 0.5:#7ec2f3 1:#1890ff');
+    const fill = e.attr('fillStyle');
+    expect(fill).to.equal('r(0,0,1) 0:#ffffff 0.5:#7ec2f3 1:#1890ff');
+
+    e.resetContext(context);
+    expect(context.fillStyle).to.be.an.instanceof(CanvasGradient);
+
+    e.attr('fill', 'r(0.5,0.5,0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff');
+    e.resetContext(context);
+    expect(context.fillStyle).to.equal('#1890ff');
+  });
+
+  it('attr(key, value), stroke a linear gradient', function() {
+    e.attr('stroke', 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff');
+    const stroke = e.attr('strokeStyle');
+    expect(stroke).to.equal('l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff');
+
+    e.resetContext(context);
+    expect(context.strokeStyle).to.be.an.instanceof(CanvasGradient);
   });
 
   it('attr(key, value), opacity', function() {
@@ -91,7 +119,9 @@ describe('Element', function() {
       minX: 0,
       maxX: 0,
       minY: 0,
-      maxY: 0
+      maxY: 0,
+      height: 0,
+      width: 0
     });
   });
 
