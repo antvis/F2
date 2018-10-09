@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.2.4-beta.1",
+  "version": "3.2.4-beta.2",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "browser": "build/f2.js",
   "module": "src/index.js",
+  "miniprogram": "dist",
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
