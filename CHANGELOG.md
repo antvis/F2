@@ -1,7 +1,8 @@
-#### 3.2.4-beta.1 (2018-10-09)
+#### 3.2.4-beta.2 (2018-10-15)
 
 ##### Bug Fixes
 
+* fix the draw error caused by smooth area animation. Closed [#373](https://github.com/antvis/f2/pull/373). ([407fdf5c](https://github.com/antvis/f2/commit/407fdf5cb56646b0a8ea175e2a61a946c29bdcb1))
 * fix the draw error of polyline which has empty points but still fill the area. Closed [#363](https://github.com/antvis/f2/pull/363). ([2c336837](https://github.com/antvis/f2/commit/2c336837b59ad4140a32b80c8401f7a4e9fbbc77))
 * let 'interval-select' interaction work for mixed charts. Closed [#355](https://github.com/antvis/f2/pull/355). ([b80aa3ff](https://github.com/antvis/f2/commit/b80aa3ff31d157346bf98783c9bbd99b169ccaef))
 
