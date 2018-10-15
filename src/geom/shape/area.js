@@ -8,6 +8,23 @@ function equals(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;
 }
 
+function notEmpty(value) {
+  return !isNaN(value) && !Util.isNil(value);
+}
+
+function filterPoints(points) {
+  const filteredPoints = [];
+  // filter the point which x or y is NaN
+  for (let i = 0, len = points.length; i < len; i++) {
+    const point = points[i];
+    if (notEmpty(point.x) && notEmpty(point.y)) {
+      filteredPoints.push(point);
+    }
+  }
+
+  return filteredPoints;
+}
+
 function equalsCenter(points, center) {
   let eqls = true;
   Util.each(points, function(point) {
@@ -33,7 +50,8 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
           [ 0, 0 ],
           [ 1, 1 ]
         ];
-        const points = this._attrs.attrs.points;
+        const points = filterPoints(this._attrs.attrs.points);
+
         const pointsLen = points.length;
         const topPoints = points.slice(0, pointsLen / 2);
         const bottomPoints = points.slice(pointsLen / 2, pointsLen);
@@ -56,7 +74,7 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
         context.closePath();
       },
       calculateBox() {
-        const points = this._attrs.attrs.points;
+        const points = filterPoints(this._attrs.attrs.points);
         return bbox.getBBoxFromPoints(points);
       }
     });
