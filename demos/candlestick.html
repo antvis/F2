@@ -37,6 +37,10 @@
         tickCount: 3
       }
     });
+    chart.tooltip({
+      showCrosshairs: true,
+      showXTip: true
+    });
 
     chart.axis('time', {
       label(text, index, total) {

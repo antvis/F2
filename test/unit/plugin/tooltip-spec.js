@@ -18,6 +18,10 @@ canvas.style.top = 0;
 canvas.style.left = 0;
 document.body.appendChild(canvas);
 
+function snapEqual(v1, v2) {
+  return Math.abs(v1 - v2) < 0.01;
+}
+
 describe('Tooltip Plugin', function() {
   let chart;
   let tooltipController;
@@ -278,6 +282,81 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items.length).to.equal(1);
     expect(tooltip.items[0].name).to.equal('score');
     expect(tooltip.items[0].value).to.equal('148');
+    chart.destroy();
+  });
+});
+
+describe('Tooltip crosshairs', function() {
+  const data = [
+    { date: '2018-04-21', steps: 59 },
+    { date: '2018-04-22', steps: 2515 },
+    { date: '2018-04-23', steps: 6524 },
+    { date: '2018-04-24', steps: 26044 },
+    { date: '2018-04-25', steps: 29763 },
+    { date: '2018-04-26', steps: 10586 },
+    { date: '2018-04-27', steps: 14758 },
+    { date: '2018-04-29', steps: 549 },
+    { date: '2018-04-30', steps: 21 }
+  ];
+  const chart = new F2.Chart({
+    id: 'chart-tooltip',
+    width: 400,
+    height: 300,
+    plugins: Tooltip,
+    pixelRatio: 2
+  });
+  chart.source(data, {
+    date: {
+      tickCount: 3
+    }
+  });
+  chart.line().position('date*steps');
+
+  it('chart.tooltip() with xy crosshairs.', () => {
+    chart.tooltip({
+      crosshairsType: 'xy',
+      crosshairsStyle: {
+        lineDash: [ 2 ],
+        stroke: '#1890ff'
+      }
+    });
+
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-26', steps: 10586 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { crosshairsShapeX, crosshairsShapeY } = tooltip;
+
+    expect(crosshairsShapeX).not.to.be.undefined;
+    expect(crosshairsShapeY).not.to.be.undefined;
+    expect(snapEqual(crosshairsShapeY.get('x'), 254.83888414171008)).to.be.true;
+    expect(snapEqual(crosshairsShapeX.get('y'), 183.69416666666666)).to.be.true;
+  });
+
+  it('show xTip and yTip', () => {
+    chart.tooltip({
+      showXTip: true,
+      showYTip: true,
+      crosshairsType: 'xy'
+    });
+    chart.repaint();
+    const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTip, yTip } = tooltip;
+
+    expect(xTip).not.to.be.undefined;
+    expect(yTip).not.to.be.undefined;
+    expect(xTip.content).to.equal('2018-04-22');
+    expect(yTip.content).to.equal('2515');
+    expect(snapEqual(xTip.x, 106.08332316080728)).to.be.true;
+    expect(xTip.y).to.equal(276.5);
+    expect(snapEqual(yTip.x, 31.95233154296875)).to.be.true;
+    expect(snapEqual(yTip.y, 247.58958333333334)).to.be.true;
     chart.destroy();
     document.body.removeChild(canvas);
   });
