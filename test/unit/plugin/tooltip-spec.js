@@ -18,6 +18,10 @@ canvas.style.top = 0;
 canvas.style.left = 0;
 document.body.appendChild(canvas);
 
+function snapEqual(v1, v2) {
+  return Math.abs(v1 - v2) < 0.01;
+}
+
 describe('Tooltip Plugin', function() {
   let chart;
   let tooltipController;
@@ -327,8 +331,8 @@ describe('Tooltip crosshairs', function() {
 
     expect(crosshairsShapeX).not.to.be.undefined;
     expect(crosshairsShapeY).not.to.be.undefined;
-    expect(crosshairsShapeY.get('x')).to.equal(254.83888414171008);
-    expect(crosshairsShapeX.get('y')).to.equal(183.69416666666666);
+    expect(snapEqual(crosshairsShapeY.get('x'), 254.83888414171008)).to.be.true;
+    expect(snapEqual(crosshairsShapeX.get('y'), 183.69416666666666)).to.be.true;
   });
 
   it('show xTip and yTip', () => {
@@ -349,10 +353,10 @@ describe('Tooltip crosshairs', function() {
     expect(yTip).not.to.be.undefined;
     expect(xTip.content).to.equal('2018-04-22');
     expect(yTip.content).to.equal('2515');
-    expect(xTip.x).to.equal(106.08332316080728);
+    expect(snapEqual(xTip.x, 106.08332316080728)).to.be.true;
     expect(xTip.y).to.equal(276.5);
-    expect(yTip.x).to.equal(31.95233154296875);
-    expect(yTip.y).to.equal(247.58958333333334);
+    expect(snapEqual(yTip.x, 31.95233154296875)).to.be.true;
+    expect(snapEqual(yTip.y, 247.58958333333334)).to.be.true;
     chart.destroy();
     document.body.removeChild(canvas);
   });

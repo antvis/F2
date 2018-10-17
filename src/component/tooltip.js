@@ -98,10 +98,9 @@ class Tooltip {
           className: 'tooltip-arrow',
           visible: false,
           zIndex: 2,
-          attrs: {
-            points: [],
-            fill: background.fill
-          }
+          attrs: Util.mix({
+            points: []
+          }, background)
         });
       }
     }
