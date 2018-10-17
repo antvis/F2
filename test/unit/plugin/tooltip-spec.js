@@ -279,6 +279,81 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items[0].name).to.equal('score');
     expect(tooltip.items[0].value).to.equal('148');
     chart.destroy();
+  });
+});
+
+describe('Tooltip crosshairs', function() {
+  const data = [
+    { date: '2018-04-21', steps: 59 },
+    { date: '2018-04-22', steps: 2515 },
+    { date: '2018-04-23', steps: 6524 },
+    { date: '2018-04-24', steps: 26044 },
+    { date: '2018-04-25', steps: 29763 },
+    { date: '2018-04-26', steps: 10586 },
+    { date: '2018-04-27', steps: 14758 },
+    { date: '2018-04-29', steps: 549 },
+    { date: '2018-04-30', steps: 21 }
+  ];
+  const chart = new F2.Chart({
+    id: 'chart-tooltip',
+    width: 400,
+    height: 300,
+    plugins: Tooltip,
+    pixelRatio: 2
+  });
+  chart.source(data, {
+    date: {
+      tickCount: 3
+    }
+  });
+  chart.line().position('date*steps');
+
+  it('chart.tooltip() with xy crosshairs.', () => {
+    chart.tooltip({
+      crosshairsType: 'xy',
+      crosshairsStyle: {
+        lineDash: [ 2 ],
+        stroke: '#1890ff'
+      }
+    });
+
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-26', steps: 10586 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { crosshairsShapeX, crosshairsShapeY } = tooltip;
+
+    expect(crosshairsShapeX).not.to.be.undefined;
+    expect(crosshairsShapeY).not.to.be.undefined;
+    expect(crosshairsShapeY.get('x')).to.equal(254.83888414171008);
+    expect(crosshairsShapeX.get('y')).to.equal(183.69416666666666);
+  });
+
+  it('show xTip and yTip', () => {
+    chart.tooltip({
+      showXTip: true,
+      showYTip: true,
+      crosshairsType: 'xy'
+    });
+    chart.repaint();
+    const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTip, yTip } = tooltip;
+
+    expect(xTip).not.to.be.undefined;
+    expect(yTip).not.to.be.undefined;
+    expect(xTip.content).to.equal('2018-04-22');
+    expect(yTip.content).to.equal('2515');
+    expect(xTip.x).to.equal(106.08332316080728);
+    expect(xTip.y).to.equal(276.5);
+    expect(yTip.x).to.equal(31.95233154296875);
+    expect(yTip.y).to.equal(247.58958333333334);
+    chart.destroy();
     document.body.removeChild(canvas);
   });
 });

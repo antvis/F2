@@ -1,8 +1,22 @@
 const Util = require('../util/common');
 const Marker = require('./marker');
 const Container = require('./list');
+const TextBox = require('./text-box');
 const GAP = 4;
 
+function directionEnabled(mode, dir) {
+  if (mode === undefined) {
+    return true;
+  } else if (typeof mode === 'string') {
+    return mode.indexOf(dir) !== -1;
+  }
+
+  return false;
+}
+/**
+ * TODOList：
+ * 1. 移除 fixed 参数
+ */
 class Tooltip {
   getDefaultCfg() {
     return {
@@ -18,6 +32,40 @@ class Tooltip {
       crosshairsStyle: {
         stroke: 'rgba(0, 0, 0, 0.25)',
         lineWidth: 1
+      },
+      /**
+       * the type of crosshairs, optional value is 'x', 'y' or 'xy', default is 'y'
+       */
+      crosshairsType: 'y',
+      /**
+       * show or hide the x axis tip
+       */
+      showXTip: false,
+      /**
+       * show or hide the y axis tip
+       */
+      showYTip: false,
+      xTipTextStyle: {
+        fontSize: 12,
+        fill: '#fff',
+        textAlign: 'center',
+        textBaseline: 'middle'
+      },
+      xTipBackground: {
+        radius: 1,
+        fill: 'rgba(0, 0, 0, 0.65)',
+        padding: [ 3, 5 ]
+      },
+      yTipTextStyle: {
+        fontSize: 12,
+        fill: '#fff',
+        textAlign: 'center',
+        textBaseline: 'middle'
+      },
+      yTipBackground: {
+        radius: 1,
+        fill: 'rgba(0, 0, 0, 0.65)',
+        padding: [ 3, 5 ]
       },
       /**
        * the style for tooltip container's background
@@ -36,58 +84,123 @@ class Tooltip {
 
   constructor(cfg) {
     Util.deepMix(this, this.getDefaultCfg(), cfg);
-    const frontPlot = this.frontPlot;
-    const plotRange = this.plotRange;
+    const { frontPlot, custom } = this;
 
-    if (!this.custom) { // custom means user do customize
+    if (!custom) { // custom means user do customize
       const container = new Container(Util.mix({
         parent: frontPlot,
         zIndex: 3
       }, cfg));
       this.container = container;
-      if (!this.fixed) {
+      const { fixed, background } = this;
+      if (!fixed) {
         this.tooltipArrow = frontPlot.addShape('Polygon', {
           className: 'tooltip-arrow',
           visible: false,
           zIndex: 2,
           attrs: {
             points: [],
-            fill: this.background.fill
+            fill: background.fill
           }
         });
       }
     }
+    if (this.showXTip) {
+      const { xTipBackground, xTipTextStyle } = this;
+      const xTip = new TextBox({
+        className: 'xTip',
+        textStyle: xTipTextStyle,
+        background: xTipBackground,
+        visible: false
+      });
+      frontPlot.add(xTip.container);
+      this.xTip = xTip;
+    }
+
+    if (this.showYTip) {
+      const { yTipBackground, yTipTextStyle } = this;
+      const yTip = new TextBox({
+        className: 'yTip',
+        textStyle: yTipTextStyle,
+        background: yTipBackground,
+        visible: false
+      });
+      frontPlot.add(yTip.container);
+      this.yTip = yTip;
+    }
 
     if (this.showCrosshairs) {
-      const crosshairsStyle = this.crosshairsStyle;
-      const shape = frontPlot.addShape('Line', {
-        className: 'tooltip-crosshairs',
-        zIndex: 0,
-        visible: false,
-        attrs: Util.mix({
-          x1: 0,
-          y1: plotRange.bl.y,
-          x2: 0,
-          y2: plotRange.tl.y
-        }, crosshairsStyle)
-      });
-      this.crosshairsShape = shape;
+      this._renderCrosshairs();
     }
 
     frontPlot.sort();
   }
 
-  setContent(title, items) {
+  setContent(title, items, transposed) {
     this.title = title;
     this.items = items;
-    const container = this.container;
-    container.setTitle(title);
-    container.setItems(items);
+    if (!this.custom) {
+      const container = this.container;
+      container.setTitle(title);
+      container.setItems(items);
+    }
+
+    if (this.xTip) {
+      const text = transposed ? items[0].value : title;
+      this.xTip.updateContent(text);
+    }
+    if (this.yTip) {
+      const text = !transposed ? items[0].value : title;
+      this.yTip.updateContent(text);
+    }
   }
 
   setPosition(items) {
-    const { container, plotRange, offsetX, offsetY, crosshairsShape, fixed, tooltipArrow } = this;
-    crosshairsShape && crosshairsShape.moveTo(items[0].x, 0);
+    const { container, plotRange, offsetX, offsetY, fixed, tooltipArrow } = this;
+    const { crosshairsShapeX, crosshairsShapeY } = this;
+    crosshairsShapeX && crosshairsShapeX.moveTo(0, items[0].y);
+    crosshairsShapeY && crosshairsShapeY.moveTo(items[0].x, 0);
+
+
+    if (this.showXTip) {
+      const xTip = this.xTip;
+      const xTipWidth = xTip.getWidth();
+      let x;
+      let posX;
+      if (items.length > 1) {
+        x = (items[0].x + items[items.length - 1].x) / 2;
+      } else {
+        x = items[0].x;
+      }
+      posX = x - (xTipWidth / 2);
+      if (posX <= plotRange.tl.x) {
+        posX = plotRange.tl.x;
+      }
+      if (posX + xTipWidth >= plotRange.tr.x) {
+        posX = plotRange.tr.x - xTipWidth;
+      }
+      xTip.updatePosition(posX, plotRange.br.y);
+    }
+    if (this.showYTip) {
+      const yTip = this.yTip;
+      const yTipHeight = yTip.getHeight();
+      const yTipWidth = yTip.getWidth();
+      let y;
+      let posY;
+      if (items.length > 1) {
+        y = (items[0].y + items[items.length - 1].y) / 2;
+      } else {
+        y = items[0].y;
+      }
+      posY = y - (yTipHeight / 2);
+      if (posY <= plotRange.tl.y) {
+        posY = plotRange.tl.y;
+      }
+      if (posY + yTipHeight >= plotRange.br.y) {
+        posY = plotRange.br.y - yTipHeight;
+      }
+      yTip.updatePosition(plotRange.tl.x - yTipWidth, posY);
+    }
 
     if (!container) {
       return;
@@ -181,40 +294,57 @@ class Tooltip {
   }
 
   show() {
-    const crosshairsShape = this.crosshairsShape;
+    const crosshairsShapeX = this.crosshairsShapeX;
+    const crosshairsShapeY = this.crosshairsShapeY;
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
+    const xTip = this.xTip;
+    const yTip = this.yTip;
     const canvas = this.canvas;
-    // canvas.sort();
-    crosshairsShape && crosshairsShape.show();
+    crosshairsShapeX && crosshairsShapeX.show();
+    crosshairsShapeY && crosshairsShapeY.show();
     markerGroup && markerGroup.show();
     container && container.show();
     tooltipArrow && tooltipArrow.show();
+    xTip && xTip.show();
+    yTip && yTip.show();
     canvas.draw();
   }
 
   hide() {
-    const crosshairsShape = this.crosshairsShape;
+    const crosshairsShapeX = this.crosshairsShapeX;
+    const crosshairsShapeY = this.crosshairsShapeY;
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
-    crosshairsShape && crosshairsShape.hide();
+    const xTip = this.xTip;
+    const yTip = this.yTip;
+    crosshairsShapeX && crosshairsShapeX.hide();
+    crosshairsShapeY && crosshairsShapeY.hide();
     markerGroup && markerGroup.hide();
     container && container.hide();
     tooltipArrow && tooltipArrow.hide();
+    xTip && xTip.hide();
+    yTip && yTip.hide();
   }
 
   destroy() {
-    const crosshairsShape = this.crosshairsShape;
+    const crosshairsShapeX = this.crosshairsShapeX;
+    const crosshairsShapeY = this.crosshairsShapeY;
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
+    const xTip = this.xTip;
+    const yTip = this.yTip;
 
-    crosshairsShape && crosshairsShape.remove(true);
+    crosshairsShapeX && crosshairsShapeX.remove(true);
+    crosshairsShapeY && crosshairsShapeY.remove(true);
     markerGroup && markerGroup.remove(true);
-    container && container.clear();
     tooltipArrow && tooltipArrow.remove(true);
+    container && container.clear();
+    xTip && xTip.clear();
+    yTip && yTip.clear();
 
     this.destroyed = true;
   }
@@ -236,6 +366,39 @@ class Tooltip {
     }
 
     return markerGroup;
+  }
+
+  _renderCrosshairs() {
+    const { crosshairsType, crosshairsStyle, frontPlot, plotRange } = this;
+    const { tl, br } = plotRange;
+    if (directionEnabled(crosshairsType, 'x')) {
+      this.crosshairsShapeX = frontPlot.addShape('Line', {
+        className: 'tooltip-crosshairs-x',
+        zIndex: 0,
+        visible: false,
+        attrs: Util.mix({
+          x1: tl.x,
+          y1: 0,
+          x2: br.x,
+          y2: 0
+        }, crosshairsStyle)
+      });
+    }
+
+    if (directionEnabled(crosshairsType, 'y')) {
+      this.crosshairsShapeY = frontPlot.addShape('Line', {
+        className: 'tooltip-crosshairs-y',
+        zIndex: 0,
+        visible: false,
+        attrs: Util.mix({
+          x1: 0,
+          y1: br.y,
+          x2: 0,
+          y2: tl.y
+        }, crosshairsStyle)
+      });
+    }
+
   }
 }
 
