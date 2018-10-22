@@ -285,12 +285,11 @@ class TooltipController {
         tooltipMarkerCfg
       });
     }
-
-    if (!cfg.custom) {
-      const first = items[0];
-      const title = first.title || first.name;
-      tooltip.setContent(title, items);
-    }
+    const chart = this.chart;
+    const coord = chart.get('coord');
+    const first = items[0];
+    const title = first.title || first.name;
+    tooltip.setContent(title, items, coord.transposed);
     tooltip.setPosition(items);
 
     const markerItems = tooltipMarkerCfg.items;
