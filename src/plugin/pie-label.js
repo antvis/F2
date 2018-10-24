@@ -7,11 +7,6 @@ const DEFAULT_CFG = {
   lineHeight: 32, // 文本的行高
   adjustOffset: 15, // 发生调整时的偏移量
   skipOverlapLabels: false, // 是否不展示重叠的文本
-  lineStyle: {}, // 连接线的样式
-  anchorStyle: {}, // 锚点的样式
-  label1: {}, // label1 文本内容及其样式，Function 类型，回调函数
-  label2: {}, // label2 文本内容及其样式，Function 类型，回调函数
-  onClick: null, // 点击行为，回调函数
   triggerOn: 'touchstart' // 点击行为触发的时间类型
 };
 
