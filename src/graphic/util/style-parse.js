@@ -1,5 +1,9 @@
 const Util = require('../../util/common');
 
+function _mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
 function _addStop(steps, gradient) {
   Util.each(steps, item => {
     item = item.split(':');
@@ -10,8 +14,7 @@ function _addStop(steps, gradient) {
 // the string format: 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff'
 function _parseLineGradient(color, shape, context) {
   const arr = color.split(' ');
-  let angle = arr[0].slice(2, arr[0].length - 1);
-  angle = (angle * Math.PI) / 180;
+  const angle = _mod((parseFloat(arr[1]) * Math.PI) / 180, Math.PI * 2);
   const steps = arr.slice(1);
 
   const { minX, minY, maxX, maxY } = shape.getBBox();
