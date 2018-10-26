@@ -47,6 +47,7 @@ const Theme = {
   },
   sizes: [ 4, 10 ],
   axis: {
+    common: defaultAxis, // common axis configuration
     bottom: Util.mix({}, defaultAxis, {
       grid: null
     }),
