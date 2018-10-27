@@ -4,6 +4,11 @@ node_js:
   - "8"
   - "10"
 
+os:
+  - windows
+  - linux
+  - osx
+
 env:
   matrix:
     - TEST_TYPE=ci
