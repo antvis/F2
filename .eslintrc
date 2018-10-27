@@ -10,6 +10,9 @@
     "sourceType": "module"
   },
   "rules": {
+    "linebreak-style": [
+      0
+    ],
     "no-bitwise": [
       0
     ],
