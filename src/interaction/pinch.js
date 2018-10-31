@@ -21,7 +21,7 @@ class Pinch extends Interaction {
       maxScale: null,
       limitRange: {},
       sensitivity: 1,
-      _zoomCumulativeDelta: 0,
+      _pinchCumulativeDelta: 0,
       _timestamp: 0
     });
   }
@@ -70,6 +70,7 @@ class Pinch extends Interaction {
     if (this.pressed) return;
     this._handlePinch(e);
     this.currentPinchScaling = null; // reset
+    this.pinchCumulativeDelta = 0;
   }
 
   reset() {
@@ -206,10 +207,10 @@ class Pinch extends Interaction {
 
   // 针对分类类型
   _zoomCatScale(scale, zoom, center) {
-    let zoomCumulativeDelta = this._zoomCumulativeDelta;
+    let pinchCumulativeDelta = this._pinchCumulativeDelta;
     const sensitivity = this.sensitivity;
-    zoomCumulativeDelta = zoom > 1 ? zoomCumulativeDelta + 1 : zoomCumulativeDelta - 1;
-    this._zoomCumulativeDelta = zoomCumulativeDelta;
+    pinchCumulativeDelta = zoom > 1 ? pinchCumulativeDelta + 1 : pinchCumulativeDelta - 1;
+    this._pinchCumulativeDelta = pinchCumulativeDelta;
 
     const { field, values } = scale;
     const chart = this.chart;
@@ -226,10 +227,10 @@ class Pinch extends Interaction {
     const minCount = parseInt(originValuesLen / maxScale);
     const maxCount = parseInt(originValuesLen / minScale);
     const currentLen = values.length;
-    if (zoomCumulativeDelta > 0 && currentLen <= minCount) {
+    if (pinchCumulativeDelta > 0 && currentLen <= minCount) {
       return null;
     }
-    if (zoomCumulativeDelta < 0 && currentLen >= maxCount) {
+    if (pinchCumulativeDelta < 0 && currentLen >= maxCount) {
       return null;
     }
 
@@ -241,9 +242,9 @@ class Pinch extends Interaction {
     const chartCenter = (coord.start.x + coord.end.x) / 2;
     const centerPointer = center.x;
 
-    if (Math.abs(zoomCumulativeDelta) > sensitivity) {
+    if (Math.abs(pinchCumulativeDelta) > sensitivity) {
       const deltaCount = Math.max(1, parseInt(currentLen * Math.abs(zoom - 1)));
-      if (zoomCumulativeDelta < 0) {
+      if (pinchCumulativeDelta < 0) {
         if (centerPointer >= chartCenter) {
           if (minIndex <= 0) {
             maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
@@ -257,14 +258,14 @@ class Pinch extends Interaction {
             maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
           }
         }
-        this._zoomCumulativeDelta = 0;
-      } else if (zoomCumulativeDelta > 0) {
+        this._pinchCumulativeDelta = 0;
+      } else if (pinchCumulativeDelta > 0) {
         if (centerPointer >= chartCenter) {
           minIndex = minIndex < maxIndex ? minIndex = Math.min(maxIndex, minIndex + deltaCount) : minIndex;
         } else if (centerPointer < chartCenter) {
           maxIndex = maxIndex > minIndex ? maxIndex = Math.max(minIndex, maxIndex - deltaCount) : maxIndex;
         }
-        this._zoomCumulativeDelta = 0;
+        this._pinchCumulativeDelta = 0;
       }
 
       const newValues = originValues.slice(minIndex, maxIndex + 1);
