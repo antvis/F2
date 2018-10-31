@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>小数据量分类度量缩放</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+
+<body>
+  <div>
+    <canvas id="mountNode"></canvas>
+  </div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="../build/f2-all.js"></script>
+  <script>
+    const data = [
+      { time: 'Jan.', tem: 1000 },
+      { time: 'Feb.', tem: 2200 },
+      { time: 'Mar.', tem: 2000 },
+      { time: 'Apr.', tem: 2600 },
+      { time: 'May.', tem: 2000 },
+      { time: 'Jun.', tem: 2600 },
+      { time: 'Jul.', tem: 2800 },
+      { time: 'Aug.', tem: 2000 }
+    ];
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      pixelRatio: window.devicePixelRatio
+    });
+
+    chart.source(data);
+    chart.scale({
+      tem: {
+        tickCount: 5,
+        min: 0
+      }
+    });
+    chart.axis('time', {
+      label(text, index, total) {
+        const textCfg = {};
+        if (index === 0) {
+          textCfg.textAlign = 'left';
+        }
+        if (index === total - 1) {
+          textCfg.textAlign = 'right';
+        }
+        return textCfg;
+      }
+    });
+    chart.tooltip({
+      showCrosshairs: true,
+      onShow(ev) {
+        const { items } = ev;
+        items[0].name = items[0].title;
+      }
+    });
+    // chart.area().position('time*tem');
+    // chart.line().position('time*tem');
+    chart.interval().position('time*tem');
+    chart.interaction('pinch', {
+      sensitivity: 1
+    });
+    chart.render();
+  </script>
+</body>
+
+</html>
