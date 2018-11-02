@@ -5,9 +5,9 @@ require('../../../src/geom/line');
 require('../../../src/geom/interval');
 require('../../../src/scale/time-cat');
 
-function snapEqual(v1, v2) {
-  return Math.abs(v1 - v2) < 0.01;
-}
+// function snapEqual(v1, v2) {
+//   return Math.abs(v1 - v2) < 0.01;
+// }
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;
@@ -113,7 +113,8 @@ describe('chart pinch', function() {
     chart.line().position('x2*y');
     chart.interaction('pinch', {
       minScale: 1,
-      maxScale: 5
+      maxScale: 5,
+      sensitivity: 0
     });
     chart.render();
 
@@ -128,10 +129,11 @@ describe('chart pinch', function() {
     expect(limitRange.x2.length).to.equal(20);
 
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '9', '10', '11', '12' ]);
+    expect(xScale.values.length).to.equal(4);
+    expect(xScale.values).to.eql([ '16', '17', '18', '19' ]);
 
     const xRange = interaction.xRange;
-    expect(xRange).to.eql([ 0.47368421052631576, 0.631578947368421 ]);
+    expect(xRange).to.eql([ 0.8421052631578947, 1 ]);
   });
 
   it('pan x axis, and x field is a timeCat type.', function() {
@@ -147,7 +149,9 @@ describe('chart pinch', function() {
       }
     });
     chart.line().position('x3*y');
-    chart.interaction('pinch');
+    chart.interaction('pinch', {
+      sensitivity: 0
+    });
     chart.render();
 
     const point = chart.getPosition({
@@ -161,12 +165,9 @@ describe('chart pinch', function() {
     expect(limitRange.x3.length).to.equal(20);
     const xScale = chart.getXScale();
     expect(xScale.values.length).to.equal(10);
-    // expect(xScale.values[0]).to.equal(1533484800000);
-    // expect(xScale.values[9]).to.equal(1534262400000);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.2631578947368421)).to.be.true;
-    expect(snapEqual(xRange[1], 0.7368421052631579)).to.be.true;
+    expect(xRange).to.eql([ 0.5263157894736842, 1 ]);
 
     chart.destroy();
     document.body.removeChild(canvas);

@@ -31,7 +31,9 @@ class Pan extends Interaction {
       panning: false,
       limitRange: {},
       _timestamp: 0,
-      lastPoint: null
+      lastPoint: null,
+      _panCumulativeDelta: 0,
+      speed: 5
     });
 
     if (Util.isWx || Util.isMy) { // 小程序
@@ -98,6 +100,7 @@ class Pan extends Interaction {
     this.currentDeltaX = null;
     this.currentDeltaY = null;
     this.lastPoint = null;
+    this._panCumulativeDelta = 0;
   }
 
   reset() {
@@ -212,57 +215,58 @@ class Pan extends Interaction {
   }
 
   _panCatScale(scale, delta, range) {
-    const chart = this.chart;
     const { type, field, values, ticks } = scale;
+    const chart = this.chart;
     const colDef = Helper.getColDef(chart, field);
 
     const originValues = this.limitRange[field];
-    const ratio = delta / range;
-    const valueLength = values.length;
-    const deltaCount = Math.max(1, Math.abs(parseInt(ratio * valueLength)));
+    const lastValueIndex = originValues.length - 1;
+    const currentLength = values.length;
+    const speed = this.speed || 1;
+    const step = range / (currentLength * speed);
 
-    let firstIndex = originValues.indexOf(values[0]);
-    let lastIndex = originValues.indexOf(values[valueLength - 1]);
-    if (delta > 0 && firstIndex >= 0) { // right
-      for (let i = 0; i < deltaCount && firstIndex > 0; i++) {
-        firstIndex -= 1;
-        lastIndex -= 1;
-      }
-      const newValues = originValues.slice(firstIndex, lastIndex + 1);
-      let newTicks = null;
-      if (type === 'timeCat') {
-        const tickGap = ticks.length > 2 ? ticks[1] - ticks[0] : DAY_TIMESTAMPS;
+    const firstIndex = originValues.indexOf(values[0]);
+    const lastIndex = originValues.indexOf(values[currentLength - 1]);
+    let minIndex = firstIndex;
+    let maxIndex = lastIndex;
+
+    const ratio = Math.abs(delta / range);
+    const panStep = this.step || Math.max(1, parseInt(ratio * currentLength));
+
+    this._panCumulativeDelta += delta;
+    minIndex = this._panCumulativeDelta > step ?
+      Math.max(0, minIndex - panStep) :
+      (this._panCumulativeDelta < -step ? Math.min(lastValueIndex - currentLength + 1, minIndex + panStep) : minIndex);
+
+    maxIndex = Math.min(lastValueIndex, minIndex + currentLength - 1);
+
+    if (minIndex === firstIndex && maxIndex === lastIndex) {
+      return null;
+    }
+
+    const newValues = originValues.slice(minIndex, maxIndex + 1);
+    let newTicks = null;
+    if (type === 'timeCat') {
+      const tickGap = ticks.length > 2 ? ticks[1] - ticks[0] : DAY_TIMESTAMPS;
+
+      if (this._panCumulativeDelta > step) {
         for (let i = ticks[0] - tickGap; i >= newValues[0]; i -= tickGap) {
           ticks.unshift(i);
         }
-        newTicks = ticks;
-      }
-
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: newTicks
-      }));
-    } else if (delta < 0 && lastIndex <= originValues.length - 1) { // left
-      for (let i = 0; i < deltaCount && lastIndex < originValues.length - 1; i++) {
-        firstIndex += 1;
-        lastIndex += 1;
-      }
-      const newValues = originValues.slice(firstIndex, lastIndex + 1);
-
-      let newTicks = null;
-      if (type === 'timeCat') {
-        const tickGap = ticks.length > 2 ? ticks[1] - ticks[0] : DAY_TIMESTAMPS;
+      } else if (this._panCumulativeDelta < -step) {
         for (let i = ticks[ticks.length - 1] + tickGap; i <= newValues[newValues.length - 1]; i += tickGap) {
           ticks.push(i);
         }
-        newTicks = ticks;
       }
 
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: newTicks
-      }));
+      newTicks = ticks;
     }
+
+    chart.scale(field, Util.mix({}, colDef, {
+      values: newValues,
+      ticks: newTicks
+    }));
+    this._panCumulativeDelta = minIndex !== firstIndex ? 0 : this._panCumulativeDelta;
   }
 }
 

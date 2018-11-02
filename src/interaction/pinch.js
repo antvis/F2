@@ -19,8 +19,10 @@ class Pinch extends Interaction {
       originValues: null,
       minScale: null,
       maxScale: null,
-      _timestamp: 0,
-      limitRange: {}
+      limitRange: {},
+      sensitivity: 1,
+      _pinchCumulativeDelta: 0,
+      _timestamp: 0
     });
   }
 
@@ -68,6 +70,7 @@ class Pinch extends Interaction {
     if (this.pressed) return;
     this._handlePinch(e);
     this.currentPinchScaling = null; // reset
+    this.pinchCumulativeDelta = 0;
   }
 
   reset() {
@@ -168,11 +171,8 @@ class Pinch extends Interaction {
   }
 
   _zoomLinearScale(scale, zoom, center, flag) {
-    const type = scale.type;
-    if (type !== 'linear') return;
-    const field = scale.field;
     const chart = this.chart;
-    const { min, max } = scale;
+    const { min, max, field } = scale;
     const valueRange = max - min;
     const limitRange = this.limitRange;
     const originRange = limitRange[field].max - limitRange[field].min;
@@ -205,46 +205,74 @@ class Pinch extends Interaction {
     }));
   }
 
+  // 针对分类类型
   _zoomCatScale(scale, zoom, center) {
+    let pinchCumulativeDelta = this._pinchCumulativeDelta;
+    const sensitivity = this.sensitivity;
+    pinchCumulativeDelta = zoom > 1 ? pinchCumulativeDelta + 1 : pinchCumulativeDelta - 1;
+    this._pinchCumulativeDelta = pinchCumulativeDelta;
+
     const { field, values } = scale;
     const chart = this.chart;
     const coord = chart.get('coord');
-    const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originTicks) { // Need to be optimized
+    if (!this.originTicks) {
       this.originTicks = scale.ticks;
     }
 
-    const originTicks = this.originTicks;
     const originValues = this.limitRange[field];
     const originValuesLen = originValues.length;
-    const maxScale = this.maxScale || 4;
     const minScale = this.minScale || 1;
-    const minCount = originValuesLen / maxScale;
-    const maxCount = originValuesLen / minScale;
+    const maxScale = this.maxScale || 5;
+    const minCount = parseInt(originValuesLen / maxScale);
+    const maxCount = parseInt(originValuesLen / minScale);
+    const currentLen = values.length;
+    if (pinchCumulativeDelta > 0 && currentLen <= minCount) {
+      return null;
+    }
+    if (pinchCumulativeDelta < 0 && currentLen >= maxCount) {
+      return null;
+    }
 
-    const valuesLength = values.length;
-    const offsetPoint = coord.invertPoint(center);
-    const percent = offsetPoint.x;
-    const deltaCount = parseInt(valuesLength * Math.abs(zoom - 1));
-    const minDelta = parseInt(deltaCount * (percent));
-    const maxDelta = deltaCount - minDelta;
+    const lastLabelIndex = originValuesLen - 1;
+    const firstValue = values[0];
+    const lastValue = values[currentLen - 1];
+    let minIndex = originValues.indexOf(firstValue);
+    let maxIndex = originValues.indexOf(lastValue);
+    const chartCenter = (coord.start.x + coord.end.x) / 2;
+    const centerPointer = center.x;
 
-    if (zoom >= 1 && valuesLength >= minCount) { // zoom out
-      const newValues = values.slice(minDelta, valuesLength - maxDelta);
+    if (Math.abs(pinchCumulativeDelta) > sensitivity) {
+      const deltaCount = Math.max(1, parseInt(currentLen * Math.abs(zoom - 1)));
+      if (pinchCumulativeDelta < 0) {
+        if (centerPointer >= chartCenter) {
+          if (minIndex <= 0) {
+            maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
+          } else {
+            minIndex = Math.max(0, minIndex - deltaCount);
+          }
+        } else if (centerPointer < chartCenter) {
+          if (maxIndex >= lastLabelIndex) {
+            minIndex = Math.max(0, minIndex - deltaCount);
+          } else {
+            maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
+          }
+        }
+        this._pinchCumulativeDelta = 0;
+      } else if (pinchCumulativeDelta > 0) {
+        if (centerPointer >= chartCenter) {
+          minIndex = minIndex < maxIndex ? minIndex = Math.min(maxIndex, minIndex + deltaCount) : minIndex;
+        } else if (centerPointer < chartCenter) {
+          maxIndex = maxIndex > minIndex ? maxIndex = Math.max(minIndex, maxIndex - deltaCount) : maxIndex;
+        }
+        this._pinchCumulativeDelta = 0;
+      }
+
+      const newValues = originValues.slice(minIndex, maxIndex + 1);
+      const colDef = Helper.getColDef(chart, field);
       chart.scale(field, Util.mix({}, colDef, {
         values: newValues,
-        ticks: originTicks
-      }));
-    } else if (zoom < 1 && valuesLength <= maxCount) { // zoom in
-      const firstIndex = originValues.indexOf(values[0]);
-      const lastIndex = originValues.indexOf(values[valuesLength - 1]);
-      const minIndex = Math.max(0, firstIndex - minDelta);
-      const maxIndex = Math.min(lastIndex + maxDelta, originValuesLen);
-      const newValues = originValues.slice(minIndex, maxIndex);
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: originTicks
+        ticks: this.originTicks
       }));
     }
   }
