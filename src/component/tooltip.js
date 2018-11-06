@@ -160,12 +160,15 @@ class Tooltip {
     crosshairsShapeX && crosshairsShapeX.moveTo(0, items[0].y);
     crosshairsShapeY && crosshairsShapeY.moveTo(items[0].x, 0);
 
-
     if (this.showXTip) {
+      const el = this.canvas.get('el');
+      const canvasHeight = Util.getHeight(el);
       const xTip = this.xTip;
       const xTipWidth = xTip.getWidth();
+      const xTipHeight = xTip.getHeight();
       let x;
       let posX;
+      let posY = plotRange.br.y;
       if (items.length > 1) {
         x = (items[0].x + items[items.length - 1].x) / 2;
       } else {
@@ -178,13 +181,19 @@ class Tooltip {
       if (posX + xTipWidth >= plotRange.tr.x) {
         posX = plotRange.tr.x - xTipWidth;
       }
-      xTip.updatePosition(posX, plotRange.br.y);
+
+      if (canvasHeight - posY < xTipHeight) {
+        posY -= xTipHeight;
+      }
+      xTip.updatePosition(posX, posY);
+      crosshairsShapeY && crosshairsShapeY.attr('y1', posY);
     }
     if (this.showYTip) {
       const yTip = this.yTip;
       const yTipHeight = yTip.getHeight();
       const yTipWidth = yTip.getWidth();
       let y;
+      let posX = plotRange.tl.x - yTipWidth;
       let posY;
       if (items.length > 1) {
         y = (items[0].y + items[items.length - 1].y) / 2;
@@ -198,7 +207,13 @@ class Tooltip {
       if (posY + yTipHeight >= plotRange.br.y) {
         posY = plotRange.br.y - yTipHeight;
       }
-      yTip.updatePosition(plotRange.tl.x - yTipWidth, posY);
+
+      if (posX < 0) {
+        posX = plotRange.tl.x;
+        crosshairsShapeX.attr('x1', plotRange.tl.x + yTipWidth);
+      }
+
+      yTip.updatePosition(posX, posY);
     }
 
     if (!container) {
