@@ -50,7 +50,7 @@ describe('chart pan', function() {
 
   it('pan x axis, and x field is a linear type.', function() {
     const interaction = chart._interactions.pan;
-    interaction._doPan(20, 0);
+    interaction._doMove(20, 0);
 
     const limitRange = interaction.limitRange;
     expect(limitRange).to.eql({ x1: { min: 1, max: 20 } });
@@ -78,7 +78,7 @@ describe('chart pan', function() {
     chart.repaint();
 
     const interaction = chart._interactions.pan;
-    interaction._doPan(0, 300);
+    interaction._doMove(0, 300);
 
     const limitRange = interaction.limitRange;
     expect(limitRange).to.eql({
@@ -108,7 +108,7 @@ describe('chart pan', function() {
     chart.render();
 
     const interaction = chart._interactions.pan;
-    interaction._doPan(-50, 0);
+    interaction._doMove(-50, 0);
 
     const limitRange = interaction.limitRange;
 
@@ -139,7 +139,7 @@ describe('chart pan', function() {
     chart.render();
 
     const interaction = chart._interactions.pan;
-    interaction._doPan(30, 0);
+    interaction._doMove(30, 0);
 
     const limitRange = interaction.limitRange;
     expect(limitRange.x3.length).to.equal(20);
@@ -178,7 +178,7 @@ describe('chart pan', function() {
 
     setTimeout(() => {
       const interaction = chart._interactions.pan;
-      interaction._doPan(120, 0);
+      interaction._doMove(120, 0);
       const hBar = chart.get('_horizontalBar');
       const highlightLine = hBar.get('children')[1];
       expect(snapEqual(highlightLine.attr('x1'), 50.79789011101974)).to.be.true;
