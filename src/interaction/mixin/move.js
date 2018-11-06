@@ -60,7 +60,7 @@ module.exports = {
         self._handleLinearScale(xScale, deltaX, coordWidth, 'x');
       }
       const xDef = Helper.getColDef(chart, xField);
-      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
+      self.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
@@ -75,7 +75,7 @@ module.exports = {
         yScale.isLinear && self._handleLinearScale(yScale, deltaY, coordHeight, 'y');
       });
       const yDef = Helper.getColDef(chart, yScales[0].field);
-      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
+      self.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
     chart.repaint();
   },

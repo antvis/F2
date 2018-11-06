@@ -339,7 +339,12 @@ describe('Tooltip crosshairs', function() {
     chart.tooltip({
       showXTip: true,
       showYTip: true,
-      crosshairsType: 'xy'
+      crosshairsType: 'xy',
+      yTip(val) {
+        return {
+          text: Math.round(val)
+        };
+      }
     });
     chart.repaint();
     const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
@@ -347,12 +352,12 @@ describe('Tooltip crosshairs', function() {
 
     const tooltipController = chart.get('tooltipController');
     const tooltip = tooltipController.tooltip;
-    const { xTip, yTip } = tooltip;
+    const { xTipBox: xTip, yTipBox: yTip } = tooltip;
 
     expect(xTip).not.to.be.undefined;
     expect(yTip).not.to.be.undefined;
     expect(xTip.content).to.equal('2018-04-22');
-    expect(yTip.content).to.equal('2515');
+    expect(yTip.content).to.equal(2515);
     expect(snapEqual(xTip.x, 106.08332316080728)).to.be.true;
     expect(xTip.y).to.equal(276.5);
     expect(snapEqual(yTip.x, 31.95233154296875)).to.be.true;
