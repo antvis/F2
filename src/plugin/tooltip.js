@@ -275,8 +275,8 @@ class TooltipController {
     }
     this._lastActive = items;
 
-    if (cfg.onChange || Util.isFunction(cfg.custom)) {
-      const onChange = cfg.onChange || cfg.custom;
+    const onChange = cfg.onChange;
+    if (onChange) {
       onChange({
         x: point.x,
         y: point.y,
