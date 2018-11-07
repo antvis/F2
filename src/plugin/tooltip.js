@@ -169,7 +169,7 @@ class TooltipController {
   render() {
     const self = this;
 
-    if (self.tooltip /* || !self.enable */) {
+    if (self.tooltip) {
       return;
     }
 
