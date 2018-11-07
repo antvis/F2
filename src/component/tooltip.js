@@ -98,7 +98,6 @@ class Tooltip {
       const { xTipBackground } = this;
       const xTipBox = new TextBox({
         className: 'xTip',
-        // textStyle: xTipTextStyle,
         background: xTipBackground,
         visible: false
       });
@@ -110,7 +109,6 @@ class Tooltip {
       const { yTipBackground } = this;
       const yTipBox = new TextBox({
         className: 'yTip',
-        // textStyle: yTipTextStyle,
         background: yTipBackground,
         visible: false
       });
