@@ -528,7 +528,6 @@ class Chart extends Base {
 
     Chart.plugins.notify(this, 'beforeGeomInit');
 
-
     this._initGeoms(geoms); // init all geometry instances
 
     this.get('syncY') && this._syncYScales();

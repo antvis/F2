@@ -14,6 +14,7 @@ module.exports = {
 
     const geoms = chart.get('geoms');
     let isSpecialGeom = false;
+    // TODO
     Util.each(geoms, geom => {
       if ([ 'area', 'line', 'path' ].indexOf(geom.get('type')) !== -1) {
         isSpecialGeom = true;
