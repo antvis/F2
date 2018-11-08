@@ -88,7 +88,10 @@ class TextBox {
   updateContent(text) {
     const { textShape, backgroundShape } = this;
     if (!Util.isNil(text)) {
-      textShape.attr('text', text);
+      if (!Util.isObject(text)) {
+        text = { text };
+      }
+      textShape.attr(text);
       // update box shape
       const { x, y, width: tipWidth, height: tipHeight } = this._getBBox();
       const width = this.width || tipWidth;
@@ -101,7 +104,7 @@ class TextBox {
       });
       this._width = width;
       this._height = height;
-      this.content = text;
+      this.content = text.text;
     }
   }
 

@@ -47,7 +47,7 @@ class Pan extends Interaction {
     }
 
     const tooltipController = chart.get('tooltipController');
-    if (tooltipController && tooltipController.enable) {
+    if (tooltipController/*  && tooltipController.enable */) {
       chart.tooltip(false);
       if (hammer) {
         hammer.get('press').set({
@@ -97,9 +97,10 @@ class Pan extends Interaction {
 
   reset() {
     const chart = this.chart;
-    if (chart.get('tooltipController')) {
+    const tooltipController = chart.get('tooltipController');
+    if (tooltipController) {
       this.pressed = false;
-      chart.hideTooltip();
+      !tooltipController.cfg.alwaysShow && chart.hideTooltip();
       chart.tooltip(false);
     }
   }

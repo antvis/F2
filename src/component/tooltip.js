@@ -45,23 +45,13 @@ class Tooltip {
        * show or hide the y axis tip
        */
       showYTip: false,
-      xTipTextStyle: {
-        fontSize: 12,
-        fill: '#fff',
-        textAlign: 'center',
-        textBaseline: 'middle'
-      },
+      xTip: null,
       xTipBackground: {
         radius: 1,
         fill: 'rgba(0, 0, 0, 0.65)',
         padding: [ 3, 5 ]
       },
-      yTipTextStyle: {
-        fontSize: 12,
-        fill: '#fff',
-        textAlign: 'center',
-        textBaseline: 'middle'
-      },
+      yTip: null,
       yTipBackground: {
         radius: 1,
         fill: 'rgba(0, 0, 0, 0.65)',
@@ -105,27 +95,25 @@ class Tooltip {
       }
     }
     if (this.showXTip) {
-      const { xTipBackground, xTipTextStyle } = this;
-      const xTip = new TextBox({
+      const { xTipBackground } = this;
+      const xTipBox = new TextBox({
         className: 'xTip',
-        textStyle: xTipTextStyle,
         background: xTipBackground,
         visible: false
       });
-      frontPlot.add(xTip.container);
-      this.xTip = xTip;
+      frontPlot.add(xTipBox.container);
+      this.xTipBox = xTipBox;
     }
 
     if (this.showYTip) {
-      const { yTipBackground, yTipTextStyle } = this;
-      const yTip = new TextBox({
+      const { yTipBackground } = this;
+      const yTipBox = new TextBox({
         className: 'yTip',
-        textStyle: yTipTextStyle,
         background: yTipBackground,
         visible: false
       });
-      frontPlot.add(yTip.container);
-      this.yTip = yTip;
+      frontPlot.add(yTipBox.container);
+      this.yTipBox = yTipBox;
     }
 
     if (this.showCrosshairs) {
@@ -135,7 +123,7 @@ class Tooltip {
     frontPlot.sort();
   }
 
-  setContent(title, items, transposed) {
+  setContent(title, items) {
     this.title = title;
     this.items = items;
     if (!this.custom) {
@@ -143,64 +131,92 @@ class Tooltip {
       container.setTitle(title);
       container.setItems(items);
     }
-
-    if (this.xTip) {
-      const text = transposed ? items[0].value : title;
-      this.xTip.updateContent(text);
-    }
-    if (this.yTip) {
-      const text = !transposed ? items[0].value : title;
-      this.yTip.updateContent(text);
-    }
   }
 
-  setPosition(items) {
-    const { container, plotRange, offsetX, offsetY, fixed, tooltipArrow } = this;
-    const { crosshairsShapeX, crosshairsShapeY } = this;
-    crosshairsShapeX && crosshairsShapeX.moveTo(0, items[0].y);
-    crosshairsShapeY && crosshairsShapeY.moveTo(items[0].x, 0);
-
-
-    if (this.showXTip) {
-      const xTip = this.xTip;
-      const xTipWidth = xTip.getWidth();
-      let x;
-      let posX;
-      if (items.length > 1) {
-        x = (items[0].x + items[items.length - 1].x) / 2;
-      } else {
-        x = items[0].x;
-      }
-      posX = x - (xTipWidth / 2);
-      if (posX <= plotRange.tl.x) {
-        posX = plotRange.tl.x;
-      }
-      if (posX + xTipWidth >= plotRange.tr.x) {
-        posX = plotRange.tr.x - xTipWidth;
-      }
-      xTip.updatePosition(posX, plotRange.br.y);
+  setYTipContent(val) {
+    const yTip = this.yTip;
+    if (Util.isFunction(yTip)) {
+      val = yTip(val);
+    } else {
+      val = Util.mix({
+        text: val
+      }, yTip);
     }
+    this.yTipBox && this.yTipBox.updateContent(val);
+  }
+
+  setYTipPosition(pos) {
+    const plotRange = this.plotRange;
+    const crosshairsShapeX = this.crosshairsShapeX;
     if (this.showYTip) {
-      const yTip = this.yTip;
-      const yTipHeight = yTip.getHeight();
-      const yTipWidth = yTip.getWidth();
-      let y;
-      let posY;
-      if (items.length > 1) {
-        y = (items[0].y + items[items.length - 1].y) / 2;
-      } else {
-        y = items[0].y;
-      }
-      posY = y - (yTipHeight / 2);
+      const yTipBox = this.yTipBox;
+      const yTipHeight = yTipBox.getHeight();
+      const yTipWidth = yTipBox.getWidth();
+      let posX = plotRange.tl.x - yTipWidth;
+      let posY = pos - (yTipHeight / 2);
       if (posY <= plotRange.tl.y) {
         posY = plotRange.tl.y;
       }
       if (posY + yTipHeight >= plotRange.br.y) {
         posY = plotRange.br.y - yTipHeight;
       }
-      yTip.updatePosition(plotRange.tl.x - yTipWidth, posY);
-    }
 
+      if (posX < 0) {
+        posX = plotRange.tl.x;
+        crosshairsShapeX && crosshairsShapeX.attr('x1', plotRange.tl.x + yTipWidth);
+      }
+
+
+      yTipBox.updatePosition(posX, posY);
+    }
+  }
+
+  setXTipContent(val) {
+    const xTip = this.xTip;
+    if (Util.isFunction(xTip)) {
+      val = xTip(val);
+    } else {
+      val = Util.mix({
+        text: val
+      }, xTip);
+    }
+    this.xTipBox && this.xTipBox.updateContent(val);
+  }
+
+  setXTipPosition(pos) {
+    const { showXTip, canvas, plotRange, xTipBox, crosshairsShapeY } = this;
+    if (showXTip) {
+      const el = canvas.get('el');
+      const canvasHeight = Util.getHeight(el);
+      const xTipWidth = xTipBox.getWidth();
+      const xTipHeight = xTipBox.getHeight();
+      let posX = pos - (xTipWidth / 2);
+      let posY = plotRange.br.y;
+      if (posX <= plotRange.tl.x) {
+        posX = plotRange.tl.x;
+      }
+      if (posX + xTipWidth >= plotRange.tr.x) {
+        posX = plotRange.tr.x - xTipWidth;
+      }
+
+      if (canvasHeight - posY < xTipHeight) {
+        posY -= xTipHeight;
+      }
+      xTipBox.updatePosition(posX, posY);
+      crosshairsShapeY && crosshairsShapeY.attr('y1', posY);
+    }
+  }
+
+  setXCrosshairPosition(pos) {
+    this.crosshairsShapeX && this.crosshairsShapeX.moveTo(0, pos);
+  }
+
+  setYCrosshairPosition(pos) {
+    this.crosshairsShapeY && this.crosshairsShapeY.moveTo(pos, 0);
+  }
+
+  setPosition(items) {
+    const { container, plotRange, offsetX, offsetY, fixed, tooltipArrow } = this;
     if (!container) {
       return;
     }
@@ -298,16 +314,16 @@ class Tooltip {
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
-    const xTip = this.xTip;
-    const yTip = this.yTip;
+    const xTipBox = this.xTipBox;
+    const yTipBox = this.yTipBox;
     const canvas = this.canvas;
     crosshairsShapeX && crosshairsShapeX.show();
     crosshairsShapeY && crosshairsShapeY.show();
     markerGroup && markerGroup.show();
     container && container.show();
     tooltipArrow && tooltipArrow.show();
-    xTip && xTip.show();
-    yTip && yTip.show();
+    xTipBox && xTipBox.show();
+    yTipBox && yTipBox.show();
     canvas.draw();
   }
 
@@ -317,15 +333,15 @@ class Tooltip {
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
-    const xTip = this.xTip;
-    const yTip = this.yTip;
+    const xTipBox = this.xTipBox;
+    const yTipBox = this.yTipBox;
     crosshairsShapeX && crosshairsShapeX.hide();
     crosshairsShapeY && crosshairsShapeY.hide();
     markerGroup && markerGroup.hide();
     container && container.hide();
     tooltipArrow && tooltipArrow.hide();
-    xTip && xTip.hide();
-    yTip && yTip.hide();
+    xTipBox && xTipBox.hide();
+    yTipBox && yTipBox.hide();
   }
 
   destroy() {
@@ -334,16 +350,16 @@ class Tooltip {
     const markerGroup = this.markerGroup;
     const container = this.container;
     const tooltipArrow = this.tooltipArrow;
-    const xTip = this.xTip;
-    const yTip = this.yTip;
+    const xTipBox = this.xTipBox;
+    const yTipBox = this.yTipBox;
 
     crosshairsShapeX && crosshairsShapeX.remove(true);
     crosshairsShapeY && crosshairsShapeY.remove(true);
     markerGroup && markerGroup.remove(true);
     tooltipArrow && tooltipArrow.remove(true);
     container && container.clear();
-    xTip && xTip.clear();
-    yTip && yTip.clear();
+    xTipBox && xTipBox.clear();
+    yTipBox && yTipBox.clear();
 
     this.destroyed = true;
   }
