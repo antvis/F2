@@ -64,11 +64,11 @@ module.exports = {
       const xScale = chart.getXScale();
       let xLimitRange = limitRange[xScale.field];
       if (!xLimitRange) {
-        xLimitRange = Helper._getLimitRange(data, xScale);
+        xLimitRange = Helper.getLimitRange(data, xScale);
         limitRange[xScale.field] = xLimitRange;
       }
 
-      const currentRange = Helper._getFieldRange(xScale, xLimitRange, xScale.type);
+      const currentRange = Helper.getFieldRange(xScale, xLimitRange, xScale.type);
       let horizontalBar = chart.get('_horizontalBar');
       const yPos = canvasHeight - (size / 2) + offsetY;
       if (horizontalBar) {
@@ -114,11 +114,11 @@ module.exports = {
 
       let yLimitRange = limitRange[yScale.field];
       if (!yLimitRange) {
-        yLimitRange = Helper._getLimitRange(data, yScale);
+        yLimitRange = Helper.getLimitRange(data, yScale);
         limitRange[yScale.field] = yLimitRange;
       }
 
-      const currentRange = Helper._getFieldRange(yScale, yLimitRange, yScale.type);
+      const currentRange = Helper.getFieldRange(yScale, yLimitRange, yScale.type);
       let verticalBar = chart.get('_verticalBar');
       const xPos = (size / 2) + offsetX;
       if (verticalBar) {

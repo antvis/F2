@@ -49,7 +49,7 @@ module.exports = {
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
-        limitRange[xField] = Helper._getLimitRange(data, xScale);
+        limitRange[xField] = Helper.getLimitRange(data, xScale);
       }
 
       const coordWidth = end.x - start.x;
@@ -60,7 +60,7 @@ module.exports = {
         self._handleLinearScale(xScale, deltaX, coordWidth, 'x');
       }
       const xDef = Helper.getColDef(chart, xField);
-      self.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
+      self.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
@@ -69,13 +69,13 @@ module.exports = {
       Util.each(yScales, yScale => {
         const yField = yScale.field;
         if (!limitRange[yField]) {
-          limitRange[yField] = Helper._getLimitRange(data, yScale);
+          limitRange[yField] = Helper.getLimitRange(data, yScale);
         }
 
         yScale.isLinear && self._handleLinearScale(yScale, deltaY, coordHeight, 'y');
       });
       const yDef = Helper.getColDef(chart, yScales[0].field);
-      self.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
+      self.yRange = Helper.getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
     chart.repaint();
   },
@@ -110,7 +110,6 @@ module.exports = {
   _handleCatScale(scale, delta, range) {
     const { type, field, values, ticks } = scale;
     const chart = this.chart;
-    const colDef = Helper.getColDef(chart, field);
 
     const originValues = this.limitRange[field];
     const lastValueIndex = originValues.length - 1;
@@ -155,59 +154,8 @@ module.exports = {
       newTicks = ticks;
     }
 
-    chart.scale(field, Util.mix({}, colDef, {
-      values: newValues,
-      ticks: newTicks,
-      scale(value) {
-        if (type === 'timeCat') {
-          value = this._toTimeStamp(value);
-        }
-        const rangeMin = this.rangeMin();
-        const rangeMax = this.rangeMax();
-        const range = rangeMax - rangeMin;
-        let min;
-        let max;
-        let percent;
-        const currentIndex = originValues.indexOf(value);
-        if (currentIndex < minIndex) {
-          min = (rangeMin - range) * 5;
-          max = rangeMin;
-          percent = currentIndex / minIndex;
-        } else if (currentIndex > maxIndex) {
-          min = rangeMax;
-          max = (rangeMax + range) * 5;
-          percent = (currentIndex - maxIndex - 1) / (originValues.length - 1 - maxIndex);
-        } else {
-          const index = this.translate(value);
-          percent = (index) / (this.values.length - 1);
-          min = rangeMin;
-          max = rangeMax;
-        }
-        return min + percent * (max - min);
-      },
-      getTicks() {
-        const self = this;
-        const ticks = this.ticks;
-        const rst = [];
-        Util.each(ticks, tick => {
-          let obj;
-          if (Util.isObject(tick)) {
-            obj = tick;
-          } else {
-            let value = self.scale(tick);
-            value = value >= 0 && value <= 1 ? value : NaN;
 
-            obj = {
-              text: Util.isString(tick) ? tick : self.getText(tick),
-              value,
-              tickValue: tick // 用于坐标轴上文本动画时确定前后帧的对应关系
-            };
-          }
-          rst.push(obj);
-        });
-        return rst;
-      }
-    }));
+    Helper.updateCatScale(chart, field, newValues, newTicks, originValues, minIndex, maxIndex);
     this._panCumulativeDelta = minIndex !== firstIndex ? 0 : this._panCumulativeDelta;
   }
 };
