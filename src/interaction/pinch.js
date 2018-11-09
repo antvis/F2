@@ -4,6 +4,7 @@ const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
 const PressTooltipMixin = require('./mixin/press-tooltip');
+const updateScaleMixin = require('./mixin/update-scale');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -46,7 +47,7 @@ class Pinch extends Interaction {
       }
     }]);
 
-    Util.mix(self, PressTooltipMixin);
+    Util.mix(self, PressTooltipMixin, updateScaleMixin);
     self._bindPress();
   }
 
@@ -156,7 +157,6 @@ class Pinch extends Interaction {
     const originRange = limitRange[field].max - limitRange[field].min;
 
     const coord = chart.get('coord');
-    const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
     if (this.minScale && zoom < 1) { // zoom in
@@ -175,12 +175,7 @@ class Pinch extends Interaction {
     const maxDelta = newDiff * (1 - percent);
     const newMax = max - maxDelta;
     const newMin = min + minDelta;
-
-    chart.scale(field, Util.mix({}, colDef, {
-      min: newMin,
-      max: newMax,
-      nice: false
-    }));
+    this.updateLinearScale(field, newMin, newMax);
   }
 
   // 针对分类类型
@@ -247,7 +242,7 @@ class Pinch extends Interaction {
       }
 
       const newValues = originValues.slice(minIndex, maxIndex + 1);
-      Helper.updateCatScale(chart, field, newValues, this.originTicks, originValues, minIndex, maxIndex);
+      this.updateCatScale(field, newValues, this.originTicks, originValues, minIndex, maxIndex);
     }
   }
 }
