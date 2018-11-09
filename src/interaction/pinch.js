@@ -3,6 +3,7 @@ const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
+const PressTooltipMixin = require('./mixin/press-tooltip');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -29,7 +30,7 @@ class Pinch extends Interaction {
   constructor(cfg, chart) {
     super(cfg, chart);
     const self = this;
-    const { hammer, pressThreshold, pressTime } = self;
+    const { hammer } = self;
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
@@ -45,15 +46,8 @@ class Pinch extends Interaction {
       }
     }]);
 
-    const tooltipController = chart.get('tooltipController');
-    if (tooltipController/*  && tooltipController.enable */) {
-      chart.tooltip(false);
-      hammer.get('press').set({
-        threshold: pressThreshold,
-        time: pressTime
-      });
-      hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
-    }
+    Util.mix(self, PressTooltipMixin);
+    self._bindPress();
   }
 
   start() {
@@ -71,23 +65,6 @@ class Pinch extends Interaction {
     this._handlePinch(e);
     this.currentPinchScaling = null; // reset
     this.pinchCumulativeDelta = 0;
-  }
-
-  reset() {
-    const chart = this.chart;
-    const tooltipController = chart.get('tooltipController');
-    if (tooltipController) {
-      this.pressed = false;
-      !tooltipController.cfg.alwaysShow && chart.hideTooltip();
-      chart.tooltip(false);
-    }
-  }
-
-  _handlePress(e) {
-    this.pressed = true;
-    const center = e.center;
-    this.chart.tooltip(true);
-    this.chart.showTooltip(center);
   }
 
   _handlePinch(e) {
@@ -143,7 +120,7 @@ class Pinch extends Interaction {
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
-        limitRange[xField] = Helper._getLimitRange(data, xScale);
+        limitRange[xField] = Helper.getLimitRange(data, xScale);
       }
 
       if (xScale.isCategory) { // 横轴为分类类型
@@ -152,7 +129,7 @@ class Pinch extends Interaction {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
       const xDef = Helper.getColDef(chart, xField);
-      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
+      this.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
@@ -160,12 +137,12 @@ class Pinch extends Interaction {
       Util.each(yScales, yScale => {
         const yField = yScale.field;
         if (!limitRange[yField]) {
-          limitRange[yField] = Helper._getLimitRange(data, yScale);
+          limitRange[yField] = Helper.getLimitRange(data, yScale);
         }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
       const yDef = Helper.getColDef(chart, yScales[0].field);
-      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
+      this.yRange = Helper.getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
 
     chart.repaint();
@@ -270,11 +247,7 @@ class Pinch extends Interaction {
       }
 
       const newValues = originValues.slice(minIndex, maxIndex + 1);
-      const colDef = Helper.getColDef(chart, field);
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: this.originTicks
-      }));
+      Helper.updateCatScale(chart, field, newValues, this.originTicks, originValues, minIndex, maxIndex);
     }
   }
 }

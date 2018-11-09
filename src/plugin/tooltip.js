@@ -421,8 +421,9 @@ class TooltipController {
   }
 
   handleShowEvent(ev) {
-    if (!this.enable) return;
     const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
+
     const plot = chart.get('plotRange');
     const point = Util.createEvent(ev, chart);
     if (!Helper.isPointInPlot(point, plot) && !this.cfg.alwaysShow) { // not in chart plot
@@ -439,13 +440,16 @@ class TooltipController {
   }
 
   handleHideEvent() {
-    if (!this.enable) return;
+    const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
 
     this.hideTooltip();
   }
 
   handleDocEvent(ev) {
-    if (!this.enable) return;
+    const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
+
 
     const canvasDom = this.canvasDom;
     if (ev.target !== canvasDom) {

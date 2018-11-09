@@ -3,6 +3,7 @@ const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
 const MoveMixin = require('./mixin/move');
+const PressTooltipMixin = require('./mixin/press-tooltip');
 
 class Pan extends Interaction {
   getDefaultCfg() {
@@ -38,26 +39,12 @@ class Pan extends Interaction {
   constructor(cfg, chart) {
     super(cfg, chart);
     const self = this;
-    const { hammer, panThreshold, pressThreshold, pressTime } = self;
+    const { hammer, panThreshold } = self;
 
     if (hammer) {
       hammer.get('pan').set({
         threshold: panThreshold
       });
-    }
-
-    const tooltipController = chart.get('tooltipController');
-    if (tooltipController/*  && tooltipController.enable */) {
-      chart.tooltip(false);
-      if (hammer) {
-        hammer.get('press').set({
-          threshold: pressThreshold,
-          time: pressTime
-        });
-        hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
-      } else {
-        Util.addEventListener(this.el, 'press', Util.wrapBehavior(this, '_handlePress'));
-      }
     }
 
     chart.registerPlugins([ FilterPlugin, {
@@ -69,7 +56,8 @@ class Pan extends Interaction {
       }
     }]);
 
-    Util.mix(this, MoveMixin);
+    Util.mix(this, MoveMixin, PressTooltipMixin);
+    this._bindPress();
   }
 
   start(e) {
@@ -93,23 +81,6 @@ class Pan extends Interaction {
     this.currentDeltaY = null;
     this.lastPoint = null;
     this._panCumulativeDelta = 0;
-  }
-
-  reset() {
-    const chart = this.chart;
-    const tooltipController = chart.get('tooltipController');
-    if (tooltipController) {
-      this.pressed = false;
-      !tooltipController.cfg.alwaysShow && chart.hideTooltip();
-      chart.tooltip(false);
-    }
-  }
-
-  _handlePress(e) {
-    this.pressed = true;
-    const center = e.center || e.touches[0];
-    this.chart.tooltip(true);
-    this.chart.showTooltip(center);
   }
 }
 

@@ -49,7 +49,7 @@ module.exports = {
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
-        limitRange[xField] = Helper._getLimitRange(data, xScale);
+        limitRange[xField] = Helper.getLimitRange(data, xScale);
       }
 
       const coordWidth = end.x - start.x;
@@ -60,7 +60,7 @@ module.exports = {
         self._handleLinearScale(xScale, deltaX, coordWidth, 'x');
       }
       const xDef = Helper.getColDef(chart, xField);
-      self.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
+      self.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
     if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
@@ -69,13 +69,13 @@ module.exports = {
       Util.each(yScales, yScale => {
         const yField = yScale.field;
         if (!limitRange[yField]) {
-          limitRange[yField] = Helper._getLimitRange(data, yScale);
+          limitRange[yField] = Helper.getLimitRange(data, yScale);
         }
 
         yScale.isLinear && self._handleLinearScale(yScale, deltaY, coordHeight, 'y');
       });
       const yDef = Helper.getColDef(chart, yScales[0].field);
-      self.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
+      self.yRange = Helper.getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
     chart.repaint();
   },
@@ -110,7 +110,6 @@ module.exports = {
   _handleCatScale(scale, delta, range) {
     const { type, field, values, ticks } = scale;
     const chart = this.chart;
-    const colDef = Helper.getColDef(chart, field);
 
     const originValues = this.limitRange[field];
     const lastValueIndex = originValues.length - 1;
@@ -155,10 +154,8 @@ module.exports = {
       newTicks = ticks;
     }
 
-    chart.scale(field, Util.mix({}, colDef, {
-      values: newValues,
-      ticks: newTicks
-    }));
+
+    Helper.updateCatScale(chart, field, newValues, newTicks, originValues, minIndex, maxIndex);
     this._panCumulativeDelta = minIndex !== firstIndex ? 0 : this._panCumulativeDelta;
   }
 };
