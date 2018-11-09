@@ -7,7 +7,13 @@ const DEFAULT_CFG = {
   lineHeight: 32, // 文本的行高
   adjustOffset: 15, // 发生调整时的偏移量
   skipOverlapLabels: false, // 是否不展示重叠的文本
-  triggerOn: 'touchstart' // 点击行为触发的时间类型
+  triggerOn: 'touchstart', // 点击行为触发的时间类型
+  activeShape: false, // 当有图形被选中的时候，是否激活图形
+  activeStyle: {
+    offset: 1,
+    appendRadius: 8,
+    fillOpacity: 0.5
+  }
 };
 
 function getEndPoint(center, angle, r) {
@@ -136,9 +142,6 @@ class controller {
 
       halves.forEach(half => {
         if (half.length > maxCountForOneSide) {
-          // half.sort((a, b) => {
-          //   return b._percent - a._percent;
-          // });
           half.splice(maxCountForOneSide, half.length - maxCountForOneSide);
         }
 
@@ -169,8 +172,9 @@ class controller {
   }
 
   clear() {
-    const labelGroup = this.labelGroup;
-    labelGroup && labelGroup.clear();
+    this.labelGroup && this.labelGroup.clear();
+    this.halo && this.halo.remove(true);
+    this.lastSelectedData = null;
     this.drawnLabels = [];
     this.unBindEvents();
   }
@@ -363,7 +367,7 @@ class controller {
   _handleEvent(ev) {
     const self = this;
     const { chart, drawnLabels, pieLabelCfg } = self;
-    const { onClick } = pieLabelCfg;
+    const { onClick, activeShape } = pieLabelCfg;
     const canvasEvent = Util.createEvent(ev, chart);
     const { x, y } = canvasEvent;
 
@@ -387,6 +391,51 @@ class controller {
     }
 
     onClick && onClick(canvasEvent);
+    canvasEvent.data && activeShape && this._activeShape(canvasEvent.data);
+  }
+
+  _getSelectedShapeByData(data) {
+    let selectedShape = null;
+    const chart = this.chart;
+    const geom = chart.get('geoms')[0];
+    const container = geom.get('container');
+    const children = container.get('children');
+    Util.each(children, child => {
+      if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
+        const shapeData = child.get('origin')._origin;
+        if (Util.isObjectValueEqual(shapeData, data)) {
+          selectedShape = child;
+          return false;
+        }
+      }
+    });
+    return selectedShape;
+  }
+
+  _activeShape(data) {
+    const { chart, lastSelectedData, pieLabelCfg } = this;
+    if (data === lastSelectedData) {
+      return;
+    }
+    this.lastSelectedData = data;
+    const activeStyle = pieLabelCfg.activeStyle;
+    const selectedShape = this._getSelectedShapeByData(data);
+    const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
+    const frontPlot = chart.get('frontPlot');
+    this.halo && this.halo.remove(true);
+    const halo = frontPlot.addShape('sector', {
+      attrs: Util.mix({
+        x,
+        y,
+        r: r + activeStyle.offset + activeStyle.appendRadius,
+        r0: r + activeStyle.offset,
+        fill,
+        startAngle,
+        endAngle
+      }, activeStyle)
+    });
+    this.halo = halo;
+    chart.get('canvas').draw();
   }
 }
 

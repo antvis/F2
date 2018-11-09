@@ -124,6 +124,42 @@ describe('PieLabel', () => {
     expect(clickData).to.eql({ amount: 2, ratio: 0.01, memo: '讲礼貌', namekey: 'namekey' });
   });
 
+  it('event trigger and active the selected shape', function() {
+    chart.pieLabel({
+      triggerOn: 'click',
+      label1(data, color) {
+        return {
+          text: data.memo,
+          fill: color
+        };
+      },
+      activeShape: true,
+      activeStyle: {
+        offset: 3,
+        appendRadius: 4,
+        fillOpacity: 1
+      }
+    });
+    chart.repaint();
+    gestureSimulator(canvas, 'click', {
+      clientX: 312,
+      clientY: 204
+    });
+
+    expect(clickData).to.eql({ amount: 2, ratio: 0.01, memo: '讲礼貌', namekey: 'namekey' });
+
+    const pieLabelController = chart.get('pieLabelController');
+    const halo = pieLabelController.halo;
+    const selectedShape = pieLabelController._getSelectedShapeByData(clickData);
+    expect(halo).not.to.be.empty;
+    expect(halo.attr('x')).to.equal(selectedShape.attr('x'));
+    expect(halo.attr('y')).to.equal(selectedShape.attr('y'));
+    expect(halo.attr('startAngle')).to.equal(selectedShape.attr('startAngle'));
+    expect(halo.attr('endAngle')).to.equal(selectedShape.attr('endAngle'));
+    expect(halo.attr('r')).to.equal(selectedShape.attr('r') + 7);
+    expect(halo.attr('r0')).to.equal(selectedShape.attr('r') + 3);
+  });
+
   it('legend filter', function() {
     gestureSimulator(canvas, 'click', {
       clientX: 38,
