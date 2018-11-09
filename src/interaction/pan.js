@@ -4,6 +4,7 @@ const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
 const MoveMixin = require('./mixin/move');
 const PressTooltipMixin = require('./mixin/press-tooltip');
+const UpdateScaleMixin = require('./mixin/update-scale');
 
 class Pan extends Interaction {
   getDefaultCfg() {
@@ -56,7 +57,7 @@ class Pan extends Interaction {
       }
     }]);
 
-    Util.mix(this, MoveMixin, PressTooltipMixin);
+    Util.mix(this, UpdateScaleMixin, MoveMixin, PressTooltipMixin);
     this._bindPress();
   }
 

@@ -3,6 +3,7 @@ const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
 const MoveMixin = require('./mixin/move');
+const UpdateScaleMixin = require('./mixin/update-scale');
 
 class Swipe extends Interaction {
   getDefaultCfg() {
@@ -45,7 +46,7 @@ class Swipe extends Interaction {
       }
     }]);
     self.mode = 'x';
-    Util.mix(self, MoveMixin);
+    Util.mix(self, UpdateScaleMixin, MoveMixin);
   }
 
   process(e) {

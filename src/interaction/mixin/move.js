@@ -86,7 +86,6 @@ module.exports = {
 
     if (min === limitRange[field].min && max === limitRange[field].max) return;
 
-    const chart = this.chart;
     const ratio = delta / range;
     const panValue = ratio * (max - min);
     let newMax = flag === 'x' ? max - panValue : max + panValue;
@@ -99,17 +98,11 @@ module.exports = {
       newMax = limitRange[field].max;
       newMin = newMax - (max - min);
     }
-    const colDef = Helper.getColDef(chart, field);
-    chart.scale(field, Util.mix({}, colDef, {
-      min: newMin,
-      max: newMax,
-      nice: false
-    }));
+    this.updateLinearScale(field, newMin, newMax);
   },
 
   _handleCatScale(scale, delta, range) {
     const { type, field, values, ticks } = scale;
-    const chart = this.chart;
 
     const originValues = this.limitRange[field];
     const lastValueIndex = originValues.length - 1;
@@ -154,8 +147,7 @@ module.exports = {
       newTicks = ticks;
     }
 
-
-    Helper.updateCatScale(chart, field, newValues, newTicks, originValues, minIndex, maxIndex);
+    this.updateCatScale(field, newValues, newTicks, originValues, minIndex, maxIndex);
     this._panCumulativeDelta = minIndex !== firstIndex ? 0 : this._panCumulativeDelta;
   }
 };
