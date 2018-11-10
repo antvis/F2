@@ -59,7 +59,7 @@ module.exports = {
 
     const mode = scrollBarCfg.mode;
 
-    if (Helper.directionEnabled(mode, 'x')) {
+    if (Util.directionEnabled(mode, 'x')) {
       const { offsetX, offsetY, lineCap, backgroundColor, fillerColor, size } = scrollBarCfg.xStyle;
       const xScale = chart.getXScale();
       let xLimitRange = limitRange[xScale.field];
@@ -108,7 +108,7 @@ module.exports = {
       }
     }
 
-    if (Helper.directionEnabled(mode, 'y')) {
+    if (Util.directionEnabled(mode, 'y')) {
       const { offsetX, offsetY, lineCap, backgroundColor, fillerColor, size } = scrollBarCfg.yStyle;
       const yScale = chart.getYScales()[0];
 

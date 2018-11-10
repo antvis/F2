@@ -30,7 +30,7 @@ module.exports = {
       this.currentDeltaY = e.deltaY;
     }
 
-    if (!Util.isNil(deltaX) || !Util.isNil(deltaY)) {
+    if (Math.abs(deltaX) > 0 || Math.abs(deltaY) > 0) {
       const lastTimestamp = this._timestamp;
       const now = +new Date();
       if ((now - lastTimestamp) > 16) {
@@ -45,7 +45,7 @@ module.exports = {
     const coord = chart.get('coord');
     const { start, end } = coord;
     const data = chart.get('data');
-    if (Helper.directionEnabled(mode, 'x') && deltaX !== 0) {
+    if (Util.directionEnabled(mode, 'x') && deltaX !== 0) {
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
@@ -63,7 +63,7 @@ module.exports = {
       self.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
-    if (Helper.directionEnabled(mode, 'y') && deltaY !== 0) {
+    if (Util.directionEnabled(mode, 'y') && deltaY !== 0) {
       const coordHeight = start.y - end.y;
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {

@@ -332,6 +332,11 @@ canvas {
         })
         .size('name', function (val) {
           return sizeMap[val];
+        })
+        .animate({
+          update: {
+            duration: 1000
+          }
         });
       chart.interaction('pan');
       chart.interaction('pinch');

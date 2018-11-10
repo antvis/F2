@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
-const { Canvas } = require('../../../src/graphic/index');
-const Coord = require('../../../src/coord/index');
-const { Arc } = require('../../../src/component/guide/index');
-const Scale = require('../../../src/scale/index');
+const { Canvas } = require('../../../../src/graphic/index');
+const Coord = require('../../../../src/coord/index');
+const { Arc } = require('../../../../src/component/guide/index');
+const Scale = require('../../../../src/scale/index');
 
 const dom = document.createElement('canvas');
 dom.id = 'guideArc';

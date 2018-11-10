@@ -28,12 +28,12 @@ module.exports = {
         let percent;
         const currentIndex = values.indexOf(value);
         if (currentIndex < minIndex) {
-          min = (rangeMin - range) * 5;
-          max = rangeMin;
+          max = rangeMin - 0.1;
+          min = max - range;
           percent = currentIndex / minIndex;
         } else if (currentIndex > maxIndex) {
-          min = rangeMax;
-          max = (rangeMax + range) * 5;
+          min = rangeMax + 0.1;
+          max = min + range;
           percent = (currentIndex - maxIndex - 1) / (values.length - 1 - maxIndex);
         } else {
           const index = this.translate(value);
