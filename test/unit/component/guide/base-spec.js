@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
-const Guide = require('../../../src/component/guide/base');
-const Coord = require('../../../src/coord/index');
-const Scale = require('../../../src/scale/');
+const Guide = require('../../../../src/component/guide/base');
+const Coord = require('../../../../src/coord/index');
+const Scale = require('../../../../src/scale/');
 
 describe('Guide Base', function() {
   const coord = new Coord.Rect({

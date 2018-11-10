@@ -20,7 +20,6 @@ class Pan extends Interaction {
       pressTime: 251, // Minimal press time in ms
       currentDeltaX: null,
       currentDeltaY: null,
-      panning: false,
       limitRange: {},
       _timestamp: 0,
       lastPoint: null,

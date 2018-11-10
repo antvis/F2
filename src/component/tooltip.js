@@ -4,15 +4,6 @@ const Container = require('./list');
 const TextBox = require('./text-box');
 const GAP = 4;
 
-function directionEnabled(mode, dir) {
-  if (mode === undefined) {
-    return true;
-  } else if (typeof mode === 'string') {
-    return mode.indexOf(dir) !== -1;
-  }
-
-  return false;
-}
 /**
  * TODOList：
  * 1. 移除 fixed 参数
@@ -386,7 +377,7 @@ class Tooltip {
   _renderCrosshairs() {
     const { crosshairsType, crosshairsStyle, frontPlot, plotRange } = this;
     const { tl, br } = plotRange;
-    if (directionEnabled(crosshairsType, 'x')) {
+    if (Util.directionEnabled(crosshairsType, 'x')) {
       this.crosshairsShapeX = frontPlot.addShape('Line', {
         className: 'tooltip-crosshairs-x',
         zIndex: 0,
@@ -400,7 +391,7 @@ class Tooltip {
       });
     }
 
-    if (directionEnabled(crosshairsType, 'y')) {
+    if (Util.directionEnabled(crosshairsType, 'y')) {
       this.crosshairsShapeY = frontPlot.addShape('Line', {
         className: 'tooltip-crosshairs-y',
         zIndex: 0,

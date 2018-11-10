@@ -78,7 +78,6 @@ class Pinch extends Interaction {
       x: offsetX,
       y: offsetY
     };
-
     // fingers position difference
     const x = Math.abs(e.pointers[0].clientX - e.pointers[1].clientX);
     const y = Math.abs(e.pointers[0].clientY - e.pointers[1].clientY);
@@ -117,7 +116,7 @@ class Pinch extends Interaction {
     }
     const data = chart.get('data');
 
-    if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
+    if (Util.directionEnabled(mode, 'x') && Util.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
@@ -133,7 +132,7 @@ class Pinch extends Interaction {
       this.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
-    if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
+    if (Util.directionEnabled(mode, 'y') && Util.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
         const yField = yScale.field;
