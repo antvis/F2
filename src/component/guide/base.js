@@ -85,6 +85,19 @@ class GuideBase {
     const { element } = this;
     element && element.remove(true);
   }
+
+  changeVisible(visible) {
+    const self = this;
+    self.visible = visible;
+    const element = self.element;
+
+    if (!element) return;
+    if (element.set) {
+      element.set('visible', visible);
+    } else {
+      element.style.display = visible ? '' : 'none';
+    }
+  }
 }
 
 module.exports = GuideBase;

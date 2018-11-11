@@ -208,6 +208,10 @@ describe('Guide.Html', function() {
     const top = Math.floor(position.y);
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.left)).eql(Math.floor(left - 20));
     expect(parseInt(document.getElementsByClassName('guideWapper')[0].childNodes[0].style.top)).eql(Math.floor(top - 20));
+
+    guide.changeVisible(false);
+    expect(guide.element.style.display).to.equal('none');
+
     guide.remove();
   });
 });

@@ -74,4 +74,13 @@ describe('Guide Base', function() {
     expect(guide.render).be.an.instanceof(Function);
     expect(guide.render()).to.be.undefined;
   });
+
+  it('Base class method: changeVisible()', function() {
+    const guide = new Guide();
+    expect(guide.changeVisible).be.an.instanceof(Function);
+    guide.changeVisible(false);
+    expect(guide.visible).to.be.false;
+    guide.changeVisible(true);
+    expect(guide.visible).to.be.true;
+  });
 });
