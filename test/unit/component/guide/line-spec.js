@@ -72,6 +72,10 @@ describe('Guide.Line', function() {
     const children = group.get('children');
     const textShape = children[0];
     expect(textShape.attr('x2') - textShape.attr('x1')).to.equal(200);
+
+    line.changeVisible(false);
+    expect(line.element.get('visible')).to.be.false;
+
     document.body.removeChild(canvas1);
   });
 });
