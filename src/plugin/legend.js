@@ -34,8 +34,10 @@ const DEFAULT_CFG = {
   selectedMode: 'multiple' // 'multiple' or 'single'
 };
 
+
 // Register the default configuration for Legend
 Global.legend = Util.deepMix({
+  common: DEFAULT_CFG, // common legend configuration
   right: Util.mix({
     position: 'right',
     layout: 'vertical'

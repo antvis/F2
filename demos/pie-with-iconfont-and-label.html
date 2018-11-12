@@ -5,266 +5,97 @@
   <title>F2 与 iconfont</title>
   <link rel="stylesheet" href="./assets/common.css">
   <link rel="stylesheet" href="./assets/fonts/iconfont.css">
+  <style>
+    canvas#mountNode {
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
 </head>
 <body>
 <div>
   <canvas id="mountNode"></canvas>
+  <button id="changeData">更新数据</button>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2-all.js"></script>
 <script>
-  const fontSize = 24 * (window.innerWidth / 375); // 字体适配不同屏幕
-
-  function _getEndPoint(center, angle, r) {
-    return {
-      x: center.x + r * Math.cos(angle),
-      y: center.y + r * Math.sin(angle)
-    };
-  }
-  const { Shape, Util, G } = F2;
-  const { Vector2 } = G;
-  Shape.registerShape('interval', 'pie-with-icon', {
-    draw(cfg, container) {
-      const points = this.parsePoints(cfg.points);
-      const style = Util.mix({
-        fill: cfg.color
-      }, cfg.style);
-      const coord = this._coord;
-      if (cfg.isInCircle && coord.transposed) { // 只处理极坐标y
-        const newPoints = [ points[0], points[3], points[2], points[1] ];
-
-        const { x, y } = cfg.center;
-        const v = [ 1, 0 ];
-        const v0 = [ newPoints[0].x - x, newPoints[0].y - y ];
-        const v1 = [ newPoints[1].x - x, newPoints[1].y - y ];
-        const v2 = [ newPoints[2].x - x, newPoints[2].y - y ];
-
-        let startAngle = Vector2.angleTo(v, v1);
-        let endAngle = Vector2.angleTo(v, v2);
-        const r0 = Vector2.length(v0);
-        const r = Vector2.length(v1);
-
-        if (startAngle >= 1.5 * Math.PI) {
-          startAngle = startAngle - 2 * Math.PI;
-        }
-
-        if (endAngle >= 1.5 * Math.PI) {
-          endAngle = endAngle - 2 * Math.PI;
-        }
-
-        const middleAngle = (startAngle + endAngle) / 2;
-        const numbricCenter = _getEndPoint(cfg.center, middleAngle, (r + r0) / 2 );
-
-        const sector = container.addShape('Sector', {
-          className: 'interval',
-          attrs: Util.mix({
-            x,
-            y,
-            r,
-            r0,
-            startAngle,
-            endAngle
-          }, style)
-        });
-
-        const sectorBBox = sector.getBBox();
-        if (sectorBBox.width >= fontSize && sectorBBox.height >= fontSize ) { // 确定扇形部分可以放下 iconfont
-          const text = container.addShape('text', {
-            attrs: {
-              x: numbricCenter.x,
-              y: numbricCenter.y,
-              fontFamily: 'iconfont',
-              textAlign: 'center',
-              textBaseline: 'middle',
-              fontSize,
-              text: cfg.origin._origin.iconfont,
-              fill: '#fff',
-              fontWeight: '400'
-            }
-          });
-
-          return [ sector, text ];
-        }
-        return sector;
-      }
-    }
-  });
-
-  var data = [
-    { name: '吊环', percent: 30, a: '1', iconfont: '&#xe64b;' },
-    { name: '拳击', percent: 25, a: '1', iconfont: '&#xe650;' },
-    { name: '跑步机', percent: 15, a: '1', iconfont: '&#xe64f;' },
-    { name: '跳绳', percent: 15, a: '1', iconfont: '&#xe651;' },
-    { name: '杠铃', percent: 3, a: '1', iconfont: '&#xe64c;' }
-  ];
-
-  var map = {};
-  data.map(function(obj) {
-    map[obj.name] = obj.percent + '%';
-  });
-
-  var chart = new F2.Chart({
-    id: 'mountNode',
-    pixelRatio: window.devicePixelRatio,
-    // padding: [ 20, 'auto' ]
-  });
-  chart.source(data, {
-    percent: {
-      formatter: function(val) {
-        return val + '%';
-      }
-    }
-  });
-  chart.tooltip(false);
-  chart.legend(false);
-  chart.coord('polar', {
-    transposed: true,
-    innerRadius: 0.4,
-    radius: 0.85
-  });
-  chart.axis(false);
-  chart.interval()
-    .position('a*percent')
-    .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0', '#3436C7', '#223273' ])
-    .adjust('stack')
-    .shape('pie-with-icon');
-  chart.render();
-
-  // 开始绘制文本
-  var ANCHOR_OFFSET = 5; // 锚点偏移量
-  var OFFSET = 18; // 连接线拐弯点偏移量
-  var APPEND_OFFSET = 40; // 文本同 canvas 四边的偏移值
-  var coord = chart.get('coord'); // 获取坐标系对象
-  var center = coord.center; // 极坐标圆心坐标
-  var r = coord.circleRadius; // 极坐标半径
-  var canvas = chart.get('canvas'); // 获取 canvas 对象
-  var canvasWidth = chart.get('width'); // 获取 canvas 的宽度
-
-  var drawnLabels = []; // 用于存储被绘制的文本图形对象
-  var labelGroup = canvas.addGroup(); // 用于存储文本以及文本连接线
-
-  // 判断两个矩形是否相交
-  function _isOverlap(label1, label2) {
-    var label1BBox = label1.getBBox();
-    var label2BBox = label2.getBBox();
-    return Math.max(label1BBox.minX, label2BBox.minX) <= Math.min(label1BBox.maxX, label2BBox.minX) && Math.max(label1BBox.minY, label2BBox.minY) <= Math.min(label1BBox.maxY, label2BBox.maxY);
-  }
-
-  // 绘制文本连接线
-  function _drawLabelLine(label, labelGroup) {
-    var _anchor = label._anchor,
-      _router = label._router,
-      fill = label.fill,
-      y = label.y,
-      _side = label._side;
-
-    var lastPoint = {
-      x: _side === 'left' ? APPEND_OFFSET : canvasWidth - APPEND_OFFSET,
-      y: y
-    };
-
-    // 绘制锚点
-    labelGroup.addShape('Circle', {
-      attrs: {
-        x: _anchor.x,
-        y: _anchor.y,
-        r: 2,
-        fill: fill
-      }
+    const data = [
+      { amount: 2, ratio: 0.01, memo: '学习', namekey: 'namekey' },
+      { amount: 2, ratio: 0.01, memo: '睡觉', namekey: 'namekey' },
+      { amount: 2, ratio: 0.01, memo: '吃饭', namekey: 'namekey' },
+      { amount: 2, ratio: 0.01, memo: '讲礼貌', namekey: 'namekey' },
+      { amount: 2, ratio: 0.01, memo: '其他', namekey: 'namekey' },
+      { amount: 2, ratio: 0.01, memo: '运动', namekey: 'namekey' },
+      { amount: 188, ratio: 0.94, memo: '暂无备注', namekey: 'namekey' }
+    ];
+    const chart = new F2.Chart({
+      id: 'mountNode',
+      width: 375,
+      height: 260,
+      animate: false,
+      pixelRatio: window.devicePixelRatio
     });
 
-    // 绘制文本连接线
-    labelGroup.addShape('Polyline', {
-      attrs: {
-        points: [_anchor, _router, lastPoint],
-        lineWidth: 1,
-        stroke: fill
-      }
+    chart.source(data);
+    chart.coord('polar', {
+      transposed: true,
+      innerRadius: 0.4,
+      radius: 0.8
     });
-  }
-
-  // 绘制文本
-  function _drawLabel(label) {
-    var _data = label._data,
-      y = label.y,
-      _side = label._side;
-
-    var text = new F2.G.Shape.Text({
-      attrs: {
-        x: _side === 'left' ? APPEND_OFFSET : canvasWidth - APPEND_OFFSET,
-        y: y,
-        fontSize: 12, // 字体大小
-        fill: '#808080',
-        text: _data.name + '\n' + _data.percent + '%',
-        textBaseline: 'middle',
-        textAlign: _side === 'left' ? 'left' : 'right',
-        lineHeight: 16
+    chart.axis(false);
+    chart.legend(false);
+    chart.tooltip(false);
+    chart.pieLabel({
+      triggerOn: 'click',
+      onClick(ev) {
+        console.log(ev.data);
       },
-      origin: _data // 存储原始数据
-    });
-    return text;
-  }
-
-  // 开始添加饼图的文本
-  function addPieLabel(chart) {
-    labelGroup && labelGroup.clear();
-
-    var labels = []; // 存储要绘制的文本
-    // 获取文本的信息
-    var geom = chart.get('geoms')[0];
-    var shapes = geom.get('container').get('children');
-    shapes.forEach(function(shape) {
-      var shapeAttrs = shape.attr();
-      var origin = shape.get('origin');
-      // 只展示 top5 的文本
-      var startAngle = shapeAttrs.startAngle,
-        endAngle = shapeAttrs.endAngle;
-
-      var middleAngle = (startAngle + endAngle) / 2;
-      var edgePoint = _getEndPoint(center, middleAngle, r + ANCHOR_OFFSET);
-      var routerPoint = _getEndPoint(center, middleAngle, r + OFFSET);
-      var label = {
-        _anchor: edgePoint,
-        _router: routerPoint,
-        _data: origin._origin,
-        x: routerPoint.x,
-        y: routerPoint.y,
-        r: r + OFFSET,
-        fill: origin.color // 字体颜色
-      };
-      // 判断文本的方向
-      if (edgePoint.x < center.x) {
-        label._side = 'left';
-        labels.push(label);
-      } else {
-        label._side = 'right';
-        labels.push(label);
+      lineHeight: 32,
+      // skipOverlapLabels: true,
+      sidePadding: 30,
+      adjustOffset: 20,
+      label1(data, color) {
+        return {
+          text: data.memo,
+          textBaseline: 'bottom',
+          fill: color
+        };
+      },
+      label2(data) {
+        return {
+          text: data.amount,
+          fill: '#999',
+          fontWeight: 'bold'
+        };
       }
     });
+    chart.interval().position('namekey*ratio')
+      .color('memo', [
+        '#1890FF',
+        '#13C2C2',
+        '#2FC25B',
+        '#FACC14',
+        '#F04864',
+        '#8543E0',
+        '#3436C7',
+        '#223273'])
+      .adjust('stack');
+    chart.render();
 
-    var last_label = void 0; // 存储上一个 label 对象，用于检测文本是否重叠
-    for (var i = 0; i < labels.length; i++) {
-      var label = labels[i];
-      var labelShape = _drawLabel(label); // 绘制文本图形对象
-
-      if (last_label) {
-        if (_isOverlap(labelShape, last_label)) {
-          // 重叠了就不绘制
-          last_label = labelShape;
-          continue;
-        }
+    // ================= 改变数据 ========================
+      function randomData(data) {
+        data.map(obj => {
+          obj.ratio = Math.random();
+          return obj;
+        });
+        return data;
       }
-      drawnLabels.push(labelShape);
 
-      labelGroup.add(labelShape);
-      _drawLabelLine(label, labelGroup);
-      last_label = labelShape;
-    }
-
-    canvas.draw();
-  }
-
-  addPieLabel(chart);
+      $('#changeData').on('click', () => {
+        const newData = randomData(data);
+        chart.changeData(newData);
+      });
 </script>
 </body>
 </html>

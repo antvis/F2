@@ -3,6 +3,8 @@ const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
+const PressTooltipMixin = require('./mixin/press-tooltip');
+const updateScaleMixin = require('./mixin/update-scale');
 
 class Pinch extends Interaction {
   getDefaultCfg() {
@@ -19,15 +21,17 @@ class Pinch extends Interaction {
       originValues: null,
       minScale: null,
       maxScale: null,
-      _timestamp: 0,
-      limitRange: {}
+      limitRange: {},
+      sensitivity: 1,
+      _pinchCumulativeDelta: 0,
+      _timestamp: 0
     });
   }
 
   constructor(cfg, chart) {
     super(cfg, chart);
     const self = this;
-    const { hammer, pressThreshold, pressTime } = self;
+    const { hammer } = self;
     hammer.get('pinch').set({ // open pinch recognizer
       enable: true
     });
@@ -43,15 +47,8 @@ class Pinch extends Interaction {
       }
     }]);
 
-    const tooltipController = chart.get('tooltipController');
-    if (tooltipController && tooltipController.enable) {
-      chart.tooltip(false);
-      hammer.get('press').set({
-        threshold: pressThreshold,
-        time: pressTime
-      });
-      hammer.on('press', Util.wrapBehavior(this, '_handlePress'));
-    }
+    Util.mix(self, PressTooltipMixin, updateScaleMixin);
+    self._bindPress();
   }
 
   start() {
@@ -68,22 +65,7 @@ class Pinch extends Interaction {
     if (this.pressed) return;
     this._handlePinch(e);
     this.currentPinchScaling = null; // reset
-  }
-
-  reset() {
-    const chart = this.chart;
-    if (chart.get('tooltipController')) {
-      this.pressed = false;
-      chart.hideTooltip();
-      chart.tooltip(false);
-    }
-  }
-
-  _handlePress(e) {
-    this.pressed = true;
-    const center = e.center;
-    this.chart.tooltip(true);
-    this.chart.showTooltip(center);
+    this.pinchCumulativeDelta = 0;
   }
 
   _handlePinch(e) {
@@ -96,7 +78,6 @@ class Pinch extends Interaction {
       x: offsetX,
       y: offsetY
     };
-
     // fingers position difference
     const x = Math.abs(e.pointers[0].clientX - e.pointers[1].clientX);
     const y = Math.abs(e.pointers[0].clientY - e.pointers[1].clientY);
@@ -135,11 +116,11 @@ class Pinch extends Interaction {
     }
     const data = chart.get('data');
 
-    if (Helper.directionEnabled(mode, 'x') && Helper.directionEnabled(_whichAxes, 'x')) { // x
+    if (Util.directionEnabled(mode, 'x') && Util.directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
-        limitRange[xField] = Helper._getLimitRange(data, xScale);
+        limitRange[xField] = Helper.getLimitRange(data, xScale);
       }
 
       if (xScale.isCategory) { // 横轴为分类类型
@@ -148,37 +129,33 @@ class Pinch extends Interaction {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
       const xDef = Helper.getColDef(chart, xField);
-      this.xRange = Helper._getFieldRange(xDef, limitRange[xField], xScale.type);
+      this.xRange = Helper.getFieldRange(xDef, limitRange[xField], xScale.type);
     }
 
-    if (Helper.directionEnabled(mode, 'y') && Helper.directionEnabled(_whichAxes, 'y')) { // y
+    if (Util.directionEnabled(mode, 'y') && Util.directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
       Util.each(yScales, yScale => {
         const yField = yScale.field;
         if (!limitRange[yField]) {
-          limitRange[yField] = Helper._getLimitRange(data, yScale);
+          limitRange[yField] = Helper.getLimitRange(data, yScale);
         }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
       const yDef = Helper.getColDef(chart, yScales[0].field);
-      this.yRange = Helper._getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
+      this.yRange = Helper.getFieldRange(yDef, limitRange[yScales[0].field], yScales[0].type);
     }
 
     chart.repaint();
   }
 
   _zoomLinearScale(scale, zoom, center, flag) {
-    const type = scale.type;
-    if (type !== 'linear') return;
-    const field = scale.field;
     const chart = this.chart;
-    const { min, max } = scale;
+    const { min, max, field } = scale;
     const valueRange = max - min;
     const limitRange = this.limitRange;
     const originRange = limitRange[field].max - limitRange[field].min;
 
     const coord = chart.get('coord');
-    const colDef = Helper.getColDef(chart, field);
 
     let newDiff = valueRange * (zoom - 1);
     if (this.minScale && zoom < 1) { // zoom in
@@ -197,55 +174,74 @@ class Pinch extends Interaction {
     const maxDelta = newDiff * (1 - percent);
     const newMax = max - maxDelta;
     const newMin = min + minDelta;
-
-    chart.scale(field, Util.mix({}, colDef, {
-      min: newMin,
-      max: newMax,
-      nice: false
-    }));
+    this.updateLinearScale(field, newMin, newMax);
   }
 
+  // 针对分类类型
   _zoomCatScale(scale, zoom, center) {
+    let pinchCumulativeDelta = this._pinchCumulativeDelta;
+    const sensitivity = this.sensitivity;
+    pinchCumulativeDelta = zoom > 1 ? pinchCumulativeDelta + 1 : pinchCumulativeDelta - 1;
+    this._pinchCumulativeDelta = pinchCumulativeDelta;
+
     const { field, values } = scale;
     const chart = this.chart;
     const coord = chart.get('coord');
-    const colDef = Helper.getColDef(chart, field);
 
-    if (!this.originTicks) { // Need to be optimized
+    if (!this.originTicks) {
       this.originTicks = scale.ticks;
     }
 
-    const originTicks = this.originTicks;
     const originValues = this.limitRange[field];
     const originValuesLen = originValues.length;
-    const maxScale = this.maxScale || 4;
     const minScale = this.minScale || 1;
-    const minCount = originValuesLen / maxScale;
-    const maxCount = originValuesLen / minScale;
+    const maxScale = this.maxScale || 5;
+    const minCount = parseInt(originValuesLen / maxScale);
+    const maxCount = parseInt(originValuesLen / minScale);
+    const currentLen = values.length;
+    if (pinchCumulativeDelta > 0 && currentLen <= minCount) {
+      return null;
+    }
+    if (pinchCumulativeDelta < 0 && currentLen >= maxCount) {
+      return null;
+    }
 
-    const valuesLength = values.length;
-    const offsetPoint = coord.invertPoint(center);
-    const percent = offsetPoint.x;
-    const deltaCount = parseInt(valuesLength * Math.abs(zoom - 1));
-    const minDelta = parseInt(deltaCount * (percent));
-    const maxDelta = deltaCount - minDelta;
+    const lastLabelIndex = originValuesLen - 1;
+    const firstValue = values[0];
+    const lastValue = values[currentLen - 1];
+    let minIndex = originValues.indexOf(firstValue);
+    let maxIndex = originValues.indexOf(lastValue);
+    const chartCenter = (coord.start.x + coord.end.x) / 2;
+    const centerPointer = center.x;
 
-    if (zoom >= 1 && valuesLength >= minCount) { // zoom out
-      const newValues = values.slice(minDelta, valuesLength - maxDelta);
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: originTicks
-      }));
-    } else if (zoom < 1 && valuesLength <= maxCount) { // zoom in
-      const firstIndex = originValues.indexOf(values[0]);
-      const lastIndex = originValues.indexOf(values[valuesLength - 1]);
-      const minIndex = Math.max(0, firstIndex - minDelta);
-      const maxIndex = Math.min(lastIndex + maxDelta, originValuesLen);
-      const newValues = originValues.slice(minIndex, maxIndex);
-      chart.scale(field, Util.mix({}, colDef, {
-        values: newValues,
-        ticks: originTicks
-      }));
+    if (Math.abs(pinchCumulativeDelta) > sensitivity) {
+      const deltaCount = Math.max(1, parseInt(currentLen * Math.abs(zoom - 1)));
+      if (pinchCumulativeDelta < 0) {
+        if (centerPointer >= chartCenter) {
+          if (minIndex <= 0) {
+            maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
+          } else {
+            minIndex = Math.max(0, minIndex - deltaCount);
+          }
+        } else if (centerPointer < chartCenter) {
+          if (maxIndex >= lastLabelIndex) {
+            minIndex = Math.max(0, minIndex - deltaCount);
+          } else {
+            maxIndex = Math.min(lastLabelIndex, maxIndex + deltaCount);
+          }
+        }
+        this._pinchCumulativeDelta = 0;
+      } else if (pinchCumulativeDelta > 0) {
+        if (centerPointer >= chartCenter) {
+          minIndex = minIndex < maxIndex ? minIndex = Math.min(maxIndex, minIndex + deltaCount) : minIndex;
+        } else if (centerPointer < chartCenter) {
+          maxIndex = maxIndex > minIndex ? maxIndex = Math.max(minIndex, maxIndex - deltaCount) : maxIndex;
+        }
+        this._pinchCumulativeDelta = 0;
+      }
+
+      const newValues = originValues.slice(minIndex, maxIndex + 1);
+      this.updateCatScale(field, newValues, this.originTicks, originValues, minIndex, maxIndex);
     }
   }
 }

@@ -164,4 +164,11 @@ describe('test basic util', function() {
     expect(Util.parsePadding([ 10, 19 ])).to.be.eql([ 10, 19, 10, 19 ]);
     expect(Util.parsePadding([ 10, 19, 29 ])).to.be.eql([ 10, 19, 29, 19 ]);
   });
+
+  it('directionEnabled', function() {
+    expect(Util.directionEnabled('xy', 'x')).to.be.true;
+    expect(Util.directionEnabled('xy', 'e')).to.be.false;
+    expect(Util.directionEnabled(undefined, 'e')).to.be.true;
+    expect(Util.directionEnabled({}, 'e')).to.be.false;
+  });
 });

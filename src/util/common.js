@@ -19,7 +19,7 @@ const Util = {
   mix: require('@antv/util/lib/mix'),
   each: require('@antv/util/lib/each'),
   isObjectValueEqual(a, b) {
-    // for vue
+    // for vue.js
     a = Object.assign({}, a);
     b = Object.assign({}, b);
     const aProps = Object.getOwnPropertyNames(a);
@@ -67,6 +67,15 @@ const Util = {
     }
 
     return [ top, right, bottom, left ];
+  },
+  directionEnabled(mode, dir) {
+    if (mode === undefined) {
+      return true;
+    } else if (typeof mode === 'string') {
+      return mode.indexOf(dir) !== -1;
+    }
+
+    return false;
   }
 };
 

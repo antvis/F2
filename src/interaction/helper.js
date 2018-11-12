@@ -2,15 +2,6 @@ const TimeUtil = require('@antv/scale/lib/time-util');
 const Util = require('../util/common');
 
 module.exports = {
-  directionEnabled(mode, dir) {
-    if (mode === undefined) {
-      return true;
-    } else if (typeof mode === 'string') {
-      return mode.indexOf(dir) !== -1;
-    }
-
-    return false;
-  },
   getColDef(chart, field) {
     let colDef;
     if (chart.get('colDefs') && chart.get('colDefs')[field]) {
@@ -18,7 +9,7 @@ module.exports = {
     }
     return colDef;
   },
-  _getFieldRange(scale, limitRange, type) {
+  getFieldRange(scale, limitRange, type) {
     if (!scale) return [ 0, 1 ];
     let minRatio = 0;
     let maxRatio = 0;
@@ -36,7 +27,7 @@ module.exports = {
     }
     return [ minRatio, maxRatio ];
   },
-  _getLimitRange(data, scale) {
+  getLimitRange(data, scale) {
     let result;
     const { field, type } = scale;
     const values = Util.Array.values(data, field);

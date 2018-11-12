@@ -169,7 +169,7 @@ class TooltipController {
   render() {
     const self = this;
 
-    if (self.tooltip /* || !self.enable */) {
+    if (self.tooltip) {
       return;
     }
 
@@ -261,6 +261,23 @@ class TooltipController {
     const cfg = this.cfg;
     items = _uniqItems(items);
 
+    const chart = this.chart;
+    const coord = chart.get('coord');
+    const yScale = chart.getYScales()[0];
+
+    if (yScale.isLinear && !coord.transposed) {
+      const invertPoint = coord.invertPoint(point);
+      const yTip = yScale.invert(invertPoint.y);
+      const yTipPosY = point.y;
+      const plot = chart.get('plotRange');
+      if (Helper.isPointInPlot(point, plot)) {
+        tooltip.setYTipContent(yTip);
+        tooltip.setYTipPosition(yTipPosY);
+        tooltip.setXCrosshairPosition(yTipPosY);
+      }
+    }
+
+
     if (cfg.onShow) {
       cfg.onShow({
         x: point.x,
@@ -271,12 +288,16 @@ class TooltipController {
       });
     }
     if (isEqual(lastActive, items)) {
+      if (cfg.crosshairsType === 'y' || cfg.crosshairsType === 'xy' || cfg.showYTip) {
+        const canvas = this.chart.get('canvas');
+        canvas.draw();
+      }
       return;
     }
     this._lastActive = items;
 
-    if (cfg.onChange || Util.isFunction(cfg.custom)) {
-      const onChange = cfg.onChange || cfg.custom;
+    const onChange = cfg.onChange;
+    if (onChange) {
       onChange({
         x: point.x,
         y: point.y,
@@ -286,12 +307,29 @@ class TooltipController {
       });
     }
 
-    if (!cfg.custom) {
-      const first = items[0];
-      const title = first.title || first.name;
-      tooltip.setContent(title, items);
+    const first = items[0];
+    const title = first.title || first.name;
+    let xTipPosX = first.x;
+    if (items.length > 1) {
+      xTipPosX = (items[0].x + items[items.length - 1].x) / 2;
     }
-    tooltip.setPosition(items);
+    const xTip = coord.transposed ? first.value : title;
+    tooltip.setContent(title, items, coord.transposed);
+    tooltip.setPosition(items, point);
+    tooltip.setXTipContent(xTip);
+    tooltip.setXTipPosition(xTipPosX);
+    tooltip.setYCrosshairPosition(first.x);
+
+    if (coord.transposed) {
+      let yTipPosY = first.y;
+      if (items.length > 1) {
+        yTipPosY = (items[0].y + items[items.length - 1].y) / 2;
+      }
+      const yTip = coord.transposed ? title : first.value;
+      tooltip.setYTipContent(yTip);
+      tooltip.setYTipPosition(yTipPosY);
+      tooltip.setXCrosshairPosition(yTipPosY);
+    }
 
     const markerItems = tooltipMarkerCfg.items;
     if (cfg.showTooltipMarker && markerItems.length) {
@@ -319,7 +357,6 @@ class TooltipController {
 
     const geoms = chart.get('geoms');
     const coord = chart.get('coord');
-
     Util.each(geoms, geom => {
       if (geom.get('visible')) {
         const type = geom.get('type');
@@ -384,8 +421,9 @@ class TooltipController {
   }
 
   handleShowEvent(ev) {
-    if (!this.enable) return;
     const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
+
     const plot = chart.get('plotRange');
     const point = Util.createEvent(ev, chart);
     if (!Helper.isPointInPlot(point, plot) && !this.cfg.alwaysShow) { // not in chart plot
@@ -402,13 +440,16 @@ class TooltipController {
   }
 
   handleHideEvent() {
-    if (!this.enable) return;
+    const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
 
     this.hideTooltip();
   }
 
   handleDocEvent(ev) {
-    if (!this.enable) return;
+    const chart = this.chart;
+    if (!this.enable || chart.get('_closeTooltip')) return;
+
 
     const canvasDom = this.canvasDom;
     if (ev.target !== canvasDom) {

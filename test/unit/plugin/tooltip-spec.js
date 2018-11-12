@@ -18,16 +18,22 @@ canvas.style.top = 0;
 canvas.style.left = 0;
 document.body.appendChild(canvas);
 
+function snapEqual(v1, v2) {
+  return Math.abs(v1 - v2) < 0.01;
+}
+
 describe('Tooltip Plugin', function() {
   let chart;
   let tooltipController;
   let tooltip;
   let data = [
-    { genre: 'Sports', sold: 275 },
-    { genre: 'Strategy', sold: 115 },
-    { genre: 'Action', sold: 120 },
-    { genre: 'Shooter', sold: 350 },
-    { genre: 'Other', sold: 150 }
+    { day: '周一', value: 300 },
+    { day: '周二', value: 400 },
+    { day: '周三', value: 350 },
+    { day: '周四', value: 500 },
+    { day: '周五', value: 490 },
+    { day: '周六', value: 600 },
+    { day: '周日', value: 900 }
   ];
 
   it('Register Tooltip plugin', function() {
@@ -73,8 +79,12 @@ describe('Tooltip Plugin', function() {
   });
 
   it('chart.showToolip(point)', function() {
-    chart.source(data);
-    chart.interval().position('genre*sold').color('genre');
+    chart.source(data, {
+      day: {
+        range: [ 0, 1 ]
+      }
+    });
+    chart.line().position('day*value');
     chart.render();
 
     tooltipController = chart.get('tooltipController');
@@ -86,12 +96,28 @@ describe('Tooltip Plugin', function() {
       y: 276
     };
     chart.showTooltip(point);
-
     expect(tooltip.items.length).to.equal(1);
-    expect(tooltip.items[0].name).to.equal('Strategy');
-    expect(tooltip.items[0].value).to.equal('115');
+    expect(tooltip.items[0].name).to.equal('value');
+    expect(tooltip.items[0].value).to.equal('350');
+    expect(tooltip.items[0].title).to.equal('周三');
     expect(tooltip.markerGroup.get('visible')).to.be.true;
     expect(tooltip.container.titleShape.attr('text')).to.equal(tooltip.title);
+
+    const firstPoint = chart.getPosition({ day: '周一', value: 300 });
+    chart.showTooltip(firstPoint);
+    expect(tooltip.items[0].name).to.equal('value');
+    expect(tooltip.items[0].value).to.equal('300');
+    expect(tooltip.items[0].title).to.equal('周一');
+    expect(snapEqual(tooltip.container.x, 44.17999267578125)).to.be.true;
+    expect(snapEqual(tooltip.container.y, -7)).to.be.true;
+
+    const lastPoint = chart.getPosition({ day: '周日', value: 300 });
+    chart.showTooltip(lastPoint);
+    expect(tooltip.items[0].name).to.equal('value');
+    expect(tooltip.items[0].value).to.equal('900');
+    expect(tooltip.items[0].title).to.equal('周日');
+    // expect(snapEqual(tooltip.container.x, 313.0880584716797)).to.be.true;
+    expect(snapEqual(tooltip.container.y, -7)).to.be.true;
   });
 
   it('chart.hideTooltip()', function() {
@@ -110,6 +136,46 @@ describe('Tooltip Plugin', function() {
     expect(_lastActive).to.be.null;
 
     chart.destroy();
+  });
+
+  it('dodge column chart', function() {
+    data = [
+      { name: 'London', 月份: 'Jan.', 月均降雨量: 18.9 },
+      { name: 'London', 月份: 'Feb.', 月均降雨量: 28.8 },
+      { name: 'London', 月份: 'Mar.', 月均降雨量: 39.3 },
+      { name: 'Berlin', 月份: 'Jan.', 月均降雨量: 12.4 },
+      { name: 'Berlin', 月份: 'Feb.', 月均降雨量: 23.2 },
+      { name: 'Berlin', 月份: 'Mar.', 月均降雨量: 34.5 }
+    ];
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data);
+    chart.interval().position('月份*月均降雨量')
+      .color('name')
+      .adjust({
+        type: 'dodge',
+        marginRatio: 0.05 // 设置分组间柱子的间距
+      });
+    chart.render();
+    tooltipController = chart.get('tooltipController');
+    tooltip = tooltipController.tooltip;
+
+    chart.showTooltip({
+      x: 163,
+      y: 276
+    });
+    expect(tooltip.items.length).to.equal(2);
+    expect(tooltip.items[0].name).to.equal('London');
+    expect(tooltip.items[1].name).to.equal('Berlin');
+    expect(tooltip.items[0].value).to.equal('28.8');
+    expect(tooltip.items[1].value).to.equal('23.2');
+    expect(tooltip.items[0].title).to.equal('Feb.');
+    expect(tooltip.items[1].title).to.equal('Feb.');
+    expect(tooltip.markerGroup.get('visible')).to.be.true;
+    // expect(snapEqual(tooltip.container.x, 126.502067565918)).to.be.true;
   });
 
   it('custom tooltip', function(done) {
@@ -278,6 +344,170 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items.length).to.equal(1);
     expect(tooltip.items[0].name).to.equal('score');
     expect(tooltip.items[0].value).to.equal('148');
+    chart.destroy();
+  });
+});
+
+describe('Tooltip crosshairs', function() {
+  const data = [
+    { date: '2018-04-21', steps: 59 },
+    { date: '2018-04-22', steps: 2515 },
+    { date: '2018-04-23', steps: 6524 },
+    { date: '2018-04-24', steps: 26044 },
+    { date: '2018-04-25', steps: 29763 },
+    { date: '2018-04-26', steps: 10586 },
+    { date: '2018-04-27', steps: 14758 },
+    { date: '2018-04-29', steps: 549 },
+    { date: '2018-04-30', steps: 21 }
+  ];
+  let chart = new F2.Chart({
+    id: 'chart-tooltip',
+    width: 400,
+    height: 300,
+    plugins: Tooltip,
+    padding: [ 'auto', 'auto', 0, 0 ],
+    pixelRatio: 2
+  });
+  chart.source(data, {
+    date: {
+      tickCount: 3
+    }
+  });
+  chart.line().position('date*steps');
+
+  it('chart.tooltip() with xy crosshairs.', () => {
+    chart.tooltip({
+      showYTip: true,
+      showXTip: true,
+      yTip(val) {
+        return parseInt(val);
+      },
+      xTip(val) {
+        return 'date:' + val;
+      },
+      crosshairsType: 'xy',
+      crosshairsStyle: {
+        lineDash: [ 2 ],
+        stroke: '#1890ff'
+      }
+    });
+
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-26', steps: 10586 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { crosshairsShapeX, crosshairsShapeY } = tooltip;
+
+    expect(crosshairsShapeX).not.to.be.undefined;
+    expect(crosshairsShapeY).not.to.be.undefined;
+    expect(snapEqual(crosshairsShapeY.get('x'), 235.2777777777778)).to.be.true;
+    expect(snapEqual(crosshairsShapeX.get('y'), 204.726)).to.be.true;
+    expect(tooltip.xTipBox.y).to.equal(291);
+    expect(tooltip.xTipBox.content).to.equal('date:2018-04-26');
+    expect(snapEqual(tooltip.yTipBox.x, 21.6845703125)).to.be.true;
+    expect(tooltip.yTipBox.content).to.equal(10586);
+
+
+    chart.showTooltip({
+      x: point.x,
+      y: point.y + 20
+    });
+    expect(snapEqual(tooltipController.tooltip.crosshairsShapeX.get('y'), 224.726)).to.be.true;
+    expect(snapEqual(tooltip.yTipBox.x, 18.34765625)).to.be.true;
+    expect(tooltip.yTipBox.content).to.equal(8363);
+  });
+
+  it('show xTip and yTip', () => {
+    chart.destroy();
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data, {
+      date: {
+        tickCount: 3,
+        range: [ 0, 1 ]
+      }
+    });
+    chart.line().position('date*steps');
+    chart.tooltip({
+      showXTip: true,
+      showYTip: true,
+      showTooltipMarker: false,
+      crosshairsType: 'xy',
+      yTip(val) {
+        return {
+          text: Math.round(val)
+        };
+      }
+    });
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-21', steps: 59 });
+    chart.showTooltip({
+      x: point.x,
+      y: point.y - 230
+    });
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTipBox: xTip, yTipBox: yTip } = tooltip;
+
+    expect(xTip).not.to.be.undefined;
+    expect(yTip).not.to.be.undefined;
+    expect(xTip.content).to.equal('2018-04-21');
+    expect(yTip.content).to.equal(29112);
+    expect(snapEqual(xTip.x, 85.99139404296875)).to.be.true;
+    expect(xTip.y).to.equal(276.5);
+    // expect(snapEqual(yTip.x, 29.06072998046875)).to.be.true;
+    expect(yTip.y).to.equal(39);
+    chart.showTooltip(chart.getPosition({ date: '2018-04-30', steps: 21 }));
+    expect(tooltip.xTipBox.content).to.equal('2018-04-30');
+    expect(tooltip.yTipBox.content).to.equal(21);
+    expect(snapEqual(tooltip.xTipBox.x, 349.30859375)).to.be.true;
+    expect(tooltip.xTipBox.y).to.equal(276.5);
+    expect(snapEqual(tooltip.yTipBox.x, 38.62615966796875)).to.be.true;
+    expect(tooltip.yTipBox.y).to.equal(258.5);
+
+    chart.hideTooltip();
+    expect(tooltip.xTipBox.container.get('visible')).to.be.false;
+    expect(tooltip.yTipBox.container.get('visible')).to.be.false;
+  });
+
+  it('show yTip in transposed coordinate', () => {
+    chart.destroy();
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data);
+    chart.coord({
+      transposed: true
+    });
+    chart.interval().position('date*steps');
+    chart.tooltip({
+      showYTip: true
+    });
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTipBox: xTip, yTipBox: yTip } = tooltip;
+
+    expect(xTip).be.undefined;
+    expect(yTip).not.to.be.undefined;
+    expect(yTip.content).to.equal('2018-04-22');
+    // expect(snapEqual(yTip.x, 39.068572998046875)).to.be.true;
+    expect(snapEqual(yTip.y, 227.91666666666669)).to.be.true;
     chart.destroy();
     document.body.removeChild(canvas);
   });

@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
-const Guide = require('../../../src/component/guide/base');
-const Coord = require('../../../src/coord/index');
-const Scale = require('../../../src/scale/');
+const Guide = require('../../../../src/component/guide/base');
+const Coord = require('../../../../src/coord/index');
+const Scale = require('../../../../src/scale/');
 
 describe('Guide Base', function() {
   const coord = new Coord.Rect({
@@ -73,5 +73,14 @@ describe('Guide Base', function() {
     const guide = new Guide();
     expect(guide.render).be.an.instanceof(Function);
     expect(guide.render()).to.be.undefined;
+  });
+
+  it('Base class method: changeVisible()', function() {
+    const guide = new Guide();
+    expect(guide.changeVisible).be.an.instanceof(Function);
+    guide.changeVisible(false);
+    expect(guide.visible).to.be.false;
+    guide.changeVisible(true);
+    expect(guide.visible).to.be.true;
   });
 });

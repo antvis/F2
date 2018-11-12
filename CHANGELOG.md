@@ -1,3 +1,27 @@
+#### 3.3.0-beta.1 (2018-11-11)
+
+##### Chores
+
+* add stock chart demos. ([b2600d6d](https://github.com/antvis/f2/commit/b2600d6d0ff22ed0b7290c47fcf329b99ca04e20))
+* add 1d k chart ([442d9088](https://github.com/antvis/f2/commit/442d9088566bd16c0be5e7e8add1f323612e411d))
+
+##### New Features
+
+* Guide component support change visible. ([1ba0db13](https://github.com/antvis/f2/commit/1ba0db13eaea3d24c82cb16646136636e032cfdb))
+* PieLabel plugin support active selected shape. ([fc06bca3](https://github.com/antvis/f2/commit/fc06bca3bd07f8ffe32935ab7ec9ad0b64ed9dd8))
+* optimize category scale's normalization of non-drawing data. For pan and swipe interaction. ([14556a29](https://github.com/antvis/f2/commit/14556a294b3922c5219b0017a5437898bbd3fa4b))
+* tooltip tip content support callback. ([506b1fb2](https://github.com/antvis/f2/commit/506b1fb259a8acaf496995549bf894278e56b60b))
+* auto adjust tooltip's tips position. ([5b13ecde](https://github.com/antvis/f2/commit/5b13ecde2a86f23ca820ee65042a8106613a8801))
+* support swipe interaction. ([5fb037f9](https://github.com/antvis/f2/commit/5fb037f9d7b8f0c059af10b885184a3363b933c2))
+* support speed and step setting for category scale pan interaction.Closed [#357](https://github.com/antvis/f2/pull/357),[#343](https://github.com/antvis/f2/pull/343). ([fbcf0c89](https://github.com/antvis/f2/commit/fbcf0c89f0224e4bc118aed8e6de82664457c7ff))
+* add F2.Global.legend.common and F2.Global.axis.common for generic theme configuration. ([becd26c0](https://github.com/antvis/f2/commit/becd26c0917ae4307bf8551fe7a70b320dda8acc))
+* add PieLabel plugin for rendering the labels of pie chart. ([6ba1c70e](https://github.com/antvis/f2/commit/6ba1c70e3768fbdb1d28b05e41875104b97e24ef))
+* support 'x', 'y', 'xy' three types for tooltip crosshairs, and support xTip and yTip display for tooltip. Closed [#369](https://github.com/antvis/f2/pull/369). ([7fad5c78](https://github.com/antvis/f2/commit/7fad5c78eeeb782a498668cae56af82bfa24de30))
+
+##### Bug Fixes
+
+* fix pinch errors of category scale. Closed [#342](https://github.com/antvis/f2/pull/342). ([d41802f2](https://github.com/antvis/f2/commit/d41802f294a01c70af5f8b178c1c8362add395d9))
+
 #### 3.2.4 (2018-10-25)
 
 ##### Bug Fixes

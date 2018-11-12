@@ -1,19 +1,19 @@
 const expect = require('chai').expect;
-require('../../../src/interaction/pinch');
+const Pinch = require('../../../src/interaction/pinch');
 const F2 = require('../../../src/core');
 require('../../../src/geom/line');
 require('../../../src/geom/interval');
 require('../../../src/scale/time-cat');
-
-function snapEqual(v1, v2) {
-  return Math.abs(v1 - v2) < 0.01;
-}
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;
 canvas.height = 200;
 canvas.id = 'pinch';
 document.body.appendChild(canvas);
+
+function snapEqual(v1, v2) {
+  return Math.abs(v1 - v2) < 0.01;
+}
 
 const data = [];
 const dates = [ '2018-08-01', '2018-08-02', '2018-08-03', '2018-08-04', '2018-08-05', '2018-08-06', '2018-08-07', '2018-08-08', '2018-08-09', '2018-08-10', '2018-08-11', '2018-08-12', '2018-08-13', '2018-08-14', '2018-08-15', '2018-08-16', '2018-08-17', '2018-08-18', '2018-08-19', '2018-08-20' ];
@@ -27,16 +27,94 @@ for (let i = 0; i < 20; i++) {
   data.push(obj);
 }
 
-let chart = new F2.Chart({
-  id: 'pinch',
-  pixelRatio: window.devicePixelRatio
+describe('Pinch', function() {
+  const chart = new F2.Chart({
+    id: 'pinch',
+    pixelRatio: window.devicePixelRatio
+  });
+  chart.source(data);
+  chart.line().position('x1*y');
+  chart.render();
+
+  it('pinch start, process, end', function(done) {
+    const pinch = new Pinch({
+      maxScale: 4,
+      minScale: 1
+    }, chart);
+    let eventObj = {
+      type: 'pinchstart',
+      scale: 1
+    };
+    pinch.start(eventObj);
+    expect(pinch.currentPinchScaling).to.equal(1);
+
+    eventObj = {
+      type: 'pinch',
+      scale: 1.3,
+      center: {
+        x: 210,
+        y: 150
+      },
+      pointers: [
+        { clientX: 100, clientY: 30 },
+        { clientX: 125, clientY: 45 }
+      ],
+      target: {
+        getBoundingClientRect() {
+          return { top: 60, right: 375, bottom: 260, left: 0 };
+        }
+      }
+    };
+
+
+    pinch.process(eventObj);
+    expect(pinch.currentPinchScaling).to.equal(1.3);
+    const xScale = chart.getXScale();
+    expect(snapEqual(xScale.min, 3.2424781342743505)).to.be.true;
+    expect(snapEqual(xScale.max, 17.24247813427435)).to.be.true;
+
+    setTimeout(() => {
+      eventObj = {
+        type: 'pinch',
+        scale: 1.12,
+        center: {
+          x: 210,
+          y: 150
+        },
+        pointers: [
+          { clientX: 100, clientY: 30 },
+          { clientX: 125, clientY: 45 }
+        ],
+        target: {
+          getBoundingClientRect() {
+            return { top: 60, right: 375, bottom: 260, left: 0 };
+          }
+        }
+      };
+      pinch.process(eventObj);
+      const xScale = chart.getXScale();
+      expect(snapEqual(xScale.min, 2.1949082755087916)).to.be.true;
+      expect(snapEqual(xScale.max, 18.13336981397033)).to.be.true;
+
+      pinch.end(eventObj);
+      expect(pinch.currentPinchScaling).to.be.null;
+      expect(pinch.pinchCumulativeDelta).to.equal(0);
+      done();
+    }, 1000);
+  });
 });
-chart.source(data);
-chart.line().position('x1*y');
-chart.interaction('pinch');
-chart.render();
+
 
 describe('chart pinch', function() {
+  let chart = new F2.Chart({
+    id: 'pinch',
+    pixelRatio: window.devicePixelRatio
+  });
+  chart.source(data);
+  chart.line().position('x1*y');
+  chart.interaction('pinch');
+  chart.render();
+
   it('Register successfully', function() {
     const Chart = F2.Chart;
     expect(Chart._Interactions.pinch).not.to.be.undefined;
@@ -103,7 +181,7 @@ describe('chart pinch', function() {
     expect(yRange).to.eql([ -0.53125, 1.31875 ]);
   });
 
-  it('pinch x axis, and x field is a cat type', function() {
+  it('pinch x axis, and x field is a cat type', function(done) {
     chart.destroy();
     chart = new F2.Chart({
       id: 'pinch',
@@ -113,7 +191,8 @@ describe('chart pinch', function() {
     chart.line().position('x2*y');
     chart.interaction('pinch', {
       minScale: 1,
-      maxScale: 5
+      maxScale: 5,
+      sensitivity: 0
     });
     chart.render();
 
@@ -128,13 +207,25 @@ describe('chart pinch', function() {
     expect(limitRange.x2.length).to.equal(20);
 
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '9', '10', '11', '12' ]);
+    expect(xScale.values.length).to.equal(4);
+    expect(xScale.values).to.eql([ '16', '17', '18', '19' ]);
 
     const xRange = interaction.xRange;
-    expect(xRange).to.eql([ 0.47368421052631576, 0.631578947368421 ]);
+    expect(xRange).to.eql([ 0.8421052631578947, 1 ]);
+
+    setTimeout(() => {
+      interaction._doZoom(0.85, point, 'x');
+      const xScale = chart.getXScale();
+      expect(xScale.values.length).to.equal(5);
+      expect(xScale.values).to.eql([ '15', '16', '17', '18', '19' ]);
+
+      const xRange = interaction.xRange;
+      expect(xRange).to.eql([ 0.7894736842105263, 1 ]);
+      done();
+    }, 1000);
   });
 
-  it('pan x axis, and x field is a timeCat type.', function() {
+  it('pan x axis, and x field is a timeCat type.', function(done) {
     chart.destroy();
     chart = new F2.Chart({
       id: 'pinch',
@@ -147,11 +238,13 @@ describe('chart pinch', function() {
       }
     });
     chart.line().position('x3*y');
-    chart.interaction('pinch');
+    chart.interaction('pinch', {
+      sensitivity: 0
+    });
     chart.render();
 
     const point = chart.getPosition({
-      x3: '2018-08-11',
+      x3: '2018-08-09',
       y: 12
     });
     const interaction = chart._interactions.pinch;
@@ -161,15 +254,21 @@ describe('chart pinch', function() {
     expect(limitRange.x3.length).to.equal(20);
     const xScale = chart.getXScale();
     expect(xScale.values.length).to.equal(10);
-    // expect(xScale.values[0]).to.equal(1533484800000);
-    // expect(xScale.values[9]).to.equal(1534262400000);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.2631578947368421)).to.be.true;
-    expect(snapEqual(xRange[1], 0.7368421052631579)).to.be.true;
+    expect(xRange).to.eql([ 0, 0.47368421052631576 ]);
 
-    chart.destroy();
-    document.body.removeChild(canvas);
+    setTimeout(() => {
+      interaction._doZoom(0.85, point, 'x');
+      const xScale = chart.getXScale();
+      expect(xScale.values.length).to.equal(11);
+
+      const xRange = interaction.xRange;
+      expect(xRange).to.eql([ 0, 0.5263157894736842 ]);
+      chart.destroy();
+      document.body.removeChild(canvas);
+      done();
+    }, 1000);
   });
 });
 

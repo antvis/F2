@@ -4,17 +4,71 @@
   <meta charset="UTF-8">
   <title>股票图</title>
   <link rel="stylesheet" href="./assets/common.css">
+  <style>
+    .chart-wrapper {
+      position: relative;
+    }
+    .tooltip-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: space-between;
+      visibility: hidden;
+      padding: 0 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .tooltip-item {
+      width: 19.5%;
+      height: 24px;
+      line-height: 24px;
+      vertical-align: middle;
+    }
+    .tooltip-item.first {
+      width: 20%;
+    }
+    .tooltip-item span {
+      display: inline;
+      color: #899198;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-<div>
+<div class="chart-wrapper">
+  <div class="tooltip-wrapper" id="tooltip">
+    <div class="tooltip-item first">
+      <span class="item-value" data-type="time"></span>
+    </div>
+    <div class="tooltip-item">
+      <span>高</span>
+      <span class="item-value" data-type="max"></span>
+    </div>
+    <div class="tooltip-item">
+      <span>开</span>
+      <span class="item-value" data-type="start"></span>
+    </div>
+    <div class="tooltip-item">
+      <span>低</span>
+      <span class="item-value" data-type="min"></span>
+    </div>
+    <div class="tooltip-item">
+      <span>收</span>
+      <span class="item-value" data-type="end"></span>
+    </div>
+  </div>
   <canvas id="mountNode"></canvas>
 </div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="../build/f2-all.js"></script>
 <script>
   $.getJSON('./data/candle.json',function(data){
-    data = data.slice(0, 100); // 仅显示100 个
-    //数据处理
+    const BASIC_PRICE = 6.95;
+    // 数据处理，按照时间排序
     data.sort(function(obj1, obj2) {
       return obj1.time > obj2.time ? 1 : -1;
     });
@@ -31,16 +85,76 @@
 
     chart.source(data, {
       range: {
-        tickCount: 5
+        tickCount: 5,
+        formatter(val) {
+          return val.toFixed(2);
+        }
       },
       time: {
         tickCount: 3
       }
     });
-
+    chart.tooltip({
+      showCrosshairs: true,
+      showXTip: true,
+      showYTip: true,
+      crosshairsType: 'xy',
+      custom: true,
+      yTip(val) {
+        return {
+          text: val.toFixed(2),
+          fill: '#333',
+          fontSize: 10
+        }
+      },
+      xTip: {
+        fill: '#333',
+        fontSize: 10
+      },
+      xTipBackground: {
+        fill: '#EDF2FE'
+      },
+      yTipBackground: {
+        fill: '#EDF2FE'
+      },
+      crosshairsStyle: {
+        stroke: '#0F8DE8'
+      },
+      onChange(obj) {
+        const data = obj.items[0].origin;
+        $('#tooltip .item-value').each((index, ele) => {
+          const type = $(ele).data('type');
+          const value = data[type];
+          let color;
+          if (type === 'time') {
+            color = '#000000';
+          } else {
+            color = data.trend === 0 ? '#F4333C' : '#1CA93D';
+          }
+          $(ele).css({ color });
+          $(ele).text(value);
+        });
+        $('#tooltip').css('visibility', 'visible');
+      },
+      onHide() {
+        $('#tooltip').css('visibility', 'hidden');
+      }
+    });
+    chart.axis('range', {
+      grid: {
+        stroke: '#ddd',
+        lineWidth: 1,
+        lineDash: null
+      },
+      label: {
+        fill: '#999'
+      }
+    });
     chart.axis('time', {
       label(text, index, total) {
-        const textCfg = {};
+        const textCfg = {
+          fill: '#999'
+        };
         if (index === 0) {
           textCfg.textAlign = 'left';
         }
@@ -48,12 +162,46 @@
           textCfg.textAlign = 'right';
         }
         return textCfg;
+      },
+      grid: {
+        lineWidth: 1,
+        stroke: '#ddd'
       }
     });
-
+    chart.guide().line({
+      start: [ 'min', BASIC_PRICE ],
+      end: [ 'max', BASIC_PRICE ],
+      style: {
+        lineDash: [ 8 ],
+        stroke: '#F68300'
+      }
+    });
+    chart.guide().text({
+      position: ['min', BASIC_PRICE],
+      content: BASIC_PRICE,
+      style: {
+        fill: '#808080',
+        textAlign: 'start',
+        textBaseline: 'bottom',
+        fontSize: 10,
+        fontWeight: 'bold'
+      },
+      offsetX: 2
+    });
+    chart.guide().rect({
+      start: [ '0%', '0%' ],
+      end: [ '100%', '100%' ],
+      style: {
+        stroke: '#ddd',
+        lineWidth: 1,
+        fill: '#fff',
+        opacity: 1,
+        fillOpacity: 0
+      }
+    });
     chart.schema().position('time*range')
       .color('trend', function(trend) {
-        return [ '#C00000', '#19B24B' ][trend];
+        return [ '#F4333C', '#1CA93D' ][trend];
       })
       .shape('candle');
     chart.render();
