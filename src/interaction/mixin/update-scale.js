@@ -26,12 +26,12 @@ module.exports = {
         let min;
         let max;
         let percent;
-        const currentIndex = values.indexOf(value);
-        if (currentIndex < minIndex) { // 不在范围内，左侧数据
+        const currentIndex = values.indexOf(value); // 在完整数据集中的索引值
+        if (currentIndex >= 0 && currentIndex < minIndex) { // 不在范围内，左侧数据
           max = rangeMin > 0 ? -0.1 : rangeMin - 0.1;
           min = max - range;
           percent = currentIndex / minIndex;
-        } else if (currentIndex > maxIndex) { // 不在范围内，右侧数据
+        } else if (currentIndex >= 0 && currentIndex > maxIndex) { // 不在范围内，右侧数据
           min = rangeMax < 1 ? 1.1 : rangeMax + 0.1;
           max = min + range;
           percent = (currentIndex - maxIndex - 1) / (values.length - 1 - maxIndex);
