@@ -92,6 +92,11 @@ $.getJSON('./data/steps.json', function(data) {
   });
   chart.interval().position('date*steps').color('#FF5842').style({
     radius: [ 2, 2, 0, 0 ]
+  })
+  .animate({
+    update: {
+      duration: 1000
+    }
   });
 
   firstDayArr.forEach(obj => {
@@ -102,7 +107,8 @@ $.getJSON('./data/steps.json', function(data) {
       style: {
         lineWidth: 1,
         stroke: '#A4A4A4'
-      }
+      },
+      limitInPlot: true
     });
     chart.guide().text({
       position: [ obj.date, 'min' ],
@@ -112,7 +118,8 @@ $.getJSON('./data/steps.json', function(data) {
         fill: '#cacaca',
         textBaseline: 'top'
       },
-      offsetY: 20
+      offsetY: 20,
+      limitInPlot: true
     });
   });
   chart.scrollBar({
@@ -123,6 +130,7 @@ $.getJSON('./data/steps.json', function(data) {
       offsetY: -2
     }
   });
+  chart.interaction('swipe');
   chart.interaction('pan', {
     mode: 'x',
     // onProcess(e) {
