@@ -419,7 +419,7 @@ describe('Tooltip crosshairs', function() {
     expect(tooltip.yTipBox.content).to.equal(8363);
   });
 
-  it('show xTip and yTip', () => {
+  it('show xTip and yTip, snap = false', () => {
     chart.destroy();
     chart = new F2.Chart({
       id: 'chart-tooltip',
@@ -478,6 +478,52 @@ describe('Tooltip crosshairs', function() {
     expect(tooltip.yTipBox.container.get('visible')).to.be.false;
   });
 
+  it('show xTip and yTip, snap = true', () => {
+    chart.destroy();
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data, {
+      date: {
+        tickCount: 3,
+        range: [ 0, 1 ]
+      }
+    });
+    chart.line().position('date*steps');
+    chart.tooltip({
+      showXTip: true,
+      showYTip: true,
+      showTooltipMarker: false,
+      snap: true,
+      crosshairsType: 'xy',
+      yTip(val) {
+        return {
+          text: Math.round(val)
+        };
+      }
+    });
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-21', steps: 59 });
+    chart.showTooltip({
+      x: point.x,
+      y: point.y - 230
+    });
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTipBox: xTip, yTipBox: yTip, crosshairsShapeX } = tooltip;
+
+    expect(xTip).not.to.be.undefined;
+    expect(yTip).not.to.be.undefined;
+    expect(xTip.content).to.equal('2018-04-21');
+    expect(yTip.content).to.equal(59);
+    expect(crosshairsShapeX.get('y')).to.equal(point.y);
+  });
+
   it('show yTip in transposed coordinate', () => {
     chart.destroy();
     chart = new F2.Chart({
@@ -508,6 +554,71 @@ describe('Tooltip crosshairs', function() {
     expect(yTip.content).to.equal('2018-04-22');
     // expect(snapEqual(yTip.x, 39.068572998046875)).to.be.true;
     expect(snapEqual(yTip.y, 227.91666666666669)).to.be.true;
+  });
+
+  it('show xTip, yTip in transposed coordinate, snap = false', () => {
+    chart.destroy();
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data);
+    chart.coord({
+      transposed: true
+    });
+    chart.interval().position('date*steps');
+    chart.tooltip({
+      showYTip: true,
+      showXTip: true,
+      xTip(val) {
+        return parseInt(val);
+      }
+    });
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTipBox: xTip, yTipBox: yTip } = tooltip;
+
+    expect(yTip).not.to.be.undefined;
+    expect(yTip.content).to.equal('2018-04-22');
+    expect(snapEqual(yTip.y, 227.91666666666669)).to.be.true;
+    expect(xTip.content).to.equal(4999);
+  });
+
+  it('show xTip in transposed coordinate, snap = true', () => {
+    chart.destroy();
+    chart = new F2.Chart({
+      id: 'chart-tooltip',
+      width: 400,
+      height: 300,
+      plugins: Tooltip,
+      pixelRatio: 2
+    });
+    chart.source(data);
+    chart.coord({
+      transposed: true
+    });
+    chart.interval().position('date*steps');
+    chart.tooltip({
+      showXTip: true,
+      snap: true
+    });
+    chart.render();
+    const point = chart.getPosition({ date: '2018-04-22', steps: 2515 });
+    chart.showTooltip(point);
+
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    const { xTipBox: xTip } = tooltip;
+
+    expect(xTip.content).to.equal('2515');
+
     chart.destroy();
     document.body.removeChild(canvas);
   });

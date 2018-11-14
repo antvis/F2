@@ -45,7 +45,8 @@ Global.tooltip = Util.deepMix({
     lineWidth: 1,
     stroke: '#fff'
   },
-  layout: 'horizontal'
+  layout: 'horizontal',
+  snap: false
 }, Global.tooltip || {});
 
 function _getTooltipValueScale(geom) {
@@ -264,16 +265,28 @@ class TooltipController {
     const chart = this.chart;
     const coord = chart.get('coord');
     const yScale = chart.getYScales()[0];
+    const snap = cfg.snap;
 
-    if (yScale.isLinear && !coord.transposed) {
+    if (snap === false && yScale.isLinear) {
       const invertPoint = coord.invertPoint(point);
-      const yTip = yScale.invert(invertPoint.y);
-      const yTipPosY = point.y;
       const plot = chart.get('plotRange');
+
+      let tip;
+      let pos;
       if (Helper.isPointInPlot(point, plot)) {
-        tooltip.setYTipContent(yTip);
-        tooltip.setYTipPosition(yTipPosY);
-        tooltip.setXCrosshairPosition(yTipPosY);
+        if (coord.transposed) {
+          tip = yScale.invert(invertPoint.x);
+          pos = point.x;
+          tooltip.setXTipContent(tip);
+          tooltip.setXTipPosition(pos);
+          tooltip.setYCrosshairPosition(pos);
+        } else {
+          tip = yScale.invert(invertPoint.y);
+          pos = point.y;
+          tooltip.setYTipContent(tip);
+          tooltip.setYTipPosition(pos);
+          tooltip.setXCrosshairPosition(pos);
+        }
       }
     }
 
@@ -288,7 +301,7 @@ class TooltipController {
       });
     }
     if (isEqual(lastActive, items)) {
-      if (cfg.crosshairsType === 'y' || cfg.crosshairsType === 'xy' || cfg.showYTip) {
+      if (snap === false && (Util.directionEnabled(cfg.crosshairsType, 'y') || cfg.showYTip)) {
         const canvas = this.chart.get('canvas');
         canvas.draw();
       }
@@ -313,22 +326,34 @@ class TooltipController {
     if (items.length > 1) {
       xTipPosX = (items[0].x + items[items.length - 1].x) / 2;
     }
-    const xTip = coord.transposed ? first.value : title;
     tooltip.setContent(title, items, coord.transposed);
     tooltip.setPosition(items, point);
-    tooltip.setXTipContent(xTip);
-    tooltip.setXTipPosition(xTipPosX);
-    tooltip.setYCrosshairPosition(first.x);
 
     if (coord.transposed) {
       let yTipPosY = first.y;
       if (items.length > 1) {
         yTipPosY = (items[0].y + items[items.length - 1].y) / 2;
       }
-      const yTip = coord.transposed ? title : first.value;
-      tooltip.setYTipContent(yTip);
+      tooltip.setYTipContent(title);
       tooltip.setYTipPosition(yTipPosY);
       tooltip.setXCrosshairPosition(yTipPosY);
+
+      if (snap) {
+        tooltip.setXTipContent(first.value);
+        tooltip.setXTipPosition(xTipPosX);
+        tooltip.setYCrosshairPosition(xTipPosX);
+      }
+
+    } else {
+      tooltip.setXTipContent(title);
+      tooltip.setXTipPosition(xTipPosX);
+      tooltip.setYCrosshairPosition(xTipPosX);
+
+      if (snap) {
+        tooltip.setYTipContent(first.value);
+        tooltip.setYTipPosition(first.y);
+        tooltip.setXCrosshairPosition(first.y);
+      }
     }
 
     const markerItems = tooltipMarkerCfg.items;
