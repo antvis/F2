@@ -1,3 +1,9 @@
+#### 3.1.22 (2018-11-15)
+
+##### Bug Fixes
+
+* Enhance the judgment of the browser environment for react native.
+
 #### 3.1.21 (2018-08-21)
 
 ##### Bug Fixes
