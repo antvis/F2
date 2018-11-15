@@ -55,7 +55,7 @@ DomUtil = {
   isWx: (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'),  // weixin miniprogram
   isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
   isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
-  isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined'), // in browser
+  isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined') && (typeof window.sessionStorage !== 'undefined'), // in browser
   getPixelRatio() {
     return window && window.devicePixelRatio || 1;
   },
