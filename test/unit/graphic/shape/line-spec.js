@@ -74,10 +74,10 @@ describe('Line', function() {
 
   it('getBBox', function() {
     const bbox = line.getBBox();
-    expect(bbox.x).to.equal(50);
-    expect(bbox.y).to.equal(50);
-    expect(bbox.width).to.equal(50);
-    expect(bbox.height).to.equal(50);
+    expect(bbox.x).to.equal(49);
+    expect(bbox.y).to.equal(49);
+    expect(bbox.width).to.equal(52);
+    expect(bbox.height).to.equal(52);
   });
 
   it('destroy', function() {

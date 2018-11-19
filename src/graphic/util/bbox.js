@@ -64,7 +64,7 @@ function cubicBezierBounds(c) {
 }
 
 module.exports = {
-  getBBoxFromPoints(points) {
+  getBBoxFromPoints(points, lineWidth) {
     if (points.length === 0) {
       return;
     }
@@ -83,19 +83,23 @@ module.exports = {
       bottom = Math.max(bottom, p.y);
     }
 
+    lineWidth = (lineWidth / 2) || 0;
+
     return {
-      minX: left,
-      minY: top,
-      maxX: right,
-      maxY: bottom
+      minX: left - lineWidth,
+      minY: top - lineWidth,
+      maxX: right + lineWidth,
+      maxY: bottom + lineWidth
     };
   },
-  getBBoxFromLine(x0, y0, x1, y1) {
+  getBBoxFromLine(x0, y0, x1, y1, lineWidth) {
+    lineWidth = (lineWidth / 2) || 0;
+
     return {
-      minX: Math.min(x0, x1),
-      minY: Math.min(y0, y1),
-      maxX: Math.max(x0, x1),
-      maxY: Math.max(y0, y1)
+      minX: Math.min(x0, x1) - lineWidth,
+      minY: Math.min(y0, y1) - lineWidth,
+      maxX: Math.max(x0, x1) + lineWidth,
+      maxY: Math.max(y0, y1) + lineWidth
     };
   },
   getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise) {
@@ -159,7 +163,7 @@ module.exports = {
       maxY: max[1]
     };
   },
-  getBBoxFromBezierGroup(points) {
+  getBBoxFromBezierGroup(points, lineWidth) {
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
@@ -180,11 +184,13 @@ module.exports = {
       }
     }
 
+    lineWidth = (lineWidth / 2) || 0;
+
     return {
-      minX,
-      minY,
-      maxX,
-      maxY
+      minX: minX - lineWidth,
+      minY: minY - lineWidth,
+      maxX: maxX + lineWidth,
+      maxY: maxY + lineWidth
     };
   }
 };

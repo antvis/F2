@@ -77,6 +77,7 @@ class Timeline {
             newValue = value;
           }
           shape._attrs.attrs[key] = newValue;
+          shape._attrs.bbox = null; // should clear calculated bbox
         }
       }
 
