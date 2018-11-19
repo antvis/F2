@@ -12,6 +12,10 @@ const canvas = new Canvas({
   height: 200
 });
 
+function snapEqual(v1, v2) {
+  return Math.abs(v1 - v2) < 0.01;
+}
+
 describe('Polyline', function() {
   const polyline = new Polyline({
     attrs: {
@@ -42,10 +46,10 @@ describe('Polyline', function() {
 
   it('getBBox', function() {
     const bbox = polyline.getBBox();
-    expect(bbox.x).to.equal(10);
-    expect(bbox.y).to.equal(10);
-    expect(bbox.width).to.equal(113);
-    expect(bbox.height).to.equal(70);
+    expect(bbox.x).to.equal(9.5);
+    expect(bbox.y).to.equal(9.5);
+    expect(bbox.width).to.equal(114);
+    expect(bbox.height).to.equal(71);
   });
 
   it('destroy', function() {
@@ -85,10 +89,10 @@ describe('Smooth Polyline', function() {
 
   it('getBBox', function() {
     const bbox = line.getBBox();
-    expect(bbox.x).to.equal(10);
-    expect(+bbox.y.toFixed(1)).to.equal(88.5);
-    expect(bbox.width).to.equal(89.99739841364499);
-    expect(bbox.height).to.equal(31.502917125608604);
+    expect(bbox.x).to.equal(8);
+    expect(snapEqual(bbox.y, 86.49273479496628)).to.be.true;
+    expect(snapEqual(bbox.width, 93.99739841364499)).to.be.true;
+    expect(snapEqual(bbox.height, 35.502917125608604)).to.be.true;
   });
 
   it('destroy', function() {

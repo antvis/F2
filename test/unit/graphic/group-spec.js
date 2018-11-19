@@ -342,10 +342,10 @@ describe('Group', function() {
     canvas.draw();
     expect(group.getChildren().length).to.equal(4);
     expect(canvas.getChildren().length).to.equal(1);
-    expect(bbox.x).to.equal(10);
-    expect(bbox.y).to.equal(10);
-    expect(bbox.width).to.equal(109.1171875);
-    expect(bbox.height).to.equal(84);
+    expect(bbox.x).to.equal(9.5);
+    expect(bbox.y).to.equal(9.5);
+    expect(bbox.width).to.equal(109.6171875);
+    expect(bbox.height).to.equal(84.5);
     group.destroy();
   });
 

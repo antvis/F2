@@ -29,8 +29,8 @@ class Line extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x1, y1, x2, y2 } = attrs;
-    return bbox.getBBoxFromLine(x1, y1, x2, y2);
+    const { x1, y1, x2, y2, lineWidth } = attrs;
+    return bbox.getBBoxFromLine(x1, y1, x2, y2, lineWidth);
   }
 }
 
