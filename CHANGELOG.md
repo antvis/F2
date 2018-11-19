@@ -1,4 +1,4 @@
-#### 3.3.0-beta.1 (2018-11-11)
+#### 3.3.0-beta.4 (2018-11-19)
 
 ##### Chores
 
@@ -7,6 +7,7 @@
 
 ##### New Features
 
+* support snap property for crosshairs. ([267e59eb](https://github.com/antvis/f2/commit/267e59ebe249ebc38bad2abed0f3e6ca29933d4c))
 * Guide component support change visible. ([1ba0db13](https://github.com/antvis/f2/commit/1ba0db13eaea3d24c82cb16646136636e032cfdb))
 * PieLabel plugin support active selected shape. ([fc06bca3](https://github.com/antvis/f2/commit/fc06bca3bd07f8ffe32935ab7ec9ad0b64ed9dd8))
 * optimize category scale's normalization of non-drawing data. For pan and swipe interaction. ([14556a29](https://github.com/antvis/f2/commit/14556a294b3922c5219b0017a5437898bbd3fa4b))
@@ -20,7 +21,9 @@
 
 ##### Bug Fixes
 
+* fix the gradient color bug. Closed [#389](https://github.com/antvis/f2/pull/389). ([5cf6e442](https://github.com/antvis/f2/commit/5cf6e44248507e18b4f4ac5fbdee33fe3407a9f9))
 * fix pinch errors of category scale. Closed [#342](https://github.com/antvis/f2/pull/342). ([d41802f2](https://github.com/antvis/f2/commit/d41802f294a01c70af5f8b178c1c8362add395d9))
+
 
 #### 3.2.4 (2018-10-25)
 
