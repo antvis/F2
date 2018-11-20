@@ -2,7 +2,7 @@ const Theme = require('./theme');
 const Util = require('./util/common');
 
 const Global = {
-  version: '3.3.0-beta.4',
+  version: '3.3.0',
   trackable: true,
   scales: {},
   widthRatio: {
