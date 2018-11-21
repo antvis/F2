@@ -302,11 +302,14 @@ class AxisController {
           Util.each(verticalTicks, verticalTick => {
             const x = dimType === 'x' ? tick.value : verticalTick.value;
             const y = dimType === 'x' ? verticalTick.value : tick.value;
-            const point = coord.convertPoint({
-              x,
-              y
-            });
-            subPoints.push(point);
+
+            if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+              const point = coord.convertPoint({
+                x,
+                y
+              });
+              subPoints.push(point);
+            }
           });
 
           gridPoints.push({
