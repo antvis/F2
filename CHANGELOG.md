@@ -1,3 +1,10 @@
+#### 3.3.1 (2018-11-30)
+
+##### Bug Fixes
+
+* Arc shape support fill. Closed [#429](https://github.com/antvis/f2/pull/429). ([dc4981fc](https://github.com/antvis/f2/commit/dc4981fced90488ca98108c41e3a39e2463b1813))
+* filter grid points which not in the range 0 to 1. ([f25b1300](https://github.com/antvis/f2/commit/f25b13007db21ce91c9692ac630241a27b820747))
+
 #### 3.3.0 (2018-11-20)
 
 ##### Chores
