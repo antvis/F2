@@ -5,6 +5,7 @@ class Arc extends Shape {
   _initProperties() {
     super._initProperties();
     this._attrs.canStroke = true;
+    this._attrs.canFill = true;
     this._attrs.type = 'arc';
   }
 

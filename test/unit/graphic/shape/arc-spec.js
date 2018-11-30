@@ -36,6 +36,8 @@ describe('Arc', function() {
     expect(arc.attr('clockwise')).to.be.false;
     expect(arc.attr('lineWidth')).to.equal(2);
     expect(arc.attr('stroke')).to.equal('#18901f');
+    expect(arc.get('canFill')).to.be.true;
+    expect(arc.get('canStroke')).to.be.true;
   });
 
   it('draw', function() {
