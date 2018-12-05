@@ -100,7 +100,8 @@ class Abastract {
     Util.each(gridPoints, function(subPoints, index) {
       if (Util.isFunction(grid)) {
         const tick = ticks[index] || {};
-        gridCfg = Util.mix({}, Global._defaultAxis.grid, grid(tick.text, index, count));
+        const executedGrid = grid(tick.text, index, count);
+        gridCfg = executedGrid ? Util.mix({}, Global._defaultAxis.grid, executedGrid) : null;
       }
 
       if (gridCfg) {
