@@ -52,5 +52,8 @@ describe('Issue 437', () => {
     const children = axisController.backPlot.get('children');
     expect(children.length).to.equal(1); // grid 存储在 backPlot 图层中
     expect(children[0]._id).to.equal('axis-y0-grid-30');
+
+    chart.destroy();
+    document.body.removeChild(canvas);
   });
 });

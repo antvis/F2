@@ -80,6 +80,7 @@ class ScaleController {
     let scale;
     if (!data || !data.length) {
       if (def && def.type) {
+        def.field = field;
         scale = new Scale[SCALE_TYPES_MAP[def.type]](def);
       } else {
         scale = new Scale.Identity({
