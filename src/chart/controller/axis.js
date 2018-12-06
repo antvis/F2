@@ -149,11 +149,7 @@ class AxisController {
     Util.each(ticks, (tick, index) => {
       if (Util.isFunction(label)) {
         const executedLabel = label(tick.text, index, count);
-        if (executedLabel) {
-          labelCfg = Util.mix({}, Global._defaultAxis.label, executedLabel);
-        } else {
-          labelCfg = null;
-        }
+        labelCfg = executedLabel ? Util.mix({}, Global._defaultAxis.label, executedLabel) : null;
       }
       if (labelCfg) {
         const textStyle = {};
