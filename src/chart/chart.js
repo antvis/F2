@@ -530,9 +530,9 @@ class Chart extends Base {
 
     this._initGeoms(geoms); // init all geometry instances
 
-    this.get('syncY') && this._syncYScales();
-
     this._adjustScale(); // do some adjust for data
+
+    this.get('syncY') && this._syncYScales();
 
     Chart.plugins.notify(this, 'beforeGeomDraw');
     this._renderAxis();
