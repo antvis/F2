@@ -25,23 +25,11 @@
     id: 'mountNode',
     width: window.innerWidth,
     height: window.innerWidth * 0.64,
-    pixelRatio: window.devicePixelRatio
+    pixelRatio: window.devicePixelRatio,
+    syncY: true
   });
 
-  chart.source(data, {
-    tem: {
-      min: 0,
-      max: 30,
-      tickInterval: 10,
-      nice: false
-    },
-    rain: {
-      min: 0,
-      max: 30,
-      tickInterval: 10,
-      nice: false
-    }
-  });
+  chart.source(data);
 
   // 配置刻度文字大小，供PC端显示用(移动端可以使用默认值20px)
   chart.axis('time', {

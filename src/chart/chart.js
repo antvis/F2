@@ -187,8 +187,8 @@ class Chart extends Base {
     max = Math.max.apply(null, max);
 
     Util.each(syncScales, scale => {
-      scale.min = min;
-      scale.max = max;
+      scale.change({ min });
+      scale.change({ max });
     });
   }
 
