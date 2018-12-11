@@ -80,6 +80,7 @@ class controller {
       };
 
       const textGroup = new Group({
+        context: chart.get('canvas').get('context'), // 兼容 node、小程序环境
         data: _origin // 存储原始数据
       });
       const textAttrs = {
