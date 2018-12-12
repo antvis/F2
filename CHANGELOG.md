@@ -1,3 +1,16 @@
+#### 3.3.2-beta.2 (2018-12-12)
+
+##### New Features
+
+* add label1offsetY, label2OffsetY to adjust label position for pie-label. ([7cac3ce4](https://github.com/antvis/f2/commit/7cac3ce4f25171de03063012367bfaccad837043))
+
+##### Bug Fixes
+
+* pieLabel getBBox() should compact node and mini program env. Closed [#448](https://github.com/antvis/f2/pull/448). ([29ebd491](https://github.com/antvis/f2/commit/29ebd491746910e692ff4d3d8b00e7ff41d5cb71))
+* fix the bug that axis configuration not work when data is empty. Closed [#439](https://github.com/antvis/f2/pull/439). ([594e4f84](https://github.com/antvis/f2/commit/594e4f84344f557814b9c788c65cb7d2b410b81e))
+* fix the bug that grid callback return null did not work. Closed [#437](https://github.com/antvis/f2/pull/437) ([717f2bf6](https://github.com/antvis/f2/commit/717f2bf664f02ffc5ef402db12b22412288a086e))
+* **syncYScales:** scale should re-calculate the ticks ([ef68c0c8](https://github.com/antvis/f2/commit/ef68c0c84e46ebbd0b919d4db459a14ff5cc9ee7))
+
 #### 3.3.1 (2018-11-30)
 
 ##### Bug Fixes
