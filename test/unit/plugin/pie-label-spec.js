@@ -57,6 +57,8 @@ describe('PieLabel', () => {
     });
     chart.pieLabel({
       skipOverlapLabels: true,
+      label1OffsetY: 0,
+      label2OffsetY: 0,
       label1(data, color) {
         return {
           text: data.memo,
@@ -91,6 +93,7 @@ describe('PieLabel', () => {
   it('pieLabel, adjust overlap labels', function() {
     chart.pieLabel({
       triggerOn: 'click',
+      label1OffsetY: 0,
       onClick(ev) {
         clickData = ev.data;
       },
@@ -127,6 +130,7 @@ describe('PieLabel', () => {
   it('event trigger and active the selected shape', function() {
     chart.pieLabel({
       triggerOn: 'click',
+      label1OffsetY: 0,
       label1(data, color) {
         return {
           text: data.memo,
