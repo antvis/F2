@@ -13,7 +13,9 @@ const DEFAULT_CFG = {
     offset: 1,
     appendRadius: 8,
     fillOpacity: 0.5
-  }
+  },
+  label1OffsetY: -1,
+  label2OffsetY: 1
 };
 
 function getEndPoint(center, angle, r) {
@@ -59,7 +61,7 @@ class controller {
     ]; // 存储左右 labels
     const geom = chart.get('geoms')[0];
     const shapes = geom.get('container').get('children');
-    const { anchorOffset, inflectionOffset, label1, label2, lineHeight, skipOverlapLabels } = pieLabelCfg;
+    const { anchorOffset, inflectionOffset, label1, label2, lineHeight, skipOverlapLabels, label1OffsetY, label2OffsetY } = pieLabelCfg;
     const coord = chart.get('coord');
     const { center, circleRadius: radius } = coord;
     shapes.forEach(shape => {
@@ -80,6 +82,7 @@ class controller {
       };
 
       const textGroup = new Group({
+        context: chart.get('canvas').get('context'), // 兼容 node、小程序环境
         data: _origin // 存储原始数据
       });
       const textAttrs = {
@@ -94,7 +97,8 @@ class controller {
           attrs: Util.mix({
             textBaseline: 'bottom'
           }, textAttrs, label1(_origin, color)),
-          data: _origin // 存储原始数据
+          data: _origin, // 存储原始数据
+          offsetY: label1OffsetY
         });
       }
 
@@ -103,7 +107,8 @@ class controller {
           attrs: Util.mix({
             textBaseline: 'top'
           }, textAttrs, label2(_origin, color)),
-          data: _origin // 存储原始数据
+          data: _origin, // 存储原始数据
+          offsetY: label2OffsetY
         });
       }
       label.textGroup = textGroup;
@@ -188,12 +193,12 @@ class controller {
     const children = textGroup.get('children');
     const textAttrs = {
       textAlign: label._side === 'left' ? 'left' : 'right',
-      x: label._side === 'left' ? sidePadding : canvasWidth - sidePadding,
-      y
+      x: label._side === 'left' ? sidePadding : canvasWidth - sidePadding
     };
 
     children.forEach(child => {
       child.attr(textAttrs);
+      child.attr('y', y + child.get('offsetY'));
     });
 
     return textGroup;
