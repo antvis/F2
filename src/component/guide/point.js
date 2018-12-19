@@ -18,6 +18,8 @@ class Point extends GuideBase {
   render(coord, container) {
     const position = this.parsePoint(coord, this.position);
 
+    if (!position) return null;
+
     const shape = container.addShape('Circle', {
       className: 'guide-point',
       attrs: Util.mix({
