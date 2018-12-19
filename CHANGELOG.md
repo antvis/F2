@@ -1,4 +1,4 @@
-#### 3.3.2-beta.2 (2018-12-12)
+#### 3.3.2 (2018-12-19)
 
 ##### New Features
 
@@ -6,10 +6,12 @@
 
 ##### Bug Fixes
 
+* Guide.Point, fix the bug caused by parsePoint() return null. Closed [#458](https://github.com/antvis/f2/pull/458). ([2edbb03f](https://github.com/antvis/f2/commit/2edbb03f243cfaf564f4c9e41e946627070042e7))
 * pieLabel getBBox() should compact node and mini program env. Closed [#448](https://github.com/antvis/f2/pull/448). ([29ebd491](https://github.com/antvis/f2/commit/29ebd491746910e692ff4d3d8b00e7ff41d5cb71))
 * fix the bug that axis configuration not work when data is empty. Closed [#439](https://github.com/antvis/f2/pull/439). ([594e4f84](https://github.com/antvis/f2/commit/594e4f84344f557814b9c788c65cb7d2b410b81e))
 * fix the bug that grid callback return null did not work. Closed [#437](https://github.com/antvis/f2/pull/437) ([717f2bf6](https://github.com/antvis/f2/commit/717f2bf664f02ffc5ef402db12b22412288a086e))
 * **syncYScales:** scale should re-calculate the ticks ([ef68c0c8](https://github.com/antvis/f2/commit/ef68c0c84e46ebbd0b919d4db459a14ff5cc9ee7))
+
 
 #### 3.3.1 (2018-11-30)
 
