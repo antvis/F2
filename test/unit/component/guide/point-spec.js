@@ -53,9 +53,24 @@ describe('Guide.Point', function() {
     expect(children[0].attr('x')).to.equal(60);
     expect(children[0].attr('y')).to.equal(400);
     expect(children[0].attr('r')).to.equal(3);
+  });
+
+  it('guide point, limitInPlot', function() {
+    group.clear();
+    const point = new Point({
+      xScale,
+      yScales: [ yScale ],
+      position: [ 0, -50 ], // 不在画布范围内
+      limitInPlot: true
+    });
+    const result = point.render(coord, group);
+    canvas.draw();
+
+    expect(result).to.be.null;
+    const children = group.get('children');
+    expect(children.length).to.equal(0);
 
     canvas.destroy();
     document.body.removeChild(canvas1);
-
   });
 });
