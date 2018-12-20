@@ -177,8 +177,9 @@ class Tooltip {
   setXTipPosition(pos) {
     const { showXTip, canvas, plotRange, xTipBox, crosshairsShapeY } = this;
     if (showXTip) {
-      const el = canvas.get('el');
-      const canvasHeight = Util.getHeight(el);
+      // const el = canvas.get('el');
+      // const canvasHeight = Util.getHeight(el);
+      const canvasHeight = canvas.get('height');
       const xTipWidth = xTipBox.getWidth();
       const xTipHeight = xTipBox.getHeight();
       let posX = pos - (xTipWidth / 2);
