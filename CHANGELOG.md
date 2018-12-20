@@ -1,3 +1,9 @@
+#### 3.3.3 (2018-12-20)
+
+##### New Features
+
+* **tooltip:**  miniprogram support xTip. ([e9115c38](https://github.com/antvis/f2/commit/e9115c385d09c04b670e9970b496e5f1f58698be))
+
 #### 3.3.2 (2018-12-19)
 
 ##### New Features
