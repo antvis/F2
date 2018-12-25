@@ -115,6 +115,17 @@ $ npm run bundler
 
 如需提交代码，请遵从我们的[贡献指南](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md)。
 
+## 体验改进计划说明
+
+为了更好服务用户，F2 会将 URL 和版本信息发送回 AntV 服务器：https://kcart.alipay.com/web/bi.do
+
+除了 URL 与 F2 版本信息外，不会收集任何其他信息，一切为了能对 F2 的运行情况有更多了解，以更好服务于用户。如有担心，可以通过下面的代码关闭：
+
+```js
+// 关闭 F2 的体验改进计划打点请求
+F2.track(false)
+```
+
 ## License
 
 [MIT license](./LICENSE).
