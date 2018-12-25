@@ -124,6 +124,17 @@ Please let us know how can we help. Do check out [issues](https://github.com/ant
 
 To become a contributor, please follow our [contributing guide](https://github.com/antvis/f2/blob/master/CONTRIBUTING.md).
 
+## Experience Improvement Program Description
+
+In order to serve the users better, F2 will send the URL and version information back to the AntV server:
+https://kcart.alipay.com/web/bi.do
+Except for URL and F2 version information, no other information will be collected. You can always turn it off with the following code:
+
+```js
+// Unable the tracking
+F2.track(false)
+```
+
 ## License
 
 [MIT license](./LICENSE).
