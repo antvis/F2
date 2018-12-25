@@ -126,8 +126,8 @@ To become a contributor, please follow our [contributing guide](https://github.c
 
 ## Experience Improvement Program Description
 
-In order to serve the users better, F2 will send the URL and version information back to the AntV server:
-https://kcart.alipay.com/web/bi.do
+In order to serve the users better, F2 will send the URL and version information back to the AntV server: https://kcart.alipay.com/web/bi.do
+
 Except for URL and F2 version information, no other information will be collected. You can always turn it off with the following code:
 
 ```js
