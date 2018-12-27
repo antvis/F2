@@ -126,14 +126,8 @@ To become a contributor, please follow our [contributing guide](https://github.c
 
 ## Experience Improvement Program Description
 
-In order to serve the users better, F2 will send the URL and version information back to the AntV server: https://kcart.alipay.com/web/bi.do
+Since version 3.1.12 (released on 2018-06-20), we add `F2.track(true)` method for our user experience improvement program. But now the program has finish, so we remove the method from F2 since version 3.3.4. We are very sorry if it has caused trouble for you.
 
-Except for URL and F2 version information, no other information will be collected. You can always turn it off with the following code:
-
-```js
-// Unable the tracking
-F2.track(false)
-```
 
 ## License
 

@@ -2,8 +2,7 @@ const Theme = require('./theme');
 const Util = require('./util/common');
 
 const Global = {
-  version: '3.3.3',
-  trackable: true,
+  version: '3.3.4',
   scales: {},
   widthRatio: {
     column: 1 / 2,
