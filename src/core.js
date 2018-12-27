@@ -8,9 +8,14 @@ Core.Shape = require('./geom/shape/shape');
 Core.G = require('./graphic/index');
 Core.Util = require('./util/common');
 
-Core.track = function(enable) {
-  Global.trackable = enable;
+// Core.track = function(enable) {
+//   Global.trackable = enable;
+// };
+// require('./track');
+
+// 2018-12-27 关闭打点
+Core.track = () => {
+  return null;
 };
-require('./track');
 
 module.exports = Core;

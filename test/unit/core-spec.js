@@ -6,10 +6,10 @@ describe('Core', function() {
     expect(Core).to.have.all.keys([ 'Global', 'Chart', 'Shape', 'G', 'Util', 'track', 'version' ]);
   });
 
-  it('close track', function() {
-    expect(Core.Global.trackable).to.be.true; // default is open
+  it('no more track', function() {
+    expect(Core.Global.trackable).to.be.undefined; // default is open
 
     Core.track(false);
-    expect(Core.Global.trackable).to.be.false;
+    expect(Core.Global.trackable).to.be.undefined;
   });
 });
