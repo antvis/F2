@@ -1,3 +1,9 @@
+#### 3.3.4 (2018-12-27)
+
+##### Chores
+
+*  close F2.track(). ([ae6331b5](https://github.com/antvis/f2/commit/ae6331b5152bdde3ca763b4886997213e29bce7b))
+
 #### 3.3.3 (2018-12-20)
 
 ##### New Features
