@@ -2,6 +2,19 @@ const Shape = require('../shape');
 const Smooth = require('../util/smooth');
 const bbox = require('../util/bbox');
 
+// filter the point which x or y is NaN
+function _filterPoints(points) {
+  const filteredPoints = [];
+  for (let i = 0, len = points.length; i < len; i++) {
+    const point = points[i];
+    if (!isNaN(point.x) && !isNaN(point.y)) {
+      filteredPoints.push(point);
+    }
+  }
+
+  return filteredPoints;
+}
+
 class Polyline extends Shape {
   _initProperties() {
     super._initProperties();
@@ -23,14 +36,7 @@ class Polyline extends Shape {
     const attrs = self.get('attrs');
     const { points, smooth } = attrs;
 
-    const filteredPoints = [];
-    // filter the point which x or y is NaN
-    for (let i = 0, len = points.length; i < len; i++) {
-      const point = points[i];
-      if (!isNaN(point.x) && !isNaN(point.y)) {
-        filteredPoints.push(point);
-      }
-    }
+    const filteredPoints = _filterPoints(points);
 
     context.beginPath();
     if (filteredPoints.length) {
@@ -60,17 +66,18 @@ class Polyline extends Shape {
     const attrs = this.get('attrs');
     const { points, smooth, lineWidth } = attrs;
 
+    const filteredPoints = _filterPoints(points);
     if (smooth) {
       const newPoints = [];
       const constaint = [
         [ 0, 0 ],
         [ 1, 1 ]
       ];
-      const sps = Smooth.smooth(points, false, constaint);
+      const sps = Smooth.smooth(filteredPoints, false, constaint);
       for (let i = 0, n = sps.length; i < n; i++) {
         const sp = sps[i];
         if (i === 0) {
-          newPoints.push([ points[0].x, points[0].y, sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
+          newPoints.push([ filteredPoints[0].x, filteredPoints[0].y, sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
         } else {
           const lastPoint = sps[ i - 1 ];
           newPoints.push([ lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
@@ -78,7 +85,7 @@ class Polyline extends Shape {
       }
       return bbox.getBBoxFromBezierGroup(newPoints, lineWidth);
     }
-    return bbox.getBBoxFromPoints(points, lineWidth);
+    return bbox.getBBoxFromPoints(filteredPoints, lineWidth);
   }
 }
 
