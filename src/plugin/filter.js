@@ -8,7 +8,7 @@ module.exports = {
   beforeGeomInit(chart) {
     chart.set('limitInPlot', true);
 
-    const data = chart.get('data');
+    const data = chart.get('filteredData');
     const colDefs = chart.get('colDefs');
     if (!colDefs) return data;
 
