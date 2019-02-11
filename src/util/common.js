@@ -1,6 +1,7 @@
 /**
  * @fileOverview Utility for F2
- * @author dxq613@gmail.com
+ * @author dxq613 @gmail.com
+ * @author sima.zhang1990@gmail.com
  */
 const DomUtil = require('./dom');
 const Util = {
