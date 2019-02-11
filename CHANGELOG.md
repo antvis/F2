@@ -1,3 +1,26 @@
+#### 3.3.5 (2019-02-11)
+
+##### Chores
+
+*  npm publish ignore src folder. Closed [#472](https://github.com/antvis/f2/pull/472) ([7e4a7616](https://github.com/antvis/f2/commit/7e4a7616728497899d662bf9f544db2a42f80aae))
+
+##### New Features
+
+*  add `shadow` graphic property for ant-mini-program. Closed [#486](https://github.com/antvis/f2/pull/486) ([b558eada](https://github.com/antvis/f2/commit/b558eada94993267e6c5c67190f1b93abfcf9152))
+
+##### Bug Fixes
+
+*  legend filter should work during pan or pinch. Closed [#467](https://github.com/antvis/f2/pull/467) ([3be0359f](https://github.com/antvis/f2/commit/3be0359f57fa92745aeb2d20fd24e432cb25e454))
+*  should filter the points when calculate the polyline shape's bounding box. Closed [#468](https://github.com/antvis/f2/pull/468) ([00883059](https://github.com/antvis/f2/commit/00883059895ec7246676185ab670eaed167eff36))
+
+##### Other Changes
+
+*  update @antv/adjust version. Related to [#488](https://github.com/antvis/f2/pull/488) ([41a93d8c](https://github.com/antvis/f2/commit/41a93d8cf4eadae11890bdef65b1f2d4686cf7e9))
+
+##### Tests
+
+*  add test case for issue 488, the bug has fixed at https://github.com/antvis/adjust/pull/2, Closed [#488](https://github.com/antvis/f2/pull/488). ([e4381e0a](https://github.com/antvis/f2/commit/e4381e0a553f39d4bc390ebb1dc3edbefdfbc887))
+
 #### 3.3.4 (2018-12-27)
 
 ##### Chores
