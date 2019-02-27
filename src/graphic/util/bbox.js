@@ -104,7 +104,7 @@ module.exports = {
   },
   getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise) {
     const diff = Math.abs(startAngle - endAngle);
-    if (diff % Math.PI * 2 < 1e-4 && diff > 1e-4) {
+    if (diff % (Math.PI * 2) < 1e-4 && diff > 1e-4) {
       // Is a circle
       return {
         minX: x - r,
