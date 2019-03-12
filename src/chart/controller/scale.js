@@ -66,8 +66,7 @@ class ScaleController {
         cfg.nice = true;
       }
     }
-
-    if (type === 'cat' || type === 'timeCat') {
+    else {
       cfg.isRounding = false; // used for tickCount calculation
     }
 
