@@ -1,3 +1,16 @@
+#### 3.3.6 (2019-03-14)
+
+##### Bug Fixes
+
+* **bbox.js:**  getBBoxFromArc方法对于整圆的判断错误，导致半圆弧的最小包围盒计算错误 ([8763929f](https://github.com/antvis/f2/commit/8763929f71b6f7620044e2be662fb7fe41da5253))
+*  fix the error when pie chart data difference is very large. Closed [#514](https://github.com/antvis/f2/pull/514) ([b3bf2932](https://github.com/antvis/f2/commit/b3bf293253ddcf91ca43de19105a856ea0f123ff))
+*  add null value judgment to prevent error. ([c9be938a](https://github.com/antvis/f2/commit/c9be938a864264167c1d2a0a6aeae2beb754d824))
+
+##### Other Changes
+
+*  update @antv/scale version ([b09219ef](https://github.com/antvis/f2/commit/b09219ef066f1df5d5884e33e9d0ca8760288fe5))
+*  update @antv/scale version ([002b4b71](https://github.com/antvis/f2/commit/002b4b712799fecf6c29bd3569e6a74037fc82f8))
+
 #### 3.3.5 (2019-02-11)
 
 ##### Chores
