@@ -19,7 +19,7 @@ module.exports = {
       maxRatio = (scale.max - min) / (max - min);
     } else {
       const originValues = limitRange;
-      const values = scale.values;
+      const values = scale.values || [];
       const firstIndex = originValues.indexOf(values[0]);
       const lastIndex = originValues.indexOf(values[values.length - 1]);
       minRatio = firstIndex / (originValues.length - 1);
