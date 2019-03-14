@@ -65,8 +65,7 @@ class ScaleController {
         cfg.max = max;
         cfg.nice = true;
       }
-    }
-    else {
+    } else {
       cfg.isRounding = false; // used for tickCount calculation
     }
 
