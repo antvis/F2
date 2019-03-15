@@ -32,7 +32,7 @@ class Sector extends Shape {
     context.moveTo(unitX * r0 + x, unitY * r0 + y);
     context.lineTo(unitX * r + x, unitY * r + y);
 
-    if (endAngle - startAngle > 0.0001) { // 当扇形的角度非常小的时候，就不进行弧线的绘制
+    if (Math.abs(endAngle - startAngle) > 0.0001) { // 当扇形的角度非常小的时候，就不进行弧线的绘制
       context.arc(x, y, r, startAngle, endAngle, clockwise);
       context.lineTo(Math.cos(endAngle) * r0 + x, Math.sin(endAngle) * r0 + y);
       if (r0 !== 0) {
