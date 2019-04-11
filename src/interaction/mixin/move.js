@@ -104,14 +104,16 @@ module.exports = {
   _handleCatScale(scale, delta, range) {
     const { type, field, values, ticks } = scale;
 
+    const duplicateRemovalValues = Util.uniq(values);
+
     const originValues = this.limitRange[field];
     const lastValueIndex = originValues.length - 1;
-    const currentLength = values.length;
+    const currentLength = duplicateRemovalValues.length;
     const speed = this.speed || 1;
     const step = range / (currentLength * speed);
 
-    const firstIndex = originValues.indexOf(values[0]);
-    const lastIndex = originValues.indexOf(values[currentLength - 1]);
+    const firstIndex = originValues.indexOf(duplicateRemovalValues[0]);
+    const lastIndex = originValues.indexOf(duplicateRemovalValues[currentLength - 1]);
     let minIndex = firstIndex;
     let maxIndex = lastIndex;
 
