@@ -26,7 +26,9 @@ class Arc extends Shape {
     const { x, y, r, startAngle, endAngle, clockwise } = attrs;
 
     context.beginPath();
-    context.arc(x, y, r, startAngle, endAngle, clockwise);
+    if (startAngle !== endAngle) {
+      context.arc(x, y, r, startAngle, endAngle, clockwise);
+    }
   }
 
   calculateBox() {

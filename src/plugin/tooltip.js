@@ -187,17 +187,17 @@ class TooltipController {
     const coord = chart.get('coord');
 
     const defaultCfg = self._setCrosshairsCfg();
-    let cfg = self.cfg;
-    cfg = Util.deepMix({
+    const cfg = self.cfg; // 通过 chart.tooltip() 接口传入的 tooltip 配置项
+    const tooltipCfg = Util.deepMix({
       plotRange,
       frontPlot,
       backPlot,
       canvas,
       fixed: coord.transposed || coord.isPolar
-    }, defaultCfg, cfg);
-    cfg.maxLength = self._getMaxLength(cfg);
-    this.cfg = cfg;
-    const tooltip = new Tooltip(cfg);
+    }, defaultCfg, cfg); // 创建 tooltip 实例需要的配置，不应该修改 this.cfg，即用户传入的配置
+    tooltipCfg.maxLength = self._getMaxLength(tooltipCfg);
+    this._tooltipCfg = tooltipCfg;
+    const tooltip = new Tooltip(tooltipCfg);
     self.tooltip = tooltip;
     self.bindEvents();
   }
@@ -213,7 +213,7 @@ class TooltipController {
 
   _getTooltipMarkerStyle(cfg = {}) {
     const { type, items } = cfg;
-    const tooltipCfg = this.cfg;
+    const tooltipCfg = this._tooltipCfg;
     if (type === 'rect') {
       let x;
       let y;
@@ -259,7 +259,7 @@ class TooltipController {
   _setTooltip(point, items, tooltipMarkerCfg = {}) {
     const lastActive = this._lastActive;
     const tooltip = this.tooltip;
-    const cfg = this.cfg;
+    const cfg = this._tooltipCfg;
     items = _uniqItems(items);
 
     const chart = this.chart;
@@ -374,7 +374,7 @@ class TooltipController {
     let tooltipMarkerType;
     const tooltipMarkerItems = [];
     const items = [];
-    const cfg = self.cfg;
+    const cfg = self._tooltipCfg;
     let marker;
     if (cfg.showItemMarker) {
       marker = cfg.itemMarkerStyle;
@@ -430,7 +430,7 @@ class TooltipController {
   }
 
   hideTooltip() {
-    const cfg = this.cfg;
+    const cfg = this._tooltipCfg;
     this._lastActive = null;
     const tooltip = this.tooltip;
     if (tooltip) {
@@ -451,7 +451,7 @@ class TooltipController {
 
     const plot = chart.get('plotRange');
     const point = Util.createEvent(ev, chart);
-    if (!Helper.isPointInPlot(point, plot) && !this.cfg.alwaysShow) { // not in chart plot
+    if (!Helper.isPointInPlot(point, plot) && !this._tooltipCfg.alwaysShow) { // not in chart plot
       this.hideTooltip();
       return;
     }
@@ -494,7 +494,7 @@ class TooltipController {
   }
 
   bindEvents() {
-    const cfg = this.cfg;
+    const cfg = this._tooltipCfg;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
@@ -509,7 +509,7 @@ class TooltipController {
   }
 
   unBindEvents() {
-    const cfg = this.cfg;
+    const cfg = this._tooltipCfg;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');

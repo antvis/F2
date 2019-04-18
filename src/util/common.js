@@ -19,6 +19,7 @@ const Util = {
   deepMix: require('@antv/util/lib/deep-mix'),
   mix: require('@antv/util/lib/mix'),
   each: require('@antv/util/lib/each'),
+  uniq: require('@antv/util/lib/array/uniq'),
   isObjectValueEqual(a, b) {
     // for vue.js
     a = Object.assign({}, a);
