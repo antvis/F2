@@ -227,7 +227,7 @@ describe('Pie-Select', function() {
       expect(interaction.selectedShape).not.to.be.null;
       expect(interaction.selectedShape.get('origin')._origin).to.eql({ name: '机器之血', percent: 0.18, a: '1' });
       expect(interaction.halo).not.to.be.undefined;
-      expect(interaction.halo.get('destroyed')).to.be.true;
+      expect(interaction.halo.get('destroyed')).to.be.false;
       chart.destroy();
       done();
     }, 300);
