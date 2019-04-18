@@ -106,8 +106,6 @@ class PieSelect extends Interaction {
     }
     const { x, y } = Util.createEvent(ev, chart);
 
-    this.halo && this.halo.remove(true);
-
     const records = chart.getSnapRecords({ x, y });
     if (!records.length) {
       this.selected = false;
@@ -128,6 +126,7 @@ class PieSelect extends Interaction {
       this.lastShape = null;
       this.selected = false;
     } else {
+      this.halo && this.halo.remove(true);
       this._selectedShape(selectedShape);
     }
 
