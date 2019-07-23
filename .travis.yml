@@ -23,3 +23,5 @@ script:
     if [ "$TEST_TYPE" = ci ]; then
       npm run ci
     fi
+
+dist: trusty

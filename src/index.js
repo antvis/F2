@@ -17,6 +17,7 @@ require('./component/guide/line');
 require('./component/guide/rect');
 require('./component/guide/text');
 require('./component/guide/tag');
+require('./component/guide/point');
 
 const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');
