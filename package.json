@@ -25,6 +25,13 @@
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
   },
+  "files": [
+    "src",
+    "lib",
+    "build",
+    "dist",
+    "bundler"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
