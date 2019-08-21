@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -25,6 +25,12 @@
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
   },
+  "files": [
+    "lib",
+    "build",
+    "dist",
+    "bundler"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
