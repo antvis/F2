@@ -26,7 +26,6 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "files": [
-    "src",
     "lib",
     "build",
     "dist",
