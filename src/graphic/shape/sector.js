@@ -18,13 +18,13 @@ class Sector extends Shape {
       r0: 0,
       startAngle: 0,
       endAngle: Math.PI * 2,
-      clockwise: false
+      anticlockwise: false
     };
   }
 
   createPath(context) {
     const attrs = this.get('attrs');
-    const { x, y, startAngle, endAngle, r, r0, clockwise } = attrs;
+    const { x, y, startAngle, endAngle, r, r0, anticlockwise } = attrs;
     context.beginPath();
     const unitX = Math.cos(startAngle);
     const unitY = Math.sin(startAngle);
@@ -34,10 +34,10 @@ class Sector extends Shape {
 
     // 当扇形的角度非常小的时候，就不进行弧线的绘制；或者整个只有1个扇形时，会出现end<0的情况不绘制
     if (Math.abs(endAngle - startAngle) > 0.0001 || startAngle === 0 && endAngle < 0) {
-      context.arc(x, y, r, startAngle, endAngle, clockwise);
+      context.arc(x, y, r, startAngle, endAngle, anticlockwise);
       context.lineTo(Math.cos(endAngle) * r0 + x, Math.sin(endAngle) * r0 + y);
       if (r0 !== 0) {
-        context.arc(x, y, r0, endAngle, startAngle, !clockwise);
+        context.arc(x, y, r0, endAngle, startAngle, !anticlockwise);
       }
     }
     context.closePath();
@@ -45,9 +45,9 @@ class Sector extends Shape {
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, r0, startAngle, endAngle, clockwise } = attrs;
-    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
-    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, clockwise);
+    const { x, y, r, r0, startAngle, endAngle, anticlockwise } = attrs;
+    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
+    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, anticlockwise);
     return {
       minX: Math.min(outerBBox.minX, innerBBox.minX),
       minY: Math.min(outerBBox.minY, innerBBox.minY),

@@ -33,7 +33,7 @@ describe('Arc', function() {
     expect(arc.attr('r')).to.equal(50);
     expect(arc.attr('startAngle')).to.equal(0);
     expect(arc.attr('endAngle')).to.equal(Math.PI / 2);
-    expect(arc.attr('clockwise')).to.be.false;
+    expect(arc.attr('anticlockwise')).to.be.false;
     expect(arc.attr('lineWidth')).to.equal(2);
     expect(arc.attr('stroke')).to.equal('#18901f');
     expect(arc.get('canFill')).to.be.true;

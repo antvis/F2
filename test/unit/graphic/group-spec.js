@@ -65,7 +65,7 @@ describe('Group', function() {
       attrs: {
         startAngle: -Math.PI,
         endAngle: Math.PI / 2,
-        clockwise: false,
+        anticlockwise: false,
         x: 60,
         y: 60,
         r: 20,
@@ -84,7 +84,7 @@ describe('Group', function() {
       attrs: {
         startAngle: -Math.PI,
         endAngle: Math.PI / 2,
-        clockwise: false,
+        anticlockwise: false,
         x: 60,
         y: 60,
         r: 20,
