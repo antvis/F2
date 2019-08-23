@@ -16,26 +16,26 @@ class Arc extends Shape {
       r: 0,
       startAngle: 0,
       endAngle: Math.PI * 2,
-      clockwise: false,
+      anticlockwise: false,
       lineWidth: 1
     };
   }
 
   createPath(context) {
     const attrs = this.get('attrs');
-    const { x, y, r, startAngle, endAngle, clockwise } = attrs;
+    const { x, y, r, startAngle, endAngle, anticlockwise } = attrs;
 
     context.beginPath();
     if (startAngle !== endAngle) {
-      context.arc(x, y, r, startAngle, endAngle, clockwise);
+      context.arc(x, y, r, startAngle, endAngle, anticlockwise);
     }
   }
 
   calculateBox() {
     const attrs = this.get('attrs');
-    const { x, y, r, startAngle, endAngle, clockwise } = attrs;
+    const { x, y, r, startAngle, endAngle, anticlockwise } = attrs;
 
-    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, clockwise);
+    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
   }
 }
 Shape.Arc = Arc;
