@@ -90,7 +90,7 @@ class LegendController {
     this.clear();
   }
 
-  addLegend(scale, items, filterVals) {
+  addLegend(scale, items, filteredVals) {
     const self = this;
     const legendCfg = self.legendCfg;
     const field = scale.field;
@@ -108,7 +108,7 @@ class LegendController {
         position = fieldCfg.position;
       }
       if (scale.isCategory) {
-        self._addCategoryLegend(scale, items, position, filterVals);
+        self._addCategoryLegend(scale, items, position, filteredVals);
       }
     }
   }
@@ -183,7 +183,7 @@ class LegendController {
       chart.get('width') - (appendPadding[1] + appendPadding[3]);
   }
 
-  _addCategoryLegend(scale, items, position, filterVals) {
+  _addCategoryLegend(scale, items, position, filteredVals) {
     const self = this;
     const { legendCfg, legends, container, chart } = self;
     const field = scale.field;
@@ -203,8 +203,8 @@ class LegendController {
         item.marker.symbol = symbol;
       }
 
-      if (filterVals) {
-        item.checked = self._isFiltered(scale, filterVals, item.dataValue);
+      if (filteredVals) {
+        item.checked = !self._isFiltered(scale, filteredVals, item.dataValue);
       }
     });
 
@@ -215,7 +215,7 @@ class LegendController {
       maxLength: self._getMaxLength(position),
       items,
       field,
-      filterVals,
+      filteredVals,
       parent: container
     });
     if (lastCfg.showTitle) {
@@ -333,7 +333,7 @@ class LegendController {
       } else if (!clickedLegend.custom) {
         const checked = clickedItem.get('checked');
         const value = clickedItem.get('dataValue');
-        const { filterVals, field, selectedMode } = clickedLegend;
+        const { filteredVals, field, selectedMode } = clickedLegend;
         const isSingeSelected = selectedMode === 'single';
 
         if (isSingeSelected) {
@@ -341,14 +341,14 @@ class LegendController {
             return val === value;
           });
         } else {
-          if (!checked) {
-            filterVals.push(value);
+          if (checked) {
+            filteredVals.push(value);
           } else {
-            Util.Array.remove(filterVals, value);
+            Util.Array.remove(filteredVals, value);
           }
 
           chart.filter(field, val => {
-            return filterVals.indexOf(val) !== -1;
+            return filteredVals.indexOf(val) === -1;
           });
         }
 
@@ -413,13 +413,13 @@ module.exports = {
       Util.each(legendItems, (items, field) => {
         const scale = scales[field];
         const values = scale.values;
-        let filterVals;
+        let filteredVals;
         if (filters && filters[field]) {
-          filterVals = values.filter(filters[field]);
+          filteredVals = values.filter(v => !filters[field](v));
         } else {
-          filterVals = values.slice(0);
+          filteredVals = [];
         }
-        legendController.addLegend(scale, items, filterVals);
+        legendController.addLegend(scale, items, filteredVals);
       });
     }
 
