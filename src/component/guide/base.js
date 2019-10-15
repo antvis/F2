@@ -48,7 +48,8 @@ class GuideBase {
     }
 
     // 如果数据格式是 ['50%', '50%'] 的格式
-    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1) {
+    // fix: 原始数据中可能会包含 'xxx5%xxx' 这样的数据，需要判断下 https://github.com/antvis/f2/issues/590
+    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1 && !isNaN(position[0].slice(0, -1))) {
       return this.parsePercentPoint(coord, position);
     }
 

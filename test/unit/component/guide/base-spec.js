@@ -15,7 +15,7 @@ describe('Guide Base', function() {
     }
   });
   const xScale = new Scale.Cat({
-    values: [ '一月', '二月', '三月', '四月', '五月' ]
+    values: [ '一月', '二月', '45%三月', '四月', '五月' ]
   });
 
   const yScale = new Scale.Linear({
@@ -24,7 +24,7 @@ describe('Guide Base', function() {
   });
 
   it('Base class method: parsePoint(coord, point)', function() {
-    const point = [ '三月', 600 ];
+    const point = [ '45%三月', 600 ];
     const cfg = {
       xScale,
       yScales: [ yScale ]
