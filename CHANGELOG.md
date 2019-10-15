@@ -1,3 +1,19 @@
+#### 3.4.2 (2019-10-15)
+
+##### Chores
+
+*  发布时候babelrc & webpackrc & lintrc都带上了 这会影响工程本身 ([4c6f3b47](https://github.com/antvis/f2/commit/4c6f3b47963638f1cd0e4ab385fd3b790967d874))
+
+##### New Features
+
+*  默认增加guide point插件 ([28d9e0c4](https://github.com/antvis/f2/commit/28d9e0c4778280fc04b037420b51f4231ce5855a))
+
+##### Bug Fixes
+
+*  图例只支持分类数据 ([bfe50422](https://github.com/antvis/f2/commit/bfe5042207c916e17a1143329fd8cd123a077053))
+*  修复图例过滤不考虑空数据的问题。 ([78ee9fca](https://github.com/antvis/f2/commit/78ee9fcaf6c2b657a05cbeaa6f696ff9a407f8c1))
+*  Guide 的 position 百分比解析需要考虑原始数据中本身包含 '%' 的情况.Closed [#590](https://github.com/antvis/f2/pull/590). ([b299390c](https://github.com/antvis/f2/commit/b299390c45bb1c61ea2bb453b3cd5de8dff18db3))
+
 #### 3.3.8 (2019-04-02)
 
 ##### Bug Fixes
