@@ -749,7 +749,8 @@ class Chart extends Base {
       const colorAttr = geom.getAttr('color');
       if (colorAttr) {
         const scale = colorAttr.getScale('color');
-        if (scale.type !== 'identity' && !_isScaleExist(scales, scale)) {
+        // 只支持分类图例
+        if (scale.isCategory && !_isScaleExist(scales, scale)) {
           scales.push(scale);
 
           const field = scale.field;
