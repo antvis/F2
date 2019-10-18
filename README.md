@@ -105,7 +105,7 @@ chart.render();
 ```bash
 $ npm install
 
-# run test case
+# run test case for the application
 $ npm run test-live
 
 # build watching file changes and run demos
