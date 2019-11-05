@@ -71,6 +71,7 @@ module.exports = {
           en: 'Pie Charts'
         }
       }
-    ]
+    ],
+    exampleContainer: '<canvas id="container" />'
   }
 };
