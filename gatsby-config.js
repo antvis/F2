@@ -18,7 +18,7 @@ module.exports = {
     githubUrl: repository.url,
     navs: [
       {
-        slug: 'docs/tutorial',
+        slug: 'docs/tutorial/getting-started',
         title: {
           zh: '使用教程',
           en: 'tutorial'
@@ -44,6 +44,13 @@ module.exports = {
         slug: 'api/chart',
         title: {
           zh: 'chart'
+        }
+      },
+      {
+        slug: 'tutorial/manual',
+        title: {
+          zh: '教程',
+          en: 'tutorial'
         }
       }
     ],
