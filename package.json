@@ -32,7 +32,7 @@
     "bundler"
   ],
   "devDependencies": {
-    "@antv/gatsby-theme-antv": "^0.9.11",
+    "@antv/gatsby-theme-antv": "^0.9.15",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
