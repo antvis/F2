@@ -7,7 +7,8 @@ order: 0
 
 ### 通过 npm 安装
 
-[![](https://img.shields.io/npm/v/@antv/f2.svg?style=flat-square&amp;maxAge=600#align=left&display=inline&height=20&originHeight=20&originWidth=80&search=&status=done&width=80)](https://npmjs.com/package/@antv/f2)[![](https://img.shields.io/npm/dm/@antv/f2.svg?style=flat-square&amp;maxAge=600#align=left&display=inline&height=17&originHeight=20&originWidth=140&search=&status=done&width=116)](https://npmjs.com/package/@antv/f2)
+[![](https://img.shields.io/npm/v/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
+[![](https://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
 
 ```bash
 npm install @antv/f2 --save
