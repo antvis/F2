@@ -642,7 +642,7 @@ class Geom extends Base {
     });
 
     // special for pie chart
-    if (this.hasAdjust('stack') && coord.isPolar && coord.transposed && xScale.values.length === 1) {
+    if (this.hasAdjust('stack') && coord.isPolar && coord.transposed) {
       if (invertPointX >= 0 && invertPointX <= 1) {
         let yValue = yScale.invert(invertPoint.y);
         yValue = self._getSnap(yScale, yValue, tmp);
