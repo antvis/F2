@@ -83,6 +83,8 @@ module.exports = {
         }
       }
     ],
-    exampleContainer: '<canvas id="container" />'
+    playground: {
+      container: '<canvas id="container" />'
+    }
   }
 };
