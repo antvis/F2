@@ -41,17 +41,28 @@ module.exports = {
     ],
     docs: [
       {
-        slug: 'api/chart',
-        title: {
-          zh: 'chart'
-        }
-      },
-      {
         slug: 'tutorial/manual',
         title: {
           zh: '教程',
           en: 'tutorial'
-        }
+        },
+        order: 1
+      },
+      {
+        slug: 'api/chart-api',
+        title: {
+          zh: '图表实例',
+          en: 'chart'
+        },
+        order: 1
+      },
+      {
+        slug: 'api/graphic',
+        title: {
+          zh: '绘图',
+          en: 'chart'
+        },
+        order: 5
       }
     ],
     examples: [

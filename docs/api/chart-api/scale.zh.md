@@ -1,6 +1,6 @@
 ---
-title: 度量
-order: 3
+title: Scale
+order: 1
 ---
 
 度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作。针对不同的数据类型对应不同类型的度量。
@@ -67,7 +67,7 @@ chart.scale('aqi',  {
 });
 ```
 
-## Scale对应的属性
+## 各个 Scale 类型对应的属性
 
 ### linear
 | **属性名** | **类型** | **说明** |
@@ -175,3 +175,5 @@ chart.scale('fieldName', {
   sortable: false
 })
 ```
+
+

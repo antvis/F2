@@ -1,6 +1,6 @@
 ---
 title: 自定义 Shape
-order: 2
+order: 6
 ---
 
 ## 获取方式

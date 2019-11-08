@@ -1,6 +1,6 @@
 ---
 title: 按需引用
-order: 5
+order: 7
 ---
 
 F2 应用在移动端，所以对文件的大小非常重视，而默认情况下 F2 包含了完整的[几何标记类型](https://www.yuque.com/antv/f2/geometry)、[度量类型](https://www.yuque.com/antv/f2/scale)、[坐标系类型](https://www.yuque.com/antv/f2/coordinate)以及图表组件，但是用户有时候可能只需要其中几种，所以 F2 提供了按需引用的策略，由用户自定义引用需要的功能。
