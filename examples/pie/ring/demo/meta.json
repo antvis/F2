@@ -1,0 +1,23 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础环形图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "cascade.js",
+      "title": "嵌套环图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "progress-bar.js",
+      "title": "环形进度条",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    }
+  ]
+}

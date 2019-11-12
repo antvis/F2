@@ -1,0 +1,28 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础条形图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "dodge-column.js",
+      "title": "分组条形图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "stack-column.js",
+      "title": "层叠条形图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "percent-stack-column.js",
+      "title": "百分比层叠条形图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    }
+  ]
+}

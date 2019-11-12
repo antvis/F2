@@ -1,0 +1,18 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "雷达图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "area.js",
+      "title": "雷达面积图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    }
+  ]
+}

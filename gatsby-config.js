@@ -75,11 +75,51 @@ module.exports = {
         }
       },
       {
+        slug: 'area',
+        icon: 'area', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '面积图',
+          en: 'Area Charts'
+        }
+      },
+      {
+        slug: 'column',
+        icon: 'column', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '柱状图',
+          en: 'Column Charts'
+        }
+      },
+      {
         slug: 'pie',
         icon: 'pie', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
         title: {
           zh: '饼图',
           en: 'Pie Charts'
+        }
+      },
+      {
+        slug: 'radar',
+        icon: 'radar', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '雷达图',
+          en: 'Radar Charts'
+        }
+      },
+      {
+        slug: 'point',
+        icon: 'point', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '点图',
+          en: 'Point Charts'
+        }
+      },
+      {
+        slug: 'candlestick',
+        icon: 'candlestick', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '蜡烛图',
+          en: 'Candlestick Charts'
         }
       }
     ],

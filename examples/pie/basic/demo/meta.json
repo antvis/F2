@@ -1,0 +1,33 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础饼图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "labelline-pie.js",
+      "title": "分组柱状图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "pie-with-label.js",
+      "title": "带图例、文本的饼图",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "pie-click.js",
+      "title": "可点击的文本",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    },
+    {
+      "filename": "rotation-pie.js",
+      "title": "手势操作下的饼图旋转",
+      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+    }
+  ]
+}
