@@ -5,13 +5,9 @@ import Banner from '@antv/gatsby-theme-antv/site/components/Banner';
 import Companies from '@antv/gatsby-theme-antv/site/components/Companies';
 import Features from '@antv/gatsby-theme-antv/site/components/Features';
 import Cases from '@antv/gatsby-theme-antv/site/components/Cases';
-import BannerSVG from '@antv/gatsby-theme-antv/site/components/BannerSVG';
 
 const IndexPage = () => {
   const { t, i18n } = useTranslation();
-
-  const coverImage = BannerSVG();
-
   const features = [
     {
       icon:
@@ -38,68 +34,36 @@ const IndexPage = () => {
       ),
     },
   ];
-
   const companies = [
+    { name: '蚂蚁财富', img: 'https://antv.alipay.com/assets/image/home/f2/mayicaifu.png' },
+    { name: '淘票票', img: 'https://antv.alipay.com/assets/image/home/f2/taopiaopiao.png', },
+    { name: '钉钉', img: 'https://antv.alipay.com/assets/image/home/f2/dingding.png', },
+    { name: '支付宝', img: 'https://antv.alipay.com/assets/image/home/f2/alipay.png', },
+    { name: '小红书', img: 'https://antv.alipay.com/assets/image/home/f2/xiaohongshu.png', },
+    { name: '盒马', img: 'https://antv.alipay.com/assets/image/home/f2/hema.png', },
+    { name: '口碑', img: 'https://antv.alipay.com/assets/image/home/f2/koubei.png', },
+  ];
+  const bannerButtons = [
     {
-      name: '公司1',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Z1NnQ6L4xCIAAAAAAAAAAABkARQnAQ',
+      text: t('开始使用'),
+      link: 'docs/tutorial/getting-started',
+      type: 'primary',
     },
     {
-      name: '公司2',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*6u3hTpsd7h8AAAAAAAAAAABkARQnAQ',
-    },
-    {
-      name: '公司3',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*Fw8HTbFgUdAAAAAAAAAAAABkARQnAQ',
-    },
-    {
-      name: '公司4',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*lUdjTqQix48AAAAAAAAAAABkARQnAQ',
-    },
-    {
-      name: '公司5',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*1q8NQZ9GaN0AAAAAAAAAAABkARQnAQ',
-    },
-    {
-      name: '公司6',
-      img:
-        'https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*SqmTSqj4FjEAAAAAAAAAAABkARQnAQ',
+      text: t('demo演示'),
+      link: './examples/basic',
     },
   ];
-
   const notifications = [
-    {
-      type: t('测试'),
-      title: t('G6 3.2 全新上线！'),
-      date: '2019.12.04',
-      link: '#',
-    },
   ];
 
   const cases = [
     {
-      logo:
-        'https://gw.alipayobjects.com/mdn/rms_23b644/afts/img/A*2Ij9T76DyCcAAAAAAAAAAABkARQnAQ',
-      title: '灯塔专业版',
-      description:
-        '深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金深入金融的基金',
-      link: '#',
-      image:
-        'https://gw.alipayobjects.com/mdn/rms_23b644/afts/img/A*oCd7Sq3N-QEAAAAAAAAAAABkARQnAQ',
-    },
-    {
-      logo:
-        'https://gw.alipayobjects.com/mdn/rms_23b644/afts/img/A*ekkhR7ISzUsAAAAAAAAAAABkARQnAQ',
-      title: '灯塔专业版2',
-      description:
-        '深2222222入金融的基金深入金融的基金深2222222入金融的基金深入金融的基金深2222222入金融的基金深入金融的基金',
-      image:
-        'https://gw.alipayobjects.com/mdn/rms_23b644/afts/img/A*oCd7Sq3N-QEAAAAAAAAAAABkARQnAQ',
+      logo: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*-dLnTIexOxwAAAAAAAAAAABkARQnAQ',
+      title: t('精品 Gallery'),
+      description: t('真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。'),
+      link: 'examples/basic',
+      image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*MYNsTKSKIVIAAAAAAAAAAABkARQnAQ',
     },
   ];
 
@@ -107,28 +71,30 @@ const IndexPage = () => {
     <>
       <SEO title={t('蚂蚁数据可视化')} lang={i18n.language} />
       <Banner
-        coverImage={coverImage}
-        title={t('让数据栩栩如生')}
+        coverImage={
+          <img
+            width="100%"
+            className="Notification-module--number--31-3Z"
+            style={{ marginLeft: '125px', marginTop: '50px' }}
+            src="https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hT73QqjgYPcAAAAAAAAAAABkARQnAQ"
+          />
+        }
+        title={t('F2 移动端可视化方案')}
         description={t(
-          'AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、无限可能的数据可视化最佳实践。',
+          'F2 是一个专注于移动，开箱即用的可视化解决方案，完美支持 H5 环境同时兼容多种环境（Node, 小程序，Weex），完备的图形语法理论，满足你的各种可视化需求，专业的移动设计指引为你带来最佳的移动端图表体验。',
         )}
-        buttonText={t('继续了解')}
-        buttonHref={'#products'}
+        buttons={bannerButtons}
         notifications={notifications}
-        className="banner"
-        // style={{ height: '600px' }}
+        className='banner'
       />
       <Features
         features={features}
-        // className="features"
         style={{ width: '100%' }}
       />
       <Cases cases={cases} />
       <Companies
         title={t('合作公司')}
         companies={companies}
-        // className="companies"
-        // style={{ width: '100%' }}
       />
     </>
   );
