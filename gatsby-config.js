@@ -272,18 +272,18 @@ module.exports = {
         order: 1
       },
       {
-        slug: 'api/chart-api',
+        slug: 'api/chart',
         title: {
-          zh: '图表实例',
+          zh: '图表',
           en: 'Chart'
         },
         order: 1
       },
       {
-        slug: 'api/graphic',
+        slug: 'api/g',
         title: {
           zh: '绘图',
-          en: 'Chart'
+          en: 'G'
         },
         order: 5
       }
