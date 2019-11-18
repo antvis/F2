@@ -1,0 +1,18 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "dodge.js",
+      "title": "分组柱状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*MF4lTYiYXV8AAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "negetive.js",
+      "title": "带负值",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*KONhS7Py0XMAAAAAAAAAAABkARQnAQ"
+    }
+  ]
+}

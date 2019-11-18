@@ -1,5 +1,5 @@
 ---
-title: Basic Column Chart
+title: Basic Bar Chart
 order: 0
-icon: column
+icon: bar
 ---

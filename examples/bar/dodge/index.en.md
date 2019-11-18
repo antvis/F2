@@ -1,5 +1,5 @@
 ---
-title: Stack Bar Chart
+title: Dodge Bar Chart
 order: 1
 icon: bar
 ---

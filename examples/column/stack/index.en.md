@@ -1,5 +1,5 @@
 ---
 title: Stack Column Chart
-order: 1
+order: 2
 icon: column
 ---

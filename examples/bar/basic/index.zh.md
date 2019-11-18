@@ -1,6 +1,6 @@
 ---
-title: 基础柱状图
+title: 基础条状图
 order: 0
-icon: column
+icon: bar
 ---
 

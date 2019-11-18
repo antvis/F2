@@ -368,6 +368,22 @@ module.exports = {
           zh: '关系图',
           en: 'Relation Charts'
         }
+      },
+      {
+        slug: 'heatmap',
+        icon: 'heatmap', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '关系图',
+          en: 'Heatmap Charts'
+        }
+      },
+      {
+        slug: 'other',
+        icon: 'other',
+        title: {
+          zh: '其他图表',
+          en: 'Other Chart'
+        }
       }
     ],
     playground: {
