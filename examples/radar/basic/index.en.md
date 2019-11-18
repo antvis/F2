@@ -1,5 +1,5 @@
 ---
-title: Component
+title: Basic Radar Chart
 order: 0
-icon: line
+icon: radar
 ---

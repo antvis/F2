@@ -244,7 +244,7 @@ module.exports = {
         slug: 'docs/tutorial/getting-started',
         title: {
           zh: '使用教程',
-          en: 'tutorial'
+          en: 'Tutorial'
         }
       },
       {
@@ -267,7 +267,7 @@ module.exports = {
         slug: 'tutorial/manual',
         title: {
           zh: '教程',
-          en: 'tutorial'
+          en: 'Tutorial'
         },
         order: 1
       },
@@ -275,7 +275,7 @@ module.exports = {
         slug: 'api/chart-api',
         title: {
           zh: '图表实例',
-          en: 'chart'
+          en: 'Chart'
         },
         order: 1
       },
@@ -283,12 +283,20 @@ module.exports = {
         slug: 'api/graphic',
         title: {
           zh: '绘图',
-          en: 'chart'
+          en: 'Chart'
         },
         order: 5
       }
     ],
     examples: [
+      {
+        slug: 'gallery',
+        icon: 'gallery', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: 'Gallery',
+          en: 'Gallery'
+        }
+      },
       {
         slug: 'line',
         icon: 'line', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
@@ -311,6 +319,14 @@ module.exports = {
         title: {
           zh: '柱状图',
           en: 'Column Charts'
+        }
+      },
+      {
+        slug: 'bar',
+        icon: 'bar', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '条形图',
+          en: 'Bar Charts'
         }
       },
       {
@@ -343,6 +359,14 @@ module.exports = {
         title: {
           zh: '蜡烛图',
           en: 'Candlestick Charts'
+        }
+      },
+      {
+        slug: 'relation',
+        icon: 'relation', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '关系图',
+          en: 'Relation Charts'
         }
       }
     ],

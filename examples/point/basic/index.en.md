@@ -1,5 +1,6 @@
 ---
-title: Component
+title: Point Chart
 order: 0
-icon: line
+icon: point
 ---
+

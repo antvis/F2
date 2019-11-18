@@ -1,5 +1,6 @@
 ---
-title: Component
+title: Basic Pie Chart
 order: 0
-icon: line
+icon: pie
 ---
+

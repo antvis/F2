@@ -1,5 +1,5 @@
 ---
-title: 基础雷达图
+title: Basic Radar Chart
 order: 0
 icon: radar
 ---

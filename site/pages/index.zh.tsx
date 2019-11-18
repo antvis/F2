@@ -46,7 +46,7 @@ const IndexPage = () => {
   const bannerButtons = [
     {
       text: t('开始使用'),
-      link: 'docs/tutorial/getting-started',
+      link: './docs/tutorial/getting-started',
       type: 'primary',
     },
     {
@@ -76,7 +76,7 @@ const IndexPage = () => {
             width="100%"
             className="Notification-module--number--31-3Z"
             style={{ marginLeft: '125px', marginTop: '50px' }}
-            src="https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hT73QqjgYPcAAAAAAAAAAABkARQnAQ"
+            src="https://gw.alipayobjects.com/zos/rmsportal/yFuPizVQnXnCMNVrZhaX.png"
           />
         }
         title={t('F2 移动端可视化方案')}
