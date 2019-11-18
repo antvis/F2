@@ -12,46 +12,47 @@ const IndexPage = () => {
     {
       icon:
         'https://gw.alipayobjects.com/zos/basement_prod/5dbaf094-c064-4a0d-9968-76020b9f1510.svg',
-      title: t('简单方便'),
+      title: t('专注移动，体验优雅'),
       description: t(
-        '从数据出发，仅需几行代码可以轻松获得想要的图表展示效果。',
+        '围绕设计、性能以及异构环境，为用户提供移动端图表的最佳实践',
       ),
     },
     {
       icon:
         'https://gw.alipayobjects.com/zos/basement_prod/0a0371ab-6bed-41ad-a99b-87a5044ba11b.svg',
-      title: t('方便可靠'),
+      title: t('图表丰富，组件完备'),
       description: t(
-        '大量产品实践之上，提供绘图引擎、完备图形语法，专业设计规范。',
+        '基于图形语法，可灵活构建各类图表（50+），组件完备，覆盖各类场景',
       ),
     },
     {
       icon:
         'https://gw.alipayobjects.com/zos/basement_prod/716d0bc0-e311-4b28-b79f-afdd16e8148e.svg',
-      title: t('无限可能'),
+      title: t('扩展灵活，创意无限'),
       description: t(
-        '任何图表，都可以基于图形语法灵活绘制，满足你无限的创意。',
+        '插件机制，图形、动画、交互均可灵活扩展，使用更自由',
       ),
     },
   ];
   const companies = [
-    { name: '蚂蚁财富', img: 'https://antv.alipay.com/assets/image/home/f2/mayicaifu.png' },
-    { name: '淘票票', img: 'https://antv.alipay.com/assets/image/home/f2/taopiaopiao.png', },
-    { name: '钉钉', img: 'https://antv.alipay.com/assets/image/home/f2/dingding.png', },
-    { name: '支付宝', img: 'https://antv.alipay.com/assets/image/home/f2/alipay.png', },
-    { name: '小红书', img: 'https://antv.alipay.com/assets/image/home/f2/xiaohongshu.png', },
-    { name: '盒马', img: 'https://antv.alipay.com/assets/image/home/f2/hema.png', },
-    { name: '口碑', img: 'https://antv.alipay.com/assets/image/home/f2/koubei.png', },
+    { name: '蚂蚁财富', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ef3db0cb-1dda-4964-9f34-19994282b8e9.png' },
+    { name: '淘票票', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/bc37d595-6627-408d-a9a5-c09ec31b574c.png', },
+    { name: '钉钉', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/9da1ebec-f65e-4cae-8781-745a94edbd50.png', },
+    { name: '掌上运维', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f4a412a4-c48d-4405-9d24-6e0c52a59735.png', },
+    { name: '支付宝', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e90d7242-8fc4-42eb-b6cb-edb57004428b.png', },
+    { name: '小红书', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/87d43eab-7945-4eef-8b6e-686f6d89d26e.png', },
+    { name: '盒马', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/2af46caa-1219-427a-97f3-d7eb82da647d.png', },
+    { name: '口碑', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ec4d60db-59e6-4e74-8524-a1fde5079c43.png', },
   ];
   const bannerButtons = [
     {
       text: t('开始使用'),
-      link: './docs/tutorial/getting-started',
+      link: '/zh/docs/tutorial/getting-started',
       type: 'primary',
     },
     {
       text: t('demo演示'),
-      link: './examples/basic',
+      link: '/zh/examples/basic',
     },
   ];
   const notifications = [
@@ -59,11 +60,23 @@ const IndexPage = () => {
 
   const cases = [
     {
-      logo: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*-dLnTIexOxwAAAAAAAAAAABkARQnAQ',
-      title: t('精品 Gallery'),
-      description: t('真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。'),
-      link: 'examples/basic',
+      logo: 'https://antv.alipay.com/assets/image/home/f2/caifu-logo.png',
+      title: t('蚂蚁财富'),
+      description: t('已广泛应用于基金、定期、黄金、股票等各个金融业务场景中，支撑着蚂蚁财富 app 上众多可视化场景。同时通过深入剖析用户的可视化诉求，沉淀出多套面向金融的可视化方案。'),
+      link: 'https://www.yuque.com/mo-college/f2-fund-course',
       image: 'https://antv.alipay.com/assets/image/home/f2/usecase-caifu.png',
+    },
+    {
+      logo: 'https://antv.alipay.com/assets/image/home/f2/alipay-logo.png',
+      title: t('支付宝'),
+      description: t('覆盖蚂蚁会员、支付宝月账单、个人总资产等业务场景，通过可视化的形式帮助您更快更好得了解您的消费数据。'),
+      image: 'https://antv.alipay.com/assets/image/home/f2/usecase-alipay.png',
+    },
+    {
+      logo: 'https://antv.alipay.com/assets/image/home/f2/dt-logo.png',
+      title: t('灯塔专业版'),
+      description: t('灯塔专业版，为影视人提供有价值的数据。整合阿里海量用户数据，提供全面专业数据，让行业更加公开透明，提升行业决策效率。'),
+      image: 'https://antv.alipay.com/assets/image/home/f2/usecase-tpp.png',
     },
   ];
 
