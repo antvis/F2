@@ -63,7 +63,7 @@ const IndexPage = () => {
       title: t('精品 Gallery'),
       description: t('真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。'),
       link: 'examples/basic',
-      image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*MYNsTKSKIVIAAAAAAAAAAABkARQnAQ',
+      image: 'https://antv.alipay.com/assets/image/home/f2/usecase-caifu.png',
     },
   ];
 
