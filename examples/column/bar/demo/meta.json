@@ -7,22 +7,22 @@
     {
       "filename": "basic.js",
       "title": "基础条形图",
-      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*ozp8QYSQee8AAAAAAAAAAABkARQnAQ"
     },
     {
       "filename": "dodge-column.js",
       "title": "分组条形图",
-      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*MF4lTYiYXV8AAAAAAAAAAABkARQnAQ"
     },
     {
       "filename": "stack-column.js",
       "title": "层叠条形图",
-      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*JHcUR7EEbo8AAAAAAAAAAABkARQnAQ"
     },
     {
       "filename": "percent-stack-column.js",
       "title": "百分比层叠条形图",
-      "screenshot": "https://gw.alipayobjects.com/os/s/prod/antv/assets/dist/3.0.0/g2/3.x/line/basic-b9ffb.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/aa5d4ae5-7625-4f7c-a850-2d7b57515744.jpg"
     }
   ]
 }
