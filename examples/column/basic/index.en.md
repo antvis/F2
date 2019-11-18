@@ -1,5 +1,5 @@
 ---
-title: Component
+title: Basic Column Chart
 order: 0
-icon: line
+icon: column
 ---

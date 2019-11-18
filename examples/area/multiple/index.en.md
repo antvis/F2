@@ -1,5 +1,5 @@
 ---
-title: Component
-order: 0
-icon: line
+title: Stacked Area Chart
+order: 1
+icon: area
 ---

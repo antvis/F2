@@ -1,5 +1,5 @@
 ---
-title: Component
-order: 0
+title: Compare Line Chart
+order: 1
 icon: line
 ---

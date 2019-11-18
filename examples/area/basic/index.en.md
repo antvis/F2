@@ -1,5 +1,5 @@
 ---
-title: Component
+title: Basic Area Chart
 order: 0
-icon: line
+icon: area
 ---

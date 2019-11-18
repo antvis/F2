@@ -1,5 +1,5 @@
 ---
-title: Component
-order: 0
-icon: line
+title: Range Column Chart
+order: 2
+icon: column
 ---

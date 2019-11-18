@@ -1,5 +1,5 @@
 ---
-title: Component
-order: 0
+title: Dynamic Line Chart
+order: 2
 icon: line
 ---
