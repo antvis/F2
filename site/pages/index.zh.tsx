@@ -88,8 +88,8 @@ const IndexPage = () => {
           <img
             width="100%"
             className="Notification-module--number--31-3Z"
-            style={{ marginLeft: '125px', marginTop: '50px' }}
-            src="https://gw.alipayobjects.com/zos/rmsportal/yFuPizVQnXnCMNVrZhaX.png"
+            style={{ marginLeft: '80px', marginTop: '105px' }}
+            src="https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/90c5a2ec-b671-4b08-8d93-dc65b8e01cbf.png"
           />
         }
         title={t('F2 移动端可视化方案')}

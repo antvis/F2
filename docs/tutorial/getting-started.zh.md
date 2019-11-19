@@ -117,7 +117,7 @@ chart.render();
 
 ### 更多示例
 
-更多的示例直接查看 [Demo](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)。
+更多的示例直接查看 [Demo](/zh/examples/basic)。
 
 ## 体验改进计划说明
 

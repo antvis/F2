@@ -1,6 +1,6 @@
 ---
 title: Global
-order: 2
+order: 3
 ---
 
 Global 是 F2 中的全局配置项，全局配置项包含了以下内容：

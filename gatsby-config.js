@@ -57,12 +57,12 @@ module.exports = {
         order: 1
       },
       {
-        slug: 'api/g',
+        slug: 'api/graphic',
         title: {
           zh: '绘图',
-          en: 'G'
+          en: 'Graphic'
         },
-        order: 5
+        order: 2
       }
     ],
     examples: [
