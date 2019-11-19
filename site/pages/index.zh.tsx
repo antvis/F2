@@ -47,12 +47,12 @@ const IndexPage = () => {
   const bannerButtons = [
     {
       text: t('开始使用'),
-      link: '/zh/docs/tutorial/getting-started',
+      link: `/${i18n.language}/docs/tutorial/getting-started`,
       type: 'primary',
     },
     {
       text: t('demo演示'),
-      link: '/zh/examples/basic',
+      link: `/${i18n.language}/examples/basic`,
     },
   ];
   const notifications = [
