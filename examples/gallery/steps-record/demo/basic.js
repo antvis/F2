@@ -6,10 +6,23 @@ insertCss(`
     border-radius: 5px;
     background-image: linear-gradient(-135deg, #874BFF 0%, #6854EE 43%, #6052F2 63%, #534FFA 100%);
   }
+  .chart-tooltip {
+    position: absolute;
+    z-index: 99;
+    font-size: 12px;
+    color: #ADC6FF;
+    text-align: center;
+    top: 38vw;
+    left: 0;
+    margin-top: 3px;
+    visibility: hidden;
+    transition: top 0.4s cubic-bezier(0.23, 1, 0.32, 1)
+  }
 `);
 // 设置独立的css
 const container = document.getElementById('container');
 container.className = 'steps-record';
+$(container).after('<div class="chart-tooltip" id="tooltip"></div>');
 
 const data = [{
   date: '2018-04-21',
@@ -103,7 +116,6 @@ const data = [{
   steps: 14271
 }];
 
-// $('.chart-header').text('步数：' + data[data.length - 1].steps);
 
 const chart = new F2.Chart({
   id: 'container',
@@ -170,26 +182,26 @@ chart.tooltip({
     lineDash: [ 2 ],
     stroke: '#77C0B3'
   },
-  onChange: function onChange(/* e */) {
-    // const item = e.items[0];
-    // const origin = item.origin;
-    // const tooltipEl = $('#tooltip');
-    // tooltipEl.text(origin.steps);
-    // // 设置 tooltip 位置
-    // const canvasOffsetTop = $('#mountNode').position().top;
-    // const canvasOffsetLeft = $('#mountNode').position().left;
-    // const tooltipWidth = tooltipEl.outerWidth();
-    // tooltipEl.css({
-    //   visibility: 'visible',
-    //   left: canvasOffsetLeft + item.x - tooltipWidth / 2,
-    //   top: canvasOffsetTop
-    // });
+  onChange: function onChange(e) {
+    const item = e.items[0];
+    const origin = item.origin;
+    const tooltipEl = $('#tooltip');
+    tooltipEl.text(origin.steps);
+    // 设置 tooltip 位置
+    const canvasOffsetTop = $('#container').position().top;
+    const canvasOffsetLeft = $('#container').position().left;
+    const tooltipWidth = tooltipEl.outerWidth();
+    tooltipEl.css({
+      visibility: 'visible',
+      left: canvasOffsetLeft + item.x - tooltipWidth / 2,
+      top: canvasOffsetTop
+    });
   },
   onHide: function onHide() {
-    // const tooltipEl = $('#tooltip');
-    // tooltipEl.css({
-    //   visibility: 'hidden'
-    // });
+    const tooltipEl = $('#tooltip');
+    tooltipEl.css({
+      visibility: 'hidden'
+    });
   }
 });
 chart.area().position('date*steps').style({

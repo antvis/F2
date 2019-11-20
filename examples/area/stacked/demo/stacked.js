@@ -433,21 +433,10 @@ chart.tooltip({
       }
     });
     legend.setItems(_.values(map));
-    // const coord = chart.get('coord');
-    // const title = tooltipItems[0].title;
-    // $('#date').text(title);
-    // $('#date').css({
-    //   visibility: 'visible',
-    //   left: obj.x,
-    //   top: coord.start.y
-    // });
   },
   onHide: function onHide() {
     const legend = chart.get('legendController').legends.top[0];
     legend.setItems(chart.getLegendItems().country);
-    // $('#date').css({
-    //   visibility: 'hidden'
-    // });
   }
 });
 chart.axis('date', {

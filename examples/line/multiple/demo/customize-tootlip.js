@@ -164,43 +164,43 @@ chart.legend({
 });
 chart.guide().html({
   position: [ 'min', 'max' ],
-  html: `<div id="tooltipWrapper" style="height: 45px;background-color:#E9F1FF;line-height: 45px;">
+  html: `<div id="tooltipWrapper" style="height: 30px;background-color:#E9F1FF;line-height: 30px;">
       <div id="tooltipName" style="float:left;font-size:12px;color:#2E2E2E;"></div>
       <div id="tooltipValue" style="float:right;font-size:12px;color:#2E2E2E;"></div>
     </div>`,
   offsetY: -22.5
 });
-// chart.tooltip({
-//   showCrosshairs: true,
-//   custom: true, // 自定义 tooltip 内容框
-//   onChange: function onChange(obj) {
-//     const items = obj.items;
-//     const originData = items[0].origin;
-//     const date = originData.date;
-//     const value = originData.value;
-//     const tag = originData.tag;
+chart.tooltip({
+  showCrosshairs: true,
+  custom: true, // 自定义 tooltip 内容框
+  onChange: function onChange(obj) {
+    const items = obj.items;
+    const originData = items[0].origin;
+    const date = originData.date;
+    const value = originData.value;
+    const tag = originData.tag;
 
-//     $('#tooltipWrapper').width($('#mountNode').width());
-//     $('#tooltipWrapper').css('left', 0);
-//     $('#tooltipName').css('margin-left', 15);
-//     $('#tooltipValue').css('margin-right', 15);
+    $('#tooltipWrapper').width($('#container').width());
+    $('#tooltipWrapper').css('left', 0);
+    $('#tooltipName').css('margin-left', 15);
+    $('#tooltipValue').css('margin-right', 15);
 
-//     if (tag === 1) {
-//       $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/RcgYrLNGIUfTytjjijER.png">');
-//     } else if (tag === 2) {
-//       $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/XzNFpOkuSLlmEWUSZErB.png">');
-//     } else {
-//       $('#tooltipName').text(date);
-//     }
-//     const color = value >= 0 ? '#FA541C' : '#1CAA3D';
+    if (tag === 1) {
+      $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/RcgYrLNGIUfTytjjijER.png">');
+    } else if (tag === 2) {
+      $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/XzNFpOkuSLlmEWUSZErB.png">');
+    } else {
+      $('#tooltipName').text(date);
+    }
+    const color = value >= 0 ? '#FA541C' : '#1CAA3D';
 
-//     $('#tooltipValue').html('涨幅：<span style="color:' + color + '">' + items[0].value + '</span>');
-//     $('#tooltipWrapper').show();
-//   },
-//   onHide: function onHide() {
-//     $('#tooltipWrapper').hide();
-//   }
-// });
+    $('#tooltipValue').html('涨幅：<span style="color:' + color + '">' + items[0].value + '</span>');
+    $('#tooltipWrapper').show();
+  },
+  onHide: function onHide() {
+    $('#tooltipWrapper').hide();
+  }
+});
 chart.line().position('date*value').color('#518DFE');
 chart.point()
   .position('date*value')
