@@ -590,12 +590,19 @@ class Geom extends Base {
         return a - b;
       });
       for (let len = values.length; i < len; i++) {
+        // 如果只有1个点直接返回第1个点
+        if (len <= 1) {
+          break;
+        }
+        // 第1个点和第2个点之间
         if ((values[0] + values[1]) / 2 > item) {
           break;
         }
+        // 中间的点
         if ((values[i - 1] + values[i]) / 2 <= item && (values[i + 1] + values[i]) / 2 > item) {
           break;
         }
+        // 最后2个点
         if ((values[values.length - 2] + values[values.length - 1]) / 2 <= item) {
           i = values.length - 1;
           break;
