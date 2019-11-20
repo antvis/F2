@@ -1,3 +1,11 @@
+#### 3.4.3 (2019-11-20)
+
+##### Bug Fixes
+
+* 修复只有1个点时，tooltip不显示的问题 ([da62475](https://github.com/antvis/f2/commit/da624751e72fb74351f3278444ed5ec5977915cb))
+* 修复多类型换图点击选中的问题 ([10c4b04](https://github.com/antvis/f2/commit/10c4b0416ae9f2b18c8aa98e055f0948755adc2b))
+
+
 #### 3.4.2 (2019-10-15)
 
 ##### Chores
