@@ -104,20 +104,20 @@ describe('getSnapRecords', () => {
     let records;
 
     canvas.onclick = ev => {
-      const point = chart.get('canvas').getPointByClient(ev.clientX, ev.clientY);
+      const point = { x: ev.clientX, y: ev.clientY };
       records = chart.getSnapRecords(point);
     };
 
     gestureSimulator(canvas, 'click', {
       clientX: 277,
-      clientY: 71
+      clientY: 113
     });
 
     setTimeout(function() {
-      expect(records.length).to.equal(2);
-      expect(records[0]._origin.a).to.equal(records[1]._origin.a);
-      expect(records[0]._origin.b).to.equal(0.4);
-      expect(records[1]._origin.b).to.equal(0.6);
+      expect(records.length).to.equal(1);
+      expect(records[0]._origin.a).to.equal('2');
+      expect(records[0]._origin.b).to.equal(0.5);
+      expect(records[0]._origin.c).to.equal('1');
       chart.destroy();
       document.body.removeChild(canvas);
       done();
