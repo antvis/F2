@@ -36,8 +36,8 @@ chart.source(data);
 
 chart.coord('polar', {
   transposed: true,
-  inner: 0.5,
-  radius: 0.85
+  radius: 0.85,
+  inner: 0.5
 });
 
 chart.axis(false);

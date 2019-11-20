@@ -51,8 +51,8 @@ const IndexPage = () => {
       type: 'primary',
     },
     {
-      text: t('demo演示'),
-      link: `/${i18n.language}/examples/basic`,
+      text: t('图表演示'),
+      link: `/${i18n.language}/examples`,
     },
   ];
   const notifications = [
