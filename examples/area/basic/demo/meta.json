@@ -1,0 +1,28 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础面积图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*iaxqSLvD7BUAAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "with-negative.js",
+      "title": "带负值面积图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*_iPJQJENNrYAAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "with-negative-not-start-on-zero.js",
+      "title": "带负值面积图（x 基线不为 0）",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*DE2uRKCtVf4AAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "gradient.js",
+      "title": "渐变填充面积图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*qSQERq7-D7gAAAAAAAAAAABkARQnAQ"
+    }
+  ]
+}

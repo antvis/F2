@@ -1,0 +1,38 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础柱状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*vDAjTLpn6YwAAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "selection.js",
+      "title": "柱状图选中",
+      "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/GhDuESLuLpYUuTgLYfLF.gif"
+    },
+    {
+      "filename": "pan.js",
+      "title": "柱状图平移",
+      "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/YuwGCXucVvoJLqkqDgLJ.gif"
+    },
+    {
+      "filename": "ranged.js",
+      "title": "区间柱状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*18g1Tr7RTngAAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "gradient.js",
+      "title": "渐变色柱状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*eqocQ7izB-UAAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "pattern.js",
+      "title": "纹理柱状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*i4_MT7N4e5wAAAAAAAAAAABkARQnAQ"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "word-cloud.js",
+      "title": "词云图",
+      "screenshot": "https://cdn.nlark.com/yuque/0/2019/png/98090/1554262050276-d1d040f7-6407-4384-9d18-1c72b73f78fb.png"
+    }
+  ]
+}

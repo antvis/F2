@@ -1,0 +1,18 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "stack.js",
+      "title": "层叠条状图",
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_4f0ff1/afts/img/A*JHcUR7EEbo8AAAAAAAAAAABkARQnAQ"
+    },
+    {
+      "filename": "percent.js",
+      "title": "百分比层叠柱状图",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f8f994c4-064e-4d7c-a153-63f19553c6e8.jpg"
+    }
+  ]
+}

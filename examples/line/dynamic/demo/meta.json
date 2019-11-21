@@ -1,0 +1,18 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "gold.js",
+      "title": "某黄金实时金价走势图",
+      "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/nhKcpmYFRYcSeQgTQSZW.png"
+    },
+    {
+      "filename": "dynamic.js",
+      "title": "实时折线",
+      "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/McevuIUuSZcUbkBEOGRc.gif"
+    }
+  ]
+}

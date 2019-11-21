@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "",
+      "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/fzCCwErtNDbjwJZCNFQR.gif"
+    }
+  ]
+}
