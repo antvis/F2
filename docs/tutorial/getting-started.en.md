@@ -92,7 +92,7 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-完成上述两步之后，保存文件并用浏览器打开，一张柱状图就绘制成功了：<br />![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539843869497-73cbcb31-3ec2-463e-b4a1-915620f13fa4.png#align=left&display=inline&height=260&originHeight=520&originWidth=800&search=&status=done&width=400)
+完成上述两步之后，保存文件并用浏览器打开，一张柱状图就绘制成功了：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/54ad3af8-c30d-43ca-b0e8-e21c4ea3d438.png)
 
 
 ```javascript

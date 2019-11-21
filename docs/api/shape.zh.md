@@ -143,7 +143,7 @@ Shape.registerShape('interval', 'rect', {
 
 ## 代码示例
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539851726315-3b3546cb-a750-4fed-a2c4-84e014d42765.png#width=500)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/40986088-7d33-466f-a598-30e580c693fd.png)
 
 ```javascript
 const Shape = F2.Shape;

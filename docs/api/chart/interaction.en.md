@@ -697,7 +697,7 @@ hammer.js 设置，用于设置识别 press 事件的最小时间差，详见 [h
 
 
 ## Swipe 快扫
-![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1541672854376-e66bb2d8-b8f5-41f2-846d-6efd536be921.gif#width=375)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ecdf873b-da0b-41e7-b27c-0ef47d9109a7.gif)
 
 
 基于 Hammer.js 的 swipe 事件: [http://hammerjs.github.io/recognizer-swipe/](http://hammerjs.github.io/recognizer-swipe/)<br />**只支持 x 轴水平方向的快扫交互。**
