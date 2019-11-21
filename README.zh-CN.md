@@ -29,7 +29,7 @@ $ npm install @antv/f2
 
 - **轻巧流畅**：F2 一直致力于追求极致的性能，针对移动设备做了大量的优化，在支持丰富（50+）图表的基础上同时保持代码量的小巧（不带交互版本 gzip 压缩后 44k，带所有交互版本 56k），同时提供模块化的设计以支持动态加载，提供更优的大小。
 
-- **多端异构**：在完美支持 H5 环境的同时，同时兼容 [Node.js](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/node-env.html)，[支付宝小程序](https://github.com/antvis/my-f2)、[微信小程序](https://github.com/antvis/wx-f2)、[React Native](https://github.com/chenshuai2144/f2-demo)以及 [Weex 端](https://github.com/weex-plugins/weex-chart)的渲染，一份代码，多设备多环境渲染。
+- **多端异构**：在完美支持 H5 环境的同时，同时兼容 [Node.js](https://f2.antv.vision/zh/docs/tutorial/manual/node-env)，[支付宝小程序](https://github.com/antvis/my-f2)、[微信小程序](https://github.com/antvis/wx-f2)、[React Native](https://github.com/chenshuai2144/f2-demo)以及 [Weex 端](https://github.com/weex-plugins/weex-chart)的渲染，一份代码，多设备多环境渲染。
 <p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
 
 
@@ -47,9 +47,9 @@ $ npm install @antv/f2
 
 ## 文档
 
-- [使用教程](https://antv.alipay.com/zh-cn/f2/3.x/tutorial/index.html)
-- [API](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)
-- [图表示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
+- [使用教程](https://f2.antv.vision/zh/docs/tutorial/getting-started)
+- [API](https://f2.antv.vision/zh/docs/api)
+- [图表示例](https://f2.antv.vision/zh/examples)
 
 ## 快速开始
 
@@ -84,7 +84,7 @@ chart.interval().position('year*sales');
 chart.render();
 ```
 
-更多示例：[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)。
+更多示例：[demos](https://f2.antv.vision/zh/examples)。
 
 **手机扫码观看 demos**
 
