@@ -71,7 +71,7 @@ chart.guide().line({
 
 #### 示例
 
-[Guide.Line](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-line.html)。
+[Guide.Line](/zh/examples/component/guide#line)。
 
 #### 参数
 
@@ -161,7 +161,7 @@ chart.guide().text({
 
 #### 示例
 
-[Guide.Text](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-text.html)。
+[Guide.Text](/zh/examples/component/guide#text)。
 
 #### 参数
 
@@ -256,7 +256,7 @@ chart.guide().point({
 
 #### 示例
 
-[Guide.Point](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-point.html)。
+[Guide.Point](/zh/examples/component/guide#point)。
 
 #### 参数
 
@@ -355,7 +355,7 @@ chart.guide().tag({
 
 #### 示例
 
-[Guide.Tag](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-tag.html)。
+[Guide.Tag](/zh/examples/component/guide#tag)。
 
 #### 参数
 
@@ -486,7 +486,7 @@ chart.guide().rect({
 
 #### 示例
 
-[Guide.Rect](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-rect.html)。
+[Guide.Rect](/zh/examples/component/guide#rect)。
 
 #### 参数
 
@@ -571,7 +571,7 @@ chart.guide().html({
 
 #### 示例
 
-[Guide.Html](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-html.html)。
+[Guide.Html](/zh/examples/component/guide#html)。
 
 #### 参数
 
@@ -656,7 +656,7 @@ chart.arc({
 
 #### 示例
 
-[Guide.Arc](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-arc.html)。
+[Guide.Arc](/zh/examples/component/guide#arc)。
 
 #### 参数
 
@@ -746,7 +746,7 @@ chart.guide().regionFilter({
 
 #### 示例
 
-[Guide.RegionFilter](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-regionFilter.html)。
+[Guide.RegionFilter](/zh/examples/component/guide#region-filter)。
 
 #### 参数
 

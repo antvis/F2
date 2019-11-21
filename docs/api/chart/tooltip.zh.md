@@ -208,12 +208,12 @@ const data =[
 ## DEMO
 | 场景描述 | demo |
 | --- | --- |
-| `snap: true` <br />[辅助线准确定位至数据点](https://antv.alipay.com/zh-cn/f2/3.x/demo/line/basic.html) | ![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1542203051089-4e610efa-c9bf-4d2a-9dff-ac0866e359d4.gif#width=354) |
-| [自定义 HTML tooltip](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/tooltip-custom.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/GXqFyFmzhrVvJeWNSHDL.png#width=) |
-| [初始化显示 tooltip](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/tooltip-showTooltip.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/xxBHLpazEZJgfEkSrdZj.png#width=) |
-| [自定义样式](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/tooltip-style.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/oLwGTmcnQLqzvfigSwoO.png#width=) |
-| [带标题的 tooltip](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/tooltip-showTitle.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/AdLPFtRaMxXIATwBAKKx.png#width=) |
-| [内容项垂直布局](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/tooltip-layout.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/tKpCnCjXUrfMaYTPLLnO.png#width=) |
-| [十字辅助线](https://antv.alipay.com/zh-cn/f2/3.x/demo/k/basic.html) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1541567654558-9af9077c-bd98-472b-8cb8-590602bdf5d9.png#width=354) |
+| `snap: true` <br />[辅助线准确定位至数据点](/zh/examples/line/basic#basic) | ![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1542203051089-4e610efa-c9bf-4d2a-9dff-ac0866e359d4.gif#width=354) |
+| [自定义 HTML tooltip](/zh/examples/component/tooltip#custom) | ![](https://gw.alipayobjects.com/zos/rmsportal/GXqFyFmzhrVvJeWNSHDL.png#width=) |
+| [初始化显示 tooltip](/zh/examples/component/tooltip#show-tooltip) | ![](https://gw.alipayobjects.com/zos/rmsportal/xxBHLpazEZJgfEkSrdZj.png#width=) |
+| [自定义样式](/zh/examples/component/tooltip#style) | ![](https://gw.alipayobjects.com/zos/rmsportal/oLwGTmcnQLqzvfigSwoO.png#width=) |
+| [带标题的 tooltip](/zh/examples/component/tooltip#show-title) | ![](https://gw.alipayobjects.com/zos/rmsportal/AdLPFtRaMxXIATwBAKKx.png#width=) |
+| [内容项垂直布局](/zh/examples/component/tooltip#layout) | ![](https://gw.alipayobjects.com/zos/rmsportal/tKpCnCjXUrfMaYTPLLnO.png#width=) |
+| [十字辅助线](/zh/examples/candlestick/basic) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1541567654558-9af9077c-bd98-472b-8cb8-590602bdf5d9.png#width=354) |
 
 

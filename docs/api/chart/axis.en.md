@@ -99,13 +99,13 @@ chart.axis('field', {
 ## DEMO
 | 场景描述 | demo |
 | --- | --- |
-| [label 文本换行](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-break-line.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/DEwVBFoGLbnMrwHxauyp.png#width=) |
-| [label 文本旋转](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-rotate.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/aZQMEqhJsZrHBPVvfwVu.png#width=) |
-| [label 回调](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-label-callback.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/JNURaLRrBdyAFOgatkwO.png#width=) |
-| [grid 样式配置](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-grid.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/WgyBJAgRVIwsjaIyPhvA.png#width=) |
-| [grid 回调](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-grid-callback.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/dWXDCtnpVQFhvhtgSmWy.png#width=) |
-| [弧形网格线](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-circle-grid.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/CnTYvcQBFcUeWmcKutse.png#width=) |
-| [iconfont 文本](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/axis-iconfont.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/wBAMqyEGjiKXvVfkAzSr.png#width=) |
+| [label 文本换行](/en/examples/component/axis#break-line) | ![](https://gw.alipayobjects.com/zos/rmsportal/DEwVBFoGLbnMrwHxauyp.png#width=) |
+| [label 文本旋转](/en/examples/component/axis#rotate) | ![](https://gw.alipayobjects.com/zos/rmsportal/aZQMEqhJsZrHBPVvfwVu.png#width=) |
+| [label 回调](/en/examples/component/axis#label-callback) | ![](https://gw.alipayobjects.com/zos/rmsportal/JNURaLRrBdyAFOgatkwO.png#width=) |
+| [grid 样式配置](/en/examples/component/axis#grid) | ![](https://gw.alipayobjects.com/zos/rmsportal/WgyBJAgRVIwsjaIyPhvA.png#width=) |
+| [grid 回调](/en/examples/component/axis#grid-callback) | ![](https://gw.alipayobjects.com/zos/rmsportal/dWXDCtnpVQFhvhtgSmWy.png#width=) |
+| [弧形网格线](/en/examples/component/axis#circle-grid) | ![](https://gw.alipayobjects.com/zos/rmsportal/CnTYvcQBFcUeWmcKutse.png#width=) |
+| [iconfont 文本](/en/examples/component/axis#iconfont) | ![](https://gw.alipayobjects.com/zos/rmsportal/wBAMqyEGjiKXvVfkAzSr.png#width=) |
 
 
 

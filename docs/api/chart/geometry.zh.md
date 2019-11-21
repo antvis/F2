@@ -130,7 +130,7 @@ chart.line({
 });
 ```
 
-详见 [demo](https://antv.alipay.com/zh-cn/f2/3.x/demo/line/connect-null.html)。
+详见 [demo](/zh/examples/line/other#connect-null)。
 
 ## 方法
 

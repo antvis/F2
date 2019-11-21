@@ -175,7 +175,7 @@ F2 **3.2.1** 版本开始支持使用渐变色的声明方式：
 chart.area().position('year*age').color('l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF');
 ```
 
-详见 [demo](https://antv.alipay.com/zh-cn/f2/3.x/demo/area/gradient.html)。渐变色声明使用方式详见：[渐变色](https://www.yuque.com/antv/f2/canvas#zrhdmb)。
+详见 [demo](/en/examples/area/basic#gradient)。渐变色声明使用方式详见：[渐变色](https://www.yuque.com/antv/f2/canvas#zrhdmb)。
 
 3.2.1 版本之前，需要用户自己获取 `context` 生成渐变对象，参考：[canvas 渐变](http://www.w3school.com.cn/jsref/dom_obj_canvasgradient.asp)，如下：
 
@@ -191,7 +191,7 @@ grd.addColorStop(1,"#f7f7f7");
 chart.area().position('x*y').color(grd);
 ```
 
-[示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/area/gradient.html)
+[示例](/en/examples/area/basic#gradient)
 
 ## 5. 坐标轴上数字混乱
 
@@ -246,4 +246,4 @@ chart.line().position('time*value').label('value');
 
 使用 F2 的 guide，参考 [guide 接口](https://www.yuque.com/antv/f2/api-guide)。
 
-[查看示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/guide-text.html)。
+[查看示例](/en/examples/component/guide#text)。

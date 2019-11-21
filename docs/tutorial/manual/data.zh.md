@@ -80,7 +80,7 @@ const data = [
 ];
 ```
 
-详见饼图[示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/pie/pie.html)。
+详见饼图[示例](/zh/examples/pie/basic)。
 
 ### 区间柱状图
 
@@ -99,7 +99,7 @@ const data = [
 ];
 ```
 
-详见区间柱状图[示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/bar/range-column.html)。
+详见区间柱状图[示例](/zh/examples/column/basic#ranged)。
 
 ### 股票图
 
@@ -116,4 +116,4 @@ const data = [
 ];
 ```
 
-详见 K 线图[示例](https://antv.alipay.com/zh-cn/f2/3.x/demo/other/candle.html)。
+详见 K 线图[示例](/zh/examples/candlestick/basic)。

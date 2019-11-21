@@ -203,13 +203,13 @@ chart.interaction('pie-select', {
 });
 ```
 
-用于设置初始化默认选中的数据，只要传入对应的数据即可，详见 [demo](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/selection-for-pie-chart.html)。
+用于设置初始化默认选中的数据，只要传入对应的数据即可，详见 [demo](/en/examples/pie/basic#pie-click)。
 
 **注意：** 如果需要使用该功能，请在 `chart.render()` 方法之后调用该交互方法。
 
 ### 实例
 
-[饼图选中](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/selection-for-pie-chart.html)
+[饼图选中](/en/examples/pie/basic#pie-click)
 
 ---
 
@@ -359,13 +359,13 @@ chart.interaction('ingterval-select', {
 });
 ```
 
-用于设置初始化默认选中的数据，只要传入对应的数据即可，详见 [demo](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/selection-for-bar-chart.html)。
+用于设置初始化默认选中的数据，只要传入对应的数据即可，详见 [demo](/en/examples/bar/basic#basic)。
 
 **注意：** 如果需要使用该功能，请在 `chart.render()` 方法之后调用该交互方法。
 
 ### 实例
 
-- [柱状图选中](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/selection-for-bar-chart.html)
+- [柱状图选中](/en/examples/bar/basic#basic)
 
 
 ---
@@ -496,7 +496,7 @@ limitRange: {
 
 设置之后，图表只会在 x 轴的 0 - 100 数值范围内移动。
 
-**参见 demo:**  [x 轴平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pan-for-line-chart.html)。
+**参见 demo:**  [x 轴平移](/en/examples/line/basic#pan)。
 
 ##### onStart
 
@@ -539,11 +539,11 @@ onEnd(ev) {}
 
 ### 实例
 
-- [折线图平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pan-for-line-chart.html)
+- [折线图平移](/en/examples/line/basic#pan)
 
-- [柱状图平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pan-for-bar-chart.html)
+- [柱状图平移](/en/examples/cloumn/basic#pan)
 
-- [散点图平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pinch-and-pan-for-scatter-chart.html)
+- [散点图平移](/en/examples/point/basic#pan)
 
 
 ---
@@ -693,11 +693,7 @@ hammer.js 设置，用于设置识别 press 事件的最小时间差，详见 [h
 
 ### 实例
 
-- [x 轴缩放、平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pinch-and-pan-for-smooth-line.html)
-
-- [xy 轴缩放、平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pinch-and-pan-for-scatter-chart.html)
-
-- [时间类型的平移缩放](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pinch-and-pan-for-line-chart.html)
+- [x 轴缩放、平移](/en/examples/line/basic#pan-smooth)
 
 
 ## Swipe 快扫
@@ -820,9 +816,4 @@ onProcess(ev) {}
 ```javascript
 onEnd(ev) {}
 ```
-
-### 实例
-
-[快扫平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pan-and-swipe.html)
-
 

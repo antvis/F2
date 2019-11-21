@@ -75,7 +75,7 @@ chart.scrollBar({
 
 ## 实例
 
-- [折线图平移](https://antv.alipay.com/zh-cn/f2/3.x/demo/interaction/pan-for-line-chart.html)
+- [折线图平移](/en/examples/line/basic#pan)
 
 
 

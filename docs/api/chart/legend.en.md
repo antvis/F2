@@ -356,12 +356,12 @@ chart.legend({
 ## DEMO
 | 场景描述 | demo |
 | --- | --- |
-| [水平居中布局](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-align.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/GeegjFfFxXHMWnbPBGJz.png#width=) |
-| [自定义文本样式](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-custom-text-style.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/aqzSeuHSkITDSNazLptD.png#width=) |
-| [自定义带交互的图例](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-custom.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/jyCzuJAUavxZEyeLXohP.png#width=) |
-| [marker 定制](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-marker.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/lzGYAheYCrbbgeXFVNqQ.png#width=) |
-| [图例单选模式](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-single-selected.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/jmLNmcJDUIGoExwlRLob.png#width=) |
-| [右上角图例](https://antv.alipay.com/zh-cn/f2/3.x/demo/component/legend-vertical-align.html) | ![](https://gw.alipayobjects.com/zos/rmsportal/iAhLZupiXHwGsHzvyKBH.png#width=) |
+| [水平居中布局](/en/examples/component/legend#align) | ![](https://gw.alipayobjects.com/zos/rmsportal/GeegjFfFxXHMWnbPBGJz.png#width=) |
+| [自定义文本样式](/en/examples/component/legend#custom-text-style) | ![](https://gw.alipayobjects.com/zos/rmsportal/aqzSeuHSkITDSNazLptD.png#width=) |
+| [自定义带交互的图例](/en/examples/component/legend#custom) | ![](https://gw.alipayobjects.com/zos/rmsportal/jyCzuJAUavxZEyeLXohP.png#width=) |
+| [marker 定制](/en/examples/component/legend#marker) | ![](https://gw.alipayobjects.com/zos/rmsportal/lzGYAheYCrbbgeXFVNqQ.png#width=) |
+| [图例单选模式](/en/examples/component/legend#single-selected) | ![](https://gw.alipayobjects.com/zos/rmsportal/jmLNmcJDUIGoExwlRLob.png#width=) |
+| [右上角图例](/en/examples/component/legend#vertical-align) | ![](https://gw.alipayobjects.com/zos/rmsportal/iAhLZupiXHwGsHzvyKBH.png#width=) |
 
 
 

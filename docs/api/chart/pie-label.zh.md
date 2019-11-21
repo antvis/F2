@@ -136,6 +136,6 @@ chart.pieLabel({
 ## Demo
 | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540446293014-4851fc4d-9871-4a78-948c-6505addb05e7.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540446333471-617dee36-5f66-49f8-8203-bd4dbb836f89.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1541747570228-2d1af4ce-4972-4b9f-86e6-15b8b6b18d8c.gif#width=229) |
 | --- | --- | --- |
-| [链接](https://antv.alipay.com/zh-cn/f2/3.x/demo/pie/labelline-pie.html) | [链接](https://antv.alipay.com/zh-cn/f2/3.x/demo/pie/pie-with-label.html) | [链接](https://antv.alipay.com/zh-cn/f2/3.x/demo/pie/pie-click.html) |
+| [链接](/zh/examples/pie/basic#labelline-pie) | [链接](/zh/examples/pie/basic#pie-with-label) | [链接](/zh/examples/pie/basic#pie-click) |
 
 

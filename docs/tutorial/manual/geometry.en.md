@@ -36,7 +36,7 @@ const geom = chart.point(); // 这里使用了 point 类型的 geom，该方法�
 
 虽然 F2 没有特定的图表类型概念，**但是仍支持所有传统图表类型的绘制**。
 
-下表展示了 F2 中的 geom 几何标记类型和传统图表的对应关系，更多的图表详见[demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)。
+下表展示了 F2 中的 geom 几何标记类型和传统图表的对应关系，更多的图表详见[demos](/en/examples)。
 
 | **geom 类型** | **图表类型** | **备注** |
 | --- | --- | --- |
