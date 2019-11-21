@@ -55,8 +55,6 @@ const IndexPage = () => {
       link: `/${i18n.language}/examples`,
     },
   ];
-  const notifications = [
-  ];
 
   const cases = [
     {
@@ -97,7 +95,6 @@ const IndexPage = () => {
           'F2 是一个专注于移动，开箱即用的可视化解决方案，完美支持 H5 环境同时兼容多种环境（Node, 小程序，Weex），完备的图形语法理论，满足你的各种可视化需求，专业的移动设计指引为你带来最佳的移动端图表体验。',
         )}
         buttons={bannerButtons}
-        notifications={notifications}
         className='banner'
       />
       <Features
