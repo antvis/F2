@@ -155,6 +155,14 @@ module.exports = {
         }
       },
       {
+        slug: 'component',
+        icon: 'component', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        title: {
+          zh: '功能组件',
+          en: 'Chart Components'
+        }
+      },
+      {
         slug: 'other',
         icon: 'other',
         title: {
