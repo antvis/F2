@@ -14,7 +14,7 @@
 
 F2 is **born for mobile**, developed for developers as well as designers. It is Html5 Canvas-based, and is also compatible with Node.js, Weex and React Native. Based on [the grammar of graphics](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), F2 provides all the chart types you'll need. Our mobile design guidelines enable better user experience in mobile visualzation projects.
 
-<p align="center"><a href="https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html"><img src="https://user-images.githubusercontent.com/6628666/44565498-f4e12c80-a79a-11e8-98fc-73ee58547dc9.png" /></a></p>
+<p align="center"><a href="https://f2.antv.vision/en/examples"><img src="https://user-images.githubusercontent.com/6628666/44565498-f4e12c80-a79a-11e8-98fc-73ee58547dc9.png" /></a></p>
 
 > Special thanks to [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson), the author of [*The Grammar Of Graphics*](https://www.cs.uic.edu/~wilkinson/TheGrammarOfGraphics/GOG.html), whose book served as the foundation for F2 and G2.
 
@@ -38,7 +38,7 @@ $ npm install @antv/f2
 <p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
 
 ### All the chart types you want
-With the power of grammar of graphics, F2 supports data-driven [50+ chart types](https://antv.alipay.com/zh-cn/f2/3.x/api/index.html)(the amount can be even more, which is depended on you) including classical charts such as line, column/bar chart, pie chart, scatter plot, gauges, etc. Additionally, F2 also provides feature-riched chart components, such as Tooltip, Legend and Guide.
+With the power of grammar of graphics, F2 supports data-driven [50+ chart types](https://f2.antv.vision/zh/examples)(the amount can be even more, which is depended on you) including classical charts such as line, column/bar chart, pie chart, scatter plot, gauges, etc. Additionally, F2 also provides feature-riched chart components, such as Tooltip, Legend and Guide.
 
 ### Flexible and Interactive
 We also provide developers with flexible extension mechanisms, including shape, animation, and interactive customization capabilities, as well as flexible styling to meet a variety of personalized charting requirements.
@@ -47,10 +47,10 @@ We also provide developers with flexible extension mechanisms, including shape, 
 
 ## Links
 
-* [Website](https://antv.alipay.com/zh-cn/f2/3.x/index.html)
-* English documents: https://antv.gitbook.io/f2/
-* Chart demos: https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html
-* 中文文档: https://antv.alipay.com/zh-cn/f2/3.x/api/index.html
+* [Website](https://f2.antv.vision/)
+* English documents: https://f2.antv.vision/en
+* Chart demos: https://f2.antv.vision/en/examples
+* 中文文档: https://f2.antv.vision/zh
 
 ## Other libraries base on F2
 * [ant-design-mobile-chart](https://github.com/ant-design/ant-design-mobile-chart): Ant Design Mobile Chart based on F2. (React).
@@ -60,7 +60,7 @@ We also provide developers with flexible extension mechanisms, including shape, 
 
 ## Demos
 
-[Chart Demos](https://antv.alipay.com/zh-cn/f2/3.x/demo/index.html)
+[Chart Demos](https://f2.antv.vision/en/examples)
 
 **Or just scan the below qrcode to see demos in mobile:**
 
