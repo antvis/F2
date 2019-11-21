@@ -112,7 +112,7 @@ const defs = {
 2. 数据字段中的数据是数值类型，但是需要转换成分类类型，**这个时候需要注意原始数据必须是索引值**。
 
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539849177041-6faa3fb3-8cd3-4618-8b86-f18fc9064fe9.png#width=375)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e847832c-3000-4745-b7d5-d3552feee17b.png)
 
 ```javascript
 const data = [

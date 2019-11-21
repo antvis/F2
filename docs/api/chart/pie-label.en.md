@@ -5,7 +5,7 @@ order: 10
 
 | **文本全部展示，重叠则调整** | **文本重叠则不展示** | **点击操作** |
 | --- | --- | --- |
-| ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540374987000-32045d52-65d0-4e48-95d4-62b00162229c.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540374852604-f5a682f0-9d27-4fcb-b994-171e19ebe466.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1541747067841-b683708c-0b90-41b8-ae39-fd7a23087d46.png#width=229) |
+| ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f2afb2c0-2b84-41e7-9ecd-25f3a167f954.png) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/d72df18f-c170-4ee1-a479-84b8d98c27ca.png) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/3d4156b9-d646-4242-be32-438ec62ba8ac.png) |
 
 PieLabel 是一个用于绘制饼图文本的插件。
 
@@ -61,7 +61,7 @@ chart.pieLabel({
 })
 ```
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540376030399-0927ade9-6d25-4ca2-a342-5ce3d3eb763c.png#width=375)<br />配置项图解
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ccc56b10-5517-4d25-a879-a043db182b7e.png)<br />配置项图解
 
 ### 配置项
 | **属性名** | **类型** | **默认值** | **说明** |
@@ -131,10 +131,10 @@ chart.pieLabel({
 
 通过 `ev` 参数我们可以获取被点击图形的原始数据：`ev.data` ，点击的画布坐标：`ev.x`, `ev.y` 等。
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540378190132-44c50f85-e4fe-4b7c-b83d-917e85ef88c8.png#width=747)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/07e63369-e5ad-415d-890f-c068dc9d9e0e.png)
 
 ## Demo
-| ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540446293014-4851fc4d-9871-4a78-948c-6505addb05e7.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1540446333471-617dee36-5f66-49f8-8203-bd4dbb836f89.png#width=747) | ![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1541747570228-2d1af4ce-4972-4b9f-86e6-15b8b6b18d8c.gif#width=229) |
+| ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/32cf033e-1225-42ff-b8d5-9b2cb7dd4f4b.png) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/37f37f67-0c3c-4721-b538-a2a27af8a14c.png) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/15ba3984-f64f-4833-bb82-578c48f4711e.gif) |
 | --- | --- | --- |
 | [链接](/en/examples/pie/basic#labelline-pie) | [链接](/en/examples/pie/basic#pie-with-label) | [链接](/en/examples/pie/basic#pie-click) |
 

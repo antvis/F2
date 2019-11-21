@@ -139,7 +139,7 @@ getBBox()
 }
 ```
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539851220611-eb01a7d2-bef0-4ebb-8ef5-d6790e89a3a2.png#width=400)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/10f300ec-2f26-42e5-9f51-c0e4756e9852.png)
 ### getParent()
 
 ```javascript
@@ -362,7 +362,7 @@ new G.Shape.Rect({
 })
 ```
 
-`radius` 圆角的设置如下图所示：<br />![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539851348101-9fae78f3-590c-4abf-a943-0ac38bd9fa78.png#width=200)
+`radius` 圆角的设置如下图所示：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/8f170673-175e-408a-bd0b-bc4d39c078fe.png)
 
 ### Sector 扇形
 

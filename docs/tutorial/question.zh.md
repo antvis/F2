@@ -5,7 +5,7 @@ order: 2
 
 ## 1. 图表模糊怎么办？
 #### 现象描述：
-绘制的图表上的字体和文字模糊<br />![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539847002799-d1a95abd-be08-4761-9f39-a7424d938f37.png#width=400)
+绘制的图表上的字体和文字模糊<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/7ac3aa87-910a-43c3-8e03-f9c41f04b68d.png)
 
 #### 原因分析
 
@@ -33,7 +33,7 @@ const chart1 = new F2.Chart({
 });
 ```
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539847038820-bffb9692-f900-43b7-95c8-e8d85149fea1.png#width=400)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/1730501d-ce3e-4644-998c-9674f7eaaa2b.png)
 
 #### 更多说明
 
@@ -59,7 +59,7 @@ const data = [
 ];
 ```
 
-则显示成：<br />![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539847107410-8fb1ee7a-69ac-4104-9874-a5415e1e53ba.png#width=747)
+则显示成：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/6fc11496-5f0b-4630-93af-a7c77407bd6d.png)
 
 #### 问题分析
 
@@ -225,7 +225,7 @@ const data = [
 ];
 ```
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539847322214-5bf44984-2cdf-4d07-a987-51712dad7ca4.png#width=375)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/5463499e-8065-4a76-9d8d-3586d3435fd1.png)
 
 ## 6. 如何显示文本
 

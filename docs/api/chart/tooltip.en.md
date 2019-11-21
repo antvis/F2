@@ -92,7 +92,7 @@ chart.tooltip({
 
 **以下为 F2 3.3 版本 Tooltip 新增配置项**：
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1541566891522-57066463-bf66-4b13-9187-56a0680673fb.png#width=375)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f7a4df21-cc39-47e0-b3f2-0cab5e1d8a9c.png)
 
 | **属性** | **类型** | **默认值** | **说明** |
 | --- | --- | --- | --- |
@@ -144,7 +144,7 @@ chart.tooltip({
 
 在移动端，我们经常会将 tooltip 同 legend 一起使用，这个时候我们就可以通过配置 `custom` 属性来实现。(手机端观看)
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539849652230-469fa395-6a99-4a41-98a3-3af221bd6d9a.png#width=400)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/3cadaf14-1834-4a39-8cc0-e4d83e73b56f.png)
 
 ```javascript
 const data =[
@@ -208,12 +208,12 @@ const data =[
 ## DEMO
 | 场景描述 | demo |
 | --- | --- |
-| `snap: true` <br />[辅助线准确定位至数据点](/en/examples/line/basic#basic) | ![](https://cdn.nlark.com/yuque/0/2018/gif/98090/1542203051089-4e610efa-c9bf-4d2a-9dff-ac0866e359d4.gif#width=354) |
+| `snap: true` <br />[辅助线准确定位至数据点](/en/examples/line/basic#basic) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/4231f172-be1e-4c54-908c-22b646acd28d.gif) |
 | [自定义 HTML tooltip](/en/examples/component/tooltip#custom) | ![](https://gw.alipayobjects.com/zos/rmsportal/GXqFyFmzhrVvJeWNSHDL.png#width=) |
 | [初始化显示 tooltip](/en/examples/component/tooltip#show-tooltip) | ![](https://gw.alipayobjects.com/zos/rmsportal/xxBHLpazEZJgfEkSrdZj.png#width=) |
 | [自定义样式](/en/examples/component/tooltip#style) | ![](https://gw.alipayobjects.com/zos/rmsportal/oLwGTmcnQLqzvfigSwoO.png#width=) |
 | [带标题的 tooltip](/en/examples/component/tooltip#show-title) | ![](https://gw.alipayobjects.com/zos/rmsportal/AdLPFtRaMxXIATwBAKKx.png#width=) |
 | [内容项垂直布局](/en/examples/component/tooltip#layout) | ![](https://gw.alipayobjects.com/zos/rmsportal/tKpCnCjXUrfMaYTPLLnO.png#width=) |
-| [十字辅助线](/en/examples/candlestick/basic) | ![](https://cdn.nlark.com/yuque/0/2018/png/98090/1541567654558-9af9077c-bd98-472b-8cb8-590602bdf5d9.png#width=354) |
+| [十字辅助线](/en/examples/candlestick/basic) | ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/d373e4f9-c011-4e3a-96b2-bf7201c04b8f.png) |
 
 

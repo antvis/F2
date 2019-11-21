@@ -64,7 +64,7 @@ chart.coord('polar', {
 
 ## 示例
 ### 环图
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539849253295-2f3417f0-d27a-449e-9b22-3035316aceb6.png#width=300)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/971c4287-36a1-4932-bbd2-5859575f4d1c.png)
 
 
 ```javascript
@@ -109,7 +109,7 @@ chart.render();
 
 ### 半圆
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539849276002-919259ae-16f4-4c7e-86df-76ccf70805da.png#width=300)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/abd8add5-3f74-43ca-8bd4-12aaaa8a6b9f.png)
 
 ```javascript
 const data = [

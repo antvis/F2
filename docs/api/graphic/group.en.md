@@ -171,7 +171,7 @@ getBBox()
 }
 ```
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539851034294-c4bf511a-272f-4c8e-8d95-4ae3b8625acd.png#width=400)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c516e878-4619-4fea-ac2b-4fc2b74dfd8c.png)
 
 ### getParent()
 

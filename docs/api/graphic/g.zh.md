@@ -68,7 +68,7 @@ const { G } = F2;
 
 **示例：**
 
-![](https://cdn.nlark.com/yuque/0/2018/png/98090/1539850559091-2336f0a9-be77-4bd2-8bce-e6db22cc60d1.png#width=200)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e66df1e1-ce1b-4fce-a123-51219527872b.png)
 
 ```javascript
 const { Canvas } = F2.G; // 引入 Canvas
