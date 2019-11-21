@@ -35,14 +35,14 @@ const IndexPage = () => {
     },
   ];
   const companies = [
-    { name: '蚂蚁财富', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ef3db0cb-1dda-4964-9f34-19994282b8e9.png' },
-    { name: '淘票票', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/bc37d595-6627-408d-a9a5-c09ec31b574c.png', },
-    { name: '钉钉', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/9da1ebec-f65e-4cae-8781-745a94edbd50.png', },
-    { name: '掌上运维', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f4a412a4-c48d-4405-9d24-6e0c52a59735.png', },
-    { name: '支付宝', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e90d7242-8fc4-42eb-b6cb-edb57004428b.png', },
-    { name: '小红书', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/87d43eab-7945-4eef-8b6e-686f6d89d26e.png', },
-    { name: '盒马', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/2af46caa-1219-427a-97f3-d7eb82da647d.png', },
-    { name: '口碑', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ec4d60db-59e6-4e74-8524-a1fde5079c43.png', },
+    { name: '蚂蚁财富', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/89790c1c-cc08-4270-8489-99893a57b20c.png' },
+    { name: '淘票票', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/4664f031-d79c-4030-a14a-3bbf3709b51c.png', },
+    { name: '钉钉', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ce76cb7b-f916-4784-9475-6c16ad62df42.png', },
+    { name: '掌上运维', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/2f9d94fc-0fae-4618-9563-3be0cc9be5eb.png', },
+    { name: '支付宝', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/0014f3ad-ec8c-4023-97b4-740090cd78a2.png', },
+    { name: '小红书', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/8a401562-c488-49a5-9f7e-bc1d2c6873bf.png', },
+    { name: '盒马', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ed57edff-e5d5-4e50-bccd-7002e0a4048e.png', },
+    { name: '口碑', img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/9fb6be41-76d6-4ca0-be56-71a247cac5a4.png', },
   ];
   const bannerButtons = [
     {
@@ -88,8 +88,8 @@ const IndexPage = () => {
           <img
             width="100%"
             className="Notification-module--number--31-3Z"
-            style={{ marginLeft: '80px', marginTop: '105px' }}
-            src="https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/90c5a2ec-b671-4b08-8d93-dc65b8e01cbf.png"
+            style={{ marginLeft: '80px', marginTop: '50px' }}
+            src="https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/870e2e92-6187-4729-889c-232a7df0998a.png"
           />
         }
         title={t('F2 移动端可视化方案')}
@@ -106,7 +106,7 @@ const IndexPage = () => {
       />
       <Cases cases={cases} />
       <Companies
-        title={t('合作公司')}
+        title={t('感谢信赖')}
         companies={companies}
       />
     </>
