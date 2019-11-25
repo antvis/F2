@@ -5,6 +5,7 @@ import Banner from '@antv/gatsby-theme-antv/site/components/Banner';
 import Companies from '@antv/gatsby-theme-antv/site/components/Companies';
 import Features from '@antv/gatsby-theme-antv/site/components/Features';
 import Cases from '@antv/gatsby-theme-antv/site/components/Cases';
+import './index.less';
 
 const IndexPage = () => {
   const { t, i18n } = useTranslation();
@@ -80,13 +81,13 @@ const IndexPage = () => {
 
   return (
     <>
-      <SEO title={t('蚂蚁数据可视化')} lang={i18n.language} />
+      <SEO title={t('F2 移动端可视化方案')} titleSuffix="AntV" lang={i18n.language} />
       <Banner
         coverImage={
           <img
             width="100%"
             className="Notification-module--number--31-3Z"
-            style={{ marginLeft: '80px', marginTop: '50px' }}
+            style={{ marginTop: '70px' }}
             src="https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/870e2e92-6187-4729-889c-232a7df0998a.png"
           />
         }
