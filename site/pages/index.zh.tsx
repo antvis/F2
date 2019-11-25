@@ -81,7 +81,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <SEO title={t('蚂蚁数据可视化')} lang={i18n.language} />
+      <SEO title={t('F2 移动端可视化方案')} titleSuffix="AntV" lang={i18n.language} />
       <Banner
         coverImage={
           <img
