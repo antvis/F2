@@ -145,7 +145,7 @@ class Canvas {
           child.draw(context);
         }
 
-        if (Util.isWx || Util.isMy) {
+        if (Util.isWx || Util.isMy || Util.isNative) {
           context.draw();
         }
       } catch (ev) {

@@ -408,6 +408,11 @@ class Chart extends Base {
 
   _init() {
     const self = this;
+    if (Util.isNative && !self.get('context')) {
+      /* eslint-disable */
+      self.set('context', new NativeCanvasContext());
+      /* eslint-enable */
+    }
     self._initCanvas();
     self._initLayers();
     self.set('geoms', []);

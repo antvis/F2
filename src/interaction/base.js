@@ -6,7 +6,7 @@ const Util = require('../util/common');
 const Chart = require('../chart/chart');
 
 let Hammer;
-if (!Util.isWx && !Util.isMy) {
+if (!Util.isWx && !Util.isMy && !Util.isNative) {
   Hammer = require('hammerjs');
 }
 

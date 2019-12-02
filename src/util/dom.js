@@ -56,6 +56,7 @@ DomUtil = {
   isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
   isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
   isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined') && (typeof window.sessionStorage !== 'undefined'), // in browser
+  isNative: (typeof PLATFORM !== 'undefined'),
   getPixelRatio() {
     return window && window.devicePixelRatio || 1;
   },
@@ -85,6 +86,13 @@ DomUtil = {
     return document.getElementById(id);
   },
   getRelativePosition(point, canvas) {
+    if (this.isNative) {
+      const pixelRatio = window.devicePixelRatio;
+      return {
+        x: point.x / pixelRatio,
+        y: point.y / pixelRatio
+      };
+    }
     const canvasDom = canvas.get('el');
     const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
 
@@ -105,10 +113,10 @@ DomUtil = {
     };
   },
   addEventListener(source, type, listener) {
-    DomUtil.isBrowser && source.addEventListener(type, listener, eventListenerOptions);
+    (DomUtil.isBrowser || DomUtil.isNative) && source.addEventListener(type, listener, eventListenerOptions);
   },
   removeEventListener(source, type, listener) {
-    DomUtil.isBrowser && source.removeEventListener(type, listener, eventListenerOptions);
+    (DomUtil.isBrowser || DomUtil.isNative) && source.removeEventListener(type, listener, eventListenerOptions);
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);
