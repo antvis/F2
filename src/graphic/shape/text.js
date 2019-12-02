@@ -147,7 +147,7 @@ class Text extends Shape {
     const self = this;
     const attrs = self._attrs.attrs;
     const { x, y, textAlign, textBaseline } = attrs;
-    const width = self._getTextWidth(); // attrs.width
+    let width = self._getTextWidth(); // attrs.width
     if (!width) {
       return {
         minX: x,
@@ -156,7 +156,18 @@ class Text extends Shape {
         maxY: y
       };
     }
-    const height = self._getTextHeight(); // attrs.height
+    let height = self._getTextHeight(); // attrs.height
+
+    if (attrs.rotate) {
+      const rotatedBox = Util.Rect.calcRotatedBox({
+        width,
+        height,
+        rotate: attrs.rotate,
+      });
+      width = rotatedBox.width;
+      height = rotatedBox.height;
+    }
+    
     const point = {
       x,
       y: y - height
