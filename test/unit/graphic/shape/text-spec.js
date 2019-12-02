@@ -168,6 +168,28 @@ describe('Text', function() {
     expect(bbox.width).to.equal(28.67578125);
     expect(bbox.height).to.equal(48);
     canvas.draw();
+  });
+
+  it('rotate', function() {
+    const text = new Text({
+      attrs: {
+        x: 100,
+        y: 50,
+        text: 'haha\nHello\nworld',
+        textAlign: 'end',
+        textBaseline: 'middle',
+        fontSize: 12,
+        lineHeight: 18,
+        lineWidth: 1,
+        rotate: Math.PI / 2
+      }
+    });
+    canvas.add(text);
+    // bbox
+    const bbox = text.getBBox();
+    expect(bbox.width).to.equal(48);
+    expect(bbox.height).to.equal(28.67578125);
+    canvas.draw();
     document.body.removeChild(dom);
   });
 });

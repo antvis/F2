@@ -162,12 +162,11 @@ class Text extends Shape {
       const rotatedBox = Util.Rect.calcRotatedBox({
         width,
         height,
-        rotate: attrs.rotate,
+        rotate: attrs.rotate
       });
       width = rotatedBox.width;
       height = rotatedBox.height;
     }
-    
     const point = {
       x,
       y: y - height

@@ -203,13 +203,13 @@ Util.Array = {
 };
 
 Util.Rect = {
-  calcRotatedBox({width, height, rotate}) {
+  calcRotatedBox({ width, height, rotate }) {
     return {
       width: Math.abs(width * Math.cos(rotate) + height * Math.sin(rotate)),
-      height: Math.abs(height * Math.cos(rotate) + width * Math.sin(rotate)),
-    }
+      height: Math.abs(height * Math.cos(rotate) + width * Math.sin(rotate))
+    };
   }
-}
+};
 
 Util.mix(Util, DomUtil);
 
