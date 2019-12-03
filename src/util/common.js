@@ -204,9 +204,10 @@ Util.Array = {
 
 Util.Rect = {
   calcRotatedBox({ width, height, rotate }) {
+    const absRotate = Math.abs(rotate);
     return {
-      width: Math.abs(width * Math.cos(rotate) + height * Math.sin(rotate)),
-      height: Math.abs(height * Math.cos(rotate) + width * Math.sin(rotate))
+      width: Math.abs(width * Math.cos(absRotate) + height * Math.sin(absRotate)),
+      height: Math.abs(height * Math.cos(absRotate) + width * Math.sin(absRotate))
     };
   }
 };
