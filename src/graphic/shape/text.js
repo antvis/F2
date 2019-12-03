@@ -1,5 +1,6 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
+const RectUtil = require('../util/rect');
 
 let textWidthCacheCounter = 0;
 let textWidthCache = {};
@@ -159,7 +160,7 @@ class Text extends Shape {
     let height = self._getTextHeight(); // attrs.height
 
     if (attrs.rotate) {
-      const rotatedBox = Util.Rect.calcRotatedBox({
+      const rotatedBox = RectUtil.calcRotatedBox({
         width,
         height,
         rotate: attrs.rotate
