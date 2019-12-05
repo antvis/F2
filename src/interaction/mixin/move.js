@@ -145,7 +145,9 @@ module.exports = {
           ticks.push(i);
         }
       }
-
+      newTicks = ticks;
+    } else {
+      // 保留之前的ticks
       newTicks = ticks;
     }
 
