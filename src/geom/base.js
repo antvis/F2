@@ -71,7 +71,9 @@ class Geom extends Base {
       sortable: false,
       startOnZero: true,
       visible: true,
-      connectNulls: false
+      connectNulls: false,
+      // 是否丢弃没有值的分组。
+      ignoreEmptyGroup: false
     };
   }
 
@@ -196,7 +198,13 @@ class Geom extends Base {
     const self = this;
     const data = this.get('data');
     const dataArray = [];
-    const groupedArray = this._groupData(data);
+    let groupedArray = this._groupData(data);
+    if (this.get('ignoreEmptyGroup')) {
+      const yScale = this.getYScale();
+      groupedArray = groupedArray.filter(group =>
+        group.some(item => typeof item[yScale.field] !== 'undefined')
+      );
+    }
     for (let i = 0, len = groupedArray.length; i < len; i++) {
       const subData = groupedArray[i];
       const tempData = self._saveOrigin(subData);

@@ -206,6 +206,36 @@ describe('test geoms', function() {
       expect(arr[1][0].c).equal('1');
     });
 
+    it('test group data with undefined values in group', function() {
+      geom.set('colDefs', {});
+      const data = [
+        // 相关数据
+        { a: 1, b: 1, c: '指标1' },
+        { a: 2, b: 2, c: '指标1' },
+        { a: 3, b: 3, c: '指标1' },
+        { a: 1, b: 2, c: '指标2' },
+        { a: 2, b: 3, c: '指标2' },
+        { a: 3, b: 4, c: '指标2' },
+        // 无关数据
+        { a: 1, b1: 3, c: '指标3' },
+        { a: 2, b1: 2, c: '指标3' },
+        { a: 3, b1: 1, c: '指标3' },
+        { a: 1, b1: 4, c: '指标4' },
+        { a: 2, b1: 3, c: '指标4' },
+        { a: 3, b1: 2, c: '指标4' }
+      ];
+      geom.set('data', data);
+      geom.position('a*b').color('c');
+      geom.init();
+      const dataArray = geom.get('dataArray');
+      expect(dataArray.length).equal(4);
+
+      geom.set('ignoreEmptyGroup', true);
+      geom.init();
+      const dataArray1 = geom.get('dataArray');
+      expect(dataArray1.length).equal(2);
+    });
+
     it('destroy', function() {
       geom.destroy();
       expect(geom.destroyed).equal(true);
