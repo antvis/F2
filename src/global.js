@@ -2,7 +2,7 @@ const Theme = require('./theme');
 const Util = require('./util/common');
 
 const Global = {
-  version: '3.4.3',
+  version: '3.4.4',
   scales: {},
   widthRatio: {
     column: 1 / 2,
