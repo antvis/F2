@@ -1,3 +1,19 @@
+#### 3.4.4 (2019-12-06)
+
+##### Documentation Changes
+
+*  update links in README ([e6f8bba5](https://github.com/antvis/f2/commit/e6f8bba55e79fff9ad4fa55145e2ebad4e2d0388))
+*  fix example throws error ([c2072b91](https://github.com/antvis/f2/commit/c2072b91f69d7e5e17e61f3b9e8593d9276a0b37))
+
+##### New Features
+
+* **GeomBase:**  add ignoreEmptyGroup config to geom base ([bb1b0107](https://github.com/antvis/f2/commit/bb1b010720694220255d322e522b05329ffbe265))
+
+##### Bug Fixes
+
+* 滑动x轴时，cat的ticks会被置成null ([49d4a86b](https://github.com/antvis/f2/commit/49d4a86b1d7f916296b9cb809195fbea55d4b9c4))
+* 修复Shape.Text 在设置 rotate 之后 Box 宽高不正确的问题 ([27e3eec](https://github.com/antvis/f2/commit/27e3eecc3c33b646eef5f5f73ad54587410a254f))
+
 #### 3.4.3 (2019-11-20)
 
 ##### Bug Fixes
