@@ -308,6 +308,26 @@ chart.scale({
 
 详见 [Legend](https://www.yuque.com/antv/f2/api-legend)。
 
+### filter
+
+(field:string, callback:function)
+过滤数据，如果存在对应的图例，则过滤掉的字段置灰。
+
+#### 参数
+- field: string
+指定过滤的数据字段。
+- callback: function
+回调函数，用于过滤满足条件的数据。使用如下：
+
+```
+chart.filter('x', val => {
+  // val 参数为 x 字段对应的数据值。
+  return val > 20; // 图表将会只渲染数值大于 20 的数值。
+});
+```
+参考[demo](/zh/examples/component/legend#single-selected)
+
+
 ### tooltip
 
 `chart.tooltip()`
