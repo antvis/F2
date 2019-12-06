@@ -201,6 +201,26 @@ describe('chart pan', function() {
     expect(snapEqual(xRange[1], 0.42105263157894735)).to.be.true;
   });
 
+  it('pan x axis, and with ticks', function() {
+    chart.clear();
+    chart.source(data, {
+      x2: {
+        range: [ 0, 1 ],
+        values: [ '4', '5', '6', '7', '8' ],
+        ticks: [ '4', '6', '8' ]
+      },
+      y: null
+    });
+    chart.line().position('x2*y');
+    chart.interaction('pan');
+    chart.render();
+    const interaction = chart._interactions.pan;
+    interaction._doMove(-50, 0);
+    const xScale = chart.getXScale();
+    expect(xScale.values).to.eql([ '5', '6', '7', '8', '9' ]);
+    expect(xScale.ticks).to.eql([ '4', '6', '8' ]);
+  });
+
   it('pan x axis, and x field is a timeCat type.', function() {
     chart.clear();
     chart.source(data, {
