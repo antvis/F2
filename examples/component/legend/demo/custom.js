@@ -171,9 +171,9 @@ chart.tooltip({
 chart.interval().position('name*score').color('#FACC14');
 chart.line().position('name*avgScore').color('#000');
 chart.point().position('name*avgScore').size(3)
-.style({
-  fill: '#000',
-  stroke: '#fff',
-  lineWidth: 1
-});
+  .style({
+    fill: '#000',
+    stroke: '#fff',
+    lineWidth: 1
+  });
 chart.render();
