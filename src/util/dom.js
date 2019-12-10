@@ -51,8 +51,8 @@ function fromNativeEvent(event, chart) {
 }
 
 DomUtil = {
-  /* global wx, my, module */
-  isWx: (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'),  // weixin miniprogram
+  /* global wx, my */
+  isWx: (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'), // weixin miniprogram
   isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
   isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
   isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined') && (typeof window.sessionStorage !== 'undefined'), // in browser

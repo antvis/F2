@@ -34,9 +34,9 @@ describe('Issue 467', () => {
       return val === 'Kelloggs';
     });
     const point = chart.point().position('Calories*Potassium').color('Manufacturer')
-    .style({
-      fillOpacity: 0.6
-    });
+      .style({
+        fillOpacity: 0.6
+      });
     chart.interaction('pan', {
       mode: 'xy'
     });

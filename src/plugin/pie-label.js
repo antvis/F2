@@ -57,7 +57,7 @@ class controller {
 
     const halves = [
       [], // left
-      []  // right
+      [] // right
     ]; // 存储左右 labels
     const geom = chart.get('geoms')[0];
     const shapes = geom.get('container').get('children');

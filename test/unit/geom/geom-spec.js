@@ -111,12 +111,9 @@ describe('test geoms', function() {
 
     it('other attrs', function() {
       geom.color('red')
-          .shape('a', [ 'circle', 'rect' ])
-          .size('b', function() {
-
-          });
+        .shape('a', [ 'circle', 'rect' ])
+        .size('b', function() {});
       const attrOptions = geom.get('attrOptions');
-      // debugger;
       expect(attrOptions.color.field).eqls('red');
       expect(attrOptions.color.values).eqls(Global.colors);
       expect(attrOptions.shape).eqls({ field: 'a', values: [ 'circle', 'rect' ] });
@@ -523,13 +520,12 @@ describe('test geom line', function() {
 
 describe('test geom area', function() {
   const data = [
-      { a: '1', b: 2, c: '1' },
-      { a: '2', b: 5, c: '1' },
-      { a: '3', b: 4, c: '1' },
-
-      { a: '1', b: 3, c: '2' },
-      { a: '2', b: 1, c: '2' },
-      { a: '3', b: 2, c: '2' }
+    { a: '1', b: 2, c: '1' },
+    { a: '2', b: 5, c: '1' },
+    { a: '3', b: 4, c: '1' },
+    { a: '1', b: 3, c: '2' },
+    { a: '2', b: 1, c: '2' },
+    { a: '3', b: 2, c: '2' }
   ];
   let geom;
   it('create area', function() {
@@ -597,19 +593,18 @@ describe('test geom area', function() {
 
 describe('test geom interval', function() {
   const data = [
-      { a: '1', b: 2, c: '1' },
-      { a: '2', b: 5, c: '1' },
-      { a: '3', b: 4, c: '1' }
+    { a: '1', b: 2, c: '1' },
+    { a: '2', b: 5, c: '1' },
+    { a: '3', b: 4, c: '1' }
   ];
 
   const data1 = [
-      { a: '1', b: 2, c: '1' },
-      { a: '2', b: 5, c: '1' },
-      { a: '3', b: 4, c: '1' },
-
-      { a: '1', b: 3, c: '2' },
-      { a: '2', b: 1, c: '2' },
-      { a: '3', b: 2, c: '2' }
+    { a: '1', b: 2, c: '1' },
+    { a: '2', b: 5, c: '1' },
+    { a: '3', b: 4, c: '1' },
+    { a: '1', b: 3, c: '2' },
+    { a: '2', b: 1, c: '2' },
+    { a: '3', b: 2, c: '2' }
   ];
 
   scaleA = new Scale.Cat({
@@ -748,8 +743,8 @@ describe('test geom interval', function() {
 
 describe('test polygon', function() {
   const data = [
-      { x: [ 1, 2, 2, 1 ], y: [ 0, 0, 2, 1 ] },
-      { x: [ 4, 3, 4, 2 ], y: [ 0, 0, 2, 4 ] }
+    { x: [ 1, 2, 2, 1 ], y: [ 0, 0, 2, 1 ] },
+    { x: [ 4, 3, 4, 2 ], y: [ 0, 0, 2, 4 ] }
   ];
   const data1 = [{
     a: '1', b: '1', c: 10
