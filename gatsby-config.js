@@ -181,6 +181,10 @@ module.exports = {
           </div>
         </div>
       `
+    },
+    docsearchOptions: {
+      apiKey: '349619374e9488b3f000714317d67381',
+      indexName: 'antv_f2'
     }
   }
 };
