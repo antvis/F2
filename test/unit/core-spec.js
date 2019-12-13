@@ -3,7 +3,15 @@ const Core = require('../../src/core');
 
 describe('Core', function() {
   it('Keys', function() {
-    expect(Core).to.have.all.keys([ 'Global', 'Chart', 'Shape', 'G', 'Util', 'track', 'version' ]);
+    expect(Core).to.have.all.keys([
+      'Global',
+      'Chart',
+      'Shape',
+      'G',
+      'Util',
+      'track',
+      'version'
+    ]);
   });
 
   it('no more track', function() {

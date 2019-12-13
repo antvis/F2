@@ -495,21 +495,23 @@ class TooltipController {
 
   bindEvents() {
     const cfg = this._tooltipCfg;
+    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
-    // TODO: 当用户点击 canvas 外的事件时 tooltip 消失
+    // 如果 !alwaysShow, 则在手势离开后就隐藏
     if (!alwaysShow) {
       const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-      Util.isBrowser && Util.addEventListener(document, 'touchstart', docMethod);
+      Util.addEventListener(canvasElement, 'touchend', docMethod);
     }
   }
 
   unBindEvents() {
     const cfg = this._tooltipCfg;
+    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
@@ -519,7 +521,7 @@ class TooltipController {
 
     if (!alwaysShow) {
       const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-      Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
+      Util.removeEventListener(canvasElement, 'touchend', docMethod);
     }
   }
 }

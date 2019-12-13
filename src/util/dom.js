@@ -35,19 +35,29 @@ function createEvent(type, chart, x, y, nativeEvent) {
 
 function fromNativeEvent(event, chart) {
   const type = event.type;
-
-  const point = {};
-  const touches = event.targetTouches;
-  if (touches && touches.length > 0) {
-    point.x = touches[0].clientX;
-    point.y = touches[0].clientY;
+  let clientPoint;
+  // 说明是touch相关事件
+  if (event.touches) {
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/TouchEvent/changedTouches
+    // 这里直接拿changedTouches就可以了，不管是touchstart, touchmove, touchend changedTouches 都是有的
+    // 为了以防万一，做个空判断
+    const touch = event.changedTouches[0] || {};
+    // x, y: 相对canvas原点的位置，clientX, clientY 相对于可视窗口的位置
+    const { x, y, clientX, clientY } = touch;
+    // 小程序环境会有x,y，这里就直接返回
+    if (x && y) {
+      return createEvent(type, chart, x, y, event);
+    }
+    clientPoint = { x: clientX, y: clientY };
   } else {
-    point.x = event.clientX;
-    point.y = event.clientY;
+    // mouse相关事件
+    clientPoint = { x: event.clientX, y: event.clientY };
   }
+  // 理论上应该是只有有在浏览器环境才会走到这里
   const canvas = chart.get('canvas');
-  const pos = DomUtil.getRelativePosition(point, canvas);
-  return createEvent(type, chart, pos.x, pos.y, event);
+  // 通过clientX, clientY 计算x, y
+  const point = DomUtil.getRelativePosition(clientPoint, canvas);
+  return createEvent(type, chart, point.x, point.y, event);
 }
 
 DomUtil = {
@@ -56,6 +66,15 @@ DomUtil = {
   isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
   isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
   isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined') && (typeof window.sessionStorage !== 'undefined'), // in browser
+  isCanvasElement(el) {
+    if (!el || typeof el !== 'object') return false;
+    if (el.nodeType === 1 && el.nodeName) {
+      // HTMLCanvasElement
+      return true;
+    }
+    // CanvasElement
+    return !!el.isCanvasElement;
+  },
   getPixelRatio() {
     return window && window.devicePixelRatio || 1;
   },
@@ -105,10 +124,10 @@ DomUtil = {
     };
   },
   addEventListener(source, type, listener) {
-    DomUtil.isBrowser && source.addEventListener(type, listener, eventListenerOptions);
+    source.addEventListener(type, listener, eventListenerOptions);
   },
   removeEventListener(source, type, listener) {
-    DomUtil.isBrowser && source.removeEventListener(type, listener, eventListenerOptions);
+    source.removeEventListener(type, listener, eventListenerOptions);
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);

@@ -2,6 +2,7 @@ const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
 const { requestAnimationFrame } = require('./util/requestAnimationFrame');
+const CanvasElement = require('./canvas-element');
 
 class Canvas {
   get(name) {
@@ -31,25 +32,23 @@ class Canvas {
   beforeDraw() {
     const context = this._attrs.context;
     const el = this._attrs.el;
-    !Util.isWx && !Util.isMy && context && context.clearRect(0, 0, el.width, el.height);
+    context && context.clearRect && context.clearRect(0, 0, el.width, el.height);
   }
 
   _initCanvas() {
     const self = this;
     const el = self.get('el');
     const context = self.get('context');
-    let canvas;
-
-    if (context) { // CanvasRenderingContext2D
-      canvas = context.canvas;
-    } else if (Util.isString(el)) { // HTMLElement's id
-      canvas = Util.getDomById(el);
-    } else { // HTMLElement
-      canvas = el;
-    }
-
-    if (!canvas) {
+    if (!el && !context) {
       throw new Error('Please specify the id or el of the chart!');
+    }
+    let canvas;
+    if (el) {
+      // DOMElement or String
+      canvas = Util.isString(el) ? Util.getDomById(el) : el;
+    } else {
+      // 说明没有指定el
+      canvas = CanvasElement.create(context);
     }
 
     if (context && canvas && !canvas.getContext) {
@@ -76,14 +75,15 @@ class Canvas {
 
   changeSize(width, height) {
     const pixelRatio = this.get('pixelRatio');
-    const canvasDOM = this.get('el');
+    const canvasDOM = this.get('el'); // HTMLCanvasElement or canvasElement
 
-    if (Util.isBrowser) {
+    // 浏览器环境设置style样式
+    if (canvasDOM.style) {
       canvasDOM.style.width = width + 'px';
       canvasDOM.style.height = height + 'px';
     }
 
-    if (!Util.isWx && !Util.isMy) {
+    if (Util.isCanvasElement(canvasDOM)) {
       canvasDOM.width = width * pixelRatio;
       canvasDOM.height = height * pixelRatio;
 
@@ -145,7 +145,8 @@ class Canvas {
           child.draw(context);
         }
 
-        if (Util.isWx || Util.isMy) {
+        // 支付宝，微信小程序，需要调context.draw才能完成绘制， 所以这里直接判断是否有.draw方法
+        if (context.draw) {
           context.draw();
         }
       } catch (ev) {
