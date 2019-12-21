@@ -68,7 +68,7 @@ module.exports = {
     examples: [
       {
         slug: 'gallery',
-        icon: 'gallery', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'gallery',
         title: {
           zh: 'Gallery',
           en: 'Gallery'
@@ -76,7 +76,7 @@ module.exports = {
       },
       {
         slug: 'line',
-        icon: 'line', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'line',
         title: {
           zh: '折线图',
           en: 'Line Charts'
@@ -84,7 +84,7 @@ module.exports = {
       },
       {
         slug: 'area',
-        icon: 'area', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'area',
         title: {
           zh: '面积图',
           en: 'Area Charts'
@@ -92,7 +92,7 @@ module.exports = {
       },
       {
         slug: 'column',
-        icon: 'column', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'column',
         title: {
           zh: '柱状图',
           en: 'Column Charts'
@@ -100,7 +100,7 @@ module.exports = {
       },
       {
         slug: 'bar',
-        icon: 'bar', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'bar',
         title: {
           zh: '条形图',
           en: 'Bar Charts'
@@ -108,7 +108,7 @@ module.exports = {
       },
       {
         slug: 'pie',
-        icon: 'pie', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'pie',
         title: {
           zh: '饼图',
           en: 'Pie Charts'
@@ -116,7 +116,7 @@ module.exports = {
       },
       {
         slug: 'radar',
-        icon: 'radar', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'radar',
         title: {
           zh: '雷达图',
           en: 'Radar Charts'
@@ -124,15 +124,23 @@ module.exports = {
       },
       {
         slug: 'point',
-        icon: 'point', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'point',
         title: {
           zh: '点图',
           en: 'Point Charts'
         }
       },
       {
+        slug: 'funnel',
+        icon: 'funnel',
+        title: {
+          zh: '漏斗图',
+          en: 'Funnel Charts'
+        }
+      },
+      {
         slug: 'candlestick',
-        icon: 'candlestick', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'candlestick',
         title: {
           zh: '蜡烛图',
           en: 'Candlestick Charts'
@@ -140,7 +148,7 @@ module.exports = {
       },
       {
         slug: 'relation',
-        icon: 'relation', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'relation',
         title: {
           zh: '关系图',
           en: 'Relation Charts'
@@ -148,7 +156,7 @@ module.exports = {
       },
       {
         slug: 'heatmap',
-        icon: 'heatmap', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'heatmap',
         title: {
           zh: '关系图',
           en: 'Heatmap Charts'
@@ -156,7 +164,7 @@ module.exports = {
       },
       {
         slug: 'component',
-        icon: 'component', // 图标名可以去 https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html 打开控制台查看图标类名
+        icon: 'component',
         title: {
           zh: '功能组件',
           en: 'Chart Components'

@@ -1,0 +1,23 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "basic.js",
+      "title": "基础金字塔图",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/0ea9b22a-139b-4565-bc45-1dcec0b8e739.jpg"
+    },
+    {
+      "filename": "stroke.js",
+      "title": "有间距",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ca7a35dd-b1e9-46b4-a802-54ee4c5e3501.jpg"
+    },
+    {
+      "filename": "scale.js",
+      "title": "旋转向下",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/8b69153b-d84f-47c8-85e3-73c040c2ea59.jpg"
+    }
+  ]
+}
