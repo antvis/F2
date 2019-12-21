@@ -52,6 +52,18 @@ const ScaleTen = new Scale.Identity({
   field: '10',
   value: 10
 });
+
+const scaleShapePyramid = new Scale.Identity({
+  field: 'pyramid',
+  value: 'pyramid'
+});
+
+const scaleShapeFunnel = new Scale.Identity({
+  field: 'funnel',
+  value: 'funnel'
+});
+
+
 const coord = new Coord.Rect({
   start: {
     x: 0,
@@ -617,7 +629,7 @@ describe('test geom interval', function() {
     data,
     coord,
     container: canvas.addGroup(),
-    scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, 10: ScaleTen }
+    scales: { a: scaleA, b: scaleB, c: scaleC, red: ScaleRed, 10: ScaleTen, pyramid: scaleShapePyramid, funnel: scaleShapeFunnel }
   });
   it('draw interval', function() {
     clearCanvas(canvas);
@@ -642,7 +654,6 @@ describe('test geom interval', function() {
     geom.paint();
 
     expect(geom.getSize()).equal((500) / 3 / 4);
-
   });
 
   it('custom size', function() {
@@ -667,6 +678,36 @@ describe('test geom interval', function() {
     geom.init();
     geom.paint();
     expect(geom.getSize()).equal(500 / 6);
+  });
+
+  it('shape pyramid', function() {
+    clearCanvas(canvas);
+    geom.reset();
+    geom.position('a*b').color('c').adjust('symmetric');
+    geom.set('data', data1);
+    geom.shape('pyramid');
+    geom.init();
+    geom.paint();
+
+    const container = geom.get('container');
+    const children = container.get('children');
+    expect(children.length).equal(6);
+    expect(children[0].get('attrs').points.length).equal(4);
+    expect(children[children.length - 1].get('attrs').points.length).equal(3);
+  });
+
+  it('shape funnel', function() {
+    clearCanvas(canvas);
+    geom.reset();
+    geom.position('a*b').color('c').adjust('symmetric');
+    geom.set('data', data1);
+    geom.shape('funnel');
+    geom.init();
+    geom.paint();
+
+    const container = geom.get('container');
+    const children = container.get('children');
+    expect(children[children.length - 1].get('attrs').points.length).equal(4);
   });
 
   it('polar coord, draw interval', function() {

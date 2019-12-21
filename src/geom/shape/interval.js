@@ -52,6 +52,12 @@ function getRectRange(points) {
   };
 }
 
+function getMiddlePoint(a, b) {
+  const x = (a.x - b.x) / 2 + b.x;
+  const y = (a.y - b.y) / 2 + b.y;
+  return { x, y };
+}
+
 const Interval = Shape.registerFactory('interval', {
   defaultShapeType: 'rect',
   getDefaultPoints(cfg) {
@@ -110,6 +116,46 @@ Shape.registerShape('interval', 'rect', {
       attrs: Util.mix(rectCfg, style)
     });
   }
+});
+
+// 金字塔 和 漏斗图
+[ 'pyramid', 'funnel' ].forEach(shapeType => {
+  Shape.registerShape('interval', shapeType, {
+    getPoints(cfg) {
+      cfg.size = cfg.size * 2; // 漏斗图的 size 是柱状图的两倍
+      return getRectPoints(cfg);
+    },
+    draw(cfg, container) {
+      const points = this.parsePoints(cfg.points);
+      const nextPoints = this.parsePoints(cfg.nextPoints);
+
+      let polygonPoints = null;
+      if (nextPoints) {
+        polygonPoints = [ points[0], points[1], nextPoints[1], nextPoints[0] ];
+      } else {
+        polygonPoints = [
+          points[0],
+          points[1]
+        ];
+        // pyramid 顶部是三角形，所以取中心点就好了，funnel顶部是长方形
+        if (shapeType === 'pyramid') {
+          polygonPoints.push(getMiddlePoint(points[2], points[3]));
+        } else {
+          polygonPoints.push(points[2], points[3]);
+        }
+      }
+
+      const attrs = Util.mix({
+        fill: cfg.color,
+        points: polygonPoints
+      }, Global.shape.interval, cfg.style);
+
+      return container.addShape('polygon', {
+        className: 'interval',
+        attrs
+      });
+    }
+  });
 });
 
 module.exports = Interval;
