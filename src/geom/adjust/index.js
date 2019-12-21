@@ -1,4 +1,5 @@
 module.exports = {
   Stack: require('./stack'),
-  Dodge: require('./dodge')
+  Dodge: require('./dodge'),
+  Symmetric: require('./symmetric')
 };

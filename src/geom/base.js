@@ -349,6 +349,7 @@ class Geom extends Base {
       const newRecord = {};
       newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
       newRecord.points = record.points;
+      newRecord.nextPoints = record.nextPoints;
       // 避免
       newRecord[FIELD_ORIGIN_Y] = record[yField];
       for (const k in attrs) {
@@ -408,6 +409,13 @@ class Geom extends Base {
       Util.each(dataArray, function(data) {
         self._generatePoints(data);
       });
+      // 添加nextPoints
+      Util.each(dataArray, (data, index) => {
+        const nextData = dataArray[index + 1];
+        if (nextData) {
+          data[0].nextPoints = nextData[0].points;
+        }
+      });
     }
   }
 
@@ -453,6 +461,7 @@ class Geom extends Base {
     }
     if (self.get('generatePoints')) {
       cfg.points = obj.points;
+      cfg.nextPoints = obj.nextPoints;
     }
     if (isInCircle) {
       cfg.center = self.get('coord').center;

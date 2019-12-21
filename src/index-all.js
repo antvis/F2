@@ -19,10 +19,11 @@ const Legend = require('./plugin/legend');
 const Animation = require('./animation/detail');
 const ScrollBar = require('./plugin/scroll-bar');
 const PieLabel = require('./plugin/pie-label');
+const intervalLabel = require('./plugin/interval-label');
 
 F2.Animate = require('./animation/animate');
 // register plugins
-F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar, PieLabel ]);
+F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar, PieLabel, intervalLabel ]);
 
 // add interaction
 require('./interaction');
