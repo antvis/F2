@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.5.0-beta.2",
+  "version": "3.5.0-beta.3",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -108,7 +108,7 @@
     "@antv/attr": "~0.1.0",
     "@antv/scale": "~0.1.2",
     "@antv/util": "~1.2.5",
-    "hammerjs": "^2.0.8",
-    "wolfy87-eventemitter": "^5.2.8"
+    "@babel/runtime": "^7.7.7",
+    "hammerjs": "^2.0.8"
   }
 }

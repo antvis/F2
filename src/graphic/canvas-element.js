@@ -1,8 +1,7 @@
-const EventEmitter = require('wolfy87-eventemitter');
+const Util = require('../util/common');
 
-class CanvasElement extends EventEmitter {
+class CanvasElement {
   constructor(ctx) {
-    super();
     this.context = ctx;
     // canvas实际的宽高 (width/height) * pixelRatio
     this.width = 0;
@@ -10,6 +9,9 @@ class CanvasElement extends EventEmitter {
     this.style = {};
     // 用来标识是CanvasElement实例
     this.isCanvasElement = true;
+
+    // 实现简单的事件机制
+    this.__events = {};
   }
 
   getContext(/* type */) {
@@ -29,15 +31,30 @@ class CanvasElement extends EventEmitter {
   }
 
   addEventListener(type, listener) {
-    this.addListener(type, listener);
+    const events = this.__events[type] || [];
+    events.push(listener);
+    this.__events[type] = events;
   }
 
   removeEventListener(type) {
-    this.removeEvent(type);
+    delete this.__events[type];
   }
 
-  dispatchEvent(e) {
-    this.emitEvent(e);
+  dispatchEvent(type, e) {
+    if (Util.isObject(type)) {
+      e = type;
+      type = e && e.type;
+    }
+    if (!type) {
+      return;
+    }
+    const events = this.__events[type];
+    if (!events || !events.length) {
+      return;
+    }
+    events.forEach(listener => {
+      listener.call(this, e);
+    });
   }
 }
 
