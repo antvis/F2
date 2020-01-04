@@ -7,6 +7,7 @@ class CanvasElement {
     this.width = 0;
     this.height = 0;
     this.style = {};
+    this.currentStyle = {};
     // 用来标识是CanvasElement实例
     this.isCanvasElement = true;
 
