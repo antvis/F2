@@ -204,11 +204,13 @@ class TooltipController {
 
   clear() {
     const tooltip = this.tooltip;
-    tooltip && tooltip.destroy();
+    if (tooltip) {
+      tooltip.destroy();
+      this.unBindEvents();
+    }
     this.tooltip = null;
     this.prePoint = null;
     this._lastActive = null;
-    this.unBindEvents();
   }
 
   _getTooltipMarkerStyle(cfg = {}) {
