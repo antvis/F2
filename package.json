@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.5.0-beta.4",
+  "version": "3.5.0-beta.5",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -26,6 +26,7 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "files": [
+    "src",
     "lib",
     "build",
     "dist",
