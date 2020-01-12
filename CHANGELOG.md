@@ -1,3 +1,29 @@
+#### 3.5.0 (2020-01-12)
+
+##### Chores
+
+*  npm包添加src源文件 ([16d026c4](https://github.com/antvis/f2/commit/16d026c45461c0d9848199c9beb4db74d2d6f8e2))
+* **deps:**  upgrade eslint 3.19.0 to 6.7.2 ([234edfc1](https://github.com/antvis/f2/commit/234edfc1d23d9d4962f768c68e82070523fb1f89))
+* **deps-dev:**  bump open from 0.0.5 to 7.0.0 ([cba92c2a](https://github.com/antvis/f2/commit/cba92c2adb24c1d73f42e5cbd0236bd5406d43f6))
+
+##### Documentation Changes
+
+*  添加filter的使用说明 ([79038d47](https://github.com/antvis/f2/commit/79038d47d1c976494d05ac2c1f269ee703e34acf))
+
+##### New Features
+
+*  添加漏斗图 ([47c8a233](https://github.com/antvis/f2/commit/47c8a233d802a7546ffa5af826101a456d470f80))
+*  多端多环境的适配与支持 ([458c3fbf](https://github.com/antvis/f2/commit/458c3fbf576b3123a1527adc5f7fbb99a0762c7d))
+
+##### Bug Fixes
+
+*  未设置geometry时，clear报错 ([065c7ea3](https://github.com/antvis/f2/commit/065c7ea3b77a175ffdc3b582ce9d9490cb57efbb))
+*  修复非浏览器环境时，currentStyle报错 ([f90affa3](https://github.com/antvis/f2/commit/f90affa3440e6c18a118400305aa62ae60e66b5e))
+
+##### Refactors
+
+*  去掉eventemitter，只要简单的事件处理就可以了 ([b63c63a6](https://github.com/antvis/f2/commit/b63c63a600d900253d6a1ce982a894639770b541))
+
 #### 3.4.4 (2019-12-06)
 
 ##### Documentation Changes
