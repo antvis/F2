@@ -1,4 +1,7 @@
 const Util = require('../util/common');
+const MatrixUtil = require('../graphic/util/matrix');
+const Vector2 = require('../graphic/util/vector2');
+const defaultMatrix = [ 1, 0, 0, 1, 0, 0 ];
 
 class Base {
   _initDefaultCfg() {}
@@ -21,13 +24,46 @@ class Base {
     this.init(start, end);
   }
 
-  init() {}
+  _scale(s1, s2) {
+    const matrix = this.matrix;
+    const center = this.center;
+    MatrixUtil.translate(matrix, matrix, [ center.x, center.y ]);
+    MatrixUtil.scale(matrix, matrix, [ s1, s2 ]);
+    MatrixUtil.translate(matrix, matrix, [ -center.x, -center.y ]);
+  }
+
+  init(start, end) {
+    this.matrix = [].concat(defaultMatrix);
+    // 设置中心点
+    this.center = {
+      x: ((end.x - start.x) / 2) + start.x,
+      y: (end.y - start.y) / 2 + start.y
+    };
+    if (this.scale) {
+      this._scale(this.scale[0], this.scale[1]);
+    }
+  }
 
   convertPoint(point) {
-    return point;
+    const { x, y } = this._convertPoint(point);
+    const vector = [ x, y ];
+    Vector2.transformMat2d(vector, vector, this.matrix);
+
+    return {
+      x: vector[0],
+      y: vector[1]
+    };
   }
 
   invertPoint(point) {
+    return this._invertPoint(point);
+  }
+
+  _convertPoint(point) {
+    return point;
+  }
+
+  _invertPoint(point) {
     return point;
   }
 

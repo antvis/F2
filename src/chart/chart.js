@@ -386,6 +386,7 @@ class Chart extends Base {
         fontFamily: Global.fontFamily
       });
       self.set('canvas', canvas);
+      self.set('el', canvas.get('el'));
       self.set('width', canvas.get('width'));
       self.set('height', canvas.get('height'));
     } catch (error) {

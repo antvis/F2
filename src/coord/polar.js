@@ -16,6 +16,7 @@ class Polar extends Base {
   }
 
   init(start, end) {
+    super.init(start, end);
     const self = this;
     const inner = self.inner || self.innerRadius;
     const width = Math.abs(end.x - start.x);
@@ -55,7 +56,7 @@ class Polar extends Base {
     this.circleRadius = maxRadius; // the radius value in px
   }
 
-  convertPoint(point) {
+  _convertPoint(point) {
     const self = this;
     const center = self.center;
     const transposed = self.transposed;
@@ -74,7 +75,7 @@ class Polar extends Base {
     };
   }
 
-  invertPoint(point) {
+  _invertPoint(point) {
     const self = this;
     const { center, transposed, x, y } = self;
     const xDim = transposed ? 'y' : 'x';

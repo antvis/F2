@@ -204,11 +204,13 @@ class TooltipController {
 
   clear() {
     const tooltip = this.tooltip;
-    tooltip && tooltip.destroy();
+    if (tooltip) {
+      tooltip.destroy();
+      this.unBindEvents();
+    }
     this.tooltip = null;
     this.prePoint = null;
     this._lastActive = null;
-    this.unBindEvents();
   }
 
   _getTooltipMarkerStyle(cfg = {}) {
@@ -386,6 +388,11 @@ class TooltipController {
       if (geom.get('visible')) {
         const type = geom.get('type');
         const records = geom.getSnapRecords(point);
+        const adjust = geom.get('adjust');
+        // 漏斗图和金子塔图tooltip位置有问题，暂时不开放显示
+        if (type === 'interval' && adjust && adjust.type === 'symmetric') {
+          return;
+        }
         Util.each(records, record => {
           if (record.x && record.y) {
             const { x, y, _origin, color } = record;
@@ -471,17 +478,6 @@ class TooltipController {
     this.hideTooltip();
   }
 
-  handleDocEvent(ev) {
-    const chart = this.chart;
-    if (!this.enable || chart.get('_closeTooltip')) return;
-
-
-    const canvasDom = this.canvasDom;
-    if (ev.target !== canvasDom) {
-      this.hideTooltip();
-    }
-  }
-
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
     Util.each([].concat(methodName), aMethod => {
@@ -495,21 +491,22 @@ class TooltipController {
 
   bindEvents() {
     const cfg = this._tooltipCfg;
+    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
-    // TODO: 当用户点击 canvas 外的事件时 tooltip 消失
-    if (!alwaysShow) {
-      const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-      Util.isBrowser && Util.addEventListener(document, 'touchstart', docMethod);
+    // 如果 !alwaysShow, 则在手势离开后就隐藏
+    if (!alwaysShow && !triggerOff) {
+      Util.addEventListener(canvasElement, 'touchend', hideMethod);
     }
   }
 
   unBindEvents() {
     const cfg = this._tooltipCfg;
+    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
     const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
     const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
@@ -519,7 +516,7 @@ class TooltipController {
 
     if (!alwaysShow) {
       const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-      Util.isBrowser && Util.removeEventListener(document, 'touchstart', docMethod);
+      Util.removeEventListener(canvasElement, 'touchend', docMethod);
     }
   }
 }

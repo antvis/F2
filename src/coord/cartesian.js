@@ -8,6 +8,7 @@ class Cartesian extends Base {
   }
 
   init(start, end) {
+    super.init(start, end);
     this.x = {
       start: start.x,
       end: end.x
@@ -19,7 +20,7 @@ class Cartesian extends Base {
     };
   }
 
-  convertPoint(point) {
+  _convertPoint(point) {
     const self = this;
     const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
@@ -32,7 +33,7 @@ class Cartesian extends Base {
     };
   }
 
-  invertPoint(point) {
+  _invertPoint(point) {
     const self = this;
     const transposed = self.transposed;
     const xDim = transposed ? 'y' : 'x';
