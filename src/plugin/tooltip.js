@@ -388,6 +388,11 @@ class TooltipController {
       if (geom.get('visible')) {
         const type = geom.get('type');
         const records = geom.getSnapRecords(point);
+        const adjust = geom.get('adjust');
+        // 漏斗图和金子塔图tooltip位置有问题，暂时不开放显示
+        if (type === 'interval' && adjust && adjust.type === 'symmetric') {
+          return;
+        }
         Util.each(records, record => {
           if (record.x && record.y) {
             const { x, y, _origin, color } = record;
@@ -473,17 +478,6 @@ class TooltipController {
     this.hideTooltip();
   }
 
-  handleDocEvent(ev) {
-    const chart = this.chart;
-    if (!this.enable || chart.get('_closeTooltip')) return;
-
-
-    const canvasDom = this.canvasDom;
-    if (ev.target !== canvasDom) {
-      this.hideTooltip();
-    }
-  }
-
   _handleEvent(methodName, method, action) {
     const canvasDom = this.canvasDom;
     Util.each([].concat(methodName), aMethod => {
@@ -505,9 +499,8 @@ class TooltipController {
     triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
     triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
     // 如果 !alwaysShow, 则在手势离开后就隐藏
-    if (!alwaysShow) {
-      const docMethod = Util.wrapBehavior(this, 'handleDocEvent');
-      Util.addEventListener(canvasElement, 'touchend', docMethod);
+    if (!alwaysShow && !triggerOff) {
+      Util.addEventListener(canvasElement, 'touchend', hideMethod);
     }
   }
 
