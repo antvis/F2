@@ -8,7 +8,7 @@ const data = require('../fixtures/cereal.json');
 describe('Issue 467', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -53,7 +53,7 @@ describe('Issue 467', () => {
     });
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });

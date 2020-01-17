@@ -8,7 +8,7 @@ require('../../src/geom/adjust/dodge');
 describe('Issue 514', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -186,7 +186,7 @@ describe('Issue 514', () => {
     expect(pixelData[2]).to.equal(255); // b
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });

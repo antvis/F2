@@ -4,4 +4,7 @@
 
 describe('Scale controller', function() {
   // TODO
+  it('empty', () => {
+    expect(true);
+  });
 });

@@ -5,7 +5,7 @@ const Canvas = require('../../src/graphic/canvas');
 describe('Issue 468', () => {
   let canvas;
   let dom;
-  before(() => {
+  beforeAll(() => {
     dom = document.createElement('canvas');
     dom.id = 'issue468';
     document.body.appendChild(dom);
@@ -51,7 +51,7 @@ describe('Issue 468', () => {
     });
   });
 
-  after(() => {
+  afterAll(() => {
     canvas.destroy();
     document.body.removeChild(dom);
   });

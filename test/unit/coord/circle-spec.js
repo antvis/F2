@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const Plot = require('../../../src/chart/plot');
 const Coord = require('../../../src/coord/index');
+require('../../../src/coord/polar');
 
 const gMath = {
   equal(v1, v2) {

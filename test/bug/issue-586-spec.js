@@ -13,7 +13,7 @@ document.body.appendChild(canvas);
 describe('issue 586', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -52,7 +52,7 @@ describe('issue 586', () => {
     expect(legendItems).to.be.empty;
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });
