@@ -3,7 +3,10 @@
     "egg"
   ],
   "globals": {
-    "$": true
+    "$": true,
+    "expect": true,
+    "beforeAll": true,
+    "afterAll": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

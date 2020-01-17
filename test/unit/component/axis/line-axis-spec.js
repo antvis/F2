@@ -121,10 +121,9 @@ describe('line axis', function() {
       side = axis.getSidePoint(point, -10);
       expect(side).eql({ x: 40, y: 450 });
     });
-
   });
 
-  it('right', function() {
+  describe('right', function() {
     const cfg = Util.deepMix({
       start: {
         x: 460,
@@ -151,7 +150,7 @@ describe('line axis', function() {
       expect(point).eql({ x: 460, y: 250 });
 
       point = axis.getOffsetPoint(1);
-      expect(point).eql({ x: 460, y: 460 });
+      expect(point).eql({ x: 460, y: 40 });
     });
 
     it('test text align', function() {
@@ -170,7 +169,7 @@ describe('line axis', function() {
     });
 
     it('test grid', function() {
-      expect(axis.get('gridPoints').length).equal(2);
+      expect(axis.gridPoints.length).equal(2);
     });
   });
 

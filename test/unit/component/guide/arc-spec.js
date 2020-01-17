@@ -3,6 +3,7 @@ const { Canvas } = require('../../../../src/graphic/index');
 const Coord = require('../../../../src/coord/index');
 const { Arc } = require('../../../../src/component/guide/index');
 const Scale = require('../../../../src/scale/index');
+require('../../../../src/coord/polar');
 
 const dom = document.createElement('canvas');
 dom.id = 'guideArc';

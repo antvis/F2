@@ -4,6 +4,7 @@ const F2 = require('../../../src/core');
 const Gesture = require('../../../src/plugin/gesture');
 const canvas = document.createElement('canvas');
 const { gestureSimulator } = require('../test-util');
+require('../../../src/geom');
 
 canvas.width = 500;
 canvas.height = 500;
