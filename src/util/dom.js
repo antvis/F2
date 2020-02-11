@@ -124,10 +124,10 @@ DomUtil = {
     };
   },
   addEventListener(source, type, listener) {
-    source.addEventListener(type, listener, eventListenerOptions);
+    isBrowser && source.addEventListener(type, listener, eventListenerOptions);
   },
   removeEventListener(source, type, listener) {
-    source.removeEventListener(type, listener, eventListenerOptions);
+    isBrowser && source.removeEventListener(type, listener, eventListenerOptions);
   },
   createEvent(event, chart) {
     return fromNativeEvent(event, chart);
