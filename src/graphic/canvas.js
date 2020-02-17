@@ -1,10 +1,13 @@
+import EventEmit from './event/emit';
+import EventController from './event/controller';
+
 const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
 const { requestAnimationFrame } = require('./util/requestAnimationFrame');
 const CanvasElement = require('./canvas-element');
 
-class Canvas {
+class Canvas extends EventEmit {
   get(name) {
     return this._attrs[name];
   }
@@ -14,6 +17,7 @@ class Canvas {
   }
 
   constructor(cfg) {
+    super();
     this._attrs = Util.mix({
       type: 'canvas',
       children: []
@@ -40,7 +44,7 @@ class Canvas {
     const el = self.get('el');
     const context = self.get('context');
     if (!el && !context) {
-      throw new Error('Please specify the id or el of the chart!');
+      throw new Error('Please specify the id, el or context of the chart!');
     }
     let canvas;
     if (el) {
@@ -56,7 +60,6 @@ class Canvas {
         return context;
       };
     }
-
     let width = self.get('width');
     if (!width) {
       width = Util.getWidth(canvas);
@@ -71,6 +74,13 @@ class Canvas {
     self.set('el', canvas);
     self.set('context', context || canvas.getContext('2d'));
     self.changeSize(width, height);
+
+    // 初始化事件控制器
+    const eventController = new EventController({
+      canvas: this,
+      el: canvas
+    });
+    self.set('eventController', eventController);
   }
 
   changeSize(width, height) {

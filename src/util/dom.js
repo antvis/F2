@@ -79,6 +79,7 @@ function getDomById(id) {
 
 function getRelativePosition(point, canvas) {
   const canvasDom = canvas.get('el');
+  if (!canvasDom) return point;
   const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
 
   const paddingLeft = parseFloat(getStyle(canvasDom, 'padding-left'));
