@@ -18,7 +18,8 @@ import {
   deepMix,
   mix,
   each,
-  uniq
+  uniq,
+  find
 } from '@antv/util';
 import * as ArrayUtil from './array';
 
@@ -104,6 +105,7 @@ export {
   mix,
   each,
   uniq,
+  find,
   isObjectValueEqual,
   wrapBehavior,
   getWrapBehavior,

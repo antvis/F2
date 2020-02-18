@@ -51,9 +51,6 @@ class EventController {
     this.canvas = canvas;
     this.delegateEvent(el);
 
-    // press的停顿
-    this.pressDelay = 250;
-
     // 用来记录当前触发的事件
     this.processEvent = {};
   }
@@ -91,8 +88,6 @@ class EventController {
     }
   }
   _move = ev => {
-    // TODO： 需要做精细化判断
-    ev.preventDefault();
     const points = convertPoints(ev, this.canvas);
     if (!points) return;
     ev.points = points;
@@ -146,8 +141,15 @@ class EventController {
     this.reset();
   }
   getEventType() {
+    const { canvas, startTime } = this;
+    const panEventListeners = canvas.__events.pan;
+    // 如果没有pan事件的监听，默认都是press
+    if (!panEventListeners || !panEventListeners.length) {
+      return 'press';
+    }
+    // 如果有pan事件的处理，press则需要停顿250ms
     const now = Date.now();
-    if (now - this.startTime > this.pressDelay) {
+    if (now - startTime > 250) {
       return 'press';
     }
     return 'pan';

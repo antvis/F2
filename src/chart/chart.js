@@ -522,6 +522,7 @@ class Chart extends Base {
     const canvas = this.get('canvas');
     const geoms = this.get('geoms');
     const data = this.get('data') || [];
+    this.emit('beforerender');
 
     const filteredData = this._execFilter(data); // filter data
     this.set('filteredData', filteredData);
@@ -556,6 +557,8 @@ class Chart extends Base {
     this.get('frontPlot').sort();
     Chart.plugins.notify(this, 'beforeCanvasDraw');
     canvas.draw();
+
+    this.emit('afterrender');
     return this;
   }
 
