@@ -344,18 +344,23 @@ class Geom extends Base {
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
     const mappedData = [];
-    for (let i = 0, len = data.length; i < len; i++) {
-      const record = data[i];
-      const newRecord = {};
-      newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
-      newRecord.points = record.points;
-      newRecord.nextPoints = record.nextPoints;
-      // 避免
-      newRecord[FIELD_ORIGIN_Y] = record[yField];
-      for (const k in attrs) {
-        if (attrs.hasOwnProperty(k)) {
-          const attr = attrs[k];
-          const names = attr.names;
+
+    for (const k in attrs) {
+      if (attrs.hasOwnProperty(k)) {
+        const attr = attrs[k];
+        const names = attr.names;
+
+        for (let i = 0, len = data.length; i < len; i++) {
+          const record = data[i];
+
+          const newRecord = mappedData[i] || {
+            [FIELD_ORIGIN]: record[FIELD_ORIGIN],
+            points: record.points,
+            nextPoints: record.nextPoints,
+            [FIELD_ORIGIN_Y]: record[yField]
+          };
+
+          // 获取视觉属性对应的value值
           const values = self._getAttrValues(attr, record);
           if (names.length > 1) {
             for (let j = 0, len = values.length; j < len; j++) {
@@ -366,11 +371,11 @@ class Geom extends Base {
           } else {
             newRecord[names[0]] = values.length === 1 ? values[0] : values;
           }
+
+          mappedData[i] = newRecord;
         }
       }
-      mappedData.push(newRecord);
     }
-
     return mappedData;
   }
 
