@@ -1,4 +1,5 @@
 import { getRelativePosition } from '../../util/dom';
+
 // 计算滑动的方向
 const calcDirection = (start, end) => {
   const xDistance = end.x - start.x;
@@ -45,6 +46,8 @@ const convertPoints = (ev, canvas) => {
   return points;
 };
 
+const PRESS_DELAY = 250;
+
 class EventController {
   constructor({ canvas, el }) {
     // canvasEl
@@ -85,11 +88,22 @@ class EventController {
     if (points.length > 1) {
       this.startDistance = calcDistance(points[0], points[1]);
       this.center = getCenter(points[0], points[1]);
+    } else {
+      // 如果touchstart后停顿250ms, 则也触发press事件
+      this.pressTimeout = setTimeout(() => {
+        const eventType = this.getEventType(points);
+        this.emitStart(eventType, ev);
+        this.emitEvent(eventType, ev);
+      }, PRESS_DELAY);
     }
   }
   _move = ev => {
     const points = convertPoints(ev, this.canvas);
     if (!points) return;
+    if (this.pressTimeout) {
+      clearTimeout(this.pressTimeout);
+      this.pressTimeout = 0;
+    }
     ev.points = points;
     this.emitEvent('touchmove', ev);
     const startPoints = this.startPoints;
@@ -98,15 +112,12 @@ class EventController {
     if (points.length > 1) {
       // touchstart的距离
       const startDistance = this.startDistance;
-      // 多指时阻止默认事件
-      ev.preventDefault();
       const currentDistance = calcDistance(points[0], points[1]);
       ev.zoom = currentDistance / startDistance;
       ev.center = this.center;
       // 触发缩放事件
       this.emitStart('pinch', ev);
       this.emitEvent('pinch', ev);
-      // return;
     } else {
       const deltaX = points[0].x - startPoints[0].x;
       const deltaY = points[0].y - startPoints[0].y;
@@ -116,8 +127,7 @@ class EventController {
       // 获取press或者pan的事件类型
       // press 按住滑动, pan表示平移
       // 如果start后立刻move，则触发pan, 如果有停顿，则触发press
-      const eventType = this.eventType || this.getEventType(points);
-      this.eventType = eventType;
+      const eventType = this.getEventType(points);
 
       ev.direction = direction;
       ev.deltaX = deltaX;
@@ -131,8 +141,9 @@ class EventController {
     this.emitEnd(ev);
     this.reset();
 
+    const touches = ev.touches;
     // 当多指只释放了1指时也会触发end, 这时重新触发一次start
-    if (ev.touches) {
+    if (touches && touches.length > 0) {
       this._start(ev);
     }
   }
@@ -140,19 +151,27 @@ class EventController {
     this.emitEvent('touchcancel', ev);
     this.reset();
   }
-  getEventType() {
-    const { canvas, startTime } = this;
+  getEventType(points) {
+    const { eventType, canvas, startTime, startPoints } = this;
+    if (eventType) {
+      return eventType;
+    }
+    let type;
     const panEventListeners = canvas.__events.pan;
     // 如果没有pan事件的监听，默认都是press
     if (!panEventListeners || !panEventListeners.length) {
-      return 'press';
+      type = 'press';
+    } else {
+      // 如果有pan事件的处理，press则需要停顿250ms, 且移动距离小于10
+      const now = Date.now();
+      if (now - startTime > PRESS_DELAY && calcDistance(startPoints[0], points[0]) < 10) {
+        type = 'press';
+      } else {
+        type = 'pan';
+      }
     }
-    // 如果有pan事件的处理，press则需要停顿250ms
-    const now = Date.now();
-    if (now - startTime > 250) {
-      return 'press';
-    }
-    return 'pan';
+    this.eventType = type;
+    return type;
   }
   enable(eventType) {
     this.processEvent[eventType] = true;
