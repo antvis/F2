@@ -257,6 +257,7 @@ describe('chart test', () => {
     it('geom methods', function() {
       expect(chart.point).not.equal(undefined);
       const geom = chart.point().position('a*b').color('c');
+      chart.render();
       expect(chart.get('geoms').length).equal(1);
       expect(geom.get('type')).equal('point');
       expect(geom.get('container')).not.to.be.empty;

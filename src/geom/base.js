@@ -80,11 +80,7 @@ class Geom extends Base {
   init() {
     const self = this;
     self._initAttrs();
-    const dataArray = self._processData();
-    if (self.get('adjust')) {
-      self._adjustData(dataArray);
-    }
-    self.set('dataArray', dataArray);
+    self._processData();
   }
 
   _getGroupScales() {
@@ -166,6 +162,8 @@ class Geom extends Base {
         }
         if (type === 'position') {
           const yScale = scales[1];
+
+          // 饼图的处理，但是还不知道为啥
           if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {
               yScale.change({
@@ -213,6 +211,13 @@ class Geom extends Base {
       }
       dataArray.push(tempData);
     }
+    if (self.get('adjust')) {
+      self._adjustData(dataArray);
+    }
+    if (self.get('sortable')) {
+      self._sort(dataArray);
+    }
+    self.set('dataArray', dataArray);
     return dataArray;
   }
 
@@ -343,7 +348,6 @@ class Geom extends Base {
     const self = this;
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
-    const mappedData = [];
 
     for (const k in attrs) {
       if (attrs.hasOwnProperty(k)) {
@@ -352,13 +356,7 @@ class Geom extends Base {
 
         for (let i = 0, len = data.length; i < len; i++) {
           const record = data[i];
-
-          const newRecord = mappedData[i] || {
-            [FIELD_ORIGIN]: record[FIELD_ORIGIN],
-            points: record.points,
-            nextPoints: record.nextPoints,
-            [FIELD_ORIGIN_Y]: record[yField]
-          };
+          record[FIELD_ORIGIN_Y] = record[yField];
 
           // 获取视觉属性对应的value值
           const values = self._getAttrValues(attr, record);
@@ -366,17 +364,15 @@ class Geom extends Base {
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
-              newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
+              record[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
-            newRecord[names[0]] = values.length === 1 ? values[0] : values;
+            record[names[0]] = values.length === 1 ? values[0] : values;
           }
-
-          mappedData[i] = newRecord;
         }
       }
     }
-    return mappedData;
+    return data;
   }
 
   _getAttrValues(attr, record) {
@@ -407,20 +403,8 @@ class Geom extends Base {
 
   _beforeMapping(dataArray) {
     const self = this;
-    if (self.get('sortable')) {
-      self._sort(dataArray);
-    }
     if (self.get('generatePoints')) {
-      Util.each(dataArray, function(data) {
-        self._generatePoints(data);
-      });
-      // 添加nextPoints
-      Util.each(dataArray, (data, index) => {
-        const nextData = dataArray[index + 1];
-        if (nextData) {
-          data[0].nextPoints = nextData[0].points;
-        }
-      });
+      self._generatePoints(dataArray);
     }
   }
 
@@ -499,17 +483,26 @@ class Geom extends Base {
     }
   }
 
-  _generatePoints(data) {
+  _generatePoints(dataArray) {
     const self = this;
     const shapeFactory = self.getShapeFactory();
     const shapeAttr = self.getAttr('shape');
-    for (let i = 0, len = data.length; i < len; i++) {
-      const obj = data[i];
-      const cfg = self.createShapePointsCfg(obj);
-      const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
-      const points = shapeFactory.getShapePoints(shape, cfg);
-      obj.points = points;
-    }
+    Util.each(dataArray, function(data) {
+      for (let i = 0, len = data.length; i < len; i++) {
+        const obj = data[i];
+        const cfg = self.createShapePointsCfg(obj);
+        const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
+        const points = shapeFactory.getShapePoints(shape, cfg);
+        obj.points = points;
+      }
+    });
+    // 添加nextPoints
+    Util.each(dataArray, (data, index) => {
+      const nextData = dataArray[index + 1];
+      if (nextData) {
+        data[0].nextPoints = nextData[0].points;
+      }
+    });
   }
 
   /**
@@ -752,28 +745,28 @@ class Geom extends Base {
     return this;
   }
 
-  reset() {
-    this.set('attrOptions', {});
-    this.set('adjust', null);
-    this.clearInner();
+  changeData(data) {
+    this.set('data', data);
+    this._processData();
   }
 
   clearInner() {
     const container = this.get('container');
     if (container) {
       container.clear();
-      container.setMatrix([ 1, 0, 0, 1, 0, 0 ]);
+      // container.setMatrix([ 1, 0, 0, 1, 0, 0 ]);
     }
-    container && container.clear();
+  }
+
+  reset() {
     this.set('attrs', {});
-    this.set('groupScales', null);
-    this.set('xDistance', null);
-    this.set('_width', null);
+    this.set('attrOptions', {});
+    this.set('adjust', null);
+    this.clearInner();
   }
 
   clear() {
     this.clearInner();
-    this.set('scales', {});
   }
 
   destroy() {

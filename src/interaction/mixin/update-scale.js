@@ -3,17 +3,24 @@ const Util = require('../../util/common');
 module.exports = {
   updateLinearScale(field, min, max) {
     const chart = this.chart;
-    const colDef = Helper.getColDef(chart, field);
-    chart.scale(field, Util.mix({}, colDef, {
+    const scale = Helper.getScale(chart, field);
+    // const colDef = Helper.getColDef(chart, field);
+    // chart.scale(field, Util.mix({}, colDef, {
+    //   min,
+    //   max,
+    //   nice: false
+    // }));
+    scale.change({
       min,
       max,
       nice: false
-    }));
+    });
   },
   updateCatScale(field, newValues, ticks, values, minIndex, maxIndex) {
     const chart = this.chart;
-    const colDef = Helper.getColDef(chart, field);
-    chart.scale(field, Util.mix({}, colDef, {
+    // const colDef = Helper.getColDef(chart, field);
+    const scale = Helper.getScale(chart, field);
+    scale.change({
       values: newValues,
       ticks,
       scale(value) {
@@ -71,6 +78,6 @@ module.exports = {
         });
         return rst;
       }
-    }));
+    });
   }
 };

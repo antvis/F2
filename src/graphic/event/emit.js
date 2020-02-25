@@ -2,7 +2,9 @@
 import { isObject } from '../../util/common';
 
 class EventEmit {
-  __events = {};
+  constructor() {
+    this.__events = {};
+  }
 
   on(type, listener) {
     if (!type || !listener) {
@@ -42,7 +44,7 @@ class EventEmit {
     // 删除指定的 listener
     for (let i = 0, len = events.length; i < len; i++) {
       if (events[i] === listener) {
-        __events[type] = events.splice(i, 1);
+        events.splice(i, 1);
       }
     }
   }
