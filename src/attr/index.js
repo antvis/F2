@@ -1,6 +1,4 @@
-module.exports = {
-  Position: require('@antv/attr/lib/position'),
-  Shape: require('@antv/attr/lib/shape'),
-  Size: require('@antv/attr/lib/size'),
-  Color: require('./color')
-};
+export { default as Position } from './position';
+export { default as Shape } from './shape';
+export { default as Size } from './size';
+export { default as Color } from './color';

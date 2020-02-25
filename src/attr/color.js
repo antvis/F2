@@ -1,6 +1,8 @@
-const Util = require('../util/common');
-const ColorUtil = require('./color-util');
-const Base = require('@antv/attr/lib/base');
+import {
+  isString
+} from '@antv/util';
+import Base from './base';
+import ColorUtil from './color-util';
 
 class Color extends Base {
 
@@ -9,7 +11,7 @@ class Color extends Base {
     this.names = [ 'color' ];
     this.type = 'color';
     this.gradient = null;
-    if (Util.isString(this.values)) {
+    if (isString(this.values)) {
       this.linear = true;
     }
   }
@@ -28,4 +30,4 @@ class Color extends Base {
   }
 }
 
-module.exports = Color;
+export default Color;

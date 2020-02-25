@@ -1,10 +1,11 @@
+import * as Attr from '../attr/index';
+
 const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
-const Attr = require('../attr/index');
 const GeometryShape = require('./shape/shape');
 const Adjust = require('@antv/adjust/lib/base');
 
