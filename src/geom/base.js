@@ -350,25 +350,40 @@ class Geom extends Base {
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
 
+    // 用来缓存转换的值，减少mapping耗时
+    const mappedCache = {};
+
     for (const k in attrs) {
       if (attrs.hasOwnProperty(k)) {
         const attr = attrs[k];
         const names = attr.names;
+        const scales = attr.scales;
 
         for (let i = 0, len = data.length; i < len; i++) {
           const record = data[i];
           record[FIELD_ORIGIN_Y] = record[yField];
 
           // 获取视觉属性对应的value值
-          const values = self._getAttrValues(attr, record);
-          if (names.length > 1) {
+          // 位置的缓存命中率低，还是每次单独计算
+          if (attr.type === 'position') {
+            const values = self._getAttrValues(attr, record);
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
               record[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
-            record[names[0]] = values.length === 1 ? values[0] : values;
+            // 除了position其他都只有一项
+            const name = names[0];
+            const field = scales[0].field;
+            const value = record[field];
+            const key = `${name}${value}`;
+            let values = mappedCache[key];
+            if (!values) {
+              values = self._getAttrValues(attr, record);
+              mappedCache[key] = values;
+            }
+            record[name] = values[0];
           }
         }
       }
