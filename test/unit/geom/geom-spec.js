@@ -267,6 +267,10 @@ describe('test geoms', function() {
       nice: false
     });
     it('test generate points and ', function() {
+      // const data = [
+      //   { a: 1, b: [ 1, 2 ], c: '1' },
+      //   { a: 2, b: [ 2, 3 ], c: '1' }
+      // ];
       geom = new Geom({
         shapeType: 'point',
         coord,
@@ -277,6 +281,8 @@ describe('test geoms', function() {
       });
       geom.position('a*b').color('red');
       geom.init();
+      // const dataArray = geom.get('dataArray');
+      // expect(dataArray[0][0].points).eqls([{ x: 0.1, y: 0.2 }, { x: 0.1, y: 0.4 }]);
       const data = [
         { a: 1, b: [ 1, 2 ], c: '1' },
         { a: 2, b: [ 2, 3 ], c: '2' }

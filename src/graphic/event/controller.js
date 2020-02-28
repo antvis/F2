@@ -1,4 +1,5 @@
 import { getRelativePosition } from '../../util/dom';
+import { isNumber } from '../../util/common';
 
 // 计算滑动的方向
 const calcDirection = (start, end) => {
@@ -35,7 +36,7 @@ const convertPoints = (ev, canvas) => {
     const { x, y, clientX, clientY } = touch;
     let point;
     // 小程序环境会有x,y
-    if (x && y) {
+    if (isNumber(x) || isNumber(y)) {
       point = { x, y };
     } else {
       // 浏览器环境再计算下canvas的相对位置
@@ -92,6 +93,7 @@ class EventController {
       // 如果touchstart后停顿250ms, 则也触发press事件
       this.pressTimeout = setTimeout(() => {
         const eventType = this.getEventType(points);
+        ev.direction = 'none';
         this.emitStart(eventType, ev);
         this.emitEvent(eventType, ev);
       }, PRESS_DELAY);
@@ -100,10 +102,7 @@ class EventController {
   _move = ev => {
     const points = convertPoints(ev, this.canvas);
     if (!points) return;
-    if (this.pressTimeout) {
-      clearTimeout(this.pressTimeout);
-      this.pressTimeout = 0;
-    }
+    this.clearPressTimeout();
     ev.points = points;
     this.emitEvent('touchmove', ev);
     const startPoints = this.startPoints;
@@ -139,6 +138,7 @@ class EventController {
   _end = ev => {
     this.emitEvent('touchend', ev);
     this.emitEnd(ev);
+
     this.reset();
 
     const touches = ev.touches;
@@ -196,7 +196,14 @@ class EventController {
       delete processEvent[type];
     });
   }
+  clearPressTimeout() {
+    if (this.pressTimeout) {
+      clearTimeout(this.pressTimeout);
+      this.pressTimeout = 0;
+    }
+  }
   reset() {
+    this.clearPressTimeout();
     this.startTime = 0;
     this.startPoints = null;
     this.startDistance = 0;

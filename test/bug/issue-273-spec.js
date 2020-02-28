@@ -42,6 +42,7 @@ describe('issue 273', () => {
     expect(snapEqual(tooltipMarker.attr('width'), 48.12300109863281)).to.be.true;
     expect(snapEqual(width, 320.82000732421875)).to.be.true;
 
+
     setTimeout(() => {
       chart.changeSize(100, 260);
       const point = chart.getPosition({ country: '美国', population: 290 });

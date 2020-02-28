@@ -1,3 +1,11 @@
+import {
+  EVENT_BEFORE_RENDER,
+  EVENT_AFTER_RENDER,
+  EVENT_BEFORE_DATA_CHANGE,
+  EVENT_AFTER_DATA_CHANGE,
+  EVENT_AFTER_SIZE_CHANGE,
+  EVENT_AFTER_GEOM_INIT
+} from './const';
 const Base = require('../base');
 const Plot = require('./plot');
 const Util = require('../util/common');
@@ -9,14 +17,6 @@ const Global = require('../global');
 const { Canvas } = require('../graphic/index');
 const Helper = require('../util/helper');
 
-function isFullCircle(coord) {
-  const startAngle = coord.startAngle;
-  const endAngle = coord.endAngle;
-  if (!Util.isNil(startAngle) && !Util.isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
-    return false;
-  }
-  return true;
-}
 
 function compare(a, b) {
   return a - b;
@@ -132,6 +132,7 @@ class Chart extends Base {
        * @type {String}
        */
       id: null,
+      rendered: false,
       /**
        * padding
        * @type {Array|Number}
@@ -153,7 +154,7 @@ class Chart extends Base {
        * geometry instances
        * @type {Array}
        */
-      geoms: null,
+      geoms: [],
       /**
        * scale configuration
        * @type {Object}
@@ -170,6 +171,10 @@ class Chart extends Base {
   }
 
   _syncYScales() {
+    const syncY = this.get('syncY');
+    if (!syncY) {
+      return;
+    }
     const geoms = this.get('geoms');
     const syncScales = [];
     let min = [];
@@ -211,66 +216,34 @@ class Chart extends Base {
     return fields;
   }
 
-  _createScale(field, data) {
+  _getScaleData(field) {
+    let data = this.get('data');
+    const filteredData = this.get('filteredData');
+    if (filteredData.length) {
+      const legendFields = this._getFieldsForLegend();
+      if (legendFields.indexOf(field) === -1) {
+        data = filteredData;
+      }
+    }
+    return data;
+  }
+
+  _updateScales() {
     const scaleController = this.get('scaleController');
-    return scaleController.createScale(field, data);
+    scaleController.updateScales();
+    this._adjustScale();
   }
 
   _adjustScale() {
     const self = this;
-    const coord = self.get('coord');
-    const xScale = self.getXScale();
-    const yScales = self.getYScales();
-    let scales = [];
-
-    xScale && scales.push(xScale);
-    scales = scales.concat(yScales);
-    const inFullCircle = coord.isPolar && isFullCircle(coord);
     const scaleController = self.get('scaleController');
-    const colDefs = scaleController.defs;
-    Util.each(scales, function(scale) {
-      if ((scale.isCategory || scale.isIdentity) && scale.values && !(colDefs[scale.field] && colDefs[scale.field].range)) {
-        const count = scale.values.length;
-        let range;
-        if (count === 1) {
-          range = [ 0.5, 1 ];
-        } else {
-          let widthRatio = 1;
-          let offset = 0;
-          if (inFullCircle) {
-            if (!coord.transposed) {
-              range = [ 0, 1 - 1 / count ];
-            } else {
-              widthRatio = Global.widthRatio.multiplePie;
-              offset = 1 / count * widthRatio;
-              range = [ offset / 2, 1 - offset / 2 ];
-            }
-          } else {
-            offset = 1 / count * 1 / 2;
-            range = [ offset, 1 - offset ];
-          }
-        }
-        scale.range = range;
-      }
-    });
-
+    // 看起来是为了让柱状图最小或最大都默认从0开始
     const geoms = this.get('geoms');
     for (let i = 0; i < geoms.length; i++) {
       const geom = geoms[i];
       if (geom.get('type') === 'interval') {
         const yScale = geom.getYScale();
-        const { field, min, max, type } = yScale;
-        if (!(colDefs[field] && colDefs[field].min) && type !== 'time') {
-          if (min > 0) {
-            yScale.change({
-              min: 0
-            });
-          } else if (max <= 0) {
-            yScale.change({
-              max: 0
-            });
-          }
-        }
+        scaleController.adjustStartZero(yScale);
       }
     }
   }
@@ -292,16 +265,14 @@ class Chart extends Base {
   }
 
   _clearInner() {
-    this.set('scales', {});
-    this.set('legendItems', null);
     this._clearGeoms();
-
     Chart.plugins.notify(this, 'clearInner');
     this.get('axisController') && this.get('axisController').clear();
   }
 
-  _execFilter(data) {
+  _initFilteredData() {
     const filters = this.get('filters');
+    let data = this.get('data') || [];
     if (filters) {
       data = data.filter(function(obj) {
         let rst = true;
@@ -316,20 +287,38 @@ class Chart extends Base {
         return rst;
       });
     }
-    return data;
+    this.set('filteredData', data);
   }
 
-  _initGeoms(geoms) {
-    const coord = this.get('coord');
+  _changeGeomsData() {
+    const geoms = this.get('geoms');
     const data = this.get('filteredData');
-    const colDefs = this.get('colDefs');
 
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
-      geom.set('data', data);
-      geom.set('coord', coord);
-      geom.set('colDefs', colDefs);
-      geom.init();
+      geom.changeData(data);
+    }
+  }
+
+  _initGeom(geom) {
+    const coord = this.get('coord');
+    const data = this.get('filteredData');
+    const colDefs = this.get('colDefs');
+    const middlePlot = this.get('middlePlot');
+    geom.set('chart', this);
+    geom.set('container', middlePlot.addGroup());
+    geom.set('data', data);
+    geom.set('coord', coord);
+    geom.set('colDefs', colDefs);
+    geom.init();
+    this.emit(EVENT_AFTER_GEOM_INIT, geom);
+  }
+
+  _initGeoms() {
+    const geoms = this.get('geoms');
+
+    for (let i = 0, length = geoms.length; i < length; i++) {
+      this._initGeom(geoms[i]);
     }
   }
 
@@ -360,18 +349,26 @@ class Chart extends Base {
 
     const width = this.get('width');
     const height = this.get('height');
-    const plot = new Plot({
-      start: {
-        x: left,
-        y: top
-      },
-      end: {
-        x: width - right,
-        y: height - bottom
-      }
+
+    const start = {
+      x: left,
+      y: top
+    };
+    const end = {
+      x: width - right,
+      y: height - bottom
+    };
+    const plot = this.get('plot');
+    if (plot) {
+      plot.reset(start, end);
+      return;
+    }
+    const newPlot = new Plot({
+      start,
+      end
     });
-    this.set('plotRange', plot);
-    this.set('plot', plot);
+    this.set('plotRange', newPlot);
+    this.set('plot', newPlot);
   }
 
   _initCanvas() {
@@ -393,7 +390,6 @@ class Chart extends Base {
       throw error;
     }
     Chart.plugins.notify(self, 'afterCanvasInit');
-    self._initLayout();
   }
 
   _initLayers() {
@@ -407,12 +403,54 @@ class Chart extends Base {
     }));
   }
 
+  _initEvents() {
+    // 数据更新后的一些更新
+    this.on(EVENT_AFTER_DATA_CHANGE, () => {
+      // 数据更新后，重新设置filterdata
+      this._initFilteredData();
+
+      // 要重新计算scale的value值
+      this._updateScales();
+
+      // 更新geoms里的数据
+      this._changeGeomsData();
+    });
+
+    // 大小变化后的一些更新
+    this.on(EVENT_AFTER_SIZE_CHANGE, () => {
+      this._initLayout();
+
+      // layout变化后，坐标轴也需要做相应的变化
+      const coord = this.get('coord');
+      if (coord) {
+        coord.reset(this.get('plot'));
+      }
+    });
+  }
+
+  _initScaleController() {
+    const scaleController = new ScaleController({
+      chart: this
+    });
+    // 让colDefs 和 scaleController.defs 用同一个对象，这样就不用考虑同步的问题
+    this.set('colDefs', scaleController.defs);
+    // 已经实例化的scales 也保持统一个对象
+    this.set('scales', scaleController.scales);
+    this.set('scaleController', scaleController);
+  }
+
+  _clearScaleController() {
+    const scaleController = this.get('scaleController');
+    scaleController.clear();
+  }
+
   _init() {
     const self = this;
     self._initCanvas();
+    self._initLayout();
     self._initLayers();
-    self.set('geoms', []);
-    self.set('scaleController', new ScaleController());
+    self._initEvents();
+    self._initScaleController();
     self.set('axisController', new AxisController({
       frontPlot: self.get('frontPlot').addGroup({
         className: 'axisContainer'
@@ -439,6 +477,21 @@ class Chart extends Base {
     self._init();
   }
 
+  init() {
+    // 初始filterData
+    this._initFilteredData();
+    // initialization coordinate instance
+    this._initCoord();
+
+    Chart.plugins.notify(this, 'beforeGeomInit');
+    // init all geometry instances
+    this._initGeoms();
+    // 多 Y 轴的情况时，统一 Y 轴的数值范围。
+    this._syncYScales();
+    // do some adjust for data
+    this._adjustScale();
+  }
+
   /**
    * set data and some scale configuration
    * @chainable
@@ -455,16 +508,8 @@ class Chart extends Base {
   }
 
   scale(field, cfg) {
-    const colDefs = this.get('colDefs') || {};
-    if (Util.isObject(field)) {
-      Util.mix(colDefs, field);
-    } else {
-      colDefs[field] = cfg;
-    }
-
-    this.set('colDefs', colDefs);
     const scaleController = this.get('scaleController');
-    scaleController.defs = colDefs;
+    scaleController.setFieldDef(field, cfg);
 
     return this;
   }
@@ -503,7 +548,6 @@ class Chart extends Base {
       coordCfg.type = type || 'cartesian';
     }
     this.set('coordCfg', coordCfg);
-
     return this;
   }
 
@@ -511,6 +555,11 @@ class Chart extends Base {
     const filters = this.get('filters') || {};
     filters[field] = condition;
     this.set('filters', filters);
+
+    // 如果已经render过，则再重新触发一次change
+    if (this.get('rendered')) {
+      this.emit(EVENT_AFTER_DATA_CHANGE, this.get('data'));
+    }
   }
 
   /**
@@ -519,22 +568,15 @@ class Chart extends Base {
    * @return {Chart} return the chart instance
    */
   render() {
+    const rendered = this.get('rendered');
     const canvas = this.get('canvas');
     const geoms = this.get('geoms');
-    const data = this.get('data') || [];
-    this.emit('beforerender');
 
-    const filteredData = this._execFilter(data); // filter data
-    this.set('filteredData', filteredData);
-    this._initCoord(); // initialization coordinate instance
-
-    Chart.plugins.notify(this, 'beforeGeomInit');
-
-    this._initGeoms(geoms); // init all geometry instances
-
-    this.get('syncY') && this._syncYScales();
-
-    this._adjustScale(); // do some adjust for data
+    if (!rendered) {
+      this.init();
+      this.set('rendered', true);
+    }
+    this.emit(EVENT_BEFORE_RENDER);
 
     Chart.plugins.notify(this, 'beforeGeomDraw');
     this._renderAxis();
@@ -558,7 +600,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'beforeCanvasDraw');
     canvas.draw();
 
-    this.emit('afterrender');
+    this.emit(EVENT_AFTER_RENDER);
     return this;
   }
 
@@ -569,11 +611,14 @@ class Chart extends Base {
    */
   clear() {
     Chart.plugins.notify(this, 'clear');
-    this._removeGeoms();
     this._clearInner();
+    this._removeGeoms();
+    this._clearScaleController();
+    this.set('legendItems', null);
     this.set('filters', null);
     this.set('isUpdate', false);
     this.set('_padding', null);
+    this.set('rendered', false);
     const canvas = this.get('canvas');
     canvas.draw();
     return this;
@@ -581,14 +626,17 @@ class Chart extends Base {
 
   repaint() {
     this.set('isUpdate', true);
+    this.set('legendItems', null);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
     this.render();
   }
 
   changeData(data) {
+    this.emit(EVENT_BEFORE_DATA_CHANGE, data);
     this.set('data', data);
     Chart.plugins.notify(this, 'changeData');
+    this.emit(EVENT_AFTER_DATA_CHANGE, data);
     this.set('_padding', null);
     this.repaint();
   }
@@ -608,7 +656,7 @@ class Chart extends Base {
 
     const canvas = this.get('canvas');
     canvas.changeSize(width, height);
-    this._initLayout();
+    this.emit(EVENT_AFTER_SIZE_CHANGE, { width, height });
     this.repaint();
     return this;
   }
@@ -684,20 +732,9 @@ class Chart extends Base {
    * @return {Scale} return the scale
    */
   createScale(field) {
-    let data = this.get('data');
-    const filteredData = this.get('filteredData');
-    if (filteredData.length) {
-      const legendFields = this._getFieldsForLegend();
-      if (legendFields.indexOf(field) === -1) {
-        data = filteredData;
-      }
-    }
-
-    const scales = this.get('scales');
-    if (!scales[field]) {
-      scales[field] = this._createScale(field, data);
-    }
-    return scales[field];
+    const data = this._getScaleData(field);
+    const scaleController = this.get('scaleController');
+    return scaleController.createScale(field, data);
   }
 
   /**
@@ -706,11 +743,13 @@ class Chart extends Base {
    * @param {Geom} geom geometry instance
    */
   addGeom(geom) {
+    const rendered = this.get('rendered');
     const geoms = this.get('geoms');
-    const middlePlot = this.get('middlePlot');
     geoms.push(geom);
-    geom.set('chart', this);
-    geom.set('container', middlePlot.addGroup());
+    // 如果图表已经渲染过了，则直接初始化geom
+    if (rendered) {
+      this._initGeom(geom);
+    }
   }
 
   /**

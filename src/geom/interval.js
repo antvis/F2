@@ -17,6 +17,12 @@ class Interval extends Geom {
     Util.mix(this, SizeMixin);
   }
 
+  init() {
+    super.init();
+    // 绑定事件
+    this.initEvent();
+  }
+
   createShapePointsCfg(obj) {
     const cfg = super.createShapePointsCfg(obj);
     cfg.size = this.getNormalizedSize(obj);

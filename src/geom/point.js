@@ -7,7 +7,7 @@ class Point extends Geom {
     const cfg = super.getDefaultCfg();
     cfg.type = 'point';
     cfg.shapeType = 'point';
-    cfg.generatePoints = true;
+    cfg.generatePoints = false;
     return cfg;
   }
 
