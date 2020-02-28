@@ -1,4 +1,5 @@
 import { getRelativePosition } from '../../util/dom';
+import { isNumber } from '../../util/common';
 
 // 计算滑动的方向
 const calcDirection = (start, end) => {
@@ -35,7 +36,7 @@ const convertPoints = (ev, canvas) => {
     const { x, y, clientX, clientY } = touch;
     let point;
     // 小程序环境会有x,y
-    if (x && y) {
+    if (isNumber(x) || isNumber(y)) {
       point = { x, y };
     } else {
       // 浏览器环境再计算下canvas的相对位置
