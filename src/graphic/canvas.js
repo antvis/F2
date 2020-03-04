@@ -1,11 +1,11 @@
 import EventEmit from './event/emit';
 import EventController from './event/controller';
+import CanvasElement from './canvas-element';
 
 const Util = require('../util/common');
 const Container = require('./container');
 const Group = require('./group');
 const { requestAnimationFrame } = require('./util/requestAnimationFrame');
-const CanvasElement = require('./canvas-element');
 
 class Canvas extends EventEmit {
   get(name) {

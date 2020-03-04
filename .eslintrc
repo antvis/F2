@@ -4,6 +4,7 @@
   ],
   "globals": {
     "$": true,
+    "jest": true,
     "expect": true,
     "beforeAll": true,
     "afterAll": true

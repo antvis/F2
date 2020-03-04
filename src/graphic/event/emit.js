@@ -38,7 +38,7 @@ class EventEmit {
     }
     // 如果没有指定方法，则删除所有项
     if (!listener) {
-      delete events[type];
+      delete __events[type];
       return;
     }
     // 删除指定的 listener
