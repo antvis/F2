@@ -25,8 +25,7 @@ const getCenter = (point1, point2) => {
   return { x, y };
 };
 
-const convertPoints = (ev, canvas) => {
-  const touches = ev.touches;
+const convertPoints = (touches, canvas) => {
   if (!touches) return;
   const points = [];
   const len = touches.length;
@@ -74,7 +73,7 @@ class EventController {
     this.emitEvent('click', ev);
   }
   _start = ev => {
-    const points = convertPoints(ev, this.canvas);
+    const points = convertPoints(ev.touches, this.canvas);
     if (!points) {
       return;
     }
@@ -100,7 +99,7 @@ class EventController {
     }
   }
   _move = ev => {
-    const points = convertPoints(ev, this.canvas);
+    const points = convertPoints(ev.touches, this.canvas);
     if (!points) return;
     this.clearPressTimeout();
     ev.points = points;
@@ -133,11 +132,45 @@ class EventController {
       ev.deltaY = deltaY;
       this.emitStart(eventType, ev);
       this.emitEvent(eventType, ev);
+
+      // 记录最后2次move的时间和坐标，为了给swipe事件用
+      const prevMoveTime = this.lastMoveTime;
+      const now = Date.now();
+      // 最后2次的时间间隔一定要大于0，否则swipe没发计算
+      if (now - prevMoveTime > 0) {
+        this.prevMoveTime = prevMoveTime;
+        this.prevMovePoints = this.lastMovePoints;
+        this.lastMoveTime = now;
+        this.lastMovePoints = points;
+      }
     }
   }
   _end = ev => {
-    this.emitEvent('touchend', ev);
     this.emitEnd(ev);
+    this.emitEvent('touchend', ev);
+
+    // swipe事件处理, 在touchend之后触发
+    const lastMoveTime = this.lastMoveTime;
+    const now = Date.now();
+    // 做这个判断是为了最后一次touchmove后到end前，还有一个停顿的过程
+    // 100 是拍的一个值，理论这个值会很短，一般不卡顿的话在10ms以内
+    if (now - lastMoveTime < 100) {
+      const prevMoveTime = this.prevMoveTime || this.startTime;
+      const intervalTime = lastMoveTime - prevMoveTime;
+      // 时间间隔一定要大于0, 否则计算没意义
+      if (intervalTime > 0) {
+        const prevMovePoints = this.prevMovePoints || this.startPoints;
+        const lastMovePoints = this.lastMovePoints;
+        // move速率
+        const velocity = calcDistance(prevMovePoints[0], lastMovePoints[0]) / intervalTime;
+        // 0.3 是参考hammerjs的设置
+        if (velocity > 0.3) {
+          ev.velocity = velocity;
+          ev.direction = calcDirection(prevMovePoints[0], lastMovePoints[0]);
+          this.emitEvent('swipe', ev);
+        }
+      }
+    }
 
     this.reset();
 
@@ -210,6 +243,10 @@ class EventController {
     this.direction = null;
     this.eventType = null;
     this.pinch = false;
+    this.prevMoveTime = 0;
+    this.prevMovePoints = null;
+    this.lastMoveTime = 0;
+    this.lastMovePoints = null;
   }
 }
 
