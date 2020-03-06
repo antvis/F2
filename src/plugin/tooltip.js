@@ -454,7 +454,7 @@ class TooltipController {
     }
   }
 
-  handleShowEvent(ev) {
+  handleShowEvent = ev => {
     const chart = this.chart;
     if (!this.enable) return;
 
@@ -473,7 +473,7 @@ class TooltipController {
     }
   }
 
-  handleHideEvent() {
+  handleHideEvent = () => {
     if (!this.enable) return;
 
     this.hideTooltip();
@@ -493,25 +493,21 @@ class TooltipController {
   bindEvents() {
     const cfg = this._tooltipCfg;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
-    const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
-    const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
-    triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
+    triggerOn && this._handleEvent(triggerOn, this.handleShowEvent, 'bind');
     // 如果 !alwaysShow, 则在手势离开后就隐藏
     if (!alwaysShow) {
-      this._handleEvent(triggerOff, hideMethod, 'bind');
+      this._handleEvent(triggerOff, this.handleHideEvent, 'bind');
     }
   }
 
   unBindEvents() {
     const cfg = this._tooltipCfg;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
-    const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
-    const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
 
-    triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
+    triggerOn && this._handleEvent(triggerOn, this.handleShowEvent, 'unBind');
     if (!alwaysShow) {
-      this._handleEvent(triggerOff, hideMethod, 'unBind');
+      this._handleEvent(triggerOff, this.handleHideEvent, 'unBind');
     }
   }
 }

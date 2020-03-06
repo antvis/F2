@@ -1,4 +1,5 @@
 import {
+  EVENT_AFTER_INIT,
   EVENT_BEFORE_RENDER,
   EVENT_AFTER_RENDER,
   EVENT_BEFORE_DATA_CHANGE,
@@ -490,6 +491,7 @@ class Chart extends Base {
     this._syncYScales();
     // do some adjust for data
     this._adjustScale();
+    this.emit(EVENT_AFTER_INIT);
   }
 
   /**

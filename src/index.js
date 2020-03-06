@@ -28,4 +28,7 @@ F2.Animate = require('./animation/animate');
 // register plugins
 F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
 
+// 默认添加交互
+require('./interaction/new/index');
+
 module.exports = F2;

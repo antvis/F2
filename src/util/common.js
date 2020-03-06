@@ -44,21 +44,6 @@ function isObjectValueEqual(a, b) {
   return true;
 }
 
-function wrapBehavior(obj, action) {
-  if (obj['_wrap_' + action]) {
-    return obj['_wrap_' + action];
-  }
-  const method = e => {
-    obj[action](e);
-  };
-  obj['_wrap_' + action] = method;
-  return method;
-}
-
-function getWrapBehavior(obj, action) {
-  return obj['_wrap_' + action];
-}
-
 function parsePadding(padding) {
   let top;
   let right;
@@ -107,8 +92,6 @@ export {
   uniq,
   find,
   isObjectValueEqual,
-  wrapBehavior,
-  getWrapBehavior,
   parsePadding,
   directionEnabled
 };
