@@ -3,7 +3,6 @@ const Helper = require('./helper');
 const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
-const PressTooltipMixin = require('./mixin/press-tooltip');
 const updateScaleMixin = require('./mixin/update-scale');
 
 class Pinch extends Interaction {
@@ -47,8 +46,7 @@ class Pinch extends Interaction {
       }
     }]);
 
-    Util.mix(self, PressTooltipMixin, updateScaleMixin);
-    self._bindPress();
+    Util.mix(self, updateScaleMixin);
   }
 
   start() {

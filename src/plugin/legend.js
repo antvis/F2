@@ -294,7 +294,7 @@ class LegendController {
     return self;
   }
 
-  handleEvent(ev) {
+  handleEvent = ev => {
     const self = this;
 
     function findItem(x, y) {
@@ -360,15 +360,13 @@ class LegendController {
   bindEvents() {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
-    const method = Util.wrapBehavior(this, 'handleEvent');
-    Util.addEventListener(this.canvasDom, triggerOn, method);
+    Util.addEventListener(this.canvasDom, triggerOn, this.handleEvent);
   }
 
   unBindEvents() {
     const legendCfg = this.legendCfg;
     const triggerOn = legendCfg.triggerOn || 'touchstart';
-    const method = Util.getWrapBehavior(this, 'handleEvent');
-    Util.removeEventListener(this.canvasDom, triggerOn, method);
+    Util.removeEventListener(this.canvasDom, triggerOn, this.handleEvent);
   }
 }
 module.exports = {

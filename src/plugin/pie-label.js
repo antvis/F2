@@ -165,15 +165,13 @@ class controller {
   bindEvents() {
     const pieLabelCfg = this.pieLabelCfg;
     const triggerOn = pieLabelCfg.triggerOn || 'touchstart';
-    const method = Util.wrapBehavior(this, '_handleEvent');
-    Util.addEventListener(this.canvasDom, triggerOn, method);
+    Util.addEventListener(this.canvasDom, triggerOn, this._handleEvent);
   }
 
   unBindEvents() {
     const pieLabelCfg = this.pieLabelCfg;
     const triggerOn = pieLabelCfg.triggerOn || 'touchstart';
-    const method = Util.getWrapBehavior(this, '_handleEvent');
-    Util.removeEventListener(this.canvasDom, triggerOn, method);
+    Util.removeEventListener(this.canvasDom, triggerOn, this._handleEvent);
   }
 
   clear() {
@@ -369,7 +367,7 @@ class controller {
     return drawnLabels;
   }
 
-  _handleEvent(ev) {
+  _handleEvent = ev => {
     const self = this;
     const { chart, drawnLabels, pieLabelCfg } = self;
     const { onClick, activeShape } = pieLabelCfg;
