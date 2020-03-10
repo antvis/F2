@@ -1,4 +1,8 @@
 import { getRange } from '../../util/array';
+import {
+  EVENT_AFTER_INIT,
+  EVENT_AFTER_DATA_CHANGE
+} from '../../chart/const';
 
 const autoCat = require('@antv/scale/lib/auto/cat');
 
@@ -32,7 +36,7 @@ class Context {
     this._initEvent(chart);
   }
   _initEvent(chart) {
-    chart.on('afterinit', () => {
+    chart.on(EVENT_AFTER_INIT, () => {
       // 初始化value值
       const scale = this.getPinchScale();
       // 记录原始全量数据
@@ -40,6 +44,9 @@ class Context {
       this.values = values;
       // 最小的缩放比例
       this.minRangeRatio = minCount / values.length;
+    });
+    chart.on(EVENT_AFTER_DATA_CHANGE, () => {
+      this.updateRange(this.range);
     });
   }
   // 缩放的主轴scale
