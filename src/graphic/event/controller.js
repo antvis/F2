@@ -91,10 +91,12 @@ class EventController {
     } else {
       // 如果touchstart后停顿250ms, 则也触发press事件
       this.pressTimeout = setTimeout(() => {
-        const eventType = this.getEventType(points);
+        // 这里固定触发press事件
+        const eventType = 'press';
         ev.direction = 'none';
         this.emitStart(eventType, ev);
         this.emitEvent(eventType, ev);
+        this.eventType = eventType;
       }, PRESS_DELAY);
     }
   }

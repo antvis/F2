@@ -98,6 +98,8 @@ class Context {
   }
 
   doMove(ratio) {
+    // 不管是0， 还是其他，都不用处理
+    if (!ratio) return;
     const { startRange: range } = this;
     const [ start, end ] = range;
 
