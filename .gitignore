@@ -63,6 +63,7 @@ typings/
 build
 dist
 lib
+umd
 temp
 .DS_Store
 .vscode
