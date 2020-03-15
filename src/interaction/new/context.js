@@ -17,8 +17,6 @@ function isValuesEqual(values, newValues) {
 
 // 不同交互之间共享的上下文
 const defaultRange = [ 0, 1 ];
-// 缩放最小的点数
-const minCount = 20;
 class Context {
   chart = null;
   // 最开始的原始值
@@ -26,8 +24,10 @@ class Context {
   // 当前显示的范围
   range = defaultRange;
   startRange = defaultRange;
-  // 最小的缩放比例
-  minRangeRatio = 0.01;
+  // 缩放最小的点数
+  minCount = 10;
+  // 最小的缩放比例, 默认通过minCount计算
+  // minScale = 0.01;
   // 交互开始时，ticks个数，主要为了每次缩放后，更新ticks个数
   // lastTickCount;
 
@@ -36,14 +36,23 @@ class Context {
     this._initEvent(chart);
   }
   _initEvent(chart) {
+    // 在整体初始化后还需要设置一些初始状态
     chart.on(EVENT_AFTER_INIT, () => {
       // 初始化value值
       const scale = this.getPinchScale();
       // 记录原始全量数据
       const values = [].concat(scale.values);
       this.values = values;
+
       // 最小的缩放比例
-      this.minRangeRatio = minCount / values.length;
+      if (!this.minScale) {
+        this.minScale = this.minCount / values.length;
+      }
+
+      // 初始化的时候有设置range，则初始化成默认比例
+      if (this.range !== defaultRange) {
+        this.updateRange(this.range);
+      }
     });
     chart.on(EVENT_AFTER_DATA_CHANGE, () => {
       this.updateRange(this.range);
@@ -75,7 +84,7 @@ class Context {
   }
 
   doZoom(leftScale, rightScale, zoom) {
-    const { startRange: range, minRangeRatio } = this;
+    const { startRange: range, minScale } = this;
     const [ start, end ] = range;
 
     const zoomOffset = (1 - zoom);
@@ -90,7 +99,7 @@ class Context {
     const newRange = [ newStart, newEnd ];
 
     // 如果已经到了最小比例，则不能再继续再放大
-    if (newEnd - newStart < minRangeRatio) {
+    if (newEnd - newStart < minScale) {
       return;
     }
 

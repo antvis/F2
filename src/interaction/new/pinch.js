@@ -1,4 +1,5 @@
 import Base from './base';
+import { mix } from '../../util/common';
 
 class Pinch extends Base {
   getDefaultCfg() {
@@ -8,6 +9,12 @@ class Pinch extends Base {
       processEvent: 'pinch',
       endEvent: 'pinchend'
     };
+  }
+
+  constructor(cfg, chart) {
+    super(cfg, chart);
+    const { context } = this;
+    mix(context, cfg);
   }
 
   start() {

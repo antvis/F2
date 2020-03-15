@@ -627,6 +627,11 @@ class Chart extends Base {
   }
 
   repaint() {
+    // 如果在没有render之前就repaint的，就直接return退出
+    const rendered = this.get('rendered');
+    if (!rendered) {
+      return;
+    }
     this.set('isUpdate', true);
     this.set('legendItems', null);
     Chart.plugins.notify(this, 'repaint');

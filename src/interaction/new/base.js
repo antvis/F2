@@ -28,6 +28,12 @@ class Base {
     mix(this, this.getDefaultCfg(), cfg);
     this.context = this.getInteractionContext(chart);
     this.chart = chart;
+
+    // 只处理range, 暂时先这么处理后面再看情况调整
+    const { range } = this;
+    if (range) {
+      this.context.range = range;
+    }
     this._bindEvents(chart);
   }
 
