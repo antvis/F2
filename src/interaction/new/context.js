@@ -52,6 +52,7 @@ class Context {
       // 初始化的时候有设置range，则初始化成默认比例
       if (this.range !== defaultRange) {
         this.updateRange(this.range);
+        this.updateTicks();
       }
     });
     chart.on(EVENT_AFTER_DATA_CHANGE, () => {
