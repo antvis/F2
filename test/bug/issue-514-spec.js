@@ -8,7 +8,7 @@ require('../../src/geom/adjust/dodge');
 describe('Issue 514', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -38,7 +38,7 @@ describe('Issue 514', () => {
     chart.coord('polar', { // 极坐标
       transposed: true,
       innerRadius: 0.5,
-      radius: 0.85
+      radius: 1
     });
 
     chart.interval()
@@ -49,7 +49,7 @@ describe('Issue 514', () => {
     chart.render();
 
     // 通过判断像素点的颜色进行测试
-    const pixelData = canvas.getContext('2d').getImageData(248, 171, 1, 1).data;
+    const pixelData = canvas.getContext('2d').getImageData(230, 171, 1, 1).data;
 
     expect(pixelData[0]).to.equal(24); // r
     expect(pixelData[1]).to.equal(144); // g
@@ -180,13 +180,13 @@ describe('Issue 514', () => {
 
     chart.render();
 
-    const pixelData = canvas.getContext('2d').getImageData(241, 138, 1, 1).data;
+    const pixelData = canvas.getContext('2d').getImageData(230, 138, 1, 1).data;
     expect(pixelData[0]).to.equal(24); // r
     expect(pixelData[1]).to.equal(144); // g
     expect(pixelData[2]).to.equal(255); // b
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });

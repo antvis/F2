@@ -50,9 +50,9 @@ describe('Text', function() {
     expect(text.attr('fontVariant')).to.equal('small-caps');
     expect(text.attr('font')).to.equal('italic small-caps bolder 12px Arial');
 
-    text.attr('fontFamily', '宋体');
-    expect(text.attr('fontFamily')).to.equal('宋体');
-    expect(text.attr('font')).to.equal('italic small-caps bolder 12px 宋体');
+    text.attr('fontFamily', 'Arial');
+    expect(text.attr('fontFamily')).to.equal('Arial');
+    expect(text.attr('font')).to.equal('italic small-caps bolder 12px Arial');
 
     text.attr('text', 'italic');
     canvas.add(text);
@@ -61,7 +61,7 @@ describe('Text', function() {
     const bbox = text.getBBox();
     expect(bbox.x).to.equal(30);
     expect(bbox.y).to.equal(18);
-    expect(bbox.width).to.equal(26.23046875);
+    expect(bbox.width).to.equal(25.1796875);
     expect(bbox.height).to.equal(12);
   });
 

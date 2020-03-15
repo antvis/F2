@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.5.0",
+  "version": "3.6.0-alpha.6",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -14,8 +14,6 @@
     "interactive"
   ],
   "main": "lib/index.js",
-  "browser": "build/f2.js",
-  "module": "src/index.js",
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
@@ -38,7 +36,6 @@
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@lite-js/torch": "~0.2.6",
     "babel-eslint": "~7.2.3",
     "babel-loader": "^8.0.0",
     "babel-plugin-transform-remove-strict-mode": "~0.0.2",
@@ -49,12 +46,14 @@
     "connect": "~3.6.3",
     "d3-queue": "~3.0.7",
     "debug": "~3.1.0",
-    "electron": "~1.8.2-beta5",
+    "electron": "^7.1.9",
     "eslint": "^6.7.2",
     "eslint-config-egg": "~4.2.0",
     "gatsby": "^2.17.7",
     "get-port": "~3.1.0",
     "gh-pages": "^2.1.1",
+    "jest": "^24.9.0",
+    "jest-electron": "^0.1.11",
     "jquery": "^3.3.1",
     "jszip": "^3.1.5",
     "nightmare": "~2.10.0",
@@ -76,12 +75,9 @@
     "site:deploy": "npm run site:build && gh-pages -d public",
     "build": "webpack",
     "build-lib": "babel src --out-dir lib",
-    "bundler": "electron ./bundler/app.js",
-    "ci": "npm run lint && npm run test-all",
+    "ci": "npm run lint && npm run test",
     "compress": "sh ./bin/compress.sh",
-    "coverage": "npm run coverage-generator && npm run coverage-viewer",
-    "coverage-generator": "torch --compile --coverage --renderer --source-pattern src/*.js,src/**/*.js --recursive test/unit",
-    "coverage-viewer": "torch-coverage",
+    "coverage": "jest --coverage",
     "demos": "electron ./demos/app.js",
     "demos-web": "node ./demos/app.js --web --port 2048",
     "dev": "npm run watch & DEBUG=app:* npm run demos-web",
@@ -90,25 +86,28 @@
     "lint-fix": "eslint --fix ./",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
-    "test-all": "npm run test && npm run test-bug",
-    "test": "torch --compile --renderer --recursive ./test/unit",
-    "test-bug": "torch --compile --renderer --recursive ./test/bug",
-    "test-bug-live": "torch --compile --interactive --recursive ./test/bug",
-    "test-live": "torch --compile --interactive --recursive ./test/unit",
+    "test": "jest",
+    "test-unit": "jest test/unit",
+    "test-bug": "jest test/bug",
+    "test-live": "DEBUG_MODE=1 jest --watch",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
     "run": [
       "lint",
-      "test-all"
+      "test"
     ],
     "silent": false
   },
+  "jest": {
+    "runner": "jest-electron/runner",
+    "testEnvironment": "jest-electron/environment",
+    "testRegex": "/test/.*-spec\\.js?$"
+  },
   "dependencies": {
     "@antv/adjust": "~0.1.1",
-    "@antv/attr": "~0.1.0",
-    "@antv/scale": "~0.1.2",
-    "@antv/util": "~1.2.5",
+    "@antv/scale": "0.1.3",
+    "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.7.7",
     "hammerjs": "^2.0.8"
   }

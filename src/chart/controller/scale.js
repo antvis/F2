@@ -8,11 +8,42 @@ const SCALE_TYPES_MAP = {
   identity: 'Identity'
 };
 
+function isFullCircle(coord) {
+  if (!coord.isPolar) {
+    return false;
+  }
+  const startAngle = coord.startAngle;
+  const endAngle = coord.endAngle;
+  if (!Util.isNil(startAngle) && !Util.isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
+    return false;
+  }
+  return true;
+}
+
+function clearObj(obj) {
+  Object.keys(obj).forEach(key => {
+    delete obj[key];
+  });
+}
+
 class ScaleController {
   constructor(cfg) {
     // defs 列定义
     this.defs = {};
+    // 已经实例化的scale
+    this.scales = {};
     Util.mix(this, cfg);
+  }
+
+  setFieldDef(field, cfg) {
+    const { defs } = this;
+    if (Util.isObject(field)) {
+      Util.mix(defs, field);
+    } else {
+      defs[field] = cfg;
+    }
+
+    this.updateScales();
   }
 
   _getDef(field) {
@@ -46,7 +77,7 @@ class ScaleController {
     return type;
   }
 
-  _getScaleCfg(type, field, data, def) {
+  _getScaleDef(type, field, data, def) {
     let values;
     if (def && def.values) {
       values = def.values;
@@ -72,22 +103,57 @@ class ScaleController {
     return cfg;
   }
 
-  createScale(field, data) {
+  // 调整range，为了让图形居中
+  _adjustRange(type, cfg) {
+    const { range, values } = cfg;
+    // 如果是线性, 或者有自定义range都不处理
+    if (type === 'linear' || range || !values) {
+      return cfg;
+    }
+    const count = values.length;
+    // 单只有一条数据时，在中间显示
+    if (count === 1) {
+      cfg.range = [ 0.5, 1 ];
+    } else {
+      const { chart } = this;
+      const coord = chart.get('coord');
+      const widthRatio = Global.widthRatio.multiplePie;
+      let offset = 0;
+      if (isFullCircle(coord)) {
+        if (!coord.transposed) {
+          cfg.range = [ 0, 1 - 1 / count ];
+        } else {
+          offset = 1 / count * widthRatio;
+          cfg.range = [ offset / 2, 1 - offset / 2 ];
+        }
+      } else {
+        // 为了让图形居中，所以才设置range
+        offset = 1 / count * 1 / 2;
+        cfg.range = [ offset, 1 - offset ];
+      }
+    }
+    return cfg;
+  }
+
+  _getScaleCfg(field, data) {
     const self = this;
     const def = self._getDef(field);
-    let scale;
     if (!data || !data.length) {
       if (def && def.type) {
         def.field = field;
-        scale = new Scale[SCALE_TYPES_MAP[def.type]](def);
-      } else {
-        scale = new Scale.Identity({
+        return {
+          type: SCALE_TYPES_MAP[def.type],
+          cfg: def
+        };
+      }
+      return {
+        type: 'Identity',
+        cfg: {
           value: field,
           field: field.toString(),
           values: [ field ]
-        });
-      }
-      return scale;
+        }
+      };
     }
     const firstObj = data[0];
     let firstValue = firstObj[field];
@@ -96,18 +162,77 @@ class ScaleController {
     }
 
     if (Util.isNumber(field) || (Util.isNil(firstValue)) && !def) {
-      scale = new Scale.Identity({
-        value: field,
-        field: field.toString(),
-        values: [ field ]
-      });
-    } else {
-      const type = self._getDefaultType(field, data, def);
-      const cfg = self._getScaleCfg(type, field, data, def);
-      def && Util.mix(cfg, def);
-      scale = new Scale[SCALE_TYPES_MAP[type]](cfg);
+      return {
+        type: 'Identity',
+        cfg: {
+          value: field,
+          field: field.toString(),
+          values: [ field ]
+        }
+      };
     }
+    const type = self._getDefaultType(field, data, def);
+    let cfg = self._getScaleDef(type, field, data, def);
+    def && Util.mix(cfg, def);
+    cfg = this._adjustRange(type, cfg);
+    return {
+      type: SCALE_TYPES_MAP[type],
+      cfg
+    };
+  }
+
+  createScale(field, data) {
+    const { scales } = this;
+    if (scales[field]) {
+      return scales[field];
+    }
+    const { type, cfg } = this._getScaleCfg(field, data);
+    const scale = new Scale[type](cfg);
+    this.scales[field] = scale;
     return scale;
+  }
+
+  _updateScale(scale) {
+    const { field } = scale;
+    const data = this.chart._getScaleData(field);
+    const { cfg } = this._getScaleCfg(field, data);
+    scale.change(cfg);
+  }
+
+  updateScales() {
+    const { scales } = this;
+    // 修改完列定义后，需要更新已经实例化的scale
+    // 如果是还没有实例化的，在geom初始化的时候会被实例化，所以这里可以不用更新
+    Util.each(scales, scale => {
+      this._updateScale(scale);
+    });
+  }
+
+  // 调整scale从0开始
+  adjustStartZero(scale) {
+    const { defs } = this;
+    const { field, min, max } = scale;
+    // 如果有定义，则不处理
+    if (defs[field] && defs[field].min) {
+      return;
+    }
+    if (min > 0) {
+      scale.change({
+        min: 0
+      });
+    } else if (max < 0) {
+      scale.change({
+        max: 0
+      });
+    }
+  }
+
+  clear() {
+    // this.defs = {};
+    // this.scales = {};
+    clearObj(this.defs);
+    clearObj(this.scales);
+    this.data = null;
   }
 }
 

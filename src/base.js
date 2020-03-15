@@ -3,15 +3,17 @@
  * @author dxq613@gmail.com
  */
 
+import Emit from './graphic/event/emit';
 const Util = require('./util/common');
 
-class Base {
+class Base extends Emit {
 
   getDefaultCfg() {
     return {};
   }
 
   constructor(cfg) {
+    super();
     const attrs = {};
     const defaultCfg = this.getDefaultCfg();
     this._attrs = attrs;

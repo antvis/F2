@@ -1,12 +1,12 @@
 const expect = require('chai').expect;
 const F2 = require('../../src/core');
-require('../../src/geom/line');
-
+require('../../src/geom');
+require('../../src/scale/time-cat');
 
 describe('Issue 550', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -209,7 +209,7 @@ describe('Issue 550', () => {
     expect(points[2].x).to.equal(0.9285714285714286);
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });

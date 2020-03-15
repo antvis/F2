@@ -3,7 +3,7 @@ const Interaction = require('./base');
 const Chart = require('../chart/chart');
 const FilterPlugin = require('../plugin/filter');
 const MoveMixin = require('./mixin/move');
-const PressTooltipMixin = require('./mixin/press-tooltip');
+// const PressTooltipMixin = require('./mixin/press-tooltip');
 const UpdateScaleMixin = require('./mixin/update-scale');
 
 class Pan extends Interaction {
@@ -45,6 +45,8 @@ class Pan extends Interaction {
       hammer.get('pan').set({
         threshold: panThreshold
       });
+      // 为了兼容hammer的pan 和 tooltips里的press, 后面去hammerjs的时候需要去掉
+      chart.get('canvas').on('pan', () => {});
     }
 
     chart.registerPlugins([ FilterPlugin, {
@@ -56,8 +58,7 @@ class Pan extends Interaction {
       }
     }]);
 
-    Util.mix(this, UpdateScaleMixin, MoveMixin, PressTooltipMixin);
-    this._bindPress();
+    Util.mix(this, UpdateScaleMixin, MoveMixin);
   }
 
   start(e) {

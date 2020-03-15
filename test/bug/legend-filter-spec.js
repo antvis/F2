@@ -10,7 +10,7 @@ require('../../src/geom/adjust/stack');
 describe('图例过滤未考虑数据中存在空数据的情况', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -50,10 +50,9 @@ describe('图例过滤未考虑数据中存在空数据的情况', () => {
     });
 
     expect(chart.get('filteredData').length).to.equal(2);
-    console.log(chart.get('filteredData'));
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });

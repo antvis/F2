@@ -1,4 +1,7 @@
-const Util = require('../util/common');
+import {
+  isString,
+  each
+} from '@antv/util';
 
 // Get the interpolation between colors
 function getValue(start, end, percent, index) {
@@ -95,10 +98,10 @@ const ColorUtil = {
    */
   gradient(colors) {
     const points = [];
-    if (Util.isString(colors)) {
+    if (isString(colors)) {
       colors = colors.split('-');
     }
-    Util.each(colors, function(color) {
+    each(colors, function(color) {
       if (color.indexOf('#') === -1) {
         color = ColorUtil.toHex(color);
       }
@@ -110,4 +113,4 @@ const ColorUtil = {
   }
 };
 
-module.exports = ColorUtil;
+export default ColorUtil;

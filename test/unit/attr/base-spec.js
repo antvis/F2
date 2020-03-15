@@ -2,6 +2,11 @@
 // const Attr = require('../../../src/attr/base');
 // const Scale = require('../../../src/scale/');
 
+describe('attr base test', function() {
+  it('empty', () => {
+    expect(true);
+  });
+});
 // describe('attr base test', function() {
 //   const scale1 = new Scale.Linear({
 //     field: 'dim1',

@@ -1,4 +1,3 @@
-let DomUtil;
 /**
  * Detects support for options object argument in addEventListener.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
@@ -23,7 +22,92 @@ const supportsEventListenerOptions = (function() {
 // https://github.com/chartjs/Chart.js/issues/4287
 const eventListenerOptions = supportsEventListenerOptions ? { passive: true } : false;
 
-function createEvent(type, chart, x, y, nativeEvent) {
+/* global wx, my */
+// weixin miniprogram
+const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function');
+// ant miniprogram
+const isMy = (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function');
+// in node
+const isNode = (typeof module !== 'undefined') && (typeof module.exports !== 'undefined');
+// in browser
+const isBrowser = (typeof window !== 'undefined')
+                && (typeof window.document !== 'undefined')
+                && (typeof window.sessionStorage !== 'undefined');
+
+function isCanvasElement(el) {
+  if (!el || typeof el !== 'object') return false;
+  if (el.nodeType === 1 && el.nodeName) {
+    // HTMLCanvasElement
+    return true;
+  }
+  // CanvasElement
+  return !!el.isCanvasElement;
+}
+
+function getPixelRatio() {
+  return window && window.devicePixelRatio || 1;
+}
+
+function getStyle(el, property) {
+  return el.currentStyle ?
+    el.currentStyle[property] :
+    document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+}
+
+function getWidth(el) {
+  let width = getStyle(el, 'width');
+  if (width === 'auto') {
+    width = el.offsetWidth;
+  }
+  return parseFloat(width);
+}
+
+function getHeight(el) {
+  let height = getStyle(el, 'height');
+  if (height === 'auto') {
+    height = el.offsetHeight;
+  }
+  return parseFloat(height);
+}
+
+function getDomById(id) {
+  if (!id) {
+    return null;
+  }
+  return document.getElementById(id);
+}
+
+function getRelativePosition(point, canvas) {
+  const canvasDom = canvas.get('el');
+  if (!canvasDom) return point;
+  const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
+
+  const paddingLeft = parseFloat(getStyle(canvasDom, 'padding-left'));
+  const paddingTop = parseFloat(getStyle(canvasDom, 'padding-top'));
+  const paddingRight = parseFloat(getStyle(canvasDom, 'padding-right'));
+  const paddingBottom = parseFloat(getStyle(canvasDom, 'padding-bottom'));
+  const width = right - left - paddingLeft - paddingRight;
+  const height = bottom - top - paddingTop - paddingBottom;
+  const pixelRatio = canvas.get('pixelRatio');
+
+  const mouseX = (point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio;
+  const mouseY = (point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio;
+
+  return {
+    x: mouseX,
+    y: mouseY
+  };
+}
+
+function addEventListener(source, type, listener) {
+  source.addEventListener(type, listener, eventListenerOptions);
+}
+
+function removeEventListener(source, type, listener) {
+  source.removeEventListener(type, listener, eventListenerOptions);
+}
+
+function createEventObj(type, chart, x, y, nativeEvent) {
   return {
     type,
     chart,
@@ -33,7 +117,7 @@ function createEvent(type, chart, x, y, nativeEvent) {
   };
 }
 
-function fromNativeEvent(event, chart) {
+function createEvent(event, chart) {
   const type = event.type;
   let clientPoint;
   // 说明是touch相关事件
@@ -46,7 +130,7 @@ function fromNativeEvent(event, chart) {
     const { x, y, clientX, clientY } = touch;
     // 小程序环境会有x,y，这里就直接返回
     if (x && y) {
-      return createEvent(type, chart, x, y, event);
+      return createEventObj(type, chart, x, y, event);
     }
     clientPoint = { x: clientX, y: clientY };
   } else {
@@ -56,90 +140,33 @@ function fromNativeEvent(event, chart) {
   // 理论上应该是只有有在浏览器环境才会走到这里
   const canvas = chart.get('canvas');
   // 通过clientX, clientY 计算x, y
-  const point = DomUtil.getRelativePosition(clientPoint, canvas);
-  return createEvent(type, chart, point.x, point.y, event);
+  const point = getRelativePosition(clientPoint, canvas);
+  return createEventObj(type, chart, point.x, point.y, event);
 }
 
-DomUtil = {
-  /* global wx, my */
-  isWx: (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function'), // weixin miniprogram
-  isMy: (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function'), // ant miniprogram
-  isNode: (typeof module !== 'undefined') && (typeof module.exports !== 'undefined'), // in node
-  isBrowser: (typeof window !== 'undefined') && (typeof window.document !== 'undefined') && (typeof window.sessionStorage !== 'undefined'), // in browser
-  isCanvasElement(el) {
-    if (!el || typeof el !== 'object') return false;
-    if (el.nodeType === 1 && el.nodeName) {
-      // HTMLCanvasElement
-      return true;
-    }
-    // CanvasElement
-    return !!el.isCanvasElement;
-  },
-  getPixelRatio() {
-    return window && window.devicePixelRatio || 1;
-  },
-  getStyle(el, property) {
-    return el.currentStyle ?
-      el.currentStyle[property] :
-      document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
-  },
-  getWidth(el) {
-    let width = this.getStyle(el, 'width');
-    if (width === 'auto') {
-      width = el.offsetWidth;
-    }
-    return parseFloat(width);
-  },
-  getHeight(el) {
-    let height = this.getStyle(el, 'height');
-    if (height === 'auto') {
-      height = el.offsetHeight;
-    }
-    return parseFloat(height);
-  },
-  getDomById(id) {
-    if (!id) {
-      return null;
-    }
-    return document.getElementById(id);
-  },
-  getRelativePosition(point, canvas) {
-    const canvasDom = canvas.get('el');
-    const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
-
-    const paddingLeft = parseFloat(this.getStyle(canvasDom, 'padding-left'));
-    const paddingTop = parseFloat(this.getStyle(canvasDom, 'padding-top'));
-    const paddingRight = parseFloat(this.getStyle(canvasDom, 'padding-right'));
-    const paddingBottom = parseFloat(this.getStyle(canvasDom, 'padding-bottom'));
-    const width = right - left - paddingLeft - paddingRight;
-    const height = bottom - top - paddingTop - paddingBottom;
-    const pixelRatio = canvas.get('pixelRatio');
-
-    const mouseX = (point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio;
-    const mouseY = (point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio;
-
-    return {
-      x: mouseX,
-      y: mouseY
-    };
-  },
-  addEventListener(source, type, listener) {
-    source.addEventListener(type, listener, eventListenerOptions);
-  },
-  removeEventListener(source, type, listener) {
-    source.removeEventListener(type, listener, eventListenerOptions);
-  },
-  createEvent(event, chart) {
-    return fromNativeEvent(event, chart);
-  },
-  measureText(text, font, ctx) {
-    if (!ctx) {
-      ctx = document.createElement('canvas').getContext('2d');
-    }
-
-    ctx.font = font || '12px sans-serif';
-    return ctx.measureText(text);
+function measureText(text, font, ctx) {
+  if (!ctx) {
+    ctx = document.createElement('canvas').getContext('2d');
   }
-};
 
-module.exports = DomUtil;
+  ctx.font = font || '12px sans-serif';
+  return ctx.measureText(text);
+}
+
+export {
+  isWx,
+  isMy,
+  isNode,
+  isBrowser,
+  isCanvasElement,
+  getPixelRatio,
+  getStyle,
+  getWidth,
+  getHeight,
+  getDomById,
+  getRelativePosition,
+  addEventListener,
+  removeEventListener,
+  createEvent,
+  measureText
+};

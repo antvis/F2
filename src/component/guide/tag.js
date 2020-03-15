@@ -71,6 +71,10 @@ class Tag extends GuideBase {
     if (!position) {
       return;
     }
+    // 数据不在显示范围内时，x/y 会为NaN
+    if (isNaN(position.x) || isNaN(position.y)) {
+      return;
+    }
     const { content, background, textStyle } = this;
     const shapes = [];
 

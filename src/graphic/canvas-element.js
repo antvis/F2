@@ -1,7 +1,8 @@
-const Util = require('../util/common');
+import EventEmit from './event/emit';
 
-class CanvasElement {
+class CanvasElement extends EventEmit {
   constructor(ctx) {
+    super();
     this.context = ctx;
     // canvas实际的宽高 (width/height) * pixelRatio
     this.width = 0;
@@ -10,9 +11,6 @@ class CanvasElement {
     this.currentStyle = {};
     // 用来标识是CanvasElement实例
     this.isCanvasElement = true;
-
-    // 实现简单的事件机制
-    this.__events = {};
   }
 
   getContext(/* type */) {
@@ -32,30 +30,15 @@ class CanvasElement {
   }
 
   addEventListener(type, listener) {
-    const events = this.__events[type] || [];
-    events.push(listener);
-    this.__events[type] = events;
+    this.on(type, listener);
   }
 
-  removeEventListener(type) {
-    delete this.__events[type];
+  removeEventListener(type, listener) {
+    this.off(type, listener);
   }
 
   dispatchEvent(type, e) {
-    if (Util.isObject(type)) {
-      e = type;
-      type = e && e.type;
-    }
-    if (!type) {
-      return;
-    }
-    const events = this.__events[type];
-    if (!events || !events.length) {
-      return;
-    }
-    events.forEach(listener => {
-      listener.call(this, e);
-    });
+    this.emit(type, e);
   }
 }
 
@@ -82,7 +65,7 @@ function supportEventListener(canvas) {
 }
 
 
-module.exports = {
+export default {
   create(ctx) {
     if (!ctx) {
       return null;

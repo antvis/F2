@@ -3,11 +3,24 @@
  * @author sima.zhang1990@gmail.com
  * @author dxq613@gmail.com
  */
+import {
+  EVENT_AFTER_SIZE_CHANGE
+} from '../../chart/const';
 
 const Global = require('../../global');
 const Util = require('../../util/common');
 
+
 const SizeMixin = {
+  initEvent() {
+    const chart = this.get('chart');
+    if (!chart) {
+      return;
+    }
+    chart.on(EVENT_AFTER_SIZE_CHANGE, () => {
+      this.set('_width', null);
+    });
+  },
   getDefalutSize() {
     let defaultSize = this.get('defaultSize');
     if (!defaultSize) {

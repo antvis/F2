@@ -1,10 +1,11 @@
+import * as Attr from '../attr/index';
+
 const Util = require('../util/common');
 const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
 const Global = require('../global');
-const Attr = require('../attr/index');
 const GeometryShape = require('./shape/shape');
 const Adjust = require('@antv/adjust/lib/base');
 
@@ -80,11 +81,7 @@ class Geom extends Base {
   init() {
     const self = this;
     self._initAttrs();
-    const dataArray = self._processData();
-    if (self.get('adjust')) {
-      self._adjustData(dataArray);
-    }
-    self.set('dataArray', dataArray);
+    self._processData();
   }
 
   _getGroupScales() {
@@ -166,6 +163,8 @@ class Geom extends Base {
         }
         if (type === 'position') {
           const yScale = scales[1];
+
+          // 饼图的处理，但是还不知道为啥
           if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
             if (yScale.values.length) {
               yScale.change({
@@ -213,6 +212,13 @@ class Geom extends Base {
       }
       dataArray.push(tempData);
     }
+    if (self.get('adjust')) {
+      self._adjustData(dataArray);
+    }
+    if (self.get('sortable')) {
+      self._sort(dataArray);
+    }
+    self.set('dataArray', dataArray);
     return dataArray;
   }
 
@@ -343,35 +349,46 @@ class Geom extends Base {
     const self = this;
     const attrs = self.get('attrs');
     const yField = self.getYScale().field;
-    const mappedData = [];
-    for (let i = 0, len = data.length; i < len; i++) {
-      const record = data[i];
-      const newRecord = {};
-      newRecord[FIELD_ORIGIN] = record[FIELD_ORIGIN];
-      newRecord.points = record.points;
-      newRecord.nextPoints = record.nextPoints;
-      // 避免
-      newRecord[FIELD_ORIGIN_Y] = record[yField];
-      for (const k in attrs) {
-        if (attrs.hasOwnProperty(k)) {
-          const attr = attrs[k];
-          const names = attr.names;
-          const values = self._getAttrValues(attr, record);
-          if (names.length > 1) {
+
+    // 用来缓存转换的值，减少mapping耗时
+    const mappedCache = {};
+
+    for (const k in attrs) {
+      if (attrs.hasOwnProperty(k)) {
+        const attr = attrs[k];
+        const names = attr.names;
+        const scales = attr.scales;
+
+        for (let i = 0, len = data.length; i < len; i++) {
+          const record = data[i];
+          record[FIELD_ORIGIN_Y] = record[yField];
+
+          // 获取视觉属性对应的value值
+          // 位置的缓存命中率低，还是每次单独计算
+          if (attr.type === 'position') {
+            const values = self._getAttrValues(attr, record);
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
-              newRecord[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
+              record[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
-            newRecord[names[0]] = values.length === 1 ? values[0] : values;
+            // 除了position其他都只有一项
+            const name = names[0];
+            const field = scales[0].field;
+            const value = record[field];
+            const key = `${name}${value}`;
+            let values = mappedCache[key];
+            if (!values) {
+              values = self._getAttrValues(attr, record);
+              mappedCache[key] = values;
+            }
+            record[name] = values[0];
           }
         }
       }
-      mappedData.push(newRecord);
     }
-
-    return mappedData;
+    return data;
   }
 
   _getAttrValues(attr, record) {
@@ -402,20 +419,8 @@ class Geom extends Base {
 
   _beforeMapping(dataArray) {
     const self = this;
-    if (self.get('sortable')) {
-      self._sort(dataArray);
-    }
     if (self.get('generatePoints')) {
-      Util.each(dataArray, function(data) {
-        self._generatePoints(data);
-      });
-      // 添加nextPoints
-      Util.each(dataArray, (data, index) => {
-        const nextData = dataArray[index + 1];
-        if (nextData) {
-          data[0].nextPoints = nextData[0].points;
-        }
-      });
+      self._generatePoints(dataArray);
     }
   }
 
@@ -494,17 +499,26 @@ class Geom extends Base {
     }
   }
 
-  _generatePoints(data) {
+  _generatePoints(dataArray) {
     const self = this;
     const shapeFactory = self.getShapeFactory();
     const shapeAttr = self.getAttr('shape');
-    for (let i = 0, len = data.length; i < len; i++) {
-      const obj = data[i];
-      const cfg = self.createShapePointsCfg(obj);
-      const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
-      const points = shapeFactory.getShapePoints(shape, cfg);
-      obj.points = points;
-    }
+    Util.each(dataArray, function(data) {
+      for (let i = 0, len = data.length; i < len; i++) {
+        const obj = data[i];
+        const cfg = self.createShapePointsCfg(obj);
+        const shape = shapeAttr ? self._getAttrValues(shapeAttr, obj) : null;
+        const points = shapeFactory.getShapePoints(shape, cfg);
+        obj.points = points;
+      }
+    });
+    // 添加nextPoints
+    Util.each(dataArray, (data, index) => {
+      const nextData = dataArray[index + 1];
+      if (nextData) {
+        data[0].nextPoints = nextData[0].points;
+      }
+    });
   }
 
   /**
@@ -747,28 +761,28 @@ class Geom extends Base {
     return this;
   }
 
-  reset() {
-    this.set('attrOptions', {});
-    this.set('adjust', null);
-    this.clearInner();
+  changeData(data) {
+    this.set('data', data);
+    this._processData();
   }
 
   clearInner() {
     const container = this.get('container');
     if (container) {
       container.clear();
-      container.setMatrix([ 1, 0, 0, 1, 0, 0 ]);
+      // container.setMatrix([ 1, 0, 0, 1, 0, 0 ]);
     }
-    container && container.clear();
+  }
+
+  reset() {
     this.set('attrs', {});
-    this.set('groupScales', null);
-    this.set('xDistance', null);
-    this.set('_width', null);
+    this.set('attrOptions', {});
+    this.set('adjust', null);
+    this.clearInner();
   }
 
   clear() {
     this.clearInner();
-    this.set('scales', {});
   }
 
   destroy() {

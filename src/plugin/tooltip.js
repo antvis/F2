@@ -5,8 +5,8 @@ const Helper = require('../util/helper');
 
 // Register the default configuration for Tooltip
 Global.tooltip = Util.deepMix({
-  triggerOn: [ 'touchstart', 'touchmove' ],
-  // triggerOff: 'touchend',
+  triggerOn: 'press',
+  triggerOff: 'pressend',
   alwaysShow: false,
   showTitle: false,
   showCrosshairs: false,
@@ -135,7 +135,9 @@ class TooltipController {
     this.timeStamp = 0;
     Util.mix(this, cfg);
     const chart = this.chart;
-    this.canvasDom = chart.get('canvas').get('el');
+    const canvas = chart.get('canvas');
+    this.canvas = canvas;
+    this.canvasDom = canvas.get('el');
   }
 
   _setCrosshairsCfg() {
@@ -452,9 +454,9 @@ class TooltipController {
     }
   }
 
-  handleShowEvent(ev) {
+  handleShowEvent = ev => {
     const chart = this.chart;
-    if (!this.enable || chart.get('_closeTooltip')) return;
+    if (!this.enable) return;
 
     const plot = chart.get('plotRange');
     const point = Util.createEvent(ev, chart);
@@ -471,52 +473,41 @@ class TooltipController {
     }
   }
 
-  handleHideEvent() {
-    const chart = this.chart;
-    if (!this.enable || chart.get('_closeTooltip')) return;
+  handleHideEvent = () => {
+    if (!this.enable) return;
 
     this.hideTooltip();
   }
 
   _handleEvent(methodName, method, action) {
-    const canvasDom = this.canvasDom;
+    const canvas = this.canvas;
     Util.each([].concat(methodName), aMethod => {
       if (action === 'bind') {
-        Util.addEventListener(canvasDom, aMethod, method);
+        canvas.on(aMethod, method);
       } else {
-        Util.removeEventListener(canvasDom, aMethod, method);
+        canvas.off(aMethod, method);
       }
     });
   }
 
   bindEvents() {
     const cfg = this._tooltipCfg;
-    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
-    const showMethod = Util.wrapBehavior(this, 'handleShowEvent');
-    const hideMethod = Util.wrapBehavior(this, 'handleHideEvent');
 
-    triggerOn && this._handleEvent(triggerOn, showMethod, 'bind');
-    triggerOff && this._handleEvent(triggerOff, hideMethod, 'bind');
+    triggerOn && this._handleEvent(triggerOn, this.handleShowEvent, 'bind');
     // 如果 !alwaysShow, 则在手势离开后就隐藏
-    if (!alwaysShow && !triggerOff) {
-      Util.addEventListener(canvasElement, 'touchend', hideMethod);
+    if (!alwaysShow) {
+      this._handleEvent(triggerOff, this.handleHideEvent, 'bind');
     }
   }
 
   unBindEvents() {
     const cfg = this._tooltipCfg;
-    const canvasElement = this.canvasDom;
     const { triggerOn, triggerOff, alwaysShow } = cfg;
-    const showMethod = Util.getWrapBehavior(this, 'handleShowEvent');
-    const hideMethod = Util.getWrapBehavior(this, 'handleHideEvent');
 
-    triggerOn && this._handleEvent(triggerOn, showMethod, 'unBind');
-    triggerOff && this._handleEvent(triggerOff, hideMethod, 'unBind');
-
+    triggerOn && this._handleEvent(triggerOn, this.handleShowEvent, 'unBind');
     if (!alwaysShow) {
-      const docMethod = Util.getWrapBehavior(this, 'handleDocEvent');
-      Util.removeEventListener(canvasElement, 'touchend', docMethod);
+      this._handleEvent(triggerOff, this.handleHideEvent, 'unBind');
     }
   }
 }

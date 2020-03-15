@@ -9,6 +9,10 @@ module.exports = {
     }
     return colDef;
   },
+  getScale(chart, field) {
+    const scales = chart.get('scales');
+    return scales[field];
+  },
   getFieldRange(scale, limitRange, type) {
     if (!scale) return [ 0, 1 ];
     let minRatio = 0;

@@ -7,7 +7,7 @@ require('../../src/geom/line');
 describe('Issue 543', () => {
   let canvas;
   let chart;
-  before(() => {
+  beforeAll(() => {
     canvas = document.createElement('canvas');
     canvas.width = 300;
     canvas.height = 300;
@@ -78,7 +78,7 @@ describe('Issue 543', () => {
     expect(crosshairsShapeY.attr('y1') - crosshairsShapeY.attr('y2')).to.equal(plotRange.height);
   });
 
-  after(() => {
+  afterAll(() => {
     chart.destroy();
     document.body.removeChild(canvas);
   });
