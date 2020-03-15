@@ -23,7 +23,7 @@ class Pinch extends Base {
   }
 
   process(e) {
-    e.preventDefault();
+    e.preventDefault && e.preventDefault();
     const { zoom, center } = e;
     const { context } = this;
     const { chart } = context;

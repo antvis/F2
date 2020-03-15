@@ -20,7 +20,7 @@ class Pan extends Base {
     if (direction === 'up' || direction === 'down') {
       return;
     }
-    e.preventDefault();
+    e.preventDefault && e.preventDefault();
 
     const { context } = this;
     const chart = context.chart;
