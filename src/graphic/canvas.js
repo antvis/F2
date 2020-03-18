@@ -181,6 +181,12 @@ class Canvas extends EventEmit {
     if (this.get('destroyed')) {
       return;
     }
+    // 需要清理 canvas 画布内容，否则会导致 spa 应用 ios 下 canvas 白屏
+    // https://stackoverflow.com/questions/52532614/total-canvas-memory-use-exceeds-the-maximum-limit-safari-12
+    // https://github.com/antvis/F2/issues/630
+    const el = this.get('el');
+    el.width = 0;
+    el.height = 0;
     this.clear();
     this._attrs = {};
     this.set('destroyed', true);
