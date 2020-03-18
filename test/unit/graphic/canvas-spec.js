@@ -134,7 +134,7 @@ describe('Canvas', function() {
 
   it('clear canvas', function() {
     const canvas = new Canvas({
-      el: 'canvas',
+      el: dom,
       width: 500,
       height: 500,
       pixelRatio: 1
@@ -145,6 +145,8 @@ describe('Canvas', function() {
     canvas.clear();
     expect(canvas.getChildren()).to.be.an('array').that.is.empty;
     canvas.destroy();
+    expect(dom.width).to.equal(0);
+    expect(dom.height).to.equal(0);
     expect(canvas.isDestroyed()).to.be.true;
     document.body.removeChild(dom);
   });
