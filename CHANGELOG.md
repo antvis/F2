@@ -1,3 +1,46 @@
+#### 3.6.1 (2020-03-19)
+
+##### Chores
+
+*  调整geom attr的映射代码 ([441e2408](https://github.com/antvis/f2/commit/441e24089845406e48035bc51787e4bcdc4d4f55))
+* **deps:**  upgrade eslint 3.19.0 to 6.7.2 ([234edfc1](https://github.com/antvis/f2/commit/234edfc1d23d9d4962f768c68e82070523fb1f89))
+* **deps-dev:**  bump open from 0.0.5 to 7.0.0 ([cba92c2a](https://github.com/antvis/f2/commit/cba92c2adb24c1d73f42e5cbd0236bd5406d43f6))
+
+##### New Features
+
+*  pinch 添加range配置 ([9560f70d](https://github.com/antvis/f2/commit/9560f70de8b9c32f99f4274c4dc21d9e09811659))
+*  复杂交互支持小程序 ([707f6198](https://github.com/antvis/f2/commit/707f61980dce403967d9fd800a898d7d946d53a6))
+*  chart添加事件处理 ([bc9afcda](https://github.com/antvis/f2/commit/bc9afcda4c2a453bf0614d6ccef1bd55f16d2ed6))
+*  添加内部的事情处理 ([9209b635](https://github.com/antvis/f2/commit/9209b635011fcc920a5ded7f1f38844c6724c2ba))
+*  升级@antv/util ([30babec1](https://github.com/antvis/f2/commit/30babec11ba4169f5c420360dbcb9337ba884414))
+
+##### Bug Fixes
+
+*  添加browser字段。Closed [#789](https://github.com/antvis/f2/pull/789) ([e5a798f1](https://github.com/antvis/f2/commit/e5a798f18d51910f62c61109ec0f1aa09a8d7373))
+*  ios spa多次创建导致canvas白屏。Closed [#630](https://github.com/antvis/f2/pull/630) ([ea3f84f4](https://github.com/antvis/f2/commit/ea3f84f4bcddb4d296b4977504121dd0a7cbc838))
+*  preventDefault添加空判断 ([ec99ed5a](https://github.com/antvis/f2/commit/ec99ed5ab5dbb916afa887470f17cd1b979a7c41))
+*  再初始完成后，需要跟新ticks ([54a11e9d](https://github.com/antvis/f2/commit/54a11e9dab685adf5802decae3a78260dc089ce3))
+*  修复ci的报错 ([ce404908](https://github.com/antvis/f2/commit/ce404908f44cd26668fdee9649998a5ba832e9ff))
+*  scale锁定0.1.3 ([0fe2de5c](https://github.com/antvis/f2/commit/0fe2de5cdf30fd5ebed9bacc1283714d48fb2d8a))
+*  修复touchstart时，会触发pan事件 ([1be26b83](https://github.com/antvis/f2/commit/1be26b834ab28425ebcfa19d6d9157e18c6219d1))
+*  缩放后，legend点击会让缩放失效 ([b490bbe0](https://github.com/antvis/f2/commit/b490bbe051316ce7803ea00acd12066bb4107e3b))
+*  添加swipe事件 ([eaa89f9c](https://github.com/antvis/f2/commit/eaa89f9c703b59f2888b223275fdae92df464080))
+*  修复tag位置为NaN时的绘制问题 ([3aee6443](https://github.com/antvis/f2/commit/3aee644349caf2b30cecf2f90b547fa6ddbe2aee))
+*  修复事件删除的bug，并补充单测 ([a7f37899](https://github.com/antvis/f2/commit/a7f3789942c65fa3c6a964990e4dfb92dae05539))
+*  修复x, y为0的情况 ([1dcb5f92](https://github.com/antvis/f2/commit/1dcb5f92ce1b9d282842b9b021f118f874c25b41))
+*  touchend时，timeount没有清除导致报错 ([1059bdd0](https://github.com/antvis/f2/commit/1059bdd0e526971aa89693d6738a90f436c1b063))
+*  优化press事件的处理 ([5b0153dc](https://github.com/antvis/f2/commit/5b0153dcb7ecf0d6234b6af928dcddf606e59d3c))
+*  修复tooltip touchend不消失的问题 ([cb834770](https://github.com/antvis/f2/commit/cb834770bcc7c9683e7f6f76e91bfaab6cf33046))
+*  未设置geometry时，clear报错 ([065c7ea3](https://github.com/antvis/f2/commit/065c7ea3b77a175ffdc3b582ce9d9490cb57efbb))
+*  修复非浏览器环境时，currentStyle报错 ([f90affa3](https://github.com/antvis/f2/commit/f90affa3440e6c18a118400305aa62ae60e66b5e))
+
+##### Refactors
+
+*  tooltip响应事件改成press ([9a1a21a6](https://github.com/antvis/f2/commit/9a1a21a6cea41fb1c5d06e9aae131bba835d3c77))
+*  为mapping增加缓存，减少计算耗时 ([f96a452d](https://github.com/antvis/f2/commit/f96a452d52cf8aa86596aedfb74b9e40ac1fa2fc))
+*  attr模块迁移内部 ([d13ca752](https://github.com/antvis/f2/commit/d13ca752de9ea6a0a2bba0c99165b44c52fa82f6))
+*  调整二次绘制的性能 ([05c6c2c4](https://github.com/antvis/f2/commit/05c6c2c4b1e8617884f4505e18442a78fcabd2fe))
+
 #### 3.5.0 (2020-01-12)
 
 ##### Chores
