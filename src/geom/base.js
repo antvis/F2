@@ -124,6 +124,12 @@ class Geom extends Base {
   _setAttrOptions(attrName, attrCfg) {
     const options = this.get('attrOptions');
     options[attrName] = attrCfg;
+
+    const attrs = this.get('attrs');
+    // 说明已经初始化过了
+    if (Object.keys(attrs).length) {
+      this._createAttr(attrName, attrCfg);
+    }
   }
 
   _createAttrOption(attrName, field, cfg, defaultValues) {
@@ -141,44 +147,49 @@ class Geom extends Base {
     this._setAttrOptions(attrName, attrCfg);
   }
 
-  _initAttrs() {
+  _createAttr(type, option) {
     const self = this;
     const attrs = self.get('attrs');
-    const attrOptions = self.get('attrOptions');
     const coord = self.get('coord');
+    const className = Util.upperFirst(type);
+    const fields = parseFields(option.field);
+    if (type === 'position') {
+      option.coord = coord;
+    }
+    const scales = [];
+    for (let i = 0, len = fields.length; i < len; i++) {
+      const field = fields[i];
+      const scale = self._createScale(field);
+      scales.push(scale);
+    }
+    if (type === 'position') {
+      const yScale = scales[1];
+
+      // 饼图的处理，但是还不知道为啥
+      if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
+        if (yScale.values.length) {
+          yScale.change({
+            nice: false,
+            min: 0,
+            max: Math.max.apply(null, yScale.values)
+          });
+        }
+      }
+    }
+
+    option.scales = scales;
+    const attr = new Attr[className](option);
+    attrs[type] = attr;
+    return attr;
+  }
+
+  _initAttrs() {
+    const self = this;
+    const attrOptions = self.get('attrOptions');
 
     for (const type in attrOptions) {
       if (attrOptions.hasOwnProperty(type)) {
-        const option = attrOptions[type];
-        const className = Util.upperFirst(type);
-        const fields = parseFields(option.field);
-        if (type === 'position') {
-          option.coord = coord;
-        }
-        const scales = [];
-        for (let i = 0, len = fields.length; i < len; i++) {
-          const field = fields[i];
-          const scale = self._createScale(field);
-          scales.push(scale);
-        }
-        if (type === 'position') {
-          const yScale = scales[1];
-
-          // 饼图的处理，但是还不知道为啥
-          if (coord.type === 'polar' && coord.transposed && self.hasAdjust('stack')) {
-            if (yScale.values.length) {
-              yScale.change({
-                nice: false,
-                min: 0,
-                max: Math.max.apply(null, yScale.values)
-              });
-            }
-          }
-        }
-
-        option.scales = scales;
-        const attr = new Attr[className](option);
-        attrs[type] = attr;
+        this._createAttr(type, attrOptions[type]);
       }
     }
   }
