@@ -1,3 +1,14 @@
+#### 3.6.2 (2020-03-24)
+
+##### New Features
+
+*  把helper和component透出来 ([3bc0220d](https://github.com/antvis/f2/commit/3bc0220da7d8445cbdaf43c639126e79deba4334))
+
+##### Bug Fixes
+
+*  render 之后再次修改geom的size. Closed [#797](https://github.com/antvis/f2/pull/797) ([a90d9608](https://github.com/antvis/f2/commit/a90d96083c7204483ea25d448f94d715de085ffc))
+*  修复官网的链接问题 ([1e8c0bfe](https://github.com/antvis/f2/commit/1e8c0bfec92a979de940900285e4e91aa51d3cf0))
+
 #### 3.6.1 (2020-03-19)
 
 ##### Chores
