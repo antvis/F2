@@ -7,6 +7,7 @@ Core.Chart = require('./chart/chart');
 Core.Shape = require('./geom/shape/shape');
 Core.G = require('./graphic/index');
 Core.Util = require('./util/common');
+Core.Helper = require('./util/helper');
 
 // Core.track = function(enable) {
 //   Global.trackable = enable;
