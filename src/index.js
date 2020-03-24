@@ -19,6 +19,12 @@ require('./component/guide/text');
 require('./component/guide/tag');
 require('./component/guide/point');
 
+const Marker = require('./component/marker');
+// 把一些component挂上去，外部可以直接使用
+F2.Component = {
+  Marker
+};
+
 const Tooltip = require('./plugin/tooltip');
 const Guide = require('./plugin/guide');
 const Legend = require('./plugin/legend');

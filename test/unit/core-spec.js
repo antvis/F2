@@ -9,6 +9,7 @@ describe('Core', function() {
       'Shape',
       'G',
       'Util',
+      'Helper',
       'track',
       'version'
     ]);
