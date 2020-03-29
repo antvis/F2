@@ -43,6 +43,7 @@ class ScaleController {
       defs[field] = cfg;
     }
 
+    // 因为可能同时变更多个scale，所以要把所有已实例化的scale都更新下
     this.updateScales();
   }
 
@@ -183,17 +184,21 @@ class ScaleController {
 
   createScale(field, data) {
     const { scales } = this;
-    if (scales[field]) {
-      return scales[field];
-    }
     const { type, cfg } = this._getScaleCfg(field, data);
-    const scale = new Scale[type](cfg);
-    this.scales[field] = scale;
-    return scale;
+    const scale = scales[field];
+    // 如果已经存在，且类型相等时直接返回
+    if (scale && SCALE_TYPES_MAP[scale.type] === type) {
+      scale.change(cfg);
+      return scale;
+    }
+    const newScale = new Scale[type](cfg);
+    scales[field] = newScale;
+    return newScale;
   }
 
   _updateScale(scale) {
     const { field } = scale;
+    // 因为每个field的数据都会不同
     const data = this.chart._getScaleData(field);
     const { cfg } = this._getScaleCfg(field, data);
     scale.change(cfg);

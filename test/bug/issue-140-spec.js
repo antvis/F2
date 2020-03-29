@@ -38,7 +38,7 @@ describe('issue 140', () => {
     chart.scale('value', null);
     chart.changeData(data);
     const newValueScale = line.getYScale();
-    expect(newValueScale.type).eql('linear');
+    expect(newValueScale.type).eql('identity');
 
     chart.destroy();
     document.body.removeChild(canvas);

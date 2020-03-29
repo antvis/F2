@@ -229,11 +229,11 @@ class Chart extends Base {
     return data;
   }
 
-  _updateScales() {
-    const scaleController = this.get('scaleController');
-    scaleController.updateScales();
-    this._adjustScale();
-  }
+  // _updateScales() {
+  //   const scaleController = this.get('scaleController');
+  //   scaleController.updateScales();
+  //   this._adjustScale();
+  // }
 
   _adjustScale() {
     const self = this;
@@ -410,11 +410,9 @@ class Chart extends Base {
       // 数据更新后，重新设置filterdata
       this._initFilteredData();
 
-      // 要重新计算scale的value值
-      this._updateScales();
-
       // 更新geoms里的数据
       this._changeGeomsData();
+      this._adjustScale();
     });
 
     // 大小变化后的一些更新
