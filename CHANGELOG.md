@@ -1,3 +1,9 @@
+#### 3.6.3 (2020-03-30)
+
+##### Bug Fixes
+
+*  after changeData, scale incorrect. Closed [#804](https://github.com/antvis/f2/pull/804) ([2dd9c26a](https://github.com/antvis/f2/commit/2dd9c26ac59fe078ba97d5f9ff3d9c1c0c9f42d6))
+
 #### 3.6.2 (2020-03-24)
 
 ##### New Features
