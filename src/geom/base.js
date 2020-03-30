@@ -774,7 +774,9 @@ class Geom extends Base {
 
   changeData(data) {
     this.set('data', data);
-    this._processData();
+    // 改变数据后，情况度量，因为需要重新实例化
+    this.set('scales', {});
+    this.init();
   }
 
   clearInner() {
