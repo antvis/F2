@@ -60,6 +60,7 @@ async function gestureSimulator(dom, eventType, options) {
 }
 
 module.exports = {
+  dispatchEvent,
   gestureSimulator,
   delay
 };

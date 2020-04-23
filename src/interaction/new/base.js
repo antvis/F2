@@ -59,16 +59,24 @@ class Base {
   }
 
   _start = ev => {
+    this.preStart && this.preStart(ev);
     this.start(ev);
+    this.onStart && this.onStart(ev);
   }
   _process = ev => {
+    this.preProcess && this.preProcess(ev);
     this.process(ev);
+    this.onProcess && this.onProcess(ev);
   }
   _end = ev => {
+    this.preEnd && this.preEnd(ev);
     this.end(ev);
+    this.onEnd && this.onEnd(ev);
   }
   _reset = ev => {
+    this.preReset && this.preReset(ev);
     this.reset(ev);
+    this.onReset && this.onReset(ev);
   }
 
   // override
