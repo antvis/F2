@@ -201,17 +201,13 @@ class Context {
 
   // 上一次的tick个数
   updateTicks() {
-    const { chart, lastTickCount, values } = this;
+    const { chart, values } = this;
     const scale = this.getPinchScale();
 
     const { values: currentValues, tickCount, isRounding } = scale;
     // 根据当前数据的比例，和定义的tickCount计算应该需要多少个ticks
     const newTickCount = Math.round(tickCount * values.length / currentValues.length);
 
-    // 如果个数没有变化，则不更新
-    if (newTickCount === lastTickCount) {
-      return;
-    }
     const cat = autoCat({
       maxCount: newTickCount,
       data: values,

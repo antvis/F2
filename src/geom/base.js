@@ -229,6 +229,7 @@ class Geom extends Base {
     if (self.get('sortable')) {
       self._sort(dataArray);
     }
+    self.emit('afterprocessdata', { dataArray });
     self.set('dataArray', dataArray);
     return dataArray;
   }
@@ -707,6 +708,23 @@ class Geom extends Base {
     }
 
     return rst;
+  }
+
+  getRecords(value) {
+    const xScale = this.getXScale();
+    const dataArray = this.get('dataArray');
+    const xfield = xScale.field;
+
+    return dataArray.map(data => {
+      for (let len = data.length, i = len - 1; i >= 0; i--) {
+        const obj = data[i];
+        const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        if (this._isEqual(originValue, value, xScale)) {
+          return obj;
+        }
+      }
+      return null;
+    });
   }
 
   _isEqual(originValue, value, scale) {
