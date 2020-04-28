@@ -911,4 +911,45 @@ describe('test schema', function() {
       document.body.removeChild(dom);
     });
   });
+
+  describe('test getRecord', () => {
+    const data = [
+      { type: 'a', date: '2018', value: 100 },
+      { type: 'a', date: '2019', value: 200 },
+      { type: 'b', date: '2018', value: 300 },
+      { type: 'c', date: '2019', value: 400 }
+    ];
+    const typeScale = new Scale.Cat({
+      field: 'type',
+      values: [ 'a', 'b', 'c' ]
+    });
+    const dateScale = new Scale.Cat({
+      field: 'date',
+      values: [ '2018', '2019' ]
+    });
+    const valueScale = new Scale.Linear({
+      field: 'value',
+      min: 100,
+      max: 400,
+      nice: false
+    });
+
+    const geom = new Geom.Line({
+      data,
+      coord,
+      container: canvas.addGroup(),
+      scales: { type: typeScale, date: dateScale, value: valueScale }
+    });
+
+    geom.position('date*value').color('type');
+    geom.init();
+
+    it('getRecords', () => {
+      const records = geom.getRecords('2019');
+      expect(records.length).equal(3);
+      expect(records[0].type).equal('a');
+      expect(records[1]).equal(null);
+      expect(records[2].type).equal('c');
+    });
+  });
 });
