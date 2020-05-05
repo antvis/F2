@@ -43,7 +43,7 @@
     "babel-plugin-transform-remove-strict-mode": "~0.0.2",
     "babel-preset-gatsby": "^0.2.20",
     "body-parser": "^1.18.2",
-    "chai": "~4.0.1",
+    "chai": "~4.2.0",
     "commander": "~2.9.0",
     "connect": "~3.6.3",
     "d3-queue": "~3.0.7",
