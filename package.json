@@ -65,7 +65,7 @@
     "pre-commit": "~1.2.2",
     "react-i18next": "^11.0.1",
     "serve-static": "~1.12.4",
-    "shelljs": "~0.7.8",
+    "shelljs": "~0.8.4",
     "uglify-js": "~3.0.15",
     "webpack": "~3.4.1"
   },
