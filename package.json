@@ -47,7 +47,7 @@
     "commander": "~2.9.0",
     "connect": "~3.6.3",
     "d3-queue": "~3.0.7",
-    "debug": "~3.1.0",
+    "debug": "~4.1.1",
     "electron": "^7.1.9",
     "eslint": "^6.7.2",
     "eslint-config-egg": "~4.2.0",
