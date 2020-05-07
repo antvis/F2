@@ -41,7 +41,7 @@
     "babel-eslint": "~10.1.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-transform-remove-strict-mode": "~0.0.2",
-    "babel-preset-gatsby": "^0.2.20",
+    "babel-preset-gatsby": "^0.4.0",
     "body-parser": "^1.18.2",
     "chai": "~4.0.1",
     "commander": "~2.9.0",
