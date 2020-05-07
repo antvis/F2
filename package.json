@@ -67,7 +67,7 @@
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
     "uglify-js": "~3.0.15",
-    "webpack": "~3.4.1"
+    "webpack": "~4.43.0"
   },
   "scripts": {
     "start": "npm run site:develop",
