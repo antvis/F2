@@ -107,7 +107,7 @@
     "testRegex": "/test/.*-spec\\.js?$"
   },
   "dependencies": {
-    "@antv/adjust": "~0.1.1",
+    "@antv/adjust": "~0.2.2",
     "@antv/scale": "0.1.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.7.7",
