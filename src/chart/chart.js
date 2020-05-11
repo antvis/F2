@@ -5,7 +5,9 @@ import {
   EVENT_BEFORE_DATA_CHANGE,
   EVENT_AFTER_DATA_CHANGE,
   EVENT_AFTER_SIZE_CHANGE,
-  EVENT_AFTER_GEOM_INIT
+  EVENT_AFTER_GEOM_INIT,
+  EVENT_CLEAR,
+  EVENT_CLEAR_INNER
 } from './const';
 const Base = require('../base');
 const Plot = require('./plot');
@@ -268,6 +270,7 @@ class Chart extends Base {
   _clearInner() {
     this._clearGeoms();
     Chart.plugins.notify(this, 'clearInner');
+    this.emit(EVENT_CLEAR_INNER);
     this.get('axisController') && this.get('axisController').clear();
   }
 
@@ -611,6 +614,7 @@ class Chart extends Base {
    */
   clear() {
     Chart.plugins.notify(this, 'clear');
+    this.emit(EVENT_CLEAR);
     this._clearInner();
     this._removeGeoms();
     this._clearScaleController();
