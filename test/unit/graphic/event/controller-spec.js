@@ -1,23 +1,20 @@
-import EventEmit from '../../../../src/graphic/event/emit';
+import Canvas from '../../../../src/graphic/canvas';
 import CanvasElement from '../../../../src/graphic/canvas-element';
-import Controller from '../../../../src/graphic/event/controller';
 
 const clickCallback = jest.fn();
 const panCallback = jest.fn();
 const pressCallback = jest.fn();
 const pinchCallback = jest.fn();
 
-const canvas = new EventEmit();
+const canvasEl = CanvasElement.create({});
+const canvas = new Canvas({
+  el: canvasEl,
+  pixelRatio: 1
+});
 canvas.on('click', clickCallback);
 canvas.on('pan', panCallback);
 canvas.on('press', pressCallback);
 canvas.on('pinch', pinchCallback);
-
-const canvasEl = CanvasElement.create({});
-new Controller({
-  canvas,
-  el: canvasEl
-});
 
 describe('Event Controller', function() {
   it('delegateEvent', function() {
@@ -30,7 +27,7 @@ describe('Event Controller', function() {
   it('click event', () => {
     canvasEl.dispatchEvent({ type: 'click' });
     expect(clickCallback.mock.calls.length).toBe(1);
-    expect(clickCallback.mock.calls[0][0]).toEqual({ type: 'click' });
+    expect(clickCallback.mock.calls[0][0].type).toBe('click');
   });
 });
 

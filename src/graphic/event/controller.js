@@ -25,8 +25,13 @@ const getCenter = (point1, point2) => {
   return { x, y };
 };
 
-const convertPoints = (touches, canvas) => {
-  if (!touches) return;
+const convertPoints = (ev, canvas) => {
+  const touches = ev.touches;
+  // 认为是mouse事件
+  if (!touches) {
+    const point = getRelativePosition({ x: ev.clientX, y: ev.clientY }, canvas);
+    return [ point ];
+  }
   const points = [];
   const len = touches.length;
   for (let i = 0; i < len; i++) {
@@ -70,10 +75,12 @@ class EventController {
     canvas.emit(type, ev);
   }
   _click = ev => {
+    const points = convertPoints(ev, this.canvas);
+    ev.points = points;
     this.emitEvent('click', ev);
   }
   _start = ev => {
-    const points = convertPoints(ev.touches, this.canvas);
+    const points = convertPoints(ev, this.canvas);
     if (!points) {
       return;
     }
@@ -101,7 +108,7 @@ class EventController {
     }
   }
   _move = ev => {
-    const points = convertPoints(ev.touches, this.canvas);
+    const points = convertPoints(ev, this.canvas);
     if (!points) return;
     this.clearPressTimeout();
     ev.points = points;
