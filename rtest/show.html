@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>show</title>
+</head>
+<body>
+  <canvas id="container"></canvas>
+  <script src="./bundle.js"></script>
+  <!-- <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script> -->
+  <script>
+    // cosnole.log(F2)
+
+    const data = [
+        { genre: 'Sports', sold: 275 },
+        { genre: 'Strategy', sold: 115 },
+        { genre: 'Action', sold: 120 },
+        { genre: 'Shooter', sold: 350 },
+        { genre: 'Other', sold: 150 }
+      ];
+
+      // Step 1: 创建 Chart 对象
+        const chart = new F2.Chart({
+          id: 'container',
+          pixelRatio: window.devicePixelRatio // 指定分辨率
+        });
+
+        // Step 2: 载入数据源
+        chart.source(data);
+
+        // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+        chart.interval()
+          .position('genre*sold')
+          .color('genre');
+
+        // Step 4: 渲染图表
+        chart.render();
+
+
+  </script>
+</body>
+</html>

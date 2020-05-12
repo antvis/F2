@@ -896,3 +896,4 @@ class Chart extends Base {
 Chart.plugins = Chart.initPlugins();
 
 module.exports = Chart;
+export default Chart;

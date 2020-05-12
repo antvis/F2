@@ -36,3 +36,4 @@ class Base extends Emit {
 }
 
 module.exports = Base;
+export default Base;

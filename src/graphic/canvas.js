@@ -204,3 +204,4 @@ Util.mix(Canvas.prototype, Container, {
 });
 
 module.exports = Canvas;
+export default Canvas;

@@ -112,3 +112,4 @@ const SizeMixin = {
 };
 
 module.exports = SizeMixin;
+export default SizeMixin;

@@ -839,3 +839,4 @@ class Geom extends Base {
 }
 
 module.exports = Geom;
+export default Geom;
