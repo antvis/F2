@@ -66,7 +66,7 @@
     "react-i18next": "^11.0.1",
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
-    "uglify-js": "~3.0.15",
+    "uglify-js": "~3.9.3",
     "webpack": "~3.4.1"
   },
   "scripts": {
