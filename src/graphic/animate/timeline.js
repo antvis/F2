@@ -1,4 +1,4 @@
-const { requestAnimationFrame } = require('../util/requestAnimationFrame');
+import { requestAnimationFrame } from '../util/requestAnimationFrame';
 const clock = typeof performance === 'object' && performance.now ? performance : Date;
 
 class Timeline {
@@ -111,4 +111,4 @@ class Timeline {
   }
 }
 
-module.exports = Timeline;
+export default Timeline;

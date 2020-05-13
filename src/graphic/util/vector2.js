@@ -2,7 +2,7 @@
  * 2 Dimensional Vector
  * @module vector2
  */
-module.exports = {
+export default {
   /**
    * Creates a new, empty vector2
    *

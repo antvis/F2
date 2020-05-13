@@ -1,6 +1,6 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
-const { Rect } = require('../../graphic/shape');
+import Rect from '../../graphic/shape';
+import { mix } from '@util';
+import GuideBase from './base';
 
 class RegionFilter extends GuideBase {
   _initDefaultCfg() {
@@ -45,7 +45,7 @@ class RegionFilter extends GuideBase {
       children.map(c => {
         if (c.get('isShape')) {
           const type = c.get('type');
-          const attrs = Util.mix({}, c.get('attrs'), style);
+          const attrs = mix({}, c.get('attrs'), style);
           if (color && (attrs.fill || attrs.fillStyle)) {
             attrs.fill = attrs.fillStyle = color;
           }
@@ -85,4 +85,4 @@ class RegionFilter extends GuideBase {
 }
 
 GuideBase.RegionFilter = RegionFilter;
-module.exports = RegionFilter;
+export default RegionFilter;

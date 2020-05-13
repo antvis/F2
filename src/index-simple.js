@@ -1,13 +1,13 @@
 /**
  * Only support simple bar chart, line chart and pie chart
  */
-const F2 = require('./core');
+import F2 from './core';
 
-require('./geom/line');
-require('./geom/interval');
+import './geom/line';
+import './geom/interval';
 
-require('./geom/adjust/');
+import './geom/adjust/';
 
-require('./coord/polar');
+import './coord/polar';
 
-module.exports = F2;
+export default F2;

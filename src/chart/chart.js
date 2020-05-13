@@ -7,16 +7,16 @@ import {
   EVENT_AFTER_SIZE_CHANGE,
   EVENT_AFTER_GEOM_INIT
 } from './const';
-const Base = require('../base');
-const Plot = require('./plot');
-const Util = require('../util/common');
-const Coord = require('../coord/index');
-const Geom = require('../geom/base');
-const ScaleController = require('./controller/scale');
-const AxisController = require('./controller/axis');
-const Global = require('../global');
-const { Canvas } = require('../graphic/index');
-const Helper = require('../util/helper');
+import Base from '../base';
+import Plot from './plot';
+import { each, isString, mix, upperFirst, parsePadding, lowerFirst, isObject, isArray } from '../util/common';
+import Coord from '../coord/index';
+import Geom from '../geom/base';
+import ScaleController from './controller/scale';
+import AxisController from './controller/axis';
+import Global from '../global';
+import { Canvas } from '../graphic/index';
+import { getClip } from '../util/helper';
 
 
 function compare(a, b) {
@@ -25,7 +25,7 @@ function compare(a, b) {
 
 function _isScaleExist(scales, compareScale) {
   let flag = false;
-  Util.each(scales, scale => {
+  each(scales, scale => {
     const scaleValues = [].concat(scale.values);
     const compareScaleValues = [].concat(compareScale.values);
     if (scale.type === compareScale.type &&
@@ -180,7 +180,7 @@ class Chart extends Base {
     const syncScales = [];
     let min = [];
     let max = [];
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       const yScale = geom.getYScale();
       if (yScale.isLinear) {
         syncScales.push(yScale);
@@ -192,7 +192,7 @@ class Chart extends Base {
     min = Math.min.apply(null, min);
     max = Math.max.apply(null, max);
 
-    Util.each(syncScales, scale => {
+    each(syncScales, scale => {
       scale.change({ min });
       scale.change({ max });
     });
@@ -201,13 +201,13 @@ class Chart extends Base {
   _getFieldsForLegend() {
     const fields = [];
     const geoms = this.get('geoms');
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       const attrOptions = geom.get('attrOptions');
       const attrCfg = attrOptions.color;
-      if (attrCfg && attrCfg.field && Util.isString(attrCfg.field)) {
+      if (attrCfg && attrCfg.field && isString(attrCfg.field)) {
         const arr = attrCfg.field.split('*');
 
-        Util.each(arr, item => {
+        each(arr, item => {
           if (fields.indexOf(item) === -1) {
             fields.push(item);
           }
@@ -277,7 +277,7 @@ class Chart extends Base {
     if (filters) {
       data = data.filter(function(obj) {
         let rst = true;
-        Util.each(filters, function(fn, k) {
+        each(filters, function(fn, k) {
           if (fn) {
             rst = fn(obj[k], obj);
             if (!rst) {
@@ -325,13 +325,13 @@ class Chart extends Base {
 
   _initCoord() {
     const plot = this.get('plotRange');
-    const coordCfg = Util.mix({
+    const coordCfg = mix({
       type: 'cartesian'
     }, this.get('coordCfg'), {
       plot
     });
     const type = coordCfg.type;
-    const C = Coord[Util.upperFirst(type)];
+    const C = Coord[upperFirst(type)];
     const coord = new C(coordCfg);
     this.set('coord', coord);
   }
@@ -340,7 +340,7 @@ class Chart extends Base {
     let padding = this.get('_padding');
     if (!padding) {
       padding = this.get('margin') || this.get('padding');
-      padding = Util.parsePadding(padding);
+      padding = parsePadding(padding);
     }
 
     const top = padding[0] === 'auto' ? 0 : padding[0];
@@ -465,8 +465,8 @@ class Chart extends Base {
   constructor(cfg) {
     super(cfg);
     const self = this;
-    Util.each(Geom, function(geomConstructor, className) {
-      const methodName = Util.lowerFirst(className);
+    each(Geom, function(geomConstructor, className) {
+      const methodName = lowerFirst(className);
       self[methodName] = function(cfg) {
         const geom = new geomConstructor(cfg);
         self.addGeom(geom);
@@ -541,7 +541,7 @@ class Chart extends Base {
    */
   coord(type, cfg) {
     let coordCfg;
-    if (Util.isObject(type)) {
+    if (isObject(type)) {
       coordCfg = type;
     } else {
       coordCfg = cfg || {};
@@ -584,7 +584,7 @@ class Chart extends Base {
     const middlePlot = this.get('middlePlot');
     if (this.get('limitInPlot') && !middlePlot.attr('clip')) {
       const coord = this.get('coord');
-      const clip = Helper.getClip(coord);
+      const clip = getClip(coord);
       clip.set('canvas', middlePlot.get('canvas'));
       middlePlot.attr('clip', clip);
     }
@@ -673,7 +673,7 @@ class Chart extends Base {
     Chart.plugins.notify(this, 'afterCanvasDestroyed');
 
     if (this._interactions) {
-      Util.each(this._interactions, interaction => {
+      each(this._interactions, interaction => {
         interaction.destroy();
       });
     }
@@ -776,7 +776,7 @@ class Chart extends Base {
     const geoms = this.get('geoms');
     const rst = [];
 
-    Util.each(geoms, function(geom) {
+    each(geoms, function(geom) {
       const yScale = geom.getYScale();
       if (rst.indexOf(yScale) === -1) {
         rst.push(yScale);
@@ -793,7 +793,7 @@ class Chart extends Base {
     const scales = [];
 
     const geoms = this.get('geoms');
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       const colorAttr = geom.getAttr('color');
       if (colorAttr) {
         const scale = colorAttr.getScale('color');
@@ -804,7 +804,7 @@ class Chart extends Base {
           const field = scale.field;
           const ticks = scale.getTicks();
           const items = [];
-          Util.each(ticks, tick => {
+          each(ticks, tick => {
             const text = tick.text;
             const name = text;
             const scaleValue = tick.value;
@@ -840,7 +840,7 @@ class Chart extends Base {
   registerPlugins(plugins) {
     const self = this;
     let chartPlugins = self.get('plugins') || [];
-    if (!Util.isArray(chartPlugins)) {
+    if (!isArray(chartPlugins)) {
       chartPlugins = [ chartPlugins ];
     }
 
@@ -868,7 +868,7 @@ class Chart extends Base {
       return false;
     }
     const padding = this.get('padding');
-    if (Util.isArray(padding)) {
+    if (isArray(padding)) {
       return padding.indexOf('auto') !== -1;
     }
     return padding === 'auto';
@@ -895,5 +895,4 @@ class Chart extends Base {
 
 Chart.plugins = Chart.initPlugins();
 
-module.exports = Chart;
 export default Chart;

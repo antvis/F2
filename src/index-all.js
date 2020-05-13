@@ -1,32 +1,36 @@
 /**
  * all
  */
-const F2 = require('./core');
+import F2 from './core';
 
-require('./geom/');
-require('./geom/adjust/');
 
-require('./coord/polar'); // polar coordinate
-require('./component/axis/circle'); // the axis for polar coordinate
+import './geom/';
+import './geom/adjust/';
 
-require('./scale/time-cat'); // timeCat scale
+import './coord/polar'; // polar coordinate
+import './component/axis/circle'; // the axis for polar coordinate
 
-require('./component/guide'); // guide components
+import './scale/time-cat'; // timeCat scale
 
-const Tooltip = require('./plugin/tooltip');
-const Guide = require('./plugin/guide');
-const Legend = require('./plugin/legend');
-const Animation = require('./animation/detail');
-const ScrollBar = require('./plugin/scroll-bar');
-const PieLabel = require('./plugin/pie-label');
-const intervalLabel = require('./plugin/interval-label');
+import './component/guide'; // guide components
 
-F2.Animate = require('./animation/animate');
+import * as Tooltip from './plugin/tooltip';
+import * as Guide from './plugin/guide';
+import * as Legend from './plugin/legend';
+import * as Animation from './animation/detail';
+import * as ScrollBar from './plugin/scroll-bar';
+import * as PieLabel from './plugin/pie-label';
+import * as intervalLabel from './plugin/interval-label';
+import * as Animate from './animation/animate';
+
+F2.Animate = Animate;
 // register plugins
 F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar, PieLabel, intervalLabel ]);
 
 // add interaction
-require('./interaction');
-F2.Interaction = require('./interaction/base');
+import './interaction';
+import Interaction from './interaction/base';
 
-module.exports = F2;
+F2.Interaction = Interaction;
+
+export default F2;

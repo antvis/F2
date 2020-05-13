@@ -1,7 +1,8 @@
-const Util = require('../util/common');
+import { mix, isObject } from '@util';
+
 class Plot {
   constructor(cfg) {
-    Util.mix(this, cfg);
+    mix(this, cfg);
     this._init();
   }
 
@@ -52,7 +53,7 @@ class Plot {
    * @return {Boolean} return the result
    */
   isInRange(x, y) {
-    if (Util.isObject(x)) {
+    if (isObject(x)) {
       y = x.y;
       x = x.x;
     }
@@ -62,4 +63,4 @@ class Plot {
   }
 }
 
-module.exports = Plot;
+export default Plot;

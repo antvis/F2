@@ -1,4 +1,4 @@
-const Base = require('./base');
+import Base from './base';
 
 class Cartesian extends Base {
   _initDefaultCfg() {

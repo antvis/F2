@@ -7,8 +7,8 @@
 </head>
 <body>
   <canvas id="container"></canvas>
-  <script src="./bundle.js"></script>
-  <!-- <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script> -->
+  <!-- <script src="./bundle.js"></script> -->
+  <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script>
   <script>
     // cosnole.log(F2)
 
@@ -23,6 +23,8 @@
       // Step 1: 创建 Chart 对象
         const chart = new F2.Chart({
           id: 'container',
+          width: 300,
+          height: 200,
           pixelRatio: window.devicePixelRatio // 指定分辨率
         });
 

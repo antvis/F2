@@ -1,5 +1,5 @@
 import { getRelativePosition } from '../../util/dom';
-import { isNumber } from '../../util/common';
+import { isNumber } from '@util';
 
 // 计算滑动的方向
 const calcDirection = (start, end) => {

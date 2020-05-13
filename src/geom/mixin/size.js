@@ -7,9 +7,8 @@ import {
   EVENT_AFTER_SIZE_CHANGE
 } from '../../chart/const';
 
-const Global = require('../../global');
-const Util = require('../../util/common');
-
+import { uniq, isNil } from '@util';
+import Global from '../../global';
 
 const SizeMixin = {
   initEvent() {
@@ -27,7 +26,7 @@ const SizeMixin = {
       const coord = this.get('coord');
       const xScale = this.getXScale();
       const dataArray = this.get('dataArray');
-      const values = Util.uniq(xScale.values);
+      const values = uniq(xScale.values);
       const count = values.length;
       const range = xScale.range;
       let normalizeSize = 1 / count;
@@ -94,7 +93,7 @@ const SizeMixin = {
   },
   getNormalizedSize(obj) {
     let size = this.getAttrValue('size', obj);
-    if (Util.isNil(size)) {
+    if (isNil(size)) {
       size = this.getDefalutSize();
     } else {
       size = this._toNormalizedSize(size);
@@ -103,7 +102,7 @@ const SizeMixin = {
   },
   getSize(obj) {
     let size = this.getAttrValue('size', obj);
-    if (Util.isNil(size)) {
+    if (isNil(size)) {
       const normalizeSize = this.getDefalutSize();
       size = this._toCoordSize(normalizeSize);
     }
@@ -111,5 +110,4 @@ const SizeMixin = {
   }
 };
 
-module.exports = SizeMixin;
 export default SizeMixin;

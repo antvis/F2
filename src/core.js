@@ -1,22 +1,23 @@
 const Core = {};
 
-const Global = require('./global');
+import Global from './global';
+import Chart from './chart/chart';
+import Shape from './geom/shape/shape';
+import * as G from './graphic/index';
+import * as Util from './util/common';
+import * as Helper from './util/helper';
+
 Core.Global = Global;
 Core.version = Global.version;
-Core.Chart = require('./chart/chart');
-Core.Shape = require('./geom/shape/shape');
-Core.G = require('./graphic/index');
-Core.Util = require('./util/common');
-Core.Helper = require('./util/helper');
+Core.Chart = Chart;
+Core.Shape = Shape;
+Core.G = G;
 
-// Core.track = function(enable) {
-//   Global.trackable = enable;
-// };
-// require('./track');
+Core.Util = Util;
+Core.Helper = Helper;
 
-// 2018-12-27 关闭打点
 Core.track = () => {
   return null;
 };
 
-module.exports = Core;
+export default Core;

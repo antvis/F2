@@ -1,6 +1,7 @@
-const Shape = require('../shape');
-const Smooth = require('../util/smooth');
-const bbox = require('../util/bbox');
+
+import Shape from '../shape';
+import { getBBoxFromPoints, getBBoxFromBezierGroup } from '../util/bbox';
+import * as Smooth from '../util/smooth';
 
 // filter the point which x or y is NaN
 function _filterPoints(points) {
@@ -83,11 +84,11 @@ class Polyline extends Shape {
           newPoints.push([ lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
         }
       }
-      return bbox.getBBoxFromBezierGroup(newPoints, lineWidth);
+      return getBBoxFromBezierGroup(newPoints, lineWidth);
     }
-    return bbox.getBBoxFromPoints(filteredPoints, lineWidth);
+    return getBBoxFromPoints(filteredPoints, lineWidth);
   }
 }
 
 Shape.Polyline = Polyline;
-module.exports = Polyline;
+export default Polyline;

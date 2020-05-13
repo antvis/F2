@@ -8,5 +8,5 @@ const Rect = {
   }
 };
 
-module.exports = Rect;
+export default Rect;
 

@@ -1,4 +1,4 @@
-const Vector2 = require('./vector2');
+import Vector2 from './vector2';
 
 const start = Vector2.create();
 const end = Vector2.create();
@@ -63,134 +63,145 @@ function cubicBezierBounds(c) {
   };
 }
 
-module.exports = {
-  getBBoxFromPoints(points, lineWidth) {
-    if (points.length === 0) {
-      return;
-    }
-    let p = points[0];
-    let left = p.x;
-    let right = p.x;
-    let top = p.y;
-    let bottom = p.y;
-    const len = points.length;
 
-    for (let i = 1; i < len; i++) {
-      p = points[i];
-      left = Math.min(left, p.x);
-      right = Math.max(right, p.x);
-      top = Math.min(top, p.y);
-      bottom = Math.max(bottom, p.y);
-    }
+function getBBoxFromPoints(points, lineWidth) {
+  if (points.length === 0) {
+    return;
+  }
+  let p = points[0];
+  let left = p.x;
+  let right = p.x;
+  let top = p.y;
+  let bottom = p.y;
+  const len = points.length;
 
-    lineWidth = (lineWidth / 2) || 0;
+  for (let i = 1; i < len; i++) {
+    p = points[i];
+    left = Math.min(left, p.x);
+    right = Math.max(right, p.x);
+    top = Math.min(top, p.y);
+    bottom = Math.max(bottom, p.y);
+  }
 
+  lineWidth = (lineWidth / 2) || 0;
+
+  return {
+    minX: left - lineWidth,
+    minY: top - lineWidth,
+    maxX: right + lineWidth,
+    maxY: bottom + lineWidth
+  };
+}
+
+function getBBoxFromLine(x0, y0, x1, y1, lineWidth) {
+  lineWidth = (lineWidth / 2) || 0;
+
+  return {
+    minX: Math.min(x0, x1) - lineWidth,
+    minY: Math.min(y0, y1) - lineWidth,
+    maxX: Math.max(x0, x1) + lineWidth,
+    maxY: Math.max(y0, y1) + lineWidth
+  };
+}
+
+function getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise) {
+  const diff = Math.abs(startAngle - endAngle);
+  if (diff % (Math.PI * 2) < 1e-4 && diff > 1e-4) {
+    // Is a circle
     return {
-      minX: left - lineWidth,
-      minY: top - lineWidth,
-      maxX: right + lineWidth,
-      maxY: bottom + lineWidth
-    };
-  },
-  getBBoxFromLine(x0, y0, x1, y1, lineWidth) {
-    lineWidth = (lineWidth / 2) || 0;
-
-    return {
-      minX: Math.min(x0, x1) - lineWidth,
-      minY: Math.min(y0, y1) - lineWidth,
-      maxX: Math.max(x0, x1) + lineWidth,
-      maxY: Math.max(y0, y1) + lineWidth
-    };
-  },
-  getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise) {
-    const diff = Math.abs(startAngle - endAngle);
-    if (diff % (Math.PI * 2) < 1e-4 && diff > 1e-4) {
-      // Is a circle
-      return {
-        minX: x - r,
-        minY: y - r,
-        maxX: x + r,
-        maxY: y + r
-      };
-    }
-
-    start[0] = Math.cos(startAngle) * r + x;
-    start[1] = Math.sin(startAngle) * r + y;
-
-    end[0] = Math.cos(endAngle) * r + x;
-    end[1] = Math.sin(endAngle) * r + y;
-    const min = [ 0, 0 ];
-    const max = [ 0, 0 ];
-
-    Vector2.min(min, start, end);
-    Vector2.max(max, start, end);
-
-    // Thresh to [0, Math.PI * 2]
-    startAngle = startAngle % (Math.PI * 2);
-    if (startAngle < 0) {
-      startAngle = startAngle + Math.PI * 2;
-    }
-    endAngle = endAngle % (Math.PI * 2);
-    if (endAngle < 0) {
-      endAngle = endAngle + Math.PI * 2;
-    }
-
-    if (startAngle > endAngle && !anticlockwise) {
-      endAngle += Math.PI * 2;
-    } else if (startAngle < endAngle && anticlockwise) {
-      startAngle += Math.PI * 2;
-    }
-    if (anticlockwise) {
-      const tmp = endAngle;
-      endAngle = startAngle;
-      startAngle = tmp;
-    }
-
-    for (let angle = 0; angle < endAngle; angle += Math.PI / 2) {
-      if (angle > startAngle) {
-        extremity[0] = Math.cos(angle) * r + x;
-        extremity[1] = Math.sin(angle) * r + y;
-
-        Vector2.min(min, extremity, min);
-        Vector2.max(max, extremity, max);
-      }
-    }
-
-    return {
-      minX: min[0],
-      minY: min[1],
-      maxX: max[0],
-      maxY: max[1]
-    };
-  },
-  getBBoxFromBezierGroup(points, lineWidth) {
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
-    for (let i = 0, len = points.length; i < len; i++) {
-      const bbox = cubicBezierBounds(points[i]);
-      if (bbox.minX < minX) {
-        minX = bbox.minX;
-      }
-      if (bbox.maxX > maxX) {
-        maxX = bbox.maxX;
-      }
-      if (bbox.minY < minY) {
-        minY = bbox.minY;
-      }
-      if (bbox.maxY > maxY) {
-        maxY = bbox.maxY;
-      }
-    }
-
-    lineWidth = (lineWidth / 2) || 0;
-
-    return {
-      minX: minX - lineWidth,
-      minY: minY - lineWidth,
-      maxX: maxX + lineWidth,
-      maxY: maxY + lineWidth
+      minX: x - r,
+      minY: y - r,
+      maxX: x + r,
+      maxY: y + r
     };
   }
+
+  start[0] = Math.cos(startAngle) * r + x;
+  start[1] = Math.sin(startAngle) * r + y;
+
+  end[0] = Math.cos(endAngle) * r + x;
+  end[1] = Math.sin(endAngle) * r + y;
+  const min = [ 0, 0 ];
+  const max = [ 0, 0 ];
+
+  Vector2.min(min, start, end);
+  Vector2.max(max, start, end);
+
+  // Thresh to [0, Math.PI * 2]
+  startAngle = startAngle % (Math.PI * 2);
+  if (startAngle < 0) {
+    startAngle = startAngle + Math.PI * 2;
+  }
+  endAngle = endAngle % (Math.PI * 2);
+  if (endAngle < 0) {
+    endAngle = endAngle + Math.PI * 2;
+  }
+
+  if (startAngle > endAngle && !anticlockwise) {
+    endAngle += Math.PI * 2;
+  } else if (startAngle < endAngle && anticlockwise) {
+    startAngle += Math.PI * 2;
+  }
+  if (anticlockwise) {
+    const tmp = endAngle;
+    endAngle = startAngle;
+    startAngle = tmp;
+  }
+
+  for (let angle = 0; angle < endAngle; angle += Math.PI / 2) {
+    if (angle > startAngle) {
+      extremity[0] = Math.cos(angle) * r + x;
+      extremity[1] = Math.sin(angle) * r + y;
+
+      Vector2.min(min, extremity, min);
+      Vector2.max(max, extremity, max);
+    }
+  }
+
+  return {
+    minX: min[0],
+    minY: min[1],
+    maxX: max[0],
+    maxY: max[1]
+  };
+}
+
+function getBBoxFromBezierGroup(points, lineWidth) {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (let i = 0, len = points.length; i < len; i++) {
+    const bbox = cubicBezierBounds(points[i]);
+    if (bbox.minX < minX) {
+      minX = bbox.minX;
+    }
+    if (bbox.maxX > maxX) {
+      maxX = bbox.maxX;
+    }
+    if (bbox.minY < minY) {
+      minY = bbox.minY;
+    }
+    if (bbox.maxY > maxY) {
+      maxY = bbox.maxY;
+    }
+  }
+
+  lineWidth = (lineWidth / 2) || 0;
+
+  return {
+    minX: minX - lineWidth,
+    minY: minY - lineWidth,
+    maxX: maxX + lineWidth,
+    maxY: maxY + lineWidth
+  };
+}
+
+
+export {
+  getBBoxFromPoints,
+  getBBoxFromLine,
+  getBBoxFromArc,
+  getBBoxFromBezierGroup
 };
+

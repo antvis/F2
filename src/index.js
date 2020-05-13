@@ -1,40 +1,41 @@
 /**
  * Default, without interactins
  */
-const F2 = require('./core');
+import F2 from './core';
 
-require('./geom/');
-require('./geom/adjust/');
+import './geom/';
+import './geom/adjust/';
 
-require('./coord/polar'); // polar coordinate
-require('./component/axis/circle'); // the axis for polar coordinate
+import './coord/polar'; // polar coordinate
+import './component/axis/circle'; // the axis for polar coordinate
 
-require('./scale/time-cat'); // timeCat scale
+import './scale/time-cat'; // timeCat scale
 
-require('./component/guide/arc');
-require('./component/guide/html');
-require('./component/guide/line');
-require('./component/guide/rect');
-require('./component/guide/text');
-require('./component/guide/tag');
-require('./component/guide/point');
+import './component/guide/arc';
+import './component/guide/html';
+import './component/guide/line';
+import './component/guide/rect';
+import './component/guide/text';
+import './component/guide/tag';
+import './component/guide/point';
 
-const Marker = require('./component/marker');
-// 把一些component挂上去，外部可以直接使用
+import Marker from './component/marker';
+import * as Tooltip from './plugin/tooltip';
+import * as Guide from './plugin/guide';
+import * as Legend from './plugin/legend';
+import * as Animation from './animation/detail';
+import * as Animate from './animation/animate';
+
 F2.Component = {
   Marker
 };
 
-const Tooltip = require('./plugin/tooltip');
-const Guide = require('./plugin/guide');
-const Legend = require('./plugin/legend');
-const Animation = require('./animation/detail');
 
-F2.Animate = require('./animation/animate');
+F2.Animate = Animate;
 // register plugins
 F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
 
 // 默认添加交互
-require('./interaction/new/index');
+import './interaction/new/index';
 
-module.exports = F2;
+export default F2;

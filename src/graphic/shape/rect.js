@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const Shape = require('../shape');
+import { parsePadding } from '@util';
+import Shape from '../shape';
 
 class Rect extends Shape {
   _initProperties() {
@@ -30,7 +30,7 @@ class Rect extends Shape {
     if (!radius || !(width * height)) {
       context.rect(x, y, width, height);
     } else {
-      radius = Util.parsePadding(radius);
+      radius = parsePadding(radius);
       context.moveTo(x + radius[0], y);
       context.lineTo(x + width - radius[1], y);
       context.arc(x + width - radius[1], y + radius[1], radius[1], -Math.PI / 2, 0, false);
@@ -57,4 +57,3 @@ class Rect extends Shape {
 }
 
 Shape.Rect = Rect;
-module.exports = Rect;
