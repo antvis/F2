@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-const Legend = require('../../src/plugin/legend');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import * as Legend from '../../src/plugin/legend';
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;

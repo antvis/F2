@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Custom = require('../../../../src/graphic/shape/custom');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Custom from '../../../../src/graphic/shape/custom';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-custom';

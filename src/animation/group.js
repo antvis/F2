@@ -7,7 +7,7 @@ import Shape from '../graphic/shape';
 import Timeline from '../graphic/animate/timeline';
 import Animator from '../graphic/animate/animator';
 import Animate from './animate';
-import Action from './group-action';
+import * as Action from './group-action';
 
 let timeline;
 Shape.prototype.animate = function() {

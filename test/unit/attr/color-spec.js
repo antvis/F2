@@ -1,4 +1,4 @@
-import ColorUtil from '../../../src/attr/color-util';
+import * as ColorUtil from '../../../src/attr/color-util';
 
 const expect = require('chai').expect;
 

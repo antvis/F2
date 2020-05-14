@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
+import { expect } from 'chai';
 
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-require('../../src/geom/area');
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import '../../src/geom/area';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

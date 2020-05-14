@@ -1,5 +1,5 @@
 import Rect from '../../graphic/shape';
-import { mix } from '@util';
+import { mix, each } from '@util';
 import GuideBase from './base';
 
 class RegionFilter extends GuideBase {
@@ -76,7 +76,7 @@ class RegionFilter extends GuideBase {
   remove() {
     const element = this.element;
 
-    Util.each(element, group => {
+    each(element, group => {
       group && group.remove(true);
     });
 

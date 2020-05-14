@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Util = require('../../../src/util/common');
+import { expect } from 'chai';
+import * as Util from '../../../src/util/common';
 
 describe('test basic util', function() {
   it('test upperFirst', function() {

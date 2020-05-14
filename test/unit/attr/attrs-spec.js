@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Attr = require('../../../src/attr/');
-const Scale = require('../../../src/scale/');
+import { expect } from 'chai';
+import * as Attr from '../../../src/attr';
+import Scale from '../../../src/scale';
 
 describe('attr test color', () => {
   const scaleIdentity = new Scale.Identity({

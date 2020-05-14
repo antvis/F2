@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/interval');
-require('../../src/coord/polar');
-require('../../src/geom/adjust/stack');
-require('../../src/geom/adjust/dodge');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/interval';
+import '../../src/coord/polar';
+import '../../src/geom/adjust/stack';
+import '../../src/geom/adjust/dodge';
 
 describe('Issue 514', () => {
   let canvas;

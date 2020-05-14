@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/interaction/pan');
-require('../../src/geom/point');
-const Legend = require('../../src/plugin/legend');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/interaction/pan';
+import '../../src/geom/point';
+import * as Legend from '../../src/plugin/legend';
 const data = require('../fixtures/cereal.json');
 
 describe('Issue 467', () => {

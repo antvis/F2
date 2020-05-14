@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/area');
-const Animation = require('../../src/animation/detail');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/area';
+import * as Animation from '../../src/animation/detail';
 
 const canvas = document.createElement('canvas');
 canvas.width = 360;

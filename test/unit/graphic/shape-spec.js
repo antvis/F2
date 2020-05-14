@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Shape = require('../../../src/graphic/shape');
+import { expect } from 'chai';
+import Shape from '../../../src/graphic/shape';
 
 describe('Shape', function() {
   const s = new Shape({

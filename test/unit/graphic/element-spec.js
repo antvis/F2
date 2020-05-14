@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Element = require('../../../src/graphic/element');
+import { expect } from 'chai';
+import Element from '../../../src/graphic/element';
 
 const dom = document.createElement('canvas');
 dom.id = 'element';

@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const { Canvas } = require('../../../../src/graphic/index');
-const Coord = require('../../../../src/coord/index');
-const { Html } = require('../../../../src/component/guide/index');
-const Scale = require('../../../../src/scale/index');
+import { expect } from 'chai';
+import { Canvas } from '../../../../src/graphic/index';
+import Coord from '../../../../src/coord/index';
+import { Html } from '../../../../src/component/guide/index';
+import Scale from '../../../../src/scale/index';
 
 const canva1s = document.createElement('canvas');
 canva1s.id = 'guideHTML';
@@ -42,6 +42,8 @@ const coord = new Coord.Rect({
 
 describe('Guide.Html', function() {
   it('offset', function() {
+    console.log(document);
+    console.log(document.getElementsByClassName('guideWapper'));
     const guide = new Html({
       xScale,
       yScales: [ yScale ],

@@ -145,4 +145,4 @@ class Html extends GuideBase {
 
 GuideBase.Html = Html;
 
-export default GuideBase;
+export default Html;

@@ -146,6 +146,5 @@ export {
   backInOut,
   bounceIn,
   bounceOut,
-  bounceInOut,
-
+  bounceInOut
 };

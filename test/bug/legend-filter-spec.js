@@ -1,10 +1,10 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
 const { gestureSimulator } = require('../unit/test-util');
 
-require('../../src/geom/interval');
-const Legend = require('../../src/plugin/legend');
-require('../../src/geom/adjust/stack');
+import '../../src/geom/interval';
+import * as Legend from '../../src/plugin/legend';
+import '../../src/geom/adjust/stack';
 
 
 describe('图例过滤未考虑数据中存在空数据的情况', () => {

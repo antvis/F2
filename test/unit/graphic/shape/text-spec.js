@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Text = require('../../../../src/graphic/shape/text');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Text from '../../../../src/graphic/shape/text';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-text';
@@ -65,7 +65,7 @@ describe('Text', function() {
     expect(bbox.height).to.equal(12);
   });
 
-  it('fill', function() {
+  it.only('fill', function() {
     const text1 = new Text({
       attrs: {
         x: 30,
@@ -84,6 +84,9 @@ describe('Text', function() {
     const bbox = text1.getBBox();
     expect(bbox.x).to.equal(30);
     expect(bbox.y).to.equal(78);
+    console.log(1);
+    console.log(bbox);
+    console.log(1);
     expect(bbox.width).to.equal(11.33203125);
     expect(bbox.height).to.equal(12);
 

@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Interaction = require('../../../src/interaction/base');
-const F2 = require('../../../src/core');
+import { expect } from 'chai';
+import Interaction from '../../../src/interaction/base';
+import * as F2 from '../../../src/core';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

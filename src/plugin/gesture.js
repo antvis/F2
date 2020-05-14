@@ -1,5 +1,5 @@
 const Hammer = require('hammerjs'); // http://hammerjs.github.io/
-import { deepMix } from '@util';
+import { deepMix, addEventListener, removeEventListener } from '@util';
 
 const defaultOptions = {
   useCalculate: true,

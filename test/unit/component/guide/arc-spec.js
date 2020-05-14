@@ -1,9 +1,10 @@
-const expect = require('chai').expect;
-const { Canvas } = require('../../../../src/graphic/index');
-const Coord = require('../../../../src/coord/index');
-const { Arc } = require('../../../../src/component/guide/index');
-const Scale = require('../../../../src/scale/index');
-require('../../../../src/coord/polar');
+import { expect } from 'chai';
+import { Canvas } from '../../../../src/graphic/index';
+import Coord from '../../../../src/coord/index';
+import { Arc } from '../../../../src/component/guide/index';
+import Scale from '../../../../src/scale/index';
+
+import '../../../../src/coord/polar';
 
 const dom = document.createElement('canvas');
 dom.id = 'guideArc';

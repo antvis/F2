@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Sector = require('../../../../src/graphic/shape/sector');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Sector from '../../../../src/graphic/shape/sector';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-sector';

@@ -57,3 +57,4 @@ class Rect extends Shape {
 }
 
 Shape.Rect = Rect;
+export default Rect;

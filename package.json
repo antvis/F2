@@ -94,7 +94,8 @@
     "lint-fix": "eslint --fix ./",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
-    "t2": "jest test/unit/global-spec.js",
+    "test": "jest",
+    "t2": "jest test/unit/component/axis/circle-axis-spec.js DEBUG=jest",
     "test-unit": "jest test/unit",
     "test-bug": "jest test/bug",
     "test-live": "DEBUG_MODE=1 jest --watch",
@@ -114,7 +115,8 @@
     "testRegex": "/test/.*-spec\\.js?$",
     "verbose": false,
     "moduleNameMapper": {
-      "^@util$": "<rootDir>/src/util/common.js"
+      "^@util$": "<rootDir>/src/util/common.js",
+      "@src/(.*)": "<rootDir>/src/$1"
     }
   },
   "dependencies": {

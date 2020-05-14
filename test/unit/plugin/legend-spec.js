@@ -1,10 +1,10 @@
-const expect = require('chai').expect;
+import { expect } from 'chai';
 const { gestureSimulator } = require('../test-util');
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
-require('../../../src/geom/line');
-require('../../../src/geom/point');
-const Legend = require('../../../src/plugin/legend');
+import * as F2 from '../../../src/core';
+import '../../../src/geom/interval';
+import '../../../src/geom/line';
+import '../../../src/geom/point';
+import * as Legend from '../../../src/plugin/legend';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

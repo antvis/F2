@@ -1,7 +1,8 @@
 /**
  * Default, without interactins
  */
-import F2 from './core';
+
+import { Global, Chart, Shape, G, Util, Helper, track } from './core';
 
 import './geom/';
 import './geom/adjust/';
@@ -26,16 +27,36 @@ import * as Legend from './plugin/legend';
 import * as Animation from './animation/detail';
 import * as Animate from './animation/animate';
 
-F2.Component = {
+const Component = {
   Marker
 };
 
-
-F2.Animate = Animate;
 // register plugins
-F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
+Chart.plugins.register([ Tooltip, Legend, Guide, Animation ]);
 
 // 默认添加交互
 import './interaction/new/index';
 
-export default F2;
+export {
+  Component,
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track,
+  Animate
+};
+
+export default {
+  Component,
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track,
+  Animate
+};

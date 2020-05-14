@@ -23,7 +23,7 @@ const DEFAULT_CFG = {
 
 function init(chart) {
   chart.set('_limitRange', {});
-  chart.scrollBar = function (cfg) {
+  chart.scrollBar = function(cfg) {
     if (cfg === true) {
       cfg = DEFAULT_CFG;
     } else if (isObject(cfg)) {
@@ -164,7 +164,7 @@ function afterGeomDraw(chart) {
 }
 
 
-export {
+export default {
   init,
   clear,
   changeData,

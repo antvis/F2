@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const Line = require('../../../../src/graphic/shape/line');
-const Rect = require('../../../../src/graphic/shape/rect');
-const Arc = require('../../../../src/graphic/shape/arc');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Line from '../../../../src/graphic/shape/line';
+import Rect from '../../../../src/graphic/shape/rect';
+import Arc from '../../../../src/graphic/shape/arc';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-line';
