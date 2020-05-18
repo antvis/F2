@@ -9,7 +9,7 @@ const track = () => {
   return null;
 };
 
-const version = global.version;
+const version = Global.version;
 
 export {
   Global,

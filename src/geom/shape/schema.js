@@ -1,5 +1,5 @@
 import Shape from './shape';
-import { mix } from '@util';
+import { mix } from '../../util/common';
 
 function _sortValue(value) {
   const sorted = value.sort(function(a, b) {

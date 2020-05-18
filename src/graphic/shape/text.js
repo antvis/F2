@@ -1,4 +1,4 @@
-import { isNil, measureText, isString } from '@util';
+import { isNil, measureText, isString } from '../../util/common';
 import Shape from '../shape';
 import RectUtil from '../util/rect';
 

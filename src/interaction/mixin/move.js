@@ -1,4 +1,4 @@
-import { each, isNil, uniq, directionEnabled } from '@util';
+import { each, isNil, uniq, directionEnabled } from '../../util/common';
 import { getLimitRange, getFieldRange } from '../helper';
 
 const TOUCH_EVENTS = [

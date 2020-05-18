@@ -1,4 +1,4 @@
-import { mix, each, isWx, isMy, isObject, isObjectValueEqual, createEvent } from '@util';
+import { mix, each, isWx, isMy, isObject, isObjectValueEqual, createEvent } from '../util/common';
 import Interaction from './base';
 import Chart from '../chart/chart';
 

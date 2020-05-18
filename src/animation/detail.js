@@ -5,7 +5,7 @@
 import {
   mix, isArray, isNumber, each, isNil, isFunction, isString,
   isObject, deepMix
-} from '@util';
+} from '../util/common';
 
 import Element from '../graphic/element';
 import Timeline from '../graphic/animate/timeline';

@@ -1,4 +1,4 @@
-import { deepMix, mix, isFunction, directionEnabled, parsePadding } from '@util';
+import { deepMix, mix, isFunction, directionEnabled, parsePadding } from '../util/common';
 import Marker from './marker';
 import Container from './list';
 import TextBox from './text-box';

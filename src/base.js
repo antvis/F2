@@ -4,7 +4,7 @@
  */
 
 import Emit from './graphic/event/emit';
-import { mix } from '@util';
+import { mix } from './util/common';
 
 class Base extends Emit {
 

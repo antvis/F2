@@ -1,4 +1,4 @@
-import { isArray, upperFirst, mix } from '@util';
+import { isArray, upperFirst, mix } from '../../util/common';
 import Global from '../../global';
 
 const Shape = {};

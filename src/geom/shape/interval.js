@@ -1,7 +1,7 @@
 import Vector2 from '../../graphic/util/vector2';
 import Global from '../../global';
 import Shape from './shape';
-import { mix, isArray } from '@util';
+import { mix, isArray } from '../../util/common';
 
 function getRectPoints(cfg) {
   const { x, y, y0, size } = cfg;

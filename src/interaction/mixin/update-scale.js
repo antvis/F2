@@ -1,5 +1,5 @@
 import { getScale } from '../helper';
-import { each, isString, isObject } from '@util';
+import { each, isString, isObject } from '../../util/common';
 
 function updateLinearScale(field, min, max) {
   const chart = this.chart;

@@ -1,4 +1,4 @@
-import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '@util';
+import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
 import Global from '../../global';
 import Scale from '../../scale/index';
 

@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>show</title>
+  <style>
+    .font {
+      /* font-family: Arial; */
+    }
+  </style>
 </head>
 <body>
+  <div class="font">font</div>
   <canvas id="container"></canvas>
   <!-- <script src="./bundle.js"></script> -->
   <script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script>
-  <script>
-    // cosnole.log(F2)
+  <!-- <script>
 
     const data = [
         { genre: 'Sports', sold: 275 },
@@ -40,6 +45,70 @@
         chart.render();
 
 
+  </script> -->
+
+  <!-- <script>
+
+
+  const Canvas = F2.G.Canvas;
+  const canvas = new Canvas({
+    el: 'container',
+    width: 200,
+    height: 200,
+    pixelRatio: 2
+  });
+
+  const text1 = new F2.G.Shape.Text({
+    attrs: {
+      x: 30,
+      y: 90,
+      text: 'fill',
+      // font: 'normal normal normal 32px sans-serif',
+      // font: '40px Arial',
+      fontSize: 12,
+      fontFamily: 'Arial',
+      fill: 'rgb(255, 0, 255)',
+      stroke: '#8543E0',
+      lineWidth: 1
+    }
+  });
+
+  console.log(text1);
+
+  const r = text1.attr('fill');
+  const bbox = text1.getBBox();
+
+  console.log(bbox.width)
+
+  canvas.add(text1);
+
+  canvas.draw();
+
+  </script> -->
+
+
+
+  <script>
+  var context = document.getElementById('container').getContext("2d");
+
+  // context.font = "12px Arial";
+  context.font = "12px sans-serif";
+  // context.font = "12px PingFang SC";
+
+  // 设置颜色
+  // context.fillStyle = "#ff0";
+  // 设置水平对齐方式
+  // context.textAlign = "center";
+  // 设置垂直对齐方式
+  // context.textBaseline = "middle";
+  // 绘制文字（参数：要写的字，x坐标，y坐标）
+
+  context.fillText("fill", 100, 100);
+
+  console.log(context.measureText('fill').width);
+
+
   </script>
+
 </body>
 </html>

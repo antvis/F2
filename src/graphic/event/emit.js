@@ -1,5 +1,5 @@
 // 实现简单的事件机制
-import { isObject } from '@util';
+import { isObject } from '../../util/common';
 
 class EventEmit {
   constructor() {

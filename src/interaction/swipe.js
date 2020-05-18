@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../util/common';
 
 import Interaction from './base';
 import Chart from '../chart/chart';

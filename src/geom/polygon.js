@@ -1,5 +1,5 @@
 import Geom from './base';
-import { isArray } from '@util';
+import { isArray } from '../util/common';
 import './shape/polygon';
 
 class Polygon extends Geom {

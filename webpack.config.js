@@ -13,11 +13,6 @@ module.exports = {
     libraryTarget: 'umd',
     path: resolve(__dirname, 'build/')
   },
-  resolve: {
-    alias: {
-      '@util': resolve(__dirname, 'src/util/commo.js')
-    }
-  },
   module: {
     rules: [
       {

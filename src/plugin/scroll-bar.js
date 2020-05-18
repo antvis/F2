@@ -1,5 +1,5 @@
 import { getFieldRange, getLimitRange } from '../interaction/helper';
-import { isObject, deepMix, directionEnabled } from '@util';
+import { isObject, deepMix, directionEnabled } from '../util/common';
 
 const DEFAULT_CFG = {
   mode: 'x',

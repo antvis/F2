@@ -1,4 +1,4 @@
-import { deepMix, each, mix, isFunction, upperFirst } from '@util';
+import { deepMix, each, mix, isFunction, upperFirst } from '../util/common';
 import Guide from '../component/guide/base';
 import Global from '../global';
 

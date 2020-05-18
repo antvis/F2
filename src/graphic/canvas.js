@@ -1,7 +1,7 @@
 import EventEmit from './event/emit';
 import EventController from './event/controller';
 import CanvasElement from './canvas-element';
-import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement } from '@util';
+import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement } from '../util/common';
 import Container from './container';
 import Group from './group';
 import { requestAnimationFrame } from './util/requestAnimationFrame';

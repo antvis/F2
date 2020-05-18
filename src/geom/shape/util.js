@@ -3,7 +3,7 @@
  * @author dxq613@gmail.com
  */
 
-import { each, isArray, isNil } from '@util';
+import { each, isArray, isNil } from '../../util/common';
 
 function splitPoints(obj) {
   const points = [];

@@ -2,7 +2,7 @@ import { smooth } from '../../graphic/util/smooth';
 import { getBBoxFromPoints } from '../../graphic/util/bbox';
 import Global from '../../global';
 import Shape from './shape';
-import { mix, each, isArray, isNil } from '@util';
+import { mix, each, isArray, isNil } from '../../util/common';
 
 function equals(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;

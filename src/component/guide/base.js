@@ -1,4 +1,4 @@
-import { deepMix, isNil, isFunction, isString } from '@util';
+import { deepMix, isNil, isFunction, isString } from '../../util/common';
 
 const KEYWORDS_PERCENT = {
   min: 0,

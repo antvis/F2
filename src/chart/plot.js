@@ -1,4 +1,4 @@
-import { mix, isObject } from '@util';
+import { mix, isObject } from '../util/common';
 
 class Plot {
   constructor(cfg) {

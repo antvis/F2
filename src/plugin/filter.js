@@ -1,7 +1,7 @@
 /**
  * filter the data out of scale' range
  */
-import { each, isNumber } from '@util';
+import { each, isNumber } from '../util/common';
 import TimeUtil from '@antv/scale/lib/time-util';
 
 function beforeGeomInit(chart) {

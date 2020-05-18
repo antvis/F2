@@ -1,4 +1,4 @@
-import { isNil } from '@util';
+import { isNil } from '../util/common';
 import Element from './element';
 
 class Shape extends Element {

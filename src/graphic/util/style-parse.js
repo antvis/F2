@@ -1,5 +1,5 @@
 
-import { each } from '@util';
+import { each } from '../../util/common';
 function _mod(n, m) {
   return ((n % m) + m) % m;
 }

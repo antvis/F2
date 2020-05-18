@@ -1,4 +1,4 @@
-import { mix, isFunction, createEvent, each, isObjectValueEqual, deepMix, addEventListener, removeEventListener } from '@util';
+import { mix, isFunction, createEvent, each, isObjectValueEqual, deepMix, addEventListener, removeEventListener } from '../util/common';
 import { Group } from '../graphic/';
 
 const DEFAULT_CFG = {

@@ -1,4 +1,4 @@
-import { deepMix, each, isFunction, mix, parsePadding, isNil } from '@util';
+import { deepMix, each, isFunction, mix, parsePadding, isNil } from '../../util/common';
 
 import Axis from '../../component/axis/index';
 

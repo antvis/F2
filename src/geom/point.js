@@ -1,4 +1,4 @@
-import { each, isArray, isNil } from '@util';
+import { each, isArray, isNil } from '../util/common';
 import Geom from './base';
 import './shape/point';
 

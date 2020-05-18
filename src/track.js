@@ -3,7 +3,7 @@
  * @author sima.zhang1990@gmail.com
  */
 import Global from './global';
-import { isBrowser } from '@util';
+import { isBrowser } from './util/common';
 const SERVER_URL = 'https://kcart.alipay.com/web/bi.do';
 
 setTimeout(function() {

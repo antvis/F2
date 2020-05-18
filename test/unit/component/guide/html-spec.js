@@ -42,8 +42,6 @@ const coord = new Coord.Rect({
 
 describe('Guide.Html', function() {
   it('offset', function() {
-    console.log(document);
-    console.log(document.getElementsByClassName('guideWapper'));
     const guide = new Html({
       xScale,
       yScales: [ yScale ],

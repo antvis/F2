@@ -1,4 +1,4 @@
-import { mix, each, directionEnabled } from '@util';
+import { mix, each, directionEnabled } from '../util/common';
 import { getLimitRange, getFieldRange } from './helper';
 import Interaction from './base';
 import Chart from '../chart/chart';

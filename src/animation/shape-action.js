@@ -3,7 +3,7 @@
  * @author sima.zhang1990@gmail.com
  */
 
-import { isNil } from '@util';
+import { isNil } from '../util/common';
 import { doAnimation } from './util';
 
 /*

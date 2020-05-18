@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../../util/common';
 import Abstract from './abstract';
 
 class Line extends Abstract {

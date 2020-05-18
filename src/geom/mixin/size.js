@@ -7,7 +7,7 @@ import {
   EVENT_AFTER_SIZE_CHANGE
 } from '../../chart/const';
 
-import { uniq, isNil } from '@util';
+import { uniq, isNil } from '../../util/common';
 import Global from '../../global';
 
 const SizeMixin = {

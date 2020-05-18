@@ -373,7 +373,7 @@ describe('Tooltip crosshairs', function() {
   });
   chart.line().position('date*steps');
 
-  it('chart.tooltip() with xy crosshairs.', () => {
+  it.only('chart.tooltip() with xy crosshairs.', () => {
     chart.tooltip({
       showYTip: true,
       showXTip: true,

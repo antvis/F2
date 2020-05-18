@@ -1,5 +1,5 @@
 
-import { mix, isWx, isMy } from '@util';
+import { mix, isWx, isMy } from '../util/common';
 import Interaction from './base';
 import Chart from '../chart/chart';
 import * as FilterPlugin from '../plugin/filter';

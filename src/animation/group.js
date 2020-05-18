@@ -2,7 +2,7 @@
  * Group animation
  * @author sima.zhang1990@gmail.com
  */
-import { mix, deepMix, each, isFunction } from '@util';
+import { mix, deepMix, each, isFunction } from '../util/common';
 import Shape from '../graphic/shape';
 import Timeline from '../graphic/animate/timeline';
 import Animator from '../graphic/animate/animator';

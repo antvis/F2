@@ -1,4 +1,4 @@
-import { isNil, deepMix, mix, parsePadding, isObject } from '@util';
+import { isNil, deepMix, mix, parsePadding, isObject } from '../util/common';
 import { Group } from '../graphic/index';
 
 class TextBox {
@@ -11,7 +11,8 @@ class TextBox {
         fontSize: 12,
         fill: '#fff',
         textAlign: 'center',
-        textBaseline: 'middle'
+        textBaseline: 'middle',
+        fontFamily: 'Arial'
       },
       background: {
         radius: 1,

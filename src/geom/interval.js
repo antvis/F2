@@ -1,5 +1,5 @@
 import Geom from './base';
-import { mix } from '@util';
+import { mix } from '../util/common';
 import SizeMixin from './mixin/size';
 import './shape/interval';
 

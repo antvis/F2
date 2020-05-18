@@ -1,4 +1,4 @@
-import { parsePadding } from '@util';
+import { parsePadding } from '../../util/common';
 import Shape from '../shape';
 
 class Rect extends Shape {

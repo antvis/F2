@@ -3,7 +3,7 @@
  * @author sima.zhang1990@gmail.com
  */
 import './register';
-import { deepMix, isWx, isMy, addEventListener, removeEventListener } from '@util';
+import { deepMix, isWx, isMy, addEventListener, removeEventListener } from '../util/common';
 
 
 let Hammer;

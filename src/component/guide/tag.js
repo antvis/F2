@@ -1,4 +1,4 @@
-import { mix, parsePadding } from '@util';
+import { mix, parsePadding } from '../../util/common';
 import GuideBase from './base';
 
 class Tag extends GuideBase {

@@ -65,13 +65,14 @@ describe('Text', function() {
     expect(bbox.height).to.equal(12);
   });
 
-  it.only('fill', function() {
+  it('fill', function() {
     const text1 = new Text({
       attrs: {
         x: 30,
         y: 90,
         text: 'fill',
-        font: '20px Arial',
+        fontSize: 12,
+        fontFamily: 'Arial',
         fill: 'rgb(255, 0, 255)',
         stroke: '#8543E0',
         lineWidth: 1
@@ -84,9 +85,6 @@ describe('Text', function() {
     const bbox = text1.getBBox();
     expect(bbox.x).to.equal(30);
     expect(bbox.y).to.equal(78);
-    console.log(1);
-    console.log(bbox);
-    console.log(1);
     expect(bbox.width).to.equal(11.33203125);
     expect(bbox.height).to.equal(12);
 

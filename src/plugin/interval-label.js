@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../util/common';
 
 const DEFAULT_CFG = {
   label: null,

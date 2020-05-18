@@ -1,5 +1,5 @@
 import Rect from '../../graphic/shape';
-import { mix, each } from '@util';
+import { mix, each } from '../../util/common';
 import GuideBase from './base';
 
 class RegionFilter extends GuideBase {

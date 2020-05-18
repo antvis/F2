@@ -1,4 +1,4 @@
-import { each } from '@util';
+import { each } from '../util/common';
 import Chart from '../chart/chart';
 
 Chart._Interactions = {};

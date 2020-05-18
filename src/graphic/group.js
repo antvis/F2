@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../util/common';
 import Element from './element';
 import Container from './container';
 import Vector2 from './util/vector2';

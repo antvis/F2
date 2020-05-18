@@ -1,7 +1,7 @@
 import {
   deepMix, mix, each, isNil, isObject, isBoolean, createEvent, parsePadding, isPlainObject,
   removeEventListener, addEventListener, Array
-} from '@util';
+} from '../util/common';
 import List from '../component/list';
 import Global from '../global';
 

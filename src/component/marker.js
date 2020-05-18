@@ -1,7 +1,7 @@
 /**
  * marker shapes，used for tooltip and legend
  */
-import { isFunction } from '@util';
+import { isFunction } from '../util/common';
 import { Shape } from '../graphic/index';
 
 const SYMBOLS = {

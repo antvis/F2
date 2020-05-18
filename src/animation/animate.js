@@ -2,7 +2,7 @@
  * Animate configuration and register
  * @author sima.zhang1990@gmail.com
  */
-import { isFunction, deepMix } from '@util';
+import { isFunction, deepMix } from '../util/common';
 
 const defaultAnimationCfg = {
   appear: {

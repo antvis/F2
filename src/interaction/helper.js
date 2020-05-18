@@ -1,5 +1,5 @@
 import { toTimeStamp } from '@antv/scale/lib/time-util';
-import { Array, each } from '@util';
+import { Array, each } from '../util/common';
 
 module.exports = {
   getColDef(chart, field) {

@@ -1,4 +1,4 @@
-import { each, deepMix, mix, directionEnabled, isArray, createEvent, isObject } from '@util';
+import { each, deepMix, mix, directionEnabled, isArray, createEvent, isObject } from '../util/common';
 import Global from '../global';
 
 import Tooltip from '../component/tooltip';

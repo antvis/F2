@@ -1,4 +1,4 @@
-import { addEventListener, wrapBehavior } from '@util';
+import { addEventListener, wrapBehavior } from '../../util/common';
 
 function _bindPress() {
   const { chart, hammer, el, pressThreshold, pressTime } = this;

@@ -1,6 +1,6 @@
 import Global from '../../global';
 import Shape from './shape';
-import { mix, each, isArray } from '@util';
+import { mix, each, isArray } from '../../util/common';
 import { splitPoints } from './util';
 
 // register line geom

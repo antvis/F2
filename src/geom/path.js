@@ -1,6 +1,6 @@
 import Geom from './base';
 import { splitArray } from './shape/util';
-import { each } from '@util';
+import { each } from '../util/common';
 import './shape/line';
 
 class Path extends Geom {

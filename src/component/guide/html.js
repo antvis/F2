@@ -1,4 +1,4 @@
-import { getHeight, getWidth } from '@util';
+import { getHeight, getWidth } from '../../util/common';
 import GuideBase from './base';
 
 function getOffsetFromAlign(alignX, alignY, width, height) {

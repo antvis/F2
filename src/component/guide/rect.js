@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../../util/common';
 import GuideBase from './base';
 
 class Rect extends GuideBase {

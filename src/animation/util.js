@@ -3,7 +3,7 @@
  * @author sima.zhang1990@gmail.com
  */
 import { Matrix } from '../graphic/index';
-import { isFunction } from '@util';
+import { isFunction } from '../util/common';
 
 function getCoordInfo(coord) {
   const start = coord.start;

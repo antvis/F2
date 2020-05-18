@@ -1,4 +1,4 @@
-import { deepMix, isNumber, mix, isNil, each, parsePadding } from '@util';
+import { deepMix, isNumber, mix, isNil, each, parsePadding } from '../util/common';
 import { Group } from '../graphic/index';
 import Marker from './marker';
 

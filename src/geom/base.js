@@ -1,5 +1,5 @@
 import * as Attr from '../attr/index';
-import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array } from '@util';
+import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array } from '../util/common';
 import Base from '../base';
 import Global from '../global';
 import GeometryShape from './shape/shape';

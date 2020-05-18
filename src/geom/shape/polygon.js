@@ -1,5 +1,5 @@
 import Shape from './shape';
-import { mix } from '@util';
+import { mix } from '../../util/common';
 
 const Polygon = Shape.registerFactory('polygon', {
   defaultShapeType: 'polygon',

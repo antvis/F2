@@ -1,4 +1,4 @@
-import { mix } from '@util';
+import { mix } from '../util/common';
 import MatrixUtil from '../graphic/util/matrix';
 import Vector2 from '../graphic/util/vector2';
 
