@@ -129,7 +129,7 @@ class ScaleController {
         }
       } else {
         // 为了让图形居中，所以才设置range
-        offset = 1 / count * 1 / 2;
+        offset = 1 / count * 0.5; // 这里可能用0.25会更合理
         cfg.range = [ offset, 1 - offset ];
       }
     }

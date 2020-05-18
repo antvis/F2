@@ -9,6 +9,8 @@ const EVENT_AFTER_DATA_CHANGE = 'afterdatachange';
 const EVENT_AFTER_SIZE_CHANGE = '_aftersizechange';
 
 const EVENT_AFTER_GEOM_INIT = '_aftergeominit';
+const EVENT_BEFORE_GEOM_DRAW = 'beforegeomdraw';
+const EVENT_AFTER_GEOM_DRAW = 'aftergeomdraw';
 
 const EVENT_CLEAR = 'clear';
 const EVENT_CLEAR_INNER = 'clearinner';
@@ -21,6 +23,8 @@ export {
   EVENT_AFTER_DATA_CHANGE,
   EVENT_AFTER_SIZE_CHANGE,
   EVENT_AFTER_GEOM_INIT,
+  EVENT_BEFORE_GEOM_DRAW,
+  EVENT_AFTER_GEOM_DRAW,
   EVENT_CLEAR,
   EVENT_CLEAR_INNER
 };

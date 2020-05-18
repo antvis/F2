@@ -6,6 +6,8 @@ import {
   EVENT_AFTER_DATA_CHANGE,
   EVENT_AFTER_SIZE_CHANGE,
   EVENT_AFTER_GEOM_INIT,
+  EVENT_BEFORE_GEOM_DRAW,
+  EVENT_AFTER_GEOM_DRAW,
   EVENT_CLEAR,
   EVENT_CLEAR_INNER
 } from './const';
@@ -592,12 +594,14 @@ class Chart extends Base {
       middlePlot.attr('clip', clip);
     }
 
+    this.emit(EVENT_BEFORE_GEOM_DRAW);
     for (let i = 0, length = geoms.length; i < length; i++) {
       const geom = geoms[i];
       geom.paint();
     }
-
+    this.emit(EVENT_AFTER_GEOM_DRAW);
     Chart.plugins.notify(this, 'afterGeomDraw');
+
     canvas.sort();
     this.get('frontPlot').sort();
     Chart.plugins.notify(this, 'beforeCanvasDraw');
