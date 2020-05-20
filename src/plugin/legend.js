@@ -477,3 +477,11 @@ export {
   afterGeomDraw,
   clearInner
 };
+
+export default {
+  init,
+  beforeGeomDraw,
+  afterGeomDraw,
+  clearInner
+};
+

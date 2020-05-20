@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-const { gestureSimulator } = require('../test-util');
+import { gestureSimulator } from '../test-util';
 import * as F2 from '../../../src/core';
 import '../../../src/geom/interval';
 import '../../../src/geom/line';

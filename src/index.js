@@ -25,7 +25,7 @@ import * as Tooltip from './plugin/tooltip';
 import * as Guide from './plugin/guide';
 import * as Legend from './plugin/legend';
 import * as Animation from './animation/detail';
-import * as Animate from './animation/animate';
+import Animate from './animation/animate';
 
 const Component = {
   Marker
@@ -60,3 +60,4 @@ export default {
   track,
   Animate
 };
+

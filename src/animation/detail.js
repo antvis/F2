@@ -420,3 +420,9 @@ export {
   beforeCanvasDraw,
   afterCanvasDestroyed
 };
+
+export default {
+  afterCanvasInit,
+  beforeCanvasDraw,
+  afterCanvasDestroyed
+};

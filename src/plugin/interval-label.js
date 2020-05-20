@@ -98,3 +98,9 @@ export {
   afterGeomDraw,
   clearInner
 };
+
+export default {
+  init,
+  afterGeomDraw,
+  clearInner
+};

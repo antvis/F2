@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-const { gestureSimulator } = require('../unit/test-util');
-
+import { gestureSimulator } from '../unit/test-util';
 import * as F2 from '../../src/core';
 import '../../src/geom/interval';
 import '../../src/coord/polar'; // 极坐标系

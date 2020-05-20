@@ -164,6 +164,14 @@ function afterGeomDraw(chart) {
 }
 
 
+export {
+  init,
+  clear,
+  changeData,
+  clearInner,
+  afterGeomDraw
+};
+
 export default {
   init,
   clear,

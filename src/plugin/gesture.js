@@ -1,4 +1,4 @@
-const Hammer = require('hammerjs'); // http://hammerjs.github.io/
+import Hammer from 'hammerjs';
 import { deepMix, addEventListener, removeEventListener } from '../util/common';
 
 const defaultOptions = {

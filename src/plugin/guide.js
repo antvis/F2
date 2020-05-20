@@ -229,3 +229,10 @@ export {
   clear,
   repaint
 };
+
+export default {
+  init,
+  afterGeomDraw,
+  clear,
+  repaint
+};
