@@ -1,5 +1,5 @@
 import { each } from '../util/common';
-const Chart = require('../chart/chart');
+import Chart from '../chart/chart';
 
 Chart._Interactions = {};
 Chart.registerInteraction = function(type, constructor) {

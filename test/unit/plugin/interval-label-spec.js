@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
-require('../../../src/geom/adjust/symmetric');
-const IntervalLabel = require('../../../src/plugin/interval-label');
+import { expect } from 'chai';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/interval';
+import '../../../src/geom/adjust/symmetric';
+import * as IntervalLabel from '../../../src/plugin/interval-label';
 
 const canvas = document.createElement('canvas');
 canvas.width = 350;

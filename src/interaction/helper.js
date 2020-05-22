@@ -1,5 +1,5 @@
-const TimeUtil = require('@antv/scale/lib/time-util');
-const Util = require('../util/common');
+import { toTimeStamp } from '@antv/scale/lib/time-util';
+import { Array, each } from '../util/common';
 
 module.exports = {
   getColDef(chart, field) {
@@ -34,9 +34,9 @@ module.exports = {
   getLimitRange(data, scale) {
     let result;
     const { field, type } = scale;
-    const values = Util.Array.values(data, field);
+    const values = Array.values(data, field);
     if (type === 'linear') {
-      result = Util.Array.getRange(values);
+      result = Array.getRange(values);
       if (scale.min < result.min) {
         result.min = scale.min;
       }
@@ -44,8 +44,8 @@ module.exports = {
         result.max = scale.max;
       }
     } else if (type === 'timeCat') {
-      Util.each(values, (v, i) => {
-        values[i] = TimeUtil.toTimeStamp(v);
+      each(values, (v, i) => {
+        values[i] = toTimeStamp(v);
       });
       values.sort(function(v1, v2) {
         return v1 - v2;

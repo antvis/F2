@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix } from '../../util/common';
+import GuideBase from './base';
 
 class Point extends GuideBase {
   _initDefaultCfg() {
@@ -22,7 +22,7 @@ class Point extends GuideBase {
 
     const shape = container.addShape('Circle', {
       className: 'guide-point',
-      attrs: Util.mix({
+      attrs: mix({
         x: position.x + this.offsetX,
         y: position.y + this.offsetY
       }, this.style)
@@ -33,4 +33,4 @@ class Point extends GuideBase {
 }
 
 GuideBase.Point = Point;
-module.exports = Point;
+export default Point;

@@ -1,6 +1,6 @@
-const Base = require('./base');
-const Vector2 = require('../graphic/util/vector2');
-const Matrix = require('../graphic/util/matrix');
+import Base from './base';
+import Vector2 from '../graphic/util/vector2';
+import Matrix from '../graphic/util/matrix';
 
 class Polar extends Base {
   _initDefaultCfg() {
@@ -112,4 +112,4 @@ class Polar extends Base {
 }
 
 Base.Polar = Polar;
-module.exports = Polar;
+export default Polar;

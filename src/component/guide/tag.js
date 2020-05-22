@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix, parsePadding } from '../../util/common';
+import GuideBase from './base';
 
 class Tag extends GuideBase {
   _initDefaultCfg() {
@@ -85,7 +85,7 @@ class Tag extends GuideBase {
     if (this.withPoint) {
       const pointShape = wrapperContainer.addShape('Circle', {
         className: 'guide-tag-point',
-        attrs: Util.mix({
+        attrs: mix({
           x: position.x,
           y: position.y
         }, this.pointStyle)
@@ -98,7 +98,7 @@ class Tag extends GuideBase {
     const tagText = tagContainer.addShape('text', {
       className: 'guide-tag-text',
       zIndex: 1,
-      attrs: Util.mix({
+      attrs: mix({
         x: 0,
         y: 0,
         text: content
@@ -108,7 +108,7 @@ class Tag extends GuideBase {
 
     // create background box
     const textBBox = tagText.getBBox();
-    const padding = Util.parsePadding(background.padding);
+    const padding = parsePadding(background.padding);
     const tagWidth = textBBox.width + padding[1] + padding[3];
     const tagHeight = textBBox.height + padding[0] + padding[2];
     const yMin = textBBox.minY - padding[0];
@@ -116,7 +116,7 @@ class Tag extends GuideBase {
     const tagBg = tagContainer.addShape('rect', {
       className: 'guide-tag-bg',
       zIndex: -1,
-      attrs: Util.mix({
+      attrs: mix({
         x: xMin,
         y: yMin,
         width: tagWidth,
@@ -129,7 +129,7 @@ class Tag extends GuideBase {
     let x = position.x + this.offsetX;
     let y = position.y + this.offsetY;
     let arrowPoints;
-    const radius = Util.parsePadding(background.radius);
+    const radius = parsePadding(background.radius);
     if (direct === 'tl') {
       arrowPoints = [
         { x: tagWidth + xMin - side - 1, y: tagHeight + yMin - 1 }, // 这个 1 是为了防止出现白边
@@ -221,4 +221,4 @@ class Tag extends GuideBase {
 }
 
 GuideBase.Tag = Tag;
-module.exports = Tag;
+export default Tag;

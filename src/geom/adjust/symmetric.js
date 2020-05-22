@@ -1,2 +1,2 @@
-const Symmetric = require('@antv/adjust/lib/symmetric');
-module.exports = Symmetric;
+import Symmetric from '@antv/adjust/lib/symmetric';
+export default Symmetric;

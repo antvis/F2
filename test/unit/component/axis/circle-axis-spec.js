@@ -1,9 +1,11 @@
-const expect = require('chai').expect;
-const AxisCircle = require('../../../../src/component/axis/circle');
-const Scale = require('../../../../src/scale/index');
-const axisGlobal = require('../../../../src/global').axis;
-const Util = require('../../../../src/util/common');
-const { Group, Text } = require('../../../../src/graphic/index');
+import { expect } from 'chai';
+import AxisCircle from '../../../../src/component/axis/circle';
+import Scale from '../../../../src/scale/index';
+import global from '../../../../src/global';
+import * as Util from '../../../../src/util/common';
+import { Group, Text } from '../../../../src/graphic/index';
+
+const axisGlobal = global.axis;
 
 const cat = new Scale.Cat({
   domain: [ 'a', 'b', 'c' ],
@@ -51,11 +53,9 @@ describe('circle axis', function() {
       ticks: cat.getTicks(),
       labels
     }, axisGlobal.circle);
-
     let axis;
     it('init', function() {
       axis = new AxisCircle(cfg);
-      // axis.draw();
       expect(axis.ticks.length).equal(cat.getTicks().length);
       expect(backContainer.get('children').length).to.equal(2);
     });

@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix } from '../../util/common';
+import GuideBase from './base';
 
 class Line extends GuideBase {
   _initDefaultCfg() {
@@ -21,7 +21,7 @@ class Line extends GuideBase {
     }
     const shape = container.addShape('Line', {
       className: 'guide-line',
-      attrs: Util.mix({
+      attrs: mix({
         x1: points[0].x,
         y1: points[0].y,
         x2: points[1].x,
@@ -34,4 +34,4 @@ class Line extends GuideBase {
 }
 
 GuideBase.Line = Line;
-module.exports = Line;
+export default Line;

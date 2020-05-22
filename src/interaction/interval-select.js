@@ -1,12 +1,12 @@
-const Util = require('../util/common');
-const Helper = require('../util/helper');
-const Interaction = require('./base');
-const Chart = require('../chart/chart');
+import { mix, each, isWx, isMy, isObject, isObjectValueEqual, createEvent } from '../util/common';
+import { isPointInPlot } from '../util/helper';
+import Interaction from './base';
+import Chart from '../chart/chart';
 
 class IntervalSelect extends Interaction {
   getDefaultCfg() {
     let defaultCfg = super.getDefaultCfg();
-    defaultCfg = Util.mix({}, defaultCfg, {
+    defaultCfg = mix({}, defaultCfg, {
       startEvent: 'tap',
       processEvent: null,
       selectAxis: true,
@@ -23,7 +23,7 @@ class IntervalSelect extends Interaction {
       cancelable: true,
       defaultSelected: null // set the default selected shape
     });
-    if (Util.isWx || Util.isMy) { // 小程序
+    if (isWx || isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
       defaultCfg.endEvent = 'touchend';
     }
@@ -34,7 +34,7 @@ class IntervalSelect extends Interaction {
   constructor(cfg, chart) {
     super(cfg, chart);
     const defaultSelected = this.defaultSelected;
-    if (Util.isObject(defaultSelected)) {
+    if (isObject(defaultSelected)) {
       const { selectedShape, unSelectedShapes } = this._selectShapesByData(defaultSelected);
       selectedShape && this._selectShapes(selectedShape, unSelectedShapes);
       this.selectedShape = selectedShape;
@@ -78,10 +78,10 @@ class IntervalSelect extends Interaction {
 
     let selectedShape = null;
     const unSelectedShapes = [];
-    Util.each(children, child => {
+    each(children, child => {
       if (child.get('isShape') && (child.get('className') === 'interval')) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
-        if (Util.isObjectValueEqual(shapeData, data)) {
+        if (isObjectValueEqual(shapeData, data)) {
           selectedShape = child;
         } else {
           unSelectedShapes.push(child);
@@ -104,7 +104,7 @@ class IntervalSelect extends Interaction {
 
     selectedShape.attr(selectStyle);
 
-    Util.each(unSelectedShapes, child => {
+    each(unSelectedShapes, child => {
       if (!child.get('_originAttrs')) {
         const originAttrs = Object.assign({}, child.attr());
         child.set('_originAttrs', originAttrs);
@@ -128,7 +128,7 @@ class IntervalSelect extends Interaction {
 
       let axisShape;
 
-      Util.each(frontPlot.get('children').concat(backPlot.get('children')), s => {
+      each(frontPlot.get('children').concat(backPlot.get('children')), s => {
         if (s.get('value') === xScale.scale(origin[xScale.field])) {
           axisShape = s;
           return false;
@@ -149,7 +149,7 @@ class IntervalSelect extends Interaction {
     }
 
     const children = self._getIntervalShapes();
-    Util.each(children, child => {
+    each(children, child => {
       self._resetShape(child);
       child.set('_selected', false);
     });
@@ -168,7 +168,7 @@ class IntervalSelect extends Interaction {
       ev.clientX = ev.center.x;
       ev.clientY = ev.center.y;
     }
-    const { x, y } = Util.createEvent(ev, chart);
+    const { x, y } = createEvent(ev, chart);
 
     const mode = this.mode;
     const children = this._getIntervalShapes();
@@ -177,11 +177,11 @@ class IntervalSelect extends Interaction {
     let unSelectedShapes = [];
     if (mode === 'shape') {
       const plot = chart.get('plotRange');
-      if (!Helper.isPointInPlot({ x, y }, plot)) {
+      if (!isPointInPlot({ x, y }, plot)) {
         this.reset();
         return;
       }
-      Util.each(children, child => {
+      each(children, child => {
         const box = child.getBBox();
         if (x >= box.x && x <= (box.x + box.width) && y >= box.y && y <= (box.height + box.y)) { // inbox
           selectedShape = child;
@@ -226,4 +226,4 @@ class IntervalSelect extends Interaction {
 }
 
 Chart.registerInteraction('interval-select', IntervalSelect);
-module.exports = IntervalSelect;
+export default IntervalSelect;

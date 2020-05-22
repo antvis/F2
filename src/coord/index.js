@@ -1,5 +1,5 @@
-const Coord = require('./base');
 
-require('./cartesian');
+import Coord from './base';
+import './cartesian';
 
-module.exports = Coord;
+export default Coord;

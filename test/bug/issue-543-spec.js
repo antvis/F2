@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-const Tooltip = require('../../src/plugin/tooltip');
-require('../../src/geom/line');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import * as Tooltip from '../../src/plugin/tooltip';
+import '../../src/geom/line';
 
 
 describe('Issue 543', () => {

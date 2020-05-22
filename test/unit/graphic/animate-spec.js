@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const Animator = require('../../../src/graphic/animate/animator');
-const Timeline = require('../../../src/graphic/animate/timeline');
-const Canvas = require('../../../src/graphic/canvas');
-require('../../../src/graphic/shape/rect');
-require('../../../src/graphic/shape/polyline');
+import { expect } from 'chai';
+import Animator from '../../../src/graphic/animate/animator';
+import Timeline from '../../../src/graphic/animate/timeline';
+import Canvas from '../../../src/graphic/canvas';
+import '../../../src/graphic/shape/rect';
+import '../../../src/graphic/shape/polyline';
 
 const dom = document.createElement('canvas');
 dom.id = 'animate';

@@ -1,10 +1,11 @@
-const Util = require('../util/common');
-const Global = require('../global');
-const Tooltip = require('../component/tooltip');
-const Helper = require('../util/helper');
+import { each, deepMix, mix, directionEnabled, isArray, createEvent, isObject } from '../util/common';
+import Global from '../global';
+
+import Tooltip from '../component/tooltip';
+import { isPointInPlot } from '../util/helper';
 
 // Register the default configuration for Tooltip
-Global.tooltip = Util.deepMix({
+Global.tooltip = deepMix({
   triggerOn: 'press',
   triggerOff: 'pressend',
   alwaysShow: false,
@@ -71,7 +72,7 @@ function getTooltipName(geom, origin) {
   let nameScale;
   const groupScales = geom._getGroupScales();
   if (groupScales.length) {
-    Util.each(groupScales, function(scale) {
+    each(groupScales, function(scale) {
       nameScale = scale;
       return false;
     });
@@ -100,7 +101,7 @@ function getTooltipTitle(geom, origin) {
 
 function _indexOfArray(items, item) {
   let rst = -1;
-  Util.each(items, function(sub, index) {
+  each(items, function(sub, index) {
     if (sub.title === item.title && sub.name === item.name && sub.value === item.value && sub.color === item.color) {
       rst = index;
       return false;
@@ -111,7 +112,7 @@ function _indexOfArray(items, item) {
 
 function _uniqItems(items) {
   const tmp = [];
-  Util.each(items, function(item) {
+  each(items, function(item) {
     const index = _indexOfArray(tmp, item);
     if (index === -1) {
       tmp.push(item);
@@ -133,7 +134,7 @@ class TooltipController {
     this.tooltip = null;
     this.chart = null;
     this.timeStamp = 0;
-    Util.mix(this, cfg);
+    mix(this, cfg);
     const chart = this.chart;
     const canvas = chart.get('canvas');
     this.canvas = canvas;
@@ -143,10 +144,10 @@ class TooltipController {
   _setCrosshairsCfg() {
     const self = this;
     const chart = self.chart;
-    const defaultCfg = Util.mix({}, Global.tooltip);
+    const defaultCfg = mix({}, Global.tooltip);
     const geoms = chart.get('geoms');
     const shapes = [];
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       const type = geom.get('type');
       if (shapes.indexOf(type) === -1) {
         shapes.push(type);
@@ -155,7 +156,7 @@ class TooltipController {
     const coordType = chart.get('coord').type;
     if (geoms.length && (coordType === 'cartesian' || coordType === 'rect')) {
       if (shapes.length === 1 && [ 'line', 'area', 'path', 'point' ].indexOf(shapes[0]) !== -1) {
-        Util.mix(defaultCfg, {
+        mix(defaultCfg, {
           showCrosshairs: true
         });
       }
@@ -190,7 +191,7 @@ class TooltipController {
 
     const defaultCfg = self._setCrosshairsCfg();
     const cfg = self.cfg; // 通过 chart.tooltip() 接口传入的 tooltip 配置项
-    const tooltipCfg = Util.deepMix({
+    const tooltipCfg = deepMix({
       plotRange,
       frontPlot,
       backPlot,
@@ -241,7 +242,7 @@ class TooltipController {
         height = br.y - tl.y;
       }
 
-      cfg.style = Util.mix({
+      cfg.style = mix({
         x,
         y,
         width,
@@ -250,7 +251,7 @@ class TooltipController {
         opacity: 0.3
       }, tooltipCfg.tooltipMarkerStyle);
     } else {
-      cfg.style = Util.mix({
+      cfg.style = mix({
         radius: 4,
         fill: '#fff',
         lineWidth: 2
@@ -277,7 +278,7 @@ class TooltipController {
 
       let tip;
       let pos;
-      if (Helper.isPointInPlot(point, plot)) {
+      if (isPointInPlot(point, plot)) {
         if (coord.transposed) {
           tip = yScale.invert(invertPoint.x);
           pos = point.x;
@@ -305,7 +306,7 @@ class TooltipController {
       });
     }
     if (isEqual(lastActive, items)) {
-      if (snap === false && (Util.directionEnabled(cfg.crosshairsType, 'y') || cfg.showYTip)) {
+      if (snap === false && (directionEnabled(cfg.crosshairsType, 'y') || cfg.showYTip)) {
         const canvas = this.chart.get('canvas');
         canvas.draw();
       }
@@ -386,7 +387,7 @@ class TooltipController {
 
     const geoms = chart.get('geoms');
     const coord = chart.get('coord');
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       if (geom.get('visible')) {
         const type = geom.get('type');
         const records = geom.getSnapRecords(point);
@@ -395,12 +396,12 @@ class TooltipController {
         if (type === 'interval' && adjust && adjust.type === 'symmetric') {
           return;
         }
-        Util.each(records, record => {
+        each(records, record => {
           if (record.x && record.y) {
             const { x, y, _origin, color } = record;
             const tooltipItem = {
               x,
-              y: Util.isArray(y) ? y[1] : y,
+              y: isArray(y) ? y[1] : y,
               color: color || Global.defaultColor,
               origin: _origin,
               name: getTooltipName(geom, _origin),
@@ -408,7 +409,7 @@ class TooltipController {
               title: getTooltipTitle(geom, _origin)
             };
             if (marker) {
-              tooltipItem.marker = Util.mix({
+              tooltipItem.marker = mix({
                 fill: color || Global.defaultColor
               }, marker);
             }
@@ -459,8 +460,8 @@ class TooltipController {
     if (!this.enable) return;
 
     const plot = chart.get('plotRange');
-    const point = Util.createEvent(ev, chart);
-    if (!Helper.isPointInPlot(point, plot) && !this._tooltipCfg.alwaysShow) { // not in chart plot
+    const point = createEvent(ev, chart);
+    if (!isPointInPlot(point, plot) && !this._tooltipCfg.alwaysShow) { // not in chart plot
       this.hideTooltip();
       return;
     }
@@ -481,7 +482,7 @@ class TooltipController {
 
   _handleEvent(methodName, method, action) {
     const canvas = this.canvas;
-    Util.each([].concat(methodName), aMethod => {
+    each([].concat(methodName), aMethod => {
       if (action === 'bind') {
         canvas.on(aMethod, method);
       } else {
@@ -512,41 +513,54 @@ class TooltipController {
   }
 }
 
-module.exports = {
-  init(chart) {
-    const tooltipController = new TooltipController({
-      chart
-    });
-    chart.set('tooltipController', tooltipController);
 
-    chart.tooltip = function(enable, cfg) {
-      if (Util.isObject(enable)) {
-        cfg = enable;
-        enable = true;
-      }
-      tooltipController.enable = enable;
-      if (cfg) {
-        tooltipController.cfg = cfg;
-      }
-      return this;
-    };
-  },
-  afterGeomDraw(chart) {
-    const tooltipController = chart.get('tooltipController');
-    tooltipController.render();
+function init(chart) {
+  const tooltipController = new TooltipController({
+    chart
+  });
+  chart.set('tooltipController', tooltipController);
 
-    chart.showTooltip = function(point) {
-      tooltipController.showTooltip(point);
-      return this;
-    };
+  chart.tooltip = function(enable, cfg) {
+    if (isObject(enable)) {
+      cfg = enable;
+      enable = true;
+    }
+    tooltipController.enable = enable;
+    if (cfg) {
+      tooltipController.cfg = cfg;
+    }
+    return this;
+  };
+}
 
-    chart.hideTooltip = function() {
-      tooltipController.hideTooltip();
-      return this;
-    };
-  },
-  clearInner(chart) {
-    const tooltipController = chart.get('tooltipController');
-    tooltipController.clear();
-  }
+function afterGeomDraw(chart) {
+  const tooltipController = chart.get('tooltipController');
+  tooltipController.render();
+
+  chart.showTooltip = function(point) {
+    tooltipController.showTooltip(point);
+    return this;
+  };
+
+  chart.hideTooltip = function() {
+    tooltipController.hideTooltip();
+    return this;
+  };
+}
+
+function clearInner(chart) {
+  const tooltipController = chart.get('tooltipController');
+  tooltipController.clear();
+}
+
+export {
+  init,
+  afterGeomDraw,
+  clearInner
+};
+
+export default {
+  init,
+  afterGeomDraw,
+  clearInner
 };

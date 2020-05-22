@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const Group = require('../../../src/graphic/group');
-const Canvas = require('../../../src/graphic/canvas');
-require('../../../src/graphic/shape/line');
-require('../../../src/graphic/shape/circle');
+import { expect } from 'chai';
+import Group from '../../../src/graphic/group';
+import Canvas from '../../../src/graphic/canvas';
+import '../../../src/graphic/shape/line';
+import '../../../src/graphic/shape/circle';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';

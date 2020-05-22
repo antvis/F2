@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const Global = require('../../global');
+import { isArray, upperFirst, mix } from '../../util/common';
+import Global from '../../global';
 
 const Shape = {};
 
@@ -58,7 +58,7 @@ const ShapeFactoryBase = {
   },
   getShape(type) {
     const self = this;
-    if (Util.isArray(type)) {
+    if (isArray(type)) {
       type = type[0];
     }
     const shape = self[type] || self[self.defaultShapeType];
@@ -84,17 +84,17 @@ const ShapeFactoryBase = {
 };
 
 Shape.registerFactory = function(factoryName, cfg) {
-  const className = Util.upperFirst(factoryName);
-  const geomObj = Util.mix({}, ShapeFactoryBase, cfg);
+  const className = upperFirst(factoryName);
+  const geomObj = mix({}, ShapeFactoryBase, cfg);
   Shape[className] = geomObj;
   geomObj.name = factoryName;
   return geomObj;
 };
 
 Shape.registerShape = function(factoryName, shapeType, cfg) {
-  const className = Util.upperFirst(factoryName);
+  const className = upperFirst(factoryName);
   const factory = Shape[className];
-  const shapeObj = Util.mix({}, ShapeBase, cfg);
+  const shapeObj = mix({}, ShapeBase, cfg);
   factory[shapeType] = shapeObj;
   return shapeObj;
 };
@@ -104,8 +104,8 @@ Shape.registShape = Shape.registerShape;
 Shape.getShapeFactory = function(factoryName) {
   const self = this;
   factoryName = factoryName || 'point';
-  const className = Util.upperFirst(factoryName);
+  const className = upperFirst(factoryName);
   return self[className];
 };
 
-module.exports = Shape;
+export default Shape;

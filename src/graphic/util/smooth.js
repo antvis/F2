@@ -2,7 +2,7 @@
  * @fileOverview convert the line to curve
  * @author dxq613@gmail.com
  */
-const Vector2 = require('./vector2');
+import Vector2 from './vector2';
 
 function getPoint(v) {
   return [ v.x, v.y ];
@@ -124,6 +124,6 @@ function catmullRom2bezier(pointList, z, constraint) {
   return d1;
 }
 
-module.exports = {
-  smooth: catmullRom2bezier
+export {
+  catmullRom2bezier as smooth
 };

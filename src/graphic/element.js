@@ -1,7 +1,7 @@
-const Util = require('../util/common');
-const MatrixUtil = require('./util/matrix');
-const Vector2 = require('./util/vector2');
-const StyleUtil = require('./util/style-parse');
+import { mix, isObject, isArray, Array } from '../util/common';
+import MatrixUtil from './util/matrix';
+import Vector2 from './util/vector2';
+import { parseStyle } from './util/style-parse';
 
 function isUnchanged(m) {
   return m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1 && m[4] === 0 && m[5] === 0;
@@ -45,7 +45,7 @@ class Element {
 
   constructor(cfg) {
     this._initProperties();
-    Util.mix(this._attrs, cfg);
+    mix(this._attrs, cfg);
 
     const attrs = this._attrs.attrs;
     if (attrs) {
@@ -72,7 +72,7 @@ class Element {
   }
 
   initAttrs(attrs) {
-    this.attr(Util.mix(this.getDefaultAttrs(), attrs));
+    this.attr(mix(this.getDefaultAttrs(), attrs));
   }
 
   getDefaultAttrs() {
@@ -118,7 +118,7 @@ class Element {
       return self._attrs.attrs;
     }
 
-    if (Util.isObject(name)) {
+    if (isObject(name)) {
       this._attrs.bbox = null;
       for (const k in name) {
         self._setAttr(k, name[k]);
@@ -177,9 +177,9 @@ class Element {
         if (SHAPE_ATTRS.indexOf(k) > -1) {
           let v = elAttrs[k];
           if (k === 'fillStyle' || k === 'strokeStyle') {
-            v = StyleUtil.parseStyle(v, this, context);
+            v = parseStyle(v, this, context);
           }
-          if (k === 'lineDash' && context.setLineDash && Util.isArray(v)) {
+          if (k === 'lineDash' && context.setLineDash && isArray(v)) {
             context.setLineDash(v);
           } else {
             context[k] = v;
@@ -219,7 +219,7 @@ class Element {
     const parent = this.get('parent');
     if (parent) {
       const children = parent.get('children');
-      Util.Array.remove(children, this);
+      Array.remove(children, this);
     }
 
     return this;
@@ -325,4 +325,4 @@ class Element {
   }
 }
 
-module.exports = Element;
+export default Element;

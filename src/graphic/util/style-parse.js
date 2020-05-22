@@ -1,11 +1,11 @@
-const Util = require('../../util/common');
 
+import { each } from '../../util/common';
 function _mod(n, m) {
   return ((n % m) + m) % m;
 }
 
 function _addStop(steps, gradient) {
-  Util.each(steps, item => {
+  each(steps, item => {
     item = item.split(':');
     gradient.addColorStop(Number(item[0]), item[1]);
   });
@@ -91,21 +91,24 @@ function _parseRadialGradient(color, shape, context) {
   return gradient;
 }
 
-module.exports = {
-  parseStyle(color, shape, context) {
-    if (color[1] === '(') {
-      try {
-        const firstCode = color[0];
-        if (firstCode === 'l') {
-          return _parseLineGradient(color, shape, context);
-        } else if (firstCode === 'r') {
-          return _parseRadialGradient(color, shape, context);
-        }
-      } catch (ev) {
-        console.error('error in parsing gradient string, please check if there are any extra whitespaces.');
-        console.error(ev);
+function parseStyle(color, shape, context) {
+  if (color[1] === '(') {
+    try {
+      const firstCode = color[0];
+      if (firstCode === 'l') {
+        return _parseLineGradient(color, shape, context);
+      } else if (firstCode === 'r') {
+        return _parseRadialGradient(color, shape, context);
       }
+    } catch (ev) {
+      console.error('error in parsing gradient string, please check if there are any extra whitespaces.');
+      console.error(ev);
     }
-    return color;
   }
+  return color;
+}
+
+export { parseStyle };
+export default {
+  parseStyle
 };

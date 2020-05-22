@@ -2,8 +2,9 @@
  * Animation functions for shape
  * @author sima.zhang1990@gmail.com
  */
-const Util = require('../util/common');
-const Helpers = require('./util');
+
+import { isNil } from '../util/common';
+import { doAnimation } from './util';
 
 /*
 function waveIn(shape, animateCfg, coord) {
@@ -49,20 +50,18 @@ function scaleInY(shape, animateCfg) {
 */
 
 function fadeIn(shape, animateCfg) {
-  const fillOpacity = Util.isNil(shape.attr('fillOpacity')) ? 1 : shape.attr('fillOpacity');
-  const strokeOpacity = Util.isNil(shape.attr('strokeOpacity')) ? 1 : shape.attr('strokeOpacity');
+  const fillOpacity = isNil(shape.attr('fillOpacity')) ? 1 : shape.attr('fillOpacity');
+  const strokeOpacity = isNil(shape.attr('strokeOpacity')) ? 1 : shape.attr('strokeOpacity');
   shape.attr('fillOpacity', 0);
   shape.attr('strokeOpacity', 0);
   const endState = {
     fillOpacity,
     strokeOpacity
   };
-  Helpers.doAnimation(shape, endState, animateCfg);
+  doAnimation(shape, endState, animateCfg);
 }
 
-module.exports = {
-  // waveIn,
-  // scaleInX,
-  // scaleInY,
+export {
   fadeIn
 };
+

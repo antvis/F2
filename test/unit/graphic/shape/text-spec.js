@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Text = require('../../../../src/graphic/shape/text');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Text from '../../../../src/graphic/shape/text';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-text';
@@ -71,7 +71,8 @@ describe('Text', function() {
         x: 30,
         y: 90,
         text: 'fill',
-        font: '20px Arial',
+        fontSize: 12,
+        fontFamily: 'Arial',
         fill: 'rgb(255, 0, 255)',
         stroke: '#8543E0',
         lineWidth: 1

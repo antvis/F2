@@ -1,11 +1,12 @@
-const expect = require('chai').expect;
-const { gestureSimulator } = require('../test-util');
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
-require('../../../src/coord/polar');
-require('../../../src/geom/adjust/stack');
-const PieLabel = require('../../../src/plugin/pie-label');
-const Legend = require('../../../src/plugin/legend');
+import { expect } from 'chai';
+import { gestureSimulator } from '../test-util';
+import * as F2 from '../../../src/core';
+
+import '../../../src/geom/interval';
+import '../../../src/coord/polar';
+import '../../../src/geom/adjust/stack';
+import * as PieLabel from '../../../src/plugin/pie-label';
+import * as Legend from '../../../src/plugin/legend';
 
 function snapEqual(v1, v2) {
   return Math.abs(v1 - v2) < 0.01;

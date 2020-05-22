@@ -1,6 +1,5 @@
 import data from './data.json';
-
-const F2 = require('../../../../src/index');
+import * as F2 from '../../../../src/index';
 
 const onStartCallback = jest.fn();
 

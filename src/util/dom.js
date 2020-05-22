@@ -28,7 +28,7 @@ const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'funct
 // ant miniprogram
 const isMy = (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function');
 // in node
-const isNode = (typeof module !== 'undefined') && (typeof module.exports !== 'undefined');
+const isNode = (typeof global) && (!typeof window);
 // in browser
 const isBrowser = (typeof window !== 'undefined')
                 && (typeof window.document !== 'undefined')

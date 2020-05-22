@@ -1,5 +1,5 @@
-const Util = require('../util/common');
-const Element = require('./element');
+import { isNil } from '../util/common';
+import Element from './element';
 
 class Shape extends Element {
   _initProperties() {
@@ -23,7 +23,7 @@ class Shape extends Element {
     const originOpacity = context.globalAlpha;
     if (self.hasFill()) {
       const fillOpacity = attrs.fillOpacity;
-      if (!Util.isNil(fillOpacity) && fillOpacity !== 1) {
+      if (!isNil(fillOpacity) && fillOpacity !== 1) {
         context.globalAlpha = fillOpacity;
         context.fill();
         context.globalAlpha = originOpacity;
@@ -35,7 +35,7 @@ class Shape extends Element {
       const lineWidth = attrs.lineWidth;
       if (lineWidth > 0) {
         const strokeOpacity = attrs.strokeOpacity;
-        if (!Util.isNil(strokeOpacity) && strokeOpacity !== 1) {
+        if (!isNil(strokeOpacity) && strokeOpacity !== 1) {
           context.globalAlpha = strokeOpacity;
         }
         context.stroke();
@@ -65,4 +65,4 @@ class Shape extends Element {
   createPath() {}
 }
 
-module.exports = Shape;
+export default Shape;

@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Base = require('../../src/base');
+import { expect } from 'chai';
+import Base from '../../src/base';
 
 describe('test base', () => {
   it('init', () => {

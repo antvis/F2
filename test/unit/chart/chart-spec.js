@@ -1,14 +1,15 @@
-const expect = require('chai').expect;
-const Chart = require('../../../src/chart/chart');
-const Tooltip = require('../../../src/plugin/tooltip');
-const Legend = require('../../../src/plugin/legend');
+import { expect } from 'chai';
 
-require('../../../src/geom/index');
-require('../../../src/geom/shape/index');
-require('../../../src/geom/adjust/index');
-require('../../../src/component/axis/line');
-require('../../../src/component/axis/circle');
-require('../../../src/coord/polar');
+import Chart from '../../../src/chart/chart';
+import * as Tooltip from '../../../src/plugin/tooltip';
+import * as Legend from '../../../src/plugin/legend';
+
+import '../../../src/geom/index';
+import '../../../src/geom/shape/index';
+import '../../../src/geom/adjust/index';
+import '../../../src/component/axis/line';
+import '../../../src/component/axis/circle';
+import '../../../src/coord/polar';
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');

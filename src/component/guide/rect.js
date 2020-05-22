@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix } from '../../util/common';
+import GuideBase from './base';
 
 class Rect extends GuideBase {
   _initDefaultCfg() {
@@ -20,7 +20,7 @@ class Rect extends GuideBase {
     }
     const shape = container.addShape('rect', {
       className: 'guide-rect',
-      attrs: Util.mix({
+      attrs: mix({
         x: Math.min(start.x, end.x),
         y: Math.min(start.y, end.y),
         width: Math.abs(end.x - start.x),
@@ -33,4 +33,4 @@ class Rect extends GuideBase {
 }
 
 GuideBase.Rect = Rect;
-module.exports = Rect;
+export default Rect;

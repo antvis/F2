@@ -1,5 +1,6 @@
-const expect = require('chai').expect;
-const Global = require('../../src/global');
+import { expect } from 'chai';
+import Global from '../../src/global';
+
 const pkg = require('../../package.json');
 
 describe('Global', () => {

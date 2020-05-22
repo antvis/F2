@@ -1,13 +1,29 @@
 /**
  * Only support simple bar chart, line chart and pie chart
  */
-const F2 = require('./core');
+import { Global, Chart, Shape, G, Util, Helper, track } from './core';
 
-require('./geom/line');
-require('./geom/interval');
+import './geom/line';
+import './geom/interval';
+import './geom/adjust/';
+import './coord/polar';
 
-require('./geom/adjust/');
+export {
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track
+};
 
-require('./coord/polar');
-
-module.exports = F2;
+export default {
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track
+};

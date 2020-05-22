@@ -1,7 +1,6 @@
-const Path = require('./path');
-const Geom = require('./base');
-
-require('./shape/line');
+import Path from './path';
+import Geom from './base';
+import './shape/line';
 
 class Line extends Path {
   getDefaultCfg() {
@@ -13,4 +12,4 @@ class Line extends Path {
 }
 
 Geom.Line = Line;
-module.exports = Line;
+export default Line;

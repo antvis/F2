@@ -1,4 +1,4 @@
-const { Shape } = require('../graphic/index');
+import { Shape } from '../graphic/index';
 
 function getClip(coord) {
   const start = coord.start;

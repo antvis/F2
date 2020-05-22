@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Polygon = require('../../../../src/graphic/shape/polygon');
-const Canvas = require('../../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Polygon from '../../../../src/graphic/shape/polygon';
+import Canvas from '../../../../src/graphic/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-polygon';

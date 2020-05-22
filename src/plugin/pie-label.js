@@ -1,5 +1,6 @@
-const Util = require('../util/common');
-const { Group } = require('../graphic/');
+import { mix, isFunction, createEvent, each, isObjectValueEqual, deepMix, addEventListener, removeEventListener } from '../util/common';
+import { Group } from '../graphic/';
+
 const DEFAULT_CFG = {
   anchorOffset: 5, // 锚点的偏移量
   inflectionOffset: 15, // 拐点的偏移量
@@ -46,7 +47,7 @@ function isOverlap(label1, label2) {
 
 class controller {
   constructor(cfg) {
-    Util.mix(this, cfg);
+    mix(this, cfg);
     const chart = this.chart;
     this.canvasDom = chart.get('canvas').get('el');
   }
@@ -92,9 +93,9 @@ class controller {
         lineHeight: 12,
         fill: '#808080'
       };
-      if (Util.isFunction(label1)) {
+      if (isFunction(label1)) {
         textGroup.addShape('Text', {
-          attrs: Util.mix({
+          attrs: mix({
             textBaseline: 'bottom'
           }, textAttrs, label1(_origin, color)),
           data: _origin, // 存储原始数据
@@ -102,9 +103,9 @@ class controller {
         });
       }
 
-      if (Util.isFunction(label2)) {
+      if (isFunction(label2)) {
         textGroup.addShape('Text', {
-          attrs: Util.mix({
+          attrs: mix({
             textBaseline: 'top'
           }, textAttrs, label2(_origin, color)),
           data: _origin, // 存储原始数据
@@ -165,13 +166,13 @@ class controller {
   bindEvents() {
     const pieLabelCfg = this.pieLabelCfg;
     const triggerOn = pieLabelCfg.triggerOn || 'touchstart';
-    Util.addEventListener(this.canvasDom, triggerOn, this._handleEvent);
+    addEventListener(this.canvasDom, triggerOn, this._handleEvent);
   }
 
   unBindEvents() {
     const pieLabelCfg = this.pieLabelCfg;
     const triggerOn = pieLabelCfg.triggerOn || 'touchstart';
-    Util.removeEventListener(this.canvasDom, triggerOn, this._handleEvent);
+    removeEventListener(this.canvasDom, triggerOn, this._handleEvent);
   }
 
   clear() {
@@ -257,7 +258,7 @@ class controller {
     }
 
     labelGroup.addShape('Polyline', {
-      attrs: Util.mix({
+      attrs: mix({
         points,
         lineWidth: 1,
         stroke: fill
@@ -266,7 +267,7 @@ class controller {
 
     // 绘制锚点
     labelGroup.addShape('Circle', {
-      attrs: Util.mix({
+      attrs: mix({
         x: _anchor.x,
         y: _anchor.y,
         r: 2,
@@ -371,7 +372,7 @@ class controller {
     const self = this;
     const { chart, drawnLabels, pieLabelCfg } = self;
     const { onClick, activeShape } = pieLabelCfg;
-    const canvasEvent = Util.createEvent(ev, chart);
+    const canvasEvent = createEvent(ev, chart);
     const { x, y } = canvasEvent;
 
     // 查找被点击的 label
@@ -403,10 +404,10 @@ class controller {
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
-    Util.each(children, child => {
+    each(children, child => {
       if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
-        if (Util.isObjectValueEqual(shapeData, data)) {
+        if (isObjectValueEqual(shapeData, data)) {
           selectedShape = child;
           return false;
         }
@@ -427,7 +428,7 @@ class controller {
     const frontPlot = chart.get('frontPlot');
     this.halo && this.halo.remove(true);
     const halo = frontPlot.addShape('sector', {
-      attrs: Util.mix({
+      attrs: mix({
         x,
         y,
         r: r + activeStyle.offset + activeStyle.appendRadius,
@@ -442,38 +443,50 @@ class controller {
   }
 }
 
+function init(chart) {
+  const frontPlot = chart.get('frontPlot');
+  const labelGroup = frontPlot.addGroup({
+    className: 'pie-label',
+    zIndex: 0
+  });
+  const pieLabelController = new controller({
+    chart,
+    labelGroup
+  });
+  chart.set('pieLabelController', pieLabelController);
+  chart.pieLabel = function(cfg) {
+    cfg = deepMix({}, DEFAULT_CFG, cfg);
+    pieLabelController.pieLabelCfg = cfg;
 
-module.exports = {
-  init(chart) {
-    const frontPlot = chart.get('frontPlot');
-    const labelGroup = frontPlot.addGroup({
-      className: 'pie-label',
-      zIndex: 0
-    });
-    const pieLabelController = new controller({
-      chart,
-      labelGroup
-    });
-    chart.set('pieLabelController', pieLabelController);
-    chart.pieLabel = function(cfg) {
-      cfg = Util.deepMix({}, DEFAULT_CFG, cfg);
-      pieLabelController.pieLabelCfg = cfg;
+    return this;
+  };
+}
 
-      return this;
-    };
-
-  },
-  afterGeomDraw(chart) {
-    const controller = chart.get('pieLabelController');
-    if (controller.pieLabelCfg) { // 用户配置了饼图文本
-      controller.renderLabels();
-      controller.bindEvents(); // 绑定事件
-    }
-  },
-  clearInner(chart) {
-    const controller = chart.get('pieLabelController');
-    if (controller.pieLabelCfg) { // 用户配置了饼图文本
-      controller.clear();
-    }
+function afterGeomDraw(chart) {
+  const controller = chart.get('pieLabelController');
+  if (controller.pieLabelCfg) { // 用户配置了饼图文本
+    controller.renderLabels();
+    controller.bindEvents(); // 绑定事件
   }
+}
+
+function clearInner(chart) {
+  const controller = chart.get('pieLabelController');
+  if (controller.pieLabelCfg) { // 用户配置了饼图文本
+    controller.clear();
+  }
+}
+
+
+export {
+  init,
+  afterGeomDraw,
+  clearInner
 };
+
+export default {
+  init,
+  afterGeomDraw,
+  clearInner
+};
+

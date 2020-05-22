@@ -1,6 +1,7 @@
-const Util = require('../util/common');
-const { Group } = require('../graphic/index');
-const Marker = require('./marker');
+import { deepMix, isNumber, mix, isNil, each, parsePadding } from '../util/common';
+import { Group } from '../graphic/index';
+import Marker from './marker';
+
 const MARKER_RADIUS = 3;
 
 class List {
@@ -55,7 +56,7 @@ class List {
   }
 
   constructor(cfg) {
-    Util.deepMix(this, this.getDefaultCfg(), cfg);
+    deepMix(this, this.getDefaultCfg(), cfg);
     this._init();
     this._renderTitle();
     this._renderItems();
@@ -90,7 +91,7 @@ class List {
         const { wrapper, titleStyle } = this;
         titleShape = wrapper.addShape('text', {
           className: 'title',
-          attrs: Util.mix({
+          attrs: mix({
             x: 0,
             y: 0,
             text: title
@@ -114,7 +115,7 @@ class List {
     if (self.reversed) {
       items.reverse();
     }
-    Util.each(items, (item, index) => {
+    each(items, (item, index) => {
       self._addItem(item, index);
     });
     if (items.length > 1) {
@@ -130,8 +131,8 @@ class List {
       const wrapper = this.wrapper;
       const { minX, minY, width, height } = wrapper.getBBox();
       let padding = background.padding || [ 0, 0, 0, 0 ];
-      padding = Util.parsePadding(padding);
-      const attrs = Util.mix({
+      padding = parsePadding(padding);
+      const attrs = mix({
         x: minX - padding[3],
         y: minY - padding[0],
         width: width + padding[1] + padding[3],
@@ -169,13 +170,13 @@ class List {
 
     if (marker) {
       const radius = marker.radius || MARKER_RADIUS;
-      const markerAttrs = Util.mix({
+      const markerAttrs = mix({
         x: radius,
         y: this._titleHeight
       }, marker);
 
       if (item.checked === false) {
-        Util.mix(markerAttrs, unCheckStyle);
+        mix(markerAttrs, unCheckStyle);
       }
 
       const markerShape = new Marker({
@@ -193,7 +194,7 @@ class List {
       name = value ? name + joinString : name;
       nameText = itemGroup.addShape('text', {
         className: 'name',
-        attrs: Util.mix({
+        attrs: mix({
           x: startX,
           y: this._titleHeight,
           text: this._formatItemValue(name)
@@ -209,7 +210,7 @@ class List {
 
       itemGroup.addShape('text', {
         className: 'value',
-        attrs: Util.mix({
+        attrs: mix({
           x: valueX,
           y: this._titleHeight,
           text: value
@@ -231,7 +232,7 @@ class List {
     let width;
     const itemWidth = this.itemWidth;
 
-    if (Util.isNumber(itemWidth) || Util.isNil(itemWidth)) {
+    if (isNumber(itemWidth) || isNil(itemWidth)) {
       return itemWidth;
     }
 
@@ -325,7 +326,7 @@ class List {
       width = bbox.width;
       height = bbox.height;
 
-      if (Util.isNumber(itemWidth)) {
+      if (isNumber(itemWidth)) {
         maxItemWidth = itemWidth + itemGap;
       } else if (width > maxItemWidth) {
         maxItemWidth = width + itemGap;
@@ -417,4 +418,4 @@ class List {
   }
 }
 
-module.exports = List;
+export default List;

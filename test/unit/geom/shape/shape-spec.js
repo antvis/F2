@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Shape = require('../../../../src/geom/shape/index');
-const Coord = require('../../../../src/coord/');
+import { expect } from 'chai';
+import Shape from '../../../../src/geom/shape/index';
+import Coord from '../../../../src/coord/';
 // const { Canvas } = require('../../../../src/graphic/index');
 
 describe('shape register', () => {

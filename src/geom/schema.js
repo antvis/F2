@@ -1,7 +1,7 @@
-const Geom = require('./base');
-const Util = require('../util/common');
-const SizeMixin = require('./mixin/size');
-require('./shape/schema');
+import Geom from './base';
+import { mix } from '../util/common';
+import SizeMixin from './mixin/size';
+import './shape/schema';
 
 class Schema extends Geom {
   getDefaultCfg() {
@@ -14,7 +14,7 @@ class Schema extends Geom {
 
   constructor(cfg) {
     super(cfg);
-    Util.mix(this, SizeMixin);
+    mix(this, SizeMixin);
   }
 
   init() {
@@ -36,5 +36,4 @@ class Schema extends Geom {
 }
 
 Geom.Schema = Schema;
-
-module.exports = Schema;
+export default Schema;

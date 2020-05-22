@@ -1,5 +1,5 @@
-const Abstract = require('./abstract');
+import Abstract from './abstract';
 
-require('./line');
+import './line';
 
-module.exports = Abstract;
+export default Abstract;

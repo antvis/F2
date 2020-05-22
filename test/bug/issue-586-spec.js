@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
+import { expect } from 'chai';
 
-const F2 = require('../../src/core');
-require('../../src/geom/schema');
+import * as F2 from '../../src/core';
+import '../../src/geom/schema';
 const data = require('../fixtures/mobile-k.json');
 
 const canvas = document.createElement('canvas');

@@ -1,5 +1,10 @@
-module.exports = {
-  Stack: require('./stack'),
-  Dodge: require('./dodge'),
-  Symmetric: require('./symmetric')
+import Stack from './stack';
+import Dodge from './dodge';
+import Symmetric from './symmetric';
+
+
+export {
+  Stack,
+  Dodge,
+  Symmetric
 };
