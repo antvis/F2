@@ -14,7 +14,7 @@ export default [
     output: [
       {
         name: 'F2',
-        file: 'build/f2-all.js',
+        file: 'dist/f2-all.js',
         format: 'umd',
         exports: 'named'
       },
@@ -33,7 +33,7 @@ export default [
     output: [
       {
         name: 'F2',
-        file: 'build/f2.js',
+        file: 'dist/f2.js',
         format: 'umd',
         exports: 'named'
       },
@@ -52,7 +52,7 @@ export default [
     output: [
       {
         name: 'F2',
-        file: 'build/f2-simple.js',
+        file: 'dist/f2-simple.js',
         format: 'umd',
         exports: 'named'
       },

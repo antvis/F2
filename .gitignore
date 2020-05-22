@@ -63,6 +63,7 @@ typings/
 build
 dist
 lib
+es
 temp
 .DS_Store
 .vscode
