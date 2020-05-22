@@ -88,4 +88,4 @@ each(SHAPES, function(shapeType) {
   });
 });
 
-module.exports = Line;
+export default Line;
