@@ -1,15 +1,15 @@
 import { expect } from 'chai';
 
-import Chart from '@src/chart/chart';
-import * as Tooltip from '@src/plugin/tooltip';
-import * as Legend from '@src/plugin/legend';
+import Chart from '../../../src/chart/chart';
+import * as Tooltip from '../../../src/plugin/tooltip';
+import * as Legend from '../../../src/plugin/legend';
 
-import '@src/geom/index';
-import '@src/geom/shape/index';
-import '@src/geom/adjust/index';
-import '@src/component/axis/line';
-import '@src/component/axis/circle';
-import '@src/coord/polar';
+import '../../../src/geom/index';
+import '../../../src/geom/shape/index';
+import '../../../src/geom/adjust/index';
+import '../../../src/component/axis/line';
+import '../../../src/component/axis/circle';
+import '../../../src/coord/polar';
 
 describe('chart test', () => {
   const canvas = document.createElement('canvas');

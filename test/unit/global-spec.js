@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Global from '@src/global';
+import Global from '../../src/global';
 
 const pkg = require('../../package.json');
 

@@ -110,11 +110,7 @@
     "runner": "jest-electron/runner",
     "testEnvironment": "jest-electron/environment",
     "testRegex": "/test/.*-spec\\.js?$",
-    "verbose": false,
-    "moduleNameMapper": {
-      "^@util$": "<rootDir>/src/util/common.js",
-      "@src/(.*)": "<rootDir>/src/$1"
-    }
+    "verbose": false
   },
   "dependencies": {
     "@antv/adjust": "~0.1.1",

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Plot from '@src/chart/plot';
+import Plot from '../../../src/chart/plot';
 
 describe('plot', function() {
   const plot = new Plot({
