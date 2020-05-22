@@ -46,4 +46,4 @@ class Area extends Geom {
 
 Geom.Area = Area;
 
-module.exports = Area;
+export default Area;

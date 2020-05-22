@@ -78,9 +78,9 @@
   },
   "scripts": {
     "start": "npm run site:develop",
-    "site:develop": "gatsby develop --open",
-    "site:build": "npm run site:clean && gatsby build --prefix-paths",
-    "site:clean": "gatsby clean",
+    "site:develop": "BABEL_ENV=site gatsby develop --open",
+    "site:build": "BABEL_ENV=site npm run site:clean && gatsby build --prefix-paths",
+    "site:clean": "BABEL_ENV=site gatsby clean",
     "site:deploy": "npm run site:build && gh-pages -d public",
     "build": "rm -rf build && rm -rf dist && rollup --config",
     "build-lib": "rm -rf lib && babel src --out-dir lib",

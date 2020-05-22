@@ -49,4 +49,5 @@ class Cartesian extends Base {
 
 Base.Cartesian = Cartesian;
 Base.Rect = Cartesian;
-module.exports = Cartesian;
+
+export default Cartesian;
