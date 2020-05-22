@@ -13,14 +13,16 @@ export default [
     input: './src/index-all.js',
     output: [
       {
-        name: 'F2-all',
+        name: 'F2',
         file: 'build/f2-all.js',
-        format: 'umd'
+        format: 'umd',
+        exports: 'named'
       },
       {
-        name: 'F2-all',
+        name: 'F2',
         file: 'dist/f2-all.min.js',
         format: 'umd',
+        exports: 'named',
         plugins: [ terserPlugin ]
       }
     ],
@@ -30,14 +32,16 @@ export default [
     input: './src/index.js',
     output: [
       {
-        name: 'F2-all',
+        name: 'F2',
         file: 'build/f2.js',
-        format: 'umd'
+        format: 'umd',
+        exports: 'named'
       },
       {
-        name: 'F2-all',
+        name: 'F2',
         file: 'dist/f2.min.js',
         format: 'umd',
+        exports: 'named',
         plugins: [ terserPlugin ]
       }
     ],
@@ -47,14 +51,16 @@ export default [
     input: './src/index-simple.js',
     output: [
       {
-        name: 'F2-simple',
+        name: 'F2',
         file: 'build/f2-simple.js',
-        format: 'umd'
+        format: 'umd',
+        exports: 'named'
       },
       {
-        name: 'F2-all',
+        name: 'F2',
         file: 'dist/f2-simple.min.js',
         format: 'umd',
+        exports: 'named',
         plugins: [ terserPlugin ]
       }
     ],
