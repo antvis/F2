@@ -1,6 +1,22 @@
 const Util = require('../../util/common');
 const Shape = require('../shape');
 
+// 为了处理radius 大于 width 或 height 的场景
+function parseRadius(radius, width, height) {
+  radius = Util.parsePadding(radius);
+  // 都为0
+  if (!radius[0] && !radius[1] && !radius[2] && !radius[3]) {
+    return radius;
+  }
+  const minWidth = Math.max(radius[0] + radius[1], radius[2] + radius[3]);
+  const minHeight = Math.max(radius[0] + radius[3], radius[1] + radius[2]);
+  const scale = Math.min(width / minWidth, height / minHeight);
+  if (scale < 1) {
+    return radius.map(r => r * scale);
+  }
+  return radius;
+}
+
 class Rect extends Shape {
   _initProperties() {
     super._initProperties();
@@ -23,14 +39,13 @@ class Rect extends Shape {
   createPath(context) {
     const self = this;
     const attrs = self.get('attrs');
-    const { x, y, width, height } = attrs;
+    let { x, y, width, height, radius } = attrs;
 
     context.beginPath();
-    let radius = attrs.radius;
     if (!radius || !(width * height)) {
       context.rect(x, y, width, height);
     } else {
-      radius = Util.parsePadding(radius);
+      radius = parseRadius(radius, width, height);
       context.moveTo(x + radius[0], y);
       context.lineTo(x + width - radius[1], y);
       context.arc(x + width - radius[1], y + radius[1], radius[1], -Math.PI / 2, 0, false);
