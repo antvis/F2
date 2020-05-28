@@ -35,29 +35,31 @@ class Context {
     this.chart = chart;
     this._initEvent(chart);
   }
+  _afterinit = () => {
+    // 初始化value值
+    const scale = this.getPinchScale();
+    // 记录原始全量数据
+    const values = [].concat(scale.values);
+    this.values = values;
+
+    // 最小的缩放比例
+    if (!this.minScale) {
+      this.minScale = this.minCount / values.length;
+    }
+
+    // 初始化的时候有设置range，则初始化成默认比例
+    if (this.range !== defaultRange) {
+      this.updateRange(this.range);
+      this.updateTicks();
+    }
+  }
+  _afterdatachange = () => {
+    this.updateRange(this.range);
+  }
   _initEvent(chart) {
     // 在整体初始化后还需要设置一些初始状态
-    chart.on(EVENT_AFTER_INIT, () => {
-      // 初始化value值
-      const scale = this.getPinchScale();
-      // 记录原始全量数据
-      const values = [].concat(scale.values);
-      this.values = values;
-
-      // 最小的缩放比例
-      if (!this.minScale) {
-        this.minScale = this.minCount / values.length;
-      }
-
-      // 初始化的时候有设置range，则初始化成默认比例
-      if (this.range !== defaultRange) {
-        this.updateRange(this.range);
-        this.updateTicks();
-      }
-    });
-    chart.on(EVENT_AFTER_DATA_CHANGE, () => {
-      this.updateRange(this.range);
-    });
+    chart.on(EVENT_AFTER_INIT, this._afterinit);
+    chart.on(EVENT_AFTER_DATA_CHANGE, this._afterdatachange);
   }
   // 缩放的主轴scale
   getPinchScale() {
@@ -218,6 +220,12 @@ class Context {
 
     // 更新完后，需要重新绘制一次
     chart.repaint();
+  }
+
+  destroy() {
+    const { chart } = this;
+    chart.off(EVENT_AFTER_INIT, this._afterinit);
+    chart.off(EVENT_AFTER_DATA_CHANGE, this._afterdatachange);
   }
 }
 
