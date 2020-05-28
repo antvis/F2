@@ -3,7 +3,7 @@ import { getLimitRange, getFieldRange } from './helper';
 import Interaction from './base';
 import Chart from '../chart/chart';
 import * as FilterPlugin from '../plugin/filter';
-import * as UpdateScaleMixin from './mixin/update-scale';
+import UpdateScaleMixin from './mixin/update-scale';
 
 class Pinch extends Interaction {
   getDefaultCfg() {

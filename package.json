@@ -28,7 +28,6 @@
   "files": [
     "src",
     "lib",
-    "build",
     "dist",
     "bundler"
   ],

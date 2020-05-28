@@ -162,3 +162,10 @@ export {
   _handleLinearScale,
   _handleCatScale
 };
+
+export default {
+  _handleMove,
+  _doMove,
+  _handleLinearScale,
+  _handleCatScale
+};
