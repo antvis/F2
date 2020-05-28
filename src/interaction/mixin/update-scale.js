@@ -83,8 +83,12 @@ function updateCatScale(field, newValues, ticks, values, minIndex, maxIndex) {
   });
 }
 
-
 export {
+  updateLinearScale,
+  updateCatScale
+};
+
+export default {
   updateLinearScale,
   updateCatScale
 };

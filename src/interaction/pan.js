@@ -3,8 +3,8 @@ import { mix, isWx, isMy } from '../util/common';
 import Interaction from './base';
 import Chart from '../chart/chart';
 import * as FilterPlugin from '../plugin/filter';
-import * as MoveMixin from './mixin/move';
-import * as UpdateScaleMixin from './mixin/update-scale';
+import MoveMixin from './mixin/move';
+import UpdateScaleMixin from './mixin/update-scale';
 
 class Pan extends Interaction {
   getDefaultCfg() {
