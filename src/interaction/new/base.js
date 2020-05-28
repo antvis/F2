@@ -89,6 +89,7 @@ class Base {
   reset() {}
 
   destroy() {
+    this.context.destroy();
     this._clearEvents();
   }
 }
