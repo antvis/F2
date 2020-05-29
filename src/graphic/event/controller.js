@@ -100,10 +100,12 @@ class EventController {
       this.pressTimeout = setTimeout(() => {
         // 这里固定触发press事件
         const eventType = 'press';
-        ev.direction = 'none';
+        const direction = 'none';
+        ev.direction = direction;
         this.emitStart(eventType, ev);
         this.emitEvent(eventType, ev);
         this.eventType = eventType;
+        this.direction = direction;
       }, PRESS_DELAY);
     }
   }
