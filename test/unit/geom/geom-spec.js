@@ -243,6 +243,8 @@ describe('test geoms', function() {
       geom.init();
       const dataArray1 = geom.get('dataArray');
       expect(dataArray1.length).equal(2);
+
+
     });
 
     it('destroy', function() {
@@ -299,9 +301,11 @@ describe('test geoms', function() {
       geom._beforeMapping([ data ]);
       const mappedData = geom._mapping(data);
       const obj1 = mappedData[0];
+      const obj2 = mappedData[1];
       expect(obj1.x).equal(50);
       expect(obj1.y).eqls([ 100, 200 ]);
       expect(obj1.color).equal('red');
+      expect(obj2.color).equal('red');
     });
 
     it('test paint', function() {
