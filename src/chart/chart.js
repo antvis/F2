@@ -307,6 +307,9 @@ class Chart extends Base {
   }
 
   _initGeom(geom) {
+    if (geom.get('isInit')) {
+      return;
+    }
     const coord = this.get('coord');
     const data = this.get('filteredData');
     const colDefs = this.get('colDefs');

@@ -801,6 +801,7 @@ class Geom extends Base {
     this.set('data', data);
     // 改变数据后，情况度量，因为需要重新实例化
     this.set('scales', {});
+    this.set('isInit', false);
     this.init();
   }
 
@@ -813,6 +814,7 @@ class Geom extends Base {
   }
 
   reset() {
+    this.set('isInit', false);
     this.set('attrs', {});
     this.set('attrOptions', {});
     this.set('adjust', null);
@@ -824,6 +826,7 @@ class Geom extends Base {
   }
 
   destroy() {
+    this.set('isInit', false);
     this.clear();
     super.destroy();
   }

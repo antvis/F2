@@ -235,11 +235,13 @@ describe('test geoms', function() {
       ];
       geom.set('data', data);
       geom.position('a*b').color('c');
+      geom.set('isInit', false);
       geom.init();
       const dataArray = geom.get('dataArray');
       expect(dataArray.length).equal(4);
 
       geom.set('ignoreEmptyGroup', true);
+      geom.set('isInit', false);
       geom.init();
       const dataArray1 = geom.get('dataArray');
       expect(dataArray1.length).equal(2);
