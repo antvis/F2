@@ -42,11 +42,23 @@ class Tooltip {
         fill: 'rgba(0, 0, 0, 0.65)',
         padding: [ 3, 5 ]
       },
+      xTipTextStyle: {
+        fontSize: 12,
+        fill: '#fff',
+        textAlign: 'center',
+        textBaseline: 'middle'
+      },
       yTip: null,
       yTipBackground: {
         radius: 1,
         fill: 'rgba(0, 0, 0, 0.65)',
         padding: [ 3, 5 ]
+      },
+      yTipTextStyle: {
+        fontSize: 12,
+        fill: '#fff',
+        textAlign: 'center',
+        textBaseline: 'middle'
       },
       /**
        * the style for tooltip container's background
@@ -86,10 +98,11 @@ class Tooltip {
       }
     }
     if (this.showXTip) {
-      const { xTipBackground } = this;
+      const { xTipBackground, xTipTextStyle } = this;
       const xTipBox = new TextBox({
         className: 'xTip',
         background: xTipBackground,
+        textStyle: xTipTextStyle,
         visible: false
       });
       frontPlot.add(xTipBox.container);
@@ -97,10 +110,11 @@ class Tooltip {
     }
 
     if (this.showYTip) {
-      const { yTipBackground } = this;
+      const { yTipBackground, yTipTextStyle } = this;
       const yTipBox = new TextBox({
         className: 'yTip',
         background: yTipBackground,
+        textStyle: yTipTextStyle,
         visible: false
       });
       frontPlot.add(yTipBox.container);

@@ -71,7 +71,8 @@ describe('Text', function() {
         x: 30,
         y: 90,
         text: 'fill',
-        font: '20px Arial',
+        fontSize: 12,
+        fontFamily: 'Arial',
         fill: 'rgb(255, 0, 255)',
         stroke: '#8543E0',
         lineWidth: 1
@@ -94,6 +95,7 @@ describe('Text', function() {
     const text1 = new Text({
       attrs: {
         fontSize: 20,
+        fontFamily: 'Arial',
         text: 'fontSize',
         x: 10,
         y: 60,
@@ -102,7 +104,7 @@ describe('Text', function() {
       }
     });
     expect(text1.attr('fontSize')).to.equal(20);
-    expect(text1.attr('font')).to.equal('normal normal normal 20px sans-serif');
+    expect(text1.attr('font')).to.equal('normal normal normal 20px Arial');
     canvas.add(text1);
     // bbox
     const bbox = text1.getBBox();
@@ -154,6 +156,7 @@ describe('Text', function() {
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 12,
+        fontFamily: 'Arial',
         lineHeight: 18,
         lineWidth: 1
       }
@@ -179,6 +182,7 @@ describe('Text', function() {
         textAlign: 'end',
         textBaseline: 'middle',
         fontSize: 12,
+        fontFamily: 'Arial',
         lineHeight: 18,
         lineWidth: 1,
         rotate: Math.PI / 2

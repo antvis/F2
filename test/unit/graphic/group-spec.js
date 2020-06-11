@@ -323,6 +323,7 @@ describe('Group', function() {
         stroke: 'red',
         textBaseline: 'top',
         fontSize: 8,
+        fontFamily: 'Arial',
         lineHeight: 18,
         lineWidth: 1
       }
