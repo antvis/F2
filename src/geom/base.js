@@ -74,14 +74,21 @@ class Geom extends Base {
       visible: true,
       connectNulls: false,
       // 是否丢弃没有值的分组。
-      ignoreEmptyGroup: false
+      ignoreEmptyGroup: false,
+      // 是否已经初始化
+      isInit: false
     };
   }
 
   init() {
     const self = this;
+    const isInit = self.get('isInit');
+    if (isInit) {
+      return;
+    }
     self._initAttrs();
     self._processData();
+    self.set('isInit', true);
   }
 
   _getGroupScales() {
@@ -794,6 +801,7 @@ class Geom extends Base {
     this.set('data', data);
     // 改变数据后，情况度量，因为需要重新实例化
     this.set('scales', {});
+    this.set('isInit', false);
     this.init();
   }
 
@@ -806,6 +814,7 @@ class Geom extends Base {
   }
 
   reset() {
+    this.set('isInit', false);
     this.set('attrs', {});
     this.set('attrOptions', {});
     this.set('adjust', null);
@@ -817,6 +826,7 @@ class Geom extends Base {
   }
 
   destroy() {
+    this.set('isInit', false);
     this.clear();
     super.destroy();
   }
