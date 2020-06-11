@@ -82,10 +82,12 @@ chart.tooltip({
   crosshairsType: {String}, // 辅助线的种类
   showXTip: {Boolean}, // 是否展示 X 轴的辅助信息
   showYTip: {Boolean}, // 是否展示 Y 轴的辅助信息
-  xTip: {Object}/{Function}, // X 轴辅助信息的文本样式
-  yTip: {Object}/{Function, // Y 轴辅助信息的文本样式
+  xTip: {Object}/{Function}, // X 轴辅助信息的文本内容
+  yTip: {Object}/{Function, // Y 轴辅助信息的文本内容
   xTipBackground: {Object}, // X 轴辅助信息的背景框样式
   yTipBackground: {Object}, // Y 轴辅助信息的背景框样式  
+  xTipTextStyle: {Object}, // X 轴辅助信息的文本样式 {fontSize: 12, fill: '#fff',}
+  yTipTextStyle: {Object}, // Y 轴辅助信息的文本样式
   snap: {Boolean} // 是否将辅助线准确定位至数据点
 });
 ```
