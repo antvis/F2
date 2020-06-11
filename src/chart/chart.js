@@ -577,10 +577,14 @@ class Chart extends Base {
     const canvas = this.get('canvas');
     const geoms = this.get('geoms');
 
-    if (!rendered) {
+    // 已经渲染过
+    if (rendered) {
+      this._initGeoms();
+    } else {
       this.init();
       this.set('rendered', true);
     }
+
     this.emit(EVENT_BEFORE_RENDER);
 
     Chart.plugins.notify(this, 'beforeGeomDraw');
@@ -756,13 +760,8 @@ class Chart extends Base {
    * @param {Geom} geom geometry instance
    */
   addGeom(geom) {
-    const rendered = this.get('rendered');
     const geoms = this.get('geoms');
     geoms.push(geom);
-    // 如果图表已经渲染过了，则直接初始化geom
-    if (rendered) {
-      this._initGeom(geom);
-    }
   }
 
   /**

@@ -74,14 +74,21 @@ class Geom extends Base {
       visible: true,
       connectNulls: false,
       // 是否丢弃没有值的分组。
-      ignoreEmptyGroup: false
+      ignoreEmptyGroup: false,
+      // 是否已经初始化
+      isInit: false
     };
   }
 
   init() {
     const self = this;
+    const isInit = self.get('isInit');
+    if (isInit) {
+      return;
+    }
     self._initAttrs();
     self._processData();
+    self.set('isInit', true);
   }
 
   _getGroupScales() {
