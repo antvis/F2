@@ -379,6 +379,9 @@ describe('Tooltip crosshairs', function() {
     chart.tooltip({
       showYTip: true,
       showXTip: true,
+      yTipTextStyle: {
+        fontFamily: 'Arial'
+      },
       yTip(val) {
         return parseInt(val);
       },
@@ -438,6 +441,12 @@ describe('Tooltip crosshairs', function() {
     chart.tooltip({
       showXTip: true,
       showYTip: true,
+      xTipTextStyle: {
+        fontFamily: 'Arial'
+      },
+      yTipTextStyle: {
+        fontFamily: 'Arial'
+      },
       showTooltipMarker: false,
       crosshairsType: 'xy',
       yTip(val) {
