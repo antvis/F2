@@ -1,7 +1,21 @@
 import { Util } from './Util';
+import {
+  CanvasCommonProps,
+  CanvasLineProps,
+  CanvasTextProps,
+  CanvasPointProps,
+  CanvasBackgroundProps,
+} from './CanvasProps';
 
 declare namespace F2 {
-  export { Util };
+  export {
+    Util,
+    CanvasCommonProps,
+    CanvasLineProps,
+    CanvasTextProps,
+    CanvasPointProps,
+    CanvasBackgroundProps,
+  };
 }
 
 export = F2;
