@@ -7,6 +7,7 @@ import {
   CanvasBackgroundProps,
 } from './CanvasProps';
 import { Point } from './Point';
+import { Data, DataRecord, DataField } from './Data';
 
 declare namespace F2 {
   export {
@@ -17,6 +18,9 @@ declare namespace F2 {
     CanvasPointProps,
     CanvasBackgroundProps,
     Point,
+    Data,
+    DataRecord,
+    DataField,
   };
 }
 
