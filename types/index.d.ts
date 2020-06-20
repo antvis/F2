@@ -23,6 +23,18 @@ import {
   ScaleTimeCatProps,
   ScaleProps,
 } from './Scale';
+import {
+  AnimateKind,
+  AnimateElement,
+  AnimateAnimationName,
+  AnimateAnimationFunc,
+  AnimateEasingName,
+  AnimateEasingFunc,
+  AnimateDelayFunc,
+  AnimateConfig,
+  AnimateElementParams,
+  AnimateChartParams,
+} from './Animate';
 
 declare namespace F2 {
   export {
@@ -45,6 +57,16 @@ declare namespace F2 {
     ScaleCatProps,
     ScaleTimeCatProps,
     ScaleProps,
+    AnimateKind,
+    AnimateElement,
+    AnimateAnimationName,
+    AnimateAnimationFunc,
+    AnimateEasingName,
+    AnimateEasingFunc,
+    AnimateDelayFunc,
+    AnimateConfig,
+    AnimateElementParams,
+    AnimateChartParams,
   };
 }
 
