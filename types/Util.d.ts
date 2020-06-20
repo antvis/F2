@@ -1,4 +1,5 @@
 import { PartialDeep } from 'type-fest';
+import { Point } from './Point';
 
 /**
  * 常用工具库。
@@ -104,5 +105,5 @@ export const Util: {
    *
    * @todo 明确参数 canvas 和返回结果的类型
    */
-  getRelativePosition(point: Record<'x' | 'y', number>, canvas: any): any;
+  getRelativePosition(point: Point, canvas: any): any;
 };

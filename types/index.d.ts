@@ -6,6 +6,7 @@ import {
   CanvasPointProps,
   CanvasBackgroundProps,
 } from './CanvasProps';
+import { Point } from './Point';
 
 declare namespace F2 {
   export {
@@ -15,6 +16,7 @@ declare namespace F2 {
     CanvasTextProps,
     CanvasPointProps,
     CanvasBackgroundProps,
+    Point,
   };
 }
 
