@@ -7,7 +7,22 @@ import {
   CanvasBackgroundProps,
 } from './CanvasProps';
 import { Point } from './Point';
-import { Data, DataRecord, DataField } from './Data';
+import {
+  Data,
+  DataRecord,
+  DataField,
+  DataRecordScale,
+  DataFieldScale,
+} from './Data';
+import {
+  ScaleType,
+  ScaleCommonProps,
+  ScaleIdentityProps,
+  ScaleLinearProps,
+  ScaleCatProps,
+  ScaleTimeCatProps,
+  ScaleProps,
+} from './Scale';
 
 declare namespace F2 {
   export {
@@ -21,6 +36,15 @@ declare namespace F2 {
     Data,
     DataRecord,
     DataField,
+    DataRecordScale,
+    DataFieldScale,
+    ScaleType,
+    ScaleCommonProps,
+    ScaleIdentityProps,
+    ScaleLinearProps,
+    ScaleCatProps,
+    ScaleTimeCatProps,
+    ScaleProps,
   };
 }
 
