@@ -103,3 +103,12 @@ export interface CanvasBackgroundProps extends CanvasCommonProps {
   padding?: number | number[];
   radius?: number;
 }
+
+/**
+ * 绘图属性。
+ */
+export interface CanvasProps
+  extends CanvasLineProps,
+    CanvasTextProps,
+    CanvasPointProps,
+    CanvasBackgroundProps {}

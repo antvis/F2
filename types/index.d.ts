@@ -5,6 +5,7 @@ import {
   CanvasTextProps,
   CanvasPointProps,
   CanvasBackgroundProps,
+  CanvasProps,
 } from './CanvasProps';
 import { Point } from './Point';
 import {
@@ -35,6 +36,14 @@ import {
   AnimateElementParams,
   AnimateChartParams,
 } from './Animate';
+import {
+  GeometryKind,
+  GeometryShapeKind,
+  GeometryAdjustKind,
+  GeometryAdjustParams,
+  GeometryParams,
+  Geometry,
+} from './Geometry';
 
 declare namespace F2 {
   export {
@@ -44,6 +53,7 @@ declare namespace F2 {
     CanvasTextProps,
     CanvasPointProps,
     CanvasBackgroundProps,
+    CanvasProps,
     Point,
     Data,
     DataRecord,
@@ -67,6 +77,12 @@ declare namespace F2 {
     AnimateConfig,
     AnimateElementParams,
     AnimateChartParams,
+    GeometryKind,
+    GeometryShapeKind,
+    GeometryAdjustKind,
+    GeometryAdjustParams,
+    GeometryParams,
+    Geometry,
   };
 }
 
