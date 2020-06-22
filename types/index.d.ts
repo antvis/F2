@@ -67,6 +67,7 @@ import {
   LegendParams,
 } from './Legend';
 import { G } from './G';
+import { PluginLifecycle, Plugin } from './Plugin';
 
 declare namespace F2 {
   export {
@@ -123,6 +124,8 @@ declare namespace F2 {
     LegendItem,
     LegendParams,
     G,
+    PluginLifecycle,
+    Plugin,
   };
 }
 
