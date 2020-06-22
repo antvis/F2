@@ -44,6 +44,12 @@ import {
   GeometryParams,
   Geometry,
 } from './Geometry';
+import {
+  CoordinateKind,
+  CoordinateRectParams,
+  CoordinatePolarParams,
+  CoordinateParams,
+} from './Coordinate';
 
 declare namespace F2 {
   export {
@@ -83,6 +89,10 @@ declare namespace F2 {
     GeometryAdjustParams,
     GeometryParams,
     Geometry,
+    CoordinateKind,
+    CoordinateRectParams,
+    CoordinatePolarParams,
+    CoordinateParams,
   };
 }
 
