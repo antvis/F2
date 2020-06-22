@@ -68,6 +68,7 @@ import {
 } from './Legend';
 import { G } from './G';
 import { PluginLifecycle, Plugin } from './Plugin';
+import { TooltipItem, Tooltip, TooltipParams } from './Tooltip';
 
 declare namespace F2 {
   export {
@@ -126,6 +127,9 @@ declare namespace F2 {
     G,
     PluginLifecycle,
     Plugin,
+    TooltipItem,
+    Tooltip,
+    TooltipParams,
   };
 }
 
