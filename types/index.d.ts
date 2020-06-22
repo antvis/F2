@@ -58,6 +58,14 @@ import {
   AxisLabelParams,
   AxisParams,
 } from './Axis';
+import {
+  LegendMarkerSymbol,
+  LegendMarkerParams,
+  LegendMarkerFunc,
+  LegendMarker,
+  LegendItem,
+  LegendParams,
+} from './Legend';
 
 declare namespace F2 {
   export {
@@ -107,6 +115,12 @@ declare namespace F2 {
     AxisTickLineParams,
     AxisLabelParams,
     AxisParams,
+    LegendMarkerSymbol,
+    LegendMarkerParams,
+    LegendMarkerFunc,
+    LegendMarker,
+    LegendItem,
+    LegendParams,
   };
 }
 
