@@ -50,6 +50,14 @@ import {
   CoordinatePolarParams,
   CoordinateParams,
 } from './Coordinate';
+import {
+  AxisPositionKind,
+  AxisLineParams,
+  AxisGridParams,
+  AxisTickLineParams,
+  AxisLabelParams,
+  AxisParams,
+} from './Axis';
 
 declare namespace F2 {
   export {
@@ -93,6 +101,12 @@ declare namespace F2 {
     CoordinateRectParams,
     CoordinatePolarParams,
     CoordinateParams,
+    AxisPositionKind,
+    AxisLineParams,
+    AxisGridParams,
+    AxisTickLineParams,
+    AxisLabelParams,
+    AxisParams,
   };
 }
 
