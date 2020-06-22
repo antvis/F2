@@ -66,6 +66,7 @@ import {
   LegendItem,
   LegendParams,
 } from './Legend';
+import { G } from './G';
 
 declare namespace F2 {
   export {
@@ -121,6 +122,7 @@ declare namespace F2 {
     LegendMarker,
     LegendItem,
     LegendParams,
+    G,
   };
 }
 
