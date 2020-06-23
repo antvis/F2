@@ -21,7 +21,7 @@ const SizeMixin = {
       this.set('_width', null);
     });
   },
-  getDefalutSize() {
+  getDefaultSize() {
     let defaultSize = this.get('defaultSize');
     if (!defaultSize) {
       const coord = this.get('coord');
@@ -95,7 +95,7 @@ const SizeMixin = {
   getNormalizedSize(obj) {
     let size = this.getAttrValue('size', obj);
     if (Util.isNil(size)) {
-      size = this.getDefalutSize();
+      size = this.getDefaultSize();
     } else {
       size = this._toNormalizedSize(size);
     }
@@ -104,7 +104,7 @@ const SizeMixin = {
   getSize(obj) {
     let size = this.getAttrValue('size', obj);
     if (Util.isNil(size)) {
-      const normalizeSize = this.getDefalutSize();
+      const normalizeSize = this.getDefaultSize();
       size = this._toCoordSize(normalizeSize);
     }
     return size;

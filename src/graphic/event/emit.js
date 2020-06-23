@@ -45,6 +45,7 @@ class EventEmit {
     for (let i = 0, len = events.length; i < len; i++) {
       if (events[i] === listener) {
         events.splice(i, 1);
+        i--;
       }
     }
   }

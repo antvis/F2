@@ -40,26 +40,33 @@ class GestureController {
     for (const key in gesture) {
       if ([ 'touchstart', 'touchmove', 'touchend' ].indexOf(key) !== -1) {
         const bindEvent = event => {
-          const records = useCalculate ? this.getEventPostionRecords(event, true) : null;
+          const records = useCalculate
+            ? this.getEventPositionRecords(event, true)
+            : null;
           gesture[key](records, event);
         };
         Util.addEventListener(dom, key, bindEvent);
         this._unbindEvent[key] = bindEvent;
       } else {
         hammer.on(key, event => {
-          const records = useCalculate ? this.getEventPostionRecords(event, false) : null;
+          const records = useCalculate
+            ? this.getEventPositionRecords(event, false)
+            : null;
           gesture[key](records, event);
         });
       }
     }
   }
-  getEventPostionRecords(event, _isOrigin) {
+  getEventPositionRecords(event, _isOrigin) {
     const { useOffset } = this.options;
     const canvasDom = this.chart.get('canvas').get('el');
     let x;
     let y;
     if (_isOrigin) {
-      const positionSource = event.targetTouches.length > 0 ? event.targetTouches[0] : event.changedTouches[0];
+      const positionSource =
+        event.targetTouches.length > 0
+          ? event.targetTouches[0]
+          : event.changedTouches[0];
       if (useOffset) {
         x = positionSource.clientX - canvasDom.offsetLeft;
         y = positionSource.clientY - canvasDom.offsetTop;
@@ -91,7 +98,13 @@ module.exports = {
   init(chart) {
     chart.pluginGesture = function({ gesture, options, hammerOptions }) {
       const canvasDom = chart.get('canvas').get('el');
-      const gestureController = new GestureController({ dom: canvasDom, gesture, options, hammerOptions, chart });
+      const gestureController = new GestureController({
+        dom: canvasDom,
+        gesture,
+        options,
+        hammerOptions,
+        chart
+      });
       gestureController.bindEvents();
       chart.set('gestureController', gestureController);
       return gestureController;

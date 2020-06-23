@@ -47,7 +47,7 @@ class Plot {
 
   /**
    * check the point is in the range of plot
-   * @param  {Nubmer}  x x value
+   * @param  {Number}  x x value
    * @param  {[type]}  y y value
    * @return {Boolean} return the result
    */
