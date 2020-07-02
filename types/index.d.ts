@@ -79,6 +79,7 @@ import {
   InteractionParams,
 } from './Interaction';
 import { GestureParams } from './Gesture';
+import { ScrollBarParams } from './ScrollBar';
 
 declare namespace F2 {
   export {
@@ -148,6 +149,7 @@ declare namespace F2 {
     InteractionSwipeParams,
     InteractionParams,
     GestureParams,
+    ScrollBarParams,
   };
 }
 
