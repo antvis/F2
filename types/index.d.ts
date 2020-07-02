@@ -69,6 +69,15 @@ import {
 import { G } from './G';
 import { PluginLifecycle, Plugin } from './Plugin';
 import { TooltipItem, Tooltip, TooltipParams } from './Tooltip';
+import {
+  InteractionKind,
+  InteractionPieSelectParams,
+  InteractionIntervalSelectParams,
+  InteractionPanParams,
+  InteractionPinchParams,
+  InteractionSwipeParams,
+  InteractionParams,
+} from './Interaction';
 
 declare namespace F2 {
   export {
@@ -130,6 +139,13 @@ declare namespace F2 {
     TooltipItem,
     Tooltip,
     TooltipParams,
+    InteractionKind,
+    InteractionPieSelectParams,
+    InteractionIntervalSelectParams,
+    InteractionPanParams,
+    InteractionPinchParams,
+    InteractionSwipeParams,
+    InteractionParams,
   };
 }
 
