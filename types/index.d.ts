@@ -78,6 +78,7 @@ import {
   InteractionSwipeParams,
   InteractionParams,
 } from './Interaction';
+import { GestureParams } from './Gesture';
 
 declare namespace F2 {
   export {
@@ -146,6 +147,7 @@ declare namespace F2 {
     InteractionPinchParams,
     InteractionSwipeParams,
     InteractionParams,
+    GestureParams,
   };
 }
 

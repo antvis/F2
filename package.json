@@ -125,6 +125,7 @@
     "@antv/scale": "0.1.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.7.7",
+    "@types/hammerjs": "^2.0.36",
     "hammerjs": "^2.0.8",
     "type-fest": "^0.15.1"
   }
