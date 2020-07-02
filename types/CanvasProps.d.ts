@@ -107,8 +107,10 @@ export interface CanvasBackgroundProps extends CanvasCommonProps {
 /**
  * 绘图属性。
  */
-export interface CanvasProps
-  extends CanvasLineProps,
-    CanvasTextProps,
-    CanvasPointProps,
-    CanvasBackgroundProps {}
+export type CanvasProps<
+  TExtra extends Record<any, any> = Record<any, any>
+> = CanvasLineProps &
+  CanvasTextProps &
+  CanvasPointProps &
+  CanvasBackgroundProps &
+  TExtra;

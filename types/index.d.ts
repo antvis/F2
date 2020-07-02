@@ -80,6 +80,7 @@ import {
 } from './Interaction';
 import { GestureParams } from './Gesture';
 import { ScrollBarParams } from './ScrollBar';
+import { PieLabelText, PieLabelParams } from './PieLabel';
 
 declare namespace F2 {
   export {
@@ -150,6 +151,8 @@ declare namespace F2 {
     InteractionParams,
     GestureParams,
     ScrollBarParams,
+    PieLabelText,
+    PieLabelParams,
   };
 }
 
