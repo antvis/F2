@@ -1,5 +1,5 @@
 ---
-title: 其他图表
+title: 词云图
 order: 0
 icon: other
 ---
