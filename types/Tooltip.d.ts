@@ -1,27 +1,36 @@
 import { CanvasProps } from './CanvasProps';
+import { DataRecord } from './Data';
 
+// ref: https://github.com/antvis/F2/blob/master/src/plugin/tooltip.js#L401
 /**
  * 提示项目。
  */
-export interface TooltipItem {
+export interface TooltipItem<TRecord extends DataRecord> {
+  x: number;
+  y: number;
+  color: string;
+  origin: TRecord;
   name: string;
-  value: any;
+  value: string;
+  title: string;
 }
 
+// ref: https://github.com/antvis/F2/blob/master/src/plugin/tooltip.js#L318
 /**
  * 提示。
  */
-export interface Tooltip {
+export interface Tooltip<TRecord extends DataRecord> {
   x: number;
   y: number;
-  title: string;
-  items: TooltipItem[];
+  tooltip: any;
+  items: TooltipItem<TRecord>[];
+  tooltipMarkerCfg: any;
 }
 
 /**
  * 提示参数。
  */
-export interface TooltipParams {
+export interface TooltipParams<TRecord extends DataRecord> {
   /**
    * 当移出触发区域，是否仍显示提示框内容。
    * 默认为 false，移出触发区域 tooltip 消失，设置为 true 可以保证一直显示提示框内容。
@@ -151,15 +160,15 @@ export interface TooltipParams {
   /**
    * tooltip 显示时的回调函数。
    */
-  onShow?: (tooltip: Tooltip) => any;
+  onShow?: (tooltip: Tooltip<TRecord>) => any;
 
   /**
    * tooltip 隐藏时的回调函数。
    */
-  onHide?: (tooltip: Tooltip) => any;
+  onHide?: (tooltip: Tooltip<TRecord>) => any;
 
   /**
    * tooltip 内容发生改变时的回调函数。
    */
-  onChange?: (tooltip: Tooltip) => any;
+  onChange?: (tooltip: Tooltip<TRecord>) => any;
 }

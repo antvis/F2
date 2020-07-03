@@ -355,7 +355,7 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    *
    * @param params 配置参数
    */
-  tooltip(params: TooltipParams): this;
+  tooltip(params: TooltipParams<TRecord>): this;
 
   /**
    * 配置辅助元素。
