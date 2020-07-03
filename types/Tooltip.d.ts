@@ -10,7 +10,7 @@ export interface TooltipItem<TRecord extends DataRecord> {
   y: number;
   color: string;
   origin: TRecord;
-  name: string;
+  name: string | null;
   value: string;
   title: string;
 }

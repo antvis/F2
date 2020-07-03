@@ -35,6 +35,7 @@ import {
   AnimateConfig,
   AnimateElementParams,
   AnimateChartParams,
+  Animate,
 } from './Animate';
 import {
   GeometryKind,
@@ -132,6 +133,7 @@ declare namespace F2 {
     AnimateConfig,
     AnimateElementParams,
     AnimateChartParams,
+    Animate,
     GeometryKind,
     GeometryShapeKind,
     GeometryAdjustKind,

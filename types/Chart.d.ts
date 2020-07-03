@@ -541,7 +541,7 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    */
   interaction<TKind extends InteractionKind>(
     kind: TKind,
-    params: InteractionParams<TKind, TRecord>,
+    params?: InteractionParams<TKind, TRecord>,
   ): void;
 
   /**
@@ -550,7 +550,7 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    * @param kind 交互行为类型
    * @param params 配置参数
    */
-  interaction<TParams>(kind: string, params: TParams): void;
+  interaction<TParams>(kind: string, params?: TParams): void;
 
   /**
    * 配置饼图文本。

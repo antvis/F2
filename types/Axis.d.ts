@@ -74,7 +74,7 @@ export interface AxisParams {
    */
   grid?:
     | AxisGridParams
-    | ((text: string, index: number, total: number) => AxisGridParams)
+    | ((text: string | number, index: number, total: number) => AxisGridParams)
     | null;
 
   /**

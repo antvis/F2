@@ -118,3 +118,21 @@ export type AnimateElementParams = Partial<
 export type AnimateChartParams = Partial<
   Record<AnimateElement, boolean | AnimateElementParams>
 >;
+
+/**
+ * 动画管理。
+ */
+export const Animate: {
+  /**
+   * 注册动画。
+   *
+   * @param name 动画名称
+   * @param descriptor 动画描述
+   *
+   * @todo 完善参数 descriptor 的类型
+   */
+  registerAnimation(
+    name: string,
+    descriptor: (shape: any, animateCfg: any) => any,
+  ): void;
+};
