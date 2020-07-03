@@ -96,6 +96,7 @@ import {
   GuideResult,
   Guide,
 } from './Guide';
+import { ChartParams, ChartInnerProps, ChartPlugins, Chart } from './Chart';
 
 declare namespace F2 {
   export {
@@ -181,6 +182,10 @@ declare namespace F2 {
     GuideRegionFilterParams,
     GuideResult,
     Guide,
+    ChartParams,
+    ChartInnerProps,
+    ChartPlugins,
+    Chart,
   };
 }
 

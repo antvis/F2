@@ -1,4 +1,3 @@
-import { LiteralUnion } from 'type-fest';
 import { AnimateConfig } from './Animate';
 import { CanvasProps } from './CanvasProps';
 import { DataRecord } from './Data';
@@ -6,10 +5,12 @@ import { DataRecord } from './Data';
 /**
  * 交互行为类型。
  */
-export type InteractionKind = LiteralUnion<
-  'pie-select' | 'interval-select' | 'pan' | 'pinch' | 'swipe',
-  string
->;
+export type InteractionKind =
+  | 'pie-select'
+  | 'interval-select'
+  | 'pan'
+  | 'pinch'
+  | 'swipe';
 
 /**
  * 饼图选中参数。
@@ -347,8 +348,7 @@ export interface InteractionSwipeParams {
  */
 export type InteractionParams<
   TKind extends InteractionKind,
-  TRecord extends DataRecord,
-  TCustomInteractionParams = unknown
+  TRecord extends DataRecord
 > = TKind extends 'pie-select'
   ? InteractionPieSelectParams<TRecord>
   : TKind extends 'interval-select'
@@ -359,4 +359,4 @@ export type InteractionParams<
   ? InteractionPinchParams
   : TKind extends 'swipe'
   ? InteractionSwipeParams
-  : TCustomInteractionParams;
+  : never;
