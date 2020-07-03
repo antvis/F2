@@ -97,6 +97,7 @@ import {
   Guide,
 } from './Guide';
 import { Shape } from './Shape';
+import { Global } from './Global';
 import { ChartParams, ChartInnerProps, ChartPlugins, Chart } from './Chart';
 
 declare namespace F2 {
@@ -184,6 +185,7 @@ declare namespace F2 {
     GuideResult,
     Guide,
     Shape,
+    Global,
     ChartParams,
     ChartInnerProps,
     ChartPlugins,
