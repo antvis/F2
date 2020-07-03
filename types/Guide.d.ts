@@ -69,7 +69,7 @@ export interface GuideTextParams {
   /**
    * 辅助文本的显示内容。
    */
-  content?: string;
+  content?: string | number;
 
   /**
    * 辅助文本的显示样式。
@@ -144,7 +144,7 @@ export interface GuideTagParams {
   /**
    * 辅助标签的显示内容。
    */
-  content?: string;
+  content?: string | number;
 
   /**
    * 辅助标签的箭头方向，默认自动计算，用户也可以手动设置，该方向相对于 point，
