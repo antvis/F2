@@ -81,6 +81,21 @@ import {
 import { GestureParams } from './Gesture';
 import { ScrollBarParams } from './ScrollBar';
 import { PieLabelText, PieLabelParams } from './PieLabel';
+import {
+  GuideElementPositionLiteral,
+  GuideElementPositionFunc,
+  GuideElementPosition,
+  GuideLineParams,
+  GuideTextParams,
+  GuidePointParams,
+  GuideTagParams,
+  GuideRectParams,
+  GuideHtmlParams,
+  GuideArcParams,
+  GuideRegionFilterParams,
+  GuideResult,
+  Guide,
+} from './Guide';
 
 declare namespace F2 {
   export {
@@ -153,6 +168,19 @@ declare namespace F2 {
     ScrollBarParams,
     PieLabelText,
     PieLabelParams,
+    GuideElementPositionLiteral,
+    GuideElementPositionFunc,
+    GuideElementPosition,
+    GuideLineParams,
+    GuideTextParams,
+    GuidePointParams,
+    GuideTagParams,
+    GuideRectParams,
+    GuideHtmlParams,
+    GuideArcParams,
+    GuideRegionFilterParams,
+    GuideResult,
+    Guide,
   };
 }
 
