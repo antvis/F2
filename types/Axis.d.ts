@@ -1,4 +1,5 @@
 import { CanvasLineProps, CanvasTextProps } from './CanvasProps';
+import { DataRecord, DataField, DataValue } from './Data';
 
 /**
  * 坐标轴线的配置信息。
@@ -58,7 +59,10 @@ export type AxisPositionKind = 'bottom' | 'left' | 'right';
 /**
  * 坐标轴参数。
  */
-export interface AxisParams {
+export interface AxisParams<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> {
   /**
    * 坐标轴线的配置信息。如果值为 null，则不显示。
    */
@@ -74,7 +78,11 @@ export interface AxisParams {
    */
   grid?:
     | AxisGridParams
-    | ((text: string | number, index: number, total: number) => AxisGridParams)
+    | ((
+        value: DataValue<TRecord, TField>,
+        index: number,
+        total: number,
+      ) => AxisGridParams)
     | null;
 
   /**
@@ -87,7 +95,11 @@ export interface AxisParams {
    */
   label?:
     | AxisLabelParams
-    | ((text: string, index: number, total: number) => AxisLabelParams)
+    | ((
+        value: DataValue<TRecord, TField>,
+        index: number,
+        total: number,
+      ) => AxisLabelParams)
     | null;
 
   /**

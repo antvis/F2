@@ -24,8 +24,6 @@ export interface ScaleCommonProps<
   /**
    * 回调函数，用于格式化坐标轴刻度点的文本显示，
    * 会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。
-   *
-   * @todo 去除 any
    */
   formatter?: (value: DataValue<TRecord, TField>) => string | number;
 
@@ -129,6 +127,11 @@ export interface ScaleTimeCatProps<
    * 数据的格式化格式，默认：`YYYY-MM-DD`。
    */
   mask?: string;
+
+  /**
+   * 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。
+   */
+  values?: string[];
 }
 
 /**

@@ -99,6 +99,7 @@ import {
 } from './Guide';
 import { Shape } from './Shape';
 import { Global } from './Global';
+import { IntervalLabelParams } from './IntervalLabel';
 import { ChartParams, ChartInnerProps, ChartPlugins, Chart } from './Chart';
 
 declare namespace F2 {

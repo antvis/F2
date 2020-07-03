@@ -67,7 +67,13 @@ export type GeometryShapeKind<
 /**
  * 几何标记对象的数据调整类型。
  */
-export type GeometryAdjustKind = 'stack' | 'dodge';
+export type GeometryAdjustKind =
+  // 堆叠
+  | 'stack'
+  // 分组
+  | 'dodge'
+  // 对称
+  | 'symmetric';
 
 /**
  * 几何标记对象的数据调整参数。
@@ -114,7 +120,7 @@ export interface Geometry<
    */
   color<TField extends DataField<TRecord>>(
     field: TField,
-    color?: string | string[] | ((value: TRecord[TField]) => string),
+    color?: string | string[] | ((value: TRecord[TField]) => string | void),
   ): this;
 
   /**
@@ -125,7 +131,7 @@ export interface Geometry<
    */
   color<TFields extends [DataField<TRecord>, DataField<TRecord>]>(
     field: TFields,
-    color?: string | string[] | ((...values: TFields) => string),
+    color?: string | string[] | ((...values: TFields) => string | void),
   ): this;
 
   /**
@@ -136,7 +142,7 @@ export interface Geometry<
    */
   color<TField extends DataField<TRecord>>(
     field: TField[],
-    color?: string | string[] | ((...values: any[]) => string),
+    color?: string | string[] | ((...values: any[]) => string | void),
   ): this;
 
   /**
@@ -147,7 +153,7 @@ export interface Geometry<
    */
   color(
     field: string,
-    colors?: string | string[] | ((...values: any[]) => string),
+    colors?: string | string[] | ((...values: any[]) => string | void),
   ): this;
 
   /**
@@ -168,7 +174,7 @@ export interface Geometry<
     kind?:
       | GeometryShapeKind<TGeometryKind>
       | GeometryShapeKind<TGeometryKind>[]
-      | ((value: TRecord[TField]) => GeometryShapeKind<TGeometryKind>),
+      | ((value: TRecord[TField]) => GeometryShapeKind<TGeometryKind> | void),
   ): this;
 
   /**
@@ -176,7 +182,7 @@ export interface Geometry<
    */
   shape<TField extends DataField<TRecord>>(
     field: TField,
-    kind?: string | string[] | ((value: TRecord[TField]) => string),
+    kind?: string | string[] | ((value: TRecord[TField]) => string | void),
   ): this;
 
   /**

@@ -101,7 +101,7 @@ export interface CanvasPointProps extends CanvasCommonProps {
  */
 export interface CanvasBackgroundProps extends CanvasCommonProps {
   padding?: number | number[];
-  radius?: number;
+  radius?: number | number[];
 }
 
 /**

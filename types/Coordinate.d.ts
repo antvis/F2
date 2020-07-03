@@ -11,6 +11,11 @@ export interface CoordinateRectParams {
    * 坐标系翻转。
    */
   transposed?: boolean;
+
+  /**
+   * @todo 文档未说明参数，在漏斗图示例中有出现
+   */
+  scale?: number[];
 }
 
 /**
@@ -36,6 +41,11 @@ export interface CoordinatePolarParams {
    * 内环半径，数值为 0 - 1 范围。
    */
   innerRadius?: number;
+
+  /**
+   * @deprecated 请使用 innerRadius 代替
+   */
+  inner?: number;
 
   /**
    * 半径，数值为 0 - 1 范围。

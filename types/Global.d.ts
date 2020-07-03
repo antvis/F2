@@ -1,5 +1,6 @@
 import { Except, PartialDeep } from 'type-fest';
 import { CanvasProps } from './CanvasProps';
+import { AxisParams } from './Axis';
 
 /**
  * 全局配置项。
@@ -79,6 +80,13 @@ export const Global: {
    * 不同 shape 的宽度比配置。
    */
   widthRatio: Record<string, number>;
+
+  /**
+   * 坐标轴默认配置。
+   *
+   * @todo 细化类型
+   */
+  _defaultAxis: AxisParams<any, any>;
 
   /**
    * 自定义主题。

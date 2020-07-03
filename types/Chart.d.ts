@@ -12,12 +12,13 @@ import { LegendParams } from './Legend';
 import { TooltipParams } from './Tooltip';
 import { Guide } from './Guide';
 import { AnimateChartParams } from './Animate';
-import { Geometry } from './Geometry';
+import { Geometry, GeometryParams } from './Geometry';
 import { Point } from './Point';
 import { InteractionKind, InteractionParams } from './Interaction';
 import { PieLabelParams } from './PieLabel';
 import { ScrollBarParams } from './ScrollBar';
 import { GestureParams } from './Gesture';
+import { IntervalLabelParams } from './IntervalLabel';
 
 /**
  * 图表参数。
@@ -307,7 +308,10 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    * @param field 要操作的字段名
    * @param params 配置参数
    */
-  axis(field: DataField<TRecord>, params: AxisParams): this;
+  axis<TField extends DataField<TRecord>>(
+    field: TField,
+    params: AxisParams<TRecord, TField>,
+  ): this;
 
   /**
    * 关闭或启用图例。
@@ -325,12 +329,19 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
   legend(field: DataField<TRecord>, enable: boolean): this;
 
   /**
+   * 配置图例。
+   *
+   * @param params 配置参数
+   */
+  legend(params: LegendParams): this;
+
+  /**
    * 配置特定字段的图例。
    *
    * @param field 要操作的字段名
    * @param params 配置参数
    */
-  legend(field: DataField<TRecord>, params: LegendParams<TRecord>): this;
+  legend(field: DataField<TRecord>, params: LegendParams): this;
 
   /**
    * 过滤数据，如果存在对应的图例，则过滤掉的字段置灰。
@@ -378,38 +389,52 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
 
   /**
    * 创建 point（点）的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  point(): Geometry<'point', TRecord>;
+  point(params?: GeometryParams): Geometry<'point', TRecord>;
 
   /**
    * 创建 line（线）的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  line(): Geometry<'line', TRecord>;
+  line(params?: GeometryParams): Geometry<'line', TRecord>;
 
   /**
    * 创建 area（区域）的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  area(): Geometry<'area', TRecord>;
+  area(params?: GeometryParams): Geometry<'area', TRecord>;
 
   /**
    * 创建 path（路径）的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  path(): Geometry<'path', TRecord>;
+  path(params?: GeometryParams): Geometry<'path', TRecord>;
 
   /**
    * 创建 interval（柱）的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  interval(): Geometry<'interval', TRecord>;
+  interval(params?: GeometryParams): Geometry<'interval', TRecord>;
 
   /**
    * 创建 polygon（多边形）的几何标记对象并返回该对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  polygon(): Geometry<'polygon', TRecord>;
+  polygon(params?: GeometryParams): Geometry<'polygon', TRecord>;
 
   /**
    * 创建 schema 的几何标记对象并返回该对象。
+   *
+   * @param params 配置参数
    */
-  schema(): Geometry<'schema', TRecord>;
+  schema(params?: GeometryParams): Geometry<'schema', TRecord>;
 
   /**
    * 渲染图表，在最后调用。
@@ -572,4 +597,9 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    * @param params 配置参数
    */
   pluginGesture(params: GestureParams): void;
+
+  /**
+   * @todo 文档未说明参数，漏斗图示例中有出现
+   */
+  intervalLabel(params: IntervalLabelParams<TRecord>): void;
 }

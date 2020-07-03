@@ -1,5 +1,4 @@
 import { CanvasProps } from './CanvasProps';
-import { DataRecord, DataField } from './Data';
 
 /**
  * 图例标记的形状。
@@ -37,16 +36,16 @@ export type LegendMarker =
 /**
  * 图例项目。
  */
-export interface LegendItem<TRecord extends DataRecord> {
+export interface LegendItem extends CanvasProps {
   /**
    * 名称。
    */
-  name: DataField<TRecord>;
+  name: string;
 
   /**
    * 值。
    */
-  value?: any;
+  value?: string | number;
 
   /**
    * 标记。
@@ -59,7 +58,7 @@ export interface LegendItem<TRecord extends DataRecord> {
   checked?: boolean;
 }
 
-export interface LegendParams<TRecord extends DataRecord> {
+export interface LegendParams {
   /**
    * 图例的显示位置。默认为 top。
    */
@@ -180,7 +179,7 @@ export interface LegendParams<TRecord extends DataRecord> {
   /**
    * 图例项列表。
    */
-  items?: LegendItem<TRecord>[];
+  items?: LegendItem[];
 
   /**
    * 用于自定义鼠标点击图例项的交互，当 clickable 为 false 时不生效。
