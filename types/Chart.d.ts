@@ -263,7 +263,10 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    * @param field 要操作的字段名
    * @param fieldScale 要应用的度量配置
    */
-  scale(field: DataField<TRecord>, fieldScale?: DataFieldScale): void;
+  scale<TField extends DataField<TRecord>>(
+    field: TField,
+    fieldScale?: DataFieldScale<TRecord, TField>,
+  ): void;
 
   /**
    * 选择并配置笛卡尔坐标系。

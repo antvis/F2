@@ -1,4 +1,5 @@
 import { Except } from 'type-fest';
+import { DataRecord, DataField, DataValue } from './Data';
 
 /**
  * 度量类型。
@@ -10,7 +11,11 @@ export type ScaleType = 'identity' | 'linear' | 'cat' | 'timeCat';
  *
  * @see https://f2.antv.vision/zh/docs/api/chart/scale#%E9%80%9A%E7%94%A8%E5%B1%9E%E6%80%A7
  */
-export interface ScaleCommonProps<TScaleType extends ScaleType> {
+export interface ScaleCommonProps<
+  TScaleType extends ScaleType,
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> {
   /**
    * 度量类型。
    */
@@ -22,7 +27,7 @@ export interface ScaleCommonProps<TScaleType extends ScaleType> {
    *
    * @todo 去除 any
    */
-  formatter?: (...args: any[]) => any;
+  formatter?: (value: DataValue<TRecord, TField>) => string | number;
 
   /**
    * 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
@@ -53,14 +58,20 @@ export interface ScaleCommonProps<TScaleType extends ScaleType> {
 /**
  * identity 度量属性。
  */
-export interface ScaleIdentityProps extends ScaleCommonProps<'identity'> {}
+export interface ScaleIdentityProps<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> extends ScaleCommonProps<'identity', TRecord, TField> {}
 
 /**
  * linear 度量属性。
  *
  * @see https://f2.antv.vision/zh/docs/api/chart/scale#linear
  */
-export interface ScaleLinearProps extends ScaleCommonProps<'linear'> {
+export interface ScaleLinearProps<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> extends ScaleCommonProps<'linear', TRecord, TField> {
   /**
    * 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。
    * 例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100]。
@@ -89,7 +100,10 @@ export interface ScaleLinearProps extends ScaleCommonProps<'linear'> {
  *
  * @see https://f2.antv.vision/zh/docs/api/chart/scale#cat
  */
-export interface ScaleCatProps extends ScaleCommonProps<'cat'> {
+export interface ScaleCatProps<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> extends ScaleCommonProps<'cat', TRecord, TField> {
   /**
    * 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。
    */
@@ -107,7 +121,10 @@ export interface ScaleCatProps extends ScaleCommonProps<'cat'> {
  *
  * @see https://f2.antv.vision/zh/docs/api/chart/scale#timecat
  */
-export interface ScaleTimeCatProps extends ScaleCommonProps<'timeCat'> {
+export interface ScaleTimeCatProps<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> extends ScaleCommonProps<'timeCat', TRecord, TField> {
   /**
    * 数据的格式化格式，默认：`YYYY-MM-DD`。
    */
@@ -119,10 +136,13 @@ export interface ScaleTimeCatProps extends ScaleCommonProps<'timeCat'> {
  *
  * @see https://f2.antv.vision/zh/docs/api/chart/scale
  */
-export type ScaleProps =
-  | ScaleIdentityProps
-  | ScaleLinearProps
+export type ScaleProps<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> =
+  | ScaleIdentityProps<TRecord, TField>
+  | ScaleLinearProps<TRecord, TField>
   // type 可不填，默认为 linear
-  | Except<ScaleLinearProps, 'type'>
-  | ScaleCatProps
-  | ScaleTimeCatProps;
+  | Except<ScaleLinearProps<TRecord, TField>, 'type'>
+  | ScaleCatProps<TRecord, TField>
+  | ScaleTimeCatProps<TRecord, TField>;

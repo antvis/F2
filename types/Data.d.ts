@@ -6,6 +6,14 @@ import { ScaleProps } from './Scale';
 export type DataRecord = Record<any, any>;
 
 /**
+ * 数据值。
+ */
+export type DataValue<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> = TRecord[TField];
+
+/**
  * 数据字段。
  */
 export type DataField<TRecord extends DataRecord> = keyof TRecord;
@@ -18,11 +26,14 @@ export type Data<TRecord extends DataRecord> = TRecord[];
 /**
  * 数据字段的度量。
  */
-export type DataFieldScale = ScaleProps;
+export type DataFieldScale<
+  TRecord extends DataRecord,
+  TField extends DataField<TRecord>
+> = ScaleProps<TRecord, TField>;
 
 /**
  * 数据记录的度量。
  */
-export type DataRecordScale<TRecord extends DataRecord> = Partial<
-  Record<DataField<TRecord>, DataFieldScale>
->;
+export type DataRecordScale<TRecord extends DataRecord> = {
+  [Field in keyof TRecord]?: DataFieldScale<TRecord, Field>;
+};
