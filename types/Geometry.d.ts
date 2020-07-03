@@ -212,10 +212,11 @@ export interface Geometry<
    */
   style<TField extends DataField<TRecord>>(
     field: TField,
-    style: CanvasProps &
-      {
-        [K in keyof CanvasProps]?: (value: TRecord[TField]) => CanvasProps[K];
-      },
+    style: {
+      [K in keyof CanvasProps]?:
+        | CanvasProps[K]
+        | ((value: TRecord[TField]) => CanvasProps[K]);
+    },
   ): this;
 
   /**
