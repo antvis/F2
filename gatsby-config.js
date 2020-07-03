@@ -158,7 +158,7 @@ module.exports = {
         slug: 'heatmap',
         icon: 'heatmap',
         title: {
-          zh: '关系图',
+          zh: '热力图',
           en: 'Heatmap Charts'
         }
       },

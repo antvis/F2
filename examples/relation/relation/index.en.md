@@ -1,5 +1,5 @@
 ---
-title: Relation Chart
+title: treemap
 order: 0
 icon: relation
 ---

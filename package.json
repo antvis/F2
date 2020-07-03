@@ -80,7 +80,7 @@
     "site:develop": "BABEL_ENV=site gatsby develop --open",
     "site:build": "BABEL_ENV=site npm run site:clean && gatsby build --prefix-paths",
     "site:clean": "BABEL_ENV=site gatsby clean",
-    "site:deploy": "npm run site:build && gh-pages -d public",
+    "site:deploy": "BABEL_ENV=site npm run site:build && gh-pages -d public",
     "build": "npm run build-lib && npm run build-es && npm run build-umd",
     "build-lib": "rm -rf lib && babel src --out-dir lib",
     "build-es": "rm -rf es && BABEL_ENV=esm babel src --out-dir es",

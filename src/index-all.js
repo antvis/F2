@@ -20,7 +20,7 @@ import * as Animation from './animation/detail';
 import * as ScrollBar from './plugin/scroll-bar';
 import * as PieLabel from './plugin/pie-label';
 import * as intervalLabel from './plugin/interval-label';
-import * as Animate from './animation/animate';
+import Animate from './animation/animate';
 import './interaction';
 import Interaction from './interaction/base';
 
