@@ -151,12 +151,17 @@ export interface Geometry<
   ): this;
 
   /**
-   * 将数据值映射到图形的形状上的方法。
+   * 将数据值映射到内置的图形的形状上的方法。
    */
   shape(kind: GeometryShapeKind<TGeometryKind>): this;
 
   /**
-   * 将数据值映射到图形的形状上的方法。
+   * 将数据值映射到自定义的图形的形状上的方法。
+   */
+  shape(kind: string): this;
+
+  /**
+   * 将数据值映射到内置的图形的形状上的方法。
    */
   shape<TField extends DataField<TRecord>>(
     field: TField,
@@ -164,6 +169,14 @@ export interface Geometry<
       | GeometryShapeKind<TGeometryKind>
       | GeometryShapeKind<TGeometryKind>[]
       | ((value: TRecord[TField]) => GeometryShapeKind<TGeometryKind>),
+  ): this;
+
+  /**
+   * 将数据值映射到自定义的图形的形状上的方法。
+   */
+  shape<TField extends DataField<TRecord>>(
+    field: TField,
+    kind?: string | string[] | ((value: TRecord[TField]) => string),
   ): this;
 
   /**
