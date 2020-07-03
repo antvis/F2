@@ -1,3 +1,5 @@
+import { Except } from 'type-fest';
+
 /**
  * 度量类型。
  */
@@ -120,5 +122,7 @@ export interface ScaleTimeCatProps extends ScaleCommonProps<'timeCat'> {
 export type ScaleProps =
   | ScaleIdentityProps
   | ScaleLinearProps
+  // type 可不填，默认为 linear
+  | Except<ScaleLinearProps, 'type'>
   | ScaleCatProps
   | ScaleTimeCatProps;
