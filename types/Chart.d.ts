@@ -82,34 +82,119 @@ export interface ChartParams {
 }
 
 export interface ChartInnerProps<TRecord extends DataRecord> {
-  /** 对应 canvas 的 id */
+  /**
+   * 对应 canvas 的 id。
+   */
   id: string;
 
-  /** 当前的图表绘图区域和画布边框的间距 */
+  /**
+   * 当前的图表绘图区域和画布边框的间距。
+   */
   padding: Exclude<ChartParams['padding'], undefined>;
 
-  /** 原始数据 */
+  /**
+   * 原始数据。
+   */
   data: Data<TRecord>;
 
-  /** 图表宽度 */
+  /**
+   * 图表宽度。
+   */
   width: Exclude<ChartParams['width'], undefined>;
 
-  /** 图表高度 */
+  /**
+   * 图表高度。
+   */
   height: Exclude<ChartParams['height'], undefined>;
 
-  /** 图表的屏幕像素比 */
+  /**
+   * 图表的屏幕像素比。
+   */
   pixelRatio: Exclude<ChartParams['pixelRatio'], undefined>;
 
-  /** 对应 canvas 的 dom 对象 */
+  /**
+   * 对应 canvas 的 dom 对象。
+   */
   el: Exclude<ChartParams['el'], undefined>;
 
-  // TODO
-  /** 对应的 canvas 对象（G.Canvas） */
+  /**
+   * 对应的 canvas 对象（G.Canvas）。
+   *
+   * @todo 细化类型
+   */
   canvas: any;
 
-  // TODO
-  /** chart render 之后可获取，返回所有的 geoms 对象 */
+  /**
+   * chart render 之后可获取，返回所有的 geoms 对象。
+   *
+   * @todo 细化类型
+   */
   geoms: any;
+
+  /**
+   * 坐标系对象。
+   */
+  coord:
+    | {
+        /**
+         * 是否是直角坐标系，直角坐标系下为 true。
+         */
+        isRect: true;
+        /**
+         * 判断是否是极坐标，极坐标下为 true。
+         */
+        isPolar: false;
+        /**
+         * 坐标系的起始点，F2 图表的坐标系原点位于左下角。
+         */
+        start: Point;
+        /**
+         * 坐标系右上角的画布坐标。
+         */
+        end: Point;
+        /**
+         * 是否发生转置，true 表示发生了转置。
+         */
+        transposed: boolean;
+      }
+    | {
+        /**
+         * 是否是直角坐标系，直角坐标系下为 true。
+         */
+        isRect: false;
+        /**
+         * 判断是否是极坐标，极坐标下为 true。
+         */
+        isPolar: true;
+        /**
+         * 极坐标的起始角度，弧度制。
+         */
+        startAngle: number;
+        /**
+         * 极坐标的结束角度，弧度制。
+         */
+        endAngle: number;
+        /**
+         * 绘制环图时，设置内部空心半径，相对值，0 至 1 范围。
+         */
+        innerRadius: number;
+        /**
+         * 设置圆的半径，相对值，0 至 1 范围。
+         */
+        radius: number;
+        /**
+         * 是否发生转置，true 表示发生了转置。
+         */
+        transposed: boolean;
+        /**
+         * 极坐标的圆心所在的画布坐标。
+         */
+        center: Point;
+        /**
+         * 极坐标的半径值。
+         */
+        circleRadius: number;
+      };
 }
 
 /**
@@ -150,6 +235,8 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
 
   /**
    * 获取 chart 内部的属性。
+   *
+   * @param prop 属性名
    */
   get<TProp extends keyof ChartInnerProps<TRecord>>(
     prop: TProp,
