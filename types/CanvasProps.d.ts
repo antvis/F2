@@ -65,8 +65,8 @@ export interface CanvasLineProps extends CanvasCommonProps {
  * @see https://f2.antv.vision/zh/docs/api/canvas#%E6%96%87%E6%9C%AC%E5%B1%9E%E6%80%A7
  */
 export interface CanvasTextProps extends CanvasCommonProps {
-  textAlign?: 'center';
-  textBaseline?: 'top';
+  textAlign?: 'start' | 'center' | 'end';
+  textBaseline?: 'top' | 'middle' | 'bottom';
   fontStyle?: 'normal' | 'italic' | 'oblique';
   fontSize?: number;
   fontFamily?: string;
