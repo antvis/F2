@@ -538,8 +538,6 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
 
   /**
    * 获取图例的 items，用于图例相关的操作。
-   *
-   * @todo 细化返回类型
    */
   getLegendItems(): Partial<Record<DataField<TRecord>, LegendItem[]>>;
 
