@@ -8,7 +8,7 @@ import {
 import { Plugin } from './Plugin';
 import { CoordinateParams, CoordinateKind } from './Coordinate';
 import { AxisParams } from './Axis';
-import { LegendParams } from './Legend';
+import { LegendParams, LegendItem } from './Legend';
 import { TooltipParams } from './Tooltip';
 import { Guide } from './Guide';
 import { AnimateChartParams } from './Animate';
@@ -19,6 +19,7 @@ import { PieLabelParams } from './PieLabel';
 import { ScrollBarParams } from './ScrollBar';
 import { GestureParams } from './Gesture';
 import { IntervalLabelParams } from './IntervalLabel';
+import { LegendController } from './LegendController';
 
 /**
  * 图表参数。
@@ -196,6 +197,16 @@ export interface ChartInnerProps<TRecord extends DataRecord> {
          */
         circleRadius: number;
       };
+
+  /**
+   * 图示控制器。
+   */
+  legendController: LegendController;
+
+  /**
+   * @todo 补全所有的内部属性后去除该项
+   */
+  [key: string]: any;
 }
 
 /**
@@ -530,7 +541,7 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    *
    * @todo 细化返回类型
    */
-  getLegendItems(): any[];
+  getLegendItems(): Partial<Record<DataField<TRecord>, LegendItem[]>>;
 
   /**
    * 获取图表 X 轴对应的度量。

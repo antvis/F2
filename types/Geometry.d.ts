@@ -57,7 +57,7 @@ export type GeometryShapeKind<
   : TGeometryKind extends 'area'
   ? 'area' | 'smooth'
   : TGeometryKind extends 'interval'
-  ? 'rect'
+  ? 'rect' | 'pyramid' | 'funnel'
   : TGeometryKind extends 'polygon'
   ? 'polygon'
   : TGeometryKind extends 'schema'

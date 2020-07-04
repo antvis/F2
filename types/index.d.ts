@@ -67,6 +67,11 @@ import {
   LegendItem,
   LegendParams,
 } from './Legend';
+import {
+  LegendControllerLegend,
+  LegendControllerLegends,
+  LegendController,
+} from './LegendController';
 import { G } from './G';
 import { PluginLifecycle, Plugin } from './Plugin';
 import { TooltipItem, Tooltip, TooltipParams } from './Tooltip';
@@ -157,6 +162,9 @@ declare namespace F2 {
     LegendMarker,
     LegendItem,
     LegendParams,
+    LegendControllerLegend,
+    LegendControllerLegends,
+    LegendController,
     G,
     PluginLifecycle,
     Plugin,
@@ -189,6 +197,7 @@ declare namespace F2 {
     Guide,
     Shape,
     Global,
+    IntervalLabelParams,
     ChartParams,
     ChartInnerProps,
     ChartPlugins,

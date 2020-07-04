@@ -45,7 +45,7 @@ export interface LegendItem extends CanvasProps {
   /**
    * 值。
    */
-  value?: string | number;
+  dataValue?: string | number;
 
   /**
    * 标记。
