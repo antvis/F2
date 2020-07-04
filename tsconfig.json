@@ -4,7 +4,11 @@
     // support export default
     "esModuleInterop": true,
     // disable @types/* check
-    "typeRoots": []
+    "typeRoots": [],
+    "baseUrl": ".",
+    "paths": {
+      "@antv/f2": ["."]
+    }
   },
-  "include": ["./types"]
+  "include": ["./types/", "./types-test/"]
 }
