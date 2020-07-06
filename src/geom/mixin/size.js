@@ -3,9 +3,7 @@
  * @author sima.zhang1990@gmail.com
  * @author dxq613@gmail.com
  */
-import {
-  EVENT_AFTER_SIZE_CHANGE
-} from '../../chart/const';
+import { EVENT_AFTER_SIZE_CHANGE } from '../../chart/const';
 
 import { uniq, isNil } from '../../util/common';
 import Global from '../../global';
@@ -20,7 +18,7 @@ const SizeMixin = {
       this.set('_width', null);
     });
   },
-  getDefalutSize() {
+  getDefaultSize() {
     let defaultSize = this.get('defaultSize');
     if (!defaultSize) {
       const coord = this.get('coord');
@@ -40,7 +38,7 @@ const SizeMixin = {
         }
       } else {
         if (xScale.isLinear) {
-          normalizeSize *= (range[1] - range[0]);
+          normalizeSize *= range[1] - range[0];
         }
         widthRatio = Global.widthRatio.column;
       }
@@ -65,7 +63,9 @@ const SizeMixin = {
     });
     let width = 0;
     if (start && end) {
-      width = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+      width = Math.sqrt(
+        Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
+      );
     }
     return width;
   },
@@ -94,7 +94,7 @@ const SizeMixin = {
   getNormalizedSize(obj) {
     let size = this.getAttrValue('size', obj);
     if (isNil(size)) {
-      size = this.getDefalutSize();
+      size = this.getDefaultSize();
     } else {
       size = this._toNormalizedSize(size);
     }
@@ -103,7 +103,7 @@ const SizeMixin = {
   getSize(obj) {
     let size = this.getAttrValue('size', obj);
     if (isNil(size)) {
-      const normalizeSize = this.getDefalutSize();
+      const normalizeSize = this.getDefaultSize();
       size = this._toCoordSize(normalizeSize);
     }
     return size;

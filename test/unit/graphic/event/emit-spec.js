@@ -30,5 +30,17 @@ describe('EventEmit', function() {
     expect(emitter.__events.a.length).toBe(1);
     expect(emitter.__events.b).toBe(undefined);
   });
+
+  it('off same name function off', function() {
+    emitter.off('a');
+    function test() {}
+    emitter.on('a', test);
+    emitter.on('a', test);
+    expect(emitter.__events.a.length).toBe(2);
+
+    emitter.off('a', test);
+
+    expect(emitter.__events.a.length).toBe(0);
+  });
 });
 
