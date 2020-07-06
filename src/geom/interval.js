@@ -1,7 +1,7 @@
-const Geom = require('./base');
-const Util = require('../util/common');
-const SizeMixin = require('./mixin/size');
-require('./shape/interval');
+import Geom from './base';
+import { mix } from '../util/common';
+import SizeMixin from './mixin/size';
+import './shape/interval';
 
 class Interval extends Geom {
   getDefaultCfg() {
@@ -14,7 +14,7 @@ class Interval extends Geom {
 
   constructor(cfg) {
     super(cfg);
-    Util.mix(this, SizeMixin);
+    mix(this, SizeMixin);
   }
 
   init() {
@@ -36,5 +36,4 @@ class Interval extends Geom {
 }
 
 Geom.Interval = Interval;
-
-module.exports = Interval;
+export default Interval;

@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Animate = require('../../../src/animation/animate');
+import { expect } from 'chai';
+import Animate from '../../../src/animation/animate';
 
 describe('Animate', function() {
   it('Animate.registerAnimation', () => {

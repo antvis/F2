@@ -1,19 +1,19 @@
 import * as Attr from '../attr/index';
+import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array } from '../util/common';
+import Base from '../base';
+import Global from '../global';
+import GeometryShape from './shape/shape';
+import Adjust from '@antv/adjust/lib/base';
 
-const Util = require('../util/common');
-const Base = require('../base');
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
 const FIELD_ORIGIN_Y = '_originY';
-const Global = require('../global');
-const GeometryShape = require('./shape/shape');
-const Adjust = require('@antv/adjust/lib/base');
 
 function parseFields(field) {
-  if (Util.isArray(field)) {
+  if (isArray(field)) {
     return field;
   }
-  if (Util.isString(field)) {
+  if (isString(field)) {
     return field.split('*');
   }
   return [ field ];
@@ -94,11 +94,11 @@ class Geom extends Base {
   _getGroupScales() {
     const self = this;
     const scales = [];
-    Util.each(GROUP_ATTRS, function(attrName) {
+    each(GROUP_ATTRS, function(attrName) {
       const attr = self.getAttr(attrName);
       if (attr) {
         const attrScales = attr.scales;
-        Util.each(attrScales, function(scale) {
+        each(attrScales, function(scale) {
           if (scale && scale.isCategory && scales.indexOf(scale) === -1) {
             scales.push(scale);
           }
@@ -115,14 +115,14 @@ class Geom extends Base {
     if (groupScales.length) {
       const appendConditions = {};
       const names = [];
-      Util.each(groupScales, scale => {
+      each(groupScales, scale => {
         const field = scale.field;
         names.push(field);
         if (colDefs && colDefs[field] && colDefs[field].values) { // users have defined
           appendConditions[scale.field] = colDefs[field].values;
         }
       });
-      return Util.Array.group(data, names, appendConditions);
+      return Array.group(data, names, appendConditions);
     }
     return [ data ];
 
@@ -143,7 +143,7 @@ class Geom extends Base {
     const attrCfg = {};
     attrCfg.field = field;
     if (cfg) {
-      if (Util.isFunction(cfg)) {
+      if (isFunction(cfg)) {
         attrCfg.callback = cfg;
       } else {
         attrCfg.values = cfg;
@@ -158,7 +158,7 @@ class Geom extends Base {
     const self = this;
     const attrs = self.get('attrs');
     const coord = self.get('coord');
-    const className = Util.upperFirst(type);
+    const className = upperFirst(type);
     const fields = parseFields(option.field);
     if (type === 'position') {
       option.coord = coord;
@@ -275,14 +275,14 @@ class Geom extends Base {
     const self = this;
     const adjust = self.get('adjust');
     if (adjust) {
-      const adjustType = Util.upperFirst(adjust.type);
+      const adjustType = upperFirst(adjust.type);
       if (!Adjust[adjustType]) {
         throw new Error('not support such adjust : ' + adjust);
       }
 
       const xScale = self.getXScale();
       const yScale = self.getYScale();
-      const cfg = Util.mix({
+      const cfg = mix({
         xField: xScale.field,
         yField: yScale.field
       }, adjust);
@@ -295,7 +295,7 @@ class Geom extends Base {
   }
 
   _updateStackRange(field, scale, dataArray) {
-    const mergeArray = Util.Array.merge(dataArray);
+    const mergeArray = Array.merge(dataArray);
     let min = scale.min;
     let max = scale.max;
     for (let i = 0, len = mergeArray.length; i < len; i++) {
@@ -322,7 +322,7 @@ class Geom extends Base {
     const xScale = self.getXScale();
     const { field, type } = xScale;
     if (type !== 'identity' && xScale.values.length > 1) {
-      Util.each(mappedArray, itemArr => {
+      each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
           if (type === 'timeCat') {
             return xScale._toTimeStamp(obj1[FIELD_ORIGIN][field]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][field]);
@@ -389,7 +389,7 @@ class Geom extends Base {
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
-              record[name] = (Util.isArray(val) && val.length === 1) ? val[0] : val;
+              record[name] = (isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
             // 除了position其他都只有一项
@@ -456,8 +456,8 @@ class Geom extends Base {
     const params = fields.map(function(field) {
       return origin[field];
     });
-    Util.each(cfg, function(v, k) {
-      if (Util.isFunction(v)) {
+    each(cfg, function(v, k) {
+      if (isFunction(v)) {
         tmpCfg[k] = v.apply(null, params);
       } else {
         tmpCfg[k] = v;
@@ -497,8 +497,8 @@ class Geom extends Base {
     const self = this;
     const container = self.get('container');
     const yScale = self.getYScale();
-    Util.each(data, function(obj, index) {
-      if (yScale && Util.isNil(obj._origin[yScale.field])) {
+    each(data, function(obj, index) {
+      if (yScale && isNil(obj._origin[yScale.field])) {
         return;
       }
       obj.index = index;
@@ -512,7 +512,7 @@ class Geom extends Base {
     const gShape = shapeFactory.drawShape(shape, cfg, container);
 
     if (gShape) {
-      Util.each([].concat(gShape), s => {
+      each([].concat(gShape), s => {
         s.set('origin', shapeData);
       });
     }
@@ -522,7 +522,7 @@ class Geom extends Base {
     const self = this;
     const shapeFactory = self.getShapeFactory();
     const shapeAttr = self.getAttr('shape');
-    Util.each(dataArray, function(data) {
+    each(dataArray, function(data) {
       for (let i = 0, len = data.length; i < len; i++) {
         const obj = data[i];
         const cfg = self.createShapePointsCfg(obj);
@@ -532,7 +532,7 @@ class Geom extends Base {
       }
     });
     // 添加nextPoints
-    Util.each(dataArray, (data, index) => {
+    each(dataArray, (data, index) => {
       const nextData = dataArray[index + 1];
       if (nextData) {
         data[0].nextPoints = nextData[0].points;
@@ -585,7 +585,7 @@ class Geom extends Base {
 
   _normalizeValues(values, scale) {
     let rst = [];
-    if (Util.isArray(values)) {
+    if (isArray(values)) {
       for (let i = 0, len = values.length; i < len; i++) {
         const v = values[i];
         rst.push(scale.scale(v));
@@ -691,7 +691,7 @@ class Geom extends Base {
 
     dataArray.forEach(function(data) {
       data.forEach(function(obj) {
-        const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        const originValue = isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
         if (self._isEqual(originValue, xValue, xScale)) {
           tmp.push(obj);
         }
@@ -704,7 +704,7 @@ class Geom extends Base {
         let yValue = yScale.invert(invertPoint.y);
         yValue = self._getSnap(yScale, yValue, tmp);
         tmp.forEach(obj => {
-          if (Util.isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
+          if (isArray(yValue) ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString() : obj[FIELD_ORIGIN_Y] === yValue) {
             rst.push(obj);
           }
         });
@@ -725,7 +725,7 @@ class Geom extends Base {
     return dataArray.map(data => {
       for (let len = data.length, i = len - 1; i >= 0; i--) {
         const obj = data[i];
-        const originValue = Util.isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        const originValue = isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
         if (this._isEqual(originValue, value, xScale)) {
           return obj;
         }
@@ -771,7 +771,7 @@ class Geom extends Base {
       styleOptions = {};
       this.set('styleOptions', styleOptions);
     }
-    if (Util.isObject(field)) {
+    if (isObject(field)) {
       cfg = field;
       field = null;
     }
@@ -785,7 +785,7 @@ class Geom extends Base {
   }
 
   adjust(type) {
-    if (Util.isString(type)) {
+    if (isString(type)) {
       type = { type };
     }
     this.set('adjust', type);
@@ -801,6 +801,7 @@ class Geom extends Base {
     this.set('data', data);
     // 改变数据后，情况度量，因为需要重新实例化
     this.set('scales', {});
+    if (!this.get('isInit')) return;
     this.set('isInit', false);
     this.init();
   }
@@ -848,4 +849,4 @@ class Geom extends Base {
   }
 }
 
-module.exports = Geom;
+export default Geom;

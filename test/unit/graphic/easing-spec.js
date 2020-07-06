@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Easing = require('../../../src/graphic/animate/easing');
+import { expect } from 'chai';
+import * as Easing from '../../../src/graphic/animate/easing';
 
 describe('Easing', function() {
   it('linear', () => {

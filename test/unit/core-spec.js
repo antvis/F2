@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Core = require('../../src/core');
+import { expect } from 'chai';
+import * as Core from '../../src/core';
 
 describe('Core', function() {
   it('Keys', function() {
@@ -11,7 +11,8 @@ describe('Core', function() {
       'Util',
       'Helper',
       'track',
-      'version'
+      'version',
+      '__esModule'
     ]);
   });
 

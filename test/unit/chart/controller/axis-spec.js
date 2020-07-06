@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const Scale = require('../../../../src/scale/');
-const Controller = require('../../../../src/chart/controller/axis');
-const Plot = require('../../../../src/chart/plot');
-const Coord = require('../../../../src/coord/index');
-require('../../../../src/coord/polar');
+import { expect } from 'chai';
+import Scale from '../../../../src/scale/';
+import Controller from '../../../../src/chart/controller/axis';
+import Plot from '../../../../src/chart/plot';
+import Coord from '../../../../src/coord/index';
+import '../../../../src/coord/polar';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

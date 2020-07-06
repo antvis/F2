@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix } from '../../util/common';
+import GuideBase from './base';
 
 class Arc extends GuideBase {
   _initDefaultCfg() {
@@ -38,7 +38,7 @@ class Arc extends GuideBase {
     const endAngle = Math.atan2(end.y - coordCenter.y, end.x - coordCenter.x);
     const shape = container.addShape('arc', {
       className: 'guide-arc',
-      attrs: Util.mix({
+      attrs: mix({
         x: coordCenter.x,
         y: coordCenter.y,
         r: radius,
@@ -52,4 +52,5 @@ class Arc extends GuideBase {
 }
 
 GuideBase.Arc = Arc;
-module.exports = Arc;
+
+export default Arc;

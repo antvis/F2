@@ -2,7 +2,7 @@
  * @fileOverview default theme
  * @author dxq613@gail.com
  */
-const Util = require('./util/common');
+import { mix } from './util/common';
 const color1 = '#E8E8E8'; // color of axis-line and axis-grid
 const color2 = '#808080'; // color of axis label
 
@@ -48,19 +48,19 @@ const Theme = {
   sizes: [ 4, 10 ],
   axis: {
     common: defaultAxis, // common axis configuration
-    bottom: Util.mix({}, defaultAxis, {
+    bottom: mix({}, defaultAxis, {
       grid: null
     }),
-    left: Util.mix({}, defaultAxis, {
+    left: mix({}, defaultAxis, {
       line: null
     }),
-    right: Util.mix({}, defaultAxis, {
+    right: mix({}, defaultAxis, {
       line: null
     }),
-    circle: Util.mix({}, defaultAxis, {
+    circle: mix({}, defaultAxis, {
       line: null
     }),
-    radius: Util.mix({}, defaultAxis, {
+    radius: mix({}, defaultAxis, {
       labelOffset: 4
     })
   },
@@ -81,4 +81,4 @@ const Theme = {
   _defaultAxis: defaultAxis
 };
 
-module.exports = Theme;
+export default Theme;

@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { mix } from '../../util/common';
+import GuideBase from './base';
 
 class Text extends GuideBase {
   _initDefaultCfg() {
@@ -51,7 +51,7 @@ class Text extends GuideBase {
 
     const shape = container.addShape('text', {
       className: 'guide-text',
-      attrs: Util.mix({
+      attrs: mix({
         x: point.x,
         y: point.y,
         text: content
@@ -63,4 +63,4 @@ class Text extends GuideBase {
 }
 
 GuideBase.Text = Text;
-module.exports = Text;
+export default Text;

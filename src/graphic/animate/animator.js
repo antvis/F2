@@ -1,4 +1,4 @@
-const Easing = require('./easing');
+import * as Easing from './easing';
 
 function plainArray(arr) {
   const result = [];
@@ -132,4 +132,4 @@ class Animator {
   }
 }
 
-module.exports = Animator;
+export default Animator;

@@ -1,6 +1,7 @@
-const Util = require('../util/common');
-const MatrixUtil = require('../graphic/util/matrix');
-const Vector2 = require('../graphic/util/vector2');
+import { mix } from '../util/common';
+import MatrixUtil from '../graphic/util/matrix';
+import Vector2 from '../graphic/util/vector2';
+
 const defaultMatrix = [ 1, 0, 0, 1, 0, 0 ];
 
 class Base {
@@ -8,7 +9,7 @@ class Base {
 
   constructor(cfg) {
     this._initDefaultCfg();
-    Util.mix(this, cfg);
+    mix(this, cfg);
 
     let start;
     let end;
@@ -76,4 +77,4 @@ class Base {
   }
 }
 
-module.exports = Base;
+export default Base;

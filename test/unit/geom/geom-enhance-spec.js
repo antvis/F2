@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Geom = require('../../../src/geom/base');
-const { Canvas } = require('../../../src/graphic/index');
+import { expect } from 'chai';
+import Geom from '../../../src/geom/base';
+import { Canvas } from '../../../src/graphic/index';
 
 const dom = document.createElement('canvas');
 dom.width = 500;

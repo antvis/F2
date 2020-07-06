@@ -1,10 +1,9 @@
-const expect = require('chai').expect;
-const { gestureSimulator } = require('../unit/test-util');
-
-const F2 = require('../../src/core');
-require('../../src/geom/interval');
-require('../../src/coord/polar'); // 极坐标系
-require('../../src/geom/adjust/stack');
+import { expect } from 'chai';
+import { gestureSimulator } from '../unit/test-util';
+import * as F2 from '../../src/core';
+import '../../src/geom/interval';
+import '../../src/coord/polar'; // 极坐标系
+import '../../src/geom/adjust/stack';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

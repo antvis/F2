@@ -1,5 +1,6 @@
-const Util = require('../util/common');
-const Shape = require('./shape');
+import { upperFirst, isArray, Array, mix } from '../util/common';
+import Shape from './shape';
+
 const SHAPE_MAP = {};
 const INDEX = '_INDEX';
 
@@ -10,7 +11,7 @@ function getComparer(compare) {
   };
 }
 
-module.exports = {
+export default {
 
   getGroupClass() {},
 
@@ -22,7 +23,7 @@ module.exports = {
     const canvas = this.get('canvas');
     let shapeType = SHAPE_MAP[type];
     if (!shapeType) {
-      shapeType = Util.upperFirst(type);
+      shapeType = upperFirst(type);
       SHAPE_MAP[type] = shapeType;
     }
     cfg.canvas = canvas;
@@ -38,7 +39,7 @@ module.exports = {
   addGroup(cfg) {
     const canvas = this.get('canvas');
     const groupClass = this.getGroupClass();
-    cfg = Util.mix({}, cfg);
+    cfg = mix({}, cfg);
     cfg.canvas = canvas;
     cfg.parent = this;
     const rst = new groupClass(cfg);
@@ -77,7 +78,7 @@ module.exports = {
   add(items) {
     const self = this;
     const children = self.get('children');
-    if (!Util.isArray(items)) {
+    if (!isArray(items)) {
       items = [ items ];
     }
 
@@ -86,7 +87,7 @@ module.exports = {
       const parent = item.get('parent');
       if (parent) {
         const descendants = parent.get('children');
-        Util.Array.remove(descendants, item);
+        Array.remove(descendants, item);
       }
       self._setEvn(item);
       children.push(item);

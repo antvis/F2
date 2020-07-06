@@ -1,6 +1,7 @@
-const Util = require('../../util/common');
-const Global = require('../../global');
-const Vector2 = require('../../graphic/util/vector2');
+
+import { mix, each, isFunction } from '../../util/common';
+import Global from '../../global';
+import Vector2 from '../../graphic/util/vector2';
 
 class Abastract {
   _initDefaultCfg() {
@@ -38,7 +39,7 @@ class Abastract {
 
   constructor(cfg) {
     this._initDefaultCfg();
-    Util.mix(this, cfg);
+    mix(this, cfg);
     this.draw();
   }
 
@@ -56,12 +57,12 @@ class Abastract {
     const ticks = self.ticks;
     const length = tickCfg.length;
     const container = self.getContainer(tickCfg.top);
-    Util.each(ticks, function(tick) {
+    each(ticks, function(tick) {
       const start = self.getOffsetPoint(tick.value);
       const end = self.getSidePoint(start, length);
       const shape = container.addShape('line', {
         className: 'axis-tick',
-        attrs: Util.mix({
+        attrs: mix({
           x1: start.x,
           y1: start.y,
           x2: end.x,
@@ -76,11 +77,11 @@ class Abastract {
     const self = this;
     const labelOffset = self.labelOffset;
     const labels = self.labels;
-    Util.each(labels, labelShape => {
+    each(labels, labelShape => {
       const container = self.getContainer(labelShape.get('top'));
       const start = self.getOffsetPoint(labelShape.get('value'));
       const { x, y } = self.getSidePoint(start, labelOffset);
-      labelShape.attr(Util.mix({
+      labelShape.attr(mix({
         x,
         y
       }, self.getTextAlignInfo(start, labelOffset), labelShape.get('textStyle')));
@@ -97,11 +98,11 @@ class Abastract {
     let gridCfg = grid;
     const count = gridPoints.length;
 
-    Util.each(gridPoints, function(subPoints, index) {
-      if (Util.isFunction(grid)) {
+    each(gridPoints, function(subPoints, index) {
+      if (isFunction(grid)) {
         const tick = ticks[index] || {};
         const executedGrid = grid(tick.text, index, count);
-        gridCfg = executedGrid ? Util.mix({}, Global._defaultAxis.grid, executedGrid) : null;
+        gridCfg = executedGrid ? mix({}, Global._defaultAxis.grid, executedGrid) : null;
       }
 
       if (gridCfg) {
@@ -115,7 +116,7 @@ class Abastract {
           const radius = Vector2.length([ points[0].x - center.x, points[0].y - center.y ]);
           shape = container.addShape('Arc', {
             className: 'axis-grid',
-            attrs: Util.mix({
+            attrs: mix({
               x: center.x,
               y: center.y,
               startAngle,
@@ -126,7 +127,7 @@ class Abastract {
         } else {
           shape = container.addShape('Polyline', {
             className: 'axis-grid',
-            attrs: Util.mix({
+            attrs: mix({
               points
             }, gridCfg)
           });
@@ -189,4 +190,4 @@ class Abastract {
   }
 }
 
-module.exports = Abastract;
+export default Abastract;

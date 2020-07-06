@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const Abstract = require('./abstract');
+import { mix } from '../../util/common';
+import Abstract from './abstract';
 
 class Circle extends Abstract {
   _initDefaultCfg() {
@@ -60,7 +60,7 @@ class Circle extends Abstract {
     const container = this.getContainer(lineCfg.top);
     container.addShape('arc', {
       className: 'axis-line',
-      attrs: Util.mix({
+      attrs: mix({
         x: center.x,
         y: center.y,
         r: radius,
@@ -72,4 +72,5 @@ class Circle extends Abstract {
 }
 
 Abstract.Circle = Circle;
-module.exports = Circle;
+export default Circle;
+

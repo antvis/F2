@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const Pinch = require('../../../src/interaction/pinch');
-const F2 = require('../../../src/core');
-require('../../../src/geom/line');
-require('../../../src/geom/interval');
-require('../../../src/scale/time-cat');
+import { expect } from 'chai';
+import Pinch from '../../../src/interaction/pinch';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/line';
+import '../../../src/geom/interval';
+import '../../../src/scale/time-cat';
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;

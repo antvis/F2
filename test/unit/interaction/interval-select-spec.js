@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-require('../../../src/interaction/interval-select');
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
-const { gestureSimulator } = require('../test-util');
+import { expect } from 'chai';
+import '../../../src/interaction/interval-select';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/interval';
+import { gestureSimulator } from '../test-util';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

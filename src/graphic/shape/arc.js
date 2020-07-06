@@ -1,5 +1,5 @@
-const Shape = require('../shape');
-const bbox = require('../util/bbox');
+import Shape from '../shape';
+import { getBBoxFromArc } from '../util/bbox';
 
 class Arc extends Shape {
   _initProperties() {
@@ -35,8 +35,8 @@ class Arc extends Shape {
     const attrs = this.get('attrs');
     const { x, y, r, startAngle, endAngle, anticlockwise } = attrs;
 
-    return bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
+    return getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
   }
 }
 Shape.Arc = Arc;
-module.exports = Arc;
+export default Arc;

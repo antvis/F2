@@ -1,4 +1,4 @@
-const Base = require('./base');
+import Base from './base';
 
 class Cartesian extends Base {
   _initDefaultCfg() {
@@ -49,4 +49,5 @@ class Cartesian extends Base {
 
 Base.Cartesian = Cartesian;
 Base.Rect = Cartesian;
-module.exports = Cartesian;
+
+export default Cartesian;

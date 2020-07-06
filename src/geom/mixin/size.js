@@ -3,13 +3,10 @@
  * @author sima.zhang1990@gmail.com
  * @author dxq613@gmail.com
  */
-import {
-  EVENT_AFTER_SIZE_CHANGE
-} from '../../chart/const';
+import { EVENT_AFTER_SIZE_CHANGE } from '../../chart/const';
 
-const Global = require('../../global');
-const Util = require('../../util/common');
-
+import { uniq, isNil } from '../../util/common';
+import Global from '../../global';
 
 const SizeMixin = {
   initEvent() {
@@ -27,7 +24,7 @@ const SizeMixin = {
       const coord = this.get('coord');
       const xScale = this.getXScale();
       const dataArray = this.get('dataArray');
-      const values = Util.uniq(xScale.values);
+      const values = uniq(xScale.values);
       const count = values.length;
       const range = xScale.range;
       let normalizeSize = 1 / count;
@@ -41,7 +38,7 @@ const SizeMixin = {
         }
       } else {
         if (xScale.isLinear) {
-          normalizeSize *= (range[1] - range[0]);
+          normalizeSize *= range[1] - range[0];
         }
         widthRatio = Global.widthRatio.column;
       }
@@ -66,7 +63,9 @@ const SizeMixin = {
     });
     let width = 0;
     if (start && end) {
-      width = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+      width = Math.sqrt(
+        Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
+      );
     }
     return width;
   },
@@ -94,7 +93,7 @@ const SizeMixin = {
   },
   getNormalizedSize(obj) {
     let size = this.getAttrValue('size', obj);
-    if (Util.isNil(size)) {
+    if (isNil(size)) {
       size = this.getDefaultSize();
     } else {
       size = this._toNormalizedSize(size);
@@ -103,7 +102,7 @@ const SizeMixin = {
   },
   getSize(obj) {
     let size = this.getAttrValue('size', obj);
-    if (Util.isNil(size)) {
+    if (isNil(size)) {
       const normalizeSize = this.getDefaultSize();
       size = this._toCoordSize(normalizeSize);
     }
@@ -111,4 +110,4 @@ const SizeMixin = {
   }
 };
 
-module.exports = SizeMixin;
+export default SizeMixin;

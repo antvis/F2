@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
 
 describe('issue 224', () => {
   it('Global.setTheme({})', () => {

@@ -1,15 +1,15 @@
-const Util = require('../../util/common');
-const Shape = require('./shape');
-const Smooth = require('../../graphic/util/smooth');
-const bbox = require('../../graphic/util/bbox');
-const Global = require('../../global');
+import { smooth } from '../../graphic/util/smooth';
+import { getBBoxFromPoints } from '../../graphic/util/bbox';
+import Global from '../../global';
+import Shape from './shape';
+import { mix, each, isArray, isNil } from '../../util/common';
 
 function equals(v1, v2) {
   return Math.abs(v1 - v2) < 0.00001;
 }
 
 function notEmpty(value) {
-  return !isNaN(value) && !Util.isNil(value);
+  return !isNaN(value) && !isNil(value);
 }
 
 function filterPoints(points) {
@@ -27,7 +27,7 @@ function filterPoints(points) {
 
 function equalsCenter(points, center) {
   let eqls = true;
-  Util.each(points, function(point) {
+  each(points, function(point) {
     if (!equals(point.x, center.x) || !equals(point.y, center.y)) {
       eqls = false;
       return false;
@@ -42,7 +42,7 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
   if (isSmooth) {
     shape = container.addShape('Custom', {
       className: 'area',
-      attrs: Util.mix({
+      attrs: mix({
         points
       }, style),
       createPath(context) {
@@ -55,7 +55,7 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
         const pointsLen = points.length;
         const topPoints = points.slice(0, pointsLen / 2);
         const bottomPoints = points.slice(pointsLen / 2, pointsLen);
-        const topSps = Smooth.smooth(topPoints, false, constaint);
+        const topSps = smooth(topPoints, false, constaint);
         context.beginPath();
         context.moveTo(topPoints[0].x, topPoints[0].y);
         for (let i = 0, n = topSps.length; i < n; i++) {
@@ -64,7 +64,7 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
         }
 
         if (bottomPoints.length) {
-          const bottomSps = Smooth.smooth(bottomPoints, false, constaint);
+          const bottomSps = smooth(bottomPoints, false, constaint);
           context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
           for (let i = 0, n = bottomSps.length; i < n; i++) {
             const sp = bottomSps[i];
@@ -75,13 +75,13 @@ function drawRectShape(topPoints, bottomPoints, container, style, isSmooth) {
       },
       calculateBox() {
         const points = filterPoints(this._attrs.attrs.points);
-        return bbox.getBBoxFromPoints(points);
+        return getBBoxFromPoints(points);
       }
     });
   } else {
     shape = container.addShape('Polyline', {
       className: 'area',
-      attrs: Util.mix({
+      attrs: mix({
         points
       }, style)
     });
@@ -94,11 +94,11 @@ function drawShape(cfg, container, isSmooth) {
   const points = cfg.points;
   let topPoints = [];
   let bottomPoints = [];
-  Util.each(points, function(point) {
+  each(points, function(point) {
     bottomPoints.push(point[0]);
     topPoints.push(point[1]);
   });
-  const style = Util.mix({
+  const style = mix({
     fillStyle: cfg.color
   }, Global.shape.area, cfg.style);
 
@@ -122,7 +122,7 @@ const Area = Shape.registerFactory('area', {
     const x = obj.x;
     let y = obj.y;
     const y0 = obj.y0;
-    y = Util.isArray(y) ? y : [ y0, y ];
+    y = isArray(y) ? y : [ y0, y ];
 
     const points = [];
     points.push({
@@ -137,7 +137,7 @@ const Area = Shape.registerFactory('area', {
 });
 
 const SHAPES = [ 'area', 'smooth' ];
-Util.each(SHAPES, function(shapeType) {
+each(SHAPES, function(shapeType) {
   Shape.registerShape('area', shapeType, {
     draw(cfg, container) {
       const smooth = (shapeType === 'smooth');
@@ -146,4 +146,5 @@ Util.each(SHAPES, function(shapeType) {
   });
 });
 
-module.exports = Area;
+
+export default Area;

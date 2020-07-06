@@ -1,9 +1,10 @@
-const Shape = require('./shape');
-require('./point');
-require('./line');
-require('./interval');
-require('./interval');
-require('./area');
-require('./polygon');
-require('./schema');
-module.exports = Shape;
+import Shape from './shape';
+
+import './point';
+import './line';
+import './interval';
+import './area';
+import './polygon';
+import './schema';
+
+export default Shape;

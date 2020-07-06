@@ -1,4 +1,4 @@
-const Util = require('../util/common');
+import { mix } from '../util/common';
 
 const DEFAULT_CFG = {
   label: null,
@@ -40,7 +40,7 @@ class Controller {
   draw() {
     const { chart, container, cfg } = this;
     if (!cfg) return;
-    const labelCfg = Util.mix({}, DEFAULT_CFG, cfg);
+    const labelCfg = mix({}, DEFAULT_CFG, cfg);
     const coord = chart.get('coord');
     const geom = chart.get('geoms')[0];
     const shapes = geom.get('container').get('children');
@@ -53,7 +53,7 @@ class Controller {
         const point = coord.convertPoint(getMiddlePoint(points[1], points[2]));
 
         group.addShape('Text', {
-          attrs: Util.mix({
+          attrs: mix({
             x: point.x + labelCfg.offsetX,
             y: point.y + labelCfg.offsetY
           }, labelAttrs, DEFAULT_LABEL_CFG)
@@ -68,29 +68,39 @@ class Controller {
   }
 }
 
+function init(chart) {
+  const frontPlot = chart.get('frontPlot');
+  const labelGroup = frontPlot.addGroup({
+    className: 'label',
+    zIndex: 0
+  });
+  const labelController = new Controller({
+    chart,
+    container: labelGroup
+  });
+  chart.set('intervalLabelController', labelController);
+  chart.intervalLabel = function(cfg) {
+    labelController.cfg = cfg;
+  };
+}
+function afterGeomDraw(chart) {
+  const labelController = chart.get('intervalLabelController');
+  labelController.draw();
+}
 
-module.exports = {
-  init(chart) {
-    const frontPlot = chart.get('frontPlot');
-    const labelGroup = frontPlot.addGroup({
-      className: 'label',
-      zIndex: 0
-    });
-    const labelController = new Controller({
-      chart,
-      container: labelGroup
-    });
-    chart.set('intervalLabelController', labelController);
-    chart.intervalLabel = function(cfg) {
-      labelController.cfg = cfg;
-    };
-  },
-  afterGeomDraw(chart) {
-    const labelController = chart.get('intervalLabelController');
-    labelController.draw();
-  },
-  clearInner(chart) {
-    const labelController = chart.get('intervalLabelController');
-    labelController.clear();
-  }
+function clearInner(chart) {
+  const labelController = chart.get('intervalLabelController');
+  labelController.clear();
+}
+
+export {
+  init,
+  afterGeomDraw,
+  clearInner
+};
+
+export default {
+  init,
+  afterGeomDraw,
+  clearInner
 };

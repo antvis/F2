@@ -1,11 +1,11 @@
-const Geom = require('./base');
+import Geom from './base';
 
-require('./point');
-require('./path');
-require('./line');
-require('./area');
-require('./interval');
-require('./polygon');
-require('./schema');
+import './point';
+import './path';
+import './line';
+import './area';
+import './interval';
+import './polygon';
+import './schema';
 
-module.exports = Geom;
+export default Geom;

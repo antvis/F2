@@ -1,5 +1,5 @@
-const Hammer = require('hammerjs'); // http://hammerjs.github.io/
-const Util = require('../util/common');
+import Hammer from 'hammerjs';
+import { deepMix, addEventListener, removeEventListener } from '../util/common';
 
 const defaultOptions = {
   useCalculate: true,
@@ -12,7 +12,7 @@ class GestureController {
     this.hammer = new Hammer(dom, hammerOptions);
     this.dom = dom;
     this.gesture = gesture;
-    this.options = Util.deepMix({}, defaultOptions, options);
+    this.options = deepMix({}, defaultOptions, options);
     this.hammerOptions = hammerOptions;
     this.chart = chart;
     this._unbindEvent = {};
@@ -45,7 +45,7 @@ class GestureController {
             : null;
           gesture[key](records, event);
         };
-        Util.addEventListener(dom, key, bindEvent);
+        addEventListener(dom, key, bindEvent);
         this._unbindEvent[key] = bindEvent;
       } else {
         hammer.on(key, event => {
@@ -89,29 +89,30 @@ class GestureController {
     this.hammer.destroy();
     for (const key in this._unbindEvent) {
       const event = this._unbindEvent[key];
-      Util.removeEventListener(this.dom, key, event);
+      removeEventListener(this.dom, key, event);
     }
   }
 }
 
-module.exports = {
-  init(chart) {
-    chart.pluginGesture = function({ gesture, options, hammerOptions }) {
-      const canvasDom = chart.get('canvas').get('el');
-      const gestureController = new GestureController({
-        dom: canvasDom,
-        gesture,
-        options,
-        hammerOptions,
-        chart
-      });
-      gestureController.bindEvents();
-      chart.set('gestureController', gestureController);
-      return gestureController;
-    };
-  },
-  clear(chart) {
-    const gestureController = chart.get('gestureController');
-    gestureController && gestureController.destroy();
-  }
-};
+function init(chart) {
+  chart.pluginGesture = function({ gesture, options, hammerOptions }) {
+    const canvasDom = chart.get('canvas').get('el');
+    const gestureController = new GestureController({
+      dom: canvasDom,
+      gesture,
+      options,
+      hammerOptions,
+      chart
+    });
+    gestureController.bindEvents();
+    chart.set('gestureController', gestureController);
+    return gestureController;
+  };
+}
+
+function clear(chart) {
+  const gestureController = chart.get('gestureController');
+  gestureController && gestureController.destroy();
+}
+
+export { init, clear };

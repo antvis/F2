@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const Matrix = require('../../../src/graphic/util/matrix');
+import { expect } from 'chai';
+import Matrix from '../../../src/graphic/util/matrix';
 
 describe('Matrix Util', function() {
   it('Matrix.multiply(m1, m2)', function() {

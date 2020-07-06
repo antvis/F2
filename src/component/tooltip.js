@@ -1,7 +1,8 @@
-const Util = require('../util/common');
-const Marker = require('./marker');
-const Container = require('./list');
-const TextBox = require('./text-box');
+import { deepMix, mix, isFunction, directionEnabled, parsePadding } from '../util/common';
+import Marker from './marker';
+import Container from './list';
+import TextBox from './text-box';
+
 const GAP = 4;
 
 /**
@@ -76,11 +77,11 @@ class Tooltip {
   }
 
   constructor(cfg) {
-    Util.deepMix(this, this.getDefaultCfg(), cfg);
+    deepMix(this, this.getDefaultCfg(), cfg);
     const { frontPlot, custom } = this;
 
     if (!custom) { // custom means user do customize
-      const container = new Container(Util.mix({
+      const container = new Container(mix({
         parent: frontPlot,
         zIndex: 3
       }, cfg));
@@ -91,7 +92,7 @@ class Tooltip {
           className: 'tooltip-arrow',
           visible: false,
           zIndex: 2,
-          attrs: Util.mix({
+          attrs: mix({
             points: []
           }, background)
         });
@@ -140,10 +141,10 @@ class Tooltip {
 
   setYTipContent(val) {
     const yTip = this.yTip;
-    if (Util.isFunction(yTip)) {
+    if (isFunction(yTip)) {
       val = yTip(val);
     } else {
-      val = Util.mix({
+      val = mix({
         text: val
       }, yTip);
     }
@@ -178,10 +179,10 @@ class Tooltip {
 
   setXTipContent(val) {
     const xTip = this.xTip;
-    if (Util.isFunction(xTip)) {
+    if (isFunction(xTip)) {
       val = xTip(val);
     } else {
-      val = Util.mix({
+      val = mix({
         text: val
       }, xTip);
     }
@@ -259,7 +260,7 @@ class Tooltip {
           { x, y: tl.y + offsetY }
         ]);
         const backShape = container.backShape;
-        const radius = Util.parsePadding(backShape.attr('radius'));
+        const radius = parsePadding(backShape.attr('radius'));
         if (x === tl.x) {
           radius[3] = 0;
 
@@ -293,7 +294,7 @@ class Tooltip {
         const item = items[i];
         const marker = new Marker({
           className: 'tooltip-circle-marker',
-          attrs: Util.mix({
+          attrs: mix({
             x: item.x,
             y: item.y,
             stroke: item.color
@@ -392,12 +393,12 @@ class Tooltip {
   _renderCrosshairs() {
     const { crosshairsType, crosshairsStyle, frontPlot, plotRange } = this;
     const { tl, br } = plotRange;
-    if (Util.directionEnabled(crosshairsType, 'x')) {
+    if (directionEnabled(crosshairsType, 'x')) {
       this.crosshairsShapeX = frontPlot.addShape('Line', {
         className: 'tooltip-crosshairs-x',
         zIndex: 0,
         visible: false,
-        attrs: Util.mix({
+        attrs: mix({
           x1: tl.x,
           y1: 0,
           x2: br.x,
@@ -406,12 +407,12 @@ class Tooltip {
       });
     }
 
-    if (Util.directionEnabled(crosshairsType, 'y')) {
+    if (directionEnabled(crosshairsType, 'y')) {
       this.crosshairsShapeY = frontPlot.addShape('Line', {
         className: 'tooltip-crosshairs-y',
         zIndex: 0,
         visible: false,
-        attrs: Util.mix({
+        attrs: mix({
           x1: 0,
           y1: br.y,
           x2: 0,
@@ -423,4 +424,4 @@ class Tooltip {
   }
 }
 
-module.exports = Tooltip;
+export default Tooltip;

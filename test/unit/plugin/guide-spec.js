@@ -1,12 +1,11 @@
-const expect = require('chai').expect;
-
-const F2 = require('../../../src/core');
-require('../../../src/geom/');
-require('../../../src/geom/adjust/');
-require('../../../src/coord/polar'); // 极坐标系
-require('../../../src/component/axis/circle'); // 极坐标系下的弧长坐标轴
-require('../../../src/scale/time-cat'); // timeCat 类型的度量
-require('../../../src/component/guide'); // 加载 guide 组件
+import { expect } from 'chai';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/';
+import '../../../src/geom/adjust/';
+import '../../../src/coord/polar'; // 极坐标系
+import '../../../src/component/axis/circle'; // 极坐标系下的弧长坐标轴
+import '../../../src/scale/time-cat'; // timeCat 类型的度量
+import '../../../src/component/guide'; // 加载 guide 组件
 
 F2.Global.guide = {
   line: {

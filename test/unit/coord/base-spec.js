@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Plot = require('../../../src/chart/plot');
-const Coord = require('../../../src/coord/base');
+import { expect } from 'chai';
+import Plot from '../../../src/chart/plot';
+import Coord from '../../../src/coord/base';
 
 describe('coord', function() {
   const plot = new Plot({

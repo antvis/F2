@@ -1,5 +1,5 @@
-const Shape = require('../shape');
-const bbox = require('../util/bbox');
+import Shape from '../shape';
+import { getBBoxFromPoints } from '../util/bbox';
 
 class Polygon extends Shape {
   _initProperties() {
@@ -37,9 +37,9 @@ class Polygon extends Shape {
   calculateBox() {
     const attrs = this.get('attrs');
     const { points } = attrs;
-    return bbox.getBBoxFromPoints(points);
+    return getBBoxFromPoints(points);
   }
 }
 
 Shape.Polygon = Polygon;
-module.exports = Polygon;
+export default Polygon;

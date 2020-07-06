@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const Plot = require('../../../src/chart/plot');
-const Coord = require('../../../src/coord/index');
-require('../../../src/coord/polar');
+import { expect } from 'chai';
+import Plot from '../../../src/chart/plot';
+import Coord from '../../../src/coord/index';
+import '../../../src/coord/polar';
 
 const gMath = {
   equal(v1, v2) {

@@ -1,10 +1,10 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-const { gestureSimulator } = require('../unit/test-util');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import { gestureSimulator } from '../unit/test-util';
 
-require('../../src/geom/interval');
-const Legend = require('../../src/plugin/legend');
-require('../../src/geom/adjust/stack');
+import '../../src/geom/interval';
+import * as Legend from '../../src/plugin/legend';
+import '../../src/geom/adjust/stack';
 
 
 describe('图例过滤未考虑数据中存在空数据的情况', () => {
@@ -21,7 +21,7 @@ describe('图例过滤未考虑数据中存在空数据的情况', () => {
     document.body.appendChild(canvas);
   });
 
-  it('filter', () => {
+  it('filter', async () => {
     const data = [
       { name: 'London', 月份: 'Jan.', 月均降雨量: 18.9 },
       { name: 'Berlin', 月份: 'Jan.', 月均降雨量: 12.4 },
@@ -44,7 +44,7 @@ describe('图例过滤未考虑数据中存在空数据的情况', () => {
       .adjust('stack');
     chart.render();
 
-    gestureSimulator(canvas, 'click', {
+    await gestureSimulator(canvas, 'click', {
       clientX: 184,
       clientY: 22
     });

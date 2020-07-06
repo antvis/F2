@@ -1,11 +1,10 @@
 import EventEmit from './event/emit';
 import EventController from './event/controller';
 import CanvasElement from './canvas-element';
-
-const Util = require('../util/common');
-const Container = require('./container');
-const Group = require('./group');
-const { requestAnimationFrame } = require('./util/requestAnimationFrame');
+import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement } from '../util/common';
+import Container from './container';
+import Group from './group';
+import { requestAnimationFrame } from './util/requestAnimationFrame';
 
 class Canvas extends EventEmit {
   get(name) {
@@ -18,7 +17,7 @@ class Canvas extends EventEmit {
 
   constructor(cfg) {
     super();
-    this._attrs = Util.mix({
+    this._attrs = mix({
       type: 'canvas',
       children: []
     }, cfg);
@@ -29,7 +28,7 @@ class Canvas extends EventEmit {
   _initPixelRatio() {
     const pixelRatio = this.get('pixelRatio');
     if (!pixelRatio) {
-      this.set('pixelRatio', Util.getPixelRatio());
+      this.set('pixelRatio', getPixelRatio());
     }
   }
 
@@ -49,7 +48,7 @@ class Canvas extends EventEmit {
     let canvas;
     if (el) {
       // DOMElement or String
-      canvas = Util.isString(el) ? Util.getDomById(el) : el;
+      canvas = isString(el) ? getDomById(el) : el;
     } else {
       // 说明没有指定el
       canvas = CanvasElement.create(context);
@@ -62,12 +61,12 @@ class Canvas extends EventEmit {
     }
     let width = self.get('width');
     if (!width) {
-      width = Util.getWidth(canvas);
+      width = getWidth(canvas);
     }
 
     let height = self.get('height');
     if (!height) {
-      height = Util.getHeight(canvas);
+      height = getHeight(canvas);
     }
 
     self.set('canvas', this);
@@ -93,7 +92,7 @@ class Canvas extends EventEmit {
       canvasDOM.style.height = height + 'px';
     }
 
-    if (Util.isCanvasElement(canvasDOM)) {
+    if (isCanvasElement(canvasDOM)) {
       canvasDOM.width = width * pixelRatio;
       canvasDOM.height = height * pixelRatio;
 
@@ -197,10 +196,10 @@ class Canvas extends EventEmit {
   }
 }
 
-Util.mix(Canvas.prototype, Container, {
+mix(Canvas.prototype, Container, {
   getGroupClass() {
     return Group;
   }
 });
 
-module.exports = Canvas;
+export default Canvas;

@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-require('../../src/geom/interval');
-require('../../src/interaction/interval-select');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import '../../src/geom/interval';
+import '../../src/interaction/interval-select';
 
 
 const canvas = document.createElement('canvas');

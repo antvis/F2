@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-require('../../src/scale/time-cat');
-const Tooltip = require('../../src/plugin/tooltip');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import '../../src/scale/time-cat';
+import * as Tooltip from '../../src/plugin/tooltip';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

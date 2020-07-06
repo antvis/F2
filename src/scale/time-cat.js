@@ -1,2 +1,3 @@
-const TimeCat = require('@antv/scale/lib/time-cat');
-module.exports = TimeCat;
+import TimeCat from '@antv/scale/lib/time-cat';
+
+export default TimeCat;

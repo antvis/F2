@@ -1,14 +1,15 @@
-const Util = require('../util/common');
-const Interaction = require('./base');
-const Chart = require('../chart/chart');
-const FilterPlugin = require('../plugin/filter');
-const MoveMixin = require('./mixin/move');
-const UpdateScaleMixin = require('./mixin/update-scale');
+import { mix } from '../util/common';
+
+import Interaction from './base';
+import Chart from '../chart/chart';
+import * as FilterPlugin from '../plugin/filter';
+import MoveMixin from './mixin/move';
+import UpdateScaleMixin from './mixin/update-scale';
 
 class Swipe extends Interaction {
   getDefaultCfg() {
     let defaultCfg = super.getDefaultCfg();
-    defaultCfg = Util.mix({}, defaultCfg, {
+    defaultCfg = mix({}, defaultCfg, {
       startEvent: 'touchstart',
       processEvent: 'swipe',
       endEvent: 'touchend',
@@ -46,7 +47,7 @@ class Swipe extends Interaction {
       }
     }]);
     self.mode = 'x';
-    Util.mix(self, UpdateScaleMixin, MoveMixin);
+    mix(self, UpdateScaleMixin, MoveMixin);
   }
 
   process(e) {
@@ -61,4 +62,4 @@ class Swipe extends Interaction {
 }
 
 Chart.registerInteraction('swipe', Swipe);
-module.exports = Swipe;
+export default Swipe;

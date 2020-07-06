@@ -1,6 +1,11 @@
-module.exports = {
-  Axis: require('./axis/index'),
-  Guide: require('./guide/index'),
-  Tooltip: require('./tooltip'),
-  List: require('./list')
+import Axis from './axis/index';
+import Guide from './guide/index';
+import Tooltip from './tooltip';
+import List from './list';
+
+export {
+  Axis,
+  Guide,
+  Tooltip,
+  List
 };

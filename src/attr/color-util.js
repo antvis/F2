@@ -58,59 +58,58 @@ const colorCache = {
   yellow: '#ffff00'
 };
 
-const ColorUtil = {
-  /**
-   * Returns a hexadecimal string representing this color in RGB space, such as #f7eaba.
-   * @param  {String} color color value
-   * @return {String} Returns a hexadecimal string
-   */
-  toHex(color) {
-    if (colorCache[color]) {
-      return colorCache[color];
-    }
-
-    if (color[0] === '#') {
-      if (color.length === 7) {
-        return color;
-      }
-
-      const hex = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
-        return '#' + r + r + g + g + b + b;
-      }); // hex3 to hex6
-      colorCache[color] = hex;
-      return hex;
-    }
-
-    // rgb/rgba to hex
-    let rst = color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-    rst.shift();
-    rst = arr2hex(rst);
-    colorCache[color] = rst;
-    return rst;
-  },
-
-  hex2arr,
-
-  /**
-   * handle the gradient color
-   * @param  {Array} colors the colors
-   * @return {String} return the color value
-   */
-  gradient(colors) {
-    const points = [];
-    if (isString(colors)) {
-      colors = colors.split('-');
-    }
-    each(colors, function(color) {
-      if (color.indexOf('#') === -1) {
-        color = ColorUtil.toHex(color);
-      }
-      points.push(hex2arr(color));
-    });
-    return function(percent) {
-      return calColor(points, percent);
-    };
+/**
+ * Returns a hexadecimal string representing this color in RGB space, such as #f7eaba.
+ * @param  {String} color color value
+ * @return {String} Returns a hexadecimal string
+ */
+function toHex(color) {
+  if (colorCache[color]) {
+    return colorCache[color];
   }
-};
 
-export default ColorUtil;
+  if (color[0] === '#') {
+    if (color.length === 7) {
+      return color;
+    }
+
+    const hex = color.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+      return '#' + r + r + g + g + b + b;
+    }); // hex3 to hex6
+    colorCache[color] = hex;
+    return hex;
+  }
+
+  // rgb/rgba to hex
+  let rst = color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+  rst.shift();
+  rst = arr2hex(rst);
+  colorCache[color] = rst;
+  return rst;
+}
+
+/**
+ * handle the gradient color
+ * @param  {Array} colors the colors
+ * @return {String} return the color value
+ */
+function gradient(colors) {
+  const points = [];
+  if (isString(colors)) {
+    colors = colors.split('-');
+  }
+  each(colors, function(color) {
+    if (color.indexOf('#') === -1) {
+      color = toHex(color);
+    }
+    points.push(hex2arr(color));
+  });
+  return function(percent) {
+    return calColor(points, percent);
+  };
+}
+
+export {
+  toHex,
+  gradient
+};

@@ -1,32 +1,52 @@
 /**
  * all
  */
-const F2 = require('./core');
+import { Global, Chart, Shape, G, Util, Helper, track } from './core';
 
-require('./geom/');
-require('./geom/adjust/');
+import './geom/';
+import './geom/adjust/';
 
-require('./coord/polar'); // polar coordinate
-require('./component/axis/circle'); // the axis for polar coordinate
+import './coord/polar'; // polar coordinate
+import './component/axis/circle'; // the axis for polar coordinate
 
-require('./scale/time-cat'); // timeCat scale
+import './scale/time-cat'; // timeCat scale
 
-require('./component/guide'); // guide components
+import './component/guide'; // guide components
 
-const Tooltip = require('./plugin/tooltip');
-const Guide = require('./plugin/guide');
-const Legend = require('./plugin/legend');
-const Animation = require('./animation/detail');
-const ScrollBar = require('./plugin/scroll-bar');
-const PieLabel = require('./plugin/pie-label');
-const intervalLabel = require('./plugin/interval-label');
+import * as Tooltip from './plugin/tooltip';
+import * as Guide from './plugin/guide';
+import * as Legend from './plugin/legend';
+import * as Animation from './animation/detail';
+import * as ScrollBar from './plugin/scroll-bar';
+import * as PieLabel from './plugin/pie-label';
+import * as intervalLabel from './plugin/interval-label';
+import Animate from './animation/animate';
+import './interaction';
+import Interaction from './interaction/base';
 
-F2.Animate = require('./animation/animate');
 // register plugins
-F2.Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar, PieLabel, intervalLabel ]);
+Chart.plugins.register([ Tooltip, Legend, Guide, Animation, ScrollBar, PieLabel, intervalLabel ]);
 
-// add interaction
-require('./interaction');
-F2.Interaction = require('./interaction/base');
+export {
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track,
+  Interaction,
+  Animate
+};
 
-module.exports = F2;
+export default {
+  Global,
+  Chart,
+  Shape,
+  G,
+  Util,
+  Helper,
+  track,
+  Interaction,
+  Animate
+};

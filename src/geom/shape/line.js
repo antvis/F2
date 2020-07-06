@@ -1,7 +1,7 @@
-const Util = require('../../util/common');
-const Shape = require('./shape');
-const ShapeUtil = require('./util');
-const Global = require('../../global');
+import Global from '../../global';
+import Shape from './shape';
+import { mix, each, isArray } from '../../util/common';
+import { splitPoints } from './util';
 
 // register line geom
 const Line = Shape.registerFactory('line', {
@@ -15,19 +15,19 @@ function getStyle(cfg) {
   if (cfg.size >= 0) {
     style.lineWidth = cfg.size;
   }
-  Util.mix(style, cfg.style);
+  mix(style, cfg.style);
 
-  return Util.mix({}, Global.shape.line, style);
+  return mix({}, Global.shape.line, style);
 }
 
 function drawLines(cfg, container, style, smooth) {
   const points = cfg.points;
-  if (points.length && Util.isArray(points[0].y)) {
+  if (points.length && isArray(points[0].y)) {
     const topPoints = [];
     const bottomPoints = [];
     for (let i = 0, len = points.length; i < len; i++) {
       const point = points[i];
-      const tmp = ShapeUtil.splitPoints(point);
+      const tmp = splitPoints(point);
       bottomPoints.push(tmp[0]);
       topPoints.push(tmp[1]);
     }
@@ -38,7 +38,7 @@ function drawLines(cfg, container, style, smooth) {
     if (cfg.isStack) {
       return container.addShape('Polyline', {
         className: 'line',
-        attrs: Util.mix({
+        attrs: mix({
           points: topPoints,
           smooth
         }, style)
@@ -46,14 +46,14 @@ function drawLines(cfg, container, style, smooth) {
     }
     const topShape = container.addShape('Polyline', {
       className: 'line',
-      attrs: Util.mix({
+      attrs: mix({
         points: topPoints,
         smooth
       }, style)
     });
     const bottomShape = container.addShape('Polyline', {
       className: 'line',
-      attrs: Util.mix({
+      attrs: mix({
         points: bottomPoints,
         smooth
       }, style)
@@ -66,7 +66,7 @@ function drawLines(cfg, container, style, smooth) {
   }
   return container.addShape('Polyline', {
     className: 'line',
-    attrs: Util.mix({
+    attrs: mix({
       points,
       smooth
     }, style)
@@ -74,7 +74,7 @@ function drawLines(cfg, container, style, smooth) {
 }
 
 const SHAPES = [ 'line', 'smooth', 'dash' ];
-Util.each(SHAPES, function(shapeType) {
+each(SHAPES, function(shapeType) {
   Shape.registerShape('line', shapeType, {
     draw(cfg, container) {
       const smooth = (shapeType === 'smooth');
@@ -88,4 +88,4 @@ Util.each(SHAPES, function(shapeType) {
   });
 });
 
-module.exports = Line;
+export default Line;

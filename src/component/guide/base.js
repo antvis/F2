@@ -1,4 +1,4 @@
-const Util = require('../../util/common');
+import { deepMix, isNil, isFunction, isString } from '../../util/common';
 
 const KEYWORDS_PERCENT = {
   min: 0,
@@ -11,12 +11,12 @@ class GuideBase {
 
   constructor(cfg) {
     this._initDefaultCfg();
-    Util.deepMix(this, cfg);
+    deepMix(this, cfg);
   }
 
   _getNormalizedValue(val, scale) {
     let rst;
-    if (Util.isNil(KEYWORDS_PERCENT[val])) {
+    if (isNil(KEYWORDS_PERCENT[val])) {
       rst = scale.scale(val);
     } else {
       rst = KEYWORDS_PERCENT[val];
@@ -43,13 +43,13 @@ class GuideBase {
     const self = this;
     const xScale = self.xScale;
     const yScales = self.yScales;
-    if (Util.isFunction(position)) {
+    if (isFunction(position)) {
       position = position(xScale, yScales); // position 必须是对象
     }
 
     // 如果数据格式是 ['50%', '50%'] 的格式
     // fix: 原始数据中可能会包含 'xxx5%xxx' 这样的数据，需要判断下 https://github.com/antvis/f2/issues/590
-    if (Util.isString(position[0]) && position[0].indexOf('%') !== -1 && !isNaN(position[0].slice(0, -1))) {
+    if (isString(position[0]) && position[0].indexOf('%') !== -1 && !isNaN(position[0].slice(0, -1))) {
       return this.parsePercentPoint(coord, position);
     }
 
@@ -101,4 +101,4 @@ class GuideBase {
   }
 }
 
-module.exports = GuideBase;
+export default GuideBase;

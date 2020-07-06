@@ -1,6 +1,6 @@
-const Util = require('../util/common');
-const Geom = require('./base');
-require('./shape/point');
+import { each, isArray, isNil } from '../util/common';
+import Geom from './base';
+import './shape/point';
 
 class Point extends Geom {
   getDefaultCfg() {
@@ -14,18 +14,18 @@ class Point extends Geom {
   draw(data, shapeFactory) {
     const self = this;
     const container = self.get('container');
-    Util.each(data, obj => {
+    each(data, obj => {
       const shape = obj.shape;
       const cfg = self.getDrawCfg(obj);
-      if (Util.isArray(obj.y)) {
+      if (isArray(obj.y)) {
         const hasStack = self.hasAdjust('stack');
-        Util.each(obj.y, (y, idx) => {
+        each(obj.y, (y, idx) => {
           cfg.y = y;
           if (!hasStack || idx !== 0) {
             self.drawShape(shape, obj, cfg, container, shapeFactory);
           }
         });
-      } else if (!Util.isNil(obj.y)) {
+      } else if (!isNil(obj.y)) {
         self.drawShape(shape, obj, cfg, container, shapeFactory);
       }
     });
@@ -34,4 +34,4 @@ class Point extends Geom {
 
 Geom.Point = Point;
 
-module.exports = Point;
+export default Point;

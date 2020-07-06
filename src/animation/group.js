@@ -2,20 +2,20 @@
  * Group animation
  * @author sima.zhang1990@gmail.com
  */
-const Util = require('../util/common');
-
-const Shape = require('../graphic/shape');
-const Timeline = require('../graphic/animate/timeline');
-const Animator = require('../graphic/animate/animator');
+import { mix, deepMix, each, isFunction } from '../util/common';
+import Shape from '../graphic/shape';
+import Timeline from '../graphic/animate/timeline';
+import Animator from '../graphic/animate/animator';
+import Animate from './animate';
+import * as Action from './group-action';
 
 let timeline;
 Shape.prototype.animate = function() {
-  const attrs = Util.mix({}, this.get('attrs'));
+  const attrs = mix({}, this.get('attrs'));
   return new Animator(this, attrs, timeline);
 };
 
-const Animate = require('./animate');
-const Action = require('./group-action');
+
 Animate.Action = Action;
 Animate.defaultCfg = {
   line(coord) {
@@ -69,12 +69,12 @@ function getAnimate(geomType, coord, animationName) {
 function getAnimateCfg(geomType, animateCfg) {
   const defaultCfg = Animate.getAnimateCfg(geomType, 'appear');
   if (animateCfg && animateCfg.appear) {
-    return Util.deepMix({}, defaultCfg, animateCfg.appear);
+    return deepMix({}, defaultCfg, animateCfg.appear);
   }
   return defaultCfg;
 }
 
-module.exports = {
+export default {
   afterCanvasInit(/* chart */) {
     timeline = new Timeline();
     timeline.play();
@@ -88,13 +88,13 @@ module.exports = {
     let animateCfg;
     let animate;
 
-    Util.each(geoms, geom => {
+    each(geoms, geom => {
       const type = geom.get('type');
       const container = geom.get('container');
       if (geom.get('animateCfg') !== false) {
         animateCfg = getAnimateCfg(type, geom.get('animateCfg'));
         animate = getAnimate(type, coord, animateCfg.animation);
-        if (Util.isFunction(animate)) {
+        if (isFunction(animate)) {
           animate(container, animateCfg);
         } else if (Animate.defaultCfg[type]) {
           animate = Animate.defaultCfg[type](coord);
