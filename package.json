@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.7.0-alpha.3",
+  "version": "3.7.0-alpha.4",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -28,6 +28,7 @@
   "files": [
     "src",
     "lib",
+    "es",
     "dist",
     "bundler"
   ],
