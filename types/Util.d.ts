@@ -58,23 +58,19 @@ export const Util: {
   isObject(value: any): value is object;
 
   /**
-   * 深拷贝，最多支持 3 个对象。
+   * 深拷贝。
    */
   deepMix<T extends Record<any, any>>(
-    target: T,
-    source1: PartialDeep<T>,
-    source2?: PartialDeep<T>,
-    source3?: PartialDeep<T>,
+    target: PartialDeep<T>,
+    ...sources: Array<PartialDeep<T>>
   ): T;
 
   /**
-   * 浅拷贝，最多支持 3 个对象。
+   * 浅拷贝。
    */
   mix<T extends Record<any, any>>(
-    target: T,
-    source1: Partial<T>,
-    source2?: Partial<T>,
-    source3?: Partial<T>,
+    target: PartialDeep<T>,
+    ...sources: Array<PartialDeep<T>>
   ): T;
 
   /**
