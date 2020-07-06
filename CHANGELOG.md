@@ -1,3 +1,44 @@
+#### 3.6.4 (2020-07-06)
+
+##### Chores
+
+*  add leaks action ([734f5b12](https://github.com/antvis/f2/commit/734f5b127b8d829c26d68fc75d641391a91856d3))
+*  🔀 add GitHub Action to sync Gitee ([09b7e27c](https://github.com/antvis/f2/commit/09b7e27ca42527274e10e216742906eb83365309))
+* **deps-dev:**
+  *  bump nunjucks from 3.0.1 to 3.2.1 ([462073e7](https://github.com/antvis/f2/commit/462073e768877dc91f72d970a01052dde6e1ec51))
+  *  bump chai from 4.0.2 to 4.2.0 ([500dcc04](https://github.com/antvis/f2/commit/500dcc04ee7943a2cfb3cad98634927bdc7e6f78))
+  *  bump connect from 3.6.6 to 3.7.0 ([1ed6c46c](https://github.com/antvis/f2/commit/1ed6c46ce49db8220135c41560fc66ea3be75044))
+  *  bump babel-preset-gatsby from 0.2.36 to 0.4.0 ([1993a0ef](https://github.com/antvis/f2/commit/1993a0ef6bd61eca9f2a4ed3e31aa38b5bea7bf0))
+  *  bump babel-eslint from 7.2.3 to 10.1.0 ([bc550803](https://github.com/antvis/f2/commit/bc5508033279945c12ef8538a21723d72f32d989))
+  *  bump debug from 3.1.0 to 4.1.1 ([3e361484](https://github.com/antvis/f2/commit/3e361484800a142dd14160337f877f91b7762386))
+
+##### New Features
+
+*  adjust interval ([f4ea6de8](https://github.com/antvis/f2/commit/f4ea6de8d54c9e2cc376e9195f5add4432dca3ba))
+*  为 tooltip 的 xtip/ytip 增加 text 样式配置 ([bbbdf91a](https://github.com/antvis/f2/commit/bbbdf91a9c0c4930fbaa11f5ab6b927636750aa3))
+*  添加geom draw 事件 ([b52f7088](https://github.com/antvis/f2/commit/b52f70888bf1a2e8400c236463bb2f14087cde94))
+*  添加clear相关事件 ([390a0b88](https://github.com/antvis/f2/commit/390a0b882c7e6cab783a0e0b3db3b30adcc25ff6))
+*  geom添加getRecords方法 ([7ab43728](https://github.com/antvis/f2/commit/7ab43728e8b74ee51cf594bdb7dc12ee7f98a2d4))
+
+##### Bug Fixes
+
+*  geom rerender ([#915](https://github.com/antvis/f2/pull/915)) ([033a3668](https://github.com/antvis/f2/commit/033a36684b2335547547fa430aaa2b58b6258032))
+*  修复touchstart触发press时，没有设置direction ([b6f45a6a](https://github.com/antvis/f2/commit/b6f45a6a9ea35a8357eacb627eec3cbae0aa0297))
+*  交互销毁时，注销事件 ([912a13c1](https://github.com/antvis/f2/commit/912a13c1e4f3b9662f0c87ae3d1751a8c286c645))
+*  修复rect radius大于宽高时，图形绘制不正确 ([558fe91c](https://github.com/antvis/f2/commit/558fe91c78b991fea56b7372caffe6d6b4c78118))
+*  添加交互的几个钩子事件 ([16fbcaee](https://github.com/antvis/f2/commit/16fbcaee333b7f0f5eb44e36b69a3da907253055))
+
+##### Other Changes
+
+*  更新 tooltip 文档 ([b7c60996](https://github.com/antvis/f2/commit/b7c609960ada1f2a3405cc4956667ea3674d3e9a))
+*  补充 mapping 缓存单测 ([67483760](https://github.com/antvis/f2/commit/674837600309faaaf56789ad9cdaa80af099d2c1))
+
+##### Tests
+
+*  补充新 pan 方法的单测 ([b5f47fa5](https://github.com/antvis/f2/commit/b5f47fa535050bdca2456ed3df58cf15aa81a331))
+*  补充event controller的单测 ([955b5405](https://github.com/antvis/f2/commit/955b5405d89e50616a161507b4548865be02a531))
+*  add onstart hooks test case ([c2f0f678](https://github.com/antvis/f2/commit/c2f0f67885447ed7db1db585c52c9219ff8f0766))
+
 #### 3.6.3 (2020-03-30)
 
 ##### Bug Fixes
