@@ -37,17 +37,27 @@ chart.render();
 
 describe('Interaction', () => {
   it('pinch', () => {
-    // const interactionContext = chart.get('interactionContext');
-    // interactionContext.start();
-    // interactionContext.doZoom(0.5, 0.5, 1.5);
+    const interactionContext = chart.get('interactionContext');
+    interactionContext.start();
+    interactionContext.doZoom(0.5, 0.5, 1.5);
 
     chart.get('canvas').emit('pinchstart', {});
-    expect(onStartCallback.mock.calls.length).toBe(1);
+    expect(onStartCallback.mock.calls.length).toEqual(1);
   });
 
   it('pan', () => {
+    const beforePoints = chart.get('canvas').get('children')[1].get('children')[0].get('children')[0].get('attrs').points;
+    const firstPoint = beforePoints.find(p => !isNaN(p.x));
+    expect(firstPoint.reportDate).toEqual('2017-03-15');
+    expect(firstPoint.rate).toEqual(-1.3);
+
     const interactionContext = chart.get('interactionContext');
     interactionContext.start();
     interactionContext.doMove(0.1);
+    const afterPoints = chart.get('canvas').get('children')[1].get('children')[0].get('children')[0].get('attrs').points;
+    const afterPoint = afterPoints.find(p => !isNaN(p.x));
+    expect(afterPoint.reportDate).toEqual('2017-02-15');
+    expect(afterPoint.rate).toEqual(-6.9);
+
   });
 });
