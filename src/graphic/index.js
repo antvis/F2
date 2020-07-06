@@ -5,6 +5,7 @@ import Matrix from './util/matrix';
 import Vector2 from './util/vector2';
 
 import './shape/rect';
+import './shape/image';
 import './shape/circle';
 import './shape/line';
 import './shape/polygon';
