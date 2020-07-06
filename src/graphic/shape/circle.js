@@ -1,4 +1,4 @@
-const Shape = require('../shape');
+import Shape from '../shape';
 
 class Circle extends Shape {
   _initProperties() {
@@ -38,4 +38,4 @@ class Circle extends Shape {
   }
 }
 Shape.Circle = Circle;
-module.exports = Circle;
+export default Circle;

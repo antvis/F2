@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
 const $ = require('jquery');
-require('../../src/geom/line');
-require('../../src/component/guide/html');
-const Guide = require('../../src/plugin/guide');
+import '../../src/geom/line';
+import '../../src/component/guide/html';
+import * as Guide from '../../src/plugin/guide';
 
 $(`
   <div style="width: 500px;height: 100%;posion: fixed;top:0;left:0;" id="chartWrapper">

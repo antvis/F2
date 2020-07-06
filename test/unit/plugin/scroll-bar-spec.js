@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const F2 = require('../../../src/core');
-require('../../../src/geom/line');
-const ScrollBar = require('../../../src/plugin/scroll-bar');
+import { expect } from 'chai';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/line';
+import ScrollBar from '../../../src/plugin/scroll-bar';
 
 function snapEqual(v1, v2) {
   return Math.abs(v1 - v2) < 0.01;

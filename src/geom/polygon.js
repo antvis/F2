@@ -1,6 +1,6 @@
-const Geom = require('./base');
-const Util = require('../util/common');
-require('./shape/polygon');
+import Geom from './base';
+import { isArray } from '../util/common';
+import './shape/polygon';
 
 class Polygon extends Geom {
   getDefaultCfg() {
@@ -17,7 +17,7 @@ class Polygon extends Geom {
     let x = cfg.x;
     let y = cfg.y;
     let temp;
-    if (!(Util.isArray(x) && Util.isArray(y))) {
+    if (!(isArray(x) && isArray(y))) {
       const xScale = self.getXScale();
       const yScale = self.getYScale();
       const xCount = xScale.values ? xScale.values.length : xScale.ticks.length;
@@ -27,11 +27,11 @@ class Polygon extends Geom {
       if (xScale.isCategory && yScale.isCategory) {
         x = [ x - xOffset, x - xOffset, x + xOffset, x + xOffset ];
         y = [ y - yOffset, y + yOffset, y + yOffset, y - yOffset ];
-      } else if (Util.isArray(x)) {
+      } else if (isArray(x)) {
         temp = x;
         x = [ temp[0], temp[0], temp[1], temp[1] ];
         y = [ y - yOffset / 2, y + yOffset / 2, y + yOffset / 2, y - yOffset / 2 ];
-      } else if (Util.isArray(y)) {
+      } else if (isArray(y)) {
         temp = y;
         y = [ temp[0], temp[1], temp[1], temp[0] ];
         x = [ x - xOffset / 2, x - xOffset / 2, x + xOffset / 2, x + xOffset / 2 ];
@@ -44,5 +44,4 @@ class Polygon extends Geom {
 }
 
 Geom.Polygon = Polygon;
-
-module.exports = Polygon;
+export default Polygon;

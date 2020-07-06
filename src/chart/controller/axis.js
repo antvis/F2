@@ -1,7 +1,9 @@
-const Util = require('../../util/common');
-const Axis = require('../../component/axis/');
-const Global = require('../../global');
-const { Shape } = require('../../graphic/index');
+import { deepMix, each, isFunction, mix, parsePadding, isNil } from '../../util/common';
+
+import Axis from '../../component/axis/index';
+
+import Global from '../../global';
+import { Shape } from '../../graphic/index';
 
 function formatTicks(ticks) {
   const tmp = ticks.slice(0);
@@ -29,7 +31,7 @@ class AxisController {
     this.frontPlot = null;
     this.backPlot = null;
     this.axes = {}; // store the axes's options
-    Util.mix(this, cfg);
+    mix(this, cfg);
   }
 
   _isHide(field) {
@@ -133,7 +135,7 @@ class AxisController {
     const axisCfg = this.axisCfg;
     const ticks = scale.getTicks();
 
-    const cfg = Util.deepMix({
+    const cfg = deepMix({
       ticks,
       frontContainer: this.frontPlot,
       backContainer: this.backPlot
@@ -146,10 +148,10 @@ class AxisController {
     let maxHeight = 0;
     let labelCfg = label;
 
-    Util.each(ticks, (tick, index) => {
-      if (Util.isFunction(label)) {
+    each(ticks, (tick, index) => {
+      if (isFunction(label)) {
         const executedLabel = label(tick.text, index, count);
-        labelCfg = executedLabel ? Util.mix({}, Global._defaultAxis.label, executedLabel) : null;
+        labelCfg = executedLabel ? mix({}, Global._defaultAxis.label, executedLabel) : null;
       }
       if (labelCfg) {
         const textStyle = {};
@@ -161,7 +163,7 @@ class AxisController {
         }
         const axisLabel = new Shape.Text({
           className: 'axis-label',
-          attrs: Util.mix({
+          attrs: mix({
             x: 0,
             y: 0,
             text: tick.text,
@@ -222,7 +224,7 @@ class AxisController {
     if (xScale && !self._isHide(xScale.field)) {
       self._createAxis(coord, xScale, yScales[0], 'x');
     }
-    Util.each(yScales, function(yScale, index) {
+    each(yScales, function(yScale, index) {
       if (!self._isHide(yScale.field)) {
         self._createAxis(coord, yScale, xScale, 'y', index);
       }
@@ -231,8 +233,8 @@ class AxisController {
     const axes = this.axes;
     const chart = self.chart;
     if (chart._isAutoPadding()) {
-      const userPadding = Util.parsePadding(chart.get('padding'));
-      const appendPadding = Util.parsePadding(chart.get('appendPadding'));
+      const userPadding = parsePadding(chart.get('padding'));
+      const appendPadding = parsePadding(chart.get('appendPadding'));
       const legendRange = chart.get('legendRange') || {
         top: 0,
         right: 0,
@@ -276,7 +278,7 @@ class AxisController {
       chart._updateLayout(padding);
     }
 
-    Util.each(axes, axis => {
+    each(axes, axis => {
       const { type, grid, verticalScale, ticks, dimType, position, index } = axis;
       let appendCfg;
       if (coord.isPolar) {
@@ -293,9 +295,9 @@ class AxisController {
         const gridPoints = [];
         const verticalTicks = formatTicks(verticalScale.getTicks());
 
-        Util.each(ticks, tick => {
+        each(ticks, tick => {
           const subPoints = [];
-          Util.each(verticalTicks, verticalTick => {
+          each(verticalTicks, verticalTick => {
             const x = dimType === 'x' ? tick.value : verticalTick.value;
             const y = dimType === 'x' ? verticalTick.value : tick.value;
 
@@ -322,11 +324,11 @@ class AxisController {
         }
       }
       appendCfg._id = 'axis-' + dimType;
-      if (!Util.isNil(index)) {
+      if (!isNil(index)) {
         appendCfg._id = 'axis-' + dimType + index;
       }
 
-      new Axis[type](Util.mix(axis, appendCfg));
+      new Axis[type](mix(axis, appendCfg));
     });
   }
 
@@ -337,4 +339,4 @@ class AxisController {
   }
 }
 
-module.exports = AxisController;
+export default AxisController;

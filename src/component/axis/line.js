@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const Abstract = require('./abstract');
+import { mix } from '../../util/common';
+import Abstract from './abstract';
 
 class Line extends Abstract {
   _initDefaultCfg() {
@@ -26,7 +26,7 @@ class Line extends Abstract {
     const { start, end } = this;
     container.addShape('line', {
       className: 'axis-line',
-      attrs: Util.mix({
+      attrs: mix({
         x1: start.x,
         y1: start.y,
         x2: end.x,
@@ -37,4 +37,4 @@ class Line extends Abstract {
 }
 
 Abstract.Line = Line;
-module.exports = Line;
+export default Line;

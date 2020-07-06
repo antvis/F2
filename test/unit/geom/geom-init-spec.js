@@ -1,10 +1,8 @@
-const expect = require('chai').expect;
-const Chart = require('../../../src/chart/chart');
-
-require('../../../src/geom/index');
+import { expect } from 'chai';
+import Chart from '../../../src/chart/chart';
+import '../../../src/geom/index';
 
 describe('Geom init', function() {
-
   const canvas = document.createElement('canvas');
   canvas.width = 500;
   canvas.height = 500;

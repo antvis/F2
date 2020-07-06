@@ -1,5 +1,5 @@
-const Shape = require('./shape');
-const Util = require('../../util/common');
+import Shape from './shape';
+import { mix } from '../../util/common';
 
 const Polygon = Shape.registerFactory('polygon', {
   defaultShapeType: 'polygon',
@@ -19,7 +19,7 @@ const Polygon = Shape.registerFactory('polygon', {
 Shape.registerShape('polygon', 'polygon', {
   draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
-    const style = Util.mix({
+    const style = mix({
       fill: cfg.color,
       points
     }, cfg.style);
@@ -30,4 +30,4 @@ Shape.registerShape('polygon', 'polygon', {
   }
 });
 
-module.exports = Polygon;
+export default Polygon;

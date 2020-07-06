@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom');
-require('../../src/scale/time-cat');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom';
+import '../../src/scale/time-cat';
 
 describe('Issue 550', () => {
   let canvas;

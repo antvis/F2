@@ -1,7 +1,7 @@
-const expect = require('chai').expect;
-const Swipe = require('../../../src/interaction/swipe');
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
+import { expect } from 'chai';
+import Swipe from '../../../src/interaction/swipe';
+import * as F2 from '../../../src/core';
+import '../../../src/geom/interval';
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;

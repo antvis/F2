@@ -2,7 +2,8 @@
  * Animate configuration and register
  * @author sima.zhang1990@gmail.com
  */
-const Util = require('../util/common');
+import { isFunction, deepMix } from '../util/common';
+
 const defaultAnimationCfg = {
   appear: {
     duration: 450,
@@ -29,7 +30,7 @@ const Animate = {
     const geomAnimateCfg = this.defaultCfg[geomType];
     if (geomAnimateCfg) {
       const animation = geomAnimateCfg[animationType];
-      if (Util.isFunction(animation)) {
+      if (isFunction(animation)) {
         return animation(coord);
       }
     }
@@ -39,7 +40,7 @@ const Animate = {
     const defaultCfg = defaultAnimationCfg[animationType];
     const geomConfig = this.defaultCfg[geomType];
     if (geomConfig && geomConfig.cfg && geomConfig.cfg[animationType]) {
-      return Util.deepMix({}, defaultCfg, geomConfig.cfg[animationType]);
+      return deepMix({}, defaultCfg, geomConfig.cfg[animationType]);
     }
     return defaultCfg;
   },
@@ -51,4 +52,4 @@ const Animate = {
   }
 };
 
-module.exports = Animate;
+export default Animate;

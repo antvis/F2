@@ -4,10 +4,11 @@
  * @author sima.zhang1990@gmail.com
  */
 
-const Geom = require('./base');
-const ShapeUtil = require('./shape/util');
-const Util = require('../util/common');
-require('./shape/area');
+import Geom from './base';
+import { splitArray } from './shape/util';
+import { each } from '../util/common';
+
+import './shape/area';
 
 class Area extends Geom {
   /**
@@ -30,9 +31,9 @@ class Area extends Geom {
     const cfg = this.getDrawCfg(data[0]);
     const yScale = self.getYScale();
     const connectNulls = self.get('connectNulls');
-    const splitArray = ShapeUtil.splitArray(data, yScale.field, connectNulls);
+    const splitArrayfn = splitArray(data, yScale.field, connectNulls);
     cfg.origin = data;
-    Util.each(splitArray, function(subData, splitedIndex) {
+    each(splitArrayfn, function(subData, splitedIndex) {
       cfg.splitedIndex = splitedIndex;
       const points = subData.map(obj => {
         return obj.points;
@@ -45,4 +46,4 @@ class Area extends Geom {
 
 Geom.Area = Area;
 
-module.exports = Area;
+export default Area;

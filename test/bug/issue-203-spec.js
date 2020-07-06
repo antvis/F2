@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-require('../../src/component/guide/text'); // 加载 guide 组件
-const Guide = require('../../src/plugin/guide');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import '../../src/component/guide/text'; // 加载 guide 组件
+import * as Guide from '../../src/plugin/guide';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

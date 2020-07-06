@@ -4,7 +4,7 @@
  */
 
 import Emit from './graphic/event/emit';
-const Util = require('./util/common');
+import { mix } from './util/common';
 
 class Base extends Emit {
 
@@ -17,7 +17,7 @@ class Base extends Emit {
     const attrs = {};
     const defaultCfg = this.getDefaultCfg();
     this._attrs = attrs;
-    Util.mix(attrs, defaultCfg, cfg);
+    mix(attrs, defaultCfg, cfg);
   }
 
   get(name) {
@@ -32,7 +32,6 @@ class Base extends Emit {
     this._attrs = {};
     this.destroyed = true;
   }
-
 }
 
-module.exports = Base;
+export default Base;

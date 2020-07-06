@@ -1,5 +1,5 @@
-const Shape = require('../shape');
-const bbox = require('../util/bbox');
+import Shape from '../shape';
+import { getBBoxFromLine } from '../util/bbox';
 
 class Line extends Shape {
   _initProperties() {
@@ -30,9 +30,9 @@ class Line extends Shape {
   calculateBox() {
     const attrs = this.get('attrs');
     const { x1, y1, x2, y2, lineWidth } = attrs;
-    return bbox.getBBoxFromLine(x1, y1, x2, y2, lineWidth);
+    return getBBoxFromLine(x1, y1, x2, y2, lineWidth);
   }
 }
 
 Shape.Line = Line;
-module.exports = Line;
+export default Line;

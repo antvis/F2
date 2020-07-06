@@ -1,10 +1,10 @@
-const expect = require('chai').expect;
-require('../../../src/interaction/pie-select');
-const F2 = require('../../../src/core');
-require('../../../src/geom/interval');
-require('../../../src/geom/adjust/stack');
-require('../../../src/coord/polar');
-const { gestureSimulator } = require('../test-util');
+import { expect } from 'chai';
+import '../../../src/interaction/pie-select';
+import * as F2 from '../../../src/core';
+import { gestureSimulator } from '../test-util';
+import '../../../src/geom/interval';
+import '../../../src/geom/adjust/stack';
+import '../../../src/coord/polar';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

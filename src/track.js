@@ -2,12 +2,12 @@
  * @fileOverview track f2
  * @author sima.zhang1990@gmail.com
  */
-const Global = require('./global');
-const Util = require('./util/common');
+import Global from './global';
+import { isBrowser } from './util/common';
 const SERVER_URL = 'https://kcart.alipay.com/web/bi.do';
 
 setTimeout(function() {
-  if (Global.trackable && Util.isBrowser) { // Only works for H5 env
+  if (Global.trackable && isBrowser) { // Only works for H5 env
     const image = new Image();
     const newObj = {
       pg: document.URL,

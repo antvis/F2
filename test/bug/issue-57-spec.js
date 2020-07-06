@@ -1,11 +1,12 @@
-const expect = require('chai').expect;
+import { expect } from 'chai';
 
-const F2 = require('../../src/core');
-require('../../src/geom/interval');
-require('../../src/coord/polar'); // 极坐标系
-require('../../src/geom/adjust/stack');
-require('../../src/component/guide/arc');
-const Guide = require('../../src/plugin/guide');
+import * as F2 from '../../src/core';
+import '../../src/geom/interval';
+import '../../src/coord/polar'; // 极坐标系
+import '../../src/geom/adjust/stack';
+import '../../src/component/guide/arc';
+
+import * as Guide from '../../src/plugin/guide';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

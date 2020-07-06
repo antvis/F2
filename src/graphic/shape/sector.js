@@ -1,5 +1,5 @@
-const Shape = require('../shape');
-const bbox = require('../util/bbox');
+import Shape from '../shape';
+import { getBBoxFromArc } from '../util/bbox';
 
 class Sector extends Shape {
   _initProperties() {
@@ -46,8 +46,8 @@ class Sector extends Shape {
   calculateBox() {
     const attrs = this.get('attrs');
     const { x, y, r, r0, startAngle, endAngle, anticlockwise } = attrs;
-    const outerBBox = bbox.getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
-    const innerBBox = bbox.getBBoxFromArc(x, y, r0, startAngle, endAngle, anticlockwise);
+    const outerBBox = getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
+    const innerBBox = getBBoxFromArc(x, y, r0, startAngle, endAngle, anticlockwise);
     return {
       minX: Math.min(outerBBox.minX, innerBBox.minX),
       minY: Math.min(outerBBox.minY, innerBBox.minY),
@@ -58,5 +58,5 @@ class Sector extends Shape {
 }
 
 Shape.Sector = Sector;
-module.exports = Sector;
+export default Sector;
 

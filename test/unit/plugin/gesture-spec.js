@@ -1,10 +1,11 @@
-const assert = require('chai').assert;
-const Hammer = require('hammerjs');
-const F2 = require('../../../src/core');
-const Gesture = require('../../../src/plugin/gesture');
+import { assert } from 'chai';
+import Hammer from 'hammerjs';
+import * as F2 from '../../../src/core';
+import * as Gesture from '../../../src/plugin/gesture';
+
 const canvas = document.createElement('canvas');
-const { gestureSimulator } = require('../test-util');
-require('../../../src/geom');
+import { gestureSimulator } from '../test-util';
+import '../../../src/geom';
 
 canvas.width = 500;
 canvas.height = 500;

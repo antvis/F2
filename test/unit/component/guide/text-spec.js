@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const { Canvas } = require('../../../../src/graphic/index');
-const Coord = require('../../../../src/coord/index');
-const { Text } = require('../../../../src/component/guide/index');
-const Scale = require('../../../../src/scale/index');
+import { expect } from 'chai';
+import { Canvas } from '../../../../src/graphic/index';
+import Coord from '../../../../src/coord/index';
+import { Text } from '../../../../src/component/guide/index';
+import Scale from '../../../../src/scale/index';
 
 const canvas1 = document.createElement('canvas');
 canvas1.id = 'guideText';

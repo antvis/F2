@@ -1,5 +1,5 @@
-const Util = require('../util/common');
-const { Group } = require('../graphic/index');
+import { isNil, deepMix, mix, parsePadding, isObject } from '../util/common';
+import { Group } from '../graphic/index';
 
 class TextBox {
   getDefaultCfg() {
@@ -11,7 +11,8 @@ class TextBox {
         fontSize: 12,
         fill: '#fff',
         textAlign: 'center',
-        textBaseline: 'middle'
+        textBaseline: 'middle',
+        fontFamily: 'Arial'
       },
       background: {
         radius: 1,
@@ -25,11 +26,11 @@ class TextBox {
   }
 
   constructor(cfg) {
-    Util.deepMix(this, this.getDefaultCfg(), cfg);
+    deepMix(this, this.getDefaultCfg(), cfg);
     this._init();
     const { content, x, y } = this;
 
-    if (!Util.isNil(content)) {
+    if (!isNil(content)) {
       this.updateContent(content);
     }
 
@@ -46,7 +47,7 @@ class TextBox {
     const text = container.addShape('Text', {
       className: className + '-text',
       zIndex: 1,
-      attrs: Util.mix({
+      attrs: mix({
         text: content,
         x: 0,
         y: 0
@@ -55,7 +56,7 @@ class TextBox {
     const backgroundShape = container.addShape('Rect', {
       className: className + '-bg',
       zIndex: -1,
-      attrs: Util.mix({
+      attrs: mix({
         x: 0,
         y: 0,
         width: 0,
@@ -72,7 +73,7 @@ class TextBox {
     const textShape = this.textShape;
     const background = this.background;
     const textBBox = textShape.getBBox();
-    const padding = Util.parsePadding(background.padding);
+    const padding = parsePadding(background.padding);
     const width = textBBox.width + padding[1] + padding[3];
     const height = textBBox.height + padding[0] + padding[2];
     const x = textBBox.minX - padding[3];
@@ -87,8 +88,8 @@ class TextBox {
 
   updateContent(text) {
     const { textShape, backgroundShape } = this;
-    if (!Util.isNil(text)) {
-      if (!Util.isObject(text)) {
+    if (!isNil(text)) {
+      if (!isObject(text)) {
         text = { text };
       }
       textShape.attr(text);
@@ -142,4 +143,4 @@ class TextBox {
   }
 }
 
-module.exports = TextBox;
+export default TextBox;

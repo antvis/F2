@@ -1,13 +1,14 @@
-const Util = require('../../util/common');
-const Global = require('../../global');
-const ShapeUtil = require('./util');
-const Shape = require('./shape');
+
+import Global from '../../global';
+import Shape from './shape';
+import { mix, each, isArray } from '../../util/common';
+import { splitPoints } from './util';
 const SHAPES = [ 'circle', 'hollowCircle', 'rect' ];
 
 const Point = Shape.registerFactory('point', {
   defaultShapeType: 'circle',
   getDefaultPoints(pointInfo) {
-    return ShapeUtil.splitPoints(pointInfo);
+    return splitPoints(pointInfo);
   }
 });
 
@@ -21,8 +22,8 @@ function getPointsCfg(cfg) {
     style.size = cfg.size;
   }
 
-  Util.mix(style, cfg.style);
-  return Util.mix({}, Global.shape.point, style);
+  mix(style, cfg.style);
+  return mix({}, Global.shape.point, style);
 }
 
 function drawShape(cfg, container, shape) {
@@ -30,7 +31,7 @@ function drawShape(cfg, container, shape) {
   const pointCfg = getPointsCfg(cfg);
   const size = pointCfg.r || pointCfg.size;
   const x = cfg.x;
-  const y = !Util.isArray(cfg.y) ? [ cfg.y ] : cfg.y;
+  const y = !isArray(cfg.y) ? [ cfg.y ] : cfg.y;
   if (shape === 'hollowCircle') {
     pointCfg.lineWidth = 1;
     pointCfg.fill = null;
@@ -39,7 +40,7 @@ function drawShape(cfg, container, shape) {
     if (shape === 'rect') {
       return container.addShape('Rect', {
         className: 'point',
-        attrs: Util.mix({
+        attrs: mix({
           x: x - size,
           y: y[i] - size,
           width: size * 2,
@@ -50,7 +51,7 @@ function drawShape(cfg, container, shape) {
 
     return container.addShape('Circle', {
       className: 'point',
-      attrs: Util.mix({
+      attrs: mix({
         x,
         y: y[i],
         r: size
@@ -59,7 +60,7 @@ function drawShape(cfg, container, shape) {
   }
 }
 
-Util.each(SHAPES, function(shapeType) {
+each(SHAPES, function(shapeType) {
   Shape.registerShape('point', shapeType, {
     draw(cfg, container) {
       return drawShape(cfg, container, shapeType);
@@ -67,4 +68,4 @@ Util.each(SHAPES, function(shapeType) {
   });
 });
 
-module.exports = Point;
+export default Point;

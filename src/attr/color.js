@@ -2,7 +2,7 @@ import {
   isString
 } from '@antv/util';
 import Base from './base';
-import ColorUtil from './color-util';
+import { gradient as defaultGradient } from './color-util';
 
 class Color extends Base {
 
@@ -23,7 +23,7 @@ class Color extends Base {
     let gradient = this.gradient;
     if (!gradient) {
       const values = this.values;
-      gradient = ColorUtil.gradient(values);
+      gradient = defaultGradient(values);
       this.gradient = gradient;
     }
     return gradient(percent);

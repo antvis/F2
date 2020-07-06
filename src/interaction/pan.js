@@ -1,15 +1,15 @@
-const Util = require('../util/common');
-const Interaction = require('./base');
-const Chart = require('../chart/chart');
-const FilterPlugin = require('../plugin/filter');
-const MoveMixin = require('./mixin/move');
-// const PressTooltipMixin = require('./mixin/press-tooltip');
-const UpdateScaleMixin = require('./mixin/update-scale');
+
+import { mix, isWx, isMy } from '../util/common';
+import Interaction from './base';
+import Chart from '../chart/chart';
+import * as FilterPlugin from '../plugin/filter';
+import MoveMixin from './mixin/move';
+import UpdateScaleMixin from './mixin/update-scale';
 
 class Pan extends Interaction {
   getDefaultCfg() {
     let defaultCfg = super.getDefaultCfg();
-    defaultCfg = Util.mix({}, defaultCfg, {
+    defaultCfg = mix({}, defaultCfg, {
       startEvent: 'panstart',
       processEvent: 'panmove',
       endEvent: 'panend',
@@ -27,7 +27,7 @@ class Pan extends Interaction {
       speed: 5
     });
 
-    if (Util.isWx || Util.isMy) { // 小程序
+    if (isWx || isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
       defaultCfg.processEvent = 'touchmove';
       defaultCfg.endEvent = 'touchend';
@@ -58,7 +58,7 @@ class Pan extends Interaction {
       }
     }]);
 
-    Util.mix(this, UpdateScaleMixin, MoveMixin);
+    mix(this, UpdateScaleMixin, MoveMixin);
   }
 
   start(e) {
@@ -86,4 +86,4 @@ class Pan extends Interaction {
 }
 
 Chart.registerInteraction('pan', Pan);
-module.exports = Pan;
+export default Pan;

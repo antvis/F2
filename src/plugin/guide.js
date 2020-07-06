@@ -1,9 +1,9 @@
-const Util = require('../util/common');
-const Guide = require('../component/guide/base');
-const Global = require('../global');
+import { deepMix, each, mix, isFunction, upperFirst } from '../util/common';
+import Guide from '../component/guide/base';
+import Global from '../global';
 
 // register the default configuration for Guide
-Global.guide = Util.deepMix({
+Global.guide = deepMix({
   line: {
     style: {
       stroke: '#a3a3a3',
@@ -75,11 +75,11 @@ class GuideController {
     this.xScale = null;
     this.yScales = null;
     this.guideShapes = [];
-    Util.mix(this, cfg);
+    mix(this, cfg);
   }
 
   _toString(position) {
-    if (Util.isFunction(position)) {
+    if (isFunction(position)) {
       position = position(this.xScale, this.yScales);
     }
     position = position.toString();
@@ -104,7 +104,7 @@ class GuideController {
     const self = this;
     const { chart, guides, xScale, yScales } = self;
     const guideShapes = [];
-    Util.each(guides, function(guide, idx) {
+    each(guides, function(guide, idx) {
       guide.xScale = xScale;
       guide.yScales = yScales;
       let container;
@@ -137,13 +137,13 @@ class GuideController {
 
   reset() {
     const guides = this.guides;
-    Util.each(guides, guide => {
+    each(guides, guide => {
       guide.remove();
     });
   }
   _createGuide(type, cfg) {
-    const ClassName = Util.upperFirst(type);
-    const guide = new Guide[ClassName](Util.deepMix({}, Global.guide[type], cfg));
+    const ClassName = upperFirst(type);
+    const guide = new Guide[ClassName](deepMix({}, Global.guide[type], cfg));
     this.guides.push(guide);
     return guide;
   }
@@ -181,43 +181,58 @@ class GuideController {
   }
 }
 
-module.exports = {
-  init(chart) {
-    const guideController = new GuideController({
-      frontPlot: chart.get('frontPlot').addGroup({
-        zIndex: 20,
-        className: 'guideContainer'
-      }),
-      backPlot: chart.get('backPlot').addGroup({
-        className: 'guideContainer'
-      })
-    });
-    chart.set('guideController', guideController);
-    /**
-     * 为图表添加 guide
-     * @return {GuideController} 返回 guide 控制器
-     */
-    chart.guide = function() {
-      return guideController;
-    };
-  },
-  afterGeomDraw(chart) {
-    const guideController = chart.get('guideController');
-    if (!guideController.guides.length) {
-      return;
-    }
-    const xScale = chart.getXScale();
-    const yScales = chart.getYScales();
-    const coord = chart.get('coord');
-    guideController.xScale = xScale;
-    guideController.yScales = yScales;
-    guideController.chart = chart; // for regionFilter
-    guideController.paint(coord);
-  },
-  clear(chart) {
-    chart.get('guideController').clear();
-  },
-  repaint(chart) {
-    chart.get('guideController').reset();
+function init(chart) {
+  const guideController = new GuideController({
+    frontPlot: chart.get('frontPlot').addGroup({
+      zIndex: 20,
+      className: 'guideContainer'
+    }),
+    backPlot: chart.get('backPlot').addGroup({
+      className: 'guideContainer'
+    })
+  });
+  chart.set('guideController', guideController);
+  /**
+   * 为图表添加 guide
+   * @return {GuideController} 返回 guide 控制器
+   */
+  chart.guide = function() {
+    return guideController;
+  };
+}
+
+function afterGeomDraw(chart) {
+  const guideController = chart.get('guideController');
+  if (!guideController.guides.length) {
+    return;
   }
+  const xScale = chart.getXScale();
+  const yScales = chart.getYScales();
+  const coord = chart.get('coord');
+  guideController.xScale = xScale;
+  guideController.yScales = yScales;
+  guideController.chart = chart; // for regionFilter
+  guideController.paint(coord);
+}
+
+function clear(chart) {
+  chart.get('guideController').clear();
+}
+
+function repaint(chart) {
+  chart.get('guideController').reset();
+}
+
+export {
+  init,
+  afterGeomDraw,
+  clear,
+  repaint
+};
+
+export default {
+  init,
+  afterGeomDraw,
+  clear,
+  repaint
 };

@@ -4,7 +4,7 @@ import {
   EVENT_AFTER_DATA_CHANGE
 } from '../../chart/const';
 
-const autoCat = require('@antv/scale/lib/auto/cat');
+import autoCat from '@antv/scale/lib/auto/cat';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {

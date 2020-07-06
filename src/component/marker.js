@@ -1,8 +1,8 @@
 /**
  * marker shapes，used for tooltip and legend
  */
-const Util = require('../util/common');
-const { Shape } = require('../graphic/index');
+import { isFunction } from '../util/common';
+import { Shape } from '../graphic/index';
 
 const SYMBOLS = {
   circle(x, y, r, ctx) {
@@ -38,7 +38,7 @@ class Marker extends Shape {
     const { x, y, radius } = attrs;
     const symbol = attrs.symbol || 'circle';
     let method;
-    if (Util.isFunction(symbol)) {
+    if (isFunction(symbol)) {
       method = symbol;
     } else {
       method = SYMBOLS[symbol];
@@ -59,4 +59,4 @@ class Marker extends Shape {
   }
 }
 
-module.exports = Marker;
+export default Marker;

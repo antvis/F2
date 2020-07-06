@@ -1,17 +1,17 @@
-const expect = require('chai').expect;
-const Group = require('../../../src/graphic/group');
-const Shape = require('../../../src/graphic/shape');
-const Canvas = require('../../../src/graphic/canvas');
+import { expect } from 'chai';
+import Group from '../../../src/graphic/group';
+import Shape from '../../../src/graphic/shape';
+import Canvas from '../../../src/graphic/canvas';
 
-require('../../../src/graphic/shape/rect');
-require('../../../src/graphic/shape/circle');
-require('../../../src/graphic/shape/line');
-require('../../../src/graphic/shape/polygon');
-require('../../../src/graphic/shape/polyline');
-require('../../../src/graphic/shape/arc');
-require('../../../src/graphic/shape/sector');
-require('../../../src/graphic/shape/text');
-require('../../../src/graphic/shape/custom');
+import '../../../src/graphic/shape/rect';
+import '../../../src/graphic/shape/circle';
+import '../../../src/graphic/shape/line';
+import '../../../src/graphic/shape/polygon';
+import '../../../src/graphic/shape/polyline';
+import '../../../src/graphic/shape/arc';
+import '../../../src/graphic/shape/sector';
+import '../../../src/graphic/shape/text';
+import '../../../src/graphic/shape/custom';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-group';
@@ -322,8 +322,8 @@ describe('Group', function() {
         fill: 'black',
         stroke: 'red',
         textBaseline: 'top',
-        fontSize: 8,
         fontFamily: 'Arial',
+        fontSize: 8,
         lineHeight: 18,
         lineWidth: 1
       }

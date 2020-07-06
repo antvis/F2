@@ -1,2 +1,2 @@
-const Stack = require('@antv/adjust/lib/stack');
-module.exports = Stack;
+import Stack from '@antv/adjust/lib/stack';
+export default Stack;

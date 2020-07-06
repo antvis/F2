@@ -1,8 +1,8 @@
-const expect = require('chai').expect;
-const F2 = require('../../src/core');
-require('../../src/geom/interval');
-require('../../src/geom/adjust/dodge');
-require('../../src/scale/time-cat');
+import { expect } from 'chai';
+import * as F2 from '../../src/core';
+import '../../src/geom/interval';
+import '../../src/geom/adjust/dodge';
+import '../../src/scale/time-cat';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

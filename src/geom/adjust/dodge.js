@@ -1,2 +1,2 @@
-const Dodge = require('@antv/adjust/lib/dodge');
-module.exports = Dodge;
+import Dodge from '@antv/adjust/lib/dodge';
+export default Dodge;

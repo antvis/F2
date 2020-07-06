@@ -1,6 +1,6 @@
-const Util = require('../../util/common');
-const Shape = require('../shape');
-const RectUtil = require('../util/rect');
+import { isNil, measureText, isString } from '../../util/common';
+import Shape from '../shape';
+import RectUtil from '../util/rect';
 
 let textWidthCacheCounter = 0;
 let textWidthCache = {};
@@ -44,7 +44,7 @@ class Text extends Shape {
       const text = attrs.text;
       let textArr = null;
       let lineCount = 1;
-      if (Util.isString(text) && (text.indexOf('\n') !== -1)) {
+      if (isString(text) && (text.indexOf('\n') !== -1)) {
         textArr = text.split('\n');
         lineCount = textArr.length;
       }
@@ -81,7 +81,7 @@ class Text extends Shape {
     const text = attrs.text;
     let x = attrs.x;
     let y = attrs.y;
-    if (Util.isNil(text) || isNaN(x) || isNaN(y)) { // text will be 0
+    if (isNil(text) || isNaN(x) || isNaN(y)) { // text will be 0
       return;
     }
     const textArr = attrs.textArr;
@@ -105,7 +105,7 @@ class Text extends Shape {
     // context.beginPath();
     if (self.hasFill()) {
       const fillOpacity = attrs.fillOpacity;
-      if (!Util.isNil(fillOpacity) && fillOpacity !== 1) {
+      if (!isNil(fillOpacity) && fillOpacity !== 1) {
         context.globalAlpha = fillOpacity;
       }
       if (textArr) {
@@ -205,7 +205,7 @@ class Text extends Shape {
     const text = attrs.text;
     const context = this.get('context');
 
-    if (Util.isNil(text)) return undefined;
+    if (isNil(text)) return undefined;
 
     const font = attrs.font;
     const textArr = attrs.textArr;
@@ -218,10 +218,10 @@ class Text extends Shape {
     if (textArr) {
       for (let i = 0, length = textArr.length; i < length; i++) {
         const subText = textArr[i];
-        width = Math.max(width, Util.measureText(subText, font, context).width);
+        width = Math.max(width, measureText(subText, font, context).width);
       }
     } else {
-      width = Util.measureText(text, font, context).width;
+      width = measureText(text, font, context).width;
     }
 
     if (textWidthCacheCounter > TEXT_CACHE_MAX) {
@@ -236,4 +236,5 @@ class Text extends Shape {
 }
 
 Shape.Text = Text;
-module.exports = Text;
+
+export default Text;

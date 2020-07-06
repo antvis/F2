@@ -1,15 +1,54 @@
 {
   "plugins": [
-    "transform-remove-strict-mode"
+    "transform-remove-strict-mode",
+    "@babel/plugin-proposal-class-properties"
   ],
   "presets": [
     [
       "@babel/preset-env",
       {
         "loose": true,
-        "modules": false
+        "targets": {
+          "browsers": [
+            "last 4 versions",
+            "safari >= 7",
+            "ie >= 9"
+          ]
+        }
       }
-    ],
-    "babel-preset-gatsby"
-  ]
+    ]
+  ],
+  "env": {
+    "esm": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "targets": {
+              "esmodules": true
+            }
+          }
+        ]
+      ]
+    },
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "loose": true,
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
+    },
+    "site": {
+      "presets": [
+        ["babel-preset-gatsby"]
+      ]
+    }
+  }
 }

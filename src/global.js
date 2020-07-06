@@ -1,8 +1,8 @@
-const Theme = require('./theme');
-const Util = require('./util/common');
+import Theme from './theme';
+import { deepMix } from './util/common';
 
 const Global = {
-  version: '3.6.4',
+  version: '3.7.0-alpha.4',
   scales: {},
   widthRatio: {
     column: 1 / 2,
@@ -13,8 +13,9 @@ const Global = {
 };
 
 Global.setTheme = function(theme) {
-  Util.deepMix(this, theme);
+  deepMix(this, theme);
 };
 
 Global.setTheme(Theme);
-module.exports = Global;
+
+export default Global;

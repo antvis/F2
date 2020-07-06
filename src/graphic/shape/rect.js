@@ -1,9 +1,9 @@
-const Util = require('../../util/common');
-const Shape = require('../shape');
+import { parsePadding } from '../../util/common';
+import Shape from '../shape';
 
 // 为了处理radius 大于 width 或 height 的场景
 function parseRadius(radius, width, height) {
-  radius = Util.parsePadding(radius);
+  radius = parsePadding(radius);
   // 都为0
   if (!radius[0] && !radius[1] && !radius[2] && !radius[3]) {
     return radius;
@@ -72,4 +72,4 @@ class Rect extends Shape {
 }
 
 Shape.Rect = Rect;
-module.exports = Rect;
+export default Rect;

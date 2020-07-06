@@ -1,14 +1,14 @@
-const Util = require('../util/common');
-const Helper = require('./helper');
-const Interaction = require('./base');
-const Chart = require('../chart/chart');
-const FilterPlugin = require('../plugin/filter');
-const updateScaleMixin = require('./mixin/update-scale');
+import { mix, each, directionEnabled } from '../util/common';
+import { getLimitRange, getFieldRange } from './helper';
+import Interaction from './base';
+import Chart from '../chart/chart';
+import * as FilterPlugin from '../plugin/filter';
+import UpdateScaleMixin from './mixin/update-scale';
 
 class Pinch extends Interaction {
   getDefaultCfg() {
     const defaultCfg = super.getDefaultCfg();
-    return Util.mix({}, defaultCfg, {
+    return mix({}, defaultCfg, {
       startEvent: 'pinchstart',
       processEvent: 'pinch',
       endEvent: 'pinchend',
@@ -46,7 +46,7 @@ class Pinch extends Interaction {
       }
     }]);
 
-    Util.mix(self, updateScaleMixin);
+    mix(self, UpdateScaleMixin);
   }
 
   start() {
@@ -114,11 +114,11 @@ class Pinch extends Interaction {
     }
     const data = chart.get('data');
 
-    if (Util.directionEnabled(mode, 'x') && Util.directionEnabled(_whichAxes, 'x')) { // x
+    if (directionEnabled(mode, 'x') && directionEnabled(_whichAxes, 'x')) { // x
       const xScale = chart.getXScale();
       const xField = xScale.field;
       if (!limitRange[xField]) {
-        limitRange[xField] = Helper.getLimitRange(data, xScale);
+        limitRange[xField] = getLimitRange(data, xScale);
       }
 
       if (xScale.isCategory) { // 横轴为分类类型
@@ -126,20 +126,20 @@ class Pinch extends Interaction {
       } else if (xScale.isLinear) {
         self._zoomLinearScale(xScale, diff, center, 'x');
       }
-      this.xRange = Helper.getFieldRange(xScale, limitRange[xField], xScale.type);
+      this.xRange = getFieldRange(xScale, limitRange[xField], xScale.type);
     }
 
-    if (Util.directionEnabled(mode, 'y') && Util.directionEnabled(_whichAxes, 'y')) { // y
+    if (directionEnabled(mode, 'y') && directionEnabled(_whichAxes, 'y')) { // y
       const yScales = chart.getYScales();
-      Util.each(yScales, yScale => {
+      each(yScales, yScale => {
         const yField = yScale.field;
         if (!limitRange[yField]) {
-          limitRange[yField] = Helper.getLimitRange(data, yScale);
+          limitRange[yField] = getLimitRange(data, yScale);
         }
         yScale.isLinear && self._zoomLinearScale(yScale, diff, center, 'y');
       });
       const scale = yScales[0];
-      this.yRange = Helper.getFieldRange(scale, limitRange[scale.field], scale.type);
+      this.yRange = getFieldRange(scale, limitRange[scale.field], scale.type);
     }
 
     chart.repaint();
@@ -244,4 +244,4 @@ class Pinch extends Interaction {
 }
 
 Chart.registerInteraction('pinch', Pinch);
-module.exports = Pinch;
+export default Pinch;

@@ -1,10 +1,20 @@
-module.exports = {
-  Text: require('./text'),
-  Line: require('./line'),
-  Arc: require('./arc'),
-  Rect: require('./rect'),
-  Html: require('./html'),
-  Tag: require('./tag'),
-  Point: require('./point'),
-  RegionFilter: require('./region-filter')
+import Text from './text';
+import Line from './line';
+import Arc from './arc';
+import Rect from './rect';
+import Html from './html';
+import Tag from './tag';
+import Point from './point';
+import RegionFilter from './region-filter';
+
+export {
+  Text,
+  Line,
+  Arc,
+  Rect,
+  Html,
+  Tag,
+  Point,
+  RegionFilter
 };
+

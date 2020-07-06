@@ -1,10 +1,11 @@
 import data from './data.json';
-const F2 = require('../../../../src/index');
+import * as F2 from '../../../../src/index';
+
 
 // 兼容之前的pinch和pan
-require('../../../../src/interaction/index');
-const Pan = require('../../../../src/interaction/pan');
-const Pinch = require('../../../../src/interaction/pinch');
+import '../../../../src/interaction/index';
+import Pan from '../../../../src/interaction/pan';
+import Pinch from '../../../../src/interaction/pinch';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

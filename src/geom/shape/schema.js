@@ -1,5 +1,5 @@
-const Shape = require('./shape');
-const Util = require('../../util/common');
+import Shape from './shape';
+import { mix } from '../../util/common';
 
 function _sortValue(value) {
   const sorted = value.sort(function(a, b) {
@@ -55,7 +55,7 @@ Shape.registerShape('schema', 'candle', {
   },
   draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
-    const style = Util.mix({
+    const style = mix({
       stroke: cfg.color,
       fill: cfg.color,
       lineWidth: 1
@@ -80,4 +80,4 @@ Shape.registerShape('schema', 'candle', {
   }
 });
 
-module.exports = Schema;
+export default Schema;

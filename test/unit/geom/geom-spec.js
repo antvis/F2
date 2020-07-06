@@ -1,13 +1,12 @@
-const expect = require('chai').expect;
-const Geom = require('../../../src/geom/index');
-const Scale = require('../../../src/scale/index');
-const Coord = require('../../../src/coord/index');
-require('../../../src/coord/polar');
-const Global = require('../../../src/global');
-const { Canvas } = require('../../../src/graphic/index');
-
-require('../../../src/geom/adjust/index');
-require('../../../src/geom/shape/index');
+import { expect } from 'chai';
+import Geom from '../../../src/geom/index';
+import Scale from '../../../src/scale/index';
+import Coord from '../../../src/coord/index';
+import '../../../src/coord/polar';
+import Global from '../../../src/global';
+import { Canvas } from '../../../src/graphic/index';
+import '../../../src/geom/adjust/index';
+import '../../../src/geom/shape/index';
 
 const dom = document.createElement('canvas');
 dom.width = 500;

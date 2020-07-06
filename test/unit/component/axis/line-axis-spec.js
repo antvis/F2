@@ -1,9 +1,9 @@
-const expect = require('chai').expect;
-const AxisLine = require('../../../../src/component/axis/line');
-const Scale = require('../../../../src/scale/');
-const axisGlobal = require('../../../../src/global').axis;
-const Util = require('../../../../src/util/common');
-const { Group } = require('../../../../src/graphic/index');
+import { expect } from 'chai';
+import AxisLine from '../../../../src/component/axis/line';
+import Scale from '../../../../src/scale/';
+import { axis as axisGlobal } from '../../../../src/global';
+import * as Util from '../../../../src/util/common';
+import { Group } from '../../../../src/graphic/index';
 
 const linear = new Scale.Linear({
   min: 0,

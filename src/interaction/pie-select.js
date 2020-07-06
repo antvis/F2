@@ -1,11 +1,11 @@
-const Util = require('../util/common');
-const Interaction = require('./base');
-const Chart = require('../chart/chart');
+import { mix, each, isWx, isMy, isObject, isObjectValueEqual, createEvent } from '../util/common';
+import Interaction from './base';
+import Chart from '../chart/chart';
 
 class PieSelect extends Interaction {
   getDefaultCfg() {
     let defaultCfg = super.getDefaultCfg();
-    defaultCfg = Util.mix({}, defaultCfg, {
+    defaultCfg = mix({}, defaultCfg, {
       startEvent: 'tap',
       processEvent: null,
       animate: false,
@@ -17,7 +17,7 @@ class PieSelect extends Interaction {
       cancelable: true,
       defaultSelected: null // set the default selected shape
     });
-    if (Util.isWx || Util.isMy) { // 小程序
+    if (isWx || isMy) { // 小程序
       defaultCfg.startEvent = 'touchstart';
       defaultCfg.endEvent = 'touchend';
     }
@@ -39,7 +39,7 @@ class PieSelect extends Interaction {
       }
     });
     const defaultSelected = self.defaultSelected;
-    if (Util.isObject(defaultSelected)) {
+    if (isObject(defaultSelected)) {
       const selectedShape = self._getSelectedShapeByData(defaultSelected);
       selectedShape && self._selectedShape(selectedShape);
       this.canvas.draw();
@@ -52,10 +52,10 @@ class PieSelect extends Interaction {
     const geom = chart.get('geoms')[0];
     const container = geom.get('container');
     const children = container.get('children');
-    Util.each(children, child => {
+    each(children, child => {
       if (child.get('isShape') && (child.get('className') === geom.get('type'))) { // get geometry's shape
         const shapeData = child.get('origin')._origin;
-        if (Util.isObjectValueEqual(shapeData, data)) {
+        if (isObjectValueEqual(shapeData, data)) {
           selectedShape = child;
           return false;
         }
@@ -71,7 +71,7 @@ class PieSelect extends Interaction {
     const { x, y, startAngle, endAngle, r, fill } = selectedShape._attrs.attrs;
     const frontPlot = chart.get('frontPlot');
     const halo = frontPlot.addShape('sector', {
-      attrs: Util.mix({
+      attrs: mix({
         x,
         y,
         r: r + offset + appendRadius,
@@ -90,7 +90,7 @@ class PieSelect extends Interaction {
         };
       }
       halo.attr('r', r + offset);
-      halo.animate().to(Util.mix({
+      halo.animate().to(mix({
         attrs: {
           r: r + offset + appendRadius
         }
@@ -104,7 +104,7 @@ class PieSelect extends Interaction {
       ev.clientX = ev.center.x;
       ev.clientY = ev.center.y;
     }
-    const { x, y } = Util.createEvent(ev, chart);
+    const { x, y } = createEvent(ev, chart);
 
     const records = chart.getSnapRecords({ x, y });
     if (!records.length) {
@@ -145,4 +145,4 @@ class PieSelect extends Interaction {
 }
 
 Chart.registerInteraction('pie-select', PieSelect);
-module.exports = PieSelect;
+export default PieSelect;

@@ -1,7 +1,7 @@
-const Geom = require('./base');
-const ShapeUtil = require('./shape/util');
-const Util = require('../util/common');
-require('./shape/line');
+import Geom from './base';
+import { splitArray } from './shape/util';
+import { each } from '../util/common';
+import './shape/line';
 
 class Path extends Geom {
   getDefaultCfg() {
@@ -22,12 +22,12 @@ class Path extends Geom {
     const container = self.get('container');
     const yScale = self.getYScale();
     const connectNulls = self.get('connectNulls');
-    const splitArray = ShapeUtil.splitArray(data, yScale.field, connectNulls);
+    const splitArrayObj = splitArray(data, yScale.field, connectNulls);
 
     const cfg = this.getDrawCfg(data[0]);
     cfg.origin = data;
 
-    Util.each(splitArray, function(subData, splitedIndex) {
+    each(splitArrayObj, function(subData, splitedIndex) {
       cfg.splitedIndex = splitedIndex;
       cfg.points = subData;
       self.drawShape(cfg.shape, data[0], cfg, container, shapeFactory);
@@ -36,4 +36,4 @@ class Path extends Geom {
 }
 
 Geom.Path = Path;
-module.exports = Path;
+export default Path;

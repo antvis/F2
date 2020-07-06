@@ -1,21 +1,21 @@
-const Util = require('../../util/common');
-const Shape = require('./shape');
-const Vector2 = require('../../graphic/util/vector2');
-const Global = require('../../global');
+import Vector2 from '../../graphic/util/vector2';
+import Global from '../../global';
+import Shape from './shape';
+import { mix, isArray } from '../../util/common';
 
 function getRectPoints(cfg) {
   const { x, y, y0, size } = cfg;
 
   let ymin = y0;
   let ymax = y;
-  if (Util.isArray(y)) {
+  if (isArray(y)) {
     ymax = y[1];
     ymin = y[0];
   }
 
   let xmin;
   let xmax;
-  if (Util.isArray(x)) {
+  if (isArray(x)) {
     xmin = x[0];
     xmax = x[1];
   } else {
@@ -68,7 +68,7 @@ const Interval = Shape.registerFactory('interval', {
 Shape.registerShape('interval', 'rect', {
   draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
-    const style = Util.mix({
+    const style = mix({
       fill: cfg.color
     }, Global.shape.interval, cfg.style);
     if (cfg.isInCircle) {
@@ -98,7 +98,7 @@ Shape.registerShape('interval', 'rect', {
 
       return container.addShape('Sector', {
         className: 'interval',
-        attrs: Util.mix({
+        attrs: mix({
           x,
           y,
           r,
@@ -113,7 +113,7 @@ Shape.registerShape('interval', 'rect', {
 
     return container.addShape('rect', {
       className: 'interval',
-      attrs: Util.mix(rectCfg, style)
+      attrs: mix(rectCfg, style)
     });
   }
 });
@@ -145,7 +145,7 @@ Shape.registerShape('interval', 'rect', {
         }
       }
 
-      const attrs = Util.mix({
+      const attrs = mix({
         fill: cfg.color,
         points: polygonPoints
       }, Global.shape.interval, cfg.style);
@@ -158,4 +158,4 @@ Shape.registerShape('interval', 'rect', {
   });
 });
 
-module.exports = Interval;
+export default Interval;

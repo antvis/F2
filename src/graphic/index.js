@@ -1,19 +1,23 @@
-const G = {
-  Canvas: require('./canvas'),
-  Group: require('./group'),
-  Shape: require('./shape'),
-  Matrix: require('./util/matrix'),
-  Vector2: require('./util/vector2')
+import Canvas from './canvas';
+import Group from './group';
+import Shape from './shape';
+import Matrix from './util/matrix';
+import Vector2 from './util/vector2';
+
+import './shape/rect';
+import './shape/circle';
+import './shape/line';
+import './shape/polygon';
+import './shape/polyline';
+import './shape/arc';
+import './shape/sector';
+import './shape/text';
+import './shape/custom';
+
+export {
+  Canvas,
+  Group,
+  Shape,
+  Matrix,
+  Vector2
 };
-
-require('./shape/rect');
-require('./shape/circle');
-require('./shape/line');
-require('./shape/polygon');
-require('./shape/polyline');
-require('./shape/arc');
-require('./shape/sector');
-require('./shape/text');
-require('./shape/custom');
-
-module.exports = G;

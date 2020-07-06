@@ -1,5 +1,5 @@
-const Util = require('../../util/common');
-const GuideBase = require('./base');
+import { getHeight, getWidth } from '../../util/common';
+import GuideBase from './base';
 
 function getOffsetFromAlign(alignX, alignY, width, height) {
   const result = [];
@@ -115,8 +115,8 @@ class Html extends GuideBase {
     const canvasOffsetTop = canvasDom.offsetTop;
     const canvasOffsetLeft = canvasDom.offsetLeft;
     const { alignX, alignY, offsetX, offsetY } = self;
-    const width = Util.getWidth(myNode);
-    const height = Util.getHeight(myNode);
+    const width = getWidth(myNode);
+    const height = getHeight(myNode);
     const newOffset = getOffsetFromAlign(alignX, alignY, width, height);
     position.x = position.x + newOffset[0] + canvasOffsetLeft;
     position.y = position.y + newOffset[1] + canvasOffsetTop;
@@ -144,4 +144,5 @@ class Html extends GuideBase {
 }
 
 GuideBase.Html = Html;
-module.exports = Html;
+
+export default Html;

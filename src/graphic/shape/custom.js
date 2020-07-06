@@ -1,4 +1,4 @@
-const Shape = require('../shape');
+import Shape from '../shape';
 
 class Custom extends Shape {
   _initProperties() {
@@ -20,4 +20,4 @@ class Custom extends Shape {
   }
 }
 Shape.Custom = Custom;
-module.exports = Custom;
+export default Custom;

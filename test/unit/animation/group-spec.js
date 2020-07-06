@@ -1,10 +1,11 @@
-const expect = require('chai').expect;
-const F2 = require('../../../src/core');
+import { expect } from 'chai';
+import * as F2 from '../../../src/core';
 
-require('../../../src/geom/interval');
-require('../../../src/geom/line');
-require('../../../src/geom/point');
-const GroupAnimation = require('../../../src/animation/group');
+import '../../../src/geom/interval';
+import '../../../src/geom/line';
+import '../../../src/geom/point';
+import GroupAnimation from '../../../src/animation/group';
+
 const Chart = F2.Chart;
 
 const canvas = document.createElement('canvas');

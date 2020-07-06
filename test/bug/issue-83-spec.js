@@ -1,11 +1,11 @@
-const expect = require('chai').expect;
-const { gestureSimulator } = require('../unit/test-util');
+import { expect } from 'chai';
+import { gestureSimulator } from '../unit/test-util';
 
-const F2 = require('../../src/core');
-require('../../src/geom/line');
-require('../../src/coord/polar'); // 极坐标系
-require('../../src/component/axis/circle'); // 极坐标系
-require('../../src/geom/adjust/stack');
+import * as F2 from '../../src/core';
+import '../../src/geom/line';
+import '../../src/coord/polar'; // 极坐标系
+import '../../src/component/axis/circle'; // 极坐标系
+import '../../src/geom/adjust/stack';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

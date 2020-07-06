@@ -2,12 +2,12 @@
  * Group animate functions
  * @author sima.zhang1990@gmail.com
  */
-const Util = require('./util');
-const Helper = require('../util/helper');
-const { Shape } = require('../graphic/index');
+import { getCoordInfo, getScaledMatrix, doAnimation } from './util';
+import { getClip } from '../util/helper';
+import { Shape } from '../graphic/index';
 
 function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
-  const { start, end, width, height } = Util.getCoordInfo(coord);
+  const { start, end, width, height } = getCoordInfo(coord);
   let x;
   let y;
 
@@ -36,7 +36,7 @@ function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
     }
   }
 
-  const endMatrix = Util.getScaledMatrix(clip, [ x, y ], type);
+  const endMatrix = getScaledMatrix(clip, [ x, y ], type);
   clip.isClip = true;
   clip.endState = {
     matrix: endMatrix
@@ -48,7 +48,7 @@ function _groupScaleIn(container, animateCfg, coord, zeroY, type) {
     container.attr('clip', null);
     clip.remove(true);
   };
-  Util.doAnimation(clip, clip.endState, animateCfg, onEnd);
+  doAnimation(clip, clip.endState, animateCfg, onEnd);
 }
 
 function _shapeScale(container, animateCfg, type) {
@@ -62,8 +62,8 @@ function _shapeScale(container, animateCfg, type) {
     const box = shape.getBBox();
     x = (box.minX + box.maxX) / 2;
     y = (box.minY + box.maxY) / 2;
-    endMatrix = Util.getScaledMatrix(shape, [ x, y ], type);
-    Util.doAnimation(shape, { matrix: endMatrix }, animateCfg);
+    endMatrix = getScaledMatrix(shape, [ x, y ], type);
+    doAnimation(shape, { matrix: endMatrix }, animateCfg);
   }
 }
 
@@ -92,7 +92,7 @@ function shapesScaleInXY(container, animateCfg) {
 }
 
 function groupWaveIn(container, animateCfg, coord) {
-  const clip = Helper.getClip(coord);
+  const clip = getClip(coord);
   clip.set('canvas', container.get('canvas'));
   container.attr('clip', clip);
   const onEnd = function() {
@@ -116,10 +116,10 @@ function groupWaveIn(container, animateCfg, coord) {
       endState.width = width;
     }
   }
-  Util.doAnimation(clip, endState, animateCfg, onEnd);
+  doAnimation(clip, endState, animateCfg, onEnd);
 }
 
-module.exports = {
+export {
   groupWaveIn,
   groupScaleInX,
   groupScaleInY,

@@ -1,6 +1,7 @@
-const Util = require('../../util/common');
-const Global = require('../../global');
-const Scale = require('../../scale/');
+import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
+import Global from '../../global';
+import Scale from '../../scale/index';
+
 const SCALE_TYPES_MAP = {
   linear: 'Linear',
   cat: 'Cat',
@@ -14,7 +15,7 @@ function isFullCircle(coord) {
   }
   const startAngle = coord.startAngle;
   const endAngle = coord.endAngle;
-  if (!Util.isNil(startAngle) && !Util.isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
+  if (!isNil(startAngle) && !isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
     return false;
   }
   return true;
@@ -32,13 +33,13 @@ class ScaleController {
     this.defs = {};
     // 已经实例化的scale
     this.scales = {};
-    Util.mix(this, cfg);
+    mix(this, cfg);
   }
 
   setFieldDef(field, cfg) {
     const { defs } = this;
-    if (Util.isObject(field)) {
-      Util.mix(defs, field);
+    if (isObject(field)) {
+      mix(defs, field);
     } else {
       defs[field] = cfg;
     }
@@ -51,9 +52,9 @@ class ScaleController {
     const defs = this.defs;
     let def = null;
     if (Global.scales[field] || defs[field]) {
-      def = Util.mix({}, Global.scales[field]);
-      Util.each(defs[field], function(v, k) {
-        if (Util.isNil(v)) {
+      def = mix({}, Global.scales[field]);
+      each(defs[field], function(v, k) {
+        if (isNil(v)) {
           delete def[k];
         } else {
           def[k] = v;
@@ -68,11 +69,11 @@ class ScaleController {
       return def.type;
     }
     let type = 'linear';
-    let value = Util.Array.firstValue(data, field);
-    if (Util.isArray(value)) {
+    let value = Array.firstValue(data, field);
+    if (isArray(value)) {
       value = value[0];
     }
-    if (Util.isString(value)) {
+    if (isString(value)) {
       type = 'cat';
     }
     return type;
@@ -83,7 +84,7 @@ class ScaleController {
     if (def && def.values) {
       values = def.values;
     } else {
-      values = Util.Array.values(data, field);
+      values = Array.values(data, field);
     }
     const cfg = {
       field,
@@ -92,7 +93,7 @@ class ScaleController {
 
     if (type !== 'cat' && type !== 'timeCat') {
       if (!def || !(def.min && def.max)) {
-        const { min, max } = Util.Array.getRange(values);
+        const { min, max } = Array.getRange(values);
         cfg.min = min;
         cfg.max = max;
         cfg.nice = true;
@@ -159,10 +160,10 @@ class ScaleController {
     const firstObj = data[0];
     let firstValue = firstObj[field];
     if (firstValue === null) {
-      firstValue = Util.Array.firstValue(data, field);
+      firstValue = Array.firstValue(data, field);
     }
 
-    if (Util.isNumber(field) || (Util.isNil(firstValue)) && !def) {
+    if (isNumber(field) || (isNil(firstValue)) && !def) {
       return {
         type: 'Identity',
         cfg: {
@@ -174,7 +175,7 @@ class ScaleController {
     }
     const type = self._getDefaultType(field, data, def);
     let cfg = self._getScaleDef(type, field, data, def);
-    def && Util.mix(cfg, def);
+    def && mix(cfg, def);
     cfg = this._adjustRange(type, cfg);
     return {
       type: SCALE_TYPES_MAP[type],
@@ -208,7 +209,7 @@ class ScaleController {
     const { scales } = this;
     // 修改完列定义后，需要更新已经实例化的scale
     // 如果是还没有实例化的，在geom初始化的时候会被实例化，所以这里可以不用更新
-    Util.each(scales, scale => {
+    each(scales, scale => {
       this._updateScale(scale);
     });
   }
@@ -241,4 +242,4 @@ class ScaleController {
   }
 }
 
-module.exports = ScaleController;
+export default ScaleController;

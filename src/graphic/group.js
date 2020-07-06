@@ -1,7 +1,7 @@
-const Util = require('../util/common');
-const Element = require('./element');
-const Container = require('./container');
-const Vector2 = require('./util/vector2');
+import { mix } from '../util/common';
+import Element from './element';
+import Container from './container';
+import Vector2 from './util/vector2';
 
 class Group extends Element {
   _initProperties() {
@@ -77,10 +77,10 @@ class Group extends Element {
   }
 }
 
-Util.mix(Group.prototype, Container, {
+mix(Group.prototype, Container, {
   getGroupClass() {
     return Group;
   }
 });
 
-module.exports = Group;
+export default Group;

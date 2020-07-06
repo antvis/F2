@@ -3,12 +3,12 @@
  * @author sima.zhang1990@gmail.com
  */
 import './register';
-
-const Util = require('../util/common');
+import { deepMix, isWx, isMy, addEventListener, removeEventListener } from '../util/common';
+import HammerUtil from 'hammerjs';
 
 let Hammer;
-if (!Util.isWx && !Util.isMy) {
-  Hammer = require('hammerjs');
+if (!isWx && !isMy) {
+  Hammer = HammerUtil;
 }
 
 const TOUCH_EVENTS = [
@@ -59,7 +59,7 @@ class Interaction {
 
   constructor(cfg, chart) {
     const defaultCfg = this.getDefaultCfg();
-    Util.deepMix(this, defaultCfg, cfg);
+    deepMix(this, defaultCfg, cfg);
     this.chart = chart;
     this.canvas = chart.get('canvas');
     this.el = chart.get('canvas').get('el');
@@ -96,7 +96,7 @@ class Interaction {
     const el = this.el;
     if (eventName) {
       if (TOUCH_EVENTS.indexOf(eventName) !== -1) {
-        Util.addEventListener(el, eventName, method);
+        addEventListener(el, eventName, method);
       } else if (this.hammer) {
         this.hammer.on(eventName, method);
       }
@@ -106,7 +106,7 @@ class Interaction {
   _clearTouchEvent(eventName, method) {
     const el = this.el;
     if (eventName && TOUCH_EVENTS.indexOf(eventName) !== -1) {
-      Util.removeEventListener(el, eventName, method);
+      removeEventListener(el, eventName, method);
     }
   }
 
@@ -115,4 +115,4 @@ class Interaction {
   }
 }
 
-module.exports = Interaction;
+export default Interaction;
