@@ -420,7 +420,6 @@ class Chart extends Base {
 
       // 更新geoms里的数据
       this._changeGeomsData();
-      this._adjustScale();
     });
 
     // 大小变化后的一些更新
@@ -583,6 +582,7 @@ class Chart extends Base {
     // 已经渲染过
     if (rendered) {
       this._initGeoms();
+      this._adjustScale();
     } else {
       this.init();
       this.set('rendered', true);
