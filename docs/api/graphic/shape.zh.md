@@ -400,6 +400,34 @@ new G.Shape.Text({
 });
 ```
 
+### Image 图片型图形
+
+```javascript
+new G.Shape.Image({
+  attrs: {
+    x: 0, // 显示位置 x 坐标 左上角
+    y: 0, // 显示位置 y 坐标 左上角
+    src: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+    width: 50, // 图形宽度
+    height: 50, // 图形高度
+  }
+});
+
+new G.Shape.Image({
+  attrs: {
+    x: 0, // 显示位置 x 坐标 左上角
+    y: 0, // 显示位置 y 坐标 左上角
+    src: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+    width: 50, // 图形宽度
+    height: 50, // 图形高度
+    sx: 0, // 可选,开始剪切的 x 坐标位置。
+    sy: 0, // 可选,开始剪切的 y 坐标位置。
+    swidth: 512, // 可选,剪切宽度
+    sheight: 512, // 可选,剪切高度
+  }
+});
+```
+
 ### Custom 自定义图形
 
 ```javascript
