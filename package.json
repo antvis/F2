@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "browser": "dist/f2.js",
+  "types": "types/index.d.ts",
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
@@ -30,7 +31,8 @@
     "lib",
     "es",
     "dist",
-    "bundler"
+    "bundler",
+    "types"
   ],
   "devDependencies": {
     "@antv/data-set": "^0.10.2",
@@ -68,11 +70,13 @@
     "open": "~7.0.0",
     "parseurl": "~1.3.1",
     "pre-commit": "~1.2.2",
+    "prettier": "~2.0.5",
     "react-i18next": "^11.0.1",
     "rollup": "^2.9.1",
     "rollup-plugin-terser": "^5.3.0",
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
+    "typescript": "~3.9.5",
     "uglify-js": "~3.0.15",
     "webpack": "~3.4.1"
   },
@@ -86,7 +90,8 @@
     "build-lib": "rm -rf lib && babel src --out-dir lib",
     "build-es": "rm -rf es && BABEL_ENV=esm babel src --out-dir es",
     "build-umd": "rm -rf dist && rollup --config",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test && npm run test-types",
+    "compress": "sh ./bin/compress.sh",
     "coverage": "jest --coverage",
     "demos": "electron ./demos/app.js",
     "demos-web": "node ./demos/app.js --web --port 2048",
@@ -99,6 +104,7 @@
     "test-unit": "jest test/unit",
     "test-bug": "jest test/bug",
     "test-live": "DEBUG_MODE=1 jest --watch",
+    "test-types": "tsc --noEmit",
     "watch": "webpack --config webpack-dev.config.js"
   },
   "pre-commit": {
@@ -119,6 +125,8 @@
     "@antv/scale": "0.1.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.7.7",
-    "hammerjs": "^2.0.8"
+    "@types/hammerjs": "^2.0.36",
+    "hammerjs": "^2.0.8",
+    "type-fest": "^0.15.1"
   }
 }

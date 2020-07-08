@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    // support export default
+    "esModuleInterop": true,
+    // disable @types/* check
+    "typeRoots": [],
+    "baseUrl": ".",
+    "paths": {
+      "@antv/f2": ["."]
+    }
+  },
+  "include": ["./types/", "./types-test/"]
+}

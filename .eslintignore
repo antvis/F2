@@ -11,3 +11,5 @@ lib/
 demos/index.html
 docs/
 public
+types/
+types-test/
