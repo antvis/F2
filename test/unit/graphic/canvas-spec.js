@@ -6,6 +6,7 @@ import '../../../src/graphic/shape/circle';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';
+dom.style.width = '300px';
 document.body.appendChild(dom);
 
 describe('Canvas', function() {

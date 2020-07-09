@@ -1,4 +1,4 @@
-import { Util } from './Util';
+import { Util, Helper } from './Util';
 import {
   CanvasCommonProps,
   CanvasLineProps,
@@ -110,6 +110,7 @@ import { ChartParams, ChartInnerProps, ChartPlugins, Chart } from './Chart';
 declare namespace F2 {
   export {
     Util,
+    Helper,
     CanvasCommonProps,
     CanvasLineProps,
     CanvasTextProps,
@@ -202,59 +203,104 @@ declare namespace F2 {
     ChartInnerProps,
     ChartPlugins,
     Chart,
-  };
+  }
 }
 
-export = F2;
+export {
+  Util,
+  Helper,
+  CanvasCommonProps,
+  CanvasLineProps,
+  CanvasTextProps,
+  CanvasPointProps,
+  CanvasBackgroundProps,
+  CanvasProps,
+  Point,
+  Data,
+  DataRecord,
+  DataField,
+  DataRecordScale,
+  DataFieldScale,
+  ScaleType,
+  ScaleCommonProps,
+  ScaleIdentityProps,
+  ScaleLinearProps,
+  ScaleCatProps,
+  ScaleTimeCatProps,
+  ScaleProps,
+  AnimateKind,
+  AnimateElement,
+  AnimateAnimationName,
+  AnimateAnimationFunc,
+  AnimateEasingName,
+  AnimateEasingFunc,
+  AnimateDelayFunc,
+  AnimateConfig,
+  AnimateElementParams,
+  AnimateChartParams,
+  Animate,
+  GeometryKind,
+  GeometryShapeKind,
+  GeometryAdjustKind,
+  GeometryAdjustParams,
+  GeometryParams,
+  Geometry,
+  CoordinateKind,
+  CoordinateRectParams,
+  CoordinatePolarParams,
+  CoordinateParams,
+  AxisPositionKind,
+  AxisLineParams,
+  AxisGridParams,
+  AxisTickLineParams,
+  AxisLabelParams,
+  AxisParams,
+  LegendMarkerSymbol,
+  LegendMarkerParams,
+  LegendMarkerFunc,
+  LegendMarker,
+  LegendItem,
+  LegendParams,
+  LegendControllerLegend,
+  LegendControllerLegends,
+  LegendController,
+  G,
+  PluginLifecycle,
+  Plugin,
+  TooltipItem,
+  Tooltip,
+  TooltipParams,
+  InteractionKind,
+  InteractionPieSelectParams,
+  InteractionIntervalSelectParams,
+  InteractionPanParams,
+  InteractionPinchParams,
+  InteractionSwipeParams,
+  InteractionParams,
+  GestureParams,
+  ScrollBarParams,
+  PieLabelText,
+  PieLabelParams,
+  GuideElementPositionLiteral,
+  GuideElementPositionFunc,
+  GuideElementPosition,
+  GuideLineParams,
+  GuideTextParams,
+  GuidePointParams,
+  GuideTagParams,
+  GuideRectParams,
+  GuideHtmlParams,
+  GuideArcParams,
+  GuideRegionFilterParams,
+  GuideResult,
+  Guide,
+  Shape,
+  Global,
+  IntervalLabelParams,
+  ChartParams,
+  ChartInnerProps,
+  ChartPlugins,
+  Chart,
+};
 
-// ==== src ====
-declare module '@antv/f2/src/index-all.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/src/index-simple.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/src/index.js' {
-  export = F2;
-}
-
-// ==== lib ====
-declare module '@antv/f2/lib/index-all.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/lib/index-simple.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/lib/index.js' {
-  export = F2;
-}
-
-// ==== build ====
-declare module '@antv/f2/build/f2-all.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/build/f2-simple.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/build/f2.js' {
-  export = F2;
-}
-
-// ==== dist ====
-declare module '@antv/f2/dist/f2-all.min.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/dist/f2-simple.min.js' {
-  export = F2;
-}
-
-declare module '@antv/f2/dist/f2.min.js' {
-  export = F2;
-}
+export default F2;
