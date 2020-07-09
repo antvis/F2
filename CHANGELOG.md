@@ -1,3 +1,76 @@
+#### 3.7.0 (2020-07-09)
+
+##### Chores
+
+* **tsconfig:**  disable @types/* check ([60d17bb1](https://github.com/antvis/f2/commit/60d17bb1c677802d734428c389b58c251f8c689f))
+* **gitignore:**  ignore yarn.lock ([78ca6140](https://github.com/antvis/f2/commit/78ca61402558bc66cdc3503cd9b9c369de7332b0))
+
+##### Documentation Changes
+
+*  add TypeScript ([7645a44e](https://github.com/antvis/f2/commit/7645a44e49452b07963465b8993482456edb5a4a))
+
+##### New Features
+
+*  新增图片型图形文档和demo ([9c04763d](https://github.com/antvis/f2/commit/9c04763d5172bfb64b0e898fbbe9d51daa652122))
+*  新增imageShape组件 ([51a39e24](https://github.com/antvis/f2/commit/51a39e243134a6e318e9ae398c57d1be280dee42))
+*  添加esm的模块输出 ([4d7e0bec](https://github.com/antvis/f2/commit/4d7e0bec77ddac2689fc0bf10c480d5318af84b7))
+*  结构优化 ([09cfdcae](https://github.com/antvis/f2/commit/09cfdcaefff64d8681bfe4331cc407b2a8137f4d))
+*  test case cjs => esm ([66022b75](https://github.com/antvis/f2/commit/66022b75c7fa05953c959c4700abe29301367bf4))
+*  files cjs => esm ([380c53db](https://github.com/antvis/f2/commit/380c53db0be4f6a6772638f2506621c813b09cb0))
+*  rollup ([4904a049](https://github.com/antvis/f2/commit/4904a04958a4ecdfb605c4988d5f4587bdbfe2a8))
+* **types:**
+  *  add tests ([6fd68806](https://github.com/antvis/f2/commit/6fd688063f88c86145acff94d56a946df28ce2ea))
+  *  improve ([8d25c48e](https://github.com/antvis/f2/commit/8d25c48e75b78906362ef5df694b8f25662cc048))
+  *  improve ([85d75d81](https://github.com/antvis/f2/commit/85d75d81ce77940a375bce3a1f4042778b0271d6))
+  *  improve ([ccabc2c3](https://github.com/antvis/f2/commit/ccabc2c330cc5d6ab0bfda4756bdb8767ad68a2c))
+  *  improve ([0f6100ac](https://github.com/antvis/f2/commit/0f6100acddfaafd1dd7e5629d278011fbcb8083c))
+  *  improve Tooltip ([408cd222](https://github.com/antvis/f2/commit/408cd222e5d0881575c8f70b7d186d22d7217917))
+  *  improve Scale ([58136550](https://github.com/antvis/f2/commit/58136550a08cd8bf2e0090bb0edae40b824644f5))
+  *  improve Geometry ([ec6ccfb9](https://github.com/antvis/f2/commit/ec6ccfb942c651455b103dc33d83a501a490251e))
+  *  improve CanvasProps ([2ab3195e](https://github.com/antvis/f2/commit/2ab3195ef93589473cd37bfd613797d7c2dfcd5b))
+  *  improve Geometry ([9075b46a](https://github.com/antvis/f2/commit/9075b46ae2309affa963cfda43e37cd0916078bd))
+  *  improve ScaleProps ([64211ea4](https://github.com/antvis/f2/commit/64211ea45132401080c0d57f645a0846e774131d))
+  *  add Global ([51eb6a7c](https://github.com/antvis/f2/commit/51eb6a7caa915faee158140a12ac87a9eadb316e))
+  *  add Shape ([6c29f580](https://github.com/antvis/f2/commit/6c29f580a86ceb86a097ea3fc4576220c07e2862))
+  *  improve ChartInnerProps ([e305985b](https://github.com/antvis/f2/commit/e305985b16aa90c6615885f2e7ba780cc6a93a3e))
+  *  add Chart ([b91d08ac](https://github.com/antvis/f2/commit/b91d08ac221528fc71cd6b337d3336b858f75d89))
+  *  add Guide ([cde0cc78](https://github.com/antvis/f2/commit/cde0cc789da79175fe54c4c328d16dd48f364a39))
+  *  add PieLabel ([dd83157f](https://github.com/antvis/f2/commit/dd83157f94fddb50c0e76c7b3a164bd66c670b47))
+  *  add ScrollBar ([9f0e2a3d](https://github.com/antvis/f2/commit/9f0e2a3d79a79f9d1d0e808399de28f743bbdcd7))
+  *  add Gesture ([253ba560](https://github.com/antvis/f2/commit/253ba56079559d25b735de3d673994af3276b1cc))
+  *  add Interaction ([7dcd22b0](https://github.com/antvis/f2/commit/7dcd22b02336b15970cf271b01979b2b5621ccad))
+  *  add Tooltip ([ad052749](https://github.com/antvis/f2/commit/ad0527496a30aefb68d2128c8f1d4b79bc7ec38e))
+  *  add Plugin ([30081c1a](https://github.com/antvis/f2/commit/30081c1a77c502399e204f096615f46fcc5387c6))
+  *  add G ([e2922695](https://github.com/antvis/f2/commit/e2922695a51879c74ec344e9fd2be4010d73e50c))
+  *  add Legend ([43f32ecd](https://github.com/antvis/f2/commit/43f32ecd26bbd9553349549ba8ce5e4ff4f2e14f))
+  *  add Axis ([eb03d02e](https://github.com/antvis/f2/commit/eb03d02ed3e0375797b08921a90470e7ba3726c2))
+  *  add Coordinate ([bd33cae6](https://github.com/antvis/f2/commit/bd33cae6ae53fa5496a8c9ce8f307228c64e8a60))
+  *  add Geometry ([be17d68d](https://github.com/antvis/f2/commit/be17d68d0b5ec9d433a7ce588f28b0e8c409227e))
+  *  add Animate ([1deee96a](https://github.com/antvis/f2/commit/1deee96a3ab48cd37a4478ba3b0bccc36accf124))
+  *  add Scale ([bb96ee41](https://github.com/antvis/f2/commit/bb96ee418c35cc3f8ead685277a2843cffbbe8d2))
+  *  add Data ([bc5cd7e4](https://github.com/antvis/f2/commit/bc5cd7e4000e97dda1303a4a0ad1391ed438dec8))
+  *  add Point ([afe90fdc](https://github.com/antvis/f2/commit/afe90fdc6d4fa1855e687354a20589ebdfeb3236))
+  *  add CanvasProps ([3d902484](https://github.com/antvis/f2/commit/3d902484f52e8d21fd68cf1a1c2c49942e6c407c))
+  *  add Util ([9762a40b](https://github.com/antvis/f2/commit/9762a40bf46821605cd39db3132b087c434e2f64))
+
+##### Bug Fixes
+
+* **types:**
+  *  fix the types of the entries and plugins ([2fb80547](https://github.com/antvis/f2/commit/2fb8054706369773717e7a4fabce322dcafe96c1))
+  *  mix support any number of sources ([d8ab5803](https://github.com/antvis/f2/commit/d8ab580364f7dd07c02f970d6c9ffb8823e20f1f))
+*  补充types的定义 ([7e25cec8](https://github.com/antvis/f2/commit/7e25cec82c99ee79c21969fa8f95e27bffded2b5))
+*  merge master conflicts ([85197b90](https://github.com/antvis/f2/commit/85197b9025dc184811e85bfea873e4a31232ee9b))
+*  merge master conflicts ([21efd54b](https://github.com/antvis/f2/commit/21efd54b6a4b3bc79f1808ec2486ec252f90f8b3))
+*  site build error ([5ceccda9](https://github.com/antvis/f2/commit/5ceccda9fbca400914b025a27db913d9826c1339))
+*  site 官网的一些错误 ([d6a51e31](https://github.com/antvis/f2/commit/d6a51e31037e62e0f5c0eddb90c5a60f25cf2a38))
+*  module mix fixed ([d17c4d82](https://github.com/antvis/f2/commit/d17c4d82cb6e7abcfc3a27397a7885fa3e834589))
+*  修复site编译报错的问题 ([b9496f75](https://github.com/antvis/f2/commit/b9496f75b3494cf8659d09af69d63dca3937e6ca))
+*  去除多余jest配置 ([fa40727c](https://github.com/antvis/f2/commit/fa40727c0d17b6f29454b736525ba3de3edf0fbe))
+*  修改引用方式 ([9089dfcc](https://github.com/antvis/f2/commit/9089dfccf9bec9bba901d3369ec731fb87b27fef))
+*  remove alilas ([c8315815](https://github.com/antvis/f2/commit/c8315815e809e53a3698bb6e8e6aea247835f804))
+* **emit:**   arr len will reduce after splice ([45430d50](https://github.com/antvis/f2/commit/45430d502f14652806169258f8a79ba31a109fcb))
+
+
 #### 3.6.4 (2020-07-06)
 
 ##### Chores
