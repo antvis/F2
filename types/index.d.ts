@@ -11,6 +11,7 @@ import { Point } from './Point';
 import {
   Data,
   DataRecord,
+  DataValue,
   DataField,
   DataRecordScale,
   DataFieldScale,
@@ -120,6 +121,7 @@ declare namespace F2 {
     Point,
     Data,
     DataRecord,
+    DataValue,
     DataField,
     DataRecordScale,
     DataFieldScale,
@@ -203,7 +205,7 @@ declare namespace F2 {
     ChartInnerProps,
     ChartPlugins,
     Chart,
-  }
+  };
 }
 
 export {
