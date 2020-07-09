@@ -1,5 +1,6 @@
 import { PartialDeep } from 'type-fest';
 import { Point } from './Point';
+import { Plot } from './Plot';
 
 /**
  * 常用工具库。
@@ -56,6 +57,10 @@ export const Util: {
    * 判断是否为对象类型。
    */
   isObject(value: any): value is object;
+  /**
+   * 判断2个对象是否相等
+   */
+  isEqual(value: any, other: any): boolean;
 
   /**
    * 深拷贝。
@@ -92,6 +97,12 @@ export const Util: {
   ): void;
 
   /**
+   * 数组查找
+   * @param arr
+   */
+  find<T>(arr: T[], fn: (value: T, index: number) => boolean): T;
+
+  /**
    * 获取当前设备的像素比。
    */
   getPixelRatio(): number;
@@ -102,4 +113,17 @@ export const Util: {
    * @todo 明确参数 canvas 和返回结果的类型
    */
   getRelativePosition(point: Point, canvas: any): any;
+  /**
+   * 计算padding
+   * @param padding 
+   */
+  parsePadding(padding: number | number[]): number[];
 };
+
+export const Helper: {
+  getClip: (coord: any) => any;
+  /**
+   * 判断点是否在plot之内
+   */
+  isPointInPlot: (point: Point, plot: Plot) => boolean;
+}
