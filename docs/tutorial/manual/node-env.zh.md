@@ -78,7 +78,7 @@ const chart = new F2.Chart({
 
 下面是 F2 在 node 端绘制饼图的完整代码:
 
-![](https://cdn.yuque.com/lark/0/2018/png/514/1524314241103-865e6682-9508-4bb3-9f30-676bf0042d58.png#width=375)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/6154589f-b6eb-4647-9634-9baf6fc70991.png)
 
 ```javascript
 const fs = require('fs');
