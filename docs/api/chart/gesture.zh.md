@@ -5,7 +5,7 @@ order: 12
 
 用于图表绑定图表上的手势事件。该方法会返回 gestureController。除了支持系统基础事件 touchstart、touchmove、touchend，还支持复杂的手势，基于手势库 [hammerjs](https://github.com/hammerjs/hammer.js)。
 
-![](https://cdn.yuque.com/yuque/0/2018/png/104396/1524466228977-0589fe3d-2cef-4d42-946f-ae54f2dfb18b.png#width=827)
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/534cf6aa-7dea-4f03-b84c-e24566f08d6a.png)
 
 ## 如何引入使用插件
 

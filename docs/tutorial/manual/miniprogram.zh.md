@@ -24,22 +24,16 @@ order: 9
 
 详见：[《聊一聊 F2 与小程序》](https://yuque.com/antv/blog/bg9sxf)。
 
+为了使用方便，我们分别对支付宝小程序和微信小程序分装了自定义组件，官网上的demo都是可以在小程序中运行的
+
 ### 支付宝小程序
 
-F2 的支付宝小程序版本（待支付宝支持自定义组件后，会基于此库提供一个支付宝小程序的组件）。
+F2 的支付宝小程序版本。
 
 - github：[https://github.com/antvis/my-f2](https://github.com/antvis/my-f2)
 
 - 使用文档：[这里](https://github.com/antvis/my-f2/blob/master/README.md)
 
-- Demos:  [github](https://github.com/antvis/mini-program-f2-demos/tree/master/my-charts)，用户可以通过[蚂蚁开发者工具](https://docs.alipay.com/mini/ide/overview)直接打开此项目进行体验感受。
-
-### 支付宝小程序图表库mini-chart
-和上面小程序版本不同之处在于，my-f2是用f2的方式较为自定义底层地绘制，而mini-chart是封装成了自定义组件的形式，在使用上要简单些。
-
-- github：[https://github.com/ant-mini-program/mini-chart](https://github.com/ant-mini-program/mini-chart)
-
-文档和demo都在这个仓库中。
 
 ### 微信小程序
 
@@ -49,7 +43,5 @@ F2 的微信小程序图表组件
 
 - 使用文档：[这里](https://github.com/antvis/wx-f2/blob/master/README.md)
 
-- Demos: 源码位于项目 pages/charts/ 目录下，可以使用[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html?t=2018412)打开[ wx-f2](https://github.com/antvis/wx-f2) 项目进行体验感受，也可以打开微信扫描以下二维码进行体验：
 
 
-![](https://cdn.yuque.com/lark/0/2018/png/514/1524555862386-7010f1b3-7100-4a84-bc97-ec4a6560155d.png#align=left&display=inline&height=344&originHeight=344&originWidth=344&status=done&width=344)
