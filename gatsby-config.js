@@ -20,8 +20,8 @@ module.exports = {
       {
         slug: 'docs/tutorial/getting-started',
         title: {
-          zh: '使用教程',
-          en: 'Tutorial'
+          zh: '使用文档',
+          en: 'Manual'
         }
       },
       {
@@ -34,7 +34,7 @@ module.exports = {
       {
         slug: 'examples',
         title: {
-          zh: '图表演示',
+          zh: '图表示例',
           en: 'Examples'
         }
       }
