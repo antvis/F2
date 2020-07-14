@@ -1,10 +1,9 @@
+import { getTickMethod } from '@antv/scale';
 import { getRange } from '../../util/array';
 import {
   EVENT_AFTER_INIT,
   EVENT_AFTER_DATA_CHANGE
 } from '../../chart/const';
-
-import autoCat from '@antv/scale/lib/auto/cat';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
@@ -206,16 +205,15 @@ class Context {
     const { chart, values } = this;
     const scale = this.getPinchScale();
 
-    const { values: currentValues, tickCount, isRounding } = scale;
+    const { values: currentValues, tickCount } = scale;
     // 根据当前数据的比例，和定义的tickCount计算应该需要多少个ticks
     const newTickCount = Math.round(tickCount * values.length / currentValues.length);
 
-    const cat = autoCat({
-      maxCount: newTickCount,
-      data: values,
-      isRounding
+    const catTicks = getTickMethod('cat');
+    const ticks = catTicks({
+      tickCount: newTickCount,
+      values
     });
-    const ticks = cat.ticks;
     this.updateScale(scale, { ticks, values: currentValues });
 
     // 更新完后，需要重新绘制一次

@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import Pan from '../../../src/interaction/pan';
 import * as F2 from '../../../src/core';
 import '../../../src/geom/line';
-import '../../../src/scale/time-cat';
 import ScrollBar from '../../../src/plugin/scroll-bar';
 
 function snapEqual(v1, v2) {

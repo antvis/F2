@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import * as F2 from '../../src/core';
 import '../../src/geom';
-import '../../src/scale/time-cat';
 
 describe('Issue 550', () => {
   let canvas;

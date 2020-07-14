@@ -10,8 +10,6 @@ import './geom/adjust/';
 import './coord/polar'; // polar coordinate
 import './component/axis/circle'; // the axis for polar coordinate
 
-import './scale/time-cat'; // timeCat scale
-
 import './component/guide/arc';
 import './component/guide/html';
 import './component/guide/line';

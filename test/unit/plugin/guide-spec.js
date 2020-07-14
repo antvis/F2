@@ -4,7 +4,6 @@ import '../../../src/geom/';
 import '../../../src/geom/adjust/';
 import '../../../src/coord/polar'; // 极坐标系
 import '../../../src/component/axis/circle'; // 极坐标系下的弧长坐标轴
-import '../../../src/scale/time-cat'; // timeCat 类型的度量
 import '../../../src/component/guide'; // 加载 guide 组件
 
 F2.Global.guide = {

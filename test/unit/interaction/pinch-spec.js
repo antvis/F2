@@ -3,7 +3,6 @@ import Pinch from '../../../src/interaction/pinch';
 import * as F2 from '../../../src/core';
 import '../../../src/geom/line';
 import '../../../src/geom/interval';
-import '../../../src/scale/time-cat';
 
 const canvas = document.createElement('canvas');
 canvas.width = 375;
