@@ -26,7 +26,7 @@ const F2 = require('@antv/f2');
 
 ```html
 <!-- 引入在线资源 -->
-<script src="https://gw.alipayobjects.com/os/antv/assets/f2/3.4.2/f2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/lib/antv/f2/3.7.0/dist/f2.min.js"></script>
 <!-- 友情提醒：请按需更新版本号。 -->
 ```
 
