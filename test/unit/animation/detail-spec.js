@@ -60,7 +60,7 @@ describe('Group animation', function() {
     chart.render();
 
     setTimeout(function() {
-      expect(Object.keys(chart.get('canvas').get('caches')).length).to.equal(26);
+      expect(Object.keys(chart.get('canvas').get('caches')).length).to.equal(20);
       expect(chart.get('isUpdate')).to.be.undefined;
 
       chart.scale('sold', {
@@ -74,7 +74,7 @@ describe('Group animation', function() {
       ]);
 
       setTimeout(function() {
-        expect(Object.keys(chart.get('canvas').get('caches')).length).to.equal(18);
+        expect(Object.keys(chart.get('canvas').get('caches')).length).to.equal(16);
         expect(chart.get('isUpdate')).to.be.true;
         Chart.plugins.unregister(Animation);
         document.body.removeChild(canvas);

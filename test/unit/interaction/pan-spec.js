@@ -69,8 +69,7 @@ describe('Pan', function() {
       x: 50, y: 20
     });
     const xScale = chart.getXScale();
-    expect(snapEqual(xScale.min, 4.329738321916591)).to.be.true;
-    expect(snapEqual(xScale.max, 11.329738321916592)).to.be.true;
+    expect([ xScale.min, xScale.max ]).to.eql([ 4.364608188716922, 11.364608188716922 ]);
 
     pan.end();
     expect(pan.currentDeltaX).to.be.null;
@@ -133,12 +132,11 @@ describe('chart pan', function() {
     const limitRange = interaction.limitRange;
     expect(limitRange).to.eql({ x1: { min: 1, max: 20 } });
     const xScale = chart.getXScale();
-    expect(snapEqual(xScale.min, 2.5710521542204545)).to.be.true;
-    expect(snapEqual(xScale.max, 9.571052154220455)).to.be.true;
 
+    expect([ xScale.min, xScale.max ]).to.eql([ 2.559803810091316, 9.559803810091315 ]);
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.08268695548528708)).to.be.true;
-    expect(snapEqual(xRange[1], 0.4511080081168661)).to.be.true;
+    expect([ xRange[0], xRange[1] ]).to.eql([ 0.08209493737322715, 0.4505159900048061 ]);
+
   });
 
   it('pan y axis, and field is a linear type.', function() {
@@ -247,8 +245,8 @@ describe('chart pan', function() {
     expect(xScale.ticks.length).to.equal(8);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.47368421052631576)).to.be.true;
-    expect(snapEqual(xRange[1], 0.7894736842105263)).to.be.true;
+    expect([ xRange[0], xRange[1] ]).to.eql([ 0.47368421052631576, 0.7894736842105263 ]);
+
   });
 
   it('pan x axis with speed and step control.', function() {
@@ -322,16 +320,14 @@ describe('chart pan', function() {
 
     const hBar = chart.get('_horizontalBar');
     const highlightLine = hBar.get('children')[1];
-    expect(snapEqual(highlightLine.attr('x1'), 119.50947008634868)).to.be.true;
-    expect(snapEqual(highlightLine.attr('x2'), 308.4663150185033)).to.be.true;
+    expect([ highlightLine.attr('x1'), highlightLine.attr('x2') ]).to.eql([ 125.65473054584703, 309.78315654553865 ]);
 
     setTimeout(() => {
       const interaction = chart._interactions.pan;
       interaction._doMove(120, 0);
       const hBar = chart.get('_horizontalBar');
       const highlightLine = hBar.get('children')[1];
-      expect(snapEqual(highlightLine.attr('x1'), 50.79789011101974)).to.be.true;
-      expect(snapEqual(highlightLine.attr('x2'), 239.75473504317432)).to.be.true;
+      expect([ highlightLine.attr('x1'), highlightLine.attr('x2') ]).to.eql([ 58.69893927323191, 242.82736527292352 ]);
       chart.destroy();
       document.body.removeChild(canvas);
       done();
