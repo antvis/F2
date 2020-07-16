@@ -26,7 +26,7 @@ describe('PieLabel', () => {
   let clickData;
 
   const data = [
-    { amount: 2, ratio: 0.01, memo: '学习', namekey: 'namekey' },
+    { amount: 2, ratio: 0.01, memo: '沉迷学习', namekey: 'namekey' },
     { amount: 2, ratio: 0.01, memo: '睡觉', namekey: 'namekey' },
     { amount: 2, ratio: 0.01, memo: '吃饭', namekey: 'namekey' },
     { amount: 2, ratio: 0.01, memo: '讲礼貌', namekey: 'namekey' },
@@ -87,7 +87,7 @@ describe('PieLabel', () => {
 
     expect(labelGroup.get('children').length).to.equal(6); // 包含文本、连接线、锚点
     expect(drawnLabels.length).to.equal(2);
-    expect(drawnLabels[0].get('data')).to.eql({ amount: 2, ratio: 0.01, memo: '学习', namekey: 'namekey' });
+    expect(drawnLabels[0].get('data')).to.eql({ amount: 2, ratio: 0.01, memo: '沉迷学习', namekey: 'namekey' });
     expect(drawnLabels[1].get('data')).to.eql({ amount: 188, ratio: 0.94, memo: '暂无备注', namekey: 'namekey' });
   });
 
@@ -181,7 +181,7 @@ describe('PieLabel', () => {
     expect(snapEqual(drawnLabels[1].get('children')[0].attr('y'), 220.00000000000006)).to.be.true;
     expect(drawnLabels[2].get('data').memo).to.equal('讲礼貌');
     expect(snapEqual(drawnLabels[2].get('children')[0].attr('y'), 297.72577998965335)).to.be.true;
-    expect(drawnLabels[3].get('data').memo).to.equal('学习');
+    expect(drawnLabels[3].get('data').memo).to.equal('沉迷学习');
     expect(snapEqual(drawnLabels[3].get('children')[0].attr('y'), 142.27422001034665)).to.be.true;
     expect(drawnLabels[4].get('data').memo).to.equal('睡觉');
     expect(snapEqual(drawnLabels[4].get('children')[0].attr('y'), 220.00000000000003)).to.be.true;
