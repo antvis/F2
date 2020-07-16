@@ -188,6 +188,12 @@ class ScaleController {
     const Scale = getScale(type);
     const newScale = new Scale(cfg);
     scales[field] = newScale;
+
+    // 兼容scale type类型为cat
+    if (type === 'timeCat') {
+      newScale.type = 'timeCat';
+    }
+
     return newScale;
   }
 
