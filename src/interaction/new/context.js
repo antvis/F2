@@ -4,6 +4,7 @@ import {
   EVENT_AFTER_INIT,
   EVENT_AFTER_DATA_CHANGE
 } from '../../chart/const';
+import { toTimeStamp } from '../../util/common';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
@@ -183,7 +184,7 @@ class Context {
     const data = chart.get('data');
     data.forEach(item => {
       if (pinchScaleType === 'timeCat') {
-        const value = pinchScale._toTimeStamp(item[pinchField]);
+        const value = toTimeStamp(item[pinchField]);
         if (pinchValueMap[value]) {
           values.push(item[followField]);
         }

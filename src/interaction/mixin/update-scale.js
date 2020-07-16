@@ -1,5 +1,5 @@
 import { getScale } from '../helper';
-import { each, isString, isObject } from '../../util/common';
+import { each, isString, isObject, toTimeStamp } from '../../util/common';
 
 function updateLinearScale(field, min, max) {
   const chart = this.chart;
@@ -27,7 +27,7 @@ function updateCatScale(field, newValues, ticks, values, minIndex, maxIndex) {
     ticks,
     scale(value) {
       if (this.type === 'timeCat') {
-        value = this._toTimeStamp(value);
+        value = toTimeStamp(value);
       }
       const rangeMin = this.rangeMin();
       const rangeMax = this.rangeMax();
