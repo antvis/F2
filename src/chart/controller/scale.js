@@ -1,13 +1,6 @@
+import { getScale } from '@antv/scale';
 import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
 import Global from '../../global';
-import Scale from '../../scale/index';
-
-const SCALE_TYPES_MAP = {
-  linear: 'Linear',
-  cat: 'Cat',
-  timeCat: 'TimeCat',
-  identity: 'Identity'
-};
 
 function isFullCircle(coord) {
   if (!coord.isPolar) {
@@ -144,12 +137,12 @@ class ScaleController {
       if (def && def.type) {
         def.field = field;
         return {
-          type: SCALE_TYPES_MAP[def.type],
+          type: def.type,
           cfg: def
         };
       }
       return {
-        type: 'Identity',
+        type: 'identity',
         cfg: {
           value: field,
           field: field.toString(),
@@ -165,7 +158,7 @@ class ScaleController {
 
     if (isNumber(field) || (isNil(firstValue)) && !def) {
       return {
-        type: 'Identity',
+        type: 'identity',
         cfg: {
           value: field,
           field: field.toString(),
@@ -178,7 +171,7 @@ class ScaleController {
     def && mix(cfg, def);
     cfg = this._adjustRange(type, cfg);
     return {
-      type: SCALE_TYPES_MAP[type],
+      type,
       cfg
     };
   }
@@ -188,12 +181,14 @@ class ScaleController {
     const { type, cfg } = this._getScaleCfg(field, data);
     const scale = scales[field];
     // 如果已经存在，且类型相等时直接返回
-    if (scale && SCALE_TYPES_MAP[scale.type] === type) {
+    if (scale && scale.type === type) {
       scale.change(cfg);
       return scale;
     }
-    const newScale = new Scale[type](cfg);
+    const Scale = getScale(type);
+    const newScale = new Scale(cfg);
     scales[field] = newScale;
+
     return newScale;
   }
 

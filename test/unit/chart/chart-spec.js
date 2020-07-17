@@ -284,7 +284,7 @@ describe('chart test', () => {
       const record = { a: '2', b: 4 };
       const position = chart.getPosition(record);
       expect(position).to.eql({
-        x: 250,
+        x: 171.66666666666669,
         y: 181.66666666666669
       });
     });
@@ -293,7 +293,7 @@ describe('chart test', () => {
       const point = { x: 250, y: 181.66666666666669 };
       const record = chart.getRecord(point);
       expect(record).to.eql({
-        a: '2',
+        a: '3',
         b: 4
       });
     });
@@ -302,7 +302,11 @@ describe('chart test', () => {
       const point = { x: 250, y: 150 };
       const data = chart.getSnapRecords(point);
       expect(data.length).to.equal(1);
-      expect(data[0]._origin).to.eql({ a: '2', b: 4, c: '2' });
+      expect(data[0]._origin).to.eql({
+        a: '3',
+        b: 5,
+        c: '1'
+      });
     });
 
     it('clear', function() {

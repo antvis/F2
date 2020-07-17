@@ -1,7 +1,14 @@
-import Scale from '@antv/scale/lib/base';
+import { Scale, getScale } from '@antv/scale';
 
-import '@antv/scale/lib/linear';
-import '@antv/scale/lib/identity';
-import '@antv/scale/lib/category';
+const Linear = getScale('linear');
+const Identity = getScale('identity');
+const Category = getScale('category');
+const TimeCat = getScale('timeCat');
+
+Scale.Linear = Linear;
+Scale.Identity = Identity;
+Scale.Category = Category;
+Scale.Cat = Category;
+Scale.TimeCat = TimeCat;
 
 export default Scale;

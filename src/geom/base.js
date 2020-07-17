@@ -1,5 +1,5 @@
 import * as Attr from '../attr/index';
-import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array } from '../util/common';
+import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array, toTimeStamp } from '../util/common';
 import Base from '../base';
 import Global from '../global';
 import GeometryShape from './shape/shape';
@@ -325,7 +325,7 @@ class Geom extends Base {
       each(mappedArray, itemArr => {
         itemArr.sort((obj1, obj2) => {
           if (type === 'timeCat') {
-            return xScale._toTimeStamp(obj1[FIELD_ORIGIN][field]) - xScale._toTimeStamp(obj2[FIELD_ORIGIN][field]);
+            return toTimeStamp(obj1[FIELD_ORIGIN][field]) - toTimeStamp(obj2[FIELD_ORIGIN][field]);
           }
           return xScale.translate(obj1[FIELD_ORIGIN][field]) - xScale.translate(obj2[FIELD_ORIGIN][field]);
         });
@@ -736,7 +736,7 @@ class Geom extends Base {
 
   _isEqual(originValue, value, scale) {
     if (scale.type === 'timeCat') {
-      return scale._toTimeStamp(originValue) === value;
+      return toTimeStamp(originValue) === value;
     }
     return value === originValue;
   }

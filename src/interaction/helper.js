@@ -1,5 +1,4 @@
-import { toTimeStamp } from '@antv/scale/lib/time-util';
-import { Array, each } from '../util/common';
+import { Array, each, toTimeStamp } from '../util/common';
 
 function getColDef(chart, field) {
   let colDef;

@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import * as F2 from '../../src/core';
 import '../../src/geom/interval';
 import '../../src/geom/adjust/dodge';
-import '../../src/scale/time-cat';
 
 const canvas = document.createElement('canvas');
 canvas.width = 500;

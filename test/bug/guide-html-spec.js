@@ -39,8 +39,8 @@ describe('The position calculate of Guide.HTML', () => {
     chart.render();
 
     const guideEle = $('#guide');
-    expect(guideEle.position().top).to.eql(216);
-    expect(guideEle.position().left).to.eql(172);
+    expect(guideEle.position().top).to.eql(220);
+    expect(guideEle.position().left).to.eql(176);
     const wrapper = $('#chartWrapper')[0];
     document.body.removeChild(wrapper);
   });

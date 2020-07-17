@@ -9,8 +9,6 @@ import './geom/adjust/';
 import './coord/polar'; // polar coordinate
 import './component/axis/circle'; // the axis for polar coordinate
 
-import './scale/time-cat'; // timeCat scale
-
 import './component/guide'; // guide components
 
 import * as Tooltip from './plugin/tooltip';

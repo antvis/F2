@@ -1,8 +1,6 @@
-import { expect } from 'chai';
 import Pan from '../../../src/interaction/pan';
 import * as F2 from '../../../src/core';
 import '../../../src/geom/line';
-import '../../../src/scale/time-cat';
 import ScrollBar from '../../../src/plugin/scroll-bar';
 
 function snapEqual(v1, v2) {
@@ -52,9 +50,9 @@ describe('Pan', function() {
       ]
     };
     pan.start(eventObj);
-    expect(pan.currentDeltaX).to.equal(0);
-    expect(pan.currentDeltaY).to.equal(0);
-    expect(pan.lastPoint).to.eql({
+    expect(pan.currentDeltaX).toBe(0);
+    expect(pan.currentDeltaY).toBe(0);
+    expect(pan.lastPoint).toEqual({
       x: 112,
       y: 20
     });
@@ -66,18 +64,20 @@ describe('Pan', function() {
       ]
     };
     pan.process(eventObj);
-    expect(pan.lastPoint).to.eql({
+    expect(pan.lastPoint).toEqual({
       x: 50, y: 20
     });
     const xScale = chart.getXScale();
-    expect(snapEqual(xScale.min, 4.329738321916591)).to.be.true;
-    expect(snapEqual(xScale.max, 11.329738321916592)).to.be.true;
+
+    expect(xScale.min).toBeCloseTo(4.364608188716922, 3);
+    expect(xScale.max).toBeCloseTo(11.364608188716922, 3);
+
 
     pan.end();
-    expect(pan.currentDeltaX).to.be.null;
-    expect(pan.currentDeltaY).to.be.null;
-    expect(pan.lastPoint).to.be.null;
-    expect(pan._panCumulativeDelta).to.equal(0);
+    expect(pan.currentDeltaX).toBeNull();
+    expect(pan.currentDeltaY).toBeNull();
+    expect(pan.lastPoint).toBeNull();
+    expect(pan._panCumulativeDelta).toBe(0);
   });
 
   it('pan', function() {
@@ -96,10 +96,10 @@ describe('Pan', function() {
     };
     pan.process(eventObj);
     const xScale = chart.getXScale();
-    expect(xScale.min).to.equal(1);
-    expect(xScale.max).to.equal(8);
-    expect(pan.currentDeltaX).to.equal(3000);
-    expect(pan.currentDeltaY).to.equal(0);
+    expect(xScale.min).toBe(1);
+    expect(xScale.max).toBe(8);
+    expect(pan.currentDeltaX).toBe(3000);
+    expect(pan.currentDeltaY).toBe(0);
 
     pan.end();
     chart.destroy();
@@ -124,7 +124,7 @@ describe('chart pan', function() {
 
   it('Register successfully', function() {
     const Chart = F2.Chart;
-    expect(Chart._Interactions.pan).not.to.be.undefined;
+    expect(Chart._Interactions.pan).not.toBeUndefined();
   });
 
   it('pan x axis, and x field is a linear type.', function() {
@@ -132,14 +132,16 @@ describe('chart pan', function() {
     interaction._doMove(20, 0);
 
     const limitRange = interaction.limitRange;
-    expect(limitRange).to.eql({ x1: { min: 1, max: 20 } });
+    expect(limitRange).toEqual({ x1: { min: 1, max: 20 } });
     const xScale = chart.getXScale();
-    expect(snapEqual(xScale.min, 2.5710521542204545)).to.be.true;
-    expect(snapEqual(xScale.max, 9.571052154220455)).to.be.true;
+
+    expect(xScale.min).toBeCloseTo(2.559803810091316, 3);
+    expect(xScale.max).toBeCloseTo(9.559803810091315, 3);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.08268695548528708)).to.be.true;
-    expect(snapEqual(xRange[1], 0.4511080081168661)).to.be.true;
+    expect(xRange[0]).toBeCloseTo(0.08209493737322715, 3);
+    expect(xRange[1]).toBeCloseTo(0.4505159900048061, 3);
+
   });
 
   it('pan y axis, and field is a linear type.', function() {
@@ -160,17 +162,17 @@ describe('chart pan', function() {
     interaction._doMove(0, 300);
 
     const limitRange = interaction.limitRange;
-    expect(limitRange).to.eql({
+    expect(limitRange).toEqual({
       y: {
         min: Math.min.apply(null, yValues),
         max: Math.max.apply(null, yValues)
       }
     });
     const yScale = chart.getYScales()[0];
-    expect(yScale.max).to.equal(yMax);
+    expect(yScale.max).toEqual(yMax);
     const yRange = interaction.yRange;
-    expect(snapEqual(yRange[0], 0.7142857142857143)).to.be.true;
-    expect(yRange[1]).to.equal(1);
+    expect(snapEqual(yRange[0], 0.7142857142857143)).toBeTruthy();
+    expect(yRange[1]).toBe(1);
   });
 
   it('pan x axis, and x field is a cat type.', function() {
@@ -190,15 +192,15 @@ describe('chart pan', function() {
 
     const limitRange = interaction.limitRange;
 
-    expect(limitRange).to.eql({
+    expect(limitRange).toEqual({
       x2: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20' ]
     });
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '5', '6', '7', '8', '9' ]);
+    expect(xScale.values).toEqual([ '5', '6', '7', '8', '9' ]);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.21052631578947367)).to.be.true;
-    expect(snapEqual(xRange[1], 0.42105263157894735)).to.be.true;
+    expect(snapEqual(xRange[0], 0.21052631578947367)).toBeTruthy();
+    expect(snapEqual(xRange[1], 0.42105263157894735)).toBeTruthy();
   });
 
   it('pan x axis, and with ticks', function() {
@@ -217,8 +219,8 @@ describe('chart pan', function() {
     const interaction = chart._interactions.pan;
     interaction._doMove(-50, 0);
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '5', '6', '7', '8', '9' ]);
-    expect(xScale.ticks).to.eql([ '4', '6', '8' ]);
+    expect(xScale.values).toEqual([ '5', '6', '7', '8', '9' ]);
+    expect(xScale.ticks).toEqual([ '4', '6', '8' ]);
   });
 
   it('pan x axis, and x field is a timeCat type.', function() {
@@ -242,14 +244,14 @@ describe('chart pan', function() {
     interaction._doMove(-40, 0);
 
     const limitRange = interaction.limitRange;
-    expect(limitRange.x3.length).to.equal(20);
+    expect(limitRange.x3.length).toBe(20);
     const xScale = chart.getXScale();
-    expect(xScale.values.length).to.equal(7);
-    expect(xScale.ticks.length).to.equal(8);
+    expect(xScale.values.length).toBe(7);
+    expect(xScale.ticks.length).toBe(8);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.47368421052631576)).to.be.true;
-    expect(snapEqual(xRange[1], 0.7894736842105263)).to.be.true;
+    expect([ xRange[0], xRange[1] ]).toEqual([ 0.47368421052631576, 0.7894736842105263 ]);
+
   });
 
   it('pan x axis with speed and step control.', function() {
@@ -272,11 +274,11 @@ describe('chart pan', function() {
     interaction._doMove(-50, 0);
 
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '9', '10', '11' ]);
+    expect(xScale.values).toEqual([ '9', '10', '11' ]);
 
     const xRange = interaction.xRange;
-    expect(snapEqual(xRange[0], 0.42105263157894735)).to.be.true;
-    expect(snapEqual(xRange[1], 0.5263157894736842)).to.be.true;
+    expect(snapEqual(xRange[0], 0.42105263157894735)).toBeTruthy();
+    expect(snapEqual(xRange[1], 0.5263157894736842)).toBeTruthy();
   });
 
   it('pan x axis with small distance.', function() {
@@ -296,10 +298,10 @@ describe('chart pan', function() {
     interaction._doMove(2, 0); // 移动像素太小
 
     const xScale = chart.getXScale();
-    expect(xScale.values).to.eql([ '6', '7', '8' ]);
+    expect(xScale.values).toEqual([ '6', '7', '8' ]);
 
     interaction._doMove(-2, 0); // 移动像素太小
-    expect(xScale.values).to.eql([ '6', '7', '8' ]);
+    expect(xScale.values).toEqual([ '6', '7', '8' ]);
   });
 
   it('with scrollbar', function(done) {
@@ -323,16 +325,17 @@ describe('chart pan', function() {
 
     const hBar = chart.get('_horizontalBar');
     const highlightLine = hBar.get('children')[1];
-    expect(snapEqual(highlightLine.attr('x1'), 119.50947008634868)).to.be.true;
-    expect(snapEqual(highlightLine.attr('x2'), 308.4663150185033)).to.be.true;
+
+    expect(highlightLine.attr('x1')).toBeCloseTo(125.65473054584703, 2);
+    expect(highlightLine.attr('x2')).toBeCloseTo(309.78315654553865, 2);
 
     setTimeout(() => {
       const interaction = chart._interactions.pan;
       interaction._doMove(120, 0);
       const hBar = chart.get('_horizontalBar');
       const highlightLine = hBar.get('children')[1];
-      expect(snapEqual(highlightLine.attr('x1'), 50.79789011101974)).to.be.true;
-      expect(snapEqual(highlightLine.attr('x2'), 239.75473504317432)).to.be.true;
+      expect(highlightLine.attr('x1')).toBeCloseTo(58.70168585526316, 2);
+      expect(highlightLine.attr('x2')).toBeCloseTo(242.8284333881579, 2);
       chart.destroy();
       document.body.removeChild(canvas);
       done();

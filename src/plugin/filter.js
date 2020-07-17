@@ -1,8 +1,7 @@
 /**
  * filter the data out of scale' range
  */
-import { each, isNumber } from '../util/common';
-import TimeUtil from '@antv/scale/lib/time-util';
+import { each, isNumber, toTimeStamp } from '../util/common';
 
 function beforeGeomInit(chart) {
   chart.set('limitInPlot', true);
@@ -42,7 +41,7 @@ function beforeGeomInit(chart) {
         if (colDef.type === 'timeCat') {
           const values = colDef.values;
           if (isNumber(values[0])) {
-            value = TimeUtil.toTimeStamp(value);
+            value = toTimeStamp(value);
           }
         }
 
