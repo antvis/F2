@@ -325,7 +325,9 @@ describe('chart pan', function() {
 
     const hBar = chart.get('_horizontalBar');
     const highlightLine = hBar.get('children')[1];
-    expect([ highlightLine.attr('x1'), highlightLine.attr('x2') ]).toEqual([ 125.65473054584703, 309.78315654553865 ]);
+
+    expect(highlightLine.attr('x1')).toBeCloseTo(125.65473054584703, 2);
+    expect(highlightLine.attr('x2')).toBeCloseTo(309.78315654553865, 2);
 
     setTimeout(() => {
       const interaction = chart._interactions.pan;

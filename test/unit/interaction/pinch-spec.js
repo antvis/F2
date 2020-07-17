@@ -93,8 +93,9 @@ describe('Pinch', function() {
       pinch.process(eventObj);
       const xScale = chart.getXScale();
 
-      expect(xScale.min).to.equal(2.1459594373204514);
-      expect(xScale.max).to.equal(18.08442097578199);
+
+      expect(snapEqual(xScale.min, 2.1459594373204514)).to.be.true;
+      expect(snapEqual(xScale.max, 18.08442097578199)).to.be.true;
 
       pinch.end(eventObj);
       expect(pinch.currentPinchScaling).to.be.null;
