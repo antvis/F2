@@ -1,6 +1,9 @@
-import { getScale } from '@antv/scale';
+import { getScale, registerTickMethod } from '@antv/scale';
 import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
 import Global from '../../global';
+import TimeCat from './f2-time-cat';
+
+registerTickMethod('time-cat', TimeCat);
 
 function isFullCircle(coord) {
   if (!coord.isPolar) {
