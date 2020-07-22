@@ -2,7 +2,7 @@
 export default cfg => {
 
   const { values, tickCount } = cfg;
-  if (values.length === 1) {
+  if (values.length <= 1) {
     return values;
   }
 
