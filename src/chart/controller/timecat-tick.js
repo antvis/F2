@@ -2,12 +2,12 @@
 export default cfg => {
 
   const { values, tickCount } = cfg;
-  if (values.length === 0) {
-    return values[0];
+  if (values.length === 1) {
+    return values;
   }
 
-  // 获取间隔步长
-  const step = parseInt(values.length / (tickCount - 1));
+  // 获取间隔步长, 最小是1
+  const step = parseInt(values.length / (tickCount - 1)) || 1;
   const ticks = [];
 
   // 按间隔数取对应节点
