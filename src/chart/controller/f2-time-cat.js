@@ -1,4 +1,4 @@
-// 平均算法，保头保尾
+// timeCat平均算法，保头保尾
 export default cfg => {
 
   const { values, tickCount } = cfg;
