@@ -2,12 +2,8 @@ import * as F2 from '../../src/core';
 import '../../src/geom/interval';
 
 const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-canvas.id = 'issue804';
-canvas.style.position = 'fixed';
-canvas.style.top = 0;
-canvas.style.left = 0;
+canvas.style.width = '100%';
+canvas.style.height = '300px';
 document.body.appendChild(canvas);
 
 describe('issue 804', () => {
