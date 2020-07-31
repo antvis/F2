@@ -29,6 +29,7 @@ const data = [{
   sales: 1250
 }];
 
+// 绘制折线图
 const chart = new F2.Chart({
   id: 'container',
   padding: [ 'auto', 20, 'auto', 'auto' ],
@@ -52,6 +53,8 @@ chart.axis('year', {
 });
 chart.tooltip(false);
 chart.line().position('year*sales');
+
+// 半径通过传入函数来实现只显示特定的数据点
 chart.point().position('year*sales').style('year', {
   stroke: '#1890ff',
   lineWidth: 1,
@@ -75,6 +78,7 @@ chart.guide().regionFilter({
 // 2018 年开始为预测数据
 const forecastData = data.slice(6);
 forecastData.forEach(function(obj) {
+  // 预测数据点添加point和label
   chart.guide().point({
     position: [ obj.year, obj.sales ],
     style: {
@@ -92,6 +96,8 @@ forecastData.forEach(function(obj) {
     offsetY: -15
   });
 });
+
+// 绘制预测部分区域的背景
 chart.guide().rect({
   start: [ '2017', 'min' ],
   end: [ 'max', 'max' ],
@@ -100,6 +106,8 @@ chart.guide().rect({
     fillOpacity: 0.05
   }
 });
+
+// 添加文字提示
 chart.guide().text({
   position: [ '2017', 'max' ],
   content: '预测',

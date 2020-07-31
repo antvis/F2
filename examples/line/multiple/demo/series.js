@@ -1,7 +1,7 @@
 import F2 from '@antv/f2';
 import _ from 'lodash';
 
-fetch('../data/series-line.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({

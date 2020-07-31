@@ -11,7 +11,6 @@ insertCss(`
 const container = document.getElementById('container');
 container.className = 'fitness-ring';
 
-// customize shape and animation
 const {
   Shape,
   Util,
@@ -21,6 +20,7 @@ const {
 } = F2;
 const { Vector2 } = G;
 
+// 注册自定义Shape——极坐标下的条形
 Shape.registerShape('interval', 'tick', {
   draw: function draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
@@ -78,6 +78,7 @@ Shape.registerShape('interval', 'tick', {
   }
 });
 
+// 注册自定义动画
 Animate.registerAnimation('waveIn', function(shape, animateCfg) {
   const startAngle = shape.attr('startAngle');
   const endAngle = shape.attr('endAngle');
@@ -112,6 +113,7 @@ const data = [
   }
 ];
 
+// 创建chart
 const chart = new F2.Chart({
   id: 'container',
   width: 375,
@@ -131,6 +133,8 @@ chart.coord('polar', {
   radius: 0.8
 });
 chart.axis(false);
+
+// 将数据映射到上面注册的Shape——interval，并绑定动画
 chart.interval()
   .position('name*percent')
   .color('color', function(val) {
@@ -150,8 +154,8 @@ chart.interval()
     }
   });
 
+// 使用guide绘制辅助元素，添加背景和icon
 data.forEach(function(obj) {
-  // background
   chart.guide().arc({
     start: [ obj.name, 0 ],
     end: [ obj.name, 99.98 ],
@@ -173,6 +177,7 @@ data.forEach(function(obj) {
 });
 chart.render();
 
+// 动态更新数据
 const updateData = function updateData() {
   for (let i = 0; i < data.length; ++i) {
     data[i].percent = Math.floor(Math.random() * 60 + 20);

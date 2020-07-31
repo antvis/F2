@@ -20,7 +20,7 @@ const {
 } = F2;
 const Vector2 = G.Vector2;
 
-// 极坐标下带圆角的柱子，只对极坐标生效
+// 注册自定义Shape, 极坐标下带圆角的条形，只对极坐标生效
 Shape.registerShape('interval', 'polar-tick', {
   draw: function draw(cfg, container) {
     const points = this.parsePoints(cfg.points);
@@ -73,11 +73,14 @@ Shape.registerShape('interval', 'polar-tick', {
     });
   }
 });
+
 const data = [{
   const: 'a',
   actual: 75,
   expect: 100
 }];
+
+// 创建图表
 const chart = new F2.Chart({
   id: 'container',
   padding: [ 0, 30, 60 ],
@@ -90,6 +93,8 @@ chart.source(data, {
     nice: false
   }
 });
+
+// 设定极坐标系
 chart.coord('polar', {
   transposed: true,
   innerRadius: 0.8,
@@ -97,12 +102,14 @@ chart.coord('polar', {
   endAngle: 0
 });
 chart.axis(false);
+
+// 绘制两个条形，分别作为背景和实际的百分比进度。
 chart.interval()
   .position('const*expect')
   .shape('polar-tick')
   .size(10)
   .color('rgba(80, 143, 255, 0.95)')
-  .animate(false); // 背景条
+  .animate(false);
 chart.interval()
   .position('const*actual')
   .shape('polar-tick')
@@ -116,7 +123,6 @@ chart.interval()
         const startAngle = shape.attr('startAngle');
         let endAngle = shape.attr('endAngle');
         if (startAngle > endAngle) {
-          // -Math.PI/2 到 0
           endAngle += Math.PI * 2;
         }
         shape.attr('endAngle', startAngle);
@@ -130,7 +136,9 @@ chart.interval()
         });
       }
     }
-  }); // 实际进度
+  });
+
+// 添加辅助元素作为提示
 chart.guide().html({
   position: [ '50%', '80%' ],
   html: `
