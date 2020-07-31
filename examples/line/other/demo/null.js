@@ -1,7 +1,7 @@
 import F2 from '@antv/f2';
 import _ from 'lodash';
 
-fetch('../data/usa-medals-won.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({

@@ -135,6 +135,8 @@ chart.source(data, {
     }
   }
 });
+
+// 分别设置x、y轴，自定义label的内容和样式。
 chart.axis('date', {
   line: {
     stroke: '#85A5FF'
@@ -174,6 +176,8 @@ chart.axis('steps', {
     stroke: '#85A5FF'
   }
 });
+
+// 设置tooltip
 chart.tooltip({
   custom: true,
   showCrosshairs: true,
@@ -204,6 +208,8 @@ chart.tooltip({
     });
   }
 });
+
+// 分别绘制area、折线和点
 chart.area().position('date*steps').style({
   fill: 'l(-90) 0.03:rgba(216,216,216,0.10) 1:#6E6CD8',
   fillOpacity: 1

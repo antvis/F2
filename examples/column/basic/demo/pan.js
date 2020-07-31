@@ -4,7 +4,7 @@ function formatNumber(n) {
   return String(Math.floor(n * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-fetch('../data/steps.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/ZpWsTPpY6%26/steps.json')
   .then(res => res.json())
   .then(data => {
     const originDates = [];

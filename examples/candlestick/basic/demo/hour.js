@@ -97,7 +97,7 @@ const BASIC_PRICE = 3.55;
 let barChart;
 let lineChart;
 
-fetch('../data/hour-k.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/GGGAHoT2ap/hour-k.json')
   .then(res => res.json())
   .then(data => {
     const prices = [];
