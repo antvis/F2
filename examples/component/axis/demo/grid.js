@@ -5,7 +5,7 @@ function numberToMoney(n) {
   return String(Math.floor(n * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-fetch('../data/bubble.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/6gvW0Eksw7/bubble.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({

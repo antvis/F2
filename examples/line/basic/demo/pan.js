@@ -1,6 +1,6 @@
 import F2 from '@antv/f2';
 
-fetch('../data/linear-pan.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/Jpuku6k%24q%24/linear-pan.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({

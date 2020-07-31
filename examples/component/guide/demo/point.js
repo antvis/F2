@@ -1,6 +1,6 @@
 import F2 from '@antv/f2';
 
-fetch('../data/income.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/N81gEpw2Ef/income.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({
