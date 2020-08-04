@@ -9,7 +9,8 @@ import {
   EVENT_BEFORE_GEOM_DRAW,
   EVENT_AFTER_GEOM_DRAW,
   EVENT_CLEAR,
-  EVENT_CLEAR_INNER
+  EVENT_CLEAR_INNER,
+  EVENT_REPAINT
 } from './const';
 import Base from '../base';
 import Plot from './plot';
@@ -649,6 +650,7 @@ class Chart extends Base {
     this.set('legendItems', null);
     Chart.plugins.notify(this, 'repaint');
     this._clearInner();
+    this.emit(EVENT_REPAINT);
     this.render();
   }
 
