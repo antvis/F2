@@ -4,8 +4,8 @@ import * as F2 from '../../../../src/index';
 const onStartCallback = jest.fn();
 
 const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
+canvas.style.width = '100%';
+canvas.style.height = '300px';
 document.body.appendChild(canvas);
 
 const chart = new F2.Chart({
@@ -25,6 +25,10 @@ chart.source(data, {
   }
 });
 
+// chart.area()
+//   .position('reportDate*rate')
+//   .color('name')
+//   .animate(false);
 chart.line()
   .position('reportDate*rate')
   .color('name');
