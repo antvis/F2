@@ -15,6 +15,8 @@ const EVENT_AFTER_GEOM_DRAW = 'aftergeomdraw';
 const EVENT_CLEAR = 'clear';
 const EVENT_CLEAR_INNER = 'clearinner';
 
+const EVENT_REPAINT = 'repaint';
+
 export {
   EVENT_AFTER_INIT,
   EVENT_BEFORE_RENDER,
@@ -26,5 +28,6 @@ export {
   EVENT_BEFORE_GEOM_DRAW,
   EVENT_AFTER_GEOM_DRAW,
   EVENT_CLEAR,
-  EVENT_CLEAR_INNER
+  EVENT_CLEAR_INNER,
+  EVENT_REPAINT
 };
