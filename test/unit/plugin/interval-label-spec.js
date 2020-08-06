@@ -1,16 +1,13 @@
-import { expect } from 'chai';
 import * as F2 from '../../../src/core';
 import '../../../src/geom/interval';
 import '../../../src/geom/adjust/symmetric';
 import * as IntervalLabel from '../../../src/plugin/interval-label';
+import * as Legend from '../../../src/plugin/legend';
+import { gestureSimulator } from '../test-util';
 
 const canvas = document.createElement('canvas');
-canvas.width = 350;
-canvas.height = 350;
-canvas.id = 'chart-interval-label';
-canvas.style.position = 'fixed';
-canvas.style.top = 0;
-canvas.style.left = 0;
+canvas.style.width = '350px';
+canvas.style.height = '350px';
 document.body.appendChild(canvas);
 
 describe('IntervalLabel', () => {
@@ -26,13 +23,14 @@ describe('IntervalLabel', () => {
 
   it('Register IntervalLabel plugin', function() {
     chart = new F2.Chart({
-      id: 'chart-interval-label',
-      plugins: [ IntervalLabel ],
-      pixelRatio: 2
+      el: canvas,
+      plugins: [ IntervalLabel, Legend ],
+      pixelRatio: 2,
+      padding: [ 60, 80, 15, 15 ]
     });
 
-    expect(chart._plugins.descriptors.length).to.equal(1);
-    expect(chart.intervalLabel).to.be.an.instanceof(Function);
+    expect(chart._plugins.descriptors.length).toBe(2);
+    expect(chart.intervalLabel).toBeInstanceOf(Function);
   });
 
   it('interval label', function() {
@@ -46,31 +44,60 @@ describe('IntervalLabel', () => {
       .position('action*percent')
       .color('action', [ '#0050B3', '#1890FF', '#40A9FF', '#69C0FF', '#BAE7FF' ])
       .adjust('symmetric')
-      .shape('funnel');
+      .shape('funnel')
+      .style({
+        lineWidth: 2,
+        stroke: '#fff'
+      });
+
     chart.intervalLabel({
+      offsetX: 10,
       label: data => {
         return {
           text: data.action
         };
+      },
+      guide: data => {
+        return {
+          text: (data.percent * 100).toFixed(0) + '%',
+          fill: '#fff'
+        };
       }
     });
-
+    chart.legend(true);
     chart.render();
 
     const pieLabelController = chart.get('intervalLabelController');
     const { container } = pieLabelController;
     const children = container.get('children');
-    expect(children.length).equal(5);
+    expect(children.length).toBe(10);
 
-    const labelShape = children[0].get('children')[0];
-    expect(labelShape.get('attrs').text).equal('浏览网站');
+    const labelShape = children[0];
+    expect(labelShape.get('attrs').text).toBe('浏览网站');
 
+  });
+
+  it('legend click', () => {
+    gestureSimulator(canvas, 'touchstart', {
+      x: 156.05078125,
+      y: 22.40625
+    });
+
+    const pieLabelController = chart.get('intervalLabelController');
+    const { container } = pieLabelController;
+    const children = container.get('children');
+    expect(children.length).toBe(8);
+
+    const labelShape = children[0];
+    expect(labelShape.get('attrs').text).toBe('浏览网站');
+    expect(labelShape.get('attrs').x).toBeCloseTo(248.125, 3);
+    expect(labelShape.get('attrs').y).toBeCloseTo(280, 3);
   });
 
   it('clear', () => {
     chart.clear();
     const labelController = chart.get('intervalLabelController');
-    expect(labelController.container.get('children')).to.be.empty;
+    expect(labelController.container.get('children')).toEqual([]);
 
     chart.destroy();
     document.body.removeChild(canvas);
