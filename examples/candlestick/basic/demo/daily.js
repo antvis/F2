@@ -172,7 +172,7 @@ function updateMATip(data, index) {
   $('#ma').css('visibility', 'visible');
 }
 
-fetch('../data/1d-k.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/8qsQqah4Yg/1d-k.json')
   .then(res => res.json())
   .then(data => {
     // 构造数据结构

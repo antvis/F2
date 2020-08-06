@@ -1,6 +1,6 @@
 import F2 from '@antv/f2';
 
-fetch('../data/polar-heatmap.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/CUUfwzGQ%26H/polar-heatmap.json')
   .then(res => res.json())
   .then(data => {
     const chart = new F2.Chart({

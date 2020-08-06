@@ -1,6 +1,6 @@
 import F2 from '@antv/f2';
 
-fetch('../data/candle-sticks.json')
+fetch('https://gw.alipayobjects.com/os/antfincdn/c4ROEPcthk/candle-sticks.json')
   .then(res => res.json())
   .then(data => {
     data = data.slice(0, 150); // 截取数据，只展示 200 条

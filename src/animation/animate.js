@@ -48,7 +48,7 @@ const Animate = {
     if (!this.Action) {
       this.Action = {};
     }
-    this.Action[animationName] = animationFun;
+    this.Action = { ...this.Action, [animationName]: animationFun };
   }
 };
 
