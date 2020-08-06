@@ -2,7 +2,7 @@
 import { mix, isWx, isMy } from '../util/common';
 import Interaction from './base';
 import Chart from '../chart/chart';
-import * as FilterPlugin from '../plugin/filter';
+// import * as FilterPlugin from '../plugin/filter';
 import MoveMixin from './mixin/move';
 import UpdateScaleMixin from './mixin/update-scale';
 
@@ -40,6 +40,7 @@ class Pan extends Interaction {
     super(cfg, chart);
     const self = this;
     const { hammer, panThreshold } = self;
+    chart.set('limitInPlot', true);
 
     if (hammer) {
       hammer.get('pan').set({
@@ -49,14 +50,14 @@ class Pan extends Interaction {
       chart.get('canvas').on('pan', () => {});
     }
 
-    chart.registerPlugins([ FilterPlugin, {
-      changeData() {
-        self.limitRange = {};
-      },
-      clear() {
-        self.limitRange = {};
-      }
-    }]);
+    // chart.registerPlugins([ FilterPlugin, {
+    //   changeData() {
+    //     self.limitRange = {};
+    //   },
+    //   clear() {
+    //     self.limitRange = {};
+    //   }
+    // }]);
 
     mix(this, UpdateScaleMixin, MoveMixin);
   }
