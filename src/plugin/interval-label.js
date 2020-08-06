@@ -41,22 +41,38 @@ class Controller {
     const { chart, container, cfg } = this;
     if (!cfg) return;
     const labelCfg = mix({}, DEFAULT_CFG, cfg);
-    const coord = chart.get('coord');
     const geom = chart.get('geoms')[0];
     const shapes = geom.get('container').get('children');
     shapes.forEach(shape => {
       const origin = shape.get('origin');
-      const { _origin, color, points } = origin;
+      const attrs = shape.get('attrs');
+      const { _origin, color } = origin;
+      const { points } = attrs;
       if (labelCfg.label) {
         const labelAttrs = labelCfg.label(_origin, color);
-        const group = container.addGroup();
-        const point = coord.convertPoint(getMiddlePoint(points[1], points[2]));
+        const point = getMiddlePoint(points[1], points[2]);
 
-        group.addShape('Text', {
+        container.addShape('Text', {
           attrs: mix({
             x: point.x + labelCfg.offsetX,
             y: point.y + labelCfg.offsetY
-          }, labelAttrs, DEFAULT_LABEL_CFG)
+          }, DEFAULT_LABEL_CFG, labelAttrs)
+        });
+      }
+      if (labelCfg.guide) {
+        const labelAttrs = labelCfg.guide(_origin, color);
+        const point = getMiddlePoint(
+          getMiddlePoint(points[0], points[1]),
+          getMiddlePoint(points[2], points[3] || points[2])
+        );
+
+        container.addShape('Text', {
+          attrs: mix({
+            x: point.x,
+            y: point.y,
+            textBaseline: 'middle',
+            textAlign: 'center'
+          }, DEFAULT_LABEL_CFG, labelAttrs)
         });
       }
     });

@@ -27,20 +27,13 @@ chart.intervalLabel({
       text: data.action,
       fill: color
     };
-  }
-});
-
-// 提示文案
-data.forEach(function(obj) {
-  chart.guide().text({
-    position: [ obj.action, 0.5 ],
-    content: (obj.percent * 100).toFixed(0) + '%',
-    style: {
-      textBaseline: 'middle',
-      textAlign: 'center',
+  },
+  guide: data => {
+    return {
+      text: (data.percent * 100).toFixed(0) + '%',
       fill: '#fff'
-    }
-  });
+    };
+  }
 });
 
 chart.interval()

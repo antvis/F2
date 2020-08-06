@@ -17,22 +17,20 @@ function delay(time) {
 
 async function gestureSimulator(dom, eventType, options) {
   if ([ 'touchstart', 'touchmove', 'touchend' ].indexOf(eventType) !== -1) {
-    const { clientX, clientY } = options;
     const exData = {
-      targetTouches: [{ clientX, clientY }],
-      touches: [{ clientX, clientY }],
-      changedTouches: [{ clientX, clientY }]
+      targetTouches: [ options ],
+      touches: [ options ],
+      changedTouches: [ options ]
     };
     dispatchEvent(dom, eventType, exData);
     return;
   }
 
   if (eventType === 'press') {
-    const { clientX, clientY } = options;
     const exData = {
-      targetTouches: [{ clientX, clientY }],
-      touches: [{ clientX, clientY }],
-      changedTouches: [{ clientX, clientY }]
+      targetTouches: [ options ],
+      touches: [ options ],
+      changedTouches: [ options ]
     };
     dispatchEvent(dom, 'touchstart', exData);
     await delay(270);
@@ -41,11 +39,10 @@ async function gestureSimulator(dom, eventType, options) {
   }
 
   if (eventType === 'tap') {
-    const { clientX, clientY } = options;
     const exData = {
-      targetTouches: [{ clientX, clientY }],
-      touches: [{ clientX, clientY }],
-      changedTouches: [{ clientX, clientY }]
+      targetTouches: [ options ],
+      touches: [ options ],
+      changedTouches: [ options ]
     };
     dispatchEvent(dom, 'touchstart', exData);
     await delay(50);
