@@ -1,8 +1,7 @@
-
-const DDEFAULT_COUNT = 5;
+const DDEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
-  const { min, max, tickCount } = cfg || {};
+  const { min, max, tickCount, tickInterval } = cfg || {};
   const count = tickCount || DDEFAULT_COUNT;
   // 1.计算平均刻度间隔
   const avgInterval = (max - min) / (count - 1);
@@ -10,7 +9,7 @@ export default cfg => {
   // 2.转化成1~10的刻度间隔值
   const factor = getFactor(avgInterval);
   // 3.获取满足tickCount的情况下，最优刻度值
-  const interval = getBestInterval({ tickCount: count, avgInterval, max, min, factor });
+  const interval = tickInterval || getBestInterval({ tickCount: count, avgInterval, max, min, factor });
   const minTickPosition = Math.ceil(Math.abs(min / interval));
   const minTick = min > 0 ? minTickPosition * interval : -minTickPosition * interval;
 
@@ -18,10 +17,10 @@ export default cfg => {
 
   const ticks = [];
   while (minTick + tickLength * interval < max) {
-    ticks.push(minTick + tickLength * interval);
+    ticks.push(fixedBase(minTick + tickLength * interval, interval));
     tickLength++;
   }
-  ticks.push(minTick + tickLength * interval);
+  ticks.push(fixedBase(minTick + tickLength * interval, interval));
   return ticks;
 };
 
@@ -98,13 +97,14 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
     }
   }
 
+  // 是否满足刻度需求
   if (intervalIsVerify({ interval: similarityInterval, tickCount, max: calMax, min: calMin })) {
-    return similarityInterval * factor;
+    return fixedBase(similarityInterval * factor, factor);
   }
 
   // 最后一个接直接返回
   if (similarityIndex === SNAP_COUNT_ARRAY.length - 1) {
-    return similarityInterval * factor;
+    return fixedBase(similarityInterval * factor, factor);
   }
 
   similarityIndex++;
@@ -115,7 +115,8 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
     }
     similarityIndex++;
   }
-  return similarityInterval * factor;
+
+  return fixedBase(similarityInterval * factor, factor);
 }
 
 // 刻度是否满足展示需求
@@ -132,4 +133,23 @@ function intervalIsVerify({ interval, tickCount, max, min }) {
   }
 
   return false;
+}
+
+
+// @antv/util fixedbase不支持科学计数法的判断，需要提mr
+function fixedBase(v, base) {
+  const str = base.toString();
+  const index = str.indexOf('.');
+  const indexOfExp = str.indexOf('e-');
+
+  // 判断是否带小数点，1.000001 1.23e-9
+  if (index < 0 && indexOfExp < 0) {
+    // base为整数
+    return Math.round(v);
+  }
+  let length = indexOfExp >= 0 ? parseInt(str.substr(indexOfExp + 2), 10) : str.substr(index + 1).length;
+  if (length > 20) {
+    length = 20;
+  }
+  return parseFloat(v.toFixed(length));
 }

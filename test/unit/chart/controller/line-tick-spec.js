@@ -1,49 +1,48 @@
-import * as F2 from '../../../../src/index-all';
+import linearTick from '../../../../src/chart/controller/linear-tick';
 
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-canvas.id = 'ctx';
-document.body.appendChild(canvas);
+describe('linear-tick', function() {
 
-describe('刻度轴算法', function() {
-
-  it('刻度轴', function() {
-
-    const data = [
-      { genre: 'Sports', sold: 275 },
-      { genre: 'Strategy', sold: 115 },
-      { genre: 'Action', sold: 120 },
-      { genre: 'Shooter', sold: 350 },
-      { genre: 'Other', sold: 150 }
-    ];
-
-    const chart = new F2.Chart({
-      id: 'ctx',
-      pixelRatio: window.devicePixelRatio // 指定分辨率
+  it('整数, 默认tickcount, [0, 350]', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 350
     });
+    expect(tick).toEqual([ 0, 100, 200, 300, 400 ]);
+  });
 
-    chart.source(data);
-
-    chart.scale('date', {
-      type: 'timeCat',
-      range: [ 0, 1 ],
-      tickCount: 3,
-      mask: 'MM-DD'
-      // formatter: value => value.substr(5) // 去掉 yyyy-mm-dd 的年份
+  it('整数, 指定tickcount6, [0, 350]', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 350,
+      tickCount: 6
     });
+    expect(tick).toEqual([ 0, 75, 150, 225, 300, 375 ]);
+  });
 
+  it('负数, 默认tickcount, [-100, -560]', function() {
+    const tick = linearTick({
+      min: -560,
+      max: -100
+    });
+    expect(tick).toEqual([ -640, -480, -320, -160, 0 ]);
 
-    // chart.scale('sold', {
-    //   tickCount: 5,
-    // });
+  });
 
-    chart.interval()
-      .position('genre*sold')
-      .color('genre');
+  it('小数, 默认tickcount, [0, 0.0000035]', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 0.0000035
+    });
+    expect(tick).toEqual([ 0, 0.000001, 0.000002, 0.000003, 0.000004 ]);
+  });
 
-    chart.render();
-
+  it('指定interval 200', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 350,
+      tickInterval: 200
+    });
+    expect(tick).toEqual([ 0, 200, 400 ]);
   });
 
 });
