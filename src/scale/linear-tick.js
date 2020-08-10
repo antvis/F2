@@ -60,7 +60,7 @@ function getFactor(number) {
 
 // 获取最佳匹配刻度
 function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
-  const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
+  const SNAP_COUNT_ARRAY = [1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10];
   const calInterval = avgInterval / factor;
   const calMax = max / factor;
   const calMin = min / factor;
