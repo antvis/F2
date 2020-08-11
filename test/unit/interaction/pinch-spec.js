@@ -35,7 +35,7 @@ describe('Pinch', function() {
   chart.line().position('x1*y');
   chart.render();
 
-  it('pinch start, process, end', function(done) {
+  it('pinch start, process, end', function() {
     const pinch = new Pinch({
       maxScale: 4,
       minScale: 1
@@ -69,8 +69,8 @@ describe('Pinch', function() {
     pinch.process(eventObj);
     expect(pinch.currentPinchScaling).to.equal(1.3);
     const xScale = chart.getXScale();
-    expect(snapEqual(xScale.min, 3.17016735058703)).to.be.true;
-    expect(snapEqual(xScale.max, 17.17016735058703)).to.be.true;
+    expect(snapEqual(xScale.min, 3.2424781342743505)).to.be.true;
+    expect(snapEqual(xScale.max, 17.24247813427435)).to.be.true;
 
     setTimeout(() => {
       eventObj = {
@@ -93,14 +93,13 @@ describe('Pinch', function() {
       pinch.process(eventObj);
       const xScale = chart.getXScale();
 
-
-      expect(snapEqual(xScale.min, 2.1459594373204514)).to.be.true;
-      expect(snapEqual(xScale.max, 18.08442097578199)).to.be.true;
+      expect(snapEqual(xScale.min, 2.1949082755087916)).to.be.true;
+      expect(snapEqual(xScale.max, 18.13336981397033)).to.be.true;
 
       pinch.end(eventObj);
       expect(pinch.currentPinchScaling).to.be.null;
       expect(pinch.pinchCumulativeDelta).to.equal(0);
-      done();
+      // done();
     }, 1000);
   });
 });
@@ -164,8 +163,8 @@ describe('chart pinch', function() {
         max: 19
       },
       y: {
-        min: 2.5,
-        max: 17.5
+        min: 3,
+        max: 20
       }
     });
     const xScale = chart.getXScale();
@@ -173,13 +172,13 @@ describe('chart pinch', function() {
     expect(xScale.max).to.equal(24.8);
 
     const yScale = chart.getYScales()[0];
-    expect(yScale.min).to.equal(-5.574999999999999);
-    expect(yScale.max).to.equal(22.175);
+    expect(yScale.min).to.equal(-4.6499999999999995);
+    expect(yScale.max).to.equal(26.8);
 
     const xRange = interaction.xRange;
     const yRange = interaction.yRange;
     expect(xRange).to.eql([ 0.33157894736842103, 1.305263157894737 ]);
-    expect(yRange).to.eql([ -0.5383333333333333, 1.3116666666666668 ]);
+    expect(yRange).to.eql([ -0.44999999999999996, 1.4000000000000001 ]);
   });
 
   it('pinch x axis, and x field is a cat type', function(done) {

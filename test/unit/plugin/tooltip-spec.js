@@ -404,7 +404,9 @@ describe('Tooltip crosshairs', function() {
     expect(crosshairsShapeX).not.to.be.undefined;
     expect(crosshairsShapeY).not.to.be.undefined;
     expect(snapEqual(crosshairsShapeY.get('x'), 235.2777777777778)).to.be.true;
-    expect(snapEqual(crosshairsShapeX.get('y'), 204.726)).to.be.true;
+
+    expect(snapEqual(crosshairsShapeX.get('y'), 204.848393875713)).to.be.true;
+
     expect(tooltip.xTipBox.y).to.equal(291);
     expect(tooltip.xTipBox.content).to.equal('date:2018-04-26');
     expect(snapEqual(tooltip.yTipBox.x, 21.6845703125)).to.be.true;
@@ -415,9 +417,10 @@ describe('Tooltip crosshairs', function() {
       x: point.x,
       y: point.y + 20
     });
-    expect(snapEqual(tooltipController.tooltip.crosshairsShapeX.get('y'), 224.726)).to.be.true;
+
+    expect(snapEqual(tooltipController.tooltip.crosshairsShapeX.get('y'), 224.848393875713)).to.be.true;
     expect(snapEqual(tooltip.yTipBox.x, 18.34765625)).to.be.true;
-    expect(tooltip.yTipBox.content).to.equal(8363);
+    expect(tooltip.yTipBox.content).to.equal(8365);
   });
 
   it('show xTip and yTip, snap = false', () => {
@@ -467,7 +470,7 @@ describe('Tooltip crosshairs', function() {
     expect(xTip).not.to.be.undefined;
     expect(yTip).not.to.be.undefined;
     expect(xTip.content).to.equal('2018-04-21');
-    expect(yTip.content).to.equal(29112);
+    expect(yTip.content).to.equal(29091);
     expect(snapEqual(xTip.x, 85.99139404296875)).to.be.true;
     expect(xTip.y).to.equal(276.5);
     // expect(snapEqual(yTip.x, 29.06072998046875)).to.be.true;

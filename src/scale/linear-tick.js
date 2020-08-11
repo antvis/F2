@@ -3,6 +3,10 @@ const DDEFAULT_COUNT = 5; // 默认刻度值
 export default cfg => {
   const { min, max, tickCount, tickInterval } = cfg || {};
   const count = tickCount || DDEFAULT_COUNT;
+
+  if (max === min || count === 1) {
+    return [];
+  }
   // 1.计算平均刻度间隔
   const avgInterval = (max - min) / (count - 1);
 
@@ -26,10 +30,6 @@ export default cfg => {
 
 const DECIMAL_LENGTH = 12;
 function getFactor(number) {
-  if (number === Infinity || number === -Infinity) {
-    throw new Error('Not support Infinity!');
-  }
-
   // 取正数
   number = Math.abs(number);
   let factor = 1;
@@ -60,7 +60,7 @@ function getFactor(number) {
 
 // 获取最佳匹配刻度
 function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
-  const SNAP_COUNT_ARRAY = [1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10];
+  const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
   const calInterval = avgInterval / factor;
   const calMax = max / factor;
   const calMin = min / factor;

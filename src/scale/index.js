@@ -19,3 +19,4 @@ Scale.Cat = Category;
 Scale.TimeCat = TimeCat;
 
 export default Scale;
+export { getScale };

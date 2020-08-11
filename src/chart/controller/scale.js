@@ -1,4 +1,4 @@
-import { getScale } from '@antv/scale';
+import { getScale } from '../../scale';
 import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
 import Global from '../../global';
 

@@ -45,4 +45,13 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ 0, 200, 400 ]);
   });
 
+  it('max === min', function() {
+    const tick = linearTick({
+      min: 350,
+      max: 350,
+      tickInterval: 200
+    });
+    expect(tick).toEqual([]);
+  });
+
 });
