@@ -1,25 +1,14 @@
 const DDEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
-
   const { min, max, tickCount, tickInterval } = cfg || {};
-  const count = tickCount && tickCount >= 2 ? tickCount : DDEFAULT_COUNT;
-
-  // 异常值处理
-  if (max === min) {
-    const interval = min / 2;
-    return [
-      fixedBase(min - interval, interval),
-      min,
-      fixedBase(min + interval, interval)
-    ];
-  }
+  let count = tickCount && tickCount >= 2 ? tickCount : DDEFAULT_COUNT;
 
   // 1.计算平均刻度间隔
   const avgInterval = (max - min) / (count - 1);
 
   // 2.数据标准归一化 映射到[1-10]区间
-  const factor = getFactor(avgInterval);
+  const factor = max === min ? getFactor(max) : getFactor(avgInterval);
 
   // 3.获取满足tickCount的情况下，最优刻度值
   const interval = tickInterval || getBestInterval({ tickCount: count, avgInterval, max, min, factor });
@@ -29,11 +18,18 @@ export default cfg => {
 
   let tickLength = 0;
   const ticks = [];
-  while (minTick + tickLength * interval < max) {
+
+  // 如果指定了tickInterval就放开count的限制
+  count = tickInterval ? Math.abs(Math.ceil((max - minTick) / tickInterval)) + 1 : count;
+
+  if (tickInterval) {
+    count = count < DDEFAULT_COUNT ? DDEFAULT_COUNT : count;
+  }
+
+  while (tickLength < count) {
     ticks.push(fixedBase(minTick + tickLength * interval, interval));
     tickLength++;
   }
-  ticks.push(fixedBase(minTick + tickLength * interval, interval));
   return ticks;
 };
 
@@ -42,6 +38,10 @@ function getFactor(number) {
   // 取正数
   number = Math.abs(number);
   let factor = 1;
+
+  if (number === 0) {
+    return factor;
+  }
 
   // 小于1,逐渐放大
   if (number < 1) {
@@ -73,7 +73,9 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
   const calInterval = avgInterval / factor;
   const calMax = max / factor;
   const calMin = min / factor;
-
+  if (max === min) {
+    return 1 * factor;
+  }
   // 根据平均值推算最逼近刻度值
   let similarityInterval = 1;
   let similarityIndex = 0;
@@ -102,7 +104,7 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
 // 刻度是否满足展示需求
 function intervalIsVerify({ interval, tickCount, max, min }) {
   const minTick = Math.floor(min / interval) * interval;
-  if (minTick + tickCount * interval >= max) {
+  if (minTick + (tickCount - 1) * interval >= max) {
     return true;
   }
   return false;

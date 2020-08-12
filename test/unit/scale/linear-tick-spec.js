@@ -24,9 +24,7 @@ describe('linear-tick', function() {
       min: -560,
       max: -100
     });
-
-    expect(tick).toEqual([ -600, -480, -360, -240, -120, 0 ]);
-
+    expect(tick).toEqual([ -600, -450, -300, -150, 0 ]);
   });
 
   it('小数, 默认tickcount, [0, 0.0000035]', function() {
@@ -43,7 +41,7 @@ describe('linear-tick', function() {
       max: 350,
       tickInterval: 200
     });
-    expect(tick).toEqual([ 0, 200, 400 ]);
+    expect(tick).toEqual([ 0, 200, 400, 600, 800 ]);
   });
 
   it('[11, 50]', function() {
@@ -61,15 +59,23 @@ describe('linear-tick', function() {
       max: 350,
       tickInterval: 200
     });
-    expect(tick).toEqual([ 175, 350, 525 ]);
+    expect(tick).toEqual([ 200, 400, 600, 800, 1000 ]);
   });
 
-  it('max === min 0.00000', function() {
+  it('max === min 0.0000075', function() {
     const tick = linearTick({
-      min: 0.000005,
-      max: 0.000005
+      min: 0.0000075,
+      max: 0.0000075
     });
-    expect(tick).toEqual([ 0.0000025, 0.000005, 0.0000075 ]);
+    expect(tick).toEqual([ 0.000007, 0.000008, 0.000009, 0.00001, 0.000011 ]);
+  });
+
+  it('max === min 0', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 0
+    });
+    expect(tick).toEqual([ 0, 1, 2, 3, 4 ]);
   });
 
 });
