@@ -1,24 +1,33 @@
 const DDEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
-  const { min, max, tickCount, tickInterval } = cfg || {};
-  const count = tickCount || DDEFAULT_COUNT;
 
-  if (max === min || count === 1) {
-    return [];
+  const { min, max, tickCount, tickInterval } = cfg || {};
+  const count = tickCount && tickCount >= 2 ? tickCount : DDEFAULT_COUNT;
+
+  // 异常值处理
+  if (max === min) {
+    const interval = min / 2;
+    return [
+      fixedBase(min - interval, interval),
+      min,
+      fixedBase(min + interval, interval)
+    ];
   }
+
   // 1.计算平均刻度间隔
   const avgInterval = (max - min) / (count - 1);
 
-  // 2.转化成1~10的刻度间隔值
+  // 2.数据标准归一化 映射到[1-10]区间
   const factor = getFactor(avgInterval);
+
   // 3.获取满足tickCount的情况下，最优刻度值
   const interval = tickInterval || getBestInterval({ tickCount: count, avgInterval, max, min, factor });
-  const minTickPosition = Math.ceil(Math.abs(min / interval));
-  const minTick = min > 0 ? minTickPosition * interval : -minTickPosition * interval;
+
+  // 4.获取最小刻度线
+  const minTick = fixedBase(Math.floor(min / interval) * interval, interval);
 
   let tickLength = 0;
-
   const ticks = [];
   while (minTick + tickLength * interval < max) {
     ticks.push(fixedBase(minTick + tickLength * interval, interval));
@@ -65,49 +74,20 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
   const calMax = max / factor;
   const calMin = min / factor;
 
-  // 相似数
-  let similarityInterval;
-  let similarityIndex;
+  // 根据平均值推算最逼近刻度值
+  let similarityInterval = 1;
+  let similarityIndex = 0;
 
   for (let index = 0; index < SNAP_COUNT_ARRAY.length; index++) {
     const item = SNAP_COUNT_ARRAY[index];
-    const nextItem = SNAP_COUNT_ARRAY[index + 1];
-    if (index === 0 && item <= calInterval) {
-      similarityInterval = item;
-      similarityIndex = 0;
-    }
-
-    // last
-    if (index === SNAP_COUNT_ARRAY.length - 1 && item <= calInterval) {
+    if (calInterval <= item) {
       similarityInterval = item;
       similarityIndex = index;
-    }
-
-    if (index <= SNAP_COUNT_ARRAY.length - 2) {
-      if (calInterval >= item && calInterval < nextItem) {
-        // 取更加逼近的刻度
-        if (Math.abs(calInterval - item) > Math.abs(calInterval - nextItem)) {
-          similarityInterval = nextItem;
-          similarityIndex = index + 1;
-        } else {
-          similarityInterval = item;
-          similarityIndex = index;
-        }
-      }
+      break;
     }
   }
 
-  // 是否满足刻度需求
-  if (intervalIsVerify({ interval: similarityInterval, tickCount, max: calMax, min: calMin })) {
-    return fixedBase(similarityInterval * factor, factor);
-  }
-
-  // 最后一个接直接返回
-  if (similarityIndex === SNAP_COUNT_ARRAY.length - 1) {
-    return fixedBase(similarityInterval * factor, factor);
-  }
-
-  similarityIndex++;
+  // 刻度值校验，如果不满足，循环下去
   while (similarityIndex < SNAP_COUNT_ARRAY.length) {
     if (intervalIsVerify({ interval: SNAP_COUNT_ARRAY[similarityIndex], tickCount, max: calMax, min: calMin })) {
       similarityInterval = SNAP_COUNT_ARRAY[similarityIndex];
@@ -121,17 +101,10 @@ function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
 
 // 刻度是否满足展示需求
 function intervalIsVerify({ interval, tickCount, max, min }) {
-  const maxRange = max - min;
-
-  // 上下要预留间距
-  const maxTickPosition = Math.abs(max) % interval > 0 ? 1 : 0;
-  const minTickPosition = Math.abs(min) % interval > 0 ? 1 : 0;
-  const space = (maxTickPosition + minTickPosition) * interval;
-
-  if (interval * tickCount - maxRange - space >= 0) {
+  const minTick = Math.floor(min / interval) * interval;
+  if (minTick + tickCount * interval >= max) {
     return true;
   }
-
   return false;
 }
 

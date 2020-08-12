@@ -35,7 +35,7 @@ describe('Pinch', function() {
   chart.line().position('x1*y');
   chart.render();
 
-  it('pinch start, process, end', function() {
+  it('pinch start, process, end', function(done) {
     const pinch = new Pinch({
       maxScale: 4,
       minScale: 1
@@ -99,7 +99,7 @@ describe('Pinch', function() {
       pinch.end(eventObj);
       expect(pinch.currentPinchScaling).to.be.null;
       expect(pinch.pinchCumulativeDelta).to.equal(0);
-      // done();
+      done();
     }, 1000);
   });
 });
@@ -157,13 +157,14 @@ describe('chart pinch', function() {
     interaction._doZoom(0.15, point, 'xy');
 
     const limitRange = interaction.limitRange;
+
     expect(limitRange).to.eql({
       x1: {
         min: 0,
         max: 19
       },
       y: {
-        min: 3,
+        min: 0,
         max: 20
       }
     });
@@ -172,13 +173,13 @@ describe('chart pinch', function() {
     expect(xScale.max).to.equal(24.8);
 
     const yScale = chart.getYScales()[0];
-    expect(yScale.min).to.equal(-4.6499999999999995);
+    expect(yScale.min).to.equal(-10.2);
     expect(yScale.max).to.equal(26.8);
 
     const xRange = interaction.xRange;
     const yRange = interaction.yRange;
     expect(xRange).to.eql([ 0.33157894736842103, 1.305263157894737 ]);
-    expect(yRange).to.eql([ -0.44999999999999996, 1.4000000000000001 ]);
+    expect(yRange).to.eql([ -0.51, 1.34 ]);
   });
 
   it('pinch x axis, and x field is a cat type', function(done) {

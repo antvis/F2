@@ -302,7 +302,7 @@ describe('chart pan', function() {
     expect(xScale.values).toEqual([ '6', '7', '8' ]);
   });
 
-  it('with scrollbar', function() {
+  it('with scrollbar', function(done) {
     chart.clear();
     chart.registerPlugins(ScrollBar);
     chart.source(data, {
@@ -332,11 +332,11 @@ describe('chart pan', function() {
       interaction._doMove(120, 0);
       const hBar = chart.get('_horizontalBar');
       const highlightLine = hBar.get('children')[1];
-      expect(highlightLine.attr('x1')).toBeCloseTo(58.70168585526316, 2);
-      expect(highlightLine.attr('x2')).toBeCloseTo(242.8284333881579, 2);
+      expect(highlightLine.attr('x1')).toBeCloseTo(50.79789011101974, 2);
+      expect(highlightLine.attr('x2')).toBeCloseTo(239.75473504317432, 2);
       chart.destroy();
       document.body.removeChild(canvas);
-      // done();
+      done();
     }, 300);
   });
 });

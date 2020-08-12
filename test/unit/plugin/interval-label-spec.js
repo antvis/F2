@@ -90,7 +90,7 @@ describe('IntervalLabel', () => {
 
     const labelShape = children[0];
     expect(labelShape.get('attrs').text).toBe('浏览网站');
-    expect(labelShape.get('attrs').x).toBeCloseTo(210.9375, 3);
+    expect(labelShape.get('attrs').x).toBeCloseTo(248.125, 3);
     expect(labelShape.get('attrs').y).toBeCloseTo(280, 3);
   });
 
