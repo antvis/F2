@@ -2,30 +2,23 @@ const DDEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
   const { min, max, tickCount, tickInterval } = cfg || {};
+
   let count = tickCount && tickCount >= 2 ? tickCount : DDEFAULT_COUNT;
 
-  // 1.计算平均刻度间隔
-  const avgInterval = (max - min) / (count - 1);
-
-  // 2.数据标准归一化 映射到[1-10]区间
-  const factor = max === min ? getFactor(max) : getFactor(avgInterval);
-
-  // 3.获取满足tickCount的情况下，最优刻度值
-  const interval = tickInterval || getBestInterval({ tickCount: count, avgInterval, max, min, factor });
-
-  // 4.获取最小刻度线
+  // 计算interval， 优先取tickInterval
+  const interval = tickInterval || getBestInterval({ tickCount: count, max, min });
+  // 通过interval计算最小tick
   const minTick = fixedBase(Math.floor(min / interval) * interval, interval);
 
-  let tickLength = 0;
-  const ticks = [];
-
-  // 如果指定了tickInterval就放开count的限制
-  count = tickInterval ? Math.abs(Math.ceil((max - minTick) / tickInterval)) + 1 : count;
-
+  // 如果指定了tickInterval, count 需要根据指定的tickInterval来算计
   if (tickInterval) {
-    count = count < DDEFAULT_COUNT ? DDEFAULT_COUNT : count;
+    const intervalCount = Math.abs(Math.ceil((max - minTick) / tickInterval)) + 1;
+    // tickCount 作为最小 count 处理
+    count = Math.max(count, intervalCount);
   }
 
+  const ticks = [];
+  let tickLength = 0;
   while (tickLength < count) {
     ticks.push(fixedBase(minTick + tickLength * interval, interval));
     tickLength++;
@@ -68,14 +61,19 @@ function getFactor(number) {
 }
 
 // 获取最佳匹配刻度
-function getBestInterval({ tickCount, avgInterval, max, min, factor }) {
+function getBestInterval({ tickCount, min, max }) {
   const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
+  // 如果最大最小相等，则直接按1处理
+  if (min === max) {
+    return 1 * getFactor(max);
+  }
+  // 1.计算平均刻度间隔
+  const avgInterval = (max - min) / (tickCount - 1);
+  // 2.数据标准归一化 映射到[1-10]区间
+  const factor = getFactor(avgInterval);
   const calInterval = avgInterval / factor;
   const calMax = max / factor;
   const calMin = min / factor;
-  if (max === min) {
-    return 1 * factor;
-  }
   // 根据平均值推算最逼近刻度值
   let similarityInterval = 1;
   let similarityIndex = 0;
