@@ -44,6 +44,26 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ 0, 200, 400, 600, 800 ]);
   });
 
+  it('指定interval 200, 不超过tickCount', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 350,
+      tickCount: 3,
+      tickInterval: 200
+    });
+    expect(tick).toEqual([ 0, 200, 400 ]);
+  });
+
+  it('指定interval 200, 超过tickCount', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 550,
+      tickCount: 3,
+      tickInterval: 200
+    });
+    expect(tick).toEqual([ 0, 200, 400, 600 ]);
+  });
+
   it('[11, 50]', function() {
     const tick = linearTick({
       max: 50,
