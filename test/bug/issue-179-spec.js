@@ -48,7 +48,7 @@ describe('issue 179', () => {
     });
     chart.repaint();
     const yScale = chart.getYScales()[0];
-    expect(yScale.max).to.equal(100000);
+    expect(yScale.max).to.equal(150000);
 
     const zeroPosition = chart.getPosition({
       season: '第一季',

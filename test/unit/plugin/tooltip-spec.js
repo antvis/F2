@@ -404,17 +404,19 @@ describe('Tooltip crosshairs', function() {
     expect(crosshairsShapeX).not.to.be.undefined;
     expect(crosshairsShapeY).not.to.be.undefined;
     expect(snapEqual(crosshairsShapeY.get('x'), 235.2777777777778)).to.be.true;
+
     expect(snapEqual(crosshairsShapeX.get('y'), 204.726)).to.be.true;
+
     expect(tooltip.xTipBox.y).to.equal(291);
     expect(tooltip.xTipBox.content).to.equal('date:2018-04-26');
     expect(snapEqual(tooltip.yTipBox.x, 21.6845703125)).to.be.true;
     expect(tooltip.yTipBox.content).to.equal(10586);
 
-
     chart.showTooltip({
       x: point.x,
       y: point.y + 20
     });
+
     expect(snapEqual(tooltipController.tooltip.crosshairsShapeX.get('y'), 224.726)).to.be.true;
     expect(snapEqual(tooltip.yTipBox.x, 18.34765625)).to.be.true;
     expect(tooltip.yTipBox.content).to.equal(8363);

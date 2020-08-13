@@ -1,9 +1,7 @@
-import { getScale, registerTickMethod } from '@antv/scale';
+import { getScale } from '../../scale';
 import { isNil, mix, isObject, each, isArray, isString, isNumber, Array } from '../../util/common';
 import Global from '../../global';
-import TimeCat from './timecat-tick';
-// 覆盖0.3.x的 timecat scale算法
-registerTickMethod('time-cat', TimeCat);
+
 
 function isFullCircle(coord) {
   if (!coord.isPolar) {

@@ -1,7 +1,7 @@
 // timeCat平均算法，保头保尾
 export default cfg => {
 
-  const { values, tickCount } = cfg;
+  const { values, tickCount = 3 } = cfg;
   if (values.length <= 1) {
     return values;
   }

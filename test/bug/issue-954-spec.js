@@ -87,13 +87,13 @@ describe('issue 954', () => {
     const mappingData = geom.get('dataArray')[0];
 
     expect(mappingData[mappingData.length - 1].x).toBeCloseTo(310, 0);
-    expect(mappingData[mappingData.length - 1].y).toBeCloseTo(200, 0);
+    expect(mappingData[mappingData.length - 1].y).toBeCloseTo(196.88828125, 0);
 
     const interaction = chart._interactions.pan;
     interaction._doMove(80, 1);
     chart.repaint();
 
     expect(mappingData[mappingData.length - 1].x).toBeCloseTo(577, 0);
-    expect(mappingData[mappingData.length - 1].y).toBeCloseTo(200, 0);
+    expect(mappingData[mappingData.length - 1].y).toBeCloseTo(196.88828125, 0);
   });
 });

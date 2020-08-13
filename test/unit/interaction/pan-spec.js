@@ -68,9 +68,8 @@ describe('Pan', function() {
       x: 50, y: 20
     });
     const xScale = chart.getXScale();
-
-    expect(xScale.min).toBeCloseTo(4.364608188716922, 3);
-    expect(xScale.max).toBeCloseTo(11.364608188716922, 3);
+    expect(xScale.min).toBeCloseTo(4.329738321916591, 3);
+    expect(xScale.max).toBeCloseTo(11.329738321916592, 3);
 
 
     pan.end();
@@ -134,13 +133,12 @@ describe('chart pan', function() {
     const limitRange = interaction.limitRange;
     expect(limitRange).toEqual({ x1: { min: 1, max: 20 } });
     const xScale = chart.getXScale();
-
-    expect(xScale.min).toBeCloseTo(2.559803810091316, 3);
-    expect(xScale.max).toBeCloseTo(9.559803810091315, 3);
+    expect(xScale.min).toBeCloseTo(2.5710521542204545, 3);
+    expect(xScale.max).toBeCloseTo(9.571052154220455, 3);
 
     const xRange = interaction.xRange;
-    expect(xRange[0]).toBeCloseTo(0.08209493737322715, 3);
-    expect(xRange[1]).toBeCloseTo(0.4505159900048061, 3);
+    expect(xRange[0]).toBeCloseTo(0.08268695548528708, 3);
+    expect(xRange[1]).toBeCloseTo(0.4511080081168661, 3);
 
   });
 
@@ -326,16 +324,16 @@ describe('chart pan', function() {
     const hBar = chart.get('_horizontalBar');
     const highlightLine = hBar.get('children')[1];
 
-    expect(highlightLine.attr('x1')).toBeCloseTo(125.65473054584703, 2);
-    expect(highlightLine.attr('x2')).toBeCloseTo(309.78315654553865, 2);
+    expect(highlightLine.attr('x1')).toBeCloseTo(119.50947008634868, 2);
+    expect(highlightLine.attr('x2')).toBeCloseTo(308.4663150185033, 2);
 
     setTimeout(() => {
       const interaction = chart._interactions.pan;
       interaction._doMove(120, 0);
       const hBar = chart.get('_horizontalBar');
       const highlightLine = hBar.get('children')[1];
-      expect(highlightLine.attr('x1')).toBeCloseTo(58.70168585526316, 2);
-      expect(highlightLine.attr('x2')).toBeCloseTo(242.8284333881579, 2);
+      expect(highlightLine.attr('x1')).toBeCloseTo(50.79789011101974, 2);
+      expect(highlightLine.attr('x2')).toBeCloseTo(239.75473504317432, 2);
       chart.destroy();
       document.body.removeChild(canvas);
       done();
