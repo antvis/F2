@@ -1,14 +1,16 @@
-const DDEFAULT_COUNT = 5; // 默认刻度值
+// 认为是nice的刻度
+const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
+const DEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
   const { min, max, tickCount, tickInterval } = cfg || {};
 
-  let count = tickCount && tickCount >= 2 ? tickCount : DDEFAULT_COUNT;
+  let count = tickCount && tickCount >= 2 ? tickCount : DEFAULT_COUNT;
 
   // 计算interval， 优先取tickInterval
   const interval = tickInterval || getBestInterval({ tickCount: count, max, min });
   // 通过interval计算最小tick
-  const minTick = fixedBase(Math.floor(min / interval) * interval, interval);
+  const minTick = Math.floor(min / interval) * interval;
 
   // 如果指定了tickInterval, count 需要根据指定的tickInterval来算计
   if (tickInterval) {
@@ -62,7 +64,6 @@ function getFactor(number) {
 
 // 获取最佳匹配刻度
 function getBestInterval({ tickCount, min, max }) {
-  const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
   // 如果最大最小相等，则直接按1处理
   if (min === max) {
     return 1 * getFactor(max);
@@ -75,28 +76,36 @@ function getBestInterval({ tickCount, min, max }) {
   const calMax = max / factor;
   const calMin = min / factor;
   // 根据平均值推算最逼近刻度值
-  let similarityInterval = 1;
   let similarityIndex = 0;
-
   for (let index = 0; index < SNAP_COUNT_ARRAY.length; index++) {
     const item = SNAP_COUNT_ARRAY[index];
     if (calInterval <= item) {
-      similarityInterval = item;
       similarityIndex = index;
       break;
     }
   }
+  const similarityInterval = getInterval(similarityIndex, tickCount, calMin, calMax);
+  // 小数点位数还原到数据的位数
+  return fixedBase(similarityInterval * factor, factor);
+}
 
+function getInterval(startIndex, tickCount, min, max) {
+  let verify = false;
+  let interval = SNAP_COUNT_ARRAY[startIndex];
   // 刻度值校验，如果不满足，循环下去
-  while (similarityIndex < SNAP_COUNT_ARRAY.length) {
-    if (intervalIsVerify({ interval: SNAP_COUNT_ARRAY[similarityIndex], tickCount, max: calMax, min: calMin })) {
-      similarityInterval = SNAP_COUNT_ARRAY[similarityIndex];
+  for (let i = startIndex; i < SNAP_COUNT_ARRAY.length; i++) {
+    if (intervalIsVerify({ interval: SNAP_COUNT_ARRAY[i], tickCount, max, min })) {
+      // 有符合条件的interval
+      interval = SNAP_COUNT_ARRAY[i];
+      verify = true;
       break;
     }
-    similarityIndex++;
   }
-
-  return fixedBase(similarityInterval * factor, factor);
+  // 如果不满足, 依次缩小10倍，再计算
+  if (!verify) {
+    return 10 * getInterval(0, tickCount, min / 10, max / 10);
+  }
+  return interval;
 }
 
 // 刻度是否满足展示需求

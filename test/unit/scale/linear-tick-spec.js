@@ -98,4 +98,13 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ 0, 1, 2, 3, 4 ]);
   });
 
+  it('recursive to best ticks', function() {
+    const tick = linearTick({
+      min: -0.001,
+      max: 0.3909999999999999,
+      tickCount: 5
+    });
+    expect(tick).toEqual([ -0.15, 0, 0.15, 0.3, 0.45 ]);
+  });
+
 });
