@@ -1,3 +1,57 @@
+#### 3.7.3 (2020-08-14)
+
+##### Chores
+
+*  调整代码结构 ([3681ff50](https://github.com/antvis/f2/commit/3681ff503b9d8389b929a4f74e072af6000f5e16))
+
+##### Documentation Changes
+
+*  modify f2 cdn url ([a75384fc](https://github.com/antvis/f2/commit/a75384fc17d8c39b8784a1062b96fe8d7903358d))
+*  uniform AntV navbar's order and naming ([e492a364](https://github.com/antvis/f2/commit/e492a3645fda8b30a034d5d997aa0f4eb11fa638))
+*  修复文档上一些失效的链接 ([478f56d8](https://github.com/antvis/f2/commit/478f56d86526a5b649f6ff0e2a72b72faf98e736))
+
+##### New Features
+
+*  异常值处理 ([9d5455e8](https://github.com/antvis/f2/commit/9d5455e8d19a51767e5aa784bb0982023814e105))
+*  算法优化 ([cd412e3c](https://github.com/antvis/f2/commit/cd412e3cc8877c0fe6cb5fcc3116f7b9d900b51f))
+*  移动tick方法到scale下 ([5f64ee9c](https://github.com/antvis/f2/commit/5f64ee9cc4cee8a508b540f74a143e9c23b3479e))
+*  单测补齐 浮点数判断 ([52cbf6db](https://github.com/antvis/f2/commit/52cbf6dbbf375b0cf04dd0c5bb3da444bc6149b1))
+*  刻度值优选原则 ([b0594f64](https://github.com/antvis/f2/commit/b0594f64bd51856518b39f8774f315840079525b))
+*  连续数值刻度算法 ([83b1d348](https://github.com/antvis/f2/commit/83b1d3486ce13cba6cd8963ba3948fcf57faf925))
+*  添加repaint事件 ([29a3b1d3](https://github.com/antvis/f2/commit/29a3b1d328663cb4d35fb65929af0eb0df5d914b))
+*  scale 版本0.3.3 ([70ef7108](https://github.com/antvis/f2/commit/70ef7108cd946992d6fa221ddc52787302c1931e))
+*  增加ticks算法单测 ([12f6d69d](https://github.com/antvis/f2/commit/12f6d69d2852aa8d176f618c2a01a659db83243e))
+*  覆盖0.3.X的time-cat算法 ([f17d467a](https://github.com/antvis/f2/commit/f17d467a8d787ef2f7cf87b61c3e3c0bdce2cf0b))
+*  增加f2 自定义time-cat scale算法 ([83a556b1](https://github.com/antvis/f2/commit/83a556b1d62cc745f4d41344225d2cdb664aa111))
+*  依赖scale 0.3.2 ([d55d3161](https://github.com/antvis/f2/commit/d55d316120d5ab99b9332e7b4bf0db965759c8a1))
+*  使用jest 内置expect断言 ([77c440f7](https://github.com/antvis/f2/commit/77c440f7fcb0c11266f8f774345f126f677726a2))
+*  修改scale度量修改的单测 ([52dc3313](https://github.com/antvis/f2/commit/52dc33132853ad24be0dfe5cc68e57cb1fe4a11e))
+*  remove scalue._toTimeStamp ([b3c07713](https://github.com/antvis/f2/commit/b3c0771383aa21ce62ae9bccb0e95259837b26ab))
+
+##### Bug Fixes
+
+*  特殊情况下interval不满足要求时，需要递归计算 ([5543d488](https://github.com/antvis/f2/commit/5543d488128d90adc63a685ff85747d63b242198))
+*  修复数据字段存在x,y时，再次mapping后，数据不对 ([db9def3e](https://github.com/antvis/f2/commit/db9def3ed93392a443535df47923b8ed620989cc))
+*  刻度修改，修复单测 ([cff266fa](https://github.com/antvis/f2/commit/cff266faeec49db52af7c6d2c6855f441773403d))
+*  单测修改 ([a46809ef](https://github.com/antvis/f2/commit/a46809efbcc7176fe5d5ce13c87fb9dd4661af35))
+*  修复 interval 平移后不显示的问题 Fixed [#954](https://github.com/antvis/f2/pull/954) ([e5c64bfc](https://github.com/antvis/f2/commit/e5c64bfc833d1a5403bfcecbbd3ef83650c14381))
+*  修复漏斗图legend点击后，label位置不调整 Fixed [#979](https://github.com/antvis/f2/pull/979) ([9b43f4d3](https://github.com/antvis/f2/commit/9b43f4d3847c13cdc6fd5fe9b0cd540d001fc8e8))
+*  fix animation register error in codesandbox ([0d64825f](https://github.com/antvis/f2/commit/0d64825f6bba485114e35da70b8833aec9367f94))
+*  fix demo bugs in sandbox ([294e655b](https://github.com/antvis/f2/commit/294e655bae57085ea9290c69eb11fb8cde829c03))
+*  transform arrow functions ([8d73bba1](https://github.com/antvis/f2/commit/8d73bba141b2741fb4c8a04a4379820317c6631a))
+*  values个数边界判断 ([f2e64bab](https://github.com/antvis/f2/commit/f2e64bab828eae6aca1ffb0ddb5b1b83de5c51d7))
+*  修复精度的单测 ([5c8e9910](https://github.com/antvis/f2/commit/5c8e9910082f9531e367fc19b023b690f11eca03))
+*  兼容 0.3.X scale timeCat type ([01078256](https://github.com/antvis/f2/commit/010782566268f7badc17e9fcbb277ed0a4ccd0ff))
+*  修复pieLabel插件判断矩形重叠的函数 ([c139a6ab](https://github.com/antvis/f2/commit/c139a6ab23aed19488ac95f147e0595a0a1e2f07))
+
+##### Other Changes
+
+*  升级@antv/scale ([41074d58](https://github.com/antvis/f2/commit/41074d5801ec7256d4835f434eb03ba70e1a155a))
+
+##### Tests
+
+*  修改pieLabel单测，测试前一个渲染过的标签比后一个长，后一个必渲染的bug。 ([690bb0fc](https://github.com/antvis/f2/commit/690bb0fc8a40f058015733a244414b29b994fe52))
+
 #### 3.7.0 (2020-07-09)
 
 ##### Chores
