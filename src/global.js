@@ -2,7 +2,7 @@ import Theme from './theme';
 import { deepMix } from './util/common';
 
 const Global = {
-  version: '3.7.2',
+  version: '3.7.3',
   scales: {},
   widthRatio: {
     column: 1 / 2,
