@@ -1,4 +1,4 @@
-import { getTickMethod } from '@antv/scale';
+import { getTickMethod } from '../../scale';
 import { getRange } from '../../util/array';
 import {
   EVENT_AFTER_INIT,

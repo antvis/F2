@@ -45,6 +45,7 @@ describe('Interaction', () => {
     const interactionContext = chart.get('interactionContext');
     interactionContext.start();
     interactionContext.doZoom(0.5, 0.5, 1.5);
+    interactionContext.updateTicks();
 
     chart.get('canvas').emit('pinchstart', {});
     expect(onStartCallback.mock.calls.length).toEqual(1);
