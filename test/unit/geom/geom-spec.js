@@ -269,6 +269,17 @@ describe('test geoms', function() {
       max: 5,
       nice: false
     });
+    const scaleX = new Scale.Linear({
+      field: 'x',
+      min: 0,
+      max: 10
+    });
+    const scaleY = new Scale.Linear({
+      field: 'y',
+      min: 0,
+      max: 5,
+      nice: false
+    });
     it('test generate points and ', function() {
       // const data = [
       //   { a: 1, b: [ 1, 2 ], c: '1' },
@@ -299,14 +310,53 @@ describe('test geoms', function() {
         { a: 1, b: [ 1, 2 ], c: '1' },
         { a: 2, b: [ 2, 3 ], c: '2' }
       ];
-      geom._beforeMapping([ data ]);
-      const mappedData = geom._mapping(data);
+      const newData = geom._saveOrigin(data);
+      geom._beforeMapping([ newData ]);
+      const mappedData = geom._mapping(newData);
+
       const obj1 = mappedData[0];
       const obj2 = mappedData[1];
       expect(obj1.x).equal(50);
       expect(obj1.y).eqls([ 100, 200 ]);
       expect(obj1.color).equal('red');
       expect(obj2.color).equal('red');
+    });
+
+    it('test mapping origin x,y', function() {
+      const data = [
+        { x: 1, y: [ 1, 2 ], c: '1' },
+        { x: 2, y: [ 2, 3 ], c: '2' }
+      ];
+      const geom = new Geom({
+        shapeType: 'point',
+        coord,
+        data,
+        container: canvas.addGroup(),
+        generatePoints: true,
+        scales: { x: scaleX, y: scaleY, c: scaleC }
+      });
+      geom.position('x*y').color('c');
+      geom.init();
+
+      const newData = geom._saveOrigin(data);
+      geom._beforeMapping([ newData ]);
+      let mappedData = geom._mapping(newData);
+
+      let obj1 = mappedData[0];
+      let obj2 = mappedData[1];
+      expect(obj1.x).equal(50);
+      expect(obj1.y).eqls([ 100, 200 ]);
+      expect(obj1.color).equal('#1890FF');
+      expect(obj2.color).equal('#2FC25B');
+
+      // 第二次mapping
+      mappedData = geom._mapping(newData);
+      obj1 = mappedData[0];
+      obj2 = mappedData[1];
+      expect(obj1.x).equal(50);
+      expect(obj1.y).eqls([ 100, 200 ]);
+      expect(obj1.color).equal('#1890FF');
+      expect(obj2.color).equal('#2FC25B');
     });
 
     it('test paint', function() {

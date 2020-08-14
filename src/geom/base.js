@@ -1,5 +1,5 @@
 import * as Attr from '../attr/index';
-import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array, toTimeStamp } from '../util/common';
+import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array as ArrayUtil, toTimeStamp } from '../util/common';
 import Base from '../base';
 import Global from '../global';
 import GeometryShape from './shape/shape';
@@ -122,7 +122,7 @@ class Geom extends Base {
           appendConditions[scale.field] = colDefs[field].values;
         }
       });
-      return Array.group(data, names, appendConditions);
+      return ArrayUtil.group(data, names, appendConditions);
     }
     return [ data ];
 
@@ -237,6 +237,7 @@ class Geom extends Base {
       self._sort(dataArray);
     }
     self.emit('afterprocessdata', { dataArray });
+    self.set('mappingData', dataArray);
     self.set('dataArray', dataArray);
     return dataArray;
   }
@@ -295,7 +296,7 @@ class Geom extends Base {
   }
 
   _updateStackRange(field, scale, dataArray) {
-    const mergeArray = Array.merge(dataArray);
+    const mergeArray = ArrayUtil.merge(dataArray);
     let min = scale.min;
     let max = scale.max;
     for (let i = 0, len = mergeArray.length; i < len; i++) {
@@ -338,17 +339,17 @@ class Geom extends Base {
 
   paint() {
     const self = this;
-    const dataArray = self.get('dataArray');
+    const dataArray = self.get('mappingData');
     const mappedArray = [];
     const shapeFactory = self.getShapeFactory();
     shapeFactory.setCoord(self.get('coord'));
     self._beforeMapping(dataArray);
     for (let i = 0, len = dataArray.length; i < len; i++) {
-      let data = dataArray[i];
+      const data = dataArray[i];
       if (data.length) {
-        data = self._mapping(data);
-        mappedArray.push(data);
-        self.draw(data, shapeFactory);
+        const mappedData = self._mapping(data);
+        mappedArray.push(mappedData);
+        self.draw(mappedData, shapeFactory);
       }
     }
     self.set('dataArray', mappedArray);
@@ -371,6 +372,7 @@ class Geom extends Base {
 
     // 用来缓存转换的值，减少mapping耗时
     const mappedCache = {};
+    const mappedData = new Array(data.length);
 
     for (const k in attrs) {
       if (attrs.hasOwnProperty(k)) {
@@ -380,7 +382,11 @@ class Geom extends Base {
 
         for (let i = 0, len = data.length; i < len; i++) {
           const record = data[i];
-          record[FIELD_ORIGIN_Y] = record[yField];
+          const mappedRecord = {
+            ...record,
+            ...mappedData[i]
+          };
+          mappedRecord[FIELD_ORIGIN_Y] = record[yField];
 
           // 获取视觉属性对应的value值
           // 位置的缓存命中率低，还是每次单独计算
@@ -389,7 +395,7 @@ class Geom extends Base {
             for (let j = 0, len = values.length; j < len; j++) {
               const val = values[j];
               const name = names[j];
-              record[name] = (isArray(val) && val.length === 1) ? val[0] : val;
+              mappedRecord[name] = (isArray(val) && val.length === 1) ? val[0] : val;
             }
           } else {
             // 除了position其他都只有一项
@@ -402,12 +408,14 @@ class Geom extends Base {
               values = self._getAttrValues(attr, record);
               mappedCache[key] = values;
             }
-            record[name] = values[0];
+            mappedRecord[name] = values[0];
           }
+          // 设置新数组
+          mappedData[i] = mappedRecord;
         }
       }
     }
-    return data;
+    return mappedData;
   }
 
   _getAttrValues(attr, record) {

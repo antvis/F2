@@ -31,7 +31,8 @@ chart.source(data, {
 //   .animate(false);
 chart.line()
   .position('reportDate*rate')
-  .color('name');
+  .color('name')
+  .animate(false);
 
 chart.interaction('pinch', {
   onStart: onStartCallback
@@ -50,7 +51,8 @@ describe('Interaction', () => {
   });
 
   it('pan', () => {
-    const beforePoints = chart.get('canvas').get('children')[1].get('children')[0].get('children')[0].get('attrs').points;
+    const lineShape = chart.get('middlePlot').get('children')[0].get('children')[0];
+    const beforePoints = lineShape.get('attrs').points;
     const firstPoint = beforePoints.find(p => !isNaN(p.x));
     expect(firstPoint.reportDate).toEqual('2017-03-15');
     expect(firstPoint.rate).toEqual(-1.3);
@@ -58,7 +60,8 @@ describe('Interaction', () => {
     const interactionContext = chart.get('interactionContext');
     interactionContext.start();
     interactionContext.doMove(0.1);
-    const afterPoints = chart.get('canvas').get('children')[1].get('children')[0].get('children')[0].get('attrs').points;
+
+    const afterPoints = chart.get('middlePlot').get('children')[0].get('children')[0].get('attrs').points;
     const afterPoint = afterPoints.find(p => !isNaN(p.x));
     expect(afterPoint.reportDate).toEqual('2017-02-15');
     expect(afterPoint.rate).toEqual(-6.9);
