@@ -94,12 +94,6 @@ require('@antv/f2/lib/geom/adjust/dodge'); // 只加载分组类型
 require('@antv/f2/lib/geom/adjust/stack'); // 只加载层叠类型
 ```
 
-#### scale 度量类型
-
-```javascript
-require('@antv/f2/lib/scale/time-cat'); // 加载 timeCat 类型的度量
-```
-
 #### 动画
 
 **动画模块也作为 Chart 的插件，所以在加载该模块之后，还需要将模块注册至 Chart 上。**
