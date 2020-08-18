@@ -1,3 +1,13 @@
+#### 3.7.4 (2020-08-18)
+
+##### Documentation Changes
+
+*  remove scale/time-cat import ([16b20a30](https://github.com/antvis/f2/commit/16b20a309619526c9e5b64622952350331d48f0a))
+
+##### Bug Fixes
+
+*  add time-cat export ([a66b1eb3](https://github.com/antvis/f2/commit/a66b1eb32740a695d750fd5533383d0f8d8585fc))
+
 #### 3.7.3 (2020-08-14)
 
 ##### Chores
