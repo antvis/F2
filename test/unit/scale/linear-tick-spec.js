@@ -107,4 +107,20 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ -0.15, 0, 0.15, 0.3, 0.45 ]);
   });
 
+  it('interval origin fixed length', function() {
+    const tick = linearTick({
+      min: 0,
+      max: 0.3,
+      tickCount: 3
+    });
+    expect(tick).toEqual([ 0, 0.15, 0.3 ]);
+
+    const tick1 = linearTick({
+      min: 0,
+      max: 12.5,
+      tickCount: 6
+    });
+    expect(tick1).toEqual([ 0, 2.5, 5, 7.5, 10, 12.5 ]);
+  });
+
 });
