@@ -1,4 +1,4 @@
-import catTick from '../../../src/scale/cat-tick';
+import catTick from '../../../src/scale/time-cat';
 
 describe('Scale controller', function() {
   it('tickCount 3', () => {

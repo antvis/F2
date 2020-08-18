@@ -1,5 +1,5 @@
 import { Scale, getScale, registerTickMethod, getTickMethod } from '@antv/scale';
-import CatTick from './cat-tick';
+import CatTick from './time-cat';
 import LinearTick from './linear-tick';
 
 const Linear = getScale('linear');
