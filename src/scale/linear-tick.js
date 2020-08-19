@@ -3,7 +3,10 @@ const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10
 const DEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
-  const { min, max, tickCount, tickInterval } = cfg || {};
+  const { tickCount, tickInterval } = cfg || {};
+  let { min, max } = cfg || {};
+  min = isNaN(min) ? 0 : min;
+  max = isNaN(max) ? 0 : max;
 
   let count = tickCount && tickCount >= 2 ? tickCount : DEFAULT_COUNT;
 
