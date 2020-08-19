@@ -1,3 +1,9 @@
+#### 3.7.6 (2020-08-19)
+
+##### Bug Fixes
+
+*  linear NaN error ([482c49d0](https://github.com/antvis/f2/commit/482c49d07ea177526df7832f7af457799c82735b))
+
 #### 3.7.5 (2020-08-19)
 
 ##### Bug Fixes
