@@ -98,6 +98,14 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ 0, 1, 2, 3, 4 ]);
   });
 
+  it('max === min NaN', function() {
+    const tick = linearTick({
+      min: NaN,
+      max: NaN
+    });
+    expect(tick).toEqual([ 0, 1, 2, 3, 4 ]);
+  });
+
   it('recursive to best ticks', function() {
     const tick = linearTick({
       min: -0.001,
