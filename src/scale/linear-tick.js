@@ -1,5 +1,5 @@
 // 认为是nice的刻度
-const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 1.6, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
+const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
 const DEFAULT_COUNT = 5; // 默认刻度值
 
 export default cfg => {
@@ -21,8 +21,9 @@ export default cfg => {
 
   const ticks = [];
   let tickLength = 0;
+  const fixedLength = getFixedLength(interval);
   while (tickLength < count) {
-    ticks.push(fixedBase(minTick + tickLength * interval, interval));
+    ticks.push(toFixed(minTick + tickLength * interval, fixedLength));
     tickLength++;
   }
   return ticks;
@@ -85,8 +86,10 @@ function getBestInterval({ tickCount, min, max }) {
     }
   }
   const similarityInterval = getInterval(similarityIndex, tickCount, calMin, calMax);
-  // 小数点位数还原到数据的位数
-  return fixedBase(similarityInterval * factor, factor);
+
+  // 小数点位数还原到数据的位数, 因为similarityIndex有可能是小数，所以需要保留similarityIndex自己的小数位数
+  const fixedLength = getFixedLength(similarityInterval) + getFixedLength(factor);
+  return toFixed(similarityInterval * factor, fixedLength);
 }
 
 function getInterval(startIndex, tickCount, min, max) {
@@ -118,20 +121,21 @@ function intervalIsVerify({ interval, tickCount, max, min }) {
 }
 
 
-// @antv/util fixedbase不支持科学计数法的判断，需要提mr
-function fixedBase(v, base) {
-  const str = base.toString();
+// 计算小数点应该保留的位数
+function getFixedLength(num) {
+  const str = num.toString();
   const index = str.indexOf('.');
   const indexOfExp = str.indexOf('e-');
 
-  // 判断是否带小数点，1.000001 1.23e-9
-  if (index < 0 && indexOfExp < 0) {
-    // base为整数
-    return Math.round(v);
-  }
   let length = indexOfExp >= 0 ? parseInt(str.substr(indexOfExp + 2), 10) : str.substr(index + 1).length;
   if (length > 20) {
+    // 最多保留20位小数
     length = 20;
   }
+  return length;
+}
+
+// @antv/util fixedbase不支持科学计数法的判断，需要提mr
+function toFixed(v, length) {
   return parseFloat(v.toFixed(length));
 }

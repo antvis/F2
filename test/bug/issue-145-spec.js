@@ -30,7 +30,7 @@ describe('issue 145', function() {
     chart.interval().position('t*v');
     chart.render();
     expect(chart.get('padding')).to.equal('auto');
-    expect(parseInt(chart.get('_padding')[3])).to.eql(28);
+    expect(parseInt(chart.get('_padding')[3])).to.eql(36);
 
 
     const newData = [
