@@ -1,3 +1,9 @@
+#### 3.7.5 (2020-08-19)
+
+##### Bug Fixes
+
+*  修复当interval为小数时，小数位数会少1位 ([3a0bb6d6](https://github.com/antvis/f2/commit/3a0bb6d6290d35b3edfe14ce3dae9aab9a62cf9a))
+
 #### 3.7.4 (2020-08-18)
 
 ##### Documentation Changes
