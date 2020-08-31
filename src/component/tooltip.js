@@ -101,6 +101,7 @@ class Tooltip {
     if (this.showXTip) {
       const { xTipBackground, xTipTextStyle } = this;
       const xTipBox = new TextBox({
+        context: frontPlot.get('context'),
         className: 'xTip',
         background: xTipBackground,
         textStyle: xTipTextStyle,
@@ -113,6 +114,7 @@ class Tooltip {
     if (this.showYTip) {
       const { yTipBackground, yTipTextStyle } = this;
       const yTipBox = new TextBox({
+        context: frontPlot.get('context'),
         className: 'yTip',
         background: yTipBackground,
         textStyle: yTipTextStyle,

@@ -38,8 +38,9 @@ class TextBox {
   }
 
   _init() {
-    const { content, textStyle, background, className, visible } = this;
+    const { content, textStyle, background, className, visible, context } = this;
     const container = new Group({
+      context,
       className,
       zIndex: 0,
       visible
