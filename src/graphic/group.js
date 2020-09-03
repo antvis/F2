@@ -14,15 +14,6 @@ class Group extends Element {
     };
   }
 
-  drawInner(context) {
-    const children = this.get('children');
-    for (let i = 0, len = children.length; i < len; i++) {
-      const child = children[i];
-      child.draw(context);
-    }
-    return this;
-  }
-
   getBBox() {
     const self = this;
     let minX = Infinity;
