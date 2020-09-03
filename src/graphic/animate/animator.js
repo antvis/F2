@@ -88,6 +88,7 @@ class Animator {
 
     this.timeline.anims.push(animInfo);
     this.animate = animInfo;
+    this.timeline.rePlay();
     return this;
   }
 

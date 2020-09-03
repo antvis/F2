@@ -30,10 +30,19 @@ class Timeline {
     this.canvas = [];
   }
 
+  rePlay() {
+    this.playing = true;
+    this.time = clock.now();
+  }
+
   update() {
     const currentTime = clock.now();
     this.canvas = [];
 
+    if (!this.anims.length) {
+      this.stop();
+      return;
+    }
     for (let i = 0; i < this.anims.length; i++) {
       const propertyAnim = this.anims[i];
       if (currentTime < propertyAnim.startTime || propertyAnim.hasEnded) {

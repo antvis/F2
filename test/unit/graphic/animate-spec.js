@@ -130,10 +130,10 @@ describe('Do Animation', function() {
 
     setTimeout(function() {
       expect(polyline.attr('points')).to.eql([
-        { x: 20, y: 20 },
-        { x: 25, y: 25 },
-        { x: 35, y: 15 },
-        { x: 60, y: 35 }
+        { x: 10, y: 10 },
+        { x: 15, y: 15 },
+        { x: 25, y: 5 },
+        { x: 50, y: 25 }
       ]);
       expect(parseInt(animator.animate.endTime - animator.animate.startTime)).to.be.within(799, 800);
 
