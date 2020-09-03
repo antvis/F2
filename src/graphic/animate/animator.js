@@ -86,8 +86,9 @@ class Animator {
     animInfo.endState = attrs;
     animInfo.endTime = animInfo.startTime + duration;
 
-    this.timeline.anims.push(animInfo);
+    this.timeline.pushAnim(animInfo);
     this.animate = animInfo;
+
     return this;
   }
 
