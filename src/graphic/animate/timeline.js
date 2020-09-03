@@ -30,9 +30,22 @@ class Timeline {
     this.canvas = [];
   }
 
+  pushAnim(animInfo) {
+    this.anims.push(animInfo);
+    if (this.playing) {
+      return;
+    }
+    this.play();
+  }
+
   update() {
     const currentTime = clock.now();
     this.canvas = [];
+
+    if (!this.anims.length) {
+      this.stop();
+      return;
+    }
 
     for (let i = 0; i < this.anims.length; i++) {
       const propertyAnim = this.anims[i];
