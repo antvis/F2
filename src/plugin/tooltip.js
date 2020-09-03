@@ -202,6 +202,12 @@ class TooltipController {
     this._tooltipCfg = tooltipCfg;
     const tooltip = new Tooltip(tooltipCfg);
     self.tooltip = tooltip;
+
+    // 需要保持tooltip一直显示
+    if (tooltipCfg.alwaysShow && self.prePoint) {
+      this.showTooltip(self.prePoint);
+    }
+
     self.bindEvents();
   }
 
@@ -212,7 +218,6 @@ class TooltipController {
       this.unBindEvents();
     }
     this.tooltip = null;
-    this.prePoint = null;
     this._lastActive = null;
   }
 
@@ -262,6 +267,7 @@ class TooltipController {
   }
 
   _setTooltip(point, items, tooltipMarkerCfg = {}) {
+    this.prePoint = point;
     const lastActive = this._lastActive;
     const tooltip = this.tooltip;
     const cfg = this._tooltipCfg;
@@ -380,9 +386,10 @@ class TooltipController {
     const tooltipMarkerItems = [];
     const items = [];
     const cfg = self._tooltipCfg;
+    const { showItemMarker, itemMarkerStyle, alwaysShow } = cfg;
     let marker;
-    if (cfg.showItemMarker) {
-      marker = cfg.itemMarkerStyle;
+    if (showItemMarker) {
+      marker = itemMarkerStyle;
     }
 
     const geoms = chart.get('geoms');
@@ -434,7 +441,9 @@ class TooltipController {
         type: tooltipMarkerType
       };
       self._setTooltip(point, items, tooltipMarkerCfg);
-    } else {
+      return;
+    }
+    if (!alwaysShow) {
       self.hideTooltip();
     }
   }
