@@ -148,11 +148,7 @@ class Canvas extends EventEmit {
       self.beforeDraw();
       try {
         const context = self._attrs.context;
-        const children = self._attrs.children;
-        for (let i = 0, len = children.length; i < len; i++) {
-          const child = children[i];
-          child.draw(context);
-        }
+        self.drawInner(context);
 
         // 支付宝，微信小程序，需要调context.draw才能完成绘制， 所以这里直接判断是否有.draw方法
         if (context.draw) {

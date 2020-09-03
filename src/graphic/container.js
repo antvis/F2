@@ -66,6 +66,15 @@ export default {
     return this;
   },
 
+  drawInner(context) {
+    const children = this.get('children');
+    for (let i = 0, len = children.length; i < len; i++) {
+      const child = children[i];
+      child.draw(context);
+    }
+    return this;
+  },
+
   clear() {
     const children = this.get('children');
 
