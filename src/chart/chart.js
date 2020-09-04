@@ -707,10 +707,21 @@ class Chart extends Base {
     const self = this;
     const coord = self.get('coord');
     const xScale = self.getXScale();
-    const yScale = self.getYScales()[0];
     const xField = xScale.field;
+    const yScales = self.getYScales();
+    // default first
+    let yScale = yScales[0];
+    let yField = yScale.field;
+    for (let i = 0, len = yScales.length; i < len; i++) {
+      const scale = yScales[i];
+      const field = scale.field;
+      if (record[field]) {
+        yScale = scale;
+        yField = field;
+        break;
+      }
+    }
     const x = xScale.scale(record[xField]);
-    const yField = yScale.field;
     const y = yScale.scale(record[yField]);
     return coord.convertPoint({
       x,
