@@ -1,3 +1,17 @@
+#### 3.7.7 (2020-09-04)
+
+##### Chores
+
+*  group和canvas的drawInner统一到container里 ([c94804f8](https://github.com/antvis/f2/commit/c94804f8fb71b3e10367aecacc9c0a2566a24a40))
+
+##### Bug Fixes
+
+*  region-filter显示错误. Fixed [#1013](https://github.com/antvis/f2/pull/1013) ([1348281f](https://github.com/antvis/f2/commit/1348281fb43ff633843391d824c2a16cf0e8c3c0))
+*  双y轴， getPosition取不到point. Fixed [#1004](https://github.com/antvis/f2/pull/1004) ([147a1c2c](https://github.com/antvis/f2/commit/147a1c2c7f1ee689387f8804470158c59c33a197))
+*  修复alwaysshow为true时，滑动到plot外面，tooltip还会隐藏的问题 ([0f002fef](https://github.com/antvis/f2/commit/0f002fef6fe12077bb7fdebd6ea015462d92a4b0))
+*  动画空执行退出 ([d0ea34f5](https://github.com/antvis/f2/commit/d0ea34f5c042593926502bad4094eec958a4709d))
+*  修复tooltip showXTip 显示时，measureText需要新建canvas. Fixed [#1015](https://github.com/antvis/f2/pull/1015) ([010d5161](https://github.com/antvis/f2/commit/010d5161937546f13d6f77bffde21b9dbd652f8e))
+
 #### 3.7.6 (2020-08-19)
 
 ##### Bug Fixes
