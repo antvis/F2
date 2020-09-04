@@ -1,4 +1,4 @@
-import Rect from '../../graphic/shape';
+import Rect from '../../graphic/shape/rect';
 import { mix, each } from '../../util/common';
 import GuideBase from './base';
 
