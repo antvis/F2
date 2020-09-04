@@ -47,6 +47,9 @@ class Base {
 
   convertPoint(point) {
     const { x, y } = this._convertPoint(point);
+    if (!MatrixUtil.isChanged(this.matrix)) {
+      return { x, y };
+    }
     const vector = [ x, y ];
     Vector2.transformMat2d(vector, vector, this.matrix);
 

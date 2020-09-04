@@ -1,4 +1,10 @@
 const Matrix = {
+  generateDefault() {
+    return [ 1, 0, 0, 1, 0, 0 ];
+  },
+  isChanged(m) {
+    return m[0] !== 1 || m[1] !== 0 || m[2] !== 0 || m[3] !== 1 || m[4] !== 0 || m[5] !== 0;
+  },
   multiply(m1, m2) {
     const m11 = m1[0] * m2[0] + m1[2] * m2[1];
     const m12 = m1[1] * m2[0] + m1[3] * m2[1];

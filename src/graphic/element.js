@@ -3,10 +3,6 @@ import MatrixUtil from './util/matrix';
 import Vector2 from './util/vector2';
 import { parseStyle } from './util/style-parse';
 
-function isUnchanged(m) {
-  return m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1 && m[4] === 0 && m[5] === 0;
-}
-
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',
   fill: 'fillStyle',
@@ -315,7 +311,7 @@ class Element {
 
   resetTransform(context) {
     const mo = this._attrs.attrs.matrix;
-    if (!isUnchanged(mo)) {
+    if (MatrixUtil.isChanged(mo)) {
       context.transform(mo[0], mo[1], mo[2], mo[3], mo[4], mo[5]);
     }
   }
