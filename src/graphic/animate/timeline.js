@@ -1,5 +1,5 @@
 import { requestAnimationFrame } from '../util/requestAnimationFrame';
-const clock = typeof performance === 'object' && performance.now ? performance : Date;
+import { clock } from '../util/clock';
 
 class Timeline {
   constructor() {

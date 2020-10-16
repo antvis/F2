@@ -1,4 +1,5 @@
 import * as Easing from './easing';
+import { clock } from '../util/clock';
 
 function plainArray(arr) {
   const result = [];
@@ -60,7 +61,7 @@ class Animator {
 
     const animInfo = {
       shape: this.shape,
-      startTime: this.timeline.time + delay,
+      startTime: this.timeline.time || clock.now() + delay,
       duration,
       easing
     };
