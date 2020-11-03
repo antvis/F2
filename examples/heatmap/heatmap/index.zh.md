@@ -1,6 +1,5 @@
 ---
-title: 热力图
+title: 面积热力图
 order: 0
-icon: heatmap
 ---
 
