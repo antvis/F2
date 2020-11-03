@@ -1,5 +1,5 @@
 ---
-title: 蜡烛图
+title: 股票类型
 order: 0
 ---
 
