@@ -13,7 +13,7 @@ const Global = {
 };
 
 Global.setTheme = function(theme) {
-  deepMix(this, theme);
+  deepMix(Global, theme);
 };
 
 Global.setTheme(Theme);
