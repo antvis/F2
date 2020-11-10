@@ -1,4 +1,5 @@
 import Theme from './theme';
+import lang from './aria-lang.CN';
 import { deepMix } from './util/common';
 
 const Global = {
@@ -9,7 +10,8 @@ const Global = {
     rose: 0.999999,
     multiplePie: 3 / 4
   },
-  lineDash: [ 4, 4 ]
+  lineDash: [ 4, 4 ],
+  lang
 };
 
 Global.setTheme = function(theme) {
@@ -18,4 +20,5 @@ Global.setTheme = function(theme) {
 
 Global.setTheme(Theme);
 
+export { lang };
 export default Global;

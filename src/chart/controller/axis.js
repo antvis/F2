@@ -163,6 +163,7 @@ class AxisController {
         }
         const axisLabel = new Shape.Text({
           className: 'axis-label',
+          aria: false,
           attrs: mix({
             x: 0,
             y: 0,

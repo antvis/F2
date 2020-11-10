@@ -144,6 +144,10 @@ class Text extends Shape {
     }
   }
 
+  _getAriaLabel() {
+    return this._attrs.attrs.text;
+  }
+
   calculateBox() {
     const self = this;
     const attrs = self._attrs.attrs;

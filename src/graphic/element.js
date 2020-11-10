@@ -211,6 +211,18 @@ class Element {
     return this.get('visible');
   }
 
+  getAriaLabel() {
+    const { destroyed, visible, isShape, aria } = this._attrs;
+    if (destroyed || !visible || (isShape && !aria)) {
+      return;
+    }
+    return this._getAriaLabel();
+  }
+
+  _getAriaLabel() {
+    return this._attrs.ariaLabel;
+  }
+
   _removeFromParent() {
     const parent = this.get('parent');
     if (parent) {
