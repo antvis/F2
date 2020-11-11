@@ -1,10 +1,11 @@
 import EventEmit from './event/emit';
 import EventController from './event/controller';
 import CanvasElement from './canvas-element';
-import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement } from '../util/common';
+import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement, substitute } from '../util/common';
 import Container from './container';
 import Group from './group';
 import { requestAnimationFrame } from './util/requestAnimationFrame';
+import { lang } from '../global';
 
 class Canvas extends EventEmit {
   get(name) {
@@ -17,9 +18,12 @@ class Canvas extends EventEmit {
 
   constructor(cfg) {
     super();
+    const { title } = cfg;
+    const ariaLabel = title ? substitute(lang.general.withTitle, { title }) : lang.general.title;
     this._attrs = mix({
       type: 'canvas',
-      children: []
+      children: [],
+      ariaLabel
     }, cfg);
     this._initPixelRatio();
     this._initCanvas();
@@ -149,11 +153,12 @@ class Canvas extends EventEmit {
       try {
         const context = self._attrs.context;
         self.drawInner(context);
-
         // 支付宝，微信小程序，需要调context.draw才能完成绘制， 所以这里直接判断是否有.draw方法
         if (context.draw) {
           context.draw();
         }
+        // 设置无障碍文本
+        self.setAriaLabel();
       } catch (ev) {
         console.warn('error in draw canvas, detail as:');
         console.warn(ev);
@@ -169,6 +174,15 @@ class Canvas extends EventEmit {
       this._beginDraw();
     } else {
       drawInner();
+    }
+  }
+
+  // 设置无障碍文本
+  setAriaLabel() {
+    const { el } = this._attrs;
+    const ariaLabel = this._getAriaLabel();
+    if (ariaLabel && el.setAttribute) {
+      el.setAttribute('aria-label', ariaLabel);
     }
   }
 

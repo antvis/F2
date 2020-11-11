@@ -1,4 +1,4 @@
-import { upperFirst, isArray, Array, mix } from '../util/common';
+import { upperFirst, isArray, Array } from '../util/common';
 import Shape from './shape';
 
 const SHAPE_MAP = {};
@@ -20,28 +20,18 @@ export default {
   },
 
   addShape(type, cfg = {}) {
-    const canvas = this.get('canvas');
     let shapeType = SHAPE_MAP[type];
     if (!shapeType) {
       shapeType = upperFirst(type);
       SHAPE_MAP[type] = shapeType;
     }
-    cfg.canvas = canvas;
-    if (shapeType === 'Text' && canvas && canvas.get('fontFamily')) {
-      cfg.attrs.fontFamily = cfg.attrs.fontFamily || canvas.get('fontFamily');
-    }
-
     const shape = new Shape[shapeType](cfg);
     this.add(shape);
     return shape;
   },
 
   addGroup(cfg) {
-    const canvas = this.get('canvas');
     const groupClass = this.getGroupClass();
-    cfg = mix({}, cfg);
-    cfg.canvas = canvas;
-    cfg.parent = this;
     const rst = new groupClass(cfg);
     this.add(rst);
     return rst;
@@ -107,19 +97,55 @@ export default {
 
   _setEvn(item) {
     const self = this;
+    const { context, canvas, aria } = self._attrs;
+    const { isGroup, type } = item._attrs;
+
     item._attrs.parent = self;
-    item._attrs.context = self._attrs.context;
-    item._attrs.canvas = self._attrs.canvas;
+    item._attrs.context = context;
+    item._attrs.canvas = canvas;
+    // 是否需要无障碍处理
+    if (aria && item._attrs.aria !== false) {
+      item._attrs.aria = aria;
+    }
+
+    if (type === 'text' && canvas && canvas.get('fontFamily')) {
+      item._attrs.attrs.fontFamily = item._attrs.attrs.fontFamily || canvas.get('fontFamily');
+    }
+
     const clip = item._attrs.attrs.clip;
     if (clip) {
-      clip.set('parent', self);
-      clip.set('context', self.get('context'));
+      clip._attrs.parent = self;
+      clip._attrs.context = context;
+      clip._attrs.canvas = canvas;
     }
-    if (item._attrs.isGroup) {
+    if (isGroup) {
       const children = item._attrs.children;
       for (let i = 0, len = children.length; i < len; i++) {
         item._setEvn(children[i]);
       }
     }
+  },
+
+  _getAriaLabel() {
+    const { aria, ariaLabel, children } = this._attrs;
+    // 主动关闭
+    if (!aria) return;
+    const childAriaLabels = [];
+    if (children && children.length) {
+      for (let i = 0, len = children.length; i < len; i++) {
+        const childAriaLabel = children[i].getAriaLabel();
+        if (childAriaLabel) {
+          childAriaLabels.push(childAriaLabel);
+        }
+      }
+    }
+
+    const childAriaLabel = childAriaLabels.join(' ');
+    // 2个都有时拼接成完整句子
+    if (ariaLabel && childAriaLabel) {
+      return `${ariaLabel} ${childAriaLabel} `;
+    }
+    // 只有1个，或者都没有
+    return ariaLabel || childAriaLabel;
   }
 };

@@ -9,6 +9,7 @@ class CanvasElement extends EventEmit {
     this.height = 0;
     this.style = {};
     this.currentStyle = {};
+    this.attrs = {};
     // 用来标识是CanvasElement实例
     this.isCanvasElement = true;
   }
@@ -27,6 +28,10 @@ class CanvasElement extends EventEmit {
       bottom: height,
       left: 0
     };
+  }
+
+  setAttribute(key, value) {
+    this.attrs[key] = value;
   }
 
   addEventListener(type, listener) {
