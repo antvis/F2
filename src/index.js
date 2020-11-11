@@ -19,6 +19,8 @@ import './component/guide/tag';
 import './component/guide/point';
 
 import Marker from './component/marker';
+import TooltipComponent from './component/tooltip';
+
 import * as Tooltip from './plugin/tooltip';
 import * as Guide from './plugin/guide';
 import * as Legend from './plugin/legend';
@@ -26,7 +28,8 @@ import * as Animation from './animation/detail';
 import Animate from './animation/animate';
 
 const Component = {
-  Marker
+  Marker,
+  Tooltip: TooltipComponent
 };
 
 // register plugins
