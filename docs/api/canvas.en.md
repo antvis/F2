@@ -28,9 +28,7 @@ order: 11
 为了方便用户使用，F2 中默认提供对线性渐变、放射状/环形渐变两种渐变色的支持，定义方式如下：
 
 - **线性渐变**
-
-- ![](https://gw.alipayobjects.com/zos/rmsportal/ElBYXdsTZKFflacOBNtp.png#width=600)
-
+![](https://gw.alipayobjects.com/zos/rmsportal/ElBYXdsTZKFflacOBNtp.png)
 
 > 说明：`l` 表示使用线性渐变，绿色的字体为可变量，由用户自己填写，由一个空格进行间隔。
 
@@ -43,7 +41,7 @@ stroke: 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff'
 
 - **放射状/环形渐变**
 
-- ![](https://gw.alipayobjects.com/zos/rmsportal/fBFocveoeRaeaCCPTaFo.png#width=600)
+![](https://gw.alipayobjects.com/zos/rmsportal/fBFocveoeRaeaCCPTaFo.png)
 
 
 > 说明：`r` 表示使用放射状渐变，绿色的字体为可变量，由用户自己填写，开始圆的 x y r 值均为相对值，0 至 1 范围，'r(x,y,r)' 内不可留有空格，颜色之间由一个空格进行间隔。
