@@ -1,6 +1,6 @@
 ---
 title: 按需引用
-order: 7
+order: 8
 ---
 
 F2 应用在移动端，所以对文件的大小非常重视，而默认情况下 F2 包含了完整的[几何标记类型](https://www.yuque.com/antv/f2/geometry)、[度量类型](https://www.yuque.com/antv/f2/scale)、[坐标系类型](https://www.yuque.com/antv/f2/coordinate)以及图表组件，但是用户有时候可能只需要其中几种，所以 F2 提供了按需引用的策略，由用户自定义引用需要的功能。
@@ -201,16 +201,3 @@ require('@antv/f2/lib/geom/interval'); // 引入 interval 几何标记
 require('@antv/f2/lib/coord/polar'); // 引入 极坐标
 require('@antv/f2/lib/geom/adjust/stack'); // 引入数据层叠调整类型
 ```
-
-## 可视化工具
-
-为了方便用户，我们提供了 UI 化的按需打包工具，帮助用户自由选择所需图表和组件进行打包下载，使用方法如下：
-
-```bash
-# 进入 f2 项目根目录，运行如下命令
-$ npm run bundler
-```
-
-在出现的界面中进行需要模块的勾选，最后打包下载即可。
-
-![](https://gw.alipayobjects.com/zos/rmsportal/RmUwBPLSWIbecmKEgoSw.png)

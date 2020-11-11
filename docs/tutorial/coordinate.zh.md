@@ -1,6 +1,6 @@
 ---
 title: 坐标系
-order: 6
+order: 7
 ---
 
 坐标系是将两种位置标度结合在一起组成的 2 维定位系统，描述了数据是如何映射到图形所在的平面。
@@ -40,9 +40,7 @@ chart.coord('coordType', {
 | 柱状图 | ![](https://gw.alipayobjects.com/zos/skylark/e392736b-86a1-4452-9265-f7a5e8dc1805/2018/png/47caf538-6703-4db5-ae68-6605837f2803.png#width=) | ![](https://gw.alipayobjects.com/zos/skylark/383cdf9f-a631-4fc4-9f6a-593a22822242/2018/png/dd798932-1555-4988-bc68-353835d051b3.png#width=) | ![](https://gw.alipayobjects.com/zos/skylark/1a056c5c-13da-46d4-9315-2d589588d889/2018/png/4171f504-2f52-4ed6-ba8f-b7b286650692.png#width=) |
 
 
-### 坐标系配置
-
-#### 直角坐标系
+### 直角坐标系
 
 ```javascript
 // 声明直角坐标系
@@ -53,7 +51,7 @@ chart.coord('rect', {
 });
 ```
 
-#### 极坐标
+### 极坐标
 
 ```javascript
 // 声明极坐标

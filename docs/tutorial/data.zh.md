@@ -1,6 +1,6 @@
 ---
 title: 数据
-order: 2
+order: 3
 ---
 
 数据是绘制一张图表最基本的部分。F2 支持的数据格式如下：
@@ -80,7 +80,7 @@ const data = [
 ];
 ```
 
-详见饼图[示例](/en/examples/pie/basic)。
+详见饼图[示例](/zh/examples/pie/basic)。
 
 ### 区间柱状图
 
@@ -99,7 +99,7 @@ const data = [
 ];
 ```
 
-详见区间柱状图[示例](/en/examples/column/basic#ranged)。
+详见区间柱状图[示例](/zh/examples/column/basic#ranged)。
 
 ### 股票图
 
@@ -116,4 +116,4 @@ const data = [
 ];
 ```
 
-详见 K 线图[示例](/en/examples/candlestick/basic)。
+详见 K 线图[示例](/zh/examples/candlestick/basic)。
