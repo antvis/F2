@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Text from '../../../../src/graphic/shape/text';
-import Canvas from '../../../../src/graphic/canvas';
+import Text from '../../../../src/graphic/engine/shape/text';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-text';

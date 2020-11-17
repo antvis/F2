@@ -1,4 +1,4 @@
-import Canvas from '../../../../src/graphic/canvas';
+import Canvas from '../../../../src/graphic/engine/canvas';
 import F2 from '../../../../src/index';
 import '../../../../src/graphic';
 

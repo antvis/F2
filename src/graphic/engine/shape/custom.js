@@ -1,4 +1,4 @@
-import Shape from '../shape';
+import Shape from './shape';
 
 class Custom extends Shape {
   _initProperties() {
@@ -19,5 +19,4 @@ class Custom extends Shape {
     return calculateBox && calculateBox.call(this);
   }
 }
-Shape.Custom = Custom;
 export default Custom;

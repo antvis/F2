@@ -3,7 +3,7 @@ import AxisCircle from '../../../../src/component/axis/circle';
 import Scale from '../../../../src/scale/index';
 import global from '../../../../src/global';
 import * as Util from '../../../../src/util/common';
-import { Group, Text } from '../../../../src/graphic/index';
+import { Group, Text } from '../../../../src/graphic/engine/index';
 
 const axisGlobal = global.axis;
 

@@ -1,5 +1,5 @@
-import Shape from '../shape';
-import { getBBoxFromLine } from '../util/bbox';
+import Shape from './shape';
+import { getBBoxFromLine } from '../../util/bbox';
 
 class Line extends Shape {
   _initProperties() {
@@ -34,5 +34,4 @@ class Line extends Shape {
   }
 }
 
-Shape.Line = Line;
 export default Line;

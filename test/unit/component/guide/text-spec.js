@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Canvas } from '../../../../src/graphic/index';
+import { Canvas } from '../../../../src/graphic/engine/index';
 import Coord from '../../../../src/coord/index';
 import { Text } from '../../../../src/component/guide/index';
 import Scale from '../../../../src/scale/index';

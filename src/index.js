@@ -18,7 +18,6 @@ import './component/guide/text';
 import './component/guide/tag';
 import './component/guide/point';
 
-import Marker from './component/marker';
 import TooltipComponent from './component/tooltip';
 
 import * as Tooltip from './plugin/tooltip';
@@ -28,7 +27,8 @@ import * as Animation from './animation/detail';
 import Animate from './animation/animate';
 
 const Component = {
-  Marker,
+  // 为了兼容之前版本
+  Marker: G.Shape.Marker,
   Tooltip: TooltipComponent
 };
 

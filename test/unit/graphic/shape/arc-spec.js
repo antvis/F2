@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Arc from '../../../../src/graphic/shape/arc';
-import Canvas from '../../../../src/graphic/canvas';
+import Arc from '../../../../src/graphic/engine/shape/arc';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-arc';

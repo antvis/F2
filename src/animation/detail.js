@@ -7,7 +7,7 @@ import {
   isObject, deepMix
 } from '../util/common';
 
-import Element from '../graphic/element';
+import Element from '../graphic/engine/element';
 import Timeline from '../graphic/animate/timeline';
 import Animator from '../graphic/animate/animator';
 import Animate from './animate';

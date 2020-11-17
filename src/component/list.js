@@ -1,6 +1,4 @@
 import { deepMix, isNumber, mix, isNil, each, parsePadding } from '../util/common';
-import { Group } from '../graphic/index';
-import Marker from './marker';
 
 const MARKER_RADIUS = 3;
 
@@ -63,7 +61,9 @@ class List {
   }
 
   _init() {
-    const container = new Group({
+    const parent = this.parent;
+    if (!parent) return;
+    const container = parent.addGroup({
       zIndex: this.zIndex || 0
     });
     this.container = container;
@@ -73,10 +73,6 @@ class List {
       className: 'itemsGroup'
     });
     this.itemsGroup = itemsGroup;
-
-    if (this.parent) {
-      this.parent.add(container);
-    }
   }
 
   _renderTitle(title) {
@@ -179,11 +175,10 @@ class List {
         mix(markerAttrs, unCheckStyle);
       }
 
-      const markerShape = new Marker({
+      const markerShape = itemGroup.addShape('marker', {
         className: 'item-marker',
         attrs: markerAttrs
       });
-      itemGroup.add(markerShape);
       startX += markerShape.getBBox().width + wordSpace;
     }
 

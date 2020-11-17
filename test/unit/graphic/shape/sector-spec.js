@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Sector from '../../../../src/graphic/shape/sector';
-import Canvas from '../../../../src/graphic/canvas';
+import Sector from '../../../../src/graphic/engine/shape/sector';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-sector';

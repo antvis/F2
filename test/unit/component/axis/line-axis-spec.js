@@ -3,7 +3,7 @@ import AxisLine from '../../../../src/component/axis/line';
 import Scale from '../../../../src/scale/';
 import { axis as axisGlobal } from '../../../../src/global';
 import * as Util from '../../../../src/util/common';
-import { Group } from '../../../../src/graphic/index';
+import { Group } from '../../../../src/graphic/engine/index';
 
 const linear = new Scale.Linear({
   min: 0,

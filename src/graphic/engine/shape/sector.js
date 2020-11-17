@@ -1,5 +1,5 @@
-import Shape from '../shape';
-import { getBBoxFromArc } from '../util/bbox';
+import Shape from './shape';
+import { getBBoxFromArc } from '../../util/bbox';
 
 class Sector extends Shape {
   _initProperties() {
@@ -57,6 +57,4 @@ class Sector extends Shape {
   }
 }
 
-Shape.Sector = Sector;
 export default Sector;
-

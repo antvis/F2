@@ -1,5 +1,4 @@
 import { deepMix, mix, isFunction, directionEnabled, parsePadding } from '../util/common';
-import Marker from './marker';
 import Container from './list';
 import TextBox from './text-box';
 
@@ -294,7 +293,7 @@ class Tooltip {
     if (type === 'circle') {
       for (let i = 0, length = items.length; i < length; i++) {
         const item = items[i];
-        const marker = new Marker({
+        markerGroup.addShape('marker', {
           className: 'tooltip-circle-marker',
           attrs: mix({
             x: item.x,
@@ -302,7 +301,6 @@ class Tooltip {
             stroke: item.color
           }, style)
         });
-        markerGroup.add(marker);
       }
     } else {
       markerGroup.addShape('rect', {

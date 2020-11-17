@@ -1,7 +1,7 @@
-import { mix } from '../util/common';
+import { mix } from '../../util/common';
 import Element from './element';
 import Container from './container';
-import Vector2 from './util/vector2';
+import Vector2 from '../util/vector2';
 
 class Group extends Element {
   _initProperties() {

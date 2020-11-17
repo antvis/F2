@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Geom from '../../../src/geom/base';
-import { Canvas } from '../../../src/graphic/index';
+import { Canvas } from '../../../src/graphic/engine/index';
 
 const dom = document.createElement('canvas');
 dom.width = 500;

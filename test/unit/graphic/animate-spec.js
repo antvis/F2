@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import Animator from '../../../src/graphic/animate/animator';
 import Timeline from '../../../src/graphic/animate/timeline';
-import Canvas from '../../../src/graphic/canvas';
-import '../../../src/graphic/shape/rect';
-import '../../../src/graphic/shape/polyline';
+import Canvas from '../../../src/graphic/engine/canvas';
+import '../../../src/graphic/engine/shape/rect';
+import '../../../src/graphic/engine/shape/polyline';
 
 const dom = document.createElement('canvas');
 dom.id = 'animate';

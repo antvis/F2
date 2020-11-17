@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import Line from '../../../../src/graphic/shape/line';
-import Rect from '../../../../src/graphic/shape/rect';
-import Arc from '../../../../src/graphic/shape/arc';
-import Canvas from '../../../../src/graphic/canvas';
+import Line from '../../../../src/graphic/engine/shape/line';
+import Rect from '../../../../src/graphic/engine/shape/rect';
+import Arc from '../../../../src/graphic/engine/shape/arc';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-line';

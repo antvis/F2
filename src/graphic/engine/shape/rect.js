@@ -1,5 +1,5 @@
-import { parsePadding } from '../../util/common';
-import Shape from '../shape';
+import { parsePadding } from '../../../util/common';
+import Shape from './shape';
 
 // 为了处理radius 大于 width 或 height 的场景
 function parseRadius(radius, width, height) {
@@ -71,5 +71,4 @@ class Rect extends Shape {
   }
 }
 
-Shape.Rect = Rect;
 export default Rect;

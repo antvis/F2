@@ -1,8 +1,8 @@
 /**
  * marker shapes，used for tooltip and legend
  */
-import { isFunction } from '../util/common';
-import { Shape } from '../graphic/index';
+import { isFunction } from '../../../util/common';
+import Shape from './shape';
 
 const SYMBOLS = {
   circle(x, y, r, ctx) {

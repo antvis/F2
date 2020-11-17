@@ -1,4 +1,4 @@
-import EventEmit from './event/emit';
+import EventEmit from '../event/emit';
 
 class CanvasElement extends EventEmit {
   constructor(ctx) {
