@@ -1,5 +1,5 @@
-import { isNil } from '../util/common';
-import Element from './element';
+import { isNil } from '../../../util/common';
+import Element from '../element';
 
 class Shape extends Element {
   _initProperties() {

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import Group from '../../../src/graphic/group';
-import Canvas from '../../../src/graphic/canvas';
-import '../../../src/graphic/shape/line';
-import '../../../src/graphic/shape/circle';
-import '../../../src/graphic/shape/text';
+import Group from '../../../src/graphic/engine/group';
+import Canvas from '../../../src/graphic/engine/canvas';
+import '../../../src/graphic/engine/shape/line';
+import '../../../src/graphic/engine/shape/circle';
+import '../../../src/graphic/engine/shape/text';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Polyline from '../../src/graphic/shape/polyline';
-import Canvas from '../../src/graphic/canvas';
+import Polyline from '../../src/graphic/engine/shape/polyline';
+import Canvas from '../../src/graphic/engine/canvas';
 
 describe('Issue 468', () => {
   let canvas;

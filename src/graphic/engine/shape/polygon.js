@@ -1,5 +1,5 @@
-import Shape from '../shape';
-import { getBBoxFromPoints } from '../util/bbox';
+import Shape from './shape';
+import { getBBoxFromPoints } from '../../util/bbox';
 
 class Polygon extends Shape {
   _initProperties() {
@@ -41,5 +41,4 @@ class Polygon extends Shape {
   }
 }
 
-Shape.Polygon = Polygon;
 export default Polygon;

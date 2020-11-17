@@ -1,5 +1,5 @@
-import { isNil } from '../../util/common';
-import Shape from '../shape';
+import { isNil } from '../../../util/common';
+import Shape from './shape';
 
 class ImageShape extends Shape {
   _initProperties() {
@@ -72,5 +72,4 @@ class ImageShape extends Shape {
   }
 }
 
-Shape.Image = ImageShape;
 export default ImageShape;

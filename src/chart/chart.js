@@ -20,7 +20,7 @@ import Geom from '../geom/base';
 import ScaleController from './controller/scale';
 import AxisController from './controller/axis';
 import Global from '../global';
-import { Canvas } from '../graphic/index';
+import { createCanvas } from '../graphic/index';
 import { getClip } from '../util/helper';
 
 
@@ -138,6 +138,8 @@ class Chart extends Base {
        * @type {String}
        */
       id: null,
+      /** 图表渲染引擎 */
+      renderer: 'canvas',
       rendered: false,
       /**
        * padding
@@ -384,7 +386,8 @@ class Chart extends Base {
   _initCanvas() {
     const self = this;
     try {
-      const canvas = new Canvas({
+      const canvas = createCanvas({
+        renderer: self.get('renderer'),
         el: self.get('el') || self.get('id'),
         context: self.get('context'),
         pixelRatio: self.get('pixelRatio'),

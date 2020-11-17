@@ -1,7 +1,7 @@
-import { mix, isObject, isArray, Array } from '../util/common';
-import MatrixUtil from './util/matrix';
-import Vector2 from './util/vector2';
-import { parseStyle } from './util/style-parse';
+import { mix, isObject, isArray, Array } from '../../util/common';
+import MatrixUtil from '../util/matrix';
+import Vector2 from '../util/vector2';
+import { parseStyle } from '../util/style-parse';
 
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',

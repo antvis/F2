@@ -1,4 +1,4 @@
-import { upperFirst, isArray, Array } from '../util/common';
+import { upperFirst, isArray, Array } from '../../util/common';
 import Shape from './shape';
 
 const SHAPE_MAP = {};

@@ -1,17 +1,17 @@
 import { expect } from 'chai';
-import Group from '../../../src/graphic/group';
-import Shape from '../../../src/graphic/shape';
-import Canvas from '../../../src/graphic/canvas';
+import Group from '../../../src/graphic/engine/group';
+import Shape from '../../../src/graphic/engine/shape';
+import Canvas from '../../../src/graphic/engine/canvas';
 
-import '../../../src/graphic/shape/rect';
-import '../../../src/graphic/shape/circle';
-import '../../../src/graphic/shape/line';
-import '../../../src/graphic/shape/polygon';
-import '../../../src/graphic/shape/polyline';
-import '../../../src/graphic/shape/arc';
-import '../../../src/graphic/shape/sector';
-import '../../../src/graphic/shape/text';
-import '../../../src/graphic/shape/custom';
+import '../../../src/graphic/engine/shape/rect';
+import '../../../src/graphic/engine/shape/circle';
+import '../../../src/graphic/engine/shape/line';
+import '../../../src/graphic/engine/shape/polygon';
+import '../../../src/graphic/engine/shape/polyline';
+import '../../../src/graphic/engine/shape/arc';
+import '../../../src/graphic/engine/shape/sector';
+import '../../../src/graphic/engine/shape/text';
+import '../../../src/graphic/engine/shape/custom';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-group';

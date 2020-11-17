@@ -1,7 +1,7 @@
 
-import Shape from '../shape';
-import { getBBoxFromPoints, getBBoxFromBezierGroup } from '../util/bbox';
-import * as Smooth from '../util/smooth';
+import Shape from './shape';
+import { getBBoxFromPoints, getBBoxFromBezierGroup } from '../../util/bbox';
+import * as Smooth from '../../util/smooth';
 
 // filter the point which x or y is NaN
 function _filterPoints(points) {
@@ -90,5 +90,4 @@ class Polyline extends Shape {
   }
 }
 
-Shape.Polyline = Polyline;
 export default Polyline;

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Rect from '../../../../src/graphic/shape/rect';
-import Canvas from '../../../../src/graphic/canvas';
+import Rect from '../../../../src/graphic/engine/shape/rect';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-rect';

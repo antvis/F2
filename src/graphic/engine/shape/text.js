@@ -1,6 +1,6 @@
-import { isNil, measureText, isString } from '../../util/common';
-import Shape from '../shape';
-import RectUtil from '../util/rect';
+import { isNil, measureText, isString } from '../../../util/common';
+import Shape from './shape';
+import RectUtil from '../../util/rect';
 
 let textWidthCacheCounter = 0;
 let textWidthCache = {};
@@ -238,7 +238,5 @@ class Text extends Shape {
     return width;
   }
 }
-
-Shape.Text = Text;
 
 export default Text;

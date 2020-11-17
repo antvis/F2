@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Custom from '../../../../src/graphic/shape/custom';
-import Canvas from '../../../../src/graphic/canvas';
+import Custom from '../../../../src/graphic/engine/shape/custom';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-custom';

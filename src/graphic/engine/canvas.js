@@ -1,11 +1,11 @@
-import EventEmit from './event/emit';
-import EventController from './event/controller';
+import EventEmit from '../event/emit';
+import EventController from '../event/controller';
 import CanvasElement from './canvas-element';
-import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement, substitute } from '../util/common';
+import { mix, getPixelRatio, isString, getDomById, getWidth, getHeight, isCanvasElement, substitute } from '../../util/common';
 import Container from './container';
 import Group from './group';
-import { requestAnimationFrame } from './util/requestAnimationFrame';
-import { lang } from '../global';
+import { requestAnimationFrame } from '../util/requestAnimationFrame';
+import { lang } from '../../global';
 
 class Canvas extends EventEmit {
   get(name) {

@@ -1,5 +1,5 @@
-import Shape from '../shape';
-import { getBBoxFromArc } from '../util/bbox';
+import Shape from './shape';
+import { getBBoxFromArc } from '../../util/bbox';
 
 class Arc extends Shape {
   _initProperties() {
@@ -38,5 +38,5 @@ class Arc extends Shape {
     return getBBoxFromArc(x, y, r, startAngle, endAngle, anticlockwise);
   }
 }
-Shape.Arc = Arc;
+
 export default Arc;
