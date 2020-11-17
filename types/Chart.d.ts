@@ -43,6 +43,11 @@ export interface ChartParams {
   context?: CanvasRenderingContext2D;
 
   /**
+   * 渲染引擎，默认: canvas
+   */
+  renderer?: string,
+
+  /**
    * 图表的宽度，如果 `<canvas>` 元素上设置了宽度，可以不传入。
    */
   width?: number;
