@@ -616,4 +616,11 @@ export class Chart<TRecord extends DataRecord = DataRecord> {
    * @todo 文档未说明参数，漏斗图示例中有出现
    */
   intervalLabel(params: IntervalLabelParams<TRecord>): void;
+
+  /**
+   * 是否为横屏展示
+   *
+   * @param {Boolean} landscape 是否为横屏
+   */
+  landscape(landscape: boolean): void;
 }

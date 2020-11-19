@@ -23,6 +23,11 @@
       "filename": "steps-record.js",
       "title": "健康步数",
       "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/MLIlBSbtaBRiivHdBGmM.png"
+    },
+    {
+      "filename": "landscape.js",
+      "title": "横屏图",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/18e3331d-b7bd-476e-93eb-f7a90fc55e00.png"
     }
   ]
 }
