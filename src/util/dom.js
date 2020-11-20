@@ -1,4 +1,4 @@
-import { isFunction, isNumber } from './common';
+import { isFunction, isNumber } from '@antv/util';
 
 /**
  * Detects support for options object argument in addEventListener.
