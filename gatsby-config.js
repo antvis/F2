@@ -78,7 +78,7 @@ module.exports = {
         slug: 'creative',
         icon: 'gallery',
         title: {
-          zh: '创意图',
+          zh: '场景案例',
           en: 'Creative Charts'
         }
       },
