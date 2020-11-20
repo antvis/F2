@@ -3,7 +3,7 @@ import lang from './aria-lang.CN';
 import { deepMix } from './util/common';
 
 const Global = {
-  version: '3.8.0-alpha.1',
+  version: '3.8.0-alpha.2',
   scales: {},
   widthRatio: {
     column: 1 / 2,
