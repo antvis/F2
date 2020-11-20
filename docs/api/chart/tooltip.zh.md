@@ -111,7 +111,7 @@ chart.tooltip({
 }
 ```
  | 配置 x 轴辅助信息的背景框样式。 |
-| `yTipBackground`  | Object | ```javascript
+ | `yTipBackground`  | Object | ```javascript
 {
   radius: 1,
   fill: 'rgba(0, 0, 0, 0.65)',
@@ -120,6 +120,26 @@ chart.tooltip({
 ```
  | 配置 y 轴辅助信息的背景框样式。 |
 | `snap`  | Boolean | false | 是否将辅助线准确定位至数据点，默认为 false。 |
+
+### showTooltip()
+
+`chart.showTooltip(point)`
+
+- 参数
+
+  - `point`: Object 类型，画布坐标，格式为 `{x: ,y: }`
+
+- 描述：在该点显示 tooltip
+- 返回：当前 chart 实例
+
+
+### hideTooltip()
+
+`chart.hideTooltip()`
+
+- 描述：隐藏当前 tooltip
+
+- 返回：当前 chart 实例
 
 ### xTip, yTip回调函数用法
 
