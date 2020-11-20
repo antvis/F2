@@ -1,5 +1,4 @@
-import { getRelativePosition } from '../../util/dom';
-import { isNumber } from '../../util/common';
+import { convertPoints } from '../../util/dom';
 
 // 计算滑动的方向
 const calcDirection = (start, end) => {
@@ -23,32 +22,6 @@ const getCenter = (point1, point2) => {
   const x = point1.x + ((point2.x - point1.x) / 2);
   const y = point1.y + ((point2.y - point1.y) / 2);
   return { x, y };
-};
-
-const convertPoints = (ev, canvas) => {
-  const touches = ev.touches;
-  // 认为是mouse事件
-  if (!touches) {
-    const point = getRelativePosition({ x: ev.clientX, y: ev.clientY }, canvas);
-    return [ point ];
-  }
-  const points = [];
-  const len = touches.length;
-  for (let i = 0; i < len; i++) {
-    const touch = touches[i];
-    // x, y: 相对canvas原点的位置，clientX, clientY 相对于可视窗口的位置
-    const { x, y, clientX, clientY } = touch;
-    let point;
-    // 小程序环境会有x,y
-    if (isNumber(x) || isNumber(y)) {
-      point = { x, y };
-    } else {
-      // 浏览器环境再计算下canvas的相对位置
-      point = getRelativePosition({ x: clientX, y: clientY }, canvas);
-    }
-    points.push(point);
-  }
-  return points;
 };
 
 const PRESS_DELAY = 250;

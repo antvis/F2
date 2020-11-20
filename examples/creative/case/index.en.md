@@ -1,4 +1,4 @@
 ---
-title: iOS Chart
+title: gallery
 order: 0
 ---

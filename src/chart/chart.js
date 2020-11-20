@@ -395,7 +395,8 @@ class Chart extends Base {
         height: self.get('height'),
         fontFamily: Global.fontFamily,
         aria: self.get('aria'),
-        title: self.get('title')
+        title: self.get('title'),
+        landscape: self.get('landscape')
       });
       self.set('canvas', canvas);
       self.set('el', canvas.get('el'));
@@ -918,6 +919,15 @@ class Chart extends Base {
     const coord = this.get('coord');
     plot.reset(start, end);
     coord.reset(plot);
+  }
+  /**
+   * 是否为横屏展示
+   *
+   * @param {Boolean} landscape 是否为横屏
+   */
+  landscape(landscape) {
+    const canvas = this.get('canvas');
+    canvas.set('landscape', landscape);
   }
 }
 

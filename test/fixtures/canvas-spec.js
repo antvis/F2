@@ -5,7 +5,7 @@ canvas.style.width = '370px';
 canvas.style.height = '300px';
 document.body.appendChild(canvas);
 
-describe('svg 渲染', () => {
+describe('默认渲染', () => {
   it('render', () => {
     const data = [
       { genre: 'Sports', sold: 275 },
