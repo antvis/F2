@@ -26,3 +26,4 @@ jobs:
           gitee-password: ${{ secrets.GITEE_PASSWORD }}
           # 注意替换为你的 Gitee 仓库
           gitee-repo: antv-f2/antv-f2
+          branch: gh-pages
