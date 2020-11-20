@@ -53,7 +53,7 @@ const IndexPage = () => {
     },
     {
       text: t('图表演示'),
-      link: `/${i18n.language}/examples`,
+      link: `/${i18n.language}/examples/gallery`,
     },
   ];
 
