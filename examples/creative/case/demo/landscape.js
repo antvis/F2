@@ -1,7 +1,6 @@
 import F2 from '@antv/f2';
 import _ from 'lodash';
 import insertCss from 'insert-css';
-
 // 我们用 insert-css 演示引入自定义样式
 // 推荐将样式添加到自己的样式文件中
 // 若拷贝官方代码，别忘了 npm install insert-css
@@ -84,7 +83,7 @@ document.querySelector('.mobile-content').innerHTML = `
         </div>
       </div>
     </div>
-    <canvas id="container" />
+    <canvas id="container"></canvas>
   <div>
 `;
 
@@ -160,13 +159,19 @@ fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
         legend.setItems(chart.getLegendItems().country);
       }
     });
-    chart.line()
+    chart
+      .line()
       .position('date*value')
       .color('type', [ '#1677FF', '#00B7F4', '#FF9F18' ])
       .size('type', [ 1.5, 1, 1 ]);
-    chart.area()
+    chart
+      .area()
       .position('date*value')
-      .color('type', [ 'l(90) 0:#1677ff 1:#FFFFFF', 'transparent', 'transparent' ]);
+      .color('type', [
+        'l(90) 0:#1677ff 1:#FFFFFF',
+        'transparent',
+        'transparent'
+      ]);
 
     chart.render();
   });
