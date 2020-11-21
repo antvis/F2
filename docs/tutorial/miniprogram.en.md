@@ -1,6 +1,8 @@
 ---
 title: 小程序上渲染 F2
 order: 10
+redirect_from:
+  - /zh/docs/tutorial/manual/miniprogram
 ---
 
 F2 是基于 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) 的标准接口绘制的，所以只要能提供标准 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) 接口的实现对象，F2就能进行图表绘制
