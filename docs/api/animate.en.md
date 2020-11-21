@@ -29,7 +29,7 @@ chart.line().animate({
 
 F2 提供了完善的动画自定义机制，用户可对任意支持动画的图形元素定制不同状态下的动画行为，这里所说的状态即为 appear enter leave update 这四种动画类型。
 
-在 F2 中执行的都是 [Shape(图形)](g/shape) 元素的动画，通过逐帧改变 shape 对象的图形属性来达到动画的效果，以下面圆的移动动画为例：![](https://gw.alipayobjects.com/zos/rmsportal/VsphIrCJSqpILogoZTiS.gif#width=)
+在 F2 中执行的都是 [Shape(图形)](graphic/shape) 元素的动画，通过逐帧改变 shape 对象的图形属性来达到动画的效果，以下面圆的移动动画为例：![](https://gw.alipayobjects.com/zos/rmsportal/VsphIrCJSqpILogoZTiS.gif#width=)
 
 这个动画的实现非常简单，由于动画的最终效果是将圆移至 B 点（画布坐标为 `{ x: 230, y: 50 }`），那么我们只需要通过调用 `shape.animate()` 方法指定 shape 的最终状态（图形属性）即可：
 
@@ -45,7 +45,7 @@ circle.animate().to({
 })
 ```
 
-各类型 shape 的图形属性说明见 [graphic 图形 api](g/shape)。
+各类型 shape 的图形属性说明见 [graphic 图形 api](graphic/shape)。
 
 F2 会为用户自定义的动画函数传递三个参数，按照顺序，分别为 `shape`、`animateCfg`、`coord`
 
@@ -72,7 +72,7 @@ shape 对象具体提供了以下属性来帮助用户进行操作：
 | `index` | shape.get('index') | Number | 获取当前 shape 的索引值，即顺序 |
 
 
-另外图形属性的获取还可以通过调用 `shape.attr(name)` 方法来获取，更多 shape 对象的方法请阅读 [Shape API](g/shape#attr)。
+另外图形属性的获取还可以通过调用 `shape.attr(name)` 方法来获取，更多 shape 对象的方法请阅读 [Shape API](graphic/shape#通用方法)。
 
 另外对于处理 `update` 更新状态下的 shape 对象，我们还会提供一个 `cacheShape` 属性，该属性为一个 Object 对象，存储的是当前 shape 在上一个状态（数据变更前）的内容，以便于用户进行变更动画的定制，该属性包含的内容如下：
 
