@@ -1,3 +1,46 @@
+#### 3.8.0 (2020-11-23)
+
+##### Chores
+
+*  release 3.8.0 ([77eabfc6](https://github.com/antvis/f2/commit/77eabfc6254db2ad57e8c1deb653e3c14695d3f4))
+*  release 3.8.0-alpha.2 ([c006d977](https://github.com/antvis/f2/commit/c006d9771accb84cef93fea1381ae7528c1b49c2))
+*  chart types 添加renderer参数 ([3df2460c](https://github.com/antvis/f2/commit/3df2460c88ff569b212daaaa1f57de79e3eecc13))
+*  release 3.8.0-alpha.1 ([ac6c75ff](https://github.com/antvis/f2/commit/ac6c75ff24f6256c8e650a6fed5ebd76d14177f8))
+*  release 3.7.8 ([fbd4073f](https://github.com/antvis/f2/commit/fbd4073f1adcc045f163306e98bb4c8b27dc3660))
+
+##### Documentation Changes
+
+*  修改官网首页example链接 ([b7a4e220](https://github.com/antvis/f2/commit/b7a4e2208888277e051a6e9bf26b32ea37925661))
+*  修改demo ([9834ec86](https://github.com/antvis/f2/commit/9834ec86131beb40d89a00abc69bf61c62016003))
+*  添加tooltip show hide 的文档说明 ([034cf4dc](https://github.com/antvis/f2/commit/034cf4dc90f1029f85e764d87b70bd345e6b0cac))
+*  添加无障碍aria的配置和使用文档 ([771a8157](https://github.com/antvis/f2/commit/771a8157f2b4824c9be00e87911279cafd352e90))
+*  修改文档结构和内容 ([539575b2](https://github.com/antvis/f2/commit/539575b21ac5f3e7c2afaf0bf0f0adc48601a6a6))
+
+##### New Features
+
+*  新增横屏的支持 ([9eb85ca1](https://github.com/antvis/f2/commit/9eb85ca1c734722c96998c2bbb4c20b0d4ec4b32))
+*  支持外部注册和扩展渲染引擎 ([a29f627f](https://github.com/antvis/f2/commit/a29f627f4a6200a2732fba1a6c51b686d21d9fc3))
+*  添加地图demo ([e5b764a7](https://github.com/antvis/f2/commit/e5b764a796994d0016d240fd7428159d2c6f2eb2))
+*  添加shape的无障碍处理 ([a740a941](https://github.com/antvis/f2/commit/a740a941d08c2706b9696a4a6497574042fa76e3))
+*  图表示例名称修改 ([7e813303](https://github.com/antvis/f2/commit/7e813303a05b69dab5d19c9f4bcf34de35b12ea1))
+*  去除icon ([cf8c12eb](https://github.com/antvis/f2/commit/cf8c12ebe47f18943aea41b838cf973293a5cc8c))
+*  新增gallery ([38c273df](https://github.com/antvis/f2/commit/38c273dfa1a89a9013a710882d33a86f088c1269))
+*  升级@antv/gatsby-theme-antv主题 ([34f521ab](https://github.com/antvis/f2/commit/34f521ab4d9b265b893cf287add5e2e7169de086))
+*  export tooltip component ([4067ecd7](https://github.com/antvis/f2/commit/4067ecd7a275478c309647ff2fe4e59ee6ce4394))
+
+##### Bug Fixes
+
+*  修复部分404文档跳转链接 ([0c8fa827](https://github.com/antvis/f2/commit/0c8fa827464bcb5f7975bb76fc07e09631dfed10))
+*  gitee sync fail ([2bdfbf00](https://github.com/antvis/f2/commit/2bdfbf0047a3bc3ffede05e70864f45e16861b28))
+*  remove circular dependency ([3817e75a](https://github.com/antvis/f2/commit/3817e75a9b1c0067316789dec3f09257c9bb5176))
+*  引用hammerjs导致小程序报错 ([0c15a67c](https://github.com/antvis/f2/commit/0c15a67c561cbd3896ff0ddd547a4825538081d7))
+*  setTheme 单独使用报错,即非Global.setTheme调用 ([01080d03](https://github.com/antvis/f2/commit/01080d03e676a4b843ed1c19f76cad618283a894))
+*  创意图结构修改 ([9c9c8077](https://github.com/antvis/f2/commit/9c9c8077e155933ef97e51e910542767af4883ca))
+
+##### Tests
+
+*  添加svg注册的测试用例 ([7ca79112](https://github.com/antvis/f2/commit/7ca7911281632325a7ce640da67648a502dacc5a))
+
 #### 3.7.7 (2020-09-04)
 
 ##### Chores
