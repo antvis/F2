@@ -159,6 +159,16 @@ const chart = new F2.Chart({
 - 描述：用于多 Y 轴的情况下，统一 Y 轴的数值范围。
 - 默认值：false
 
+### aria
+
+- 参数类型: Boolean
+- 描述：是否开启无障碍图表描述
+- 默认值：false
+
+开启后会生成 ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/bc816ba8-0bd1-4081-88f8-0f0f982550cf.png) 这种可被读屏设备阅读的表述文案
+
+参考[demo](/zh/examples/column/basic#aria)
+
 
 ## 方法
 

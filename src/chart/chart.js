@@ -20,7 +20,7 @@ import Geom from '../geom/base';
 import ScaleController from './controller/scale';
 import AxisController from './controller/axis';
 import Global from '../global';
-import { Canvas } from '../graphic/index';
+import { createCanvas } from '../graphic/index';
 import { getClip } from '../util/helper';
 
 
@@ -138,6 +138,8 @@ class Chart extends Base {
        * @type {String}
        */
       id: null,
+      /** 图表渲染引擎 */
+      renderer: 'canvas',
       rendered: false,
       /**
        * padding
@@ -384,13 +386,17 @@ class Chart extends Base {
   _initCanvas() {
     const self = this;
     try {
-      const canvas = new Canvas({
+      const canvas = createCanvas({
+        renderer: self.get('renderer'),
         el: self.get('el') || self.get('id'),
         context: self.get('context'),
         pixelRatio: self.get('pixelRatio'),
         width: self.get('width'),
         height: self.get('height'),
-        fontFamily: Global.fontFamily
+        fontFamily: Global.fontFamily,
+        aria: self.get('aria'),
+        title: self.get('title'),
+        landscape: self.get('landscape')
       });
       self.set('canvas', canvas);
       self.set('el', canvas.get('el'));
@@ -913,6 +919,15 @@ class Chart extends Base {
     const coord = this.get('coord');
     plot.reset(start, end);
     coord.reset(plot);
+  }
+  /**
+   * 是否为横屏展示
+   *
+   * @param {Boolean} landscape 是否为横屏
+   */
+  landscape(landscape) {
+    const canvas = this.get('canvas');
+    canvas.set('landscape', landscape);
   }
 }
 

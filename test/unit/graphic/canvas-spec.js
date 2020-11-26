@@ -1,8 +1,9 @@
 import { expect } from 'chai';
-import Group from '../../../src/graphic/group';
-import Canvas from '../../../src/graphic/canvas';
-import '../../../src/graphic/shape/line';
-import '../../../src/graphic/shape/circle';
+import Group from '../../../src/graphic/engine/group';
+import Canvas from '../../../src/graphic/engine/canvas';
+import '../../../src/graphic/engine/shape/line';
+import '../../../src/graphic/engine/shape/circle';
+import '../../../src/graphic/engine/shape/text';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas';
@@ -150,6 +151,81 @@ describe('Canvas', function() {
     expect(dom.height).to.equal(0);
     expect(canvas.isDestroyed()).to.be.true;
     document.body.removeChild(dom);
+  });
+
+  it('aria label', function() {
+    const canvas = new Canvas({
+      el: dom,
+      width: 500,
+      height: 500,
+      pixelRatio: 2,
+      aria: true
+    });
+
+    // 无障碍内容
+    const group = canvas.addGroup({
+      ariaLabel: '图例'
+    });
+    group.addShape('text', {
+      attrs: {
+        text: '分组1',
+        x: 10,
+        y: 10,
+        fill: '#000'
+      }
+    });
+    group.addShape('text', {
+      attrs: {
+        text: '分组2',
+        x: 20,
+        y: 20,
+        fill: '#000'
+      }
+    });
+
+    // 不需要无障碍内容
+    const group1 = canvas.addGroup({
+      aria: false
+    });
+    group1.addShape('text', {
+      attrs: {
+        text: '分组3',
+        x: 30,
+        y: 30,
+        fill: '#000'
+      }
+    });
+    group1.addShape('text', {
+      attrs: {
+        text: '分组4',
+        x: 40,
+        y: 40,
+        fill: '#000'
+      }
+    });
+
+    canvas.draw();
+    expect(dom.getAttribute('aria-label')).to.equal('这是一个图表， 图例 分组1 分组2  ');
+
+
+    const group2 = canvas.addGroup();
+    const group3 = group2.addGroup({
+      aria: true
+    });
+    const group4 = group3.addGroup();
+    // group嵌套
+    group4.addShape('text', {
+      attrs: {
+        text: '其他',
+        x: 50,
+        y: 50,
+        fill: '#000'
+      }
+    });
+
+    canvas.set('animateHandler', undefined);
+    canvas.draw();
+    expect(dom.getAttribute('aria-label')).to.equal('这是一个图表， 图例 分组1 分组2  其他 ');
   });
 });
 

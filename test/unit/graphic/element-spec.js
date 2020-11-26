@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Element from '../../../src/graphic/element';
+import Element from '../../../src/graphic/engine/element';
 
 const dom = document.createElement('canvas');
 dom.id = 'element';

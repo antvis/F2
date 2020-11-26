@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Circle from '../../../../src/graphic/shape/circle';
-import Canvas from '../../../../src/graphic/canvas';
+import Circle from '../../../../src/graphic/engine/shape/circle';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-circle';

@@ -1,3 +1,5 @@
+import { isFunction, isNumber } from '@antv/util';
+
 /**
  * Detects support for options object argument in addEventListener.
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
@@ -80,19 +82,13 @@ function getDomById(id) {
 function getRelativePosition(point, canvas) {
   const canvasDom = canvas.get('el');
   if (!canvasDom) return point;
-  const { top, right, bottom, left } = canvasDom.getBoundingClientRect();
+  const { top, left } = canvasDom.getBoundingClientRect();
 
   const paddingLeft = parseFloat(getStyle(canvasDom, 'padding-left'));
   const paddingTop = parseFloat(getStyle(canvasDom, 'padding-top'));
-  const paddingRight = parseFloat(getStyle(canvasDom, 'padding-right'));
-  const paddingBottom = parseFloat(getStyle(canvasDom, 'padding-bottom'));
-  const width = right - left - paddingLeft - paddingRight;
-  const height = bottom - top - paddingTop - paddingBottom;
-  const pixelRatio = canvas.get('pixelRatio');
 
-  const mouseX = (point.x - left - paddingLeft) / (width) * canvasDom.width / pixelRatio;
-  const mouseY = (point.y - top - paddingTop) / (height) * canvasDom.height / pixelRatio;
-
+  const mouseX = point.x - left - paddingLeft;
+  const mouseY = point.y - top - paddingTop;
   return {
     x: mouseX,
     y: mouseY
@@ -107,41 +103,58 @@ function removeEventListener(source, type, listener) {
   source.removeEventListener(type, listener, eventListenerOptions);
 }
 
-function createEventObj(type, chart, x, y, nativeEvent) {
-  return {
-    type,
-    chart,
-    native: nativeEvent || null,
-    x: x !== undefined ? x : null,
-    y: y !== undefined ? y : null
-  };
+function landscapePoint(point, canvas) {
+  const landscape = canvas.get('landscape');
+  if (!landscape) {
+    return point;
+  }
+  if (isFunction(landscape)) {
+    return landscape(point, canvas);
+  }
+  // 默认顺时针旋转90度
+  const height = canvas.get('height');
+  const x = point.y;
+  const y = height - point.x;
+  return { x, y };
+}
+
+function convertPoints(ev, canvas) {
+  const touches = ev.touches;
+  // 认为是mouse事件
+  if (!touches) {
+    const point = getRelativePosition({ x: ev.clientX, y: ev.clientY }, canvas);
+    return [ landscapePoint(point, canvas) ];
+  }
+  const points = [];
+  for (let i = 0, len = touches.length; i < len; i++) {
+    const touch = touches[i];
+    // x, y: 相对canvas原点的位置，clientX, clientY 相对于可视窗口的位置
+    const { x, y, clientX, clientY } = touch;
+    let point;
+    // 小程序环境会有x,y
+    if (isNumber(x) || isNumber(y)) {
+      point = { x, y };
+    } else {
+      // 浏览器环境再计算下canvas的相对位置
+      point = getRelativePosition({ x: clientX, y: clientY }, canvas);
+    }
+    points.push(landscapePoint(point, canvas));
+  }
+  return points;
 }
 
 function createEvent(event, chart) {
-  const type = event.type;
-  let clientPoint;
-  // 说明是touch相关事件
-  if (event.touches) {
-    // https://developer.mozilla.org/zh-CN/docs/Web/API/TouchEvent/changedTouches
-    // 这里直接拿changedTouches就可以了，不管是touchstart, touchmove, touchend changedTouches 都是有的
-    // 为了以防万一，做个空判断
-    const touch = event.changedTouches[0] || {};
-    // x, y: 相对canvas原点的位置，clientX, clientY 相对于可视窗口的位置
-    const { x, y, clientX, clientY } = touch;
-    // 小程序环境会有x,y，这里就直接返回
-    if (x && y) {
-      return createEventObj(type, chart, x, y, event);
-    }
-    clientPoint = { x: clientX, y: clientY };
-  } else {
-    // mouse相关事件
-    clientPoint = { x: event.clientX, y: event.clientY };
-  }
-  // 理论上应该是只有有在浏览器环境才会走到这里
   const canvas = chart.get('canvas');
-  // 通过clientX, clientY 计算x, y
-  const point = getRelativePosition(clientPoint, canvas);
-  return createEventObj(type, chart, point.x, point.y, event);
+  const points = convertPoints(event, canvas);
+  // touchend会没有points
+  const point = points[0] || {};
+  return {
+    type: event.type,
+    chart,
+    native: event,
+    x: point.x,
+    y: point.y
+  };
 }
 
 function measureText(text, font, ctx) {
@@ -168,5 +181,6 @@ export {
   addEventListener,
   removeEventListener,
   createEvent,
+  convertPoints,
   measureText
 };

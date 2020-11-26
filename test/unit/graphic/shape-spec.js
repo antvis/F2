@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Shape from '../../../src/graphic/shape';
+import Shape from '../../../src/graphic/engine/shape';
 
 describe('Shape', function() {
   const s = new Shape({

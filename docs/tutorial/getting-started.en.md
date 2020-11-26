@@ -14,10 +14,10 @@ order: 0
 npm install @antv/f2 --save
 ```
 
-成功安装完成之后，即可使用 `import` 或 `require` 进行引用。
+成功安装完成之后，即可使用 `import` 进行引用。
 
 ```javascript
-const F2 = require('@antv/f2');
+import F2 from '@antv/f2';
 ```
 
 ### 浏览器引入
@@ -43,9 +43,7 @@ const F2 = require('@antv/f2');
 
 下面是以一个基础的柱状图为例开始我们的第一个图表创建。
 
-### 浏览器引入方式
-
-#### 1. 创建canvas标签
+### 1. 创建canvas标签
 
 在页面上创建一个 `<canvas>` 并指定 `id`：
 
@@ -53,7 +51,7 @@ const F2 = require('@antv/f2');
 <canvas id="myChart" width="400" height="260"></canvas>
 ```
 
-#### 2. 编写图表绘制代码
+### 2. 编写代码
 
 创建 `<canvas>` 标签后，我们就可以进行简单的图表绘制:
 
@@ -115,27 +113,6 @@ chart.interval().position('genre*sold').color('genre');
 chart.render();
 ```
 
-### 更多示例
+## 更多示例
 
-更多的示例直接查看 [Demo](/en/examples/basic)。
-
-## 体验改进计划说明
-
-> **2018-12-27 更新：**
-
-> **目前我们的体验改进计划已经完成，所以从 3.3.4 版本（2018-12-27 发布）开始该方法将从 F2 中删除。我们改进计划期间为您造成的困扰感到万分抱歉！**
-
-
-~~为了更好服务用户，F2(3.1.12 版本开始) 会将 URL 和版本信息发送回 AntV 服务器（H5 环境下）：~~
-
-```html
-https://kcart.alipay.com/web/bi.do
-```
-
-~~除了 URL 与 F2 版本信息外，不会收集任何其他信息，一切为了能对 F2 的运行情况有更多了解，以更好服务于用户。如有担心，可以通过下面的代码关闭：~~
-
-```javascript
-// 关闭 F2 的体验改进计划打点请求
-F2.track(false)
-```
-
+更多的示例直接查看 [Demo](/zh/examples/basic)。

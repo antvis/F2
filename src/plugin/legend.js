@@ -3,7 +3,7 @@ import {
   removeEventListener, addEventListener, Array
 } from '../util/common';
 import List from '../component/list';
-import Global from '../global';
+import Global, { lang } from '../global';
 
 const LEGEND_GAP = 12;
 const MARKER_SIZE = 3;
@@ -377,7 +377,7 @@ class LegendController {
 
 function init(chart) {
   const legendController = new LegendController({
-    container: chart.get('backPlot'),
+    container: chart.get('backPlot').addGroup(),
     plotRange: chart.get('plotRange'),
     chart
   });
@@ -406,7 +406,7 @@ function beforeGeomDraw(chart) {
   const legendController = chart.get('legendController');
   if (!legendController.enable) return null; // legend is not displayed
 
-  const legendCfg = legendController.legendCfg;
+  const { legendCfg, container } = legendController;
 
   if (legendCfg && legendCfg.custom) {
     legendController.addCustomLegend();
@@ -458,6 +458,11 @@ function beforeGeomDraw(chart) {
     legendRange[position] = padding + getPaddingByPos(position, chart.get('appendPadding'));
   });
   chart.set('legendRange', legendRange);
+  if (Object.keys(legends).length) {
+    container.set('ariaLabel', lang.legend.prefix);
+  } else {
+    container.set('ariaLabel', null);
+  }
 }
 
 function afterGeomDraw(chart) {

@@ -3,7 +3,6 @@ import { deepMix, each, isFunction, mix, parsePadding, isNil } from '../../util/
 import Axis from '../../component/axis/index';
 
 import Global from '../../global';
-import { Shape } from '../../graphic/index';
 
 function formatTicks(ticks) {
   const tmp = ticks.slice(0);
@@ -161,8 +160,11 @@ class AxisController {
         if (labelCfg.textBaseline) {
           textStyle.textBaseline = labelCfg.textBaseline;
         }
-        const axisLabel = new Shape.Text({
+
+        const container = labelCfg.top ? this.frontPlot : this.backPlot;
+        const axisLabel = container.addShape('text', {
           className: 'axis-label',
+          aria: false,
           attrs: mix({
             x: 0,
             y: 0,

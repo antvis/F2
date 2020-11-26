@@ -95,7 +95,7 @@ describe('Legend Plugin', function() {
     chart.render();
 
     expect(chart.get('legendRange')).to.be.null;
-    expect(chart.get('backPlot').get('children').length).to.equal(1);
+    expect(chart.get('backPlot').get('children').length).to.equal(2);
   });
 
   it('legend with title', function() {

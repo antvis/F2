@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Polygon from '../../../../src/graphic/shape/polygon';
-import Canvas from '../../../../src/graphic/canvas';
+import Polygon from '../../../../src/graphic/engine/shape/polygon';
+import Canvas from '../../../../src/graphic/engine/canvas';
 
 const dom = document.createElement('canvas');
 dom.id = 'canvas-polygon';

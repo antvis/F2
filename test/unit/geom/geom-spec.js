@@ -4,7 +4,7 @@ import Scale from '../../../src/scale/index';
 import Coord from '../../../src/coord/index';
 import '../../../src/coord/polar';
 import Global from '../../../src/global';
-import { Canvas } from '../../../src/graphic/index';
+import { Canvas } from '../../../src/graphic/engine/index';
 import '../../../src/geom/adjust/index';
 import '../../../src/geom/shape/index';
 

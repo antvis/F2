@@ -1,9 +1,10 @@
 import * as Attr from '../attr/index';
-import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array as ArrayUtil, toTimeStamp } from '../util/common';
+import { isArray, isString, each, isFunction, upperFirst, mix, isNil, isObject, Array as ArrayUtil, toTimeStamp, substitute } from '../util/common';
 import Base from '../base';
-import Global from '../global';
+import Global, { lang } from '../global';
 import GeometryShape from './shape/shape';
 import Adjust from '@antv/adjust/lib/base';
+import { generateCoordAria } from './aria/util';
 
 const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
 const FIELD_ORIGIN = '_origin';
@@ -125,7 +126,6 @@ class Geom extends Base {
       return ArrayUtil.group(data, names, appendConditions);
     }
     return [ data ];
-
   }
 
   _setAttrOptions(attrName, attrCfg) {
@@ -353,6 +353,7 @@ class Geom extends Base {
       }
     }
     self.set('dataArray', mappedArray);
+    this.generateAria();
   }
 
   getShapeFactory() {
@@ -546,6 +547,62 @@ class Geom extends Base {
         data[0].nextPoints = nextData[0].points;
       }
     });
+  }
+
+  // 生成无障碍文本
+  generateAria() {
+    const container = this.get('container');
+    const aria = container.get('aria');
+    if (!aria) {
+      return;
+    }
+    const ariaLables = [];
+    const coord = this.get('coord');
+    const xScale = this.getXScale();
+    const yScale = this.getYScale();
+    const coordAriaLabel = generateCoordAria(coord, xScale, yScale);
+    ariaLables.push(coordAriaLabel);
+
+    const { prefix, oneData, partData, allData } = lang.geometry;
+    const dataArray = this.get('dataArray');
+    const count = dataArray.length;
+
+    // 只处理一个，不然太复杂
+    const groupScale = this._getGroupScales()[0];
+    if (groupScale) {
+      const prefixLabel = substitute(prefix, { count });
+      ariaLables.push(prefixLabel);
+      each(dataArray, (data, index) => {
+        const len = data.length;
+        if (!len) return;
+        const firstObj = data[0]._origin;
+        if (len === 1) {
+          ariaLables.push(substitute(oneData, {
+            index: index + 1,
+            count: len,
+            name: firstObj[groupScale.field],
+            values: firstObj[yScale.field]
+          }));
+        } else {
+          const template = len > 5 ? partData : allData;
+          const values = data.slice(0, 5).map(record => {
+            const { _origin } = record;
+            const xValue = xScale.getText(_origin[xScale.field]);
+            const yValue = yScale.getText(_origin[yScale.field]);
+            return `${xValue}:${yValue}`;
+          });
+          ariaLables.push(substitute(template, {
+            index: index + 1,
+            count: len,
+            part: 3,
+            name: firstObj[groupScale.field],
+            values: values.join(' ')
+          }));
+        }
+      });
+    }
+
+    container.set('ariaLabel', ariaLables.join(''));
   }
 
   /**

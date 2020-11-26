@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "map.js",
+      "title": "地图",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/51d3f37a-d0ab-47d8-9037-d8fb7791f497.png"
+    }
+  ]
+}

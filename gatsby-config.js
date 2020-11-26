@@ -32,10 +32,10 @@ module.exports = {
         }
       },
       {
-        slug: 'examples',
+        slug: 'examples/gallery',
         title: {
           zh: '图表示例',
-          en: 'Examples'
+          en: 'Gallery'
         }
       }
     ],
@@ -70,8 +70,16 @@ module.exports = {
         slug: 'gallery',
         icon: 'gallery',
         title: {
-          zh: 'Gallery',
-          en: 'Gallery'
+          zh: '',
+          en: ''
+        }
+      },
+      {
+        slug: 'creative',
+        icon: 'gallery',
+        title: {
+          zh: '场景案例',
+          en: 'Creative Charts'
         }
       },
       {

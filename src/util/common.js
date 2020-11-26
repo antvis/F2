@@ -20,7 +20,8 @@ import {
   mix,
   each,
   uniq,
-  find
+  find,
+  substitute
 } from '@antv/util';
 import * as ArrayUtil from './array';
 
@@ -113,5 +114,6 @@ export {
   isObjectValueEqual,
   parsePadding,
   directionEnabled,
-  toTimeStamp
+  toTimeStamp,
+  substitute
 };

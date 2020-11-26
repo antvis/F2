@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "3.7.7",
+  "version": "3.8.0",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@antv/data-set": "^0.10.2",
-    "@antv/gatsby-theme-antv": "^0.10.17",
+    "@antv/gatsby-theme-antv": "^1.0.0-beta.11",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -59,6 +59,7 @@
     "electron": "^7.1.9",
     "eslint": "^6.7.2",
     "eslint-config-egg": "~4.2.0",
+    "f2-svg-engine": "^0.0.2",
     "gatsby": "^2.17.7",
     "get-port": "~3.1.0",
     "gh-pages": "^2.1.1",
@@ -78,8 +79,7 @@
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
     "typescript": "~3.9.5",
-    "uglify-js": "~3.0.15",
-    "webpack": "~3.4.1"
+    "uglify-js": "~3.0.15"
   },
   "scripts": {
     "start": "npm run site:develop",

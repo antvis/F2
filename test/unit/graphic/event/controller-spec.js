@@ -1,5 +1,5 @@
-import Canvas from '../../../../src/graphic/canvas';
-import CanvasElement from '../../../../src/graphic/canvas-element';
+import Canvas from '../../../../src/graphic/engine/canvas';
+import CanvasElement from '../../../../src/graphic/engine/canvas-element';
 
 const clickCallback = jest.fn();
 const touchstartCallback = jest.fn();
