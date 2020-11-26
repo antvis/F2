@@ -3,7 +3,7 @@
  * @author sima.zhang1990@gmail.com
  */
 import {
-  mix, isArray, isNumber, each, isNil, isFunction, isString,
+  mix, isArray, each, isNil, isFunction, isString,
   isObject, deepMix
 } from '../util/common';
 
@@ -104,9 +104,9 @@ const GROUP_ANIMATION = {
 function diff(fromAttrs, toAttrs) {
   const endState = {};
   for (const k in toAttrs) {
-    if (isNumber(fromAttrs[k]) && fromAttrs[k] !== toAttrs[k]) {
+    if (isArray(fromAttrs[k]) && JSON.stringify(fromAttrs[k]) !== JSON.stringify(toAttrs[k])) {
       endState[k] = toAttrs[k];
-    } else if (isArray(fromAttrs[k]) && JSON.stringify(fromAttrs[k]) !== JSON.stringify(toAttrs[k])) {
+    } else if (fromAttrs[k] !== toAttrs[k]) {
       endState[k] = toAttrs[k];
     }
   }
