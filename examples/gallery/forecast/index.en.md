@@ -1,5 +1,5 @@
 ---
-title: 预测线
+title: Forecast
 order: 1
 icon: gallery
 ---
