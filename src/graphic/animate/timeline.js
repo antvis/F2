@@ -31,11 +31,18 @@ class Timeline {
   }
 
   pushAnim(animInfo) {
-    this.anims.push(animInfo);
-    if (this.playing) {
-      return;
+    // 先启动动画
+    if (!this.playing) {
+      this.play();
     }
-    this.play();
+
+    const { delay, duration } = animInfo;
+    const startTime = this.time + delay;
+    const endTime = startTime + duration;
+    animInfo.startTime = startTime;
+    animInfo.endTime = endTime;
+
+    this.anims.push(animInfo);
   }
 
   update() {

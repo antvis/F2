@@ -60,7 +60,7 @@ class Animator {
 
     const animInfo = {
       shape: this.shape,
-      startTime: this.timeline.time + delay,
+      delay,
       duration,
       easing
     };
@@ -84,7 +84,6 @@ class Animator {
     animInfo.interpolate = interpolate;
     animInfo.startState = this.source;
     animInfo.endState = attrs;
-    animInfo.endTime = animInfo.startTime + duration;
 
     this.timeline.pushAnim(animInfo);
     this.animate = animInfo;

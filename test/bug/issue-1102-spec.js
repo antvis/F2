@@ -48,14 +48,21 @@ describe('issue 1102', () => {
     chart.render();
 
     setTimeout(() => {
-      line.shape('smooth').color('red');
+      line.shape('smooth').color('red').size(10);
       chart.repaint();
       setTimeout(() => {
         const container = line.get('container');
         const shape = container.get('children')[0];
         expect(shape._attrs.attrs.strokeStyle).toBe('red');
-        done();
-      }, 200);
-    }, 100);
+
+        // 测试是否有进行动画
+        expect(shape._attrs.attrs.lineWidth).not.toBe(10);
+        setTimeout(() => {
+          // 动画结束
+          expect(shape._attrs.attrs.lineWidth).toBe(10);
+          done();
+        }, 1000);
+      }, 50);
+    }, 1000);
   });
 });
