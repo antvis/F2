@@ -1,3 +1,10 @@
+#### 3.8.1 (2020-12-04)
+
+##### Bug Fixes
+
+*  修复repaint时动画不生效 ([f0ba1814](https://github.com/antvis/f2/commit/f0ba181463dd2d40693c75ac248d26ce87739761))
+*  修复repaint shape属性不生效。Closed [#1102](https://github.com/antvis/f2/pull/1102) ([b1ba85e5](https://github.com/antvis/f2/commit/b1ba85e590eeb5237aec3d07c771cb05e9371b63))
+
 #### 3.8.0 (2020-11-23)
 
 ##### Chores
