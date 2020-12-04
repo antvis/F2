@@ -270,7 +270,11 @@ function addAnimate(cache, shapes, canvas) {
       if (isFunction(animate)) {
         animate(updateShape, animateCfg, coord);
       } else {
-        updateShape.attr(cacheAttrs);
+        const startState = {};
+        each(endState, function(value, key) {
+          startState[key] = cacheAttrs[key];
+        });
+        updateShape.attr(startState);
         updateShape.animate().to({
           attrs: endState,
           duration: animateCfg.duration,
