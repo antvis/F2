@@ -1,0 +1,6 @@
+mock
+coverage
+node_modules
+dist
+es
+scripts
