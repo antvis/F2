@@ -84,7 +84,7 @@ document.querySelector('.mobile-content').innerHTML = `
       </div>
     </div>
     <canvas id="container"></canvas>
-  <div>
+  </div>
 `;
 
 fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
