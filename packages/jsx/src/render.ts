@@ -1,6 +1,5 @@
 import JSX from './interface';
 import computeLayout from 'css-layout';
-import elementFactory from './element';
 import { isArray } from './util';
 
 // 展开数组
@@ -23,11 +22,8 @@ function extendArray(arr: any[]) {
   return newArray;
 }
 
-function createElement(node, container) {
+function createElement(node, container, parentLayout) {
   const { type, props, style, layout, children } = node;
-  // const element = elementFactory.create(container, node);
-
-
   if (type === 'group') {
     const element = container.addGroup({
       attrs: style,
@@ -35,13 +31,20 @@ function createElement(node, container) {
     // 只有group才需要处理children
     if (children && children.length) {
       for (let i = 0, len = children.length; i < len; i++) {
-        createElement(children[i], element);
+        createElement(children[i], element, layout);
       }
     }
     return element;
   }
+  const { width, height, left, top } = layout;
   return container.addShape(type, {
-    attrs: style,
+    attrs: {
+      ...style,
+      x: left,
+      y: top,
+      width,
+      height,
+    },
     ...props,
   });
 }
@@ -50,5 +53,5 @@ function createElement(node, container) {
 export default (node: JSX.Element, container: any) => {
   node.children = extendArray(node.children);
   computeLayout(node);
-  return createElement(node, container);
+  return createElement(node, container, null);
 }

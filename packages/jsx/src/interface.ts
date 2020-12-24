@@ -1,5 +1,3 @@
-import JSX from './interface';
-
 declare global {
   namespace JSX {
     interface Element {
@@ -14,8 +12,8 @@ declare global {
       render(): any;
     }
     interface IntrinsicElements {
-      group: any;
-      rect: any;
+      // group: any;
+      // rect: any;
     }
   }
 }

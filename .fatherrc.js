@@ -1,4 +1,8 @@
 export default {
+  pkgs: [
+    'jsx',
+    'component'
+  ],
   cjs: {
     type: 'babel'
   },

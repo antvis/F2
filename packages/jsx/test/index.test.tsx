@@ -1,4 +1,5 @@
 /** @jsxImportSource .. */
+// @ts-nocheck
 import { canvas } from './global';
 import render from '../src/render';
 
@@ -7,26 +8,31 @@ describe('index', () => {
     canvas.clear();
     const profile = (
       <group style={{
+        // width: 200,
         flexDirection: 'row',
-        padding: 20
+        // padding: 20,
+        flex: 1,
       }}>
         <rect style={{
-          width: 20,
-          height: 20,
+          // width: 20,
+          // height: 20,
           fill: 'red'
         }} />
         <rect style={{
-          width: 20,
-          height: 20,
+          // marginLeft: 10,
+          // width: 20,
+          // height: 20,
           fill: 'green'
         }} />
         <text style={{
+          // width: 20,
+          // margin: 20,
           text: '111',
           fill: '#000'
         }} />
       </group>
     );
-    console.log(profile);
+    // console.log(profile);
     render(profile, canvas);
 
     canvas.draw();

@@ -1,4 +1,3 @@
-import JSX from '../src/interface';
 import * as F2 from '@antv/f2';
 
 const { G } = F2;
