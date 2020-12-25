@@ -1,5 +1,6 @@
 import { useEffect, useState, Children } from 'react';
 import F2 from '@antv/f2';
+import render from '../../../jsx/src/render';
 
 export default ({ canvasRef, pixelRatio, data, children }) => {
   // const [chart, setChart] = useState();
@@ -14,15 +15,24 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
 
     chart.source(data);
 
-    Children.map(children, child => {
+    const components = Children.map(children, child => {
       const { type, props } = child;
-      return type({
+      return new type({
         ...props,
         chart,
       });
     });
 
-    // const frontPlot = chart.get('frontPlot');
+    const frontPlot = chart.get('frontPlot');
+    // @ts-ignore
+    chart.on('aftergeomdraw', () => {
+      // component render
+      for (let i = 0, len = components.length; i < len; i++) {
+        const component = components[i];
+        console.log(component);
+        // render(component.render(), frontPlot);
+      }
+    });
 
     chart.render();
     return;

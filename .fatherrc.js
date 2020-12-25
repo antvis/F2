@@ -4,10 +4,10 @@ export default {
     'component'
   ],
   cjs: {
-    type: 'babel'
+    // type: 'babel'
   },
   esm: {
-    type: 'babel'
+    // type: 'babel'
   },
   extraBabelPlugins: [
     ['@babel/plugin-transform-react-jsx', {

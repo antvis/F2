@@ -23,11 +23,10 @@ function extendArray(arr: any[]) {
 }
 
 function createElement(node, container, parentLayout) {
-  const { type, props, style, layout, children } = node;
+  const { type, props, layout, children } = node;
+  const { attrs } = props;
   if (type === 'group') {
-    const element = container.addGroup({
-      attrs: style,
-    });
+    const element = container.addGroup();
     // 只有group才需要处理children
     if (children && children.length) {
       for (let i = 0, len = children.length; i < len; i++) {
@@ -38,14 +37,14 @@ function createElement(node, container, parentLayout) {
   }
   const { width, height, left, top } = layout;
   return container.addShape(type, {
+    ...props,
     attrs: {
-      ...style,
+      ...attrs,
       x: left,
       y: top,
       width,
       height,
     },
-    ...props,
   });
 }
 

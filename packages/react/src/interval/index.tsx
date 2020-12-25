@@ -1,15 +1,23 @@
+// @ts-nocheck
 
-export default (props) => {
-  const { chart, position } = props;
-  const geom = chart.interval();
-  geom.position(position);
-  console.log('interval props:', props);
-  return null;
+function model(View) {
+  return class I {
+    init() {
+      const { chart, position } = this.props;
+      const geom = chart.interval();
+      geom.position(position);
+    }
+    render() {
+      return <View />
+    };
+  }
 }
 
-// export default class Interval {
-//   render() {
-//     return null;
-//   }
-// }
+export default model((props) => {
+  // const { chart, position } = props;
+  // const geom = chart.interval();
+  // geom.position(position);
+  // console.log('interval props:', props);
+  return null;
+});
 

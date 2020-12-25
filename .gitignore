@@ -9,3 +9,4 @@ coverage/
 .vscode/
 .docz/
 .DS_Store
+package-lock.json

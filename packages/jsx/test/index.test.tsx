@@ -1,5 +1,4 @@
 /** @jsxImportSource .. */
-// @ts-nocheck
 import { canvas } from './global';
 import render from '../src/render';
 
@@ -8,43 +7,36 @@ describe('index', () => {
     canvas.clear();
     const profile = (
       <group style={{
-        // width: 200,
+        width: 200,
+        height: 100,
         flexDirection: 'row',
-        // padding: 20,
-        flex: 1,
       }}>
         <rect style={{
-          // width: 20,
-          // height: 20,
-          fill: 'red'
-        }} />
+            width: 100,
+            flex: 1,
+          }}
+          attrs={{
+            fill: 'red',
+          }}
+        />
         <rect style={{
-          // marginLeft: 10,
-          // width: 20,
-          // height: 20,
-          fill: 'green'
+            flex: 1,
+          }}
+          attrs={{
+            fill: 'green'
         }} />
         <text style={{
-          // width: 20,
-          // margin: 20,
-          text: '111',
-          fill: '#000'
+            flex: 1,
+          }}
+          attrs={{
+            textBaseline: 'top',
+            text: '111',
+            fill: '#000'
         }} />
       </group>
     );
-    // console.log(profile);
     render(profile, canvas);
-
+    console.log(canvas);
     canvas.draw();
-
-    // const group = render(
-    //   <view>
-    //     <text style={{ color: '#000' }}>ss</text>
-    //     <text style={{ color: 'red' }}>aaa</text>
-    //   </view>, canvas);
-    // canvas.draw();
-    // expect(group.get('children').length).toBe(2);
-    // expect(group.get('children')[1].get('attrs').x).toBe(0);
-    // expect(group.get('children')[1].get('attrs').y).toBe(18);
   });
 });

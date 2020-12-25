@@ -1,8 +1,10 @@
 /** @jsxImportSource react */
+// @ts-nocheck
 
 import ReactDOM from 'react-dom';
 import Chart from '../src/chart';
 import Interval from '../src/interval';
+import Legned from '../../legend/src/index';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -34,6 +36,7 @@ const App = () => {
       data={ data }
     >
       <Interval position="genre*sold" />
+      <Legned />
     </Chart>
   );
 }

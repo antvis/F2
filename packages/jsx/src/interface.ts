@@ -12,8 +12,10 @@ declare global {
       render(): any;
     }
     interface IntrinsicElements {
-      // group: any;
-      // rect: any;
+      group: any;
+      rect: any;
+      circle: any;
+      text: any;
     }
   }
 }
