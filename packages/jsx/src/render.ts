@@ -1,4 +1,3 @@
-import JSX from './interface';
 import computeLayout from './css-layout';
 import { isArray } from './util';
 
@@ -50,8 +49,7 @@ function createElement(node, container, parentLayout) {
 }
 
 
-
-export default (node: JSX.Element, container: any) => {
+export default (node: any, container: any) => {
   if (!node) {
     return;
   }

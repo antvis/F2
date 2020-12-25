@@ -2,6 +2,7 @@ class Component {
   chart: any;
   container: any;
   props: any;
+  state: any;
   actions: any;
 
   constructor(props, chart) {

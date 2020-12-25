@@ -26,8 +26,6 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
       // component render
       for (let i = 0, len = components.length; i < len; i++) {
         const component = components[i];
-        // console.log(component);
-        // debugger;
         render(component.render(), frontPlot);
       }
     });

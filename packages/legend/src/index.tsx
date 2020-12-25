@@ -3,10 +3,11 @@
 import model from './model';
 
 const View = (props) => {
+  const { record } = props;
   return (
     <group style={{
       flexDirection: 'row',
-      width: 100,
+      flex: 1,
       padding: 20
     }}>
       <text style={{
@@ -21,7 +22,7 @@ const View = (props) => {
           fill: 1,
         }}
         attrs={{
-          text: '11',
+          text: JSON.stringify(record),
           fill: '#000'
         }}
       />
