@@ -1,8 +1,8 @@
 {
   "name": "f2-jsx",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@antv/f2": "~3.8.1",

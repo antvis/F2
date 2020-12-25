@@ -1,5 +1,5 @@
 import JSX from './interface';
-import computeLayout from 'css-layout';
+import computeLayout from './css-layout';
 import { isArray } from './util';
 
 // 展开数组
@@ -21,6 +21,7 @@ function extendArray(arr: any[]) {
   }
   return newArray;
 }
+
 
 function createElement(node, container, parentLayout) {
   const { type, props, layout, children } = node;
@@ -49,7 +50,11 @@ function createElement(node, container, parentLayout) {
 }
 
 
+
 export default (node: JSX.Element, container: any) => {
+  if (!node) {
+    return;
+  }
   node.children = extendArray(node.children);
   computeLayout(node);
   return createElement(node, container, null);

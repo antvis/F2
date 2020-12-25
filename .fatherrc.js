@@ -1,17 +1,18 @@
 export default {
-  pkgs: [
-    'jsx',
-    'component'
-  ],
+  // pkgs: [
+  //   'jsx',
+  //   'component'
+  // ],
   cjs: {
-    // type: 'babel'
+    type: 'babel'
   },
   esm: {
-    // type: 'babel'
+    type: 'babel'
   },
   extraBabelPlugins: [
     ['@babel/plugin-transform-react-jsx', {
-      "runtime": "automatic"
+      runtime: 'automatic',
+      importSource: 'f2-jsx'
     }]
   ]
 }

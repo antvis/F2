@@ -1,33 +1,33 @@
 // @ts-nocheck
-/** @jsxImportSource ../../jsx */
 
-function model(View) {
-  return class LegendModel {
-    render() {
-      return <View />
-    }
-  }
-}
+import model from './model';
 
-
-export default model((props) => {
+const View = (props) => {
   return (
     <group style={{
       flexDirection: 'row',
+      width: 100,
       padding: 20
     }}>
       <text style={{
-        x: 10,
-        y: 10,
-        text: `aa `,
-        fill: '#000'
-      }} />
+        flex: 1,
+      }}
+        attrs={{
+          text: '11',
+          fill: '#000'
+        }}
+      />
       <text style={{
-        x: 60,
-        y: 10,
-        text: 'sold',
-        fill: '#000'
-      }} />
+          fill: 1,
+        }}
+        attrs={{
+          text: '11',
+          fill: '#000'
+        }}
+      />
     </group>
   );
-})
+}
+
+export { model, View };
+export default model(View);

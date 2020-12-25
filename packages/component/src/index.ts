@@ -1,8 +1,22 @@
-import ComponentFactory from './componentFactory';
-import Legend from './legend';
-import Chart from './chart';
+class Component {
+  chart: any;
+  container: any;
+  props: any;
+  actions: any;
 
-ComponentFactory.register('Legend', Legend);
+  constructor(props, chart) {
+    this.chart = chart;
+    this.props = props;
+    // this.actions = actions;
 
-export default Chart;
+    this.init();
+  }
+  init() {
+  }
+  render() {
+  }
+  destroy() {
+  }
+}
 
+export { Component };

@@ -17,10 +17,7 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
 
     const components = Children.map(children, child => {
       const { type, props } = child;
-      return new type({
-        ...props,
-        chart,
-      });
+      return new type(props, chart);
     });
 
     const frontPlot = chart.get('frontPlot');
@@ -29,12 +26,14 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
       // component render
       for (let i = 0, len = components.length; i < len; i++) {
         const component = components[i];
-        console.log(component);
-        // render(component.render(), frontPlot);
+        // console.log(component);
+        // debugger;
+        render(component.render(), frontPlot);
       }
     });
 
     chart.render();
+    console.log('chart', chart);
     return;
   }, []);
 

@@ -3,7 +3,7 @@
 
 import ReactDOM from 'react-dom';
 import Chart from '../src/chart';
-import Interval from '../src/interval';
+import Interval from '../../interval/src/index';
 import Legned from '../../legend/src/index';
 
 const style = document.createElement('style');
