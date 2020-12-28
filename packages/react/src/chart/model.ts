@@ -21,12 +21,26 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
     });
 
     const frontPlot = chart.get('frontPlot');
+    const width = chart.get('width');
+    const height = chart.get('height');
     // @ts-ignore
     chart.on('aftergeomdraw', () => {
       // component render
       for (let i = 0, len = components.length; i < len; i++) {
         const component = components[i];
-        render(component.render(), frontPlot);
+
+        const element = component.render();
+        if (element) {
+          const style = element.style;
+          element.style = {
+            // 设置元素默认宽高
+            width,
+            height,
+            ...style
+          }
+          console.log(element);
+          render(element, frontPlot);
+        }
       }
     });
 

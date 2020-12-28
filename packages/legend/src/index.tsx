@@ -7,19 +7,18 @@ const View = (props) => {
   return (
     <group style={{
       flexDirection: 'row',
-      flex: 1,
       padding: 20
     }}>
       <text style={{
-        flex: 1,
-      }}
+          flex: 1,
+        }}
         attrs={{
           text: '11',
           fill: '#000'
         }}
       />
       <text style={{
-          fill: 1,
+          flex: 1,
         }}
         attrs={{
           text: JSON.stringify(record),
