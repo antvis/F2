@@ -10,9 +10,9 @@ class Component {
     this.props = props;
     // this.actions = actions;
 
-    this.init();
+    this.mount();
   }
-  init() {
+  mount() {
   }
   render() {
   }

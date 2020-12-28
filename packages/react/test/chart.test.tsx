@@ -3,6 +3,8 @@
 
 import ReactDOM from 'react-dom';
 import Chart from '../src/chart';
+
+// 引入组件
 import Interval from '../../interval/src/index';
 import Legned from '../../legend/src/index';
 

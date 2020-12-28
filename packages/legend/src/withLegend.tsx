@@ -3,8 +3,8 @@
 import { Component } from '../../component/src/index';
 
 export default View => {
-  return class LegendModel extends Component {
-    init() {
+  return class Legend extends Component {
+    mount() {
       const { chart } = this;
       const data = chart.get('data');
       if (!data || !data.length) return;
@@ -15,9 +15,8 @@ export default View => {
       };
     }
     render() {
-      const { style } = this.props;
       const { record } = this.state;
-      return <View style={ style } record={ record } />
+      return <View record={ record } />
     }
   }
 }

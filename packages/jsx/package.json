@@ -5,10 +5,10 @@
   "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@antv/f2": "~3.8.1",
     "css-layout": "1.1.1"
   },
   "devDependencies": {
+    "@antv/f2": "~3.8.1"
   },
   "files": [
     "src",

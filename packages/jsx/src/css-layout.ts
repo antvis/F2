@@ -1160,7 +1160,6 @@ function layoutNode(node, parentMaxWidth, parentDirection) {
 }
 
 /* eslint-enable */
-
 export default node => {
   fillNodes(node);
   layoutNode(node, null, null);

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import model from './model';
+import withLegend from './withLegend';
 
 const View = (props) => {
   const { record } = props;
@@ -29,5 +29,5 @@ const View = (props) => {
   );
 }
 
-export { model, View };
-export default model(View);
+export { withLegend, View };
+export default withLegend(View);
