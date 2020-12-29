@@ -11,6 +11,7 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
     const chart = new F2.Chart({
       context,
       pixelRatio: pixelRatio || 1,
+      padding: ['auto', 'auto', 'auto', 80],
     });
 
     chart.source(data);

@@ -44,6 +44,7 @@ const App = () => {
     >
       <Interval position="genre*sold" color="genre" />
       <Legned />
+      <Legned position="left" />
     </Chart>
   );
 }
