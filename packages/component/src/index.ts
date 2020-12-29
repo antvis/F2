@@ -5,7 +5,7 @@ class Component {
   state: any;
   actions: any;
 
-  constructor(props, chart) {
+  constructor(props: any, chart: any) {
     this.chart = chart;
     this.props = props;
     // this.actions = actions;

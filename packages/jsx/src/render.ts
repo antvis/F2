@@ -9,7 +9,7 @@ function extendArray(arr: any[]) {
   if (!isArray(arr)) {
     return [ arr ];
   }
-  let newArray = [];
+  let newArray: any = [];
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
     if (isArray(element)) {
@@ -21,9 +21,21 @@ function extendArray(arr: any[]) {
   return newArray;
 }
 
+function mergeLayout(parent: any, layout: any) {
+  if (!parent) return layout;
+  const { left: parentLeft, top: parentTop } = parent;
+  const { left, top } = layout;
+  return {
+    ...layout,
+    left: parentLeft + left,
+    top: parentTop + top,
+  }
+}
 
-function createElement(node, container, parentLayout) {
-  const { type, props, layout, children } = node;
+
+function createElement(node: any, container: any, parentLayout: any) {
+  const { type, props, layout: originLayout, children } = node;
+  const layout = mergeLayout(parentLayout, originLayout);
   const { attrs } = props;
   if (type === 'group') {
     const element = container.addGroup();
@@ -54,6 +66,7 @@ export default (node: any, container: any) => {
     return;
   }
   node.children = extendArray(node.children);
+  console.log(node);
   computeLayout(node);
   return createElement(node, container, null);
 }

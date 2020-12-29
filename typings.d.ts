@@ -1,1 +1,1 @@
-// declare module '@antv/f2';
+declare module '@antv/f2';

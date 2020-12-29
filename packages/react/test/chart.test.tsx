@@ -37,8 +37,10 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Interval position="genre*sold" />
-      <Legned />
+      <Interval position="genre*sold" color="genre" />
+      <Legned
+        items={ [{ name: 'Sports' }, { name: 'Strategy' }] }
+      />
     </Chart>
   );
 }

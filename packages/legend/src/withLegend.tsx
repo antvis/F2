@@ -15,8 +15,8 @@ export default View => {
       };
     }
     render() {
-      const { record } = this.state;
-      return <View record={ record } />
+      const { props } = this;
+      return <View { ...props } />
     }
   }
 }

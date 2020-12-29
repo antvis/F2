@@ -1,5 +1,10 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2015",
+    "jsx": "react-jsx",
+    "strict": true
+  },
   "exclude": [
     "scripts",
     "node_modules",

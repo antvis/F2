@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import model from './model';
 
 const View = () => {

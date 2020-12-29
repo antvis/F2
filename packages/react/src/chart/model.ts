@@ -14,6 +14,9 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
     });
 
     chart.source(data);
+    chart.legend(false);
+    chart.tooltip(false);
+    chart.axis(false);
 
     const components = Children.map(children, child => {
       const { type, props } = child;
@@ -38,14 +41,12 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
             height,
             ...style
           }
-          console.log(element);
           render(element, frontPlot);
         }
       }
     });
 
     chart.render();
-    console.log('chart', chart);
     return;
   }, []);
 

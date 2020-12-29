@@ -1,18 +1,19 @@
-import { batch2hd } from './src/util';
+import { batch2hd, isArray } from './src/util';
 
 // 实现jsx-runtime 入口，需要使用es5语法
-var jsx = function(type, props, key) {
+var jsx = function(type: string | Function, props: any, key?: string) {
   if (typeof type === 'function') {
     return type(props);
   }
-  const { style, attrs } = props;
+  const { style, attrs, children } = props;
+
   return {
-    type: type,
-    props: props,
+    type,
+    props,
     style: batch2hd(style) || {},
     attrs: batch2hd(attrs),
-    children: props.children,
-    key: key,
+    children: children && !isArray(children) ? [ children ] : children,
+    key,
   };
 };
 

@@ -1,4 +1,6 @@
 /* eslint-disable */
+// @ts-nocheck
+
 // from css-layout
 var CSS_UNDEFINED;
 
