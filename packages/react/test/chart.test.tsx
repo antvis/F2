@@ -31,6 +31,11 @@ const data = [
   { genre: 'Other', sold: 150 }
 ];
 
+const legendItems = [
+  { name: 'Sports', value: 275 },
+  { name: 'Strategy'},
+]
+
 const App = () => {
   return (
     <Chart
@@ -38,9 +43,7 @@ const App = () => {
       data={ data }
     >
       <Interval position="genre*sold" color="genre" />
-      <Legned
-        items={ [{ name: 'Sports' }, { name: 'Strategy' }] }
-      />
+      <Legned />
     </Chart>
   );
 }

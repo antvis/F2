@@ -16,11 +16,20 @@ export default (props) => {
               flexDirection: 'row',
               // justifyContent: index === 0 ? 'flex-start' : index === len - 1 ? 'flex-end' : 'center',
               flex: 1,
-            }}>
+            }} >
               <group style={{
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
+                <rect style={{
+                    marginRight: '4px',
+                    width: '14px',
+                    height: '14px',
+                  }}
+                  attrs={{
+                    fill: item.color
+                  }}
+                />
                 <text attrs={{
                   textBaseline: 'middle',
                   text: item.name,
