@@ -16,6 +16,9 @@ class Component {
   }
   render() {
   }
+  mounted() {
+    
+  }
   destroy() {
   }
 }

@@ -61,15 +61,14 @@ function createElement(node: any, container: any, parentLayout: any) {
   return container.addShape(type, {
     ...props,
     attrs: {
-      ...attrs,
       x: left,
       y: top,
       width,
       height,
+      ...attrs,
     },
   });
 }
-
 
 export default (node: any, container: any) => {
   if (!node) {

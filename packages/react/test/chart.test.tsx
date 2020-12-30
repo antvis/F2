@@ -7,6 +7,7 @@ import Chart from '../src/chart';
 // 引入组件
 import Interval from '../../interval/src/index';
 import Legned from '../../legend/src/index';
+import Tooltip from '../../tooltip/src/index';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -44,7 +45,7 @@ const App = () => {
     >
       <Interval position="genre*sold" color="genre" />
       <Legned />
-      <Legned position="left" />
+      <Tooltip />
     </Chart>
   );
 }
