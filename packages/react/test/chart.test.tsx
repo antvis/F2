@@ -4,8 +4,11 @@
 import ReactDOM from 'react-dom';
 import Chart from '../src/chart';
 
+import data from './data';
+
 // 引入组件
 import Interval from '../../interval/src/index';
+import Line from '../../line/src/index';
 import Legned from '../../legend/src/index';
 import Tooltip from '../../tooltip/src/index';
 
@@ -24,17 +27,25 @@ const root = document.createElement('div');
 document.body.appendChild(root);
 
 
-const data = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
-];
-
 const legendItems = [
-  { name: 'Sports', value: 275 },
-  { name: 'Strategy'},
+  {
+    "value": 0.05,
+    "name": "本基金",
+    "field": "codeType",
+    "fieldValue": "PRODUCT_ID"
+  },
+  {
+    "value": 0,
+    "name": "同类均值",
+    "field": "codeType",
+    "fieldValue": "FUND_TYPE"
+  },
+  {
+    "value": -0.0626,
+    "name": "沪深300",
+    "field": "codeType",
+    "fieldValue": "INDEX_CODE"
+  }
 ]
 
 const App = () => {
@@ -43,8 +54,8 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Interval position="genre*sold" color="genre" />
-      <Legned />
+      <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
+      <Legned items={ legendItems } />
       <Tooltip />
     </Chart>
   );

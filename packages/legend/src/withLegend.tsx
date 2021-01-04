@@ -16,31 +16,56 @@ export default View => {
       this.geom = geom;
     }
     _getRecords() {
-      const geom = this.geom;
-      const colorAttr = geom.getAttr('color');
-      if (!colorAttr) return;
-      const scale = colorAttr.getScale('color');
-      const ticks = scale.getTicks();
-      const items = [];
-      for (let i = 0, len = ticks.length; i < len; i++) {
-        const tick = ticks[i];
-        const name = tick.text;
-        const scaleValue = tick.value;
-        const value = scale.invert(scaleValue);
-        const color = colorAttr.mapping(value).join('');
-        items.push({
-          name,
-          value,
-          color,
-        })
+      const { geom } = this;
+      const xScale = geom.getXScale();
+      const { values } = xScale;
+      if (!values || !values.length) {
+        return null;
       }
-      return items;
+      // 取最后一条数据
+      const lastValue = values[values.length - 1];
+      const records = geom.getRecords(lastValue);
+      return records;
+    }
+
+    getItems(records) {
+      const { geom, chart, props } = this;
+      // 默认处理第一个图形
+      const colorAttr = geom.getAttr('color');
+      // 只依赖颜色属性
+      if (!colorAttr) {
+        return;
+      }
+      records = records || this._getRecords();
+      if (!records || !records.length) {
+        return;
+      }
+      const { scales } = colorAttr;
+      const { field, values } = scales[0];
+      const { field: yField } = geom.getYScale();
+      const { items } = props;
+      return items.filter(item => {
+          return values.indexOf(item.fieldValue) > -1;
+        })
+        .map(item => {
+          const { name, fieldValue } = item;
+          const record = records.find(record => {
+            return record && record[field] === fieldValue;
+          });
+          // 因为record 有可能是空, 所以通过attr来映射
+          const color = colorAttr.mapping(fieldValue);
+          return {
+            record,
+            name,
+            color: Array.isArray(color) ? color[0] : color,
+            value: record && record[yField],
+          }
+      });
     }
 
     render() {
-      const { props } = this;
-      const items = this._getRecords();
-      return <View items={ items } { ...props } />
+      const items = this.getItems();
+      return <View items={ items } />
     }
   }
 }

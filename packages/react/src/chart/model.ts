@@ -47,7 +47,6 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
         }
         // TODO 避免每次的绘制
         chart.get('canvas').draw();
-        console.log(chart.get('canvas'));
       }
       return component;
     });

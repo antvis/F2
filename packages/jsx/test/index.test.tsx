@@ -36,7 +36,6 @@ describe('index', () => {
       </group>
     );
     render(profile, canvas);
-    console.log(canvas);
     canvas.draw();
   });
 });

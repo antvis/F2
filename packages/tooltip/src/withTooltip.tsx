@@ -17,7 +17,7 @@ export default View => {
       const geom = geoms[geomIndex || 0];
 
       canvas.on('press', ev => {
-        const { direction, points } = ev || {};
+        const { points } = ev || {};
         const point = points[0];
         if (!point) {
           return;
