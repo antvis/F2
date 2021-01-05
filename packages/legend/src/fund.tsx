@@ -1,7 +1,8 @@
 // @ts-nocheck
 
 export default (props: any) => {
-  const { items, active } = props;
+  const { items, records, active } = props;
+  console.log(items, records);
   const len = items.length;
   const firstItem = items[0];
 

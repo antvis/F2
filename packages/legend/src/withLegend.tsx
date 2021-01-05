@@ -14,6 +14,28 @@ export default View => {
       // 默认处理第一个图形
       const geom = geoms[geomIndex || 0];
       this.geom = geom;
+
+      // TODO
+      // const canvas = chart.get('canvas');
+      // canvas.on('press', ev => {
+      //   const { points } = ev || {};
+      //   const point = points[0];
+      //   if (!point) {
+      //     return;
+      //   }
+      //   const records = geom.getSnapRecords(point);
+      //   const plot = chart.get('plot');
+      //   this.setState({
+      //     point,
+      //     records,
+      //     plot,
+      //   });
+      // });
+      // canvas.on('pressend', ev => {
+      //   this.setState({
+      //     point: null,
+      //   });
+      // });
     }
     _getRecords() {
       const { geom } = this;
@@ -41,31 +63,23 @@ export default View => {
         return;
       }
       const { scales } = colorAttr;
-      const { field, values } = scales[0];
-      const { field: yField } = geom.getYScale();
-      const { items } = props;
-      return items.filter(item => {
-          return values.indexOf(item.fieldValue) > -1;
-        })
-        .map(item => {
-          const { name, fieldValue } = item;
-          const record = records.find(record => {
-            return record && record[field] === fieldValue;
-          });
-          // 因为record 有可能是空, 所以通过attr来映射
-          const color = colorAttr.mapping(fieldValue);
-          return {
-            record,
-            name,
-            color: Array.isArray(color) ? color[0] : color,
-            value: record && record[yField],
-          }
+      const { values, ticks } = scales[0];
+      const items = ticks.map((tick, index) => {
+        const value = values[index];
+        const color = colorAttr.mapping(value).join('')
+        return {
+          name: tick,
+          color,
+        }
       });
+      return items;
     }
 
     render() {
-      const items = this.getItems();
-      return <View items={ items } />
+      const { props } = this;
+      const records = this._getRecords();
+      const items = props.items ? props.items : this.getItems(records);
+      return <View records={records} items={ items } />
     }
   }
 }

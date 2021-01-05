@@ -55,7 +55,7 @@ const App = () => {
       data={ data }
     >
       <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
-      <Legned items={ legendItems } />
+      <Legned />
       <Tooltip />
     </Chart>
   );
