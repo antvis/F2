@@ -1,5 +1,5 @@
 import withTooltip from './withTooltip';
-import View from './view';
+import TooltipView from './tooltipView';
 
-export { withTooltip, View };
-export default withTooltip(View);
+export { withTooltip, TooltipView };
+export default withTooltip(TooltipView);

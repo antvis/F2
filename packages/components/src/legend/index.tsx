@@ -1,6 +1,5 @@
 import withLegend from './withLegend';
-import View from './view';
-import Fund from './fund';
+import LegendView from './legendView';
 
-export { withLegend, View, Fund};
-export default withLegend(Fund);
+export { withLegend, LegendView };
+export default withLegend(LegendView);

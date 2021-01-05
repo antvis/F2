@@ -7,7 +7,7 @@ import Chart from '../src';
 import data from './data';
 
 // 引入组件
-import Interval from '../../components/src/geometry';
+import Line from '../../components/src/line';
 import Legned from '../../components/src/legend';
 import Tooltip from '../../components/src/tooltip';
 
@@ -53,7 +53,7 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Interval position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
+      <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
       <Legned />
       <Tooltip />
       
@@ -61,5 +61,10 @@ const App = () => {
   );
 }
 
-ReactDOM.render(<App />, root);
+describe('test', () => {
+  it('test', () => {
+    expect(true).toBe(true);
+  });
+});
 
+ReactDOM.render(<App />, root);

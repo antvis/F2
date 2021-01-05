@@ -1,8 +1,8 @@
-import model from './model';
+import withGeometry from './withGeometry';
 
-const View = () => {
+const GeometryView = () => {
   return null;
 }
 
-export { model, View };
-export default model(View);
+export { withGeometry, GeometryView };
+export default withGeometry(GeometryView);

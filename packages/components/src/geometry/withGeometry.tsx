@@ -6,8 +6,8 @@ export default View => {
   return class Interval extends Component {
     mount() {
       const { chart, props } = this;
-      const { position, color } = props;
-      const geom = chart.line().position(position);
+      const { type, position, color, ...config } = props;
+      const geom = chart[type](config).position(position);
       if (color) {
         geom.color(color);
       }
