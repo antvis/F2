@@ -8,7 +8,6 @@ class Component {
   constructor(props: any, chart: any) {
     this.chart = chart;
     this.props = props;
-    // this.actions = actions;
 
     this.mount();
   }
