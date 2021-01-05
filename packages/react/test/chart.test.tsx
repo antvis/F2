@@ -7,9 +7,8 @@ import Chart from '../src';
 import data from './data';
 
 // 引入组件
-import Line from '../../components/src/line';
-import Legned from '../../components/src/legend';
-import Tooltip from '../../components/src/tooltip';
+import { Line, Tooltip } from '../../components/src/index';
+import { Legend } from '../../fund-components/src/index';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -54,9 +53,8 @@ const App = () => {
       data={ data }
     >
       <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
-      <Legned />
+      <Legend />
       <Tooltip />
-      
     </Chart>
   );
 }

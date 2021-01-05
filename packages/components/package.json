@@ -1,9 +1,8 @@
 {
   "name": "f2-components",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "dependencies": {
     "f2-jsx": "*"
   },

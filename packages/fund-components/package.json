@@ -1,0 +1,18 @@
+{
+  "name": "fund-components",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "f2-jsx": "*",
+    "f2-components": "*"
+  },
+  "devDependencies": {
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "author": "yezengyue@gmail.com"
+}
