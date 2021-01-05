@@ -1,7 +1,5 @@
 {
-  "compilerOptions": {
-    "strict": true
-  },
+  "compilerOptions": {},
   "exclude": [
     "scripts",
     "node_modules",

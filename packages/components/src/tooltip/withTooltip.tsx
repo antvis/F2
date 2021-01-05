@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { Component } from '../../component/src/index';
+import Component from '../base/index';
 
 export default View => {
   return class Legend extends Component {

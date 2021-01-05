@@ -1,9 +1,8 @@
 import { useEffect, Children } from 'react';
 import F2 from '@antv/f2';
-import render from '../../../jsx/src/render';
+import { render } from '../../jsx/src/index';
 
-export default ({ canvasRef, pixelRatio, data, children }) => {
-  // const [chart, setChart] = useState();
+export default ({ canvasRef, pixelRatio, data, children }: any) => {
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
@@ -73,7 +72,4 @@ export default ({ canvasRef, pixelRatio, data, children }) => {
     chart.render();
     return;
   }, []);
-
-  return {
-  }
 }

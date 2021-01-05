@@ -1,16 +1,15 @@
 /** @jsxImportSource react */
-// @ts-nocheck
 
+// @ts-nocheck
 import ReactDOM from 'react-dom';
-import Chart from '../src/chart';
+import Chart from '../src';
 
 import data from './data';
 
 // 引入组件
-import Interval from '../../interval/src/index';
-import Line from '../../line/src/index';
-import Legned from '../../legend/src/index';
-import Tooltip from '../../tooltip/src/index';
+import Interval from '../../components/src/geometry';
+import Legned from '../../components/src/legend';
+import Tooltip from '../../components/src/tooltip';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -54,9 +53,10 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
+      <Interval position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
       <Legned />
       <Tooltip />
+      
     </Chart>
   );
 }
