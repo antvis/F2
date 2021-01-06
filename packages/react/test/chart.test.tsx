@@ -8,7 +8,7 @@ import data from './data';
 
 // 引入组件
 import { Line, Tooltip } from '../../components/src/index';
-import { Legend } from '../../fund-components/src/index';
+import { Legend, WeaverLine } from '../../fund-components/src/index';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -52,9 +52,9 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Line position="reportDateTimestamp*rate" color={["codeType", ['#108EE8', '#86C5F2', '#E8A010']]} />
-      <Legend />
-      <Tooltip />
+      <WeaverLine position="reportDateTimestamp*rate" />
+      {/* <Legend />
+      <Tooltip /> */}
     </Chart>
   );
 }

@@ -5,3 +5,4 @@
 // export { default as Tooltip, withTooltip, TooltipView } from './tooltip';
 
 export { default as Legend, withLegend, LegendView } from './legend';
+export { default as WeaverLine } from './weaverLine';

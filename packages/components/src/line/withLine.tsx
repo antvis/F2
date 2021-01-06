@@ -1,5 +1,4 @@
 // @ts-nocheck
-import line from '.';
 import { withGeometry } from '../geometry/index';
 
 export default View => {

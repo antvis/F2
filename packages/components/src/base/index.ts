@@ -22,4 +22,8 @@ class Component {
   }
 }
 
+// 标识是否是组件
+// @ts-ignore
+Component.prototype.isComponent = true;
+
 export default Component;
