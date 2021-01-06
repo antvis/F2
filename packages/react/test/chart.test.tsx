@@ -53,8 +53,7 @@ const App = () => {
       data={ data }
     >
       <WeaverLine position="reportDateTimestamp*rate" />
-      {/* <Legend />
-      <Tooltip /> */}
+      <Legend />
     </Chart>
   );
 }
