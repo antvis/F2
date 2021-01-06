@@ -1,8 +1,5 @@
 import withGeometry from './withGeometry';
-
-const GeometryView = () => {
-  return null;
-}
+import GeometryView from './geometryView';
 
 export { withGeometry, GeometryView };
 export default withGeometry(GeometryView);

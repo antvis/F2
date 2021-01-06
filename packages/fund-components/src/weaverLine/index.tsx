@@ -5,8 +5,8 @@ export default (props: any) => {
   const { position } = props;
   return (
     <>
-      <Line position={ position } size={ 8 } color="#F93A4A" />
-      <Area position={ position } />
+      <Area position={ position } color="l(90) 0:#F93A4A 0.5:#F9BCC1 1:#ffffff" style={{ fillOpacity: 0.35 }}/>
+      <Line position={ position } size={ 4 } color="#F93A4A" />
     </>
   );
 };

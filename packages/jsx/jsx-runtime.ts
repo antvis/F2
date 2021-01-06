@@ -3,7 +3,7 @@ import Fragment from './src/fragment';
 
 // 实现jsx-runtime 入口，需要使用es5语法
 var jsx = function(type: string | Function, props: any, key?: string) {
-  // 组件不做渲染处理
+  // f2组件，需要再外部实例化
   // @ts-ignore
   if (type.prototype && type.prototype.isComponent) {
     return {
