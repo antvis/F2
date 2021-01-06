@@ -30,6 +30,7 @@ const isNumber = is('Number');
 const isString = is('String');
 const isArray = is('Array');
 const isObject = is('Object');
+const isFunction = is('Function')
 
 function parsePadding(padding: any) {
   if (isNumber(padding) || isString(padding)) {
@@ -77,4 +78,4 @@ function batch2hd(value: any) {
 }
 
 
-export { isString, isArray, isObject, batch2hd };
+export { isString, isArray, isObject, isFunction, batch2hd };

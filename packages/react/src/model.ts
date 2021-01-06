@@ -1,4 +1,4 @@
-import { useEffect, Children, createElement } from 'react';
+import { useEffect, Children } from 'react';
 import F2 from '@antv/f2';
 import { render } from '../../jsx/src/index';
 
@@ -59,6 +59,7 @@ export default ({ canvasRef, pixelRatio, data, children }: any) => {
         components.push(component);
         return;
       }
+      // function component
       let subChildren = type(props);
       subChildren = subChildren && !Array.isArray(subChildren) ? [ subChildren ] : subChildren;
       

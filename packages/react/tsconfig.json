@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "esModuleInterop": true
   },
   "extends": "../../tsconfig.json"
