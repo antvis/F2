@@ -7,7 +7,7 @@ import Chart from '../src';
 import data from './data';
 
 // 引入组件
-import { Line, Tooltip } from '../../components/src/index';
+import { Line, Tooltip, Axis } from '../../components/src/index';
 import { Legend, WeaverLine } from '../../fund-components/src/index';
 
 const style = document.createElement('style');
@@ -52,8 +52,8 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
+      <Axis xField="reportDateTimestamp" yField="rate" />
       <WeaverLine position="reportDateTimestamp*rate" />
-      <Legend />
     </Chart>
   );
 }
