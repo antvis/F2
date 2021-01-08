@@ -10,7 +10,7 @@ export default View => {
         type: 'timeCat',
         tickCount: 3,
         range: [0, 1],
-      })
+      });
     }
     render() {
       return <View />

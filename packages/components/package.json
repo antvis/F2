@@ -4,6 +4,7 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "dependencies": {
+    "@antv/f2": "^3.8.1",
     "f2-jsx": "*"
   },
   "devDependencies": {

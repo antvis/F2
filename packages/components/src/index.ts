@@ -1,3 +1,6 @@
+import Chart from './chart';
+
+export default Chart;
 export { default as Component } from './base';
 export { default as Line, withLine } from './line';
 export { default as Area, withArea } from './area';
