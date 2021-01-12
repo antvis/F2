@@ -1,10 +1,10 @@
 {
   "name": "@ali/f2x-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "lib/index.js",
   "module": "es/index.js",
   "dependencies": {
-    "@ali/f2-components": "^0.0.3",
+    "@ali/f2-components": "^0.0.4",
     "@ali/f2-jsx": "*",
     "@antv/f2": "^3.8.1"
   },
