@@ -5,8 +5,8 @@
   "module": "es/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "f2-components": "*",
-    "f2-jsx": "*"
+    "@ali/f2-components": "*",
+    "@ali/f2-jsx": "*"
   },
   "files": [
     "src",

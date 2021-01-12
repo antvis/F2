@@ -5,7 +5,7 @@
   "module": "es/index.js",
   "dependencies": {
     "@antv/f2": "^3.8.1",
-    "f2-jsx": "*"
+    "@ali/f2-jsx": "*"
   },
   "files": [
     "src",

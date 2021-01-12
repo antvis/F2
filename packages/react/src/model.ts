@@ -27,7 +27,7 @@ export default ({ canvasRef, pixelRatio, data, children }: any) => {
 
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
-    const chart = new Chart({
+    const chart = Chart({
       context,
       components,
       pixelRatio: pixelRatio || 1,
