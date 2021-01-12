@@ -1,8 +1,8 @@
 {
   "name": "fund-components",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "f2-jsx": "*",

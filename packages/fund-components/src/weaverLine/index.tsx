@@ -2,11 +2,33 @@
 import { Line, Area } from 'f2-components';
 
 export default (props: any) => {
-  const { position } = props;
+  const { position, growth } = props;
+
+  const lineRiseColor = '#F93A4A';
+  const lineFallColor = '#00B578';
+  const areaRiseColor = '#FDC3C8';
+  const areaFallColor = '#D4FFF1';
+  const areaBaseColor = '#ffffff';
+
+  let areaMiddleColor = '#ffffff';
+  let lineColor = '#F93A4A';
+  let areaColor = areaRiseColor;
+
+  if (growth === 'equal') {
+    lineColor = '#808080';
+  } else if (growth === 'rise') {
+    lineColor = lineRiseColor;
+    areaMiddleColor = '#FFEEEF';
+  } else {
+    lineColor = lineFallColor;
+    areaColor = areaFallColor;
+    areaMiddleColor = '#B0E5D3';
+  }
+
   return (
     <>
-      <Area position={ position } color="l(90) 0:#F93A4A 0.5:#F9BCC1 1:#ffffff" style={{ fillOpacity: 0.35 }}/>
-      <Line position={ position } size={ 4 } color="#F93A4A" />
+      <Area position={ position } color={'l(90) 0:' + areaColor + ' 0.5:' + areaMiddleColor + ' 1:' + areaBaseColor} style={{ fillOpacity: 0.3 }}/>
+      <Line position={ position } size={ 6 } color={ lineColor } />
     </>
   );
 };
