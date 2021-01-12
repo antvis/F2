@@ -1,5 +1,5 @@
 
-import { Line, Area } from 'f2-components';
+import { Line, Area } from '@ali/f2-components';
 
 export default (props: any) => {
   const { position, growth } = props;

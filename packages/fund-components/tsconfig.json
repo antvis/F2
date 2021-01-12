@@ -2,6 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "f2-jsx"
+    "jsxImportSource": "@ali/f2-jsx"
   }
 }

@@ -5,7 +5,8 @@
   "module": "es/index.js",
   "dependencies": {
     "@antv/f2": "^3.8.1",
-    "@ali/f2-jsx": "*"
+    "@ali/f2-jsx": "*",
+    "@ali/f2-components": "*"
   },
   "devDependencies": {
     "react": "^17.0.1",

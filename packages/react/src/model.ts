@@ -1,5 +1,5 @@
 import { useEffect, Children } from 'react';
-import Chart from '../../components/src/index';
+import Chart from '@ali/f2-components';
 
 export default ({ canvasRef, pixelRatio, data, children }: any) => {
 

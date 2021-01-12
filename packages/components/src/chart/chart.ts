@@ -1,6 +1,6 @@
 import F2 from '@antv/f2';
 import ComponentFactory from './componentFactory';
-import { render } from '../../../jsx/src/index';
+import { render } from '@ali/f2-jsx';
 
 class Chart {
 
