@@ -1,14 +1,12 @@
 {
   "name": "@ali/fund-components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "f2-jsx": "*",
-    "f2-components": "*"
-  },
-  "devDependencies": {
+    "f2-components": "*",
+    "f2-jsx": "*"
   },
   "files": [
     "src",
