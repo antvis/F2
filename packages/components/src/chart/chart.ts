@@ -14,6 +14,7 @@ class Chart {
       pixelRatio,
       width,
       height,
+      animate: false,
     });
     this.chart = chart;
 
