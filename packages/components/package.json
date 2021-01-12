@@ -9,7 +9,9 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "lib",
+    "es"
   ],
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"

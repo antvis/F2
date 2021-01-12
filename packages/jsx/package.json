@@ -11,9 +11,11 @@
     "@antv/f2": "~3.8.1"
   },
   "files": [
-    "src",
     "jsx-runtime.js",
-    "dist"
+    "src",
+    "dist",
+    "lib",
+    "es"
   ],
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"
