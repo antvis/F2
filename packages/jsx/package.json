@@ -1,8 +1,8 @@
 {
-  "name": "f2-jsx",
+  "name": "@ali/f2-jsx",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "css-layout": "1.1.1"
@@ -15,5 +15,8 @@
     "jsx-runtime.js",
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npm.alibaba-inc.com"
+  },
   "author": "yezengyue@gmail.com"
 }
