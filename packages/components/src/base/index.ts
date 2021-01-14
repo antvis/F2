@@ -3,11 +3,14 @@ class Component {
   container: any;
   props: any;
   state: any;
+  ref: any;
   actions: any;
 
   constructor(props: any, chart: any) {
+    const { ref } = props;
     this.chart = chart;
     this.props = props;
+    this.ref = ref;
 
     this.mount();
   }

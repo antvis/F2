@@ -1,14 +1,15 @@
 /** @jsxImportSource react */
 
 // @ts-nocheck
+import { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Chart from '../src';
 
-import data from './data';
+import result from './managerData';
 
 // 引入组件
-import { Line, Tooltip, Axis } from '../../components/src/index';
-import { Legend, WeaverLine } from '../../fund-components/src/index';
+// import { Line } from '../../components/src/index';
+import { Axis, Line, Guide } from '../../fund-components/src/index';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
@@ -24,27 +25,17 @@ document.head.appendChild(style);
 const root = document.createElement('div');
 document.body.appendChild(root);
 
+const { data, event } = result;
 
-const legendItems = [
-  {
-    "value": 0.05,
-    "name": "本基金",
-    "field": "codeType",
-    "fieldValue": "PRODUCT_ID"
-  },
-  {
-    "value": 0,
-    "name": "同类均值",
-    "field": "codeType",
-    "fieldValue": "FUND_TYPE"
-  },
-  {
-    "value": -0.0626,
-    "name": "沪深300",
-    "field": "codeType",
-    "fieldValue": "INDEX_CODE"
-  }
-]
+const eventData = event.map(eventRecord => {
+  const { startTime, endTime } = eventRecord;
+  const records = data.filter(record => {
+    const { codeType, reportDateTimestamp } = record;
+    return codeType === 'MANAGER' && reportDateTimestamp >= startTime && reportDateTimestamp <= endTime;
+  });
+  return records;
+});
+
 
 const App = () => {
   return (
@@ -52,8 +43,17 @@ const App = () => {
       pixelRatio={ window.devicePixelRatio }
       data={ data }
     >
-      <Axis xField="reportDateTimestamp" yField="rate" />
-      <WeaverLine position="reportDateTimestamp*rate" />
+      <Axis visible={false} field="reportDateTimestamp" type="timeCat" tickCount={ 3 } range={ [ 0, 1 ] }/>
+      <Axis field="rate" dimType="y" tickCount={ 5 } range={ [ 0, 1 ] }/>
+      <Line position="reportDateTimestamp*rate" color="codeType"/>
+      {
+        eventData.map((records, index) => {
+          return <Guide
+          key={ index }
+          records={ records }
+          />
+        })
+      }
     </Chart>
   );
 }

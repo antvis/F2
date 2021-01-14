@@ -75,6 +75,10 @@ class Chart {
     }
     const shape = render(element, frontPlot);
     component.shape = shape;
+    if (component.ref) {
+      component.ref.component = component;
+      component.ref.current = shape;
+    }
   }
 
   source(data: any) {

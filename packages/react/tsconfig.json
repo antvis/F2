@@ -4,5 +4,10 @@
     "jsxImportSource": "react",
     "esModuleInterop": true
   },
-  "extends": "../../tsconfig.json"
+  "exclude": [
+    "scripts",
+    "node_modules",
+    "**/test/**/*.ts",
+    "**/test"
+  ]
 }

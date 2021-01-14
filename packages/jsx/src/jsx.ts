@@ -2,10 +2,13 @@ import { batch2hd, isArray, isFunction } from './util';
 
 // 实现jsx-runtime 入口
 export default function(type: string | Function, props: any, key?: string) {
-  const { style, attrs, children } = props;
+  const { style, attrs, children: nodeChildren } = props;
 
   // 要转成array
-  props.children = children && !isArray(children) ? [ children ] : children;
+  const children = nodeChildren && !isArray(nodeChildren) ? [ nodeChildren ] : nodeChildren;
+
+  // 清理为空的子元素
+  props.children = children && children.filter((child: any) => !!child);
 
   if (isFunction(type)) {
     // f2组件，需要在外部实例化

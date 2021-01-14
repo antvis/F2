@@ -7,9 +7,13 @@ export default ({ canvasRef, pixelRatio, data, children }: any) => {
     // 构造component的json描述
     const components: any = [];
     Children.forEach(children, child => {
-      const { type, props } = child;
+      const { type, props: defineProps, ref } = child;
+      const props = {
+        ref,
+        ...defineProps,
+      }
 
-      // component
+      // f2 component
       if (type.prototype && type.prototype.isComponent) {
         components.push({ type, props });
         return;
@@ -28,14 +32,14 @@ export default ({ canvasRef, pixelRatio, data, children }: any) => {
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
     const chart = Chart({
+      data,
       context,
-      components,
+      children: components,
       pixelRatio: pixelRatio || 1,
     });
-
-    chart.source(data);
-
     chart.render();
+
+    console.log(chart);
 
     return;
   }, []);
