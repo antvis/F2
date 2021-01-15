@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 export default (props: any) => {
-  const { points, height } = props;
+  const { points, height, triggerRef } = props;
   if (!points || !points.length) {
     return null;
   }
@@ -37,6 +37,7 @@ export default (props: any) => {
       }}
       />
       <circle
+        ref={ triggerRef }
         attrs={{
           x,
           y,

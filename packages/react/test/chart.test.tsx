@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 
 // @ts-nocheck
-import { useRef } from 'react';
+import { useRef, useState, Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chart from '../src';
 
@@ -36,32 +36,74 @@ const eventData = event.map(eventRecord => {
   return records;
 });
 
-
-const App = () => {
-  return (
-    <Chart
-      pixelRatio={ window.devicePixelRatio }
-      data={ data }
-    >
-      <Axis visible={false} field="reportDateTimestamp" type="timeCat" tickCount={ 3 } range={ [ 0, 1 ] }/>
-      <Axis field="rate" dimType="y" tickCount={ 5 } range={ [ 0, 1 ] }/>
-      <Line position="reportDateTimestamp*rate" color="codeType"/>
-      {
-        eventData.map((records, index) => {
-          return <Guide
-          key={ index }
-          records={ records }
-          />
-        })
-      }
-    </Chart>
-  );
+class App extends Component {
+  state = {
+    activeIndex: 0,
+  }
+  guideClick = (index) => {
+    this.setState({
+      activeIndex: index,
+    });
+  }
+  render() {
+    const { activeIndex } = this.state;
+    return (
+      <Chart
+        pixelRatio={ window.devicePixelRatio }
+        data={ data }
+      >
+        <Axis visible={false} field="reportDateTimestamp" type="timeCat" tickCount={ 3 } range={ [ 0, 1 ] }/>
+        <Axis field="rate" dimType="y" tickCount={ 5 } range={ [ 0, 1 ] }/>
+        <Line position="reportDateTimestamp*rate" color="codeType" />
+        {
+          eventData.map((records, index) => {
+            return <Guide
+              key={ index }
+              active={ activeIndex === index }
+              records={ records }
+              onClick={ () => this.guideClick(index) }
+            />
+          })
+        }
+      </Chart>
+    );
+  }
 }
 
-describe('test', () => {
-  it('test', () => {
-    expect(true).toBe(true);
-  });
-});
+
+// const App = () => {
+//   const [activeIndex, setActiveIndex] = useState(0);
+  
+//   const guideClick = (index) => {
+//     setActiveIndex(index)
+//   }
+
+//   return (
+//     <Chart
+//       pixelRatio={ window.devicePixelRatio }
+//       data={ data }
+//     >
+//       <Axis visible={false} field="reportDateTimestamp" type="timeCat" tickCount={ 3 } range={ [ 0, 1 ] }/>
+//       <Axis field="rate" dimType="y" tickCount={ 5 } range={ [ 0, 1 ] }/>
+//       <Line position="reportDateTimestamp*rate" color="codeType" />
+//       {
+//         eventData.map((records, index) => {
+//           return <Guide
+//             key={ index }
+//             active={ activeIndex === index }
+//             records={ records }
+//             onClick={ () => guideClick(index) }
+//           />
+//         })
+//       }
+//     </Chart>
+//   );
+// }
+
+// describe('test', () => {
+//   it('test', () => {
+//     expect(true).toBe(true);
+//   });
+// });
 
 ReactDOM.render(<App />, root);

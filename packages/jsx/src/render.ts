@@ -58,7 +58,7 @@ function createElement(node: any, container: any, parentLayout: any) {
     }
     return element;
   }
-  return container.addShape(type, {
+  const element = container.addShape(type, {
     ...props,
     attrs: {
       x: left,
@@ -68,6 +68,10 @@ function createElement(node: any, container: any, parentLayout: any) {
       ...attrs,
     },
   });
+  if (props.ref) {
+    props.ref.current = element;
+  }
+  return element;
 }
 
 export default (node: any, container: any) => {

@@ -2,7 +2,7 @@ import { useEffect, Children } from 'react';
 import Chart from '@ali/f2-components';
 
 export default ({ canvasRef, pixelRatio, data, children }: any) => {
-
+  
   useEffect(() => {
     // 构造component的json描述
     const components: any = [];
