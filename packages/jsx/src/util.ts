@@ -77,5 +77,25 @@ function batch2hd(value: any) {
   return value;
 }
 
+// 展开数组
+function extendArray(arr: any[]) {
+  if (!arr) {
+    return arr;
+  }
+  if (!isArray(arr)) {
+    return [ arr ];
+  }
+  let newArray: any = [];
+  for (let i = 0; i < arr.length; i++) {
+    const element = arr[i];
+    if (isArray(element)) {
+      newArray = newArray.concat(extendArray(element));
+    } else if (element) {
+      newArray.push(element);
+    }
+  }
+  return newArray;
+}
 
-export { isString, isArray, isObject, isFunction, batch2hd };
+
+export { isString, isArray, isObject, isFunction, batch2hd, extendArray };

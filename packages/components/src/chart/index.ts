@@ -1,5 +1,4 @@
 import F2 from '@antv/f2';
-import ComponentFactory from './componentFactory';
 import { render } from '@ali/f2-jsx';
 
 // @ts-ignore
@@ -137,36 +136,6 @@ class Chart {
     const { chart } = this;
     chart.render();
   }
-  
-  // createComponents(componentsSchema: any) {
-  //   const { chart } = this;
-  //   const components = ComponentFactory.create(chart, componentsSchema);
-  //   components.forEach(component => {
-  //     component.setState = (state: any) => {
-  //       component.state = {
-  //         ...component.state,
-  //         ...state,
-  //       };
-  //       this.renderComponent(component);
-  //       // TODO 避免每次的绘制
-  //       chart.get('canvas').draw();
-  //     }
-  //   })
-  //   this.components = components;
-  // }
-
-  // renderComponents() {
-  //   const { components } = this;
-  //   const elements = components.map((component: any) => {
-  //     return this.renderComponent(component);
-  //   });
-  //   return elements;
-  // }
-
-
-  // source(data: any) {
-  //   this.chart.source(data);
-  // }
 }
 
 export default Chart;

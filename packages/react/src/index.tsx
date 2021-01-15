@@ -2,15 +2,6 @@
 
 import { Component, createRef } from 'react';
 import Chart from '@ali/f2-components';
-// import useModel from './model';
-
-// export default (props: any) => {
-//   const { pixelRatio, data, children } = props;
-//   const canvasRef = useRef(null);
-//   useModel({ canvasRef, data, pixelRatio, children });
-
-//   return (<canvas className="chart-canvas" ref={ canvasRef } />);
-// }
 
 class ReactChart extends Component {
   canvasRef: any;
@@ -39,7 +30,6 @@ class ReactChart extends Component {
     this.chart = chart;
   }
   componentDidUpdate() {
-    console.log('update');
     const { chart, props } = this;
     chart.update(props);
   }

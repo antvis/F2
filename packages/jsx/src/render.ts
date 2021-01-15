@@ -1,25 +1,4 @@
 import computeLayout from './css-layout';
-import { isArray } from './util';
-
-// 展开数组
-function extendArray(arr: any[]) {
-  if (!arr) {
-    return arr;
-  }
-  if (!isArray(arr)) {
-    return [ arr ];
-  }
-  let newArray: any = [];
-  for (let i = 0; i < arr.length; i++) {
-    const element = arr[i];
-    if (isArray(element)) {
-      newArray = newArray.concat(extendArray(element));
-    } else {
-      newArray.push(element);
-    }
-  }
-  return newArray;
-}
 
 function mergeLayout(parent: any, layout: any) {
   if (!parent) return layout;
@@ -78,7 +57,6 @@ export default (node: any, container: any) => {
   if (!node) {
     return;
   }
-  node.children = extendArray(node.children);
   computeLayout(node);
   return createElement(node, container, null);
 }
