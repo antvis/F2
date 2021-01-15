@@ -14,7 +14,7 @@ import { Axis, Line, Guide } from '../../fund-components/src/index';
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');
 style.innerHTML = `
-.chart-canvas {
+.f2-chart {
   vertical-align: top;
   width: 100%;
   height: 100%;
@@ -41,6 +41,7 @@ class App extends Component {
     activeIndex: 0,
   }
   guideClick = (index) => {
+    // console.log('click', index);
     this.setState({
       activeIndex: index,
     });
@@ -64,6 +65,9 @@ class App extends Component {
               onClick={ () => this.guideClick(index) }
             />
           })
+        }
+        {
+          true ? null : <Line />
         }
       </Chart>
     );

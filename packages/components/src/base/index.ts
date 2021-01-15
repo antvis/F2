@@ -16,6 +16,9 @@ class Component {
   }
   mount() {
   }
+  update(props: any) {
+    this.props = props;
+  }
   render() {
   }
   mounted() {
@@ -26,6 +29,6 @@ class Component {
 
 // 标识是否是组件
 // @ts-ignore
-Component.prototype.isComponent = true;
+Component.prototype.isF2Component = true;
 
 export default Component;

@@ -44,7 +44,7 @@ export default View => {
         return null;
       }
       // 清空
-      this._shapes = [];
+      // this._shapes = [];
       return (
         <group>
           {

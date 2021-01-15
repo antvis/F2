@@ -36,7 +36,7 @@ export default View => {
     }
     render() {
       const { chart, props } = this;
-      const { records } = props;
+      const { records, active } = props;
       const coord = chart.get('coord');
       const canvas = chart.get('canvas');
       const width = canvas.get('width');
@@ -45,7 +45,15 @@ export default View => {
 
       const triggerRef = {};
       this.triggerRef = triggerRef;
-      return <View points={ points } coord={ coord } width={ width } height={ height } triggerRef={ triggerRef }/>
+
+      return <View
+        points={ points }
+        coord={ coord }
+        width={ width }
+        height={ height }
+        triggerRef={ triggerRef }
+        active={ active }
+      />
     }
   }
 }

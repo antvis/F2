@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 export default (props: any) => {
-  const { points, height, triggerRef } = props;
+  const { points, height, triggerRef, active } = props;
   if (!points || !points.length) {
     return null;
   }
@@ -19,23 +19,30 @@ export default (props: any) => {
   });
   return (
     <group>
-      <line attrs={{
-        x1: x,
-        y1: y,
-        x2: x,
-        y2: y0,
-        stroke: '#CD9850',
-        lineWidth: '2px',
-        lineDash: [ '3px', '6px' ]
-      }}/>
-      <polyline attrs={{
-        points,
-        lineJoin: 'round',
-        lineCap: 'round',
-        fill: 'l(90) 0:#F1E7D1 1:#FFFFFF',
-        fillOpacity: 0.6,
-      }}
-      />
+      {
+        active ?
+          <group>
+            <line attrs={{
+              x1: x,
+              y1: y,
+              x2: x,
+              y2: y0,
+              stroke: '#CD9850',
+              lineWidth: '2px',
+              lineDash: [ '3px', '6px' ]
+            }}/>
+            <polyline attrs={{
+              points,
+              lineJoin: 'round',
+              lineCap: 'round',
+              fill: 'l(90) 0:#F1E7D1 1:#FFFFFF',
+              fillOpacity: 0.6,
+            }}
+            />
+          </group>
+        :
+          null
+      }
       <circle
         ref={ triggerRef }
         attrs={{

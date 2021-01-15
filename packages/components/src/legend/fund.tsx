@@ -2,7 +2,6 @@
 
 export default (props: any) => {
   const { items, records, active } = props;
-  console.log(items, records);
   const len = items.length;
   const firstItem = items[0];
 

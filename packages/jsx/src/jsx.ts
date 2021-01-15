@@ -13,7 +13,7 @@ export default function(type: string | Function, props: any, key?: string) {
   if (isFunction(type)) {
     // f2组件，需要在外部实例化
     // @ts-ignore
-    if (type.prototype && type.prototype.isComponent) {
+    if (type.prototype && type.prototype.isF2Component) {
       return {
         type,
         props,
