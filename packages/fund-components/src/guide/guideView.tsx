@@ -10,7 +10,8 @@ export default (props: any) => {
   const { x, y } = firstPoint;
   // 头尾补2个点
   const y0 = height;
-  points.push({
+  const areaPoints = [].concat(points);
+  areaPoints.push({
     x: lastPoint.x,
     y: y0
   }, {
@@ -32,11 +33,20 @@ export default (props: any) => {
               lineDash: [ '3px', '6px' ]
             }}/>
             <polyline attrs={{
-              points,
+              points: areaPoints,
               lineJoin: 'round',
               lineCap: 'round',
               fill: 'l(90) 0:#F1E7D1 1:#FFFFFF',
               fillOpacity: 0.6,
+            }}
+            />
+            <polyline attrs={{
+              points,
+              lineJoin: 'round',
+              lineCap: 'round',
+              // stroke: '#000',
+              stroke: '#EAB76B',
+              lineWidth: '4px'
             }}
             />
           </group>
