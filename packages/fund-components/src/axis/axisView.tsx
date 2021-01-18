@@ -34,7 +34,8 @@ export default (props: any) => {
                 text,
                 fill: '#CCCCCC',
                 textAlign,
-                textBaseline: 'top'
+                textBaseline: 'top',
+                fontSize: '20px'
               }} />
               <line attrs={{
                 x1: start.x,

@@ -1,2 +1,2 @@
 "use strict";
-module.exports = require('./src/index.ts');
+module.exports = require('./lib/index.js');
