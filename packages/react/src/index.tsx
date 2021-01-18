@@ -1,13 +1,13 @@
-import { Component, createRef } from 'react';
+import React from 'react';
 import Chart from '@ali/f2-components';
 
-class ReactChart extends Component {
+class ReactChart extends React.Component {
   canvasRef: any;
   chart: any;
 
   constructor(props) {
     super(props);
-    this.canvasRef = createRef();
+    this.canvasRef = React.createRef();
   }
   componentDidMount() {
     const { canvasRef, props } = this;
