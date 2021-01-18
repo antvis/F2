@@ -35,12 +35,8 @@ export default View => {
       return coord.convertPoint({ x, y });
     }
     render() {
-      const { chart, props } = this;
+      const { props, width, height, plot } = this;
       const { records, active } = props;
-      const coord = chart.get('coord');
-      const canvas = chart.get('canvas');
-      const width = canvas.get('width');
-      const height = canvas.get('height');
       const points = records.map(record => this.parsePoint(record));
 
       const triggerRef = {};
@@ -48,7 +44,7 @@ export default View => {
 
       return <View
         points={ points }
-        coord={ coord }
+        plot={ plot }
         width={ width }
         height={ height }
         triggerRef={ triggerRef }

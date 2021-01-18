@@ -1,5 +1,3 @@
-/** @jsxImportSource react */
-
 import { Component, createRef } from 'react';
 import Chart from '@ali/f2-components';
 
@@ -16,15 +14,9 @@ class ReactChart extends Component {
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
     // @ts-ignore
-    const { pixelRatio, width, height, animate, data, children } = props;
     const chart = new Chart({
+      ...props,
       context,
-      pixelRatio,
-      width,
-      height,
-      animate,
-      data,
-      children
     });
     chart.render();
     this.chart = chart;

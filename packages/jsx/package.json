@@ -1,8 +1,8 @@
 {
   "name": "@ali/f2-jsx",
   "version": "0.0.4",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "css-layout": "1.1.1"

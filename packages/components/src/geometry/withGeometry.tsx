@@ -29,9 +29,6 @@ export default View => {
 
       // 这里不画任何东西，在render的时候画
       geom.shape(EMPTY_SHAPE);
-      if (style) {
-        geom.style(style);
-      }
       this._shapes = _shapes;
       this.geom = geom;
     }

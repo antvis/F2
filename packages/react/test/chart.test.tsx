@@ -55,9 +55,21 @@ class App extends Component {
       <Chart
         pixelRatio={ window.devicePixelRatio }
         data={ data }
+        padding={ [ 15, 15, 15, 15 ] }
       >
-        <Axis field="reportDateTimestamp" type="timeCat" tickCount={ 3 } range={ [ 0, 1 ] }/>
-        <Axis field="rate" dimType="y" tickCount={ 5 } range={ [ 0, 1 ] }/>
+        <Axis
+          field="reportDateTimestamp"
+          type="timeCat"
+          tickCount={ 3 }
+          range={ [ 0, 1 ] }
+          position="bottom"
+        />
+        <Axis
+          position="left"
+          field="rate"
+          tickCount={ 5 }
+          range={ [ 0, 1 ] }
+        />
         <Line position="reportDateTimestamp*rate" color="codeType" />
         {
           eventData.map((records, index) => {
@@ -69,7 +81,6 @@ class App extends Component {
             />
           })
         }
-        <WeaverLine position="reportDateTimestamp*rate"/>
       </Chart>
     );
   }

@@ -6,6 +6,10 @@ class Component {
   ref: any;
   actions: any;
 
+  width = 0;
+  height = 0;
+  plot: any;
+
   constructor(props: any, chart: any) {
     const { ref } = props;
     this.chart = chart;

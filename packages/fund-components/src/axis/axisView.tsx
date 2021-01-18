@@ -1,38 +1,26 @@
 // @ts-nocheck
 
 export default (props: any) => {
-  const { ticks, coord, dimType } = props;
-  const { tl, tr } = coord.plot;
-  if (dimType === 'y') {
-    return (
-      <group>
-        {
-          ticks.map(tick => {
-            const { x, y, text } = tick;
-            return (
-              <group>
-                <text attrs={{
-                  x,
-                  y,
-                  text,
-                  fill: '#CCCCCC'
-                }} />
-                <line attrs={{
-                  x1: x,
-                  y1: y,
-                  x2: tr.x,
-                  y2: y,
-                  stroke: '#EDEDED',
-                  lineWidth: '1px',
-                  // lineDash: [ '3px', '6px' ]
-                }} />
-              </group>
-            );
-          })
-        }
-      </group>
-    );
+  const { ticks, plot, position } = props;
+  const { tl, tr, br, bl } = plot;
+  let start = tl;
+  let end = bl;
+  let textAlign = 'center';
+
+  if (position === 'top') {
+    start = tl;
+    end = tr;
+  } else if (position === 'right') {
+    start = tr;
+    end = br;
+    textAlign = 'left';
+  } else if (position === 'bottom') {
+    start = bl;
+    end = br;
+  } else {
+    textAlign = 'right';
   }
+
   return (
     <group>
       {
@@ -44,21 +32,23 @@ export default (props: any) => {
                 x,
                 y,
                 text,
-                fill: '#CCCCCC'
+                fill: '#CCCCCC',
+                textAlign,
+                textBaseline: 'top'
               }} />
               <line attrs={{
-                x1: x,
-                y1: y,
-                x2: x,
-                y2: tl.y,
+                x1: start.x,
+                y1: start.y,
+                x2: end.x,
+                y2: end.y,
                 stroke: '#EDEDED',
                 lineWidth: '1px',
-                // lineDash: [ '3px', '6px' ]
               }} />
             </group>
           );
         })
       }
+      
     </group>
   );
 }

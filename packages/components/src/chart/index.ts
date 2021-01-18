@@ -31,13 +31,14 @@ class Chart {
   components: any;
 
   constructor(props: any) {
-    const { context, pixelRatio, width, height, animate, data, children } = props;
+    const { context, pixelRatio, width, height, animate, data, children, padding } = props;
     const chart = new F2.Chart({
       context,
       pixelRatio,
       width,
       height,
       animate,
+      padding,
     });
     // 直接设置数据
     chart.source(data);
@@ -45,6 +46,19 @@ class Chart {
     chart.legend(false);
     chart.tooltip(false);
     chart.axis(false);
+
+    // 这些都比较hack, 暂时先这么处理
+    // const plot = chart.get('plot');
+    // chart.get('canvas').addShape('rect', {
+    //   attrs: {
+    //     x: plot.start.x,
+    //     y: plot.start.y,
+    //     width: plot.width,
+    //     height: plot.height,
+    //     fill: 'gray'
+    //   }
+    // })
+
 
     this.chart = chart;
 
@@ -90,13 +104,22 @@ class Chart {
     if (component.shape) {
       component.shape.remove(true);
     }
-    // 返回的是G的节点定义树
-    const element = component.render();
-    if (!element) return null;
     const { chart } = this;
     // TODO: 先暂时全往顶层画
     const frontPlot = chart.get('frontPlot');
     const width = chart.get('width');
+    const height = chart.get('height');
+    const plot = chart.get('plot');
+
+    component.width = width;
+    component.height = height;
+    component.plot = plot;
+
+
+    // 返回的是G的节点定义树
+    const element = component.render();
+    if (!element) return null;
+  
     const { style } = element;
     element.style = {
       // 设置元素默认宽度
