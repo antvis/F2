@@ -1,6 +1,6 @@
 {
   "name": "@ali/f2-jsx",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "dist/index.d.ts",
