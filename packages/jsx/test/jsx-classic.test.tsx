@@ -1,9 +1,10 @@
-/** @jsxImportSource .. */
+/** @jsxRuntime classic */
+/** @jsx jsx */
 
-import { render } from '../src';
+import { jsx } from '../src';
 
-describe('test', () => {
-  it('test', () => {
+describe('jsx classic 模式', () => {
+  it('tagName', () => {
     const group = (
       <group a={1}>
         <text />

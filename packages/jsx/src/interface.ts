@@ -7,7 +7,7 @@ declare global {
       render(): any;
     }
     interface IntrinsicElements {
-      view: any;
+      group: any;
       rect: any;
       circle: any;
       line: any;

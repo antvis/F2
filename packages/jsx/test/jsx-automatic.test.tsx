@@ -2,8 +2,8 @@
 
 import { render } from '../src';
 
-describe('test', () => {
-  it('test', () => {
+describe('jsx automatic 模式', () => {
+  it('tagName', () => {
     const group = (
       <group a={1}>
         <text />

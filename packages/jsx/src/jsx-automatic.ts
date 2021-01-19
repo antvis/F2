@@ -1,4 +1,4 @@
-import { batch2hd, extendArray, isFunction } from './util';
+import { batch2hd, extendArray, isFunction } from '@ali/f2x-util';
 import JSX from './interface';
 
 // 实现jsx-runtime 入口

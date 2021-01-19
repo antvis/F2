@@ -8,8 +8,6 @@ export default View => {
       const { field } = props;
       const scale = chart.get('scales')[field];
 
-      console.log(scale);
-      
       // chart.scale(xField, {
       //   type: 'timeCat',
       //   tickCount: 3,

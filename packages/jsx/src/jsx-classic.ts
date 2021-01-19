@@ -1,7 +1,8 @@
-import { batch2hd, extendArray, isFunction } from './util';
+import { batch2hd, extendArray, isFunction } from '@ali/f2x-util';
+import JSX from './interface';
 
 // 实现jsx-classic 入口
-export default function(type: string | Function, props: any, ...children: any[]) {
+export default function(type: string | Function, props: any, ...children: any[]): JSX.Element {
   props = props || {};
   if (isFunction(type)) {
     // f2组件，需要在外部实例化
