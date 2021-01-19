@@ -1,13 +1,9 @@
 {
   "name": "@ali/f2x-util",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "dist/index.d.ts",
-  "dependencies": {
-  },
-  "devDependencies": {
-  },
   "files": [
     "src",
     "dist",

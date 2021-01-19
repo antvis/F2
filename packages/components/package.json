@@ -1,12 +1,12 @@
 {
   "name": "@ali/f2-components",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "lib/index.js",
   "module": "es/index.js",
   "dependencies": {
-    "@ali/f2-jsx": "^0.0.6",
-    "@antv/f2": "^3.8.1",
-    "@ali/f2x-util": "*"
+    "@ali/f2-jsx": "^0.0.7",
+    "@ali/f2x-util": "^0.0.7",
+    "@antv/f2": "^3.8.1"
   },
   "files": [
     "src",
