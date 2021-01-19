@@ -1,10 +1,7 @@
 import render from './render';
-import jsx from './jsx';
-import Fragment from './fragment';
+import jsx from './jsx-classic';
 
 export {
   render,
-  Fragment,
   jsx,
-  jsx as jsxs
-}; 
+};
