@@ -1,13 +1,10 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "target": "esnext",
     "jsx": "react",
     "esModuleInterop": true,
-    "declaration": true
-  },
-  "exclude": [
-    "scripts",
-    "node_modules",
-    "**/test/**/*.ts",
-    "**/test"
-  ]
+    "declaration": true,
+    "moduleResolution": "Node"
+  }
 }

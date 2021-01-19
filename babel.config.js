@@ -1,17 +1,18 @@
-// for jest
 module.exports = {
-  presets: [
-    ['@babel/preset-env', {
-      targets: {
-        node: 'current'
-      }
-    }],
-    '@babel/preset-typescript'
-  ],
-  plugins: [
-    ['@babel/plugin-transform-react-jsx', {
-      runtime: 'automatic',
-      importSource: '@ali/f2-jsx'
-    }]
-  ]
+  env: {
+    // for jest
+    test: {
+      presets: [
+        ['@babel/preset-env', {
+          targets: {
+            node: 'current'
+          }
+        }],
+        '@babel/preset-typescript'
+      ],
+      plugins: [
+        ['@babel/plugin-transform-react-jsx']
+      ]
+    },
+  }
 };

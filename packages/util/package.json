@@ -10,6 +10,9 @@
     "lib",
     "es"
   ],
+  "dependencies": {
+    "@babel/runtime": "^7.12.5"
+  },
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"
   },

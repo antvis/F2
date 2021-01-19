@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "declaration": true
+    "target": "esnext",
+    "declaration": true,
+    "moduleResolution": "Node"
   }
 }

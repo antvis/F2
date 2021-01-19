@@ -1,7 +1,5 @@
-/** @jsxImportSource react */
-
 // @ts-nocheck
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chart from '../src';
 
@@ -9,7 +7,7 @@ import result from './managerData';
 
 // 引入组件
 // import { Line } from '../../components/src/index';
-import { Axis, Line, Guide, WeaverLine } from '../../fund-components/src/index';
+import { Axis, Line, Guide, WeaverLine } from '@ali/fund-components';
 
 const style = document.createElement('style');
 style.setAttribute('rel', 'text/css');

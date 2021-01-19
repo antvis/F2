@@ -48,19 +48,6 @@ class Chart {
     chart.tooltip(false);
     chart.axis(false);
 
-    // 这些都比较hack, 暂时先这么处理
-    // const plot = chart.get('plot');
-    // chart.get('canvas').addShape('rect', {
-    //   attrs: {
-    //     x: plot.start.x,
-    //     y: plot.start.y,
-    //     width: plot.width,
-    //     height: plot.height,
-    //     fill: 'gray'
-    //   }
-    // })
-
-
     this.chart = chart;
 
     this.createComponents(children);
@@ -141,17 +128,6 @@ class Chart {
     map(components, (component: any) => {
       this.renderComponent(component);
     });
-
-    // const plot = this.chart.get('plot');
-    // this.chart.get('canvas').addShape('rect', {
-    //   attrs: {
-    //     x: plot.start.x,
-    //     y: plot.start.y,
-    //     width: plot.width,
-    //     height: plot.height,
-    //     fill: 'gray'
-    //   }
-    // })
   }
 
   update(props: any) {
