@@ -1,7 +1,8 @@
 import { batch2hd, extendArray, isFunction } from './util';
+import JSX from './interface';
 
 // 实现jsx-runtime 入口
-export default function(type: string | Function, props: any, key?: string) {
+export default function(type: string | Function, props: any, key?: string): JSX.Element {
   if (isFunction(type)) {
     // f2组件，需要在外部实例化
     // @ts-ignore

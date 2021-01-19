@@ -4,5 +4,6 @@
     "target": "esnext",
     "typeRoots": [ "/node_modules" ],
     "declaration": true,
+    "moduleResolution": "Node"
   }
 }

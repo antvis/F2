@@ -1,6 +1,6 @@
+// only for jest
 module.exports = {
   env: {
-    // for jest
     test: {
       presets: [
         ['@babel/preset-env', {
@@ -11,7 +11,9 @@ module.exports = {
         '@babel/preset-typescript'
       ],
       plugins: [
-        ['@babel/plugin-transform-react-jsx']
+        ['@babel/plugin-transform-react-jsx', {
+          "runtime": "automatic"
+        }]
       ]
     },
   }

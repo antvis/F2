@@ -1,41 +1,13 @@
 /** @jsxImportSource .. */
-import { canvas } from './global';
-import render from '../src/render';
 
-describe('index', () => {
-  it('render', async () => {
-    canvas.clear();
-    const profile = (
-      <group style={{
-        width: 200,
-        height: 100,
-        flexDirection: 'row',
-      }}>
-        <rect style={{
-            width: 100,
-            flex: 1,
-          }}
-          attrs={{
-            fill: 'red',
-          }}
-        />
-        <rect style={{
-            flex: 1,
-          }}
-          attrs={{
-            fill: 'green'
-        }} />
-        <text style={{
-            flex: 1,
-          }}
-          attrs={{
-            textBaseline: 'top',
-            text: '111',
-            fill: '#000'
-        }} />
-      </group>
+// @ts-nocheck
+describe('test', () => {
+  it('test', () => {
+    const group = (
+      <group a={1}><text /></group>
     );
-    render(profile, canvas);
-    canvas.draw();
-  });
+    expect(group.type).toBe('group');
+    expect(group.props.a).toBe(1);
+    expect(group.children.length).toBe(1);
+  })
 });

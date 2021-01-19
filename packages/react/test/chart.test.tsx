@@ -1,3 +1,5 @@
+/** @jsxRuntime classic */
+
 // @ts-nocheck
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
