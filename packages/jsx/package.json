@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "types": "dist/index.d.ts",
+  "types": "es/index.d.ts",
   "dependencies": {
     "css-layout": "1.1.1"
   },

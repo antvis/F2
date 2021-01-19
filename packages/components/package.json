@@ -3,6 +3,7 @@
   "version": "0.0.9",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "types": "es/index.d.ts",
   "dependencies": {
     "@ali/f2-jsx": "^0.0.7",
     "@ali/f2x-util": "^0.0.7",

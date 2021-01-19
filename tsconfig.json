@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "declaration": true
   },
   "exclude": [
     "scripts",

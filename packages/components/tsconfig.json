@@ -1,8 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "typeRoots": [ "/node_modules" ],
     "jsx": "react-jsx",
     "jsxImportSource": "@ali/f2-jsx",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   }
 }
