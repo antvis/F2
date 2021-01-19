@@ -7,6 +7,14 @@ const EMPTY_SHAPE = 'empty-shape'
 
 export default View => {
   return class Geometry extends Component {
+    applyAttr(geom, attr, config) {
+      if (!config) return;
+      if (Array.isArray(config)) {
+        geom[attr].apply(geom, config);
+      } else {
+        geom[attr](config);
+      }
+    }
     mount() {
       const { chart, props } = this;
       const _shapes = this._shapes || [];
@@ -20,20 +28,13 @@ export default View => {
       });
 
       const geom = chart[type](config).position(position);
-      if (color) {
-        geom.color(color, ['#CCCCCC', '#EAB76B']);
-      }
-      if (size) {
-        geom.size(size);
-      }
+      this.applyAttr(geom, 'color', color);
+      this.applyAttr(geom, 'size', size);
 
       // 这里不画任何东西，在render的时候画
       geom.shape(EMPTY_SHAPE);
       this._shapes = _shapes;
       this.geom = geom;
-    }
-    getMappedData() {
-      return this.geom.get('dataArray');
     }
     render() {
       const _shapes = this._shapes;

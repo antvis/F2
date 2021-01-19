@@ -1,5 +1,5 @@
 import withLine from './withLine';
-import LineView from './lineView';
+import { LineView } from '@ali/f2-components';
 
 export { withLine, LineView };
 export default withLine(LineView);

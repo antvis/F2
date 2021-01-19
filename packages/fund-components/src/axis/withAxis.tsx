@@ -1,34 +1,85 @@
 // @ts-nocheck
 import { Component } from '@ali/f2-components';
+import { batch2hd } from '@ali/f2x-util';
 
 export default View => {
   return class Axis extends Component {
+    px2hd(props) {
+      // 设置默认配置
+      const {
+        labelOffset = '15px',
+        line = {
+          stroke: '#EDEDED',
+          lineWidth: '1px',
+        },
+        label = {
+          fill: '#CCCCCC',
+          fontSize: '20px',
+        },
+        tickLine,
+        grid = {
+          stroke: '#EDEDED',
+          lineWidth: '1px',
+          lineDash: [ '4px' ]
+        }
+      } = props;
+      return batch2hd({
+        labelOffset,
+        line,
+        label,
+        tickLine,
+        grid
+      });
+    }
     mount() {
       const { props, chart } = this;
-      const { field, type, tickCount, range } = props;
+      const {
+        field,
+        type,
+        tickCount,
+        range,
+        formatter,
+      } = props;
+      // 把这几个hd转换下
+      this.props = {
+        ...props,
+        ...this.px2hd(props),
+      };
       chart.scale(field, {
         type,
         tickCount,
-        range
+        range,
+        formatter
       });
 
       // 更新四边边距，暂时这么处理
       chart.on('beforegeomdraw', () => {
+        const { visible } = this.props;
+        if (visible === false) {
+          return;
+        }
         const ticks = this.getTicks();
         const bbox = this.getMaxBBox(ticks);
         const padding = this._calcPadding(bbox);
         chart._updateLayout(padding);
       });
     }
+    update(props) {
+      this.props = {
+        ...props,
+        ...this.px2hd(props)
+      };
+    }
     // 获取ticks最大的宽高
     getMaxBBox(ticks) {
-      const { chart } = this;
+      const { chart, props } = this;
       const group = chart.get('backPlot').addGroup();
       let width = 0;
       let height = 0;
       ticks.forEach(tick => {
         const text = group.addShape('text', {
           attrs: {
+            ...props.label,
             x: 0,
             y: 0,
             text: tick.text
@@ -49,19 +100,19 @@ export default View => {
       const { props, chart } = this;
       const padding = chart.get('padding');
       const { width, height } = bbox;
-      const { position } = props;
+      const { position, labelOffset } = props;
       switch(position) {
         case 'top':
-          padding[0] = padding[0] + height;
+          padding[0] = padding[0] + height + labelOffset;
           break;
         case 'right':
-          padding[1] = padding[1] + width;
+          padding[1] = padding[1] + width + labelOffset;
             break;
         case 'bottom':
-          padding[2] = padding[2] + height;
+          padding[2] = padding[2] + height + labelOffset;
           break;
         default:
-          padding[3] = padding[3] + width;
+          padding[3] = padding[3] + width + labelOffset;
           break;
       }
       return padding;
@@ -95,15 +146,15 @@ export default View => {
     }
     render() {
       const { width, height, plot, props } = this;
-      const ticks = this.convertPoint();
-      const { visible, position } = props;
+      const { visible } = props;
       if (visible === false) {
         return null;
       }
+      const ticks = this.convertPoint();
       return <View
-        position={ position }
         ticks={ ticks }
         plot={ plot }
+        { ...props }
       />
     }
   }

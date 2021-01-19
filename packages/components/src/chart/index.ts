@@ -1,5 +1,6 @@
 import F2 from '@antv/f2';
 import { render } from '@ali/f2-jsx';
+import { batch2hd } from '@ali/f2x-util';
 
 // @ts-ignore
 const map = (children: any, fn: any) => {
@@ -38,7 +39,7 @@ class Chart {
       width,
       height,
       animate,
-      padding,
+      padding: batch2hd(padding),
     });
     // 直接设置数据
     chart.source(data);
@@ -140,6 +141,17 @@ class Chart {
     map(components, (component: any) => {
       this.renderComponent(component);
     });
+
+    // const plot = this.chart.get('plot');
+    // this.chart.get('canvas').addShape('rect', {
+    //   attrs: {
+    //     x: plot.start.x,
+    //     y: plot.start.y,
+    //     width: plot.width,
+    //     height: plot.height,
+    //     fill: 'gray'
+    //   }
+    // })
   }
 
   update(props: any) {

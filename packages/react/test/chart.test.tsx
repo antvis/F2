@@ -55,7 +55,7 @@ class App extends Component {
       <Chart
         pixelRatio={ window.devicePixelRatio }
         data={ data }
-        padding={ [ 15, 15, 15, 15 ] }
+        padding={ [ '15px', '15px', '15px', '15px' ] }
       >
         <Axis
           field="reportDateTimestamp"
@@ -63,20 +63,32 @@ class App extends Component {
           tickCount={ 3 }
           range={ [ 0, 1 ] }
           position="bottom"
+          labelOffset="16px"
+          // visible={ false }
         />
         <Axis
           position="left"
           field="rate"
           tickCount={ 5 }
           range={ [ 0, 1 ] }
+          labelOffset="16px"
+          formatter={ (value) => { return `${(value * 100).toFixed(2)}%` } }
+          tickLine={ false }
+          label={{
+            fontSize: '20px'
+          }}
         />
-        <Line position="reportDateTimestamp*rate" color="codeType" />
+        <Line
+          position="reportDateTimestamp*rate"
+          color={[ 'codeType', ['#CCCCCC', '#EAB76B']]}
+          size="3px"
+        />
         {
           eventData.map((records, index) => {
             return <Guide
               key={ index }
-              active={ activeIndex === index }
               records={ records }
+              active={ activeIndex === index }
               onClick={ () => this.guideClick(index) }
             />
           })

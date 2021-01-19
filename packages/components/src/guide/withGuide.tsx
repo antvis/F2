@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Component } from '@ali/f2-components';
+import Component from '../base/index';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -13,9 +13,13 @@ export default View => {
       const { chart, props } = this;
       const { onClick } = props;
       const canvas = chart.get('canvas');
+      // 创建ref
+      this.triggerRef = {};
+
       canvas.on('click', ev => {
         const { points } = ev;
         const shape = this.triggerRef.current;
+        if (!shape) return;
         const bbox = shape.getBBox();
         if (isInBBox(bbox, points[0])) {
           ev.shape = shape;
@@ -36,19 +40,16 @@ export default View => {
     }
     render() {
       const { props, width, height, plot } = this;
-      const { records, active } = props;
+      const { records, ...otherProps } = props;
       const points = records.map(record => this.parsePoint(record));
-
-      const triggerRef = {};
-      this.triggerRef = triggerRef;
 
       return <View
         points={ points }
+        triggerRef={ this.triggerRef }
         plot={ plot }
         width={ width }
         height={ height }
-        triggerRef={ triggerRef }
-        active={ active }
+        { ...otherProps }
       />
     }
   }

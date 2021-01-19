@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import { Line, Area } from '@ali/f2-components';
 
 export default (props: any) => {

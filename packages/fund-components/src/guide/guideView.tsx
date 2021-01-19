@@ -44,7 +44,6 @@ export default (props: any) => {
               points,
               lineJoin: 'round',
               lineCap: 'round',
-              // stroke: '#000',
               stroke: '#EAB76B',
               lineWidth: '4px'
             }}

@@ -1,4 +1,4 @@
-import { withGuide } from '@ali/f2-components';
+import withGuide from './withGuide';
 import guideView from './guideView';
 
 export { withGuide, guideView };
