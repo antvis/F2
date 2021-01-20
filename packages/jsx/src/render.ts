@@ -1,4 +1,25 @@
+import JSX from './interface';
+import { extendMap, batch2hd } from '@ali/f2x-util';
 import computeLayout from './css-layout';
+
+// 转换成布局所需要的布局树
+function createNodeTree(element: JSX.Element) {
+  const { key, ref, type, props } = element;
+  const { style, attrs } = props;
+  const children = extendMap(props.children, (child) => {
+    return createNodeTree(child);
+  });
+
+  return {
+    key,
+    ref,
+    type,
+    props,
+    style: batch2hd(style),
+    attrs: batch2hd(attrs),
+    children,
+  }
+}
 
 function mergeLayout(parent: any, layout: any) {
   if (!parent) return layout;
@@ -13,7 +34,7 @@ function mergeLayout(parent: any, layout: any) {
 
 
 function createElement(node: any, container: any, parentLayout: any) {
-  const { type, props, attrs, layout: originLayout, children } = node;
+  const { key, ref, type, props, attrs, layout: originLayout, children } = node;
   const layout = mergeLayout(parentLayout, originLayout);
   const { width, height, left, top } = layout;
   if (type === 'group') {
@@ -47,16 +68,17 @@ function createElement(node: any, container: any, parentLayout: any) {
       ...attrs,
     },
   });
-  if (props.ref) {
-    props.ref.current = element;
+  if (ref) {
+    ref.current = element;
   }
   return element;
 }
 
-export default (node: any, container: any) => {
-  if (!node) {
+export default (element: JSX.Element, container: any) => {
+  if (!element) {
     return;
   }
-  computeLayout(node);
-  return createElement(node, container, null);
+  const nodeTree = createNodeTree(element);
+  computeLayout(nodeTree);
+  return createElement(nodeTree, container, null);
 }

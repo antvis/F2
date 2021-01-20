@@ -1,7 +1,19 @@
+interface Ref {
+  current?: any;
+}
+
+interface Props {
+  children?: any;
+  [propName: string]: any;
+}
+
 declare global {
   namespace JSX {
     interface Element {
-      [propName: string]: any;
+      key?: string,
+      ref?: Ref,
+      type: string | Function,
+      props: Props,
     }
     interface ElementClass {
       render(): any;

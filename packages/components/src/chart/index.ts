@@ -1,35 +1,11 @@
 import F2 from '@antv/f2';
-import { render } from '@ali/f2-jsx';
 import { batch2hd } from '@ali/f2x-util';
-
-// @ts-ignore
-const map = (children: any, fn: any) => {
-  if (!children) return children;
-  if (Array.isArray(children)) {
-    return children.map(child => {
-      return map(child, fn);
-    });
-  }
-  return fn(children);
-}
-
-// components 和 children 必须是完全相同的2棵树
-// @ts-ignore
-function each(components, children, fn) {
-  if (!components) return;
-  if (Array.isArray(components)) {
-    components.forEach((component, index) => {
-      each(component, children[index], fn);
-    });
-    return;
-  }
-  return fn(components, children);
-}
+import ComboComponent from './comboComponent';
 
 class Chart {
 
   chart: any;
-  components: any;
+  component: any;
   container: any;
 
   constructor(props: any) {
@@ -50,106 +26,31 @@ class Chart {
     chart.axis(false);
 
     const canvas = chart.get('canvas');
-    this.container = canvas.addGroup({
+    const container = canvas.addGroup({
       zIndex: 40
     });
-
-    this.chart = chart;
-
-    this.createComponents(children);
+    const component = new ComboComponent({ children }, chart, container)
 
     // @ts-ignore
     chart.on('aftergeomdraw', () => {
-      this.renderComponents();
+      component.render();
     });
-  }
-
-  createComponent(Constructor: any, props: any) {
-    const { chart } = this;
-    const component = new Constructor(props, chart);
-    return component;
-  }
-
-  createComponents(children: any) {
-    const components = map(children, (child: any) => {
-      // 要对react生成的ref单独处理
-      const { type, props, key, ref } = child;
-      // 只处理组件，不支持标签
-      if (typeof type !== 'function') {
-        return null;
-      }
-
-      // class 形式的组件
-      if (type.prototype && type.prototype.isF2Component) {
-        return this.createComponent(type, props);
-      }
-
-      // function 形式组件 TODO
-      // let subChildren = type(props);
-
-      return null;
-    });
-
-    this.components = components;
-  }
-
-  renderComponent(component: any) {
-    // 先把之前的内容清理掉
-    if (component.shape) {
-      component.shape.remove(true);
-    }
-    const { chart, container } = this;
-    const width = chart.get('width');
-    const height = chart.get('height');
-    const plot = chart.get('plot');
-
-    component.width = width;
-    component.height = height;
-    component.plot = plot;
-
-
-    // 返回的是G的节点定义树
-    const element = component.render();
-    if (!element) return null;
-  
-    const { style } = element;
-    element.style = {
-      // 设置元素默认宽度
-      width,
-      ...style
-    }
-    // 生成G的节点树
-    const shape = render(element, container);
-    component.shape = shape;
-    if (component.ref) {
-      component.ref.component = component;
-      component.ref.current = shape;
-    }
-  }
-
-  renderComponents() {
-    const { components } = this;
-    map(components, (component: any) => {
-      this.renderComponent(component);
-    });
-  }
-
-  update(props: any) {
-    const { chart } = this;
-    // 只处理数据，和children的变化
-    const { data, children } = props;
-    const { components } = this;
-    each(components, children, (component: any, child: any) => {
-      const { props } = child;
-      component.update(props);
-      this.renderComponent(component);
-    });
-    chart.get('canvas').draw();
+    this.chart = chart;
+    this.container = container;
+    this.component = component;
   }
 
   render() {
     const { chart } = this;
     chart.render();
+  }
+
+  update(props: any) {
+    const { chart, component } = this;
+    // 只处理数据，和children的变化
+    const { data, children } = props;
+    component.update({ children });
+    chart.get('canvas').draw();
   }
 }
 

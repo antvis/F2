@@ -78,24 +78,47 @@ function batch2hd(value: any) {
 }
 
 // 展开数组
-function extendArray(arr: any[]) {
+function extendMap(arr: any[], fn: Function) {
   if (!arr) {
     return arr;
   }
   if (!isArray(arr)) {
-    return [ arr ];
+    return [ fn(arr) ];
   }
   let newArray: any = [];
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
     if (isArray(element)) {
-      newArray = newArray.concat(extendArray(element));
+      newArray = newArray.concat(extendMap(element, fn));
     } else if (element) {
-      newArray.push(element);
+      newArray.push(fn(element));
     }
   }
   return newArray;
 }
 
+// @ts-ignore
+const map = (children: any, fn: any) => {
+  if (!children) return children;
+  if (Array.isArray(children)) {
+    return children.map(child => {
+      return map(child, fn);
+    });
+  }
+  return fn(children);
+}
 
-export { isString, isArray, isObject, isFunction, batch2hd, extendArray };
+// components 和 children 必须是完全相同的2棵树
+// @ts-ignore
+function each(components, children, fn) {
+  if (!components) return;
+  if (Array.isArray(components)) {
+    components.forEach((component, index) => {
+      each(component, children[index], fn);
+    });
+    return;
+  }
+  return fn(components, children);
+}
+
+export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, each };

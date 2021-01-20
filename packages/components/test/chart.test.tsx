@@ -16,11 +16,12 @@ const data = [
 
 describe('Chart', () => {
   it('new Chart', () => {
-    const children = (
+    const fragment = (
       <>
         <Line position="genre*sold" />
       </>
     );
+    const children = fragment.props.children;
 
     const chart = new Chart({
       context,
@@ -31,8 +32,25 @@ describe('Chart', () => {
 
     expect(chart.chart).toBeInstanceOf(F2.Chart);
     chart.render();
-
     const container = chart.container;
     expect(container.get('children').length).toBe(1);
   })
+
+  // it('component ref', () => {
+  //   const ref = {};
+  //   const children = (
+  //     <>
+  //       <Line position="genre*sold" ref={ ref } />
+  //     </>
+  //   );
+
+  //   const chart = new Chart({
+  //     context,
+  //     data,
+  //     children,
+  //     // padding
+  //   });
+  //   expect(ref.current).toBeInstanceOf(Line);
+
+  // })
 });
