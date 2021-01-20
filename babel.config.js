@@ -12,7 +12,8 @@ module.exports = {
       ],
       plugins: [
         ['@babel/plugin-transform-react-jsx', {
-          "runtime": "automatic"
+          "runtime": "automatic",
+          "importSource": "@ali/f2-jsx"
         }]
       ]
     },

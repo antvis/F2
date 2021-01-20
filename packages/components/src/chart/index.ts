@@ -30,6 +30,7 @@ class Chart {
 
   chart: any;
   components: any;
+  container: any;
 
   constructor(props: any) {
     const { context, pixelRatio, width, height, animate, data, children, padding } = props;
@@ -47,6 +48,11 @@ class Chart {
     chart.legend(false);
     chart.tooltip(false);
     chart.axis(false);
+
+    const canvas = chart.get('canvas');
+    this.container = canvas.addGroup({
+      zIndex: 40
+    });
 
     this.chart = chart;
 
@@ -92,9 +98,7 @@ class Chart {
     if (component.shape) {
       component.shape.remove(true);
     }
-    const { chart } = this;
-    // TODO: 先暂时全往顶层画
-    const frontPlot = chart.get('frontPlot');
+    const { chart, container } = this;
     const width = chart.get('width');
     const height = chart.get('height');
     const plot = chart.get('plot');
@@ -115,7 +119,7 @@ class Chart {
       ...style
     }
     // 生成G的节点树
-    const shape = render(element, frontPlot);
+    const shape = render(element, container);
     component.shape = shape;
     if (component.ref) {
       component.ref.component = component;
