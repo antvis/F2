@@ -58,8 +58,8 @@ class ComboComponent extends Component {
 
   renderComponent(component: any, container, appendProps) {
     // 先把之前的图形清除掉
-    if (component.shape) {
-      component.shape.remove(true);
+    if (component.__shape) {
+      component.__shape.remove(true);
     }
     // 返回的是jsx的element树
     const jsxElement = component.render();
@@ -71,7 +71,7 @@ class ComboComponent extends Component {
 
     // 生成G的节点树
     const shape = render(element, container);
-    component.shape = shape;
+    component.__shape = shape;
   }
 
   update(props: any) {
