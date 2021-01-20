@@ -4,6 +4,7 @@ import JSX from './interface';
 // 实现jsx-classic 入口
 export default function(type: string | Function, props: any, ...children: any[]): JSX.Element {
   props = props || {};
+  props.children = children;
   if (isFunction(type)) {
     // f2组件，需要在外部实例化
     // @ts-ignore

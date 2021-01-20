@@ -1,6 +1,8 @@
 export default (props: any) => {
-  return {
-    type: 'fragment',
-    props,
-  };
+  const { children } = props;
+  return children;
+  // return {
+  //   type: 'fragment',
+  //   props,
+  // };
 }
