@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { Line, withLine } from '@ali/f2-components';
+import { withLine } from '@ali/f2-components';
 import { batch2hd } from '@ali/f2x-util';
 
 export default View => {

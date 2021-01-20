@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { jsx } from '@ali/f2-jsx';
 
 export default (props) => {
   const { records, plot } = props;

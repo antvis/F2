@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { jsx } from '@ali/f2-jsx';
 
 export default (props: any) => {
   const { plot, labelOffset, ticks, line, label, tickLine, grid } = props;

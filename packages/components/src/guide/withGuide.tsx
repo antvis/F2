@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { jsx } from '@ali/f2-jsx';
 import Component from '../base/index';
 
 function isInBBox(bbox, point) {
@@ -9,6 +9,8 @@ function isInBBox(bbox, point) {
 
 export default View => {
   return class Guide extends Component {
+    triggerRef: any;
+
     mount() {
       const { chart, props } = this;
       const { onClick } = props;

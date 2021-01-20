@@ -1,9 +1,10 @@
-// @ts-nocheck
-
+import { jsx } from '@ali/f2-jsx';
 import Component from '../base/index';
 
 export default View => {
   return class Legend extends Component {
+    geom: any;
+    
     mount() {
       const { chart, props } = this;
       const geoms = chart.get('geoms');

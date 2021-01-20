@@ -1,12 +1,16 @@
-// @ts-nocheck
+import { jsx } from '@ali/f2-jsx';
 import F2 from '@antv/f2';
 import Component from '../base/index';
+
 const Shape = F2.Shape;
 
 const EMPTY_SHAPE = 'empty-shape'
 
 export default View => {
   return class Geometry extends Component {
+    _shapes: any;
+    geom: any;
+
     applyAttr(geom, attr, config) {
       if (!config) return;
       if (Array.isArray(config)) {

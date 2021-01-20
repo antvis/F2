@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-import Component from '../base/index';
+import { jsx } from '@ali/f2-jsx';
+import { Component } from '@ali/f2-components';
 
 export default View => {
   return class Legend extends Component {
@@ -24,16 +23,16 @@ export default View => {
         }
         const records = geom.getSnapRecords(point);
         const plot = chart.get('plot');
-        this.setState({
-          point,
-          records,
-          plot,
-        });
+        // this.setState({
+        //   point,
+        //   records,
+        //   plot,
+        // });
       });
       canvas.on('pressend', ev => {
-        this.setState({
-          point: null,
-        });
+        // this.setState({
+        //   point: null,
+        // });
       });
     }
 

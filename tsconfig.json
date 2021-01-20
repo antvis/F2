@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "declaration": true
+    "declaration": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "exclude": [
     "scripts",

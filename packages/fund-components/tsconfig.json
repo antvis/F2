@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
     "target": "esnext",
-    "jsx": "react-jsx",
-    "jsxImportSource": "@ali/f2-jsx",
+    "declaration": true,
+    "jsx": "react",
+    "jsxFactory": "jsx",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "typeRoots": [ "/node_modules" ]
   }
 }

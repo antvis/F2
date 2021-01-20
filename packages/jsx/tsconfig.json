@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
-    "typeRoots": [ "/node_modules" ],
-    "declaration": true
+    "declaration": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "typeRoots": [ "/node_modules" ]
   }
 }

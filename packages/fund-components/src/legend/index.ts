@@ -1,5 +1,4 @@
 
-// @ts-nocheck
 import { withLegend } from '@ali/f2-components';
 import LegendView from './legendView';
 
