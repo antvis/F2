@@ -1,6 +1,3 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-
 import { jsx } from '../src';
 
 describe('jsx classic 模式', () => {

@@ -1,7 +1,6 @@
-/** @jsxImportSource .. */
 
 import * as F2 from '@antv/f2';
-import { render } from '../src';
+import { render, jsx } from '../src';
 
 const { G } = F2;
 

@@ -4,6 +4,8 @@
     "target": "esnext",
     "declaration": true,
     "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
     "moduleResolution": "node",
     "esModuleInterop": true
   }

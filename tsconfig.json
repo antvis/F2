@@ -3,6 +3,8 @@
     "target": "esnext",
     "declaration": true,
     "jsx": "react",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
     "moduleResolution": "node",
     "esModuleInterop": true
   },

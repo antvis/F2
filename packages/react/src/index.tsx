@@ -26,7 +26,10 @@ class ReactChart extends React.Component {
     chart.update(props);
   }
   render() {
-    return (<canvas className="f2-chart" ref={ this.canvasRef } />);
+    return React.createElement('canvas', {
+      className: 'f2-chart',
+      ref: this.canvasRef
+    })
   }
 }
 

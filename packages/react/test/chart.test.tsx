@@ -1,6 +1,6 @@
-/** @jsxRuntime classic */
 
 // @ts-nocheck
+/* @jsx React.createElement */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chart from '../src';

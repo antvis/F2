@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { jsx, Fragment } from '@ali/f2-jsx';
 import * as F2 from '@antv/f2';
 import Chart from '../src/chart';
 import Line from '../src/line';
@@ -19,6 +21,7 @@ describe('Chart', () => {
         <Line position="genre*sold" />
       </>
     );
+
     const chart = new Chart({
       context,
       data,

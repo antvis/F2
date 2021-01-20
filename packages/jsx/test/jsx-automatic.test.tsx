@@ -1,4 +1,5 @@
-/** @jsxImportSource .. */
+/** @jsxRuntime automatic */
+/** @jsxImportSource ../src */
 
 import { render } from '../src';
 

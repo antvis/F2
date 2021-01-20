@@ -1,6 +1,5 @@
-/** @jsxImportSource .. */
 
-import { render } from '../src';
+import { jsx } from '../src';
 
 describe('test', () => {
   it('test', () => {
