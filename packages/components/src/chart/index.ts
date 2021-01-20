@@ -16,7 +16,7 @@ class Chart {
       width,
       height,
       animate,
-      padding: batch2hd(padding),
+      padding: batch2hd(padding) || [ 0, 0, 0, 0 ],
     });
     // 直接设置数据
     chart.source(data);

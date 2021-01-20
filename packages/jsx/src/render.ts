@@ -37,8 +37,10 @@ function createElement(node: any, container: any, parentLayout: any) {
   const { key, ref, type, props, attrs, layout: originLayout, children } = node;
   const layout = mergeLayout(parentLayout, originLayout);
   const { width, height, left, top } = layout;
+
+  let element;
   if (type === 'group') {
-    const element = container.addGroup();
+    element = container.addGroup();
     if (attrs) {
       element.addShape('rect', {
         attrs: {
@@ -56,18 +58,18 @@ function createElement(node: any, container: any, parentLayout: any) {
         createElement(children[i], element, layout);
       }
     }
-    return element;
+  } else {
+    element = container.addShape(type, {
+      ...props,
+      attrs: {
+        x: left,
+        y: top,
+        width,
+        height,
+        ...attrs,
+      },
+    });
   }
-  const element = container.addShape(type, {
-    ...props,
-    attrs: {
-      x: left,
-      y: top,
-      width,
-      height,
-      ...attrs,
-    },
-  });
   if (ref) {
     ref.current = element;
   }

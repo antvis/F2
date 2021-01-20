@@ -1,15 +1,11 @@
 
-import { jsx } from '../src';
+import { render, renderJSXElement, jsx, Fragment } from '../src';
 
-describe('test', () => {
-  it('test', () => {
-    const group = (
-      <group a={1}>
-        <text />
-      </group>
-    );
-    expect(group.type).toBe('group');
-    expect(group.props.a).toBe(1);
-    expect(group.children.length).toBe(1);
+describe('index', () => {
+  it('index', () => {
+    expect(!!render).toBe(true);
+    expect(!!renderJSXElement).toBe(true);
+    expect(!!jsx).toBe(true);
+    expect(!!Fragment).toBe(true);
   })
 });

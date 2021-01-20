@@ -18,11 +18,12 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
 
   if (typeof type === 'function') {
     const newElement = type(element.props);
-    return {
+    // recursive render until type is string
+    return renderJSXElement({
       key,
       ref,
       ...newElement,
-    }
+    }, null);
   }
   // return element if type is string
   return element;

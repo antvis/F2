@@ -145,7 +145,7 @@ export default View => {
       return points;
     }
     render() {
-      const { width, height, plot, props } = this;
+      const { props } = this;
       const { visible } = props;
       if (visible === false) {
         return null;
@@ -153,7 +153,6 @@ export default View => {
       const ticks = this.convertPoint();
       return <View
         ticks={ ticks }
-        plot={ plot }
         { ...props }
       />
     }
