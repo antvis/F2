@@ -33,26 +33,6 @@ export default (props) => {
         stroke: '#fff',
         lineWidth: '2px',
       }} />
-      <rect attrs={{
-        x,
-        y: tl.y,
-        width: 10,
-        height: 10,
-        fill: '#1677FF',
-        radius: '4px',
-        shadowColor: '#A1C8FF',
-        shadowBlur: '8px',
-        shadowOffsetX: 0,
-        shadowOffsetY: '4px',
-      }}
-      />
-      <text attrs={{
-        x,
-        y: tl.y,
-        fill: '#000',
-        fontSize: '22px',
-        text: 'aaa'
-      }} />
     </group>
   );
 }

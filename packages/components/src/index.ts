@@ -7,4 +7,5 @@ export { default as Area, withArea } from './area';
 export { default as Interval, withInterval } from './interval';
 export { default as Axis, withAxis, AxisView } from './axis';
 export { default as Legend, withLegend, LegendView } from './legend';
-export { default as Guide, withGuide, guideView } from './guide';
+export { default as Guide, withGuide, GuideView } from './guide';
+export { default as Tooltip, withTooltip, TooltipView } from './tooltip';

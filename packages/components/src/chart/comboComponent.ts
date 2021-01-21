@@ -36,7 +36,7 @@ class ComboComponent extends Component {
     });
   }
 
-  createComponent(Constructor: any, props: any) {
+  createComponent(Constructor: any, props: any): Component {
     // class 形式的组件
     if (Constructor.prototype && Constructor.prototype.isF2Component) {
       return new Constructor(props);

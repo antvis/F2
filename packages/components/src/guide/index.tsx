@@ -1,5 +1,5 @@
 import withGuide from './withGuide';
-import guideView from './guideView';
+import GuideView from './guideView';
 
-export { withGuide, guideView };
-export default withGuide(guideView);
+export { withGuide, GuideView };
+export default withGuide(GuideView);
