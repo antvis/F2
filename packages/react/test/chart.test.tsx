@@ -18,18 +18,35 @@ const data = [
   { genre: 'Other', sold: 150 }
 ];
 
+function App({ chartRef, lineRef, a }) {
+  return (
+    <ReactChart ref={ chartRef } data={ data } width={ 100 } height={ 100 }>
+      <Line ref={ lineRef } position="genre*sold" a={ a } />
+    </ReactChart>
+  );
+}
+
 describe('<Chart >', () => {
   it('Chart render', () => {
-    const wrapper = mount(
-      <ReactChart data={ data } width={ 100 } height={ 100 }>
-        <Line position="genre*sold"/>
-      </ReactChart>
-    );
+    const chartRef = React.createRef();
+    const lineRef = React.createRef();
+
+    const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
     expect(wrapper.html()).toBe('<canvas class="f2-chart" width="100" height="100" style="width: 100px; height: 100px;"></canvas>');
 
-    const instance = wrapper.instance();
-    expect(instance.chart).toBeInstanceOf(Chart);
-    wrapper.update({});
+    const reactChart = chartRef.current;
+    const line = lineRef.current;
+    expect(reactChart.chart).toBeInstanceOf(Chart);
+    expect(line).toBeInstanceOf(Line);
+    expect(line.props.a).toBeUndefined();
+
+    // 触发update
+    wrapper.setProps({ a: 1 });
+    expect(line.props.a).toBe(1);
+
+    wrapper.unmount();
+    // 断言 F2 实例销毁
+    expect(reactChart.chart.chart.destroyed).toBe(true);
   });
 });
 

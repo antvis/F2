@@ -41,16 +41,13 @@ export default View => {
       return coord.convertPoint({ x, y });
     }
     render() {
-      const { props, width, height, plot } = this;
+      const { props } = this;
       const { records, ...otherProps } = props;
       const points = records.map(record => this.parsePoint(record));
 
       return <View
         points={ points }
         triggerRef={ this.triggerRef }
-        plot={ plot }
-        width={ width }
-        height={ height }
         { ...otherProps }
       />
     }

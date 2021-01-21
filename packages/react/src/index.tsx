@@ -32,7 +32,7 @@ class ReactChart extends React.Component {
     return React.createElement('canvas', {
       className: 'f2-chart',
       ref: this.canvasRef
-    })
+    });
   }
 
   componentWillUnmount() {
