@@ -9,6 +9,7 @@ class ReactChart extends React.Component {
     super(props);
     this.canvasRef = React.createRef();
   }
+
   componentDidMount() {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
@@ -21,15 +22,22 @@ class ReactChart extends React.Component {
     chart.render();
     this.chart = chart;
   }
+
   componentDidUpdate() {
     const { chart, props } = this;
     chart.update(props);
   }
+
   render() {
     return React.createElement('canvas', {
       className: 'f2-chart',
       ref: this.canvasRef
     })
+  }
+
+  componentWillUnmount() {
+    const { chart } = this;
+    chart.destroy();
   }
 }
 

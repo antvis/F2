@@ -52,6 +52,12 @@ class Chart {
     component.update({ children });
     chart.get('canvas').draw();
   }
+
+  destroy() {
+    const { chart, component } = this;
+    component.destroy();
+    chart.destroy();
+  }
 }
 
 export default Chart;
