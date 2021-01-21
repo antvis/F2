@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { jsx, Fragment } from '@ali/f2-jsx';
-import Chart from '../src/chart';
-import { Line, Guide } from '../src';
+import Chart, { Line, Guide } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
