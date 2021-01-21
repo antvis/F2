@@ -1,4 +1,4 @@
-import Component from '../src/base';
+import Component from '../src/component';
 
 describe('Base Component', () => {
   it('Base component', () => {

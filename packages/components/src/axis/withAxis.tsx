@@ -1,6 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import { batch2hd } from '@ali/f2x-util';
-import Component from '../base';
+import Component from '../component';
 
 export default View => {
   return class Axis extends Component {

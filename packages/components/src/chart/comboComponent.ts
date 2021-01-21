@@ -1,6 +1,6 @@
 import { render, renderJSXElement } from '@ali/f2-jsx';
 import { map, each } from '@ali/f2x-util';
-import Component from '../base';
+import Component from '../component';
 
 class ComboComponent extends Component {
   components: any;

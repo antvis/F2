@@ -1,6 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import F2 from '@antv/f2';
-import Component from '../base/index';
+import Component from '../component/index';
 
 const Shape = F2.Shape;
 

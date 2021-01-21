@@ -1,5 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import Component from '../base/index';
+import Component from '../component/index';
 
 export default View => {
   return class Legend extends Component {
