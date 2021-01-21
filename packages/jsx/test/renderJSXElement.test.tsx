@@ -5,6 +5,10 @@ const ViewA = () => {
   return <text />
 }
 
+const ViewNull = () => {
+  return null;
+}
+
 const ViewB = () => {
   return <group>
     <ViewA />
@@ -21,5 +25,13 @@ describe('renderJSXElement', () => {
     expect(view.props.children.length).toBe(2);
     expect(view.props.children[0].type).toBe('text');
     expect(view.props.children[1].type).toBe('text');
+  })
+
+  it('renderJSXElement return null', () => {
+    const empty = renderJSXElement(null, { a: 1 });
+    expect(empty).toBeNull();
+
+    const viewNull = renderJSXElement(<ViewNull />, { a: 1 });
+    expect(viewNull).toBeNull();
   })
 });
