@@ -67,6 +67,16 @@ describe('render', () => {
     container.remove(true);
   });
 
+  it('group children empty', () => {
+    const container = canvas.addGroup();
+    const group1 = render(<group></group>, container);
+    const group2 = render(<group />, container);
+    canvas.draw();
+    
+    expect(group1.get('children').length).toBe(0);
+    expect(group2.get('children').length).toBe(0);
+  });
+
   it('shape', () => {
     const rect = (
       <rect attrs={{
@@ -128,4 +138,13 @@ describe('render', () => {
 
     container.remove(true);
   });
+
+  it('render null', () => {
+    const container = canvas.addGroup();
+    const shape = render(null, container);
+    canvas.draw();
+    expect(shape).toBeUndefined();
+
+    container.remove(true);
+  })
 });

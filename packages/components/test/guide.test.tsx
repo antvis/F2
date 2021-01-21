@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { jsx, Fragment } from '@ali/f2-jsx';
 import Chart from '../src/chart';
-import { Axis, Line} from '../src';
+import { Line, Guide } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -13,15 +13,14 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' }
 ];
 
-describe('Line', () => {
-  it('Line color callback', () => {
+describe('Guide test', () => {
+  it('render', () => {
     const fragment = (
       <>
-        <Axis
-          position="left"
-          field="sold"
-        />
         <Line position="genre*sold"/>
+        <Guide
+          records={ [{ genre: 'Sports', sold: 275 }] }
+        />
       </>
     );
 
@@ -32,9 +31,13 @@ describe('Line', () => {
     });
     chart.render();
 
-    const container = chart.container;
+    // const container = chart.container;
+    // console.log(container);
 
-    expect(container.get('children').length).toBe(2);
-    expect(container.get('children')[0].get('children').length).toBe(6);
+    // expect(container.get('children').length).toBe(2);
+
+
+
+    
   })
 });
