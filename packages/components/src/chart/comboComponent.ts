@@ -93,6 +93,7 @@ class ComboComponent extends Component {
     const { components } = this;
     each(components, children, (component: any, child: any) => {
       const { props } = child;
+      // TODO：还需要处理创建或销毁的逻辑
       component.update(props);
     });
 

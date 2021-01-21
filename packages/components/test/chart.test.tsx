@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { jsx, Fragment } from '@ali/f2-jsx';
+import { jsx } from '@ali/f2-jsx';
 import * as F2 from '@antv/f2';
 import Chart, { Line } from '../src';
 import { createContext } from './util';
@@ -15,19 +15,13 @@ const data = [
 
 describe('Chart', () => {
   it('new Chart', () => {
-    const fragment = (
-      <>
+    const { type, props } = (
+      <Chart data={ data } context={ context }>
         <Line position="genre*sold" />
-      </>
+      </Chart>
     );
-    const children = fragment.props.children;
 
-    const chart = new Chart({
-      context,
-      data,
-      children,
-      // padding
-    });
+    const chart = new type(props);
 
     expect(chart.chart).toBeInstanceOf(F2.Chart);
     chart.render();

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { jsx, Fragment } from '@ali/f2-jsx';
+import { jsx } from '@ali/f2-jsx';
 import Chart, { Line, Legend } from '../src';
 import { createContext } from './util';
 const context = createContext();
@@ -14,27 +14,19 @@ const data = [
 
 describe('Legend test', () => {
   it('render', () => {
-    const fragment = (
-      <>
+    const { type, props } = (
+      <Chart data={ data } context={ context }>
         <Line position="genre*sold"/>
         <Legend />
-      </>
+      </Chart>
     );
 
-    const chart = new Chart({
-      context,
-      data,
-      ...fragment.props,
-    });
+    const chart = new type(props);
     chart.render();
 
     // const container = chart.container;
     // console.log(container);
 
     // expect(container.get('children').length).toBe(2);
-
-
-
-    
   })
 });

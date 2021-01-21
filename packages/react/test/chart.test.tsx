@@ -36,6 +36,7 @@ describe('<Chart >', () => {
 
     const reactChart = chartRef.current;
     const line = lineRef.current;
+    // 断言实例生成和ref正确性
     expect(reactChart.chart).toBeInstanceOf(Chart);
     expect(line).toBeInstanceOf(Line);
     expect(line.props.a).toBeUndefined();

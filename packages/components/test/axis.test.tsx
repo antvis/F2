@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { jsx, Fragment } from '@ali/f2-jsx';
+import { jsx } from '@ali/f2-jsx';
 import Chart, { Axis, Line} from '../src';
 import { createContext } from './util';
 const context = createContext();
@@ -14,21 +14,17 @@ const data = [
 
 describe('Axis', () => {
   it('render', () => {
-    const fragment = (
-      <>
+    const { type, props } = (
+      <Chart data={ data } context={ context }>
         <Axis
           position="left"
           field="sold"
         />
         <Line position="genre*sold" />
-      </>
+      </Chart>
     );
 
-    const chart = new Chart({
-      context,
-      data,
-      ...fragment.props,
-    });
+    const chart = new type(props);
     chart.render();
 
     const container = chart.container;

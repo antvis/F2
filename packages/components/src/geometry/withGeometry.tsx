@@ -45,8 +45,6 @@ export default View => {
       if (!_shapes || !_shapes.length) {
         return null;
       }
-      // 清空
-      // this._shapes = [];
       return (
         <group>
           {

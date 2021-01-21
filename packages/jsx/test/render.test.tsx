@@ -90,7 +90,7 @@ describe('render', () => {
     container.remove(true);
   });
 
-  it('test ref', () => {
+  it('test shape ref', () => {
     const ref = { current: null };
     const container = canvas.addGroup();
     const shape = render(
@@ -109,12 +109,13 @@ describe('render', () => {
     container.remove(true);
   });
 
-  it('test ref', () => {
-    const ref = { current: null };
+  it('test group ref', () => {
+    const groupRef = { current: null };
+    const rectRef = { current: null };
     const container = canvas.addGroup();
     const group = render(
-      <group ref={ ref }>
-        <rect attrs={{
+      <group ref={ groupRef }>
+        <rect ref={ rectRef } attrs={{
           x: 0,
           y: 0,
           width: 10,
@@ -124,7 +125,8 @@ describe('render', () => {
         />
       </group>, container);
     canvas.draw();
-    expect(ref.current).toBe(group);
+    expect(groupRef.current).toBe(group);
+    expect(rectRef.current.get('type')).toBe('rect');
 
     container.remove(true);
   });

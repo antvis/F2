@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { jsx, Fragment } from '@ali/f2-jsx';
+import { jsx } from '@ali/f2-jsx';
 import Chart, { Interval } from '../src';
 import { createContext } from './util';
 const context = createContext();
@@ -14,17 +14,13 @@ const data = [
 
 describe('Interval', () => {
   it('render', () => {
-    const children = (
-      <>
+    const { type, props } = (
+      <Chart data={ data } context={ context }>
         <Interval position="genre*sold" />
-      </>
+      </Chart>
     );
-    const chart = new Chart({
-      context,
-      data,
-      children,
-      // padding
-    });
+
+    const chart = new type(props);
     chart.render();
   })
 });

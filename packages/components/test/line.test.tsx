@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { jsx, Fragment } from '@ali/f2-jsx';
+import { jsx } from '@ali/f2-jsx';
 import Chart, { Line } from '../src';
 import { createContext } from './util';
 const context = createContext();
@@ -16,20 +16,20 @@ const data = [
 
 describe('Line', () => {
   it('Line color callback', () => {
-    const children = (
-      <>
-        <Line position="genre*sold" color={[ 'type', (type) => {
-          colorCallback();
-          return 'red';
-        } ]} />
-      </>
+    const { type, props } = (
+      <Chart data={ data } context={ context }>
+        <Line
+          position="genre*sold"
+          color={[ 'type', () => {
+              colorCallback();
+              return 'red';
+            }
+          ]}
+        />
+      </Chart>
     );
-    const chart = new Chart({
-      context,
-      data,
-      children,
-      // padding
-    });
+
+    const chart = new type(props);
     chart.render();
 
     expect(colorCallback.mock.calls.length).not.toBe(0);
