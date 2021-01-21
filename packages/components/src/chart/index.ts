@@ -5,7 +5,7 @@ import ComboComponent from './comboComponent';
 class Chart {
 
   chart: any;
-  component: any;
+  component: ComboComponent;
   container: any;
 
   constructor(props: any) {
@@ -29,7 +29,8 @@ class Chart {
     const container = canvas.addGroup({
       zIndex: 40
     });
-    const component = new ComboComponent({ children }, chart, container)
+    const component = new ComboComponent({ children });
+    component.init(chart, container);
 
     // @ts-ignore
     chart.on('aftergeomdraw', () => {

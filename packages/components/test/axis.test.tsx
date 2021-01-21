@@ -12,15 +12,15 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' }
 ];
 
-describe('Line', () => {
-  it('Line color callback', () => {
+describe('Axis', () => {
+  it('render', () => {
     const fragment = (
       <>
         <Axis
           position="left"
           field="sold"
         />
-        <Line position="genre*sold"/>
+        <Line position="genre*sold" />
       </>
     );
 
@@ -34,6 +34,6 @@ describe('Line', () => {
     const container = chart.container;
 
     expect(container.get('children').length).toBe(2);
-    expect(container.get('children')[0].get('children').length).toBe(6);
+    expect(container.get('children')[0].get('children')[0].get('children').length).toBe(6);
   })
 });

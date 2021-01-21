@@ -5,11 +5,11 @@ import Component from '../component';
 class ComboComponent extends Component {
   components: any;
 
-  constructor(props: any, chart: any, container: any) {
-    super(props, chart);
+  constructor(props: any) {
+    super(props);
 
     const { children } = props;
-    const components = map(children, (child: any) => {
+    const components = map(children, (child: JSX.Element) => {
       // 要对react生成的ref单独处理
       const { type, props, key, ref } = child;
       // 只处理组件，不支持标签
@@ -17,7 +17,7 @@ class ComboComponent extends Component {
         return null;
       }
 
-      const component = this.createComponent(type, props, chart, container);
+      const component = this.createComponent(type, props);
       // 设置ref
       if (ref) {
         ref.current = component;
@@ -26,20 +26,27 @@ class ComboComponent extends Component {
       return component;
     });
     this.components = components;
-    this.container = container;
   }
 
-  createComponent(Constructor: any, props: any, chart: any, container: any) {
+  init(chart, container) {
+    super.init(chart, container);
+    const { components } = this;
+    map(components, (component: Component) => {
+      component.init(chart, container.addGroup());
+    });
+  }
+
+  createComponent(Constructor: any, props: any) {
     // class 形式的组件
     if (Constructor.prototype && Constructor.prototype.isF2Component) {
-      return new Constructor(props, chart);
+      return new Constructor(props);
     }
     // function 形式组件, 统一用ComboComponent处理
-    return new ComboComponent(props, chart, container);
+    return new ComboComponent(props);
   }
 
   render() {
-    const { components, chart, container } = this;
+    const { components, chart } = this;
     const width = chart.get('width');
     const height = chart.get('height');
     const plot = chart.get('plot');
@@ -51,16 +58,21 @@ class ComboComponent extends Component {
       plot,
     }
 
-    map(components, (component: any) => {
-      this.renderComponent(component, container, appendProps);
+    map(components, (component: Component) => {
+      this.renderComponent(component, appendProps);
     });
+
+    return null;
   }
 
-  renderComponent(component: any, container, appendProps) {
+  renderComponent(component: Component, appendProps) {
+    // @ts-ignore
+    const { container, __shape } = component;
     // 先把之前的图形清除掉
-    if (component.__shape) {
-      component.__shape.remove(true);
+    if (__shape) {
+      __shape.remove(true);
     }
+
     // 返回的是jsx的element树
     const jsxElement = component.render();
     if (!jsxElement) return null;
@@ -71,6 +83,7 @@ class ComboComponent extends Component {
 
     // 生成G的节点树
     const shape = render(element, container);
+    // @ts-ignore
     component.__shape = shape;
   }
 
@@ -88,7 +101,7 @@ class ComboComponent extends Component {
 
   destroy() {
     const { components } = this;
-    map(components, (component) => {
+    map(components, (component: Component) => {
       component.destroy();
     });
   }

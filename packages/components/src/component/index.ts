@@ -5,10 +5,12 @@ class Component {
   state: any;
   // actions: any;
 
-  constructor(props: any, chart: any) {
-    this.chart = chart;
+  constructor(props: any) {
     this.props = props;
-
+  }
+  init(chart, container) {
+    this.chart = chart;
+    this.container = container;
     this.mount();
   }
   mount() {
@@ -16,7 +18,8 @@ class Component {
   update(props: any) {
     this.props = props;
   }
-  render() {
+  render(): JSX.Element {
+    return null;
   }
   destroy() {
   }
