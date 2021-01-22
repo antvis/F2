@@ -2,13 +2,24 @@ import F2 from '@antv/f2';
 import { batch2hd } from '@ali/f2x-util';
 import ComboComponent from './comboComponent';
 
+interface ChartProps {
+  pixelRatio?: number,
+  width?: number | string,
+  height?: number | string,
+  data: any,
+  padding?: (number | string)[],
+  animate?: boolean,
+  children?: any,
+  context: any,
+}
+
 class Chart {
 
   chart: any;
   component: ComboComponent;
   container: any;
 
-  constructor(props: any) {
+  constructor(props: ChartProps) {
     const { context, pixelRatio, width, height, animate, data, children, padding } = props;
     const chart = new F2.Chart({
       context,
@@ -46,7 +57,7 @@ class Chart {
     chart.render();
   }
 
-  update(props: any) {
+  update(props: ChartProps) {
     const { chart, component } = this;
     // 只处理数据，和children的变化
     const { data, children } = props;
