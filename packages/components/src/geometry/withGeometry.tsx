@@ -39,6 +39,29 @@ export default View => {
       geom.shape(EMPTY_SHAPE);
       this._shapes = _shapes;
       this.geom = geom;
+
+      this._pressEvent();
+    }
+    _pressEvent() {
+      const { chart, props, geom } = this;
+      const { onPress, onPressEnd } = props;
+      const canvas = chart.get('canvas');
+      if (onPress) {
+        canvas.on('press', (ev) => {
+          const { points } = ev || {};
+          const point = points[0];
+          if (!point) {
+            return;
+          }
+          const records = geom.getSnapRecords(point);
+          ev.records = records;
+          onPress(ev);
+        });
+      }
+      if (onPressEnd) {
+        canvas.on('pressend', (ev) => {
+        });
+      }
     }
     render() {
       const _shapes = this._shapes;
