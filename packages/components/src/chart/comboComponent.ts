@@ -77,7 +77,7 @@ class ComboComponent extends Component {
     const jsxElement = component.render();
     if (!jsxElement) return null;
 
-    // 返回的是shape的定义树
+    // 返回的是shape的结构树
     const element = renderJSXElement(jsxElement, appendProps);
     if (!element) return null;
 

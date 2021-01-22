@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import Chart from '@ali/f2-components';
 
-class ReactChart extends React.Component {
-  canvasRef: any;
-  chart: any;
+export interface ChartProps {
+  pixelRatio?: number,
+  width?: number | string,
+  height?: number | string,
+  data: any,
+  padding: (string | number)[],
+  animate?: boolean
+}
 
-  constructor(props) {
+class ReactChart extends React.Component<ChartProps> {
+  canvasRef: RefObject<HTMLCanvasElement>;
+  chart: Chart;
+
+  constructor(props: ChartProps) {
     super(props);
     this.canvasRef = React.createRef();
   }
@@ -14,7 +23,6 @@ class ReactChart extends React.Component {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
-    // @ts-ignore
     const chart = new Chart({
       ...props,
       context,
