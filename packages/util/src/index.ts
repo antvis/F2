@@ -99,7 +99,9 @@ function extendMap(arr: any[], fn: Function) {
 
 // @ts-ignore
 const map = (children: any, fn: any) => {
-  if (!children) return children;
+  if (!children) {
+    return fn(children);
+  }
   if (Array.isArray(children)) {
     return children.map(child => {
       return map(child, fn);
@@ -108,17 +110,18 @@ const map = (children: any, fn: any) => {
   return fn(children);
 }
 
-// components 和 children 必须是完全相同的2棵树
+// components 和 children 需要是相同的2棵树
 // @ts-ignore
-function each(components, children, fn) {
-  if (!components) return;
+function mapTwo(components, children, fn) {
+  if (!components) {
+    return fn(components, children);
+  }
   if (Array.isArray(components)) {
-    components.forEach((component, index) => {
-      each(component, children[index], fn);
+    return components.map((component, index) => {
+      mapTwo(component, children[index], fn);
     });
-    return;
   }
   return fn(components, children);
 }
 
-export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, each };
+export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, mapTwo };

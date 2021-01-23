@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { jsx, Fragment } from '@ali/f2-jsx';
 import * as F2 from '@antv/f2';
-import Chart, { Line, Interval, Axis  } from '../src';
+import Chart, { Line, Interval, Area, Axis  } from '../src';
+import ComboComponent from '../src/chart/comboComponent';
 import { createContext } from './util';
 const context = createContext();
 
@@ -16,7 +17,10 @@ const data = [
 describe('Chart', () => {
   it('new Chart', () => {
     const lineRef = {};
-    const FragmentComponent = () => {
+    const A = () => {
+      return <Area position="genre*sold"/>
+    }
+    const B = () => {
       return <>
         <Axis
           position="left"
@@ -28,32 +32,72 @@ describe('Chart', () => {
         />
       </>
     }
+    const C = () => {
+      return <>
+        <B />
+        <Axis
+          position="right"
+          field="sold"
+        />
+      </>
+    }
 
-    const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Line position="genre*sold" ref={ lineRef } />
-        <text />
-        <>
-          <Interval position="genre*sold" />
-        </>
-      </Chart>
-    );
+    function createProps() {
+      return (
+        <Chart data={ data } context={ context }>
+          <Line position="genre*sold" ref={ lineRef } f={ () =>{} }/>
+          <text />
+          <>
+            <Interval position="genre*sold" />
+          </>
+          <A />
+          <C />
+        </Chart>
+      );
+    }
+    const { type, props } = createProps();
 
-    const chart = new type(props);
+    const chart: Chart = new type(props);
 
     expect(chart.chart).toBeInstanceOf(F2.Chart);
     chart.render();
 
     const container = chart.container;
-    expect(container.get('children').length).toBe(2);
+    expect(container.get('children').length).toBe(4);
 
     // 断言ref
     expect(lineRef.current).toBeInstanceOf(Line);
 
+    // 子组件
+    expect(chart.component.components[0]).toBeInstanceOf(Line);
     // text 标签，忽略
     expect(chart.component.components[1]).toBeNull();
+
     // Fragment 处理成combo组件
+    expect(chart.component.components[2]).toBeInstanceOf(ComboComponent);
+    // Fragment 子组件
     expect(chart.component.components[2].components).toBeInstanceOf(Interval);
+
+
+    // function component 按内部组件处理
+    expect(chart.component.components[3]).toBeInstanceOf(Area);
+    // 组件C
+    expect(chart.component.components[4]).toBeInstanceOf(ComboComponent);
+
+    // 内部组件嵌套， 
+    expect(chart.component.components[4].components.length).toBe(2);
+    // 组件B
+    expect(chart.component.components[4].components[0]).toBeInstanceOf(ComboComponent);
+    expect(chart.component.components[4].components[1]).toBeInstanceOf(Axis);
+
+    // 组件B内部组件处理
+    expect(chart.component.components[4].components[0].components.length).toBe(2);
+    expect(chart.component.components[4].components[0].components[0]).toBeInstanceOf(Axis);
+    expect(chart.component.components[4].components[0].components[1]).toBeInstanceOf(Axis);
+
+
+    // const { props: newProps } = createProps();
+    // chart.update(newProps);
 
     // console.log(chart.component)
   })

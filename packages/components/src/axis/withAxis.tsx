@@ -135,7 +135,7 @@ export default View => {
       const points = ticks.map(tick => {
         const point = coord.convertPoint({
           [dimType]: tick.value,
-          [otherDim]: 0,
+          [otherDim]: position === 'top' || position === 'right' ? 1 : 0,
         });
         return {
           ...tick,

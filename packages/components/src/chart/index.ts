@@ -1,8 +1,9 @@
 import F2 from '@antv/f2';
-import { batch2hd } from '@ali/f2x-util';
+import { batch2hd, map } from '@ali/f2x-util';
 import ComboComponent from './comboComponent';
+import createComponentTree from './createComponentTree';
 
-interface ChartProps {
+interface ChartUpdateProps {
   pixelRatio?: number,
   width?: number | string,
   height?: number | string,
@@ -10,6 +11,9 @@ interface ChartProps {
   padding?: (number | string)[],
   animate?: boolean,
   children?: any,
+}
+
+interface ChartProps extends ChartUpdateProps {
   context: any,
 }
 
@@ -24,7 +28,9 @@ class Chart {
     const chart = new F2.Chart({
       context,
       pixelRatio,
+      // @ts-ignore
       width,
+      // @ts-ignore
       height,
       animate,
       padding: batch2hd(padding) || [ 0, 0, 0, 0 ],
@@ -40,7 +46,9 @@ class Chart {
     const container = canvas.addGroup({
       zIndex: 40
     });
-    const component = new ComboComponent({ children });
+
+    const componentTree = createComponentTree(children);
+    const component = new ComboComponent({ children: componentTree });
     component.init(chart, container);
 
     // @ts-ignore
@@ -57,11 +65,12 @@ class Chart {
     chart.render();
   }
 
-  update(props: ChartProps) {
+  update(props: ChartUpdateProps) {
     const { chart, component } = this;
     // 只处理数据，和children的变化
     const { data, children } = props;
-    component.update({ children });
+    const componentTree = createComponentTree(children);
+    component.update({ children: componentTree });
     chart.get('canvas').draw();
   }
 

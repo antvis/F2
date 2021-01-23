@@ -2,7 +2,12 @@ class Component {
   chart: any;
   container: any;
   props: any;
-  state: any;
+  // state: any;
+
+  /**
+   * @private
+   */
+  __shape: any;
   // actions: any;
 
   constructor(props: any) {

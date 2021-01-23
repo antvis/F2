@@ -12,9 +12,7 @@ const ViewNull = () => {
 const ViewB = () => {
   return <group>
     <ViewA />
-    <>
-      <text />
-    </>
+    <text />
   </group>
 }
 

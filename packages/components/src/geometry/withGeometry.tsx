@@ -40,7 +40,7 @@ export default View => {
       this._shapes = _shapes;
       this.geom = geom;
 
-      this._pressEvent();
+      // this._pressEvent();
     }
     _pressEvent() {
       const { chart, props, geom } = this;
