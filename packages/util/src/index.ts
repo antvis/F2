@@ -117,9 +117,14 @@ function mapTwo(components, children, fn) {
     return fn(components, children);
   }
   if (Array.isArray(components)) {
-    return components.map((component, index) => {
-      return mapTwo(component, children[index], fn);
-    });
+    // 防止children为空的情况
+    children = children || [];
+    const len = Math.max(components.length, children.length);
+    const newComponents = [];
+    for (let i = 0; i < len; i++) {
+      newComponents.push(mapTwo(components[i], children[i], fn));
+    }
+    return newComponents;
   }
   return fn(components, children);
 }

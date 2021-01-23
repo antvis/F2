@@ -2,6 +2,7 @@ import { render, renderJSXElement } from '@ali/f2-jsx';
 import { map, mapTwo } from '@ali/f2x-util';
 import Component from '../component';
 import PlaceholderComponent from './placeholderComponent';
+import equal from './equal';
 
 class ComboComponent extends Component {
   components: any;
@@ -40,11 +41,6 @@ class ComboComponent extends Component {
     }
 
     return component;
-    // // class 形式的组件
-    // if (Constructor.prototype && Constructor.prototype.isF2Component) {
-    // }
-    // function 形式组件, 统一用ComboComponent处理
-    // return new ComboComponent(props);
   }
 
   _getAppendProps() {
@@ -116,12 +112,24 @@ class ComboComponent extends Component {
 
       // TODO diff比较是否需要更新
       const { type, props } = child;
-      component.update(props);
+      // 如果类型变化了
+      // @ts-ignore
+      if (!(component instanceof type)) {
+        // 销毁之前的
+        component.destroy();
+        // 创建新的
+        const newComponent = this.createComponent(child);
+        newComponent.init(chart, component.container);
+        this.renderComponent(newComponent, appendProps);
+      }
+
+      if (!equal(props, component.props)) {
+        component.update(props);
+        this.renderComponent(component, appendProps);
+      }
 
       return component;
     });
-
-    this.render();
   }
 
   destroy() {
