@@ -3,6 +3,7 @@ import { jsx, Fragment } from '@ali/f2-jsx';
 import * as F2 from '@antv/f2';
 import Chart, { Line, Interval, Area, Axis  } from '../src';
 import ComboComponent from '../src/chart/comboComponent';
+import Placeholder from '../src/chart/placeholderComponent';
 import { createContext } from './util';
 const context = createContext();
 
@@ -63,15 +64,15 @@ describe('Chart', () => {
     chart.render();
 
     const container = chart.container;
-    expect(container.get('children').length).toBe(4);
+    expect(container.get('children').length).toBe(5);
 
     // 断言ref
     expect(lineRef.current).toBeInstanceOf(Line);
 
     // 子组件
     expect(chart.component.components[0]).toBeInstanceOf(Line);
-    // text 标签，忽略
-    expect(chart.component.components[1]).toBeNull();
+    // text 标签，忽略, 被处理成placeholder
+    expect(chart.component.components[1]).toBeInstanceOf(Placeholder);
 
     // Fragment 处理成combo组件
     expect(chart.component.components[2]).toBeInstanceOf(ComboComponent);
@@ -96,8 +97,8 @@ describe('Chart', () => {
     expect(chart.component.components[4].components[0].components[1]).toBeInstanceOf(Axis);
 
 
-    // const { props: newProps } = createProps();
-    // chart.update(newProps);
+    const { props: newProps } = createProps();
+    chart.update(newProps);
 
     // console.log(chart.component)
   })

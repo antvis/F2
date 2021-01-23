@@ -118,7 +118,7 @@ function mapTwo(components, children, fn) {
   }
   if (Array.isArray(components)) {
     return components.map((component, index) => {
-      mapTwo(component, children[index], fn);
+      return mapTwo(component, children[index], fn);
     });
   }
   return fn(components, children);

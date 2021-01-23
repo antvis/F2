@@ -1,6 +1,7 @@
 import { render, renderJSXElement } from '@ali/f2-jsx';
 import { map, mapTwo } from '@ali/f2x-util';
 import Component from '../component';
+import PlaceholderComponent from './placeholderComponent';
 
 class ComboComponent extends Component {
   components: any;
@@ -11,17 +12,9 @@ class ComboComponent extends Component {
     const { children } = props;
     const components = map(children, (child: JSX.Element) => {
       if (!child) {
-        return null;
+        return new PlaceholderComponent({});
       }
-      // 要对react生成的ref单独处理
-      const { type, props, key, ref } = child;
-
-      const component = this.createComponent(type, props);
-      // 设置ref
-      if (ref) {
-        ref.current = component;
-      }
-
+      const component = this.createComponent(child);
       return component;
     });
     this.components = components;
@@ -31,16 +24,22 @@ class ComboComponent extends Component {
     super.init(chart, container);
     const { components } = this;
     map(components, (component: Component) => {
-      if (!component) {
-        return;
-      }
       component.init(chart, container.addGroup());
     });
   }
 
-  createComponent(Constructor: any, props: any): Component {
+  createComponent(element: JSX.Element): Component {
+    const { type, props, key, ref } = element;
     // 这里 一定是 F2 Component 了
-    return new Constructor(props);
+    // @ts-ignore
+    const component = new type(props);
+
+    // 设置ref
+    if (ref) {
+      ref.current = component;
+    }
+
+    return component;
     // // class 形式的组件
     // if (Constructor.prototype && Constructor.prototype.isF2Component) {
     // }
@@ -67,9 +66,6 @@ class ComboComponent extends Component {
     const appendProps = this._getAppendProps();
 
     map(components, (component: Component) => {
-      if (!component) {
-        return;
-      }
       this.renderComponent(component, appendProps);
     });
 
@@ -97,36 +93,32 @@ class ComboComponent extends Component {
   }
 
   update(props: any) {
-    const { components } = this;
+    const { components, chart } = this;
     const appendProps = this._getAppendProps();
     // 只处理数据和children的变化
     const { children } = props;
     this.components = mapTwo(components, children, (component: Component, child: JSX.Element) => {
       if (!child) {
+        // 销毁后，创建一个占位的组件
         component.destroy();
-        return null;
+        const placeholderComponent = new PlaceholderComponent({});
+        placeholderComponent.init(chart, component.container);
+        return placeholderComponent;
       }
-      const { type, props } = child;
-      if (!component) {
-        const newComponent = this.createComponent(type, props);
-        // newComponent.init(chart, )
-        // TODO
+      // 如果之前是展位组件，现在有新的组件，是个新建逻辑
+      // @ts-ignore
+      if (component.placeholder) {
+        const newComponent = this.createComponent(child);
+        newComponent.init(chart, component.container);
         this.renderComponent(newComponent, appendProps);
         return newComponent;
       }
 
-      // diff 判断
-      if (true) {
-        component.update(props);
-      }
+      // TODO diff比较是否需要更新
+      const { type, props } = child;
+      component.update(props);
 
-      console.log(component.props.f, props.f, component.props.f === props.f)
-      
-      // console.log(type, props);
-      // @ts-ignore
-      // console.log(component instanceof type)
-      // TODO：还需要处理创建或销毁的逻辑
-      
+      return component;
     });
 
     this.render();
