@@ -123,7 +123,7 @@ class ComboComponent extends Component {
         this.renderComponent(newComponent, appendProps);
       }
 
-      if (!equal(props, component.props)) {
+      if (!equal(props, component.__props)) {
         component.update(props);
         this.renderComponent(component, appendProps);
       }

@@ -8,9 +8,11 @@ class Component {
    * @private
    */
   __shape: any;
+  __props: any;
   // actions: any;
 
   constructor(props: any) {
+    this.__props = props;
     this.props = props;
   }
   init(chart, container) {
@@ -21,6 +23,7 @@ class Component {
   mount() {
   }
   update(props: any) {
+    this.__props = props;
     this.props = props;
   }
   render(): JSX.Element {
