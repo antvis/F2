@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
-import { Line, Area } from '@ali/f2-components';
+import Line from './line';
 
 export default (props: any) => {
   const { position, growth } = props;
@@ -25,12 +26,12 @@ export default (props: any) => {
     areaMiddleColor = '#B0E5D3';
   }
 
-  return null;
-
-  // return (
-  //   <>
-  //     <Area position={ position } color={'l(90) 0:' + areaColor + ' 0.5:' + areaMiddleColor + ' 1:' + areaBaseColor} style={{ fillOpacity: 0.3 }}/>
-  //     <Line position={ position } size={ 6 } color={ lineColor } />
-  //   </>
-  // );
+  return (
+    <Line
+      position={ position }
+      size="12px"
+      color={ lineColor }
+      areaColor={ 'l(90) 0:' + areaColor + ' 0.5:' + areaMiddleColor + ' 1:' + areaBaseColor }
+    />
+  );
 };

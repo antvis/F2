@@ -34,6 +34,7 @@ export default View => {
       const geom = chart[type](config).position(position);
       this.applyAttr(geom, 'color', color);
       this.applyAttr(geom, 'size', size);
+      this.applyAttr(geom, 'style', style);
 
       // 这里不画任何东西，在render的时候画
       geom.shape(EMPTY_SHAPE);
@@ -68,11 +69,15 @@ export default View => {
       if (!_shapes || !_shapes.length) {
         return null;
       }
+      const { props } = this;
       return (
         <group>
           {
             _shapes.map(shape => {
-              return <View { ...shape.cfg } />
+              return <View
+                { ...props }
+                { ...shape.cfg }
+              />
             })
           }
         </group>
