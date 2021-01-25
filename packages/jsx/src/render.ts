@@ -44,11 +44,11 @@ function createElement(node: any, container: any, parentLayout: any) {
     if (attrs) {
       element.addShape('rect', {
         attrs: {
-          ...attrs,
           x: left,
           y: top,
           width,
           height,
+          ...attrs,
         }
       });
     }

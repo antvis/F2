@@ -1,5 +1,5 @@
 import withInterval from './withInterval';
-import intervalView from './intervalView';
+import IntervalView from './intervalView';
 
-export { withInterval, intervalView };
-export default withInterval(intervalView);
+export { withInterval, IntervalView };
+export default withInterval(IntervalView);
