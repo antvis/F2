@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
 import Chart from '@ali/f2-components';
 import { WeaverLine } from '../src';
@@ -24,6 +23,7 @@ describe('WeaverLine', () => {
       </Chart>
     );
 
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
   });

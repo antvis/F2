@@ -1,5 +1,6 @@
 import F2 from '@antv/f2';
 import { batch2hd, map } from '@ali/f2x-util';
+import Component from '../component';
 import ComboComponent from './comboComponent';
 import createComponentTree from './createComponentTree';
 
@@ -17,13 +18,14 @@ interface ChartProps extends ChartUpdateProps {
   context: any,
 }
 
-class Chart {
+class Chart extends Component {
 
   chart: any;
   component: ComboComponent;
   container: any;
 
   constructor(props: ChartProps) {
+    super(props);
     const { context, pixelRatio, width, height, animate, data, children, padding } = props;
     const chart = new F2.Chart({
       context,
@@ -63,6 +65,7 @@ class Chart {
   render() {
     const { chart } = this;
     chart.render();
+    return null;
   }
 
   update(props: ChartUpdateProps) {

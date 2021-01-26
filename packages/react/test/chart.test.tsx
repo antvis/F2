@@ -1,5 +1,3 @@
-
-// @ts-nocheck
 /* @jsx React.createElement */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -18,7 +16,8 @@ const data = [
   { genre: 'Other', sold: 150 }
 ];
 
-function App({ chartRef, lineRef, a }) {
+function App(props: any) {
+  const { chartRef, lineRef, a } = props;
   return (
     <ReactChart ref={ chartRef } data={ data } width={ 100 } height={ 100 }>
       <Line ref={ lineRef } position="genre*sold" a={ a } />
@@ -28,8 +27,8 @@ function App({ chartRef, lineRef, a }) {
 
 describe('<Chart >', () => {
   it('Chart render', () => {
-    const chartRef = React.createRef();
-    const lineRef = React.createRef();
+    const chartRef = React.createRef<ReactChart>();
+    const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
     expect(wrapper.html()).toBe('<canvas class="f2-chart" width="100" height="100" style="width: 100px; height: 100px;"></canvas>');
@@ -42,8 +41,8 @@ describe('<Chart >', () => {
     expect(line.props.a).toBeUndefined();
 
     // 触发update
-    wrapper.setProps({ a: 1 });
-    expect(line.props.a).toBe(1);
+    wrapper.setProps({ a: 2 });
+    expect(line.props.a).toBe(2);
 
     wrapper.unmount();
     // 断言 F2 实例销毁

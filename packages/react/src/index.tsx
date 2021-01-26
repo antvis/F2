@@ -6,7 +6,7 @@ export interface ChartProps {
   width?: number | string,
   height?: number | string,
   data: any,
-  padding: (string | number)[],
+  padding?: (string | number)[],
   animate?: boolean
 }
 
