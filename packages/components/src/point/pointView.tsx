@@ -6,8 +6,9 @@ export default (props) => {
     <circle attrs={{
       x,
       y,
+      lineWidth: 0,
       fill: color,
-      r: size,
+      r: size || '6px',
     }} />
   );
 }

@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Interval } from '../src';
+import Chart, { Point } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -12,14 +11,16 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' }
 ];
 
-describe('Interval', () => {
+describe('Area', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Interval position="genre*sold" color="genre"/>
+      <Chart data={ data } context={ context }>
+        <Point
+          position="genre*sold"
+        />
       </Chart>
     );
-
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
   })
