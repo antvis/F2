@@ -10,6 +10,7 @@ export default View => {
   return class Geometry extends Component {
     _shapes: any;
     geom: any;
+    coord: any;
 
     applyAttr(geom, attr, config) {
       if (!config) return;
@@ -26,8 +27,8 @@ export default View => {
 
       // 不画任何东西，在render里面统一画
       Shape.registerShape(type, EMPTY_SHAPE, {
-        draw(cfg, container) {
-          _shapes.push({ cfg, container });
+        draw(cfg) {
+          _shapes.push(cfg);
         }
       });
 
@@ -40,7 +41,6 @@ export default View => {
       geom.shape(EMPTY_SHAPE);
       this._shapes = _shapes;
       this.geom = geom;
-
       // this._pressEvent();
     }
     _pressEvent() {
@@ -64,6 +64,17 @@ export default View => {
         });
       }
     }
+    parsePoints(points) {
+      if (!points) return false;
+      const { chart } = this;
+      const coord = chart.get('coord');
+      return points.map(function(point) {
+        return coord.convertPoint(point);
+      });
+    }
+    renderShape(props) {
+      return <View { ...props } />
+    }
     render() {
       const _shapes = this._shapes;
       if (!_shapes || !_shapes.length) {
@@ -74,10 +85,10 @@ export default View => {
         <group>
           {
             _shapes.map(shape => {
-              return <View
-                { ...props }
-                { ...shape.cfg }
-              />
+              return this.renderShape({
+                ...props,
+                ...shape,
+              })
             })
           }
         </group>

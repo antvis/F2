@@ -25,6 +25,8 @@ describe('Line', () => {
               return 'red';
             }
           ]}
+          smooth={ true }
+          lineDash={ [4, 4] }
         />
       </Chart>
     );

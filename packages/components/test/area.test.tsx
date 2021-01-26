@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
 import Chart, { Area } from '../src';
 import { createContext } from './util';
@@ -16,10 +15,12 @@ describe('Area', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={ data } context={ context }>
-        <Area position="genre*sold" />
+        <Area
+          position="genre*sold"
+        />
       </Chart>
     );
-
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
   })
