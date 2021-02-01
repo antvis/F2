@@ -30,6 +30,7 @@ declare global {
       text: any;
       custom: any;
       marker: any;
+      image: any;
     }
   }
 }
