@@ -1,13 +1,13 @@
 {
   "name": "@ali/f2x-react",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "dependencies": {
-    "@ali/f2-components": "^0.0.12",
-    "@ali/f2-jsx": "^0.0.9",
-    "@ali/fund-components": "^0.0.12",
+    "@ali/f2-components": "^0.0.13",
+    "@ali/f2-jsx": "^0.0.10",
+    "@ali/fund-components": "^0.0.13",
     "@antv/f2": "^3.8.1",
     "@babel/runtime": "^7.12.5"
   },
