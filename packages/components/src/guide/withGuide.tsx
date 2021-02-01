@@ -42,13 +42,13 @@ export default View => {
     }
     render() {
       const { props } = this;
-      const { records, ...otherProps } = props;
+      const { records } = props;
       const points = records.map(record => this.parsePoint(record));
 
       return <View
-        points={ points }
         triggerRef={ this.triggerRef }
-        { ...otherProps }
+        points={ points }
+        { ...props }
       />
     }
   }

@@ -39,6 +39,9 @@ export default View => {
         tickCount,
         range,
         formatter,
+        mask,
+        min,
+        max,
       } = props;
       // 把这几个hd转换下
       this.props = {
@@ -49,7 +52,10 @@ export default View => {
         type,
         tickCount,
         range,
-        formatter
+        formatter,
+        mask,
+        min,
+        max,
       });
 
       // 更新四边边距，暂时这么处理

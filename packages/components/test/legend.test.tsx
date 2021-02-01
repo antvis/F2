@@ -15,9 +15,23 @@ const data = [
 describe('Legend test', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Line position="genre*sold"/>
-        <Legend />
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Line position="genre*sold" />
+        <Legend items={[
+          { name: 'Sports' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+          { name: 'Strategy' },
+        ]} />
       </Chart>
     );
 

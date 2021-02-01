@@ -187,7 +187,7 @@ describe('layout', () => {
       <group style={{
         flexDirection: 'row',
         padding: ['20px', '40px'],
-        width: '200px',
+        width: '380px',
         height: '200px',
         }}>
         <rect style={{
@@ -204,21 +204,34 @@ describe('layout', () => {
             fill: 'red'
           }}
         />
+        <group style={{
+          flex: 1
+        }}>
+          <text
+            attrs={{
+              fill: '#000',
+              text: '123',
+            }}
+          />
+        </group>
       </group>, container);
     canvas.draw();
 
     const children = group.get('children');
     expect(children[0].get('attrs').x).toBe(20);
     expect(children[0].get('attrs').y).toBe(10);
-    expect(children[0].get('attrs').width).toBe(30);
+    expect(children[0].get('attrs').width).toBe(50);
     expect(children[0].get('attrs').height).toBe(80);
     expect(children[0].get('attrs').fill).toBe('gray');
 
-    expect(children[1].get('attrs').x).toBe(50);
+    expect(children[1].get('attrs').x).toBe(70);
     expect(children[1].get('attrs').y).toBe(10);
-    expect(children[1].get('attrs').width).toBe(30);
+    expect(children[1].get('attrs').width).toBe(50);
     expect(children[1].get('attrs').height).toBe(80);
     expect(children[1].get('attrs').fill).toBe('red');
-    container.remove(true);
+
+    expect(children[2].get('children')[0].get('type')).toBe('text');
+    expect(children[2].get('children')[0].get('attrs').x).toBe(120);
+    expect(children[2].get('children')[0].get('attrs').y).toBe(16);
   });
 });

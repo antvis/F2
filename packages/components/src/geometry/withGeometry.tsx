@@ -23,7 +23,7 @@ export default View => {
     mount() {
       const { chart, props } = this;
       const _shapes = this._shapes || [];
-      const { type, position, size, color, style, ...config } = props;
+      const { type, position, size, color, shape, style, ...config } = props;
 
       // 不画任何东西，在render里面统一画
       Shape.registerShape(type, EMPTY_SHAPE, {
@@ -36,9 +36,13 @@ export default View => {
       this.applyAttr(geom, 'color', color);
       this.applyAttr(geom, 'size', size);
       this.applyAttr(geom, 'style', style);
+      if (shape) {
+        this.applyAttr(geom, 'shape', shape);
+      } else {
+        // 这里不画任何东西，在render的时候画
+        geom.shape(EMPTY_SHAPE);
+      }
 
-      // 这里不画任何东西，在render的时候画
-      geom.shape(EMPTY_SHAPE);
       this._shapes = _shapes;
       this.geom = geom;
       // this._pressEvent();

@@ -29,6 +29,7 @@ declare global {
       sector: any;
       text: any;
       custom: any;
+      marker: any;
     }
   }
 }
