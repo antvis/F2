@@ -1,12 +1,13 @@
-// const { width, height, left, top, right, bo } = layout;
+export default (layout) => {
+  const { left, top, width, height } = layout;
+  const halfHeight = height / 2;
+  return {
+    x1: left,
+    y1: top + halfHeight,
+    x2: left + width,
+    y2: top + halfHeight,
+    lineWidth: height,
+  }
+}
 
-// element = container.addShape(type, {
-//   ...props,
-//   attrs: {
-//     x1: left,
-//     y1: top,
-//     x2: left + width,
-//     y2: top + height,
-//     ...attrs,
-//   },
-// });
+

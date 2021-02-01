@@ -233,5 +233,48 @@ describe('layout', () => {
     expect(children[2].get('children')[0].get('type')).toBe('text');
     expect(children[2].get('children')[0].get('attrs').x).toBe(120);
     expect(children[2].get('children')[0].get('attrs').y).toBe(16);
+    container.remove(true);
+  });
+
+  it('text render', () => {
+    const container = canvas.addGroup();
+    const group = render(
+      <group style={{
+          flexDirection: 'row',
+          width: '20px',
+          height: '200px',
+          flexWrap: 'wrap',
+        }}>
+        <text
+          style={{
+            // flex: 1,
+          }}
+          attrs={{
+            fill: '#000',
+            text: '111',
+          }}
+        />
+        <text
+          style={{
+            // flex: 1,
+          }}
+          attrs={{
+            fill: '#000',
+            text: '222',
+          }}
+        />
+      </group>, container);
+    canvas.draw();
+
+    const children = group.get('children');
+    expect(children[0].get('attrs').x).toBe(0);
+    expect(children[0].get('attrs').y).toBe(6);
+    expect(children[0].get('attrs').textBaseline).toBe('middle');
+
+    expect(children[1].get('attrs').x).toBe(0);
+    expect(children[1].get('attrs').y).toBe(18);
+    expect(children[1].get('attrs').textBaseline).toBe('middle');
+
+    container.remove(true);
   });
 });
