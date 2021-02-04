@@ -4,7 +4,7 @@ import Component from '../component/index';
 
 const Shape = F2.Shape;
 
-const EMPTY_SHAPE = 'empty-shape'
+const EMPTY_SHAPE = 'empty-shape';
 
 export default View => {
   return class Geometry extends Component {

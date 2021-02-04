@@ -11,3 +11,4 @@ export { default as Axis, withAxis, AxisView } from './axis';
 export { default as Legend, withLegend, LegendView } from './legend';
 export { default as Guide, withGuide, GuideView } from './guide';
 export { default as Tooltip, withTooltip, TooltipView } from './tooltip';
+export { default as Treemap } from './treemap';
