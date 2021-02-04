@@ -29,7 +29,10 @@ class Layout {
       this[key] = current + value;
     });
     const { left, top, right, bottom, width, height } = this;
-    this.chart._updateLayout([ top, width - right, height - bottom, left ]);
+    try {
+      this.chart._updateLayout([ top, width - right, height - bottom, left ]);
+    } catch (e) {
+    }
   }
 }
 

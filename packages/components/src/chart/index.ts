@@ -37,7 +37,7 @@ class Chart extends Component {
       // @ts-ignore
       height,
       animate,
-      padding: batch2hd(padding) || [ 0, 0, 0, 0 ],
+      // padding: batch2hd(padding) || [ 0, 0, 0, 0 ],
     });
     // 直接设置数据
     chart.source(data);
@@ -56,6 +56,15 @@ class Chart extends Component {
       chart,
       width: canvasWidth,
       height: canvasHeight
+    });
+    
+    // TODO， 后续优化
+    const p = batch2hd(padding);
+    layout.update({
+      top: p[0],
+      right: -p[1],
+      bottom: -p[2],
+      left: p[3],
     });
     const componentTree = createComponentTree(children);
     const component = new ComboComponent({ children: componentTree });
