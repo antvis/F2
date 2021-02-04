@@ -56,5 +56,12 @@ describe('Treemap', () => {
     // @ts-ignore
     const chart = new type(props);
     chart.render();
+
+
+    const treemapContainer = chart.container.get('children')[0];
+    const view = treemapContainer.get('children')[0];
+    expect(view.get('children').length).toBe(10);
+    expect(view.get('children')[1].get('attrs').x).toBe(132);
+    expect(view.get('children')[1].get('attrs').y).toBe(0);
   })
 });

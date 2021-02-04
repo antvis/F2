@@ -21,11 +21,15 @@ class ComboComponent extends Component {
     this.components = components;
   }
 
-  init(chart, container) {
-    super.init(chart, container);
+  init(config) {
+    super.init(config);
+    const { container } = config;
     const { components } = this;
     map(components, (component: Component) => {
-      component.init(chart, container.addGroup());
+      component.init({
+        ...config,
+        container: container.addGroup()
+      });
     });
   }
 
@@ -89,7 +93,7 @@ class ComboComponent extends Component {
   }
 
   update(props: any) {
-    const { components, chart } = this;
+    const { components, chart, layout } = this;
     const appendProps = this._getAppendProps();
     // 只处理数据和children的变化
     const { children } = props;
@@ -98,14 +102,22 @@ class ComboComponent extends Component {
         // 销毁后，创建一个占位的组件
         component.destroy();
         const placeholderComponent = new PlaceholderComponent({});
-        placeholderComponent.init(chart, component.container);
+        placeholderComponent.init({
+          chart,
+          layout,
+          container: component.container,
+        });
         return placeholderComponent;
       }
       // 如果之前是展位组件，现在有新的组件，是个新建逻辑
       // @ts-ignore
       if (component.placeholder) {
         const newComponent = this.createComponent(child);
-        newComponent.init(chart, component.container);
+        newComponent.init({
+          chart,
+          layout,
+          container: component.container,
+        });
         this.renderComponent(newComponent, appendProps);
         return newComponent;
       }
@@ -119,7 +131,11 @@ class ComboComponent extends Component {
         component.destroy();
         // 创建新的
         const newComponent = this.createComponent(child);
-        newComponent.init(chart, component.container);
+        newComponent.init({
+          chart,
+          layout,
+          container: component.container,
+        });
         this.renderComponent(newComponent, appendProps);
       }
 

@@ -3,6 +3,7 @@ import { batch2hd, map } from '@ali/f2x-util';
 import Component from '../component';
 import ComboComponent from './comboComponent';
 import createComponentTree from './createComponentTree';
+import Layout from './layout';
 
 interface ChartUpdateProps {
   pixelRatio?: number,
@@ -23,6 +24,7 @@ class Chart extends Component {
   chart: any;
   component: ComboComponent;
   container: any;
+  layout: Layout;
 
   constructor(props: ChartProps) {
     super(props);
@@ -48,10 +50,21 @@ class Chart extends Component {
     const container = canvas.addGroup({
       zIndex: 40
     });
-
+    const canvasWidth = canvas.get('width');
+    const canvasHeight = canvas.get('height');
+    const layout = new Layout({
+      chart,
+      width: canvasWidth,
+      height: canvasHeight
+    });
     const componentTree = createComponentTree(children);
     const component = new ComboComponent({ children: componentTree });
-    component.init(chart, container);
+
+    component.init({
+      chart,
+      container,
+      layout,
+    });
 
     // @ts-ignore
     chart.on('aftergeomdraw', () => {
@@ -60,6 +73,7 @@ class Chart extends Component {
     this.chart = chart;
     this.container = container;
     this.component = component;
+    this.layout = layout;
   }
 
   render() {

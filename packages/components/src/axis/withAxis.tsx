@@ -65,9 +65,7 @@ export default View => {
           return;
         }
         const ticks = this.getTicks();
-        const bbox = this.getMaxBBox(ticks);
-        const padding = this._calcPadding(bbox);
-        chart._updateLayout(padding);
+        this._updateLayout(ticks);
       });
     }
     update(props) {
@@ -79,13 +77,14 @@ export default View => {
     // 获取ticks最大的宽高
     getMaxBBox(ticks) {
       const { chart, props } = this;
+      const { label, labelOffset } = props;
       const group = chart.get('backPlot').addGroup();
       let width = 0;
       let height = 0;
       ticks.forEach(tick => {
         const text = group.addShape('text', {
           attrs: {
-            ...props.label,
+            ...label,
             x: 0,
             y: 0,
             text: tick.text
@@ -98,30 +97,28 @@ export default View => {
       // 检测完后直接删除掉
       group.remove(true);
       return {
-        width,
-        height,
+        width: width + labelOffset,
+        height: height + labelOffset,
       }
     }
-    _calcPadding(bbox) {
-      const { props, chart } = this;
-      const padding = chart.get('padding');
-      const { width, height } = bbox;
-      const { position, labelOffset } = props;
+    _updateLayout(ticks) {
+      const { props, layout } = this;
+      const { width, height } = this.getMaxBBox(ticks);
+      const { position } = props;
       switch(position) {
         case 'top':
-          padding[0] = padding[0] + height + labelOffset;
+          layout.update({ top: height });
           break;
         case 'right':
-          padding[1] = padding[1] + width + labelOffset;
-            break;
+          layout.update({ right: -width });
+          break;
         case 'bottom':
-          padding[2] = padding[2] + height + labelOffset;
+          layout.update({ bottom: -height });
           break;
         default:
-          padding[3] = padding[3] + width + labelOffset;
+          layout.update({ left: width });
           break;
       }
-      return padding;
     }
     getTicks() {
       const { props, chart } = this;

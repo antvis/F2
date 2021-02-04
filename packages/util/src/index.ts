@@ -59,7 +59,10 @@ function batch2hd(value: any) {
     for (const key in value) {
       if (value.hasOwnProperty(key)) {
         const rst = batch2hd(value[key]);
-        if (!rst) continue;
+        if (!rst) {
+          result[key] = rst;
+          continue;
+        };
         if (key === 'padding' || key === 'margin') {
           const paddingArray = parsePadding(rst);
           result[`${key}Top`] = paddingArray[0];

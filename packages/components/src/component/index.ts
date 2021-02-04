@@ -1,7 +1,10 @@
+import Layout from '../chart/layout';
+
 class Component {
   chart: any;
   container: any;
   props: any;
+  layout: Layout;
 
   /**
    * @private
@@ -21,8 +24,9 @@ class Component {
     this.__props = props;
     this.props = props;
   }
-  init(chart, container) {
+  init({ chart, container, layout }) {
     this.chart = chart;
+    this.layout = layout;
     this.container = container;
     this.mount();
   }

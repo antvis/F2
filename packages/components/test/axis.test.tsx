@@ -31,5 +31,8 @@ describe('Axis', () => {
 
     expect(container.get('children').length).toBe(2);
     expect(container.get('children')[0].get('children')[0].get('children').length).toBe(6);
+
+    const children = container.get('children')[0].get('children')[0].get('children');
+    expect(children[5].get('children')[0].get('attrs').y).toBe(0);
   })
 });

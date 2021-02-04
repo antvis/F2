@@ -5,10 +5,9 @@ import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 export default View => {
   return class Treemap extends Component {
     treemapLayout() {
-      const { chart, props } = this;
+      const { chart, props, layout } = this;
       const data = chart.get('data');
-      const width = chart.get('width');
-      const height = chart.get('height');
+      const { width, height } = layout;
       const { xField, yField, space = 0 } = props;
       // const { space } = chart;
   
@@ -16,7 +15,7 @@ export default View => {
         .sum(function(d) { return d[yField]; })
         .sort((a, b) => b[yField] - a[yField]);
   
-      const layout = treemap()
+      const treemapLayout = treemap()
         // 默认treemapSquarify
         .tile(treemapBinary)
         .size([width, height])
@@ -28,7 +27,7 @@ export default View => {
         // .paddingRight(options.paddingRight)
         // .paddingBottom(options.paddingBottom)
         // .paddingLeft(options.paddingLeft);
-      const nodes = layout(root);
+      const nodes = treemapLayout(root);
   
       return nodes.children.map(item => {
         const { data, x0, y0, x1, y1 } = item;
