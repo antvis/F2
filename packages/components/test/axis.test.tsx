@@ -17,6 +17,12 @@ describe('Axis', () => {
       <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
         <Axis
           field="genre"
+          position="top"
+          // tickLine={{
+          //   length: '10px',
+          //   stroke: '#000',
+          //   lineWidth: '4px',
+          // }}
         />
         <Axis
           field="sold"
