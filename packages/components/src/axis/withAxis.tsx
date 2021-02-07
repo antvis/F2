@@ -2,39 +2,45 @@ import { jsx } from '@ali/f2-jsx';
 import { batch2hd } from '@ali/f2x-util';
 import Component from '../component';
 
+function getDefaultStyle(props) {
+  // 设置默认配置
+  const {
+    labelOffset = '15px',
+    line = {
+      stroke: '#EDEDED',
+      lineWidth: '1px',
+    },
+    label = {
+      fill: '#CCCCCC',
+      fontSize: '20px',
+    },
+    tickLine,
+    grid = {
+      stroke: '#EDEDED',
+      lineWidth: '1px',
+      lineDash: [ '4px' ]
+    }
+  } = props;
+  return batch2hd({
+    labelOffset,
+    line,
+    label,
+    tickLine,
+    grid
+  });
+}
+
 export default View => {
   return class Axis extends Component {
-    px2hd(props) {
-      // 设置默认配置
-      const {
-        labelOffset = '15px',
-        line = {
-          stroke: '#EDEDED',
-          lineWidth: '1px',
-        },
-        label = {
-          fill: '#CCCCCC',
-          fontSize: '20px',
-        },
-        tickLine,
-        grid = {
-          stroke: '#EDEDED',
-          lineWidth: '1px',
-          lineDash: [ '4px' ]
-        }
-      } = props;
-      return batch2hd({
-        labelOffset,
-        line,
-        label,
-        tickLine,
-        grid
-      });
-    }
+
+    dimType: 'x' | 'y';
+    style: any;
+
     mount() {
       const { props, chart } = this;
       const {
         field,
+        visible,
         type,
         tickCount,
         range,
@@ -43,11 +49,8 @@ export default View => {
         min,
         max,
       } = props;
-      // 把这几个hd转换下
-      this.props = {
-        ...props,
-        ...this.px2hd(props),
-      };
+
+      // 设置scale
       chart.scale(field, {
         type,
         tickCount,
@@ -58,26 +61,39 @@ export default View => {
         max,
       });
 
-      // 更新四边边距，暂时这么处理
+      this.style = getDefaultStyle(props);
+
+      // geom 可能在axis后面添加
       chart.on('beforegeomdraw', () => {
-        const { visible } = this.props;
         if (visible === false) {
           return;
         }
+        const coord = chart.get('coord');
+        const { transposed } = coord;
+        const xScale = chart.getXScale();
+        const dimType = field === xScale.field ? 'x' : 'y';
+        const otherDim = dimType === 'x' ? 'y' : 'x';
+
+        this.dimType = transposed ? otherDim : dimType;
+
         const ticks = this.getTicks();
         this._updateLayout(ticks);
       });
     }
     update(props) {
-      this.props = {
-        ...props,
-        ...this.px2hd(props)
-      };
+      this.style = getDefaultStyle(props);
+    }
+    getTicks() {
+      const { props, chart } = this;
+      const { field } = props;
+      const scale = chart.get('scales')[field];
+      const ticks = scale.getTicks();
+      return ticks;
     }
     // 获取ticks最大的宽高
     getMaxBBox(ticks) {
-      const { chart, props } = this;
-      const { label, labelOffset } = props;
+      const { chart, style } = this;
+      const { label, labelOffset } = style;
       const group = chart.get('backPlot').addGroup();
       let width = 0;
       let height = 0;
@@ -102,60 +118,80 @@ export default View => {
       }
     }
     _updateLayout(ticks) {
-      const { props, layout } = this;
-      const { width, height } = this.getMaxBBox(ticks);
-      const { position } = props;
-      switch(position) {
-        case 'top':
-          layout.update({ top: height });
-          break;
-        case 'right':
-          layout.update({ right: -width });
-          break;
-        case 'bottom':
-          layout.update({ bottom: -height });
-          break;
-        default:
-          layout.update({ left: width });
-          break;
+      const { dimType, chart, props, layout } = this;
+      const coord = chart.get('coord');
+      const { isPolar } = coord;
+      // 极坐标下，y轴 不计算
+      if (isPolar && dimType === 'y') {
+        return;
       }
-    }
-    getTicks() {
-      const { props, chart } = this;
-      const { field } = props;
-      const scale = chart.get('scales')[field];
-      const ticks = scale.getTicks();
-      return ticks;
-    }
-    convertPoint() {
-      const { props, chart } = this;
+      const { width, height } = this.getMaxBBox(ticks);
+      if (isPolar) {
+        layout.update({
+          top: height,
+          right: -width,
+          bottom: -height,
+          left: width,
+        });
+        return;
+      }
       const { position } = props;
+      if (dimType === 'y') {
+        if (position === 'right') {
+          layout.update({ right: -width });
+          return;
+        }
+        layout.update({ left: width });
+        return;
+      }
+      if (position === 'top') {
+        layout.update({ top: height });
+        return;
+      }
+      layout.update({ bottom: -height });
+    }
+
+    convertPoint() {
+      const { chart, dimType } = this;
       const coord = chart.get('coord');
       const ticks = this.getTicks();
-      const dimType = position === 'top' || position === 'bottom' ? 'x' : 'y';
 
       const otherDim = dimType === 'x' ? 'y' : 'x';
-      const points = ticks.map(tick => {
-        const point = coord.convertPoint({
+      return ticks.map(tick => {
+        const start = coord.convertPoint({
           [dimType]: tick.value,
-          [otherDim]: position === 'top' || position === 'right' ? 1 : 0,
+          [otherDim]: 0,
+        });
+        const end = coord.convertPoint({
+          [dimType]: tick.value,
+          [otherDim]: 1,
         });
         return {
           ...tick,
-          ...point,
+          points: [start, end],
         }
       });
-      return points;
     }
     render() {
-      const { props } = this;
+      const { chart, props, dimType, style } = this;
       const { visible } = props;
       if (visible === false) {
         return null;
       }
+      const coord = chart.get('coord');
+      const isPolar = coord.isPolar;
       const ticks = this.convertPoint();
+
+      if (!ticks.length) {
+        return null;
+      }
+
       return <View
+        dimType={ dimType }
         ticks={ ticks }
+        isPolar={ isPolar }
+        coord={ coord }
+        style={ style }
         { ...props }
       />
     }

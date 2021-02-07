@@ -37,7 +37,7 @@ class Chart extends Component {
       // @ts-ignore
       height,
       animate,
-      // padding: batch2hd(padding) || [ 0, 0, 0, 0 ],
+      padding: [ 0, 0, 0, 0 ],
     });
     // 直接设置数据
     chart.source(data);
@@ -59,7 +59,7 @@ class Chart extends Component {
     });
     
     // TODO， 后续优化
-    const p = batch2hd(padding);
+    const p = padding ? batch2hd(padding) : [0, 0, 0, 0];
     layout.update({
       top: p[0],
       right: -p[1],
