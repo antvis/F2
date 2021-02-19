@@ -141,6 +141,28 @@ describe('render', () => {
   });
 });
 
+describe.skip('render style alias', () => {
+  it('group', () => {
+    const container = canvas.addGroup();
+    const group = render(
+      <group>
+        <rect style={{
+          left: 0,
+          top: 0,
+          width: 10,
+          height: 10,
+          backgroundColor: 'red'
+        }}
+        />
+      </group>, container);
+    canvas.draw();
+    expect(!!group).toBe(true);
+    expect(group.get('children').length).toBe(1);
+    expect(group.get('children')[0].get('type')).toBe('rect');
+    container.remove(true);
+  });
+});
+
 describe('layout', () => {
   it('flex direction default column', () => {
     const container = canvas.addGroup();
@@ -276,5 +298,39 @@ describe('layout', () => {
     expect(children[1].get('attrs').textBaseline).toBe('middle');
 
     container.remove(true);
+  });
+
+  it('margin percent', () => {
+    const container = canvas.addGroup();
+    const group = render(
+      <group style={{
+          // padding: '20px',
+          marginLeft: '-50%',
+          // marginTop: '-50%',
+        }}>
+        <text
+          style={{
+            // flex: 1,
+          }}
+          attrs={{
+            fill: '#000',
+            text: '111',
+          }}
+        />
+      </group>, container);
+    canvas.draw();
+
+    const children = group.get('children');
+
+    expect(children[0].get('attrs').x).toBeCloseTo(-9.1259765625, 1);
+    // expect(children[0].get('attrs').x).toBe(0);
+    // expect(children[0].get('attrs').y).toBe(6);
+    // expect(children[0].get('attrs').textBaseline).toBe('middle');
+
+    // expect(children[1].get('attrs').x).toBe(0);
+    // expect(children[1].get('attrs').y).toBe(18);
+    // expect(children[1].get('attrs').textBaseline).toBe('middle');
+
+    // container.remove(true);
   });
 });

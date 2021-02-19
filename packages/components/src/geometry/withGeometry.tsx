@@ -45,28 +45,24 @@ export default View => {
 
       this._shapes = _shapes;
       this.geom = geom;
-      // this._pressEvent();
+
+      this.initEvent();
     }
-    _pressEvent() {
+    initEvent() {
       const { chart, props, geom } = this;
-      const { onPress, onPressEnd } = props;
       const canvas = chart.get('canvas');
-      if (onPress) {
-        canvas.on('press', (ev) => {
-          const { points } = ev || {};
-          const point = points[0];
-          if (!point) {
-            return;
-          }
-          const records = geom.getSnapRecords(point);
-          ev.records = records;
-          onPress(ev);
-        });
-      }
-      if (onPressEnd) {
-        canvas.on('pressend', (ev) => {
-        });
-      }
+      [
+        'onPressStart',
+        'onPress',
+        'onPressEnd'
+      ].forEach((eventName) => {
+        if (props[eventName]) {
+          canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+            ev.geometry = geom;
+            props[eventName](ev);
+          });
+        }
+      });
     }
     parsePoints(points) {
       if (!points) return false;

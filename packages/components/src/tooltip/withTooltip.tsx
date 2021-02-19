@@ -3,6 +3,9 @@ import Component from '../component';
 
 export default View => {
   return class Tooltip extends Component {
+    // mount() {
+    //   console.log(this.props.geometryRef.current);
+    // }
     render() {
       const { props } = this;
       const { visible } = props;

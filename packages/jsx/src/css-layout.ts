@@ -1117,8 +1117,48 @@ function layoutNodeImpl(node, parentMaxWidth, /*css_direction_t*/parentDirection
   }
 }
 
+// 在外层做的margin补丁
+function saveMargin(node) {
+  const { style } = node;
+  const margin = {};
+  [
+    'marginTop',
+    'marginRight',
+    'marginBottom',
+    'marginLeft', // 只支持marginLeft
+  ].forEach(key => {
+    // 只处理百分号
+    const value = style[key];
+    if (value && /^-?\d+%$/.test(value)) {
+      margin[key] = value;
+      style[key] = 0;
+    }
+  });
+  node.margin = margin;
+}
+
+function percent2Num(value) {
+  const percent = Number(value.substr(0, value.length - 1));
+  return percent / 100;
+}
+
+function layoutMargin(node) {
+  const { margin, layout } = node;
+  Object.keys(margin).forEach(key => {
+    const percent = percent2Num(margin[key]);
+    if ((key === 'marginLeft' || key === 'marginRight') && layout.width) {
+      layout.left += (layout.width * percent);
+    } else if ((key === 'marginTop' || key === 'marginBottom') && layout.height) {
+      layout.top += (layout.height * percent);
+    }
+  });
+}
+
 function layoutNode(node, parentMaxWidth, parentDirection) {
   node.shouldUpdate = true;
+
+  // hack
+  saveMargin(node);
 
   var direction = node.style.direction || CSS_DIRECTION_LTR;
   var skipLayout =
@@ -1159,11 +1199,25 @@ function layoutNode(node, parentMaxWidth, parentDirection) {
     node.lastLayout.top = node.layout.top;
     node.lastLayout.left = node.layout.left;
   }
+
+  // hack
+  layoutMargin(node);
 }
 
 /* eslint-enable */
-export default node => {
-  fillNodes(node);
-  layoutNode(node, null, null);
+function computeLayout(node) {
+  const { style, children } = node;
+  if (style) {
+    fillNodes(node);
+    layoutNode(node, null, null);
+    return node;
+  }
+  if (children && children.length) {
+    for (let i = 0, len = children.length; i < len; i++) {
+      computeLayout(children[i]);
+    }
+  }
   return node;
-};
+}
+
+export default computeLayout;

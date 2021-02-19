@@ -8,7 +8,7 @@ describe('jsx classic 模式', () => {
         <text />
       </group>
     );
-    
+
     expect(group.type).toBe('group');
     expect(group.ref === ref).toBe(true);
     expect(group.props.a).toBe(1);

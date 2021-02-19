@@ -13,6 +13,7 @@ const map = {
 }
 
 export default (type: string, layout) => {
+  if (!layout) return null;
   const fn = map[type] || rect;
   return fn(layout);
 }

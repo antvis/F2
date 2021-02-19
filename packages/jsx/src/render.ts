@@ -45,7 +45,7 @@ function createNodeTree(element: JSX.Element, container: any) {
 }
 
 function mergeLayout(parent: any, layout: any) {
-  if (!parent) return layout;
+  if (!parent || !layout) return layout;
   const { left: parentLeft, top: parentTop } = parent;
   const { left, top } = layout;
   return {
@@ -57,13 +57,14 @@ function mergeLayout(parent: any, layout: any) {
 
 
 function createElement(node: any, container: any, parentLayout: any) {
-  const { key, ref, type, props, attrs, layout: originLayout, children } = node;
+  const { key, ref, type, props, style, attrs, layout: originLayout, children } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
   let element;
   if (type === 'group') {
     element = container.addGroup();
-    if (attrs) {
+    // TODO： 后续让G里的group继承rect
+    if (attrs && layout) {
       const defaultAttrs = getShapeAttrs('rect', layout);
       element.addShape('rect', {
         attrs: {
