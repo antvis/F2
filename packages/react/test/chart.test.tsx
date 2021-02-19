@@ -19,7 +19,7 @@ const data = [
 function App(props: any) {
   const { chartRef, lineRef, a } = props;
   return (
-    <ReactChart ref={ chartRef } data={ data } width={ 100 } height={ 100 }>
+    <ReactChart ref={ chartRef } data={ data } width={ 100 } height={ 100 } className="newClass">
       <Line ref={ lineRef } position="genre*sold" a={ a } />
     </ReactChart>
   );
@@ -31,7 +31,7 @@ describe('<Chart >', () => {
     const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
-    expect(wrapper.html()).toBe('<canvas class="f2-chart" width="100" height="100" style="width: 100px; height: 100px;"></canvas>');
+    expect(wrapper.html()).toBe('<canvas class="f2-chart newClass" width="100" height="100" style="width: 100px; height: 100px;"></canvas>');
 
     const reactChart = chartRef.current;
     const line = lineRef.current;

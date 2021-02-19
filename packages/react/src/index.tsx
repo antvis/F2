@@ -2,12 +2,13 @@ import React, { RefObject } from 'react';
 import Chart from '@ali/f2-components';
 
 export interface ChartProps {
-  pixelRatio?: number,
-  width?: number | string,
-  height?: number | string,
-  data: any,
-  padding?: (string | number)[],
-  animate?: boolean
+  className?: string;
+  pixelRatio?: number;
+  width?: number | string;
+  height?: number | string;
+  data: any;
+  padding?: (string | number)[];
+  animate?: boolean;
 }
 
 class ReactChart extends React.Component<ChartProps> {
@@ -37,8 +38,10 @@ class ReactChart extends React.Component<ChartProps> {
   }
 
   render() {
+    const { props } = this;
+    const { className = '' } = props;
     return React.createElement('canvas', {
-      className: 'f2-chart',
+      className: `f2-chart ${className}`,
       ref: this.canvasRef
     });
   }
