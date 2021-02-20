@@ -404,8 +404,8 @@ class TooltipController {
           return;
         }
         each(records, record => {
-          if (record.x && record.y) {
-            const { x, y, _origin, color } = record;
+          const { x, y, _origin, color } = record;
+          if ((x || !isNaN(x)) && (y || !isNaN(y))) {
             const tooltipItem = {
               x,
               y: isArray(y) ? y[1] : y,

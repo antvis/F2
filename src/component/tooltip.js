@@ -234,7 +234,10 @@ class Tooltip {
 
     const { tl, tr } = plotRange;
     let posX = 0;
-    const posY = tl.y - height - GAP + offsetY;
+    let posY = tl.y - height - GAP + offsetY;
+    if (posY < 0) {
+      posY = 0;
+    }
 
     if (fixed) {
       const x = (tl.x + tr.x) / 2;
@@ -255,10 +258,11 @@ class Tooltip {
       }
 
       if (tooltipArrow) {
+        const arrowY = posY + height;
         tooltipArrow.attr('points', [
-          { x: x - 3, y: tl.y - GAP + offsetY },
-          { x: x + 3, y: tl.y - GAP + offsetY },
-          { x, y: tl.y + offsetY }
+          { x: x - 3, y: arrowY },
+          { x: x + 3, y: arrowY },
+          { x, y: arrowY + GAP }
         ]);
         const backShape = container.backShape;
         const radius = parsePadding(backShape.attr('radius'));
@@ -266,17 +270,17 @@ class Tooltip {
           radius[3] = 0;
 
           tooltipArrow.attr('points', [
-            { x: tl.x, y: tl.y + offsetY },
-            { x: tl.x, y: tl.y - GAP + offsetY },
-            { x: tl.x + GAP, y: tl.y - GAP + offsetY }
+            { x: tl.x, y: arrowY },
+            { x: tl.x + GAP, y: arrowY },
+            { x: tl.x, y: arrowY + GAP }
           ]);
         } else if (x === tr.x) {
           radius[2] = 0;
 
           tooltipArrow.attr('points', [
-            { x: tr.x, y: tl.y + offsetY },
-            { x: tr.x - GAP, y: tl.y - GAP + offsetY },
-            { x: tr.x, y: tl.y - GAP + offsetY }
+            { x: tr.x - GAP, y: arrowY },
+            { x: tr.x, y: arrowY },
+            { x: tr.x, y: arrowY + GAP }
           ]);
         }
         backShape.attr('radius', radius);
