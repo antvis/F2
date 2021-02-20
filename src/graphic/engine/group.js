@@ -1,15 +1,19 @@
 import { mix } from '../../util/common';
-import Element from './element';
+import Rect from './shape/rect';
 import Container from './container';
 import Vector2 from '../util/vector2';
 
-class Group extends Element {
+class Group extends Rect {
   _initProperties() {
     this._attrs = {
+      type: 'group',
       zIndex: 0,
       visible: true,
       destroyed: false,
       isGroup: true,
+      canFill: true,
+      canStroke: true,
+      attrs: {},
       children: []
     };
   }
@@ -57,6 +61,20 @@ class Group extends Element {
       width: maxX - minX,
       height: maxY - minY
     };
+  }
+
+  createPath(context) {
+    const attrs = this.get('attrs');
+    // 只有在有fillStyle或strokeStyle 时才需要绘制
+    if (!attrs.fillStyle && !attrs.strokeStyle) {
+      return;
+    }
+    super.createPath(context);
+  }
+
+  drawInner(context) {
+    super.drawInner(context);
+    this.drawChildren(context);
   }
 
   destroy() {
