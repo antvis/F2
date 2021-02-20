@@ -13,7 +13,7 @@ canvas.height = 500;
 canvas.id = 'chart-tooltip';
 canvas.style.position = 'fixed';
 canvas.style.top = 0;
-canvas.style.left = 0;
+canvas.style.left = 10;
 document.body.appendChild(canvas);
 
 function snapEqual(v1, v2) {
@@ -107,7 +107,7 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items[0].value).to.equal('300');
     expect(tooltip.items[0].title).to.equal('周一');
     expect(snapEqual(tooltip.container.x, 44.17999267578125)).to.be.true;
-    expect(snapEqual(tooltip.container.y, -7)).to.be.true;
+    expect(snapEqual(tooltip.container.y, 3)).to.be.true;
 
     const lastPoint = chart.getPosition({ day: '周日', value: 300 });
     chart.showTooltip(lastPoint);
@@ -115,7 +115,7 @@ describe('Tooltip Plugin', function() {
     expect(tooltip.items[0].value).to.equal('900');
     expect(tooltip.items[0].title).to.equal('周日');
     // expect(snapEqual(tooltip.container.x, 313.0880584716797)).to.be.true;
-    expect(snapEqual(tooltip.container.y, -7)).to.be.true;
+    expect(snapEqual(tooltip.container.y, 3)).to.be.true;
   });
 
   it('chart.hideTooltip()', function() {
@@ -679,5 +679,48 @@ describe('Tooltip crosshairs', function() {
 
     chart.destroy();
     document.body.removeChild(canvas);
+  });
+});
+
+describe('vertical', function() {
+  const data = [
+    { value: 63.4, city: 'New York', date: '2011-10-01' },
+    { value: 62.7, city: 'Alaska', date: '2011-10-01' },
+    { value: 72.2, city: 'Austin', date: '2011-10-01' },
+    { value: 58, city: 'New York', date: '2011-10-02' },
+    { value: 59.9, city: 'Alaska', date: '2011-10-02' },
+    { value: 67.7, city: 'Austin', date: '2011-10-02' },
+    { value: 53.3, city: 'New York', date: '2011-10-03' },
+    { value: 59.1, city: 'Alaska', date: '2011-10-03' },
+    { value: 69.4, city: 'Austin', date: '2011-10-03' }
+  ];
+  const chart = new F2.Chart({
+    id: 'chart-tooltip',
+    width: 300,
+    height: 300,
+    plugins: Tooltip,
+    padding: [ 'auto', 'auto', 0, 0 ],
+    pixelRatio: 2,
+    animate: false
+  });
+  chart.source(data, {
+    date: {
+      range: [ 0, 1 ]
+    }
+  });
+  chart.tooltip({
+    snap: true,
+    layout: 'vertical'
+  });
+  chart.line().position('date*value').color('city');
+  chart.render();
+
+  it('posY < 0', () => {
+    const point = chart.getPosition({ value: 63.4, city: 'New York', date: '2011-10-01' });
+    chart.showTooltip(point);
+    const tooltipController = chart.get('tooltipController');
+    const tooltip = tooltipController.tooltip;
+    expect(tooltip.container.x).to.equal(5);
+    expect(tooltip.container.y).to.equal(9);
   });
 });
