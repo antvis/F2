@@ -11,7 +11,7 @@
     "test-live": "npm run test-watch packages",
     "test-watch": "DEBUG_MODE=1 jest --watch",
     "coverage": "jest --coverage",
-    "publish": "npm run build && npm run lerna",
+    "publish": "npm run test && npm run lerna",
     "lerna": "lerna publish"
   },
   "dependencies": {},
