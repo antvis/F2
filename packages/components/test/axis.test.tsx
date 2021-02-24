@@ -1,5 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Axis, Coord, Line } from '../src';
+import Chart, { Axis, Coord, Line, Interval } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -42,6 +42,27 @@ describe('Axis', () => {
 
     // const children = container.get('children')[0].get('children')[0].get('children');
     // expect(children[5].get('children')[0].get('attrs').y).toBe(0);
+  });
+
+  it('render with Transposed Coord', () => {
+    const { type, props } = (
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Coord transposed={true}/>
+        <Axis field="genre"/>
+        <Axis field="sold"/>
+        <Interval position={`genre*sold`}/>
+      </Chart>
+    );
+
+    // @ts-ignore
+    const chart = new type(props);
+    chart.render();
+
+    const container = chart.container;
+
+    expect(container.get('children').length).toBe(4);
+    // Y轴的文案符合预期
+    expect(container.get('children')[1]._attrs.children['0']._attrs.children[10]._attrs.attrs.text).toBe('Other');
   });
 });
 

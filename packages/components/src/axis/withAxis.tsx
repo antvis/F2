@@ -152,10 +152,14 @@ export default View => {
     }
 
     convertPoint() {
-      const { chart, dimType } = this;
+      const { chart, props } = this;
+      const { field} = props;
+
       const coord = chart.get('coord');
+      const xScale = chart.getXScale();
       const ticks = this.getTicks();
 
+      const dimType = field === xScale.field ? 'x' : 'y';
       const otherDim = dimType === 'x' ? 'y' : 'x';
       return ticks.map(tick => {
         const start = coord.convertPoint({
