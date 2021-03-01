@@ -1,5 +1,6 @@
 import Timeline from './timelime';
 import Animator from './animator';
+import { ElementStatus } from '@ali/f2-jsx';
 
 // 遍历全部节点
 function eachElement(element, fn) {
@@ -29,10 +30,10 @@ class Animation {
     let maxDuration = 0;
     // 遍历整个树，找到全部需要动画的元素
     eachElement(container, (element) => {
-      // TODO: flag 需要提取状态
-      const { animation, flag } = element._attrs;
+      // TODO: status 需要提取状态
+      const { animation, status } = element._attrs;
       if (!animation) {
-        if (flag === 'delete') {
+        if (status === ElementStatus.ELEMENT_DELETE) {
           element.remove(true);
         }
         return;
@@ -59,7 +60,7 @@ class Animation {
       for (let i = 0, len = animators.length; i < len; i++) {
         const animator = animators[i];
         const { element } = animator;
-        if(element._attrs.flag === 'delete') {
+        if(element._attrs.status === ElementStatus.ELEMENT_DELETE) {
           element.remove(true);
         }
       }
