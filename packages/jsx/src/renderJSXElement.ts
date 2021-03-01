@@ -23,8 +23,8 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
     if (!newElement) return newElement;
     // recursive render until type is string
     return renderJSXElement({
-      // 保留原始的key和ref
       ...newElement,
+      // 保留原始的key和ref
       key,
       ref,
     }, null);
