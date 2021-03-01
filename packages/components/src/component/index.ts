@@ -9,6 +9,8 @@ class Component {
   /**
    * @private
    */
+  // 上一次render生成的jsx element
+  __lastElement: any;
   __shape: any;
   __props: any;
   // actions: any;
@@ -46,6 +48,8 @@ class Component {
     return null;
   }
   destroy() {
+    const { container } = this;
+    container.clear();
   }
 }
 

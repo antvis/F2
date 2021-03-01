@@ -9,7 +9,8 @@
     "@ali/f2x-util": "^0.0.10",
     "@antv/f2": "^3.8.1",
     "@babel/runtime": "^7.12.5",
-    "d3-hierarchy": "^2.0.0"
+    "d3-hierarchy": "^2.0.0",
+    "d3-interpolate": "^2.0.1"
   },
   "files": [
     "src",

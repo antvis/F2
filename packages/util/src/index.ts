@@ -105,7 +105,7 @@ const map = (children: any, fn: any) => {
   if (!children) {
     return fn(children);
   }
-  if (Array.isArray(children)) {
+  if (isArray(children)) {
     return children.map(child => {
       return map(child, fn);
     });
@@ -119,7 +119,7 @@ function mapTwo(components, children, fn) {
   if (!components) {
     return fn(components, children);
   }
-  if (Array.isArray(components)) {
+  if (isArray(components)) {
     // 防止children为空的情况
     children = children || [];
     const len = Math.max(components.length, children.length);

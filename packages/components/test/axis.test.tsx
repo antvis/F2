@@ -111,6 +111,29 @@ describe('Axis', () => {
 
 });
 
+describe('Axis rect transposed', () => {
+  it('render', () => {
+    const { type, props } = (
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Coord transposed={ true } />
+        <Axis
+          field="genre"
+          visible={ true }
+        />
+        <Axis
+          field="sold"
+          visible={ true }
+        />
+        <Interval position="genre*sold" />
+      </Chart>
+    );
+
+    // @ts-ignore
+    const chart = new type(props);
+    chart.render();
+  })
+});
+
 describe('Axis polar', () => {
   it('render', () => {
     const { type, props } = (

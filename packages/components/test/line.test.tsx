@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
 import Chart, { Line } from '../src';
 import { createContext } from './util';
@@ -26,11 +25,13 @@ describe('Line', () => {
             }
           ]}
           smooth={ true }
+          // shape="line"
           lineDash={ [4, 4] }
         />
       </Chart>
     );
 
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
 
