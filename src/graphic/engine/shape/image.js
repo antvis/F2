@@ -1,7 +1,7 @@
 import { isNil } from '../../../util/common';
-import Shape from './shape';
+import Rect from './rect';
 
-class ImageShape extends Shape {
+class ImageShape extends Rect {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = false;
@@ -9,15 +9,6 @@ class ImageShape extends Shape {
     this._attrs.loading = false;
     this._attrs.image = null;
     this._attrs.type = 'image';
-  }
-
-  getDefaultAttrs() {
-    return {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    };
   }
 
   createPath(context) {
@@ -49,26 +40,25 @@ class ImageShape extends Shape {
   }
 
   drawImage(context, image) {
-    const attrs = this.get('attrs');
-    const { x, y, width, height, sx, sy, swidth, sheight } = attrs;
+    const { attrs, destroyed } = this._attrs;
+    if (destroyed) {
+      return;
+    }
+    const { x, y, width, height, sx, sy, swidth, sheight, radius } = attrs;
+    if (radius) {
+      context.save();
+      this.createRadiusPath(context, x, y, width, height, radius);
+      context.clip();
+    }
     if (!isNil(sx) && !isNil(sy) && !isNil(swidth) && !isNil(sheight)) {
       context.drawImage(image, sx, sy, swidth, sheight, x, y, width, height);
     } else {
       context.drawImage(image, x, y, width, height);
     }
-  }
-
-  calculateBox() {
-    const attrs = this.get('attrs');
-    const { x, y, width, height } = attrs;
-    // 和rect一样
-    return {
-      minX: x,
-      minY: y,
-      maxX: x + width,
-      maxY: y + height
-    };
-
+    if (radius) {
+      // 因为 save 和 restore 会一定程度上影响绘图性能，所以只在必要是调用
+      context.restore();
+    }
   }
 }
 
