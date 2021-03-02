@@ -7,19 +7,16 @@ dom.id = 'canvas';
 document.body.appendChild(dom);
 
 describe('imageShape', function() {
+  const canvas = new Canvas({
+    el: 'canvas',
+    width: 300,
+    height: 300,
+    pixelRatio: 1
+  }); // 创建 canvas 实例
   it('new imageShape', function() {
-    const canvas = new Canvas({
-      el: 'canvas',
-      width: 200,
-      height: 100
-    }); // 创建 canvas 实例
-
-    const container = canvas.addGroup({
-      zIndex: 2
-    }); // canvas 添加一个 group
+    const container = canvas.addGroup(); // canvas 添加一个 group
 
     const imageShape = container.addShape('image', {
-      zIndex: 31,
       attrs: {
         x: 0,
         y: 0,
@@ -33,15 +30,65 @@ describe('imageShape', function() {
       }
     });
 
-    container.sort();
-    canvas.sort(); // canvas 容器内的元素排序
     expect(imageShape.get('loading')).toBe(false);
     canvas.draw(); // 绘制
     expect(imageShape.get('loading')).toBe(true);
     expect(imageShape.get('image')).toBe(null);
+
+    container.remove(true);
   });
 
+  it('image radius', function(done) {
+    const container = canvas.addGroup();
 
+    const src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAG1BMVEXMzMz////r6+vf39/l5eX4+PjY2Njy8vLS0tJvPPLMAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQUlEQVQ4jWNgGAWjgP6ASdncAEaiAhaGiACmFhCJLsMaIiDAEQEi0WXYEiMCOCJAJIY9KuYGTC0gknpuHwXDGwAA5fsIZw0iYWYAAAAASUVORK5CYII=';
+
+    container.addShape('image', {
+      attrs: {
+        x: 0,
+        y: 0,
+        src,
+        width: 50,
+        height: 50,
+        radius: [ 20, 10, 20 ]
+      }
+    });
+
+    container.addShape('image', {
+      attrs: {
+        x: 100,
+        y: 100,
+        src,
+        width: 50,
+        height: 50
+      }
+    });
+
+    canvas.draw();
+
+    // 要异步获取
+    setTimeout(() => {
+      const context = dom.getContext('2d');
+
+      // 第一个image圆角区域
+      const imageData1 = context.getImageData(0, 0, 1, 1).data;
+      // 第二个image圆角区域
+      const imageData2 = context.getImageData(100, 100, 1, 1).data;
+      expect(imageData1[0]).toBe(0);
+      expect(imageData1[1]).toBe(0);
+      expect(imageData1[2]).toBe(0);
+      expect(imageData1[3]).toBe(0);
+
+      expect(imageData2[0]).not.toBe(0);
+      expect(imageData2[1]).not.toBe(0);
+      expect(imageData2[2]).not.toBe(0);
+      expect(imageData2[3]).not.toBe(0);
+      done();
+    }, 100);
+  });
+});
+
+describe('chart image shape', () => {
   it('chart add imageShape', function() {
 
     const data = [
@@ -99,6 +146,4 @@ describe('imageShape', function() {
 
 
   });
-
-
 });
