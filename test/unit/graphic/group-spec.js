@@ -368,6 +368,50 @@ describe('Group', function() {
 
     group.scale(0.5, 0.5);
     expect(group.attr('matrix')).to.eql([ 0.5, 0, 0, 0.5, 0, 0 ]);
-    document.body.removeChild(dom);
+    group.destroy();
+  });
+
+  it('group background', () => {
+    const group1 = canvas.addGroup();
+    const group2 = canvas.addGroup({
+      attrs: {
+        x: 30,
+        y: 30,
+        width: 40,
+        height: 40,
+        radius: 4,
+        fill: 'gray'
+      }
+    });
+    group1.addShape('circle', {
+      attrs: {
+        x: 50,
+        y: 50,
+        r: 20,
+        fill: 'red'
+      }
+    });
+    group2.addShape('circle', {
+      attrs: {
+        x: 50,
+        y: 50,
+        r: 20,
+        fill: 'red'
+      }
+    });
+
+    expect(group1._attrs.attrs.x).to.equal(0);
+    expect(group1._attrs.attrs.y).to.equal(0);
+    expect(group1._attrs.attrs.width).to.equal(0);
+    expect(group1._attrs.attrs.height).to.equal(0);
+
+    expect(group2._attrs.attrs.x).to.equal(30);
+    expect(group2._attrs.attrs.y).to.equal(30);
+    expect(group2._attrs.attrs.width).to.equal(40);
+    expect(group2._attrs.attrs.height).to.equal(40);
+    expect(group2._attrs.attrs.radius).to.equal(4);
+    expect(group2._attrs.attrs.fill).to.equal('gray');
+
+    canvas.draw();
   });
 });

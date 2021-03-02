@@ -56,7 +56,7 @@ export default {
     return this;
   },
 
-  drawInner(context) {
+  drawChildren(context) {
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
