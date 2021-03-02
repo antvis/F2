@@ -172,7 +172,7 @@ class Element {
       for (const k in elAttrs) {
         if (SHAPE_ATTRS.indexOf(k) > -1) {
           let v = elAttrs[k];
-          if (k === 'fillStyle' || k === 'strokeStyle') {
+          if ((k === 'fillStyle' || k === 'strokeStyle') && v) {
             v = parseStyle(v, this, context);
           }
           if (k === 'lineDash' && context.setLineDash && isArray(v)) {
