@@ -13,6 +13,9 @@ class Animator {
   // 动画定义
   animation: Animation;
 
+  // 裁剪区动画的shape
+  clip: any;
+
   // 缓动函数
   easing: EasingFunction;
   duration: number;
@@ -50,7 +53,7 @@ class Animator {
   to(time: number) {
     const { duration, delay, totalDuration, easing } = this;
     // 未开始
-    if (time <= delay) {
+    if (time <= delay || !duration) {
       return;
     }
     // 最大为1
@@ -60,13 +63,17 @@ class Animator {
   }
 
   update(t: number) {
-    const { element, interpolates, property } = this;
+    const { element, clip, interpolates, property } = this;
     const attrs = {};
     for (let i = property.length - 1; i >= 0; i--) {
       const key = property[i];
       attrs[key] = interpolates[i](t);
     }
-    element.attr(attrs);
+    if (clip) {
+      clip.attr(attrs);
+    } else {
+      element.attr(attrs);
+    }
   }
 }
 

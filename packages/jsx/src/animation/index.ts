@@ -1,26 +1,44 @@
+import { ELEMENT_DELETE } from '../elementStatus';
+import F2 from '@antv/f2';
 
-const getAnimationConfig = (nextAttrs, lastAttrs, animation) => {
-  if (!lastAttrs) {
-    return animation.appear;
-  }
-  if (!nextAttrs) {
-    return animation.leave;
-  }
-  return animation.update;
+const { G } = F2;
+const { Shape } = G;
+
+function createClipElement(type: string, config) {
+  return new Shape[type](config);
 }
 
-export default (type: string, animationCfg, nextAttrs, lastAttrs) => {
+export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
   if (!animationCfg) return null;
-  const animation = getAnimationConfig(nextAttrs, lastAttrs, animationCfg);
+  // 获取shape的默认属性
+  const status = element.get('status');
+  const { appear, update, leave } = animationCfg;
+  const animation = status === ELEMENT_DELETE ? leave : ( lastAttrs ? update : appear );
   if (!animation) return;
+  const { clip, start, end, easing, duration } = animation;
+
+  if (clip) {
+    const { type, start } = clip;
+    const clipElement = createClipElement(type, {
+      attrs: start,
+    });
+    // 默认用 animation 配置里的 easing 和 duration
+    clip.easing = clip.easing || easing;
+    clip.duration = clip.duration || duration;
+    clip.element = clipElement;
+  }
+
+  const defaultAttrs = element.getDefaultAttrs();
   return {
     ...animation,
     start: {
-      width: 0,
-      height: 0,
-      ...animation.start,
+      ...defaultAttrs,
       ...lastAttrs,
+      ...start,
     },
-    end: nextAttrs,
+    end: {
+      ...(status === ELEMENT_DELETE ? null : nextAttrs),
+      ...end,
+    }
   }
 }

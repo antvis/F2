@@ -74,13 +74,12 @@ function createElement(node: any, container: any, parentLayout: any) {
   // 缓存这次新的attrs
   _cache.attrs = elementAttrs;
 
-  const animation = getAnimation(type, props.animation, elementAttrs, lastAttrs);
+  
   let element;
   if (type === 'group') {
     element = container.addGroup({
       status,
-      attrs: elementAttrs,
-      animation,
+      attrs: elementAttrs
     });
     // 只有group才需要处理children
     if (children && children.length) {
@@ -92,10 +91,11 @@ function createElement(node: any, container: any, parentLayout: any) {
     element = container.addShape(type, {
       ...props,
       status,
-      attrs: elementAttrs,
-      animation,
+      attrs: elementAttrs
     });
   }
+  const animation = getAnimation(element, props.animation, elementAttrs, lastAttrs);
+  element.set('animation', animation);
   if (ref) {
     ref.current = element;
   }

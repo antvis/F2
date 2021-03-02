@@ -7,6 +7,8 @@ export interface Animation {
   duration: number;
   delay?: number;
   property: string[];
+  // 裁剪区动画
+  clip?: any;
   // start 的 attrs
   start?: any;
   // end 的 attrs
