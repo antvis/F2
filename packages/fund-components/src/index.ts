@@ -1,3 +1,7 @@
+import Chart from '@ali/f2-components'
+export default Chart;
+
+
 export { default as Legend, withLegend, LegendView } from './legend';
 export { default as WeaverLine } from './weaverLine';
 

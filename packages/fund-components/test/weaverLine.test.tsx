@@ -1,6 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import Chart from '@ali/f2-components';
-import { WeaverLine } from '../src';
+import Chart, { WeaverLine } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
