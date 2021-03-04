@@ -130,6 +130,8 @@ class EventController {
     }
   }
   _end = ev => {
+    const points = convertPoints(ev, this.canvas);
+    ev.points = points;
     this.emitEnd(ev);
     this.emitEvent('touchend', ev);
 
