@@ -119,11 +119,16 @@ function landscapePoint(point, canvas) {
 }
 
 function convertPoints(ev, canvas) {
-  const touches = ev.touches;
+  let touches = ev.touches;
   // 认为是mouse事件
   if (!touches) {
     const point = getRelativePosition({ x: ev.clientX, y: ev.clientY }, canvas);
     return [ landscapePoint(point, canvas) ];
+  }
+  // 单指 touchend 后，touchs 会变空，最后的触点要从changedTouches里拿
+  if (!touches.length) {
+    // 为了防止万一，加个空逻辑
+    touches = ev.changedTouches || [];
   }
   const points = [];
   for (let i = 0, len = touches.length; i < len; i++) {

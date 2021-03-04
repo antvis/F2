@@ -49,6 +49,13 @@ describe('Event Controller', function() {
     expect(touchendCallback.mock.calls.length).toBe(1);
   });
 
+  it('touch eventend points', () => {
+    touchendCallback.mockClear();
+    canvasEl.dispatchEvent({ type: 'touchend', touches: [], changedTouches: [{ x: 10, y: 10 }] });
+    expect(touchendCallback.mock.calls.length).toBe(1);
+    expect(touchendCallback.mock.calls[0][0].points).toEqual([{ x: 10, y: 10 }]);
+  });
+
   describe('pan event', () => {
     it('normal pan', () => {
       const startcallback = jest.fn();
