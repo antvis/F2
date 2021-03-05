@@ -59,7 +59,7 @@ class Rect extends Shape {
     if (!radius || !(width * height)) {
       context.rect(x, y, width, height);
     } else {
-      this.createRadiusPath(context, x, y, width, radius);
+      this.createRadiusPath(context, x, y, width, height, radius);
     }
   }
 
