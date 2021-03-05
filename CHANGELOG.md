@@ -1,3 +1,9 @@
+#### 3.8.3 (2021-03-05)
+
+##### Bug Fixes
+
+*  rect 设置radius时，图形画不出来 ([10666e85](https://github.com/antvis/f2/commit/10666e85754f0117e8f8dbc0f5aa776e97f7a12a))
+
 #### 3.8.2 (2021-03-04)
 
 ##### Chores
@@ -12,22 +18,6 @@
 ##### Bug Fixes
 
 *  修复touchend 后，points为空 ([e769d642](https://github.com/antvis/f2/commit/e769d6424c4158cc4a764b16c7044f8324537070))
-*  修复hollowCircle报错和多geom时，crosshairs不显示的问题。Fixed [#1140](https://github.com/antvis/f2/pull/1140) ([c1b5c85b](https://github.com/antvis/f2/commit/c1b5c85b4ef68b85cda7a67340c5dda49c7501cc))
-*  修复tooltip posy小于0被截断不显示 ([bcda3586](https://github.com/antvis/f2/commit/bcda35865c9e58b339bb53b07f6ccb5fda360f07))
-
-#### 3.8.2 (2021-03-04)
-
-##### Chores
-
-*  升级travis node 版本 ([3e990f15](https://github.com/antvis/f2/commit/3e990f1586b01e71b252a437a2b7d9e97b040305))
-
-##### New Features
-
-*  image 添加 radius 属性 ([31ddbc50](https://github.com/antvis/f2/commit/31ddbc50fe69db04145718f816d81af5e07133ce))
-*  group 支持添加背景 ([94403b69](https://github.com/antvis/f2/commit/94403b69b4827910e07c455077b81f836830a0c8))
-
-##### Bug Fixes
-
 *  修复hollowCircle报错和多geom时，crosshairs不显示的问题。Fixed [#1140](https://github.com/antvis/f2/pull/1140) ([c1b5c85b](https://github.com/antvis/f2/commit/c1b5c85b4ef68b85cda7a67340c5dda49c7501cc))
 *  修复tooltip posy小于0被截断不显示 ([bcda3586](https://github.com/antvis/f2/commit/bcda35865c9e58b339bb53b07f6ccb5fda360f07))
 
