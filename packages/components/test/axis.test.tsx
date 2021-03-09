@@ -64,6 +64,20 @@ describe('Axis', () => {
     // Y轴的文案符合预期
     expect(container.get('children')[1]._attrs.children['0']._attrs.children[10]._attrs.attrs.text).toBe('Other');
   });
+
+  it('using ticks param', () => {
+    const config = (
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Coord transposed={true}/>
+        <Axis field="genre" ticks={['Other']}/>
+        <Axis field="sold"/>
+        <Interval position={`genre*sold`}/>
+      </Chart>
+    );
+
+      expect(config.props.children[1].props.ticks.length).toBe(1)
+
+  });
 });
 
 describe('Axis polar', () => {
