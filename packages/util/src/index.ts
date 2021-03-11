@@ -132,4 +132,15 @@ function mapTwo(components, children, fn) {
   return fn(components, children);
 }
 
-export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, mapTwo };
+export {
+  isString,
+  isArray,
+  isObject,
+  isFunction,
+  // px2hd 含义更清晰
+  batch2hd as px2hd,
+  batch2hd,
+  extendMap,
+  map,
+  mapTwo,
+};
