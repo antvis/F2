@@ -4,6 +4,7 @@ import Component from '../component';
 import ComboComponent from './comboComponent';
 import createComponentTree from './createComponentTree';
 import Layout from './layout';
+import Animation from './animation';
 
 interface ChartUpdateProps {
   pixelRatio?: number,
@@ -26,10 +27,11 @@ class Chart extends Component {
   component: ComboComponent;
   container: any;
   layout: Layout;
+  animation?: Animation;
 
   constructor(props: ChartProps) {
     super(props);
-    const { context, pixelRatio, width, height, animate, data, children, padding, themeConfig } = props;
+    const { context, pixelRatio, width, height, animate = true, data, children, padding, themeConfig } = props;
 
     // 主题配置
     if(themeConfig) {
@@ -43,7 +45,7 @@ class Chart extends Component {
       width,
       // @ts-ignore
       height,
-      animate,
+      animate: false,
       padding: [ 0, 0, 0, 0 ],
     });
     // 直接设置数据
@@ -74,7 +76,7 @@ class Chart extends Component {
       left: p[3],
     });
     const componentTree = createComponentTree(children);
-    const component = new ComboComponent({ children: componentTree });
+    const component = new ComboComponent({ children: componentTree, animate });
 
     component.init({
       chart,
@@ -90,21 +92,38 @@ class Chart extends Component {
     this.container = container;
     this.component = component;
     this.layout = layout;
+    this.animation = animate ? new Animation(canvas) : null;
   }
 
   render() {
-    const { chart } = this;
+    const { chart, container, animation } = this;
     chart.render();
+
+    // 执行动画
+    if (animation) {
+      animation.play(container);
+    }
     return null;
   }
 
   update(props: ChartUpdateProps) {
-    const { chart, component } = this;
+    const { chart, component, animation, container } = this;
     // 只处理数据，和children的变化
     const { data, children } = props;
+
     const componentTree = createComponentTree(children);
-    component.update({ children: componentTree });
-    chart.get('canvas').draw();
+    component.update({ children: componentTree }, true);
+    if (data && data !== this.props.data) {
+      chart.changeData(data);
+    } else {
+      // 如果调用了changeData, 会触发aftergeomdraw
+      // 这里因为没有changeData, 所以需要自己再调一次render
+      component.render();
+    }
+    // 执行动画
+    if (animation) {
+      animation.play(container);
+    }
   }
 
   destroy() {

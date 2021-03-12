@@ -19,7 +19,10 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
   };
 
   if (typeof type === 'function') {
-    const newElement = type(element.props);
+    const newElement = type({
+      key,
+      ...element.props
+    });
     if (!newElement) return newElement;
     // recursive render until type is string
     return renderJSXElement({

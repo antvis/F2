@@ -3,6 +3,7 @@ import F2 from '@antv/f2';
 import Component from '../component/index';
 
 const Shape = F2.Shape;
+const isArray = Array.isArray;
 
 const EMPTY_SHAPE = 'empty-shape';
 
@@ -14,7 +15,7 @@ export default View => {
 
     applyAttr(geom, attr, config) {
       if (!config) return;
-      if (Array.isArray(config)) {
+      if (isArray(config)) {
         geom[attr].apply(geom, config);
       } else {
         geom[attr](config);
@@ -63,6 +64,10 @@ export default View => {
           });
         }
       });
+      // TODO
+      chart.on('beforedatachange', () => {
+        this._shapes.length = 0;
+      });
     }
     parsePoints(points) {
       if (!points) return false;
@@ -75,17 +80,36 @@ export default View => {
     renderShape(props) {
       return <View { ...props } />
     }
+    getScaleFields() {
+      const { geom } = this;
+      const groupScales = geom._getGroupScales();
+      return groupScales.map(scale => {
+        return scale.field;
+      });
+    }
+    getKey(shape, fields) {
+      const { origin } = shape;
+      const keys = fields.map(field => {
+        const record = isArray(origin) ? origin[0] : origin;
+        return record[field];
+      })
+      return keys.join('-');
+    }
     render() {
       const _shapes = this._shapes;
       if (!_shapes || !_shapes.length) {
         return null;
       }
       const { props } = this;
+      const fields = this.getScaleFields();
       return (
         <group>
           {
-            _shapes.map(shape => {
+            _shapes.map((shape, index) => {
+              const key = this.getKey(shape, fields);
               return this.renderShape({
+                index,
+                key,
                 ...props,
                 ...shape,
               })

@@ -1,4 +1,4 @@
-import { render, renderJSXElement } from '@ali/f2-jsx';
+import { render, renderJSXElement, compareRenderTree } from '@ali/f2-jsx';
 import { map, mapTwo } from '@ali/f2x-util';
 import Component from '../component';
 import PlaceholderComponent from './placeholderComponent';
@@ -35,6 +35,11 @@ class ComboComponent extends Component {
 
   createComponent(element: JSX.Element): Component {
     const { type, props, key, ref } = element;
+
+    // 设置默认的动画配置
+    if (props.animate === undefined) {
+      props.animate = this.animate;
+    }
     // 这里 一定是 F2 Component 了
     // @ts-ignore
     const component = new type(props);
@@ -73,10 +78,16 @@ class ComboComponent extends Component {
   }
 
   renderComponent(component: Component, appendProps) {
-    const { __shape, container } = component;
+    const { __shape, __lastElement, container, animate, props } = component;
     // 先把之前的图形清除掉
     if (__shape) {
       __shape.remove(true);
+    }
+
+    // 支持function形式，为了更的自定义
+    const { animation } = props;
+    if (animation && typeof animation === 'function') {
+      props.animation = animation(props);
     }
 
     // 返回的是jsx的element树
@@ -85,14 +96,18 @@ class ComboComponent extends Component {
 
     // 返回的是shape的结构树
     const element = renderJSXElement(jsxElement, appendProps);
-    if (!element) return null;
+    component.__lastElement = element;
+
+    // 如果需要动画，才进行比较
+    const renderElement = animate ? compareRenderTree(element, __lastElement) : element;
+    if (!renderElement) return null;
 
     // 生成G的节点树
-    const shape = render(element, container);
+    const shape = render(renderElement, container);
     component.__shape = shape;
   }
 
-  update(props: any) {
+  update(props: any, force?: boolean) {
     const { components, chart, layout } = this;
     const appendProps = this._getAppendProps();
     // 只处理数据和children的变化
@@ -118,7 +133,7 @@ class ComboComponent extends Component {
           layout,
           container: component.container,
         });
-        this.renderComponent(newComponent, appendProps);
+        // this.renderComponent(newComponent, appendProps);
         return newComponent;
       }
 
@@ -136,12 +151,18 @@ class ComboComponent extends Component {
           layout,
           container: component.container,
         });
-        this.renderComponent(newComponent, appendProps);
+
+        // 保留shape结构，为了实现动画的过渡变化
+        if (component.props.keepElement) {
+          newComponent.__lastElement = component.__lastElement;
+        }
+        return newComponent;
+        // this.renderComponent(newComponent, appendProps);
       }
 
-      if (!equal(props, component.__props)) {
+      if (force || !equal(props, component.__props)) {
         component.update(props);
-        this.renderComponent(component, appendProps);
+        // this.renderComponent(component, appendProps);
       }
 
       return component;

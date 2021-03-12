@@ -6,6 +6,8 @@ class Component {
   props: any;
   layout: Layout;
 
+  animate: boolean;
+
   /**
    * @private
    */
@@ -23,8 +25,10 @@ class Component {
   }
 
   constructor(props: any) {
+    const { animate } = props;
     this.__props = props;
     this.props = props;
+    this.animate = animate;
   }
   init({ chart, container, layout }) {
     this.chart = chart;

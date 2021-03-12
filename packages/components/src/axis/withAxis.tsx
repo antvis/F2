@@ -35,6 +35,7 @@ export default View => {
 
     dimType: 'x' | 'y';
     style: any;
+    lastLayout: any;
 
     mount() {
       const { props, chart } = this;
@@ -79,7 +80,11 @@ export default View => {
         this.dimType = transposed ? otherDim : dimType;
 
         const ticks = this.getTicks();
-        this._updateLayout(ticks);
+        // TODO: 应该记录上下左右大小，然后还原，一个boolean不太够
+        if (!this.lastLayout) {
+          this._updateLayout(ticks);
+          this.lastLayout = true;
+        }
       });
     }
     update(props) {
