@@ -1,5 +1,6 @@
 import { each, isNil, uniq, directionEnabled } from '../../util/common';
 import { getLimitRange, getFieldRange } from '../helper';
+import { getTickMethod } from '../../scale';
 
 const TOUCH_EVENTS = [
   'touchstart',
@@ -103,7 +104,7 @@ function _handleLinearScale(scale, delta, range, flag) {
 }
 
 function _handleCatScale(scale, delta, range) {
-  const { type, field, values, ticks } = scale;
+  const { type, field, values, ticks, tickCount } = scale;
 
   const duplicateRemovalValues = uniq(values);
 
@@ -147,6 +148,12 @@ function _handleCatScale(scale, delta, range) {
       }
     }
     newTicks = ticks;
+  } else if (type === 'cat' && !scale.getConfig('ticks')) {
+    const catTicks = getTickMethod('cat');
+    newTicks = catTicks({
+      tickCount,
+      values: newValues
+    });
   } else {
     // 保留之前的ticks
     newTicks = ticks;
