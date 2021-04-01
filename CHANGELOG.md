@@ -1,3 +1,9 @@
+#### 3.8.4 (2021-04-01)
+
+##### Bug Fixes
+
+*  cat类型平移后ticks不更新 ([03752e7a](https://github.com/antvis/f2/commit/03752e7a3c4eb65ea12048fe575661573df0381f))
+
 #### 3.8.3 (2021-03-05)
 
 ##### Bug Fixes
