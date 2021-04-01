@@ -252,6 +252,36 @@ describe('chart pan', function() {
 
   });
 
+  it('pan x axis, and x field is a cat type.', function() {
+    chart.clear();
+    chart.source(data, {
+      x3: {
+        type: 'cat',
+        range: [ 0, 1 ],
+        // mask: 'MM-DD',
+        values: dates.slice(8, 15)
+      },
+      y: null
+    });
+    chart.line().position('x3*y');
+    chart.interaction('pan', {
+      speed: 2
+    });
+    chart.render();
+
+    const xScale = chart.getXScale();
+    expect(xScale.ticks[0]).toBe('2018-08-09');
+    expect(xScale.ticks[6]).toBe('2018-08-15');
+
+    const interaction = chart._interactions.pan;
+    interaction._doMove(-40, 0);
+
+    expect(xScale.values.length).toBe(7);
+    expect(xScale.ticks.length).toBe(7);
+    expect(xScale.ticks[0]).toBe('2018-08-10');
+    expect(xScale.ticks[6]).toBe('2018-08-16');
+  });
+
   it('pan x axis with speed and step control.', function() {
     chart.clear();
     chart.source(data, {
@@ -334,8 +364,6 @@ describe('chart pan', function() {
       const highlightLine = hBar.get('children')[1];
       expect(highlightLine.attr('x1')).toBeCloseTo(50.79789011101974, 2);
       expect(highlightLine.attr('x2')).toBeCloseTo(239.75473504317432, 2);
-      chart.destroy();
-      document.body.removeChild(canvas);
       done();
     }, 300);
   });
