@@ -148,7 +148,7 @@ function _handleCatScale(scale, delta, range) {
       }
     }
     newTicks = ticks;
-  } else if (type === 'cat' && !scale.getConfig('ticks')) {
+  } else if (type === 'cat') {
     const catTicks = getTickMethod('cat');
     newTicks = catTicks({
       tickCount,
