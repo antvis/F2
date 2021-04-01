@@ -218,7 +218,7 @@ describe('chart pan', function() {
     interaction._doMove(-50, 0);
     const xScale = chart.getXScale();
     expect(xScale.values).toEqual([ '5', '6', '7', '8', '9' ]);
-    expect(xScale.ticks).toEqual([ '4', '6', '8' ]);
+    expect(xScale.ticks).toEqual([ '5', '6', '7', '8', '9' ]);
   });
 
   it('pan x axis, and x field is a timeCat type.', function() {
@@ -275,11 +275,12 @@ describe('chart pan', function() {
 
     const interaction = chart._interactions.pan;
     interaction._doMove(-40, 0);
+    interaction._doMove(-40, 0);
 
     expect(xScale.values.length).toBe(7);
     expect(xScale.ticks.length).toBe(7);
-    expect(xScale.ticks[0]).toBe('2018-08-10');
-    expect(xScale.ticks[6]).toBe('2018-08-16');
+    expect(xScale.ticks[0]).toBe('2018-08-11');
+    expect(xScale.ticks[6]).toBe('2018-08-17');
   });
 
   it('pan x axis with speed and step control.', function() {
