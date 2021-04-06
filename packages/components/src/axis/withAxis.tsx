@@ -45,6 +45,7 @@ export default View => {
         tickCount,
         range,
         formatter,
+        ticks,
         mask,
         min,
         max,
@@ -59,6 +60,7 @@ export default View => {
         mask,
         min,
         max,
+        ticks
       });
 
       this.style = getDefaultStyle(props);
@@ -192,11 +194,11 @@ export default View => {
 
       return <View
         dimType={ dimType }
-        ticks={ ticks }
         isPolar={ isPolar }
         coord={ coord }
         style={ style }
         { ...props }
+        ticks={ ticks }
       />
     }
   }
