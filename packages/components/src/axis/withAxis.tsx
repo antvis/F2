@@ -192,14 +192,13 @@ export default View => {
         return null;
       }
 
-      props.ticks = ticks;
-
       return <View
         dimType={ dimType }
         isPolar={ isPolar }
         coord={ coord }
         style={ style }
         { ...props }
+        ticks={ ticks }
       />
     }
   }

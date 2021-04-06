@@ -75,7 +75,7 @@ describe('Axis', () => {
       </Chart>
     );
 
-      expect(config.props.children[1].props.ticks.length).toBe(1)
+    expect(config.props.children[1].props.ticks.length).toBe(1)
 
   });
 });
