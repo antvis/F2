@@ -4,6 +4,7 @@ export default (props: any) => {
   const { ticks, plot, style } = props;
   const { bl, br } = plot;
   const { grid, tickLine, line, labelOffset, label } = style;
+  const { normalizeAlign } = label || {};
 
   return (
     <group>
@@ -61,15 +62,29 @@ export default (props: any) => {
           ticks.map((tick, index) => {
             const { points, text } = tick;
             const start = points[0];
+            
+            const textAttrs = {
+              x: start.x,
+              y: start.y + labelOffset,
+              textAlign: 'center',
+              textBaseline: 'top',
+              text,
+              ...label,
+            }
+  
+            if (normalizeAlign) {
+              const textAligns = ['start', 'center', 'end']
+              if (index === 0) {
+                textAttrs.textAlign = textAligns[0];
+              } else if (index === ticks.length - 1) {
+                textAttrs.textAlign = textAligns[2];
+              } else {
+                textAttrs.textAlign = textAligns[1];
+              }
+            }
+            
             return (
-              <text attrs={{
-                x: start.x,
-                y: start.y + labelOffset,
-                textAlign: 'center',
-                textBaseline: 'top',
-                text,
-                ...label,
-              }} />
+              <text attrs={textAttrs} />
             );
           })
         :

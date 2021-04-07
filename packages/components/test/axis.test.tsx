@@ -64,6 +64,36 @@ describe('Axis', () => {
     // Y轴的文案符合预期
     expect(container.get('children')[1]._attrs.children['0']._attrs.children[10]._attrs.attrs.text).toBe('Other');
   });
+
+  it('render label using textAligns', () => {
+    const { type, props } = (
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Coord/>
+        <Axis
+          field="genre"
+          label={{
+            fill: "#CCCCCC",
+            fontSize: "22px",
+            normalizeAlign: true
+          }}
+        />
+        <Axis field="sold"/>
+        <Interval position={`genre*sold`}/>
+      </Chart>
+    );
+
+    // @ts-ignore
+    const chart = new type(props);
+    chart.render();
+
+    const container = chart.container;
+
+    expect(container.get('children').length).toBe(4);
+  
+    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[6]._attrs.attrs.textAlign).toBe('start');
+    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[7]._attrs.attrs.textAlign).toBe('center');
+    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[10]._attrs.attrs.textAlign).toBe('end');
+  })
 });
 
 describe('Axis polar', () => {
