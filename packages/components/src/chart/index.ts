@@ -13,6 +13,7 @@ interface ChartUpdateProps {
   padding?: (number | string)[],
   animate?: boolean,
   children?: any,
+  themeConfig?: any,
 }
 
 interface ChartProps extends ChartUpdateProps {
@@ -28,7 +29,13 @@ class Chart extends Component {
 
   constructor(props: ChartProps) {
     super(props);
-    const { context, pixelRatio, width, height, animate, data, children, padding } = props;
+    const { context, pixelRatio, width, height, animate, data, children, padding, themeConfig } = props;
+
+    // 主题配置
+    if(themeConfig) {
+      F2.Global.setTheme(themeConfig);
+    }
+    
     const chart = new F2.Chart({
       context,
       pixelRatio,

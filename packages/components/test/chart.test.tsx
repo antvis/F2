@@ -45,7 +45,9 @@ describe('Chart', () => {
 
     function createProps() {
       return (
-        <Chart data={ data } context={ context }>
+        <Chart data={ data } context={ context } themeConfig={{
+          colors: ['#1677FF', '#00B7F4', '#FF9F18', '#FF6430', '#F433C', '#7F12CC' ],
+        }}>
           <Line position="genre*sold" ref={ lineRef } f={ () =>{} }/>
           <text />
           <>
@@ -90,11 +92,14 @@ describe('Chart', () => {
     // 组件B
     expect(chart.component.components[4].components[0]).toBeInstanceOf(ComboComponent);
     expect(chart.component.components[4].components[1]).toBeInstanceOf(Axis);
-
+    
     // 组件B内部组件处理
     expect(chart.component.components[4].components[0].components.length).toBe(2);
     expect(chart.component.components[4].components[0].components[0]).toBeInstanceOf(Axis);
     expect(chart.component.components[4].components[0].components[1]).toBeInstanceOf(Axis);
+    
+    // 自定义主题
+    expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe('#1677FF')
 
 
     const { props: newProps } = createProps();
