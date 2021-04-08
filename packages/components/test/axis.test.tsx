@@ -74,7 +74,7 @@ describe('Axis', () => {
           label={{
             fill: "#CCCCCC",
             fontSize: "22px",
-            normalizeAlign: true
+            align: 'between'
           }}
         />
         <Axis field="sold"/>

@@ -4,7 +4,7 @@ export default (props: any) => {
   const { ticks, plot, style } = props;
   const { bl, br } = plot;
   const { grid, tickLine, line, labelOffset, label } = style;
-  const { normalizeAlign } = label || {};
+  const { align = 'between' } = label || {};
 
   return (
     <group>
@@ -66,23 +66,22 @@ export default (props: any) => {
             const textAttrs = {
               x: start.x,
               y: start.y + labelOffset,
-              textAlign: 'center',
+              textAlign: align,
               textBaseline: 'top',
               text,
               ...label,
             }
-  
-            if (normalizeAlign) {
-              const textAligns = ['start', 'center', 'end']
+
+            if (align === "between") {
               if (index === 0) {
-                textAttrs.textAlign = textAligns[0];
+                textAttrs.textAlign = "start";
               } else if (index === ticks.length - 1) {
-                textAttrs.textAlign = textAligns[2];
+                textAttrs.textAlign = "end";
               } else {
-                textAttrs.textAlign = textAligns[1];
+                textAttrs.textAlign = "center";
               }
             }
-            
+
             return (
               <text attrs={textAttrs} />
             );
