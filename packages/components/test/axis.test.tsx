@@ -65,6 +65,20 @@ describe('Axis', () => {
     expect(container.get('children')[1]._attrs.children['0']._attrs.children[10]._attrs.attrs.text).toBe('Other');
   });
 
+  it('using ticks param', () => {
+    const config = (
+      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+        <Coord transposed={true}/>
+        <Axis field="genre" ticks={['Other']}/>
+        <Axis field="sold"/>
+        <Interval position={`genre*sold`}/>
+      </Chart>
+    );
+    expect(config.props.children[1].props.ticks.length).toBe(1)
+  });
+
+
+
   it('render label using textAligns', () => {
     const { type, props } = (
       <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
@@ -77,8 +91,8 @@ describe('Axis', () => {
             align: 'between'
           }}
         />
-        <Axis field="sold"/>
-        <Interval position={`genre*sold`}/>
+        <Axis field="sold" />
+        <Interval position={`genre*sold`} />
       </Chart>
     );
 
@@ -94,6 +108,7 @@ describe('Axis', () => {
     expect(container._attrs.children[1]._attrs.children[0]._attrs.children[7]._attrs.attrs.textAlign).toBe('center');
     expect(container._attrs.children[1]._attrs.children[0]._attrs.children[10]._attrs.attrs.textAlign).toBe('end');
   })
+
 });
 
 describe('Axis polar', () => {
