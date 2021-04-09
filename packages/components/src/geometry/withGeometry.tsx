@@ -1,5 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import F2 from '@antv/f2';
+import { isArray } from '@ali/f2x-util';
 import Component from '../component/index';
 
 const Shape = F2.Shape;
@@ -20,28 +21,66 @@ export default View => {
         geom[attr](config);
       }
     }
+
+    getAttrValue(fieldKey, attr, orderValues) {
+      if(!fieldKey || !attr || !orderValues || !orderValues.length) {
+        return null;
+      }
+      const attrMap = {};
+      orderValues.forEach((item:string, index) => {
+        attrMap[item] = F2.Global[attr][index % F2.Global[attr].length];
+      })
+
+      return [fieldKey, fieldValue => {
+        return attrMap[fieldValue];
+      }]
+    }
+
     mount() {
       const { chart, props } = this;
-      const _shapes = this._shapes || [];
-      const { type, position, size, color, shape, style, ...config } = props;
+      const { type, position, size, color, shape, style, order, ...config } = props;
+ 
+
+      let _shapes = this._shapes || [];
+
+      const geom = chart[type](config).position(position);
+
+      // 如果指定了顺序，则让颜色和大小和顺序关系对应起来
+      if(order && order.length) {
+        const orderValues = order[1];
+        _shapes = new Array(orderValues.length).fill("");
+        this.applyAttr(geom, 'color', this.getAttrValue(color, 'colors', orderValues));
+        this.applyAttr(geom, 'size', this.getAttrValue(size, 'sizes', orderValues));
+      } else {
+        this.applyAttr(geom, 'color', color);
+        this.applyAttr(geom, 'size', size);    
+      }
+
+      this.applyAttr(geom, 'style', style);
 
       // 不画任何东西，在render里面统一画
       Shape.registerShape(type, EMPTY_SHAPE, {
         draw(cfg) {
-          _shapes.push(cfg);
-        }
+          const { origin } = cfg;
+          if(order && order.length) {
+            const catField = order[0];
+            const orderValues = order[1];
+            const key = isArray(origin) ? origin[0][catField] : origin[catField];
+            // 按order的倒序处理，因为绘图时，后面的数据会绘在上面
+            _shapes.splice(Math.abs(orderValues.indexOf(key) - orderValues.length + 1), 1, cfg);
+          } else {
+            _shapes.push(cfg);
+          }
+        },
       });
 
-      const geom = chart[type](config).position(position);
-      this.applyAttr(geom, 'color', color);
-      this.applyAttr(geom, 'size', size);
-      this.applyAttr(geom, 'style', style);
       if (shape) {
         this.applyAttr(geom, 'shape', shape);
       } else {
         // 这里不画任何东西，在render的时候画
         geom.shape(EMPTY_SHAPE);
       }
+
 
       this._shapes = _shapes;
       this.geom = geom;
