@@ -30,10 +30,8 @@ export default View => {
 
       const geom = chart[type](config).position(position);
 
-      // 如果指定了顺序，则让颜色和大小和顺序关系对应起来
       if(order && order.length) {
-        const orderValues = order[1];
-        _shapes = new Array(orderValues.length).fill("");
+        _shapes = new Array(order[1].length).fill("");
       }
       
       this.applyAttr(geom, 'color', color);
