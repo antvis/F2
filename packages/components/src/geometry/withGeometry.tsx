@@ -1,5 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import F2 from '@antv/f2';
+import { isArray } from '@ali/f2x-util';
 import Component from '../component/index';
 
 const Shape = F2.Shape;
@@ -20,22 +21,45 @@ export default View => {
         geom[attr](config);
       }
     }
+
     mount() {
       const { chart, props } = this;
+      const { type, position, size, color, shape, style, order, ...config } = props; 
       const _shapes = this._shapes || [];
-      const { type, position, size, color, shape, style, ...config } = props;
+
+      const geom = chart[type](config).position(position);
+
+      if(order && order.length) {
+        const catField = order[0];
+        const orderValues = order[1];
+        if (catField && orderValues && orderValues.length) {
+          geom.on('afterprocessdata', ev => {
+            const { dataArray } = ev;
+            dataArray.sort((data1, data2) => {
+              // data 是 array, 这里只要取第一个元素比较就可以了
+              const item1 = data1[0];
+              const item2 = data2[0];
+              const orderValue1 = item1[catField];
+              const orderValue2 = item2[catField];
+              // dataArray需要按order的倒序处理，因为绘图时，后面的数据会绘在上面
+              return orderValues.indexOf(orderValue2) - orderValues.indexOf(orderValue1);
+            });
+          });
+        }
+      }
+
+      
+      this.applyAttr(geom, 'color', color);
+      this.applyAttr(geom, 'size', size);   
+      this.applyAttr(geom, 'style', style);
 
       // 不画任何东西，在render里面统一画
       Shape.registerShape(type, EMPTY_SHAPE, {
         draw(cfg) {
           _shapes.push(cfg);
-        }
+        },
       });
-
-      const geom = chart[type](config).position(position);
-      this.applyAttr(geom, 'color', color);
-      this.applyAttr(geom, 'size', size);
-      this.applyAttr(geom, 'style', style);
+      
       if (shape) {
         this.applyAttr(geom, 'shape', shape);
       } else {

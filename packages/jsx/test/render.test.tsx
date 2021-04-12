@@ -322,7 +322,7 @@ describe('layout', () => {
 
     const children = group.get('children');
 
-    expect(children[0].get('attrs').x).toBeCloseTo(-9.1259765625, 1);
+    expect(children[0].get('attrs').x).toBeCloseTo(-7.217994689941406, 1);
     // expect(children[0].get('attrs').x).toBe(0);
     // expect(children[0].get('attrs').y).toBe(6);
     // expect(children[0].get('attrs').textBaseline).toBe('middle');
