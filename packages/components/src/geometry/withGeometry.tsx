@@ -25,14 +25,29 @@ export default View => {
     mount() {
       const { chart, props } = this;
       const { type, position, size, color, shape, style, order, ...config } = props; 
-
-      let _shapes = this._shapes || [];
+      const _shapes = this._shapes || [];
 
       const geom = chart[type](config).position(position);
 
       if(order && order.length) {
-        _shapes = new Array(order[1].length).fill("");
+        const catField = order[0];
+        const orderValues = order[1];
+        if (catField && orderValues && orderValues.length) {
+          geom.on('afterprocessdata', ev => {
+            const { dataArray } = ev;
+            dataArray.sort((data1, data2) => {
+              // data 是 array, 这里只要取第一个元素比较就可以了
+              const item1 = data1[0];
+              const item2 = data2[0];
+              const orderValue1 = item1[catField];
+              const orderValue2 = item2[catField];
+              // dataArray需要按order的倒序处理，因为绘图时，后面的数据会绘在上面
+              return orderValues.indexOf(orderValue2) - orderValues.indexOf(orderValue1);
+            });
+          });
+        }
       }
+
       
       this.applyAttr(geom, 'color', color);
       this.applyAttr(geom, 'size', size);   
@@ -41,16 +56,7 @@ export default View => {
       // 不画任何东西，在render里面统一画
       Shape.registerShape(type, EMPTY_SHAPE, {
         draw(cfg) {
-          const { origin } = cfg;
-          if(order && order.length) {
-            const catField = order[0];
-            const orderValues = order[1];
-            const key = isArray(origin) ? origin[0][catField] : origin[catField];
-            // 按order的倒序处理，因为绘图时，后面的数据会绘在上面
-            _shapes.splice(Math.abs(orderValues.indexOf(key) - orderValues.length + 1), 1, cfg);
-          } else {
-            _shapes.push(cfg);
-          }
+          _shapes.push(cfg);
         },
       });
       
