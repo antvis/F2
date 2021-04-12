@@ -22,24 +22,9 @@ export default View => {
       }
     }
 
-    getAttrValue(fieldKey, attr, orderValues) {
-      if(!fieldKey || !attr || !orderValues || !orderValues.length) {
-        return null;
-      }
-      const attrMap = {};
-      orderValues.forEach((item:string, index) => {
-        attrMap[item] = F2.Global[attr][index % F2.Global[attr].length];
-      })
-
-      return [fieldKey, fieldValue => {
-        return attrMap[fieldValue];
-      }]
-    }
-
     mount() {
       const { chart, props } = this;
-      const { type, position, size, color, shape, style, order, ...config } = props;
- 
+      const { type, position, size, color, shape, style, order, ...config } = props; 
 
       let _shapes = this._shapes || [];
 
@@ -49,13 +34,10 @@ export default View => {
       if(order && order.length) {
         const orderValues = order[1];
         _shapes = new Array(orderValues.length).fill("");
-        this.applyAttr(geom, 'color', this.getAttrValue(color, 'colors', orderValues));
-        this.applyAttr(geom, 'size', this.getAttrValue(size, 'sizes', orderValues));
-      } else {
-        this.applyAttr(geom, 'color', color);
-        this.applyAttr(geom, 'size', size);    
       }
-
+      
+      this.applyAttr(geom, 'color', color);
+      this.applyAttr(geom, 'size', size);   
       this.applyAttr(geom, 'style', style);
 
       // 不画任何东西，在render里面统一画
@@ -73,14 +55,13 @@ export default View => {
           }
         },
       });
-
+      
       if (shape) {
         this.applyAttr(geom, 'shape', shape);
       } else {
         // 这里不画任何东西，在render的时候画
         geom.shape(EMPTY_SHAPE);
       }
-
 
       this._shapes = _shapes;
       this.geom = geom;
