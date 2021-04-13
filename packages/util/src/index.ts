@@ -1,3 +1,5 @@
+import formatter from './formatter'
+
 // 默认设置50
 let ONE_REM: number;
 try {
@@ -132,4 +134,4 @@ function mapTwo(components, children, fn) {
   return fn(components, children);
 }
 
-export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, mapTwo };
+export { isString, isArray, isObject, isFunction, batch2hd, extendMap, map, mapTwo, formatter };
