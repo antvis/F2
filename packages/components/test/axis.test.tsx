@@ -1,5 +1,7 @@
+// @ts-nocheck
+
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Axis, Coord, Line, Interval } from '../src';
+import Canvas, { Chart, Axis, Line, Treemap } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -8,37 +10,52 @@ const data = [
   { genre: 'Strategy', sold: 115, type: 'a' },
   { genre: 'Action', sold: 120, type: 'a' },
   { genre: 'Shooter', sold: 350, type: 'a' },
-  { genre: 'Other', sold: 150, type: 'a' }
+  { genre: 'Other', sold: 150, type: 'a' },
+  { genre: 'Shooter', sold: 300, type: 'b' },
+  { genre: 'Other', sold: 160, type: 'b' }
 ];
 
 describe('Axis', () => {
-  it('render', () => {
+  it.only('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Axis
-          field="genre"
-          position="top"
-          // tickLine={{
-          //   length: '10px',
-          //   stroke: '#000',
-          //   lineWidth: '4px',
-          // }}
-        />
-        <Axis
-          field="sold"
-        />
-        <Line position="genre*sold" />
-      </Chart>
+      <Canvas context={ context } pixelRatio={ window.devicePixelRatio } >
+        <Chart
+          data={ data }
+          end={{ x: 180, y: 400 }}
+        >
+          <Axis
+            field="genre"
+            // position="top"
+            // tickLine={{
+            //   length: '10px',
+            //   stroke: '#000',
+            //   lineWidth: '4px',
+            // }}
+          />
+          <Axis
+            field="sold"
+          />
+          <Line
+            position="genre*sold"
+            color="type"
+            size="type"
+            smooth
+          />
+        </Chart>
+      </Canvas>
     );
 
     // @ts-ignore
     const chart = new type(props);
     chart.render();
 
+    // chart.update(props);
+
     const container = chart.container;
 
     expect(container.get('children').length).toBe(3);
     expect(container.get('children')[0].get('children')[0].get('children').length).toBe(11);
+
 
     // const children = container.get('children')[0].get('children')[0].get('children');
     // expect(children[5].get('children')[0].get('attrs').y).toBe(0);
@@ -50,7 +67,7 @@ describe('Axis', () => {
         <Coord transposed={true}/>
         <Axis field="genre"/>
         <Axis field="sold"/>
-        <Interval position={`genre*sold`}/>
+        <Interval position={`genre*sold`} />
       </Chart>
     );
 

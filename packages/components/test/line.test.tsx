@@ -1,5 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Line } from '../src';
+import Canvas, { Chart, Line } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -16,19 +16,37 @@ const data = [
 describe('Line', () => {
   it('Line color callback', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Line
-          position="genre*sold"
-          color={[ 'type', () => {
-              colorCallback();
-              return 'red';
-            }
-          ]}
-          smooth={ true }
-          // shape="line"
-          lineDash={ [4, 4] }
-        />
-      </Chart>
+      <Canvas context={ context } animate={ false }>
+        <Chart
+          data={ data }
+          scale={{
+            sold: { min: 0 }
+          }}
+          coord={{
+            type: 'rect'
+          }}
+          // start={{
+          //   x: 10,
+          //   y: 10,
+          // }}
+          // end={{
+          //   x: 100,
+          //   y: 300,
+          // }}
+        >
+          <Line
+            position="genre*sold"
+            color={[ 'genre', () => {
+                colorCallback();
+                return 'red';
+              }
+            ]}
+            smooth={ true }
+            // shape="line"
+            lineDash={ [4, 4] }
+          />
+        </Chart>
+      </Canvas>
     );
 
     // @ts-ignore

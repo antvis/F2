@@ -1,135 +1,187 @@
-import F2 from '@antv/f2';
-import { batch2hd, map } from '@ali/f2x-util';
-import Component from '../component';
-import ComboComponent from './comboComponent';
-import createComponentTree from './createComponentTree';
-import Layout from './layout';
-import Animation from './animation';
+import { map, px2hd } from '@ali/f2x-util';
+import { each, isString, upperFirst } from '@antv/util';
+import Container from '../component/container';
+import ScaleController from './scale';
+import Plot from './plot';
+import * as Coord from './coord';
+import theme from './theme';
+import Layout from '../canvas/layout';
 
-interface ChartUpdateProps {
-  pixelRatio?: number,
-  width?: number | string,
-  height?: number | string,
-  data: any,
-  padding?: (number | string)[],
-  animate?: boolean,
-  children?: any,
-  themeConfig?: any,
+interface Point {
+  x: number;
+  y: number;
 }
 
-interface ChartProps extends ChartUpdateProps {
-  context: any,
+interface Props {
+  data: any;
+  scale: any;
+  coord: any;
+  start?: Point;
+  end?: Point;
+  children: any;
+  theme: any;
 }
 
-class Chart extends Component {
+// 统计图表
+class Chart extends Container {
+  scales: any;
+  props: Props;
+  plot: Plot;
+  coord: any;
+  theme: any;
 
-  chart: any;
-  component: ComboComponent;
-  container: any;
-  layout: Layout;
-  animation?: Animation;
+  scaleController: ScaleController;
 
-  constructor(props: ChartProps) {
+  constructor(props: Props) {
     super(props);
-    const { context, pixelRatio, width, height, animate = true, data, children, padding, themeConfig } = props;
-
-    // 主题配置
-    if(themeConfig) {
-      F2.Global.setTheme(themeConfig);
-    }
-    
-    const chart = new F2.Chart({
-      context,
-      pixelRatio,
-      // @ts-ignore
-      width,
-      // @ts-ignore
-      height,
-      animate: false,
-      padding: [ 0, 0, 0, 0 ],
+    this.theme = {
+      ...theme,
+      ...props.theme,
+    };
+    // 设置子元素对chart的引用
+    const { components } = this;
+    map(components, (component) => {
+      component.chart = this;
     });
-    // 直接设置数据
-    chart.source(data);
-    // 一些初始化
-    chart.legend(false);
-    chart.tooltip(false);
-    chart.axis(false);
+  }
 
-    const canvas = chart.get('canvas');
-    const container = canvas.addGroup({
-      zIndex: 40
-    });
-    const canvasWidth = canvas.get('width');
-    const canvasHeight = canvas.get('height');
+  init(config) {
+    const { layout: defaultLayout } = config;
+    const { props, theme } = this;
+    const {
+      // 默认用父元素的大小
+      start = { x: defaultLayout.left, y: defaultLayout.top },
+      end = { x: defaultLayout.right, y: defaultLayout.bottom },
+      coord: coordCfg,
+      scale
+    } = props;
+
+
     const layout = new Layout({
-      chart,
-      width: canvasWidth,
-      height: canvasHeight
+      left: start.x,
+      top: start.y,
+      width: end.x - start.x,
+      height: end.y - start.y,
     });
-    
-    // TODO， 后续优化
-    const p = padding ? batch2hd(padding) : [0, 0, 0, 0];
+    // 处理默认padding
+    const padding = px2hd(theme.padding);
     layout.update({
-      top: p[0],
-      right: -p[1],
-      bottom: -p[2],
-      left: p[3],
+      top: padding[0],
+      right: -padding[1],
+      bottom: -padding[2],
+      left: padding[3],
     });
-    const componentTree = createComponentTree(children);
-    const component = new ComboComponent({ children: componentTree, animate });
+    this.layout = layout;
 
-    component.init({
-      chart,
-      container,
+    const plot = new Plot({
+      start: { x: layout.left, y: layout.top },
+      end: { x: layout.right, y: layout.bottom },
+    });
+    const coord = this._createCoord(plot, coordCfg);
+    const scaleController = new ScaleController(scale);
+
+    this.plot = plot;
+    this.coord = coord;
+    this.scaleController = scaleController;
+
+    // 初始化完自身后，再初始化子元素
+    super.init({
+      ...config,
       layout,
     });
+  }
 
-    // @ts-ignore
-    chart.on('aftergeomdraw', () => {
-      component.render();
+  willMount() {
+    const { props, scaleController } = this;
+    const { data } = props;
+
+    // 初始化scale
+    const { defs } = scaleController;
+    each(defs, (cfg, field) => {
+      scaleController.createScale(field, data);
     });
-    this.chart = chart;
-    this.container = container;
-    this.component = component;
-    this.layout = layout;
-    this.animation = animate ? new Animation(canvas) : null;
+
+    this.scales = scaleController.scales;
+
+    super.willMount();
   }
 
-  render() {
-    const { chart, container, animation } = this;
-    chart.render();
-
-    // 执行动画
-    if (animation) {
-      animation.play(container);
+  _createCoord(plot, coordCfg) {
+    if (isString(coordCfg)) {
+      coordCfg = {
+        type: coordCfg,
+      };
     }
-    return null;
+    coordCfg = {
+      // 默认直角坐标系
+      type: 'rect',
+      ...coordCfg,
+      plot,
+    }
+
+    const { type } = coordCfg;
+    const C = Coord[upperFirst(type)];
+    const coord = new C(coordCfg);
+    return coord;
   }
 
-  update(props: ChartUpdateProps) {
-    const { chart, component, animation, container } = this;
-    // 只处理数据，和children的变化
-    const { data, children } = props;
+  scale(field, cfg) {
+    const { scaleController } = this;
+    scaleController.setDef(field, cfg);
 
-    const componentTree = createComponentTree(children);
-    component.update({ children: componentTree }, true);
-    if (data && data !== this.props.data) {
-      chart.changeData(data);
-    } else {
-      // 如果调用了changeData, 会触发aftergeomdraw
-      // 这里因为没有changeData, 所以需要自己再调一次render
-      component.render();
-    }
-    // 执行动画
-    if (animation) {
-      animation.play(container);
-    }
+    return this;
   }
 
-  destroy() {
-    const { chart, component } = this;
-    component.destroy();
-    chart.destroy();
+  convertPoint(point: Point) {
+    // const { x } = point;
+    const { coord } = this;
+    return coord.convertPoint(point);
+  }
+
+  getXScale() {
+    const geometrys = [];
+    const { components } = this;
+    map(components, (component) => {
+      if (component.geometry) {
+        geometrys.push(component);
+      }
+    });
+    if (!geometrys) return null;
+    return geometrys[0].getXScale();
+  }
+
+  getYScales() {
+    const geometrys = [];
+    const { components } = this;
+    map(components, (component) => {
+      if (component.geometry) {
+        geometrys.push(component);
+      }
+    });
+    if (!geometrys.length) return null;
+    return geometrys.map(geometry => {
+      return geometry.getYScale();
+    });
+  }
+
+  updateLayout(updateLayout) {
+    const { plot, coord } = this;
+    const { tl, width, height } = plot;
+    const newLayout = new Layout({
+      left: tl.x,
+      top: tl.y,
+      width,
+      height,
+    });
+    newLayout.update(updateLayout);
+    plot.reset({
+      x: newLayout.left,
+      y: newLayout.top,
+    }, {
+      x: newLayout.right,
+      y: newLayout.bottom,
+    });
+    coord.reset(plot);
   }
 }
 

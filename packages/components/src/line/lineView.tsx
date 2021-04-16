@@ -1,22 +1,31 @@
 import { jsx } from '@ali/f2-jsx';
 
 export default (props: any) => {
-  const { points, color, size, smooth, lineDash, isInCircle } = props;
+  const { mappedData, smooth, lineDash } = props;
 
-  // 极坐标
-  if (isInCircle) {
-    points.push(points[0]);
-  }
+  // // 极坐标
+  // if (isInCircle) {
+  //   points.push(points[0]);
+  // }
   return (
-    <polyline attrs={{
-        points,
-        lineJoin: 'round',
-        lineCap: 'round',
-        lineWidth: size || '4px',
-        strokeStyle: color,
-        smooth,
-        lineDash,
-      }}
-    />
+    <group>
+      {
+        mappedData.map(cfg => {
+          const { points, color, size } = cfg;
+          return (
+            <polyline attrs={{
+              points,
+              lineJoin: 'round',
+              lineCap: 'round',
+              lineWidth: size || '4px',
+              strokeStyle: color,
+              smooth,
+              lineDash,
+            }}
+          />
+          );
+        })
+      }
+    </group>
   );
 }

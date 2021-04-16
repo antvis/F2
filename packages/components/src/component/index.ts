@@ -1,7 +1,6 @@
-import Layout from '../chart/layout';
+import Layout from '../canvas/layout';
 
 class Component {
-  chart: any;
   container: any;
   props: any;
   layout: Layout;
@@ -30,11 +29,11 @@ class Component {
     this.props = props;
     this.animate = animate;
   }
-  init({ chart, container, layout }) {
-    this.chart = chart;
+  init({ container, layout }) {
     this.layout = layout;
     this.container = container;
-    this.mount();
+  }
+  willMount() {
   }
   mount() {
   }

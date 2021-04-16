@@ -79,8 +79,8 @@ class Animation {
       for (let i = 0, len = animators.length; i < len; i++) {
         const animator = animators[i];
         animator.to(time);
-        canvas.draw();
       }
+      canvas.draw();
     }, () => {
       // 动画结束后移除被删除的元素
       for (let i = 0, len = animators.length; i < len; i++) {
@@ -95,6 +95,8 @@ class Animation {
           element.remove(true);
         }
       }
+      // @TODO 要和update 合在一起绘制，否则会调用2次
+      canvas.draw();
     })
   }
 }

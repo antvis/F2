@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Treemap } from '../src';
+import Canvas, { Treemap } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -48,9 +49,14 @@ const data = [{
 describe('Treemap', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Treemap xField="name" yField="value" space={ 4 }/>
-      </Chart>
+      <Canvas context={ context }>
+        <Treemap
+          data={ data }
+          xField="name"
+          yField="value"
+          space={ 4 }
+        />
+      </Canvas>
     );
 
     // @ts-ignore

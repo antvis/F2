@@ -19,6 +19,7 @@ class Timeline {
 
   play(duration: number, onUpdate: UpdateCallback, onEnd: EndCallback) {
     if (duration <= 0) {
+      onEnd();
       return;
     }
     // 上次动画未结束

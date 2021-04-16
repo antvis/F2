@@ -6,7 +6,6 @@ interface updateLayout {
 }
 
 class Layout {
-  chart: any;
   width: number;
   height: number;
   left = 0;
@@ -14,12 +13,13 @@ class Layout {
   right: number;
   bottom: number;
 
-  constructor({ chart, width, height }) {
-    this.chart = chart;
+  constructor({ left = 0, top = 0, width, height }) {
+    this.left = left;
+    this.top = top;
+    this.right = left + width;
+    this.bottom = top + height;
     this.width = width;
     this.height = height;
-    this.right = width;
-    this.bottom = height;
   }
 
   update(layout: updateLayout) {
@@ -28,11 +28,18 @@ class Layout {
       const value = layout[key] || 0;
       this[key] = current + value;
     });
-    const { left, top, right, bottom, width, height } = this;
-    try {
-      this.chart._updateLayout([ top, width - right, height - bottom, left ]);
-    } catch (e) {
-    }
+    this.width = this.right - this.left;
+    this.height = this.bottom - this.top;
+  }
+
+  clone() {
+    const { left, top, width, height } = this;
+    return new Layout({
+      left,
+      top,
+      width,
+      height
+    });
   }
 }
 

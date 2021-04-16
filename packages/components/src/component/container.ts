@@ -1,11 +1,11 @@
 import { render, renderJSXElement, compareRenderTree } from '@ali/f2-jsx';
 import { map, mapTwo } from '@ali/f2x-util';
-import Component from '../component';
-import PlaceholderComponent from './placeholderComponent';
+import Component from './index';
+import PlaceholderComponent from './placeholder';
 import equal from './equal';
 
-class ComboComponent extends Component {
-  components: any;
+class ContainerComponent extends Component {
+  components: Component[];
 
   constructor(props: any) {
     super(props);
@@ -28,8 +28,23 @@ class ComboComponent extends Component {
     map(components, (component: Component) => {
       component.init({
         ...config,
+        // 为每个组件都创建一个独立节点
         container: container.addGroup()
       });
+    });
+  }
+
+  willMount() {
+    const { components } = this;
+    map(components, (component: Component) => {
+      component.willMount();
+    });
+  }
+
+  mount() {
+    const { components } = this;
+    map(components, (component: Component) => {
+      component.mount();
     });
   }
 
@@ -53,16 +68,14 @@ class ComboComponent extends Component {
   }
 
   _getAppendProps() {
-    const { chart } = this;
-    const width = chart.get('width');
-    const height = chart.get('height');
-    const plot = chart.get('plot');
+    const { layout } = this;
+    const { width, height } = layout;
 
     // 把常用的值append到props中去
     return {
       width,
       height,
-      plot,
+      // plot,
     }
   }
 
@@ -74,10 +87,11 @@ class ComboComponent extends Component {
       this.renderComponent(component, appendProps);
     });
 
+    // 自身不绘制任何内容
     return null;
   }
 
-  renderComponent(component: Component, appendProps) {
+  renderComponent(component: Component, appendProps?: any) {
     const { __shape, __lastElement, container, animate, props } = component;
     // 先把之前的图形清除掉
     if (__shape) {
@@ -107,9 +121,8 @@ class ComboComponent extends Component {
     component.__shape = shape;
   }
 
-  update(props: any, force?: boolean) {
-    const { components, chart, layout } = this;
-    const appendProps = this._getAppendProps();
+  update(props: any) {
+    const { components, layout } = this;
     // 只处理数据和children的变化
     const { children } = props;
     this.components = mapTwo(components, children, (component: Component, child: JSX.Element) => {
@@ -118,7 +131,6 @@ class ComboComponent extends Component {
         component.destroy();
         const placeholderComponent = new PlaceholderComponent({});
         placeholderComponent.init({
-          chart,
           layout,
           container: component.container,
         });
@@ -129,11 +141,9 @@ class ComboComponent extends Component {
       if (component.placeholder) {
         const newComponent = this.createComponent(child);
         newComponent.init({
-          chart,
           layout,
           container: component.container,
         });
-        // this.renderComponent(newComponent, appendProps);
         return newComponent;
       }
 
@@ -147,7 +157,6 @@ class ComboComponent extends Component {
         // 创建新的
         const newComponent = this.createComponent(child);
         newComponent.init({
-          chart,
           layout,
           container: component.container,
         });
@@ -157,12 +166,10 @@ class ComboComponent extends Component {
           newComponent.__lastElement = component.__lastElement;
         }
         return newComponent;
-        // this.renderComponent(newComponent, appendProps);
       }
 
-      if (force || !equal(props, component.__props)) {
+      if (!equal(props, component.__props)) {
         component.update(props);
-        // this.renderComponent(component, appendProps);
       }
 
       return component;
@@ -177,7 +184,8 @@ class ComboComponent extends Component {
       }
       component.destroy();
     });
+    this.components = null;
   }
 }
 
-export default ComboComponent;
+export default ContainerComponent;

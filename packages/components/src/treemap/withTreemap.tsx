@@ -4,12 +4,11 @@ import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 
 export default View => {
   return class Treemap extends Component {
+
     treemapLayout() {
-      const { chart, props, layout } = this;
-      const data = chart.get('data');
+      const { props, layout } = this;
       const { width, height } = layout;
-      const { xField, yField, space = 0 } = props;
-      // const { space } = chart;
+      const { data, xField, yField, space = 0 } = props;
   
       const root = hierarchy({ children: data })
         .sum(function(d) { return d[yField]; })
@@ -39,11 +38,6 @@ export default View => {
           y1,
         }
       });
-    }
-
-    mount() {
-      const { chart } = this;
-      chart.polygon().position('_*_');
     }
 
     render() {

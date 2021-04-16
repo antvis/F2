@@ -1,18 +1,18 @@
 import { map } from '@ali/f2x-util';
-import ComboComponent from './comboComponent';
+import Container from '../component/container';
 
 function createComponentTree(element: JSX.Element) {
   if (!element) return element;
   const { type, key, ref, props } = element;
   const { children } = props;
 
-  // 如果有children， 统一处理成 ComboComponent
+  // 如果有children， 统一处理成 Container
   if (type === 'fragment' && children) {
     props.children = map(children, (child: JSX.Element) => {
       return createComponentTree(child);
     });
     return {
-      type: ComboComponent,
+      type: Container,
       key,
       ref,
       props,
