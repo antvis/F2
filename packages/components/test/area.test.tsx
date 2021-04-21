@@ -11,7 +11,7 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' }
 ];
 
-describe('Area', () => {
+describe.skip('Area', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={ data } context={ context }>

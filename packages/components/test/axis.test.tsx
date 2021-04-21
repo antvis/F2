@@ -51,7 +51,7 @@ describe('Axis', () => {
 
     // chart.update(props);
 
-    const container = chart.container;
+    const container = chart.container._attrs.children[0];
 
     expect(container.get('children').length).toBe(3);
     expect(container.get('children')[0].get('children')[0].get('children').length).toBe(11);

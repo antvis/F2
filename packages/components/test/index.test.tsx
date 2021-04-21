@@ -1,5 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Line, Interval, Area, Axis  } from '../src';
+import Canvas, { Chart, Line, Interval, Area, Axis  } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -14,9 +14,11 @@ const data = [
 describe('Chart', () => {
   it('new Chart', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Line position="genre*sold" />
-      </Chart>
+      <Canvas context={ context }>
+        <Chart data={ data } >
+          <Line position="genre*sold" />
+        </Chart>
+      </Canvas>
     )
 
     // @ts-ignore
