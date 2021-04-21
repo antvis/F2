@@ -14,12 +14,12 @@ interface Point {
 
 interface Props {
   data: any;
-  scale: any;
-  coord: any;
+  scale?: any;
+  coord?: any;
   start?: Point;
   end?: Point;
   children: any;
-  theme: any;
+  theme?: any;
 }
 
 // 统计图表

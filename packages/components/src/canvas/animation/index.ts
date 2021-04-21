@@ -25,9 +25,9 @@ class Animation {
   }
 
   createAnimator(element, animation) {
-    const { duration, property } = animation;
+    const { duration } = animation;
     // 校验关键参数
-    if (!duration || !property || !property.length) {
+    if (!duration) {
       return;
     }
     return new Animator(element, animation);
@@ -80,22 +80,11 @@ class Animation {
         const animator = animators[i];
         animator.to(time);
       }
-      canvas.draw();
-    }, () => {
-      // 动画结束后移除被删除的元素
-      for (let i = 0, len = animators.length; i < len; i++) {
-        const animator = animators[i];
-        const { element, clip } = animator;
-        if (clip) {
-          // 如果是裁剪区动画，要移除裁剪区
-          clip.remove(true);
-          element.attr('clip', null);
-        }
-        if(element._attrs.status === ElementStatus.ELEMENT_DELETE) {
-          element.remove(true);
-        }
+      // 最后一帧放在end里统一draw， 避免重复draw
+      if (time < maxDuration) {
+        canvas.draw();
       }
-      // @TODO 要和update 合在一起绘制，否则会调用2次
+    }, () => {
       canvas.draw();
     })
   }

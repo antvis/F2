@@ -73,6 +73,11 @@ class ScaleController {
       values
     };
 
+    // 设置默认nice
+    if (type === 'linear' && typeof cfg.nice !== 'boolean') {
+      cfg.nice = true;
+    }
+
     // if (type !== 'cat' && type !== 'timeCat') {
     //   if (!def || !(def.min && def.max)) {
     //     const { min, max } = Array.getRange(values);

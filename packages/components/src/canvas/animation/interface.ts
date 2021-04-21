@@ -13,4 +13,7 @@ export interface Animation {
   start?: any;
   // end 的 attrs
   end?: any;
+  // 每一帧的处理函数
+  onFrame?: any;
+  onEnd?: any;
 }

@@ -16,7 +16,7 @@ const data = [
 describe('Line', () => {
   it('Line color callback', () => {
     const { type, props } = (
-      <Canvas context={ context } animate={ false }>
+      <Canvas context={ context }>
         <Chart
           data={ data }
           scale={{
@@ -25,18 +25,10 @@ describe('Line', () => {
           coord={{
             type: 'rect'
           }}
-          // start={{
-          //   x: 10,
-          //   y: 10,
-          // }}
-          // end={{
-          //   x: 100,
-          //   y: 300,
-          // }}
         >
           <Line
             position="genre*sold"
-            color={[ 'genre', () => {
+            color={[ 'type', () => {
                 colorCallback();
                 return 'red';
               }
@@ -50,8 +42,8 @@ describe('Line', () => {
     );
 
     // @ts-ignore
-    const chart = new type(props);
-    chart.render();
+    const canvas = new type(props);
+    canvas.render();
 
     expect(colorCallback.mock.calls.length).not.toBe(0);
   })

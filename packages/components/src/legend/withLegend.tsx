@@ -4,6 +4,8 @@ import Component from '../component/index';
 export default View => {
   return class Legend extends Component {
 
+    chart: any;
+
     getItems() {
       const { props, chart } = this;
       const { field } = props;

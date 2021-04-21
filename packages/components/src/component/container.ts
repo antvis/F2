@@ -76,6 +76,7 @@ class ContainerComponent extends Component {
       width,
       height,
       // plot,
+      layout,
     }
   }
 

@@ -1,13 +1,10 @@
-import { withGeometry } from '../geometry/index';
+import { jsx } from '@ali/f2-jsx';
+import Geometry from '../geometry';
 
 export default View => {
-  return class Point extends withGeometry(View) {
-    mount() {
-      this.props = {
-        ...this.props,
-        type: 'point',
-      }
-      super.mount();
+  return class Point extends Geometry {
+    render() {
+      return <View />
     }
   }
 }

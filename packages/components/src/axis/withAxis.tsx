@@ -39,7 +39,8 @@ export default View => {
     style: any;
     lastLayout: any;
 
-    mount() {
+    init(config) {
+      super.init(config);
       const { props, chart } = this;
       const {
         field,
@@ -52,6 +53,26 @@ export default View => {
         mask,
         min,
         max,
+        nice,
+      } = props;
+
+      chart.scale(field, {
+        type,
+        tickCount,
+        range,
+        mask,
+        formatter,
+        min,
+        max,
+        nice
+      });
+    }
+
+    mount() {
+      const { props, chart } = this;
+      const {
+        field,
+        visible,
       } = props;
       if (visible === false) {
         return;

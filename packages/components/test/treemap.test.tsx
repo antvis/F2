@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
 import Canvas, { Treemap } from '../src';
 import { createContext } from './util';
@@ -60,11 +59,10 @@ describe('Treemap', () => {
     );
 
     // @ts-ignore
-    const chart = new type(props);
-    chart.render();
+    const canvas = new type(props);
+    canvas.render();
 
-
-    const treemapContainer = chart.container.get('children')[0];
+    const treemapContainer = canvas.container.get('children')[0];
     const view = treemapContainer.get('children')[0];
     expect(view.get('children').length).toBe(10);
     expect(view.get('children')[1].get('attrs').x).toBe(132);

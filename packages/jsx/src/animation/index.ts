@@ -15,7 +15,7 @@ export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
   const { appear, update, leave } = animationCfg;
   const animation = status === ELEMENT_DELETE ? leave : ( lastAttrs ? update : appear );
   if (!animation) return;
-  const { clip, start, end, easing, duration } = animation;
+  const { clip, start, end, easing, delay, duration } = animation;
 
   if (clip) {
     const { type, start } = clip;
@@ -24,6 +24,7 @@ export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
     });
     // 默认用 animation 配置里的 easing 和 duration
     clip.easing = clip.easing || easing;
+    clip.delay = clip.delay || delay;
     clip.duration = clip.duration || duration;
     clip.element = clipElement;
   }
