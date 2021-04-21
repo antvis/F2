@@ -1,6 +1,6 @@
 {
   "name": "@ali/f2x-util",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
@@ -11,8 +11,8 @@
     "es"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
     "@alipay/tango": "^2.0.1",
+    "@babel/runtime": "^7.12.5",
     "fecha": "^2.3.3"
   },
   "publishConfig": {
