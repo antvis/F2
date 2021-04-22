@@ -31,8 +31,8 @@ describe('<Chart >', () => {
     const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
-    expect(wrapper.html()).toBe('<canvas class="f2-chart newClass" width="100" height="100" style="width: 100px; height: 100px;"></canvas>');
-
+    expect(wrapper.html()).toBe('<canvas class="f2-chart newClass" width="100" height="100" style="width: 100px; height: 100px; display: block; padding: 0px; margin: 0px;"></canvas>')
+    
     const reactChart = chartRef.current;
     const line = lineRef.current;
     // 断言实例生成和ref正确性
