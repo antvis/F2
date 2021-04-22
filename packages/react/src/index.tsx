@@ -1,5 +1,5 @@
-import React, { RefObject } from 'react';
-import Chart from '@ali/f2-components';
+import React, { RefObject } from "react";
+import Chart from "@ali/f2-components";
 
 export interface ChartProps {
   className?: string;
@@ -23,7 +23,8 @@ class ReactChart extends React.Component<ChartProps> {
   componentDidMount() {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
-    const context = canvasEl.getContext('2d');
+    const context = canvasEl.getContext("2d");
+
     const chart = new Chart({
       ...props,
       context,
@@ -39,10 +40,17 @@ class ReactChart extends React.Component<ChartProps> {
 
   render() {
     const { props } = this;
-    const { className = '' } = props;
-    return React.createElement('canvas', {
+    const { className = "" } = props;
+    return React.createElement("canvas", {
       className: `f2-chart ${className}`,
-      ref: this.canvasRef
+      ref: this.canvasRef,
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "block",
+        padding: "0",
+        margin: "0",
+      },
     });
   }
 
