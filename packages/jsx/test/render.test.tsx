@@ -52,10 +52,8 @@ describe('render', () => {
         />
       </group>, container);
     canvas.draw();
-    expect(shape.get('children').length).toBe(2);
-    expect(shape.get('children')[0].get('type')).toBe('rect');
 
-    const background = shape.get('children')[0].get('attrs');
+    const background = shape.get('attrs');
     expect(background.fill).toBe('gray');
     expect(background.width).toBe(100);
     expect(background.height).toBe(100);

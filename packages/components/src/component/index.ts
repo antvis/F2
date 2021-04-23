@@ -14,6 +14,7 @@ class Component {
   __lastElement: any;
   __shape: any;
   __props: any;
+  __mounted = false;
   // actions: any;
 
   // TODO for TypeScript

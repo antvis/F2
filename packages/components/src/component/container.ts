@@ -123,6 +123,7 @@ class ContainerComponent extends Component {
   }
 
   update(props: any) {
+    super.update(props);
     const { components, layout } = this;
     // 只处理数据和children的变化
     const { children } = props;

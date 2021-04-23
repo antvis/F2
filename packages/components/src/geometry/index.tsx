@@ -102,6 +102,17 @@ class Geometry extends Component {
     this.groupedArray = groupedArray;
   }
 
+  update(props) {
+    super.update(props);
+
+    this.init({
+      container: this.container,
+      layout: this.layout,
+    });
+    this._initAttrs();
+    this._processData();
+  }
+
   getXScale() {
     const { attrs } = this;
     return attrs['x'].scale;

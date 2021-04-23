@@ -106,6 +106,15 @@ class Chart extends Container {
     super.willMount();
   }
 
+  update(props) {
+    super.update(props);
+    const { components } = this;
+    map(components, (component) => {
+      component.chart = this;
+    });
+    this.resetLayout();
+  }
+
   _createCoord(plot, coordCfg) {
     if (isString(coordCfg)) {
       coordCfg = {
@@ -180,6 +189,18 @@ class Chart extends Container {
     }, {
       x: newLayout.right,
       y: newLayout.bottom,
+    });
+    coord.reset(plot);
+  }
+
+  resetLayout() {
+    const { plot, coord, layout } = this;
+    plot.reset({
+      x: layout.left,
+      y: layout.top,
+    }, {
+      x: layout.right,
+      y: layout.bottom,
     });
     coord.reset(plot);
   }

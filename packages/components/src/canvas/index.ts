@@ -70,13 +70,20 @@ class Canvas extends Component {
   }
 
   willMount() {
-    const { component } = this;
+    const { __mounted, component } = this;
+    if (__mounted) {
+      return;
+    }
     component.willMount();
   }
 
   mount() {
-    const { component } = this;
+    const { __mounted, component } = this;
+    if (__mounted) {
+      return;
+    }
     component.mount();
+    component.__mounted = true;
   }
 
   draw() {
@@ -98,12 +105,16 @@ class Canvas extends Component {
   }
 
   update(props: ChartUpdateProps) {
-    const { component, animation, container } = this;
+    const { component } = this;
     // 只处理数据，和children的变化
-    const { data, children } = props;
+    const { children } = props;
 
     const componentTree = createComponentTree(children);
     component.update({ children: componentTree });
+
+    component.willMount()
+    component.mount();
+    component.render();
     this.draw();
 
     // if (data && data !== this.props.data) {
