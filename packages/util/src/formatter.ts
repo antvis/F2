@@ -16,7 +16,7 @@ const colorMap = {
   normal: '#1677FF',
   rise: '#E62C3B',
   fall: '#0E9976',
-  equal: '#CCCCCC',
+  equal: '#999999',
 }
 
 function sign(value, precision: number = 2) {
@@ -31,7 +31,7 @@ function signFormater(value, percent, precision) {
   if (!isNum) {
     return {
       text: '--',
-      fill: colorMap.normal,
+      fill: colorMap.equal,
     }
   }
   const num = Number(value);
