@@ -12,7 +12,6 @@ interface ChartUpdateProps {
   pixelRatio?: number,
   width?: number | string,
   height?: number | string,
-  data: any,
   padding?: (number | string)[],
   animate?: boolean,
   children?: any,

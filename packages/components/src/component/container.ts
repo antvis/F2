@@ -51,10 +51,6 @@ class ContainerComponent extends Component {
   createComponent(element: JSX.Element): Component {
     const { type, props, key, ref } = element;
 
-    // 设置默认的动画配置
-    if (props.animate === undefined) {
-      props.animate = this.animate;
-    }
     // 这里 一定是 F2 Component 了
     // @ts-ignore
     const component = new type(props);
@@ -113,8 +109,8 @@ class ContainerComponent extends Component {
     const element = renderJSXElement(jsxElement, appendProps);
     component.__lastElement = element;
 
-    // 如果需要动画，才进行比较
-    const renderElement = animate ? compareRenderTree(element, __lastElement) : element;
+    // 如果需要动画，才进行比较，默认为true, 只有在设置false 才关闭
+    const renderElement = animate !== false ? compareRenderTree(element, __lastElement) : element;
     if (!renderElement) return null;
 
     // 生成G的节点树

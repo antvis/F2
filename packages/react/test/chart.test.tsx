@@ -1,10 +1,9 @@
 /* @jsx React.createElement */
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import ReactChart from '../src';
-import Chart, { Line } from '@ali/f2-components'
+import ReactCanvas from '../src';
+import Cavnas, { Chart, Line } from '@ali/f2-components'
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -19,15 +18,17 @@ const data = [
 function App(props: any) {
   const { chartRef, lineRef, a } = props;
   return (
-    <ReactChart ref={ chartRef } data={ data } width={ 100 } height={ 100 } className="newClass">
-      <Line ref={ lineRef } position="genre*sold" a={ a } />
-    </ReactChart>
+    <ReactCanvas ref={ chartRef } width={ 100 } height={ 100 } className="newClass">
+      <Chart data={ data }>
+        <Line ref={ lineRef } position="genre*sold" a={ a } />
+      </Chart>
+    </ReactCanvas>
   );
 }
 
-describe.skip('<Chart >', () => {
+describe('<Canvas >', () => {
   it('Chart render', () => {
-    const chartRef = React.createRef<ReactChart>();
+    const chartRef = React.createRef<ReactCanvas>();
     const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
@@ -36,7 +37,7 @@ describe.skip('<Chart >', () => {
     const reactChart = chartRef.current;
     const line = lineRef.current;
     // 断言实例生成和ref正确性
-    expect(reactChart.chart).toBeInstanceOf(Chart);
+    expect(reactChart.canvas).toBeInstanceOf(Cavnas);
     expect(line).toBeInstanceOf(Line);
     expect(line.props.a).toBeUndefined();
 
@@ -47,7 +48,7 @@ describe.skip('<Chart >', () => {
     wrapper.unmount();
     // 断言 F2 实例销毁
     // @ts-ignore
-    expect(reactChart.chart.chart.destroyed).toBe(true);
+    // expect(reactChart.canva.chart.destroyed).toBe(true);
   });
 });
 
