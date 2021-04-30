@@ -5,6 +5,9 @@ import {
   interpolateObject
 } from 'd3-interpolate';
 
+// const hasNaN = (obj) => {
+//   return Object.keys(obj).find(key => isNaN(obj[key]))
+// }
 
 function interpolateObjectArray(a, b) {
   const nb = b ? b.length : 0;
@@ -28,9 +31,15 @@ export default (a: any, b: any) => {
   }
   if (Array.isArray(b)) {
     if (typeof b !== 'number') {
+      // if (hasNaN(a[0])) {
+      //   return interpolateObjectArray(b, b);
+      // }
       return interpolateObjectArray(a, b);
     }
     return interpolateNumberArray(a, b);
   }
+  // if (isNaN(a)) {
+  //   return interpolateNumber(b, b);
+  // }
   return interpolateNumber(a, b);
 };
