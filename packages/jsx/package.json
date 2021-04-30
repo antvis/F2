@@ -1,11 +1,11 @@
 {
   "name": "@ali/f2-jsx",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "dependencies": {
-    "@ali/f2x-util": "^0.0.10",
+    "@ali/f2x-util": "^0.1.0",
     "@babel/runtime": "^7.12.5",
     "css-layout": "1.1.1"
   },
