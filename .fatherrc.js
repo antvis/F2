@@ -1,8 +1,13 @@
 export default {
-  // pkgs: [
-  //   'jsx',
-  //   'component'
-  // ],
+  pkgs: [
+    'util',
+    'jsx',
+    'components',
+    'react',
+    'fund-charts',
+    'tinker-components',
+    'wealth-chart-components'
+  ],
   cjs: {
     type: 'babel'
   },

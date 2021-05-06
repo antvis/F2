@@ -41,10 +41,17 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   render() {
     const { props } = this;
-    const { className = '' } = props;
-    return React.createElement('canvas', {
+    const { className = "" } = props;
+    return React.createElement("canvas", {
       className: `f2-chart ${className}`,
-      ref: this.canvasRef
+      ref: this.canvasRef,
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "block",
+        padding: "0",
+        margin: "0",
+      },
     });
   }
 

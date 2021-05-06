@@ -11,7 +11,9 @@
     "es"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.12.5"
+    "@alipay/tango": "^2.0.1",
+    "@babel/runtime": "^7.12.5",
+    "fecha": "^2.3.3"
   },
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"

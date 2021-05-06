@@ -1,3 +1,5 @@
+import formatter from './formatter'
+
 // 默认设置50
 let ONE_REM: number;
 try {
@@ -144,4 +146,5 @@ export {
   map,
   mapTwo,
   parsePadding,
+  formatter,
 };
