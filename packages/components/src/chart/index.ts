@@ -183,6 +183,13 @@ class Chart extends Container {
     });
   }
 
+  _getAppendProps() {
+    return {
+      ...super._getAppendProps(),
+      plot: this.plot,
+    }
+  }
+
   updateLayout(updateLayout) {
     const { plot, coord } = this;
     const { tl, width, height } = plot;

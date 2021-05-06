@@ -94,6 +94,11 @@ class Geometry extends Component {
     });
   }
 
+  getAttr(type) {
+    const { attrs } = this;
+    return attrs[type];
+  }
+
   _processData() {
     const { chart } = this;
     const { data } = chart.props;
