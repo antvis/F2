@@ -14,8 +14,7 @@ interface ChartUpdateProps {
   height?: number | string,
   padding?: (number | string)[],
   animate?: boolean,
-  children?: any,
-  themeConfig?: any,
+  children?: any
 }
 
 interface ChartProps extends ChartUpdateProps {
