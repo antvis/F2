@@ -7,7 +7,7 @@
   "dependencies": {
     "@ali/f2-components": "^0.1.0",
     "@ali/f2-jsx": "^0.1.0",
-    "@ali/fund-components": "^0.0.16",
+    "@ali/f2x-util": "*",
     "@antv/f2": "^3.8.1",
     "@babel/runtime": "^7.12.5"
   },
