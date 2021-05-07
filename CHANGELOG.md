@@ -1,3 +1,10 @@
+#### 3.8.7 (2021-05-07)
+
+##### Bug Fixes
+
+*  修复group背景色绘制不正确 ([8f38df11](https://github.com/antvis/f2/commit/8f38df1153f8c6daa268aa0c66f081553eb7ee7f))
+*  连续平移后tick计算不对 ([4bb28700](https://github.com/antvis/f2/commit/4bb28700428574528dbf973263197f28c77f63c0))
+
 #### 3.8.4 (2021-04-01)
 
 ##### Bug Fixes
