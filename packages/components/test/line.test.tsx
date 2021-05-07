@@ -55,7 +55,7 @@ describe('Line', () => {
     expect(colorCallback.mock.calls.length).not.toBe(0);
   })
   
-  it('Line use order', () => {
+  it.skip('Line use order', () => {
     const { type, props } = (
       <Chart data={ crossData } context={ context }>
         <Line
@@ -69,6 +69,7 @@ describe('Line', () => {
       </Chart>
     );
 
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
     expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe("#2FC25B");

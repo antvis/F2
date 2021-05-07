@@ -1,20 +1,21 @@
-import { isString, isArray, isFunction, each, upperFirst } from '@antv/util';
-import Component from '../component';
-import Chart from '../chart';
-import * as Attr from '../chart/attr';
+import { isString, isArray, isFunction, each, upperFirst, isNil } from "@antv/util";
+import Component from "../component";
+import Chart from "../chart";
+import * as Attr from "../chart/attr";
+// import { isArray } from '@ali/f2x-util';
 
-import { group as ArrayGroup } from '../chart/util/array';
+import { group as ArrayGroup } from "../chart/util/array";
 
-const GROUP_ATTRS = [ 'color', 'size', 'shape' ];
+const GROUP_ATTRS = ["color", "size", "shape"];
 
 function parseFields(field) {
   if (isArray(field)) {
     return field;
   }
   if (isString(field)) {
-    return field.split('*');
+    return field.split("*");
   }
-  return [ field ];
+  return [field];
 }
 
 class Geometry extends Component {
@@ -32,20 +33,26 @@ class Geometry extends Component {
     const { chart, props } = this;
     const { theme, coord } = chart;
     const { position, color, size } = props;
-    const [ x, y ] = parseFields(position);
+    const [x, y] = parseFields(position);
 
-
-    this.defineAttr('x', { field: x, coord });
-    this.defineAttr('y', { field: y, coord });
-    this.defineAttr('color', color, theme.colors);
-    this.defineAttr('size', size, theme.sizes);
+    this.defineAttr("x", { field: x, coord });
+    this.defineAttr("y", { field: y, coord });
+    this.defineAttr("color", color, theme.colors);
+    this.defineAttr("size", size, theme.sizes);
   }
 
   willMount() {
     this._initAttrs();
     this._processData();
+    this._initEvent();
   }
 
+  /**
+   * 支持三种定义属性的方式
+   * 1. attrs="field"
+   * 2. attrs=["field", values]
+   * 3. attrs=["field", (fieldValue)=>{}]
+   */
   defineAttr(type, cfg, defaultValues?) {
     if (!cfg) {
       return;
@@ -78,6 +85,23 @@ class Geometry extends Component {
       scaleController.setDef(field, {});
     }
   }
+
+  _initEvent() {
+    // TODO: 目前Event仅作用于Geometry上，后续考虑做到Component上
+    const { container, props } = this;
+    const canvas = container.get('canvas');
+    ["onPressStart", "onPress", "onPressEnd"].forEach((eventName) => {
+      if (props[eventName]) {
+        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+          ev.geometry = this;
+          props[eventName](ev);
+        });
+      }
+    });
+  }
+
+  getSnapRecords(point) {}
+
 
   _initAttrs() {
     const { attrs, attrOptions, chart } = this;
@@ -120,18 +144,23 @@ class Geometry extends Component {
 
   getXScale() {
     const { attrs } = this;
-    return attrs['x'].scale;
+    return attrs["x"].scale;
   }
 
   getYScale() {
     const { attrs } = this;
-    return attrs['y'].scale;
+    return attrs["y"].scale;
+  }
+
+  getAttr(attrKey) {
+    const { attrs } = this;
+    return attrs[attrKey];
   }
 
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
-    each(GROUP_ATTRS, function(attrName) {
+    each(GROUP_ATTRS, function (attrName) {
       const attr = attrs[attrName];
       if (attr) {
         const { scale } = attr;
@@ -146,18 +175,18 @@ class Geometry extends Component {
   _groupData(data) {
     const groupScales = this._getGroupScales();
     if (!groupScales.length) {
-      return [ data ];
+      return [data];
     }
 
     const appendConditions = {};
     const names = [];
-    groupScales.forEach(scale => {
+    groupScales.forEach((scale) => {
       const field = scale.field;
       names.push(field);
       // if (colDefs && colDefs[field] && colDefs[field].values) { // users have defined
       //   appendConditions[scale.field] = colDefs[field].values;
       // }
-    })
+    });
     return ArrayGroup(data, names, appendConditions);
   }
 
@@ -184,7 +213,7 @@ class Geometry extends Component {
         // 设置默认样式
         color: theme.defaultColor,
         origin: data[i],
-      }
+      };
     }
     return mappedData;
   }
