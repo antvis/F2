@@ -37,6 +37,10 @@ class ContainerComponent extends Component {
   willMount() {
     const { components } = this;
     map(components, (component: Component) => {
+      const { __mounted } = component;
+      if (__mounted) {
+        return;
+      }
       component.willMount();
     });
   }
@@ -44,7 +48,12 @@ class ContainerComponent extends Component {
   mount() {
     const { components } = this;
     map(components, (component: Component) => {
+      const { __mounted } = component;
+      if (__mounted) {
+        return;
+      }
       component.mount();
+      component.__mounted = true;
     });
   }
 

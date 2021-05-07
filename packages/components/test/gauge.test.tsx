@@ -4,7 +4,7 @@ import { createContext } from './util';
 const context = createContext();
 
 
-describe('Treemap', () => {
+describe('Gauge', () => {
   it('render', () => {
     const { type, props } = (
       <Canvas context={ context }>
