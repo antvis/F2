@@ -168,18 +168,16 @@ class Element {
 
   resetContext(context) {
     const elAttrs = this._attrs.attrs;
-    if (!this._attrs.isGroup) {
-      for (const k in elAttrs) {
-        if (SHAPE_ATTRS.indexOf(k) > -1) {
-          let v = elAttrs[k];
-          if ((k === 'fillStyle' || k === 'strokeStyle') && v) {
-            v = parseStyle(v, this, context);
-          }
-          if (k === 'lineDash' && context.setLineDash && isArray(v)) {
-            context.setLineDash(v);
-          } else {
-            context[k] = v;
-          }
+    for (const k in elAttrs) {
+      if (SHAPE_ATTRS.indexOf(k) > -1) {
+        let v = elAttrs[k];
+        if ((k === 'fillStyle' || k === 'strokeStyle') && v) {
+          v = parseStyle(v, this, context);
+        }
+        if (k === 'lineDash' && context.setLineDash && isArray(v)) {
+          context.setLineDash(v);
+        } else {
+          context[k] = v;
         }
       }
     }

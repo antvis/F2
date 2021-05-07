@@ -21,7 +21,8 @@ document.body.appendChild(dom);
 const canvas = new Canvas({
   el: 'canvas-group',
   width: 500,
-  height: 500
+  height: 500,
+  pixelRatio: 1
 });
 
 describe('Group', function() {
@@ -380,7 +381,7 @@ describe('Group', function() {
         width: 40,
         height: 40,
         radius: 4,
-        fill: 'gray'
+        fill: '#0000FF'
       }
     });
     group1.addShape('circle', {
@@ -410,8 +411,17 @@ describe('Group', function() {
     expect(group2._attrs.attrs.width).to.equal(40);
     expect(group2._attrs.attrs.height).to.equal(40);
     expect(group2._attrs.attrs.radius).to.equal(4);
-    expect(group2._attrs.attrs.fill).to.equal('gray');
+    expect(group2._attrs.attrs.fill).to.equal('#0000FF');
 
+    canvas.set('animateHandler', false);
     canvas.draw();
+
+    // 检测背景是否绘制正确
+    const context = canvas.get('context');
+    const imageData = context.getImageData(34, 34, 1, 1).data;
+    expect(imageData[0]).to.equal(0);
+    expect(imageData[1]).to.equal(0);
+    expect(imageData[2]).to.equal(255);
+    expect(imageData[3]).to.equal(255);
   });
 });
