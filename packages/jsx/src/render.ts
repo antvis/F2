@@ -62,7 +62,7 @@ function mergeLayout(parent: any, layout: any) {
 
 
 function createElement(node: any, container: any, parentLayout: any) {
-  const { _cache, key, ref, type, props, style, attrs, layout: originLayout, children, status } = node;
+  const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, children, status } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
   const elementAttrs = {

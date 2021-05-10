@@ -32,6 +32,13 @@ class Layout {
     this.height = this.bottom - this.top;
   }
 
+  reset(layout) {
+    Object.keys(layout).forEach(key => {
+      const value = layout[key] || 0;
+      this[key] = value;
+    })
+  }
+
   clone() {
     const { left, top, width, height } = this;
     return new Layout({
