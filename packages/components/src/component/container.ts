@@ -37,6 +37,10 @@ class ContainerComponent extends Component {
   willMount() {
     const { components } = this;
     map(components, (component: Component) => {
+      const { __mounted } = component;
+      if (__mounted) {
+        return;
+      }
       component.willMount();
     });
   }
@@ -44,7 +48,12 @@ class ContainerComponent extends Component {
   mount() {
     const { components } = this;
     map(components, (component: Component) => {
+      const { __mounted } = component;
+      if (__mounted) {
+        return;
+      }
       component.mount();
+      component.__mounted = true;
     });
   }
 
@@ -134,7 +143,7 @@ class ContainerComponent extends Component {
         });
         return placeholderComponent;
       }
-      // 如果之前是展位组件，现在有新的组件，是个新建逻辑
+      // 如果之前是占位组件，现在有新的组件，是个新建逻辑
       // @ts-ignore
       if (component.placeholder) {
         if (isArray(child)) {

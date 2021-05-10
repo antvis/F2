@@ -1,12 +1,21 @@
-import { isString, isArray, isFunction, each, upperFirst, isNil } from "@antv/util";
+import {
+  isString,
+  isArray,
+  isFunction,
+  each,
+  upperFirst,
+  isNil,
+} from "@antv/util";
+import { toTimeStamp } from "@ali/f2x-util";
 import Component from "../component";
 import Chart from "../chart";
 import * as Attr from "../chart/attr";
-// import { isArray } from '@ali/f2x-util';
 
 import { group as ArrayGroup } from "../chart/util/array";
 
 const GROUP_ATTRS = ["color", "size", "shape"];
+const FIELD_ORIGIN = "origin";
+const FIELD_ORIGIN_Y = "_originY";
 
 function parseFields(field) {
   if (isArray(field)) {
@@ -39,12 +48,27 @@ class Geometry extends Component {
     this.defineAttr("y", { field: y, coord });
     this.defineAttr("color", color, theme.colors);
     this.defineAttr("size", size, theme.sizes);
+
+    this._initEvent();
   }
 
   willMount() {
     this._initAttrs();
     this._processData();
-    this._initEvent();
+  }
+
+  // 定义Geometry上的事件，其他图形的事件自己定义
+  _initEvent() {
+    const { container, props } = this;
+    const canvas = container.get("canvas");
+    ["onPressStart", "onPress", "onPressEnd"].forEach((eventName) => {
+      if (props[eventName]) {
+        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+          ev.geometry = this;
+          props[eventName](ev);
+        });
+      }
+    });
   }
 
   /**
@@ -86,22 +110,134 @@ class Geometry extends Component {
     }
   }
 
-  _initEvent() {
-    // TODO: 目前Event仅作用于Geometry上，后续考虑做到Component上
-    const { container, props } = this;
-    const canvas = container.get('canvas');
-    ["onPressStart", "onPress", "onPressEnd"].forEach((eventName) => {
-      if (props[eventName]) {
-        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
-          ev.geometry = this;
-          props[eventName](ev);
-        });
-      }
-    });
+  _isEqual(originValue, value, scale) {
+    if (scale.type === "timeCat") {
+      return toTimeStamp(originValue) === value;
+    }
+    return value === originValue;
   }
 
-  getSnapRecords(point) {}
+  _getSnap(scale, item, arr?) {
+    let i = 0;
+    let values;
+    const yField = this.getYScale().field; // 叠加的维度
+    // TODO: if条件上增加 this.hasAdjust('stack') &&
+    if (scale.field === yField) {
+      values = [];
+      arr.forEach(function (obj) {
+        values.push(obj[FIELD_ORIGIN_Y]);
+      });
 
+      for (let len = values.length; i < len; i++) {
+        if (values[0][0] > item) {
+          break;
+        }
+        if (values[values.length - 1][1] <= item) {
+          i = values.length - 1;
+          break;
+        }
+        if (values[i][0] <= item && values[i][1] > item) {
+          break;
+        }
+      }
+    } else {
+      values = scale.values;
+      values.sort((a, b) => {
+        return a - b;
+      });
+      for (let len = values.length; i < len; i++) {
+        // 如果只有1个点直接返回第1个点
+        if (len <= 1) {
+          break;
+        }
+        // 第1个点和第2个点之间
+        if ((values[0] + values[1]) / 2 > item) {
+          break;
+        }
+        // 中间的点
+        if (
+          (values[i - 1] + values[i]) / 2 <= item &&
+          (values[i + 1] + values[i]) / 2 > item
+        ) {
+          break;
+        }
+        // 最后2个点
+        if (
+          (values[values.length - 2] + values[values.length - 1]) / 2 <=
+          item
+        ) {
+          i = values.length - 1;
+          break;
+        }
+      }
+    }
+    const result = values[i];
+    return result;
+  }
+
+  // 获取当前坐标对应的数据（视图转数据)
+  getSnapRecords(point) {
+    const self = this;
+    const { chart } = this;
+
+    const { coord } = chart;
+
+    const xScale = chart.getXScale();
+    const yScale = chart.getYScales()[0]; // 默认首个Y轴作为核心Y轴
+    const xfield = xScale.field;
+    const dataArray = this._mapping();
+
+    let rst = [];
+    const invertPoint = coord.invertPoint(point);
+    let invertPointX = invertPoint.x;
+    if (
+      coord.isPolar &&
+      !coord.transposed &&
+      invertPointX > (1 + xScale.rangeMax()) / 2
+    ) {
+      invertPointX = xScale.rangeMin();
+    }
+
+    let xValue = xScale.invert(invertPointX);
+    if (!xScale.isCategory) {
+      xValue = self._getSnap(xScale, xValue);
+    }
+
+    const tmp = [];
+
+    dataArray.forEach(function (data) {
+      data.forEach(function (obj) {
+        let originValue = isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        if (self._isEqual(originValue, xValue, xScale)) {
+          tmp.push({...obj, ...obj[FIELD_ORIGIN]})
+        }
+      });
+    });
+
+    // special for pie chart
+    // TODO: if条件上增加 this.hasAdjust('stack') &&
+    if (coord.isPolar && coord.transposed) {
+      if (invertPointX >= 0 && invertPointX <= 1) {
+        let yValue = yScale.invert(invertPoint.y);
+        yValue = self._getSnap(yScale, yValue, tmp);
+        tmp.forEach((obj) => {
+          if (
+            isArray(yValue)
+              ? obj[FIELD_ORIGIN_Y].toString() === yValue.toString()
+              : obj[FIELD_ORIGIN_Y] === yValue
+          ) {
+            rst.push(obj);
+          }
+        });
+      }
+    } else {
+      rst = tmp;
+    }
+
+    
+
+    return rst;
+  }
 
   _initAttrs() {
     const { attrs, attrOptions, chart } = this;
@@ -150,11 +286,6 @@ class Geometry extends Component {
   getYScale() {
     const { attrs } = this;
     return attrs["y"].scale;
-  }
-
-  getAttr(attrKey) {
-    const { attrs } = this;
-    return attrs[attrKey];
   }
 
   _getGroupScales() {

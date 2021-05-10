@@ -32,7 +32,7 @@ function compareArray(nextElement: any[], lastElement: any[]) {
   const cache = {};
   for (let i = 0, len = lastElement.length; i < len; i++) {
     const element = lastElement[i];
-    if (element && element.key) {
+    if (element && element.key !== undefined) {
       const { key } = element;
       cache[key] = element;
     }
