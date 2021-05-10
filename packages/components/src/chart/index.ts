@@ -174,7 +174,7 @@ class Chart extends Container {
   }
 
   updateLayout(updateLayout) {
-    const { plot, coord } = this;
+    const { plot, coord, layout } = this;
     const { tl, width, height } = plot;
     const newLayout = new Layout({
       left: tl.x,
@@ -191,6 +191,9 @@ class Chart extends Container {
       y: newLayout.bottom,
     });
     coord.reset(plot);
+
+    // newLayout 是已包含各个元素的宽高计算累加之后的值
+    layout.reset(newLayout);
   }
 
   resetLayout() {
