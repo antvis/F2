@@ -288,11 +288,6 @@ class Geometry extends Component {
     return attrs["y"].scale;
   }
 
-  getAttr(attrKey) {
-    const { attrs } = this;
-    return attrs[attrKey];
-  }
-
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
