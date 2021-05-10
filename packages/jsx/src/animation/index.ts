@@ -24,7 +24,7 @@ export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
     });
     // 默认用 animation 配置里的 easing 和 duration
     clip.easing = clip.easing || easing;
-    clip.delay = clip.delay || delay;
+    clip.delay = typeof clip.delay === 'number' ? clip.delay : delay;
     clip.duration = clip.duration || duration;
     clip.element = clipElement;
   }

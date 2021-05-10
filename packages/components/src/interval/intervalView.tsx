@@ -22,12 +22,46 @@ function getRectRange(points) {
 }
 
 export default (props) => {
-  const { points, color } = props;
-  const rectCfg = getRectRange(points);
-  return <rect
-    attrs={{
-      ...rectCfg,
-      fill: color,
-    }}
-  />;
+  const { mappedArray, size, plot } = props;
+  const { bl } = plot;
+
+  return (
+    <group>
+      {
+        mappedArray.map(dataArray => {
+          return dataArray.map(item => {
+            const { color, x, y } = item;
+            return (
+              <rect
+                attrs={{
+                  fill: color,
+                  // 数据点在柱子中间
+                  x: x - (size / 2),
+                  y,
+                  width: size,
+                  // y轴从底部开始画
+                  height: bl.y - y,
+                }}
+                animation={{
+                  appear: {
+                    easing: 'linear',
+                    duration: 450,
+                    property: [ 'y', 'height' ],
+                    start: {
+                      height: 0,
+                      y: bl.y,
+                    },
+                    end: {
+                      height: bl.y - y,
+                      y,
+                    }
+                  }
+                }}
+              />
+            );
+          })
+        })
+      }
+    </group>
+  );
 }

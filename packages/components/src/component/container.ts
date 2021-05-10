@@ -1,5 +1,5 @@
 import { render, renderJSXElement, compareRenderTree } from '@ali/f2-jsx';
-import { map, mapTwo } from '@ali/f2x-util';
+import { map, mapTwo, isArray } from '@ali/f2x-util';
 import Component from './index';
 import PlaceholderComponent from './placeholder';
 import equal from './equal';
@@ -146,6 +146,16 @@ class ContainerComponent extends Component {
       // 如果之前是占位组件，现在有新的组件，是个新建逻辑
       // @ts-ignore
       if (component.placeholder) {
+        if (isArray(child)) {
+          return map(child, (c) => {
+            const newComponent = this.createComponent(c);
+            newComponent.init({
+              layout,
+              container: component.container,
+            });
+            return newComponent;
+          });
+        }
         const newComponent = this.createComponent(child);
         newComponent.init({
           layout,

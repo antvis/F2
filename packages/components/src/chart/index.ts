@@ -108,10 +108,20 @@ class Chart extends Container {
 
   update(props) {
     super.update(props);
+    const { scale, data } = props;
     const { components } = this;
     map(components, (component) => {
       component.chart = this;
     });
+
+    // TODO: scale和数据更新的变化
+    if (scale) {
+      const { scaleController } = this;
+      each(scale, (cfg, field) => {
+        scaleController.setDef(field, cfg)
+        scaleController.createScale(field, data);
+      });
+    }
     this.resetLayout();
   }
 
@@ -171,6 +181,13 @@ class Chart extends Container {
     return geometrys.map(geometry => {
       return geometry.getYScale();
     });
+  }
+
+  _getAppendProps() {
+    return {
+      ...super._getAppendProps(),
+      plot: this.plot,
+    }
   }
 
   updateLayout(updateLayout) {
