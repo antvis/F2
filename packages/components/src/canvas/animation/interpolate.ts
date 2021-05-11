@@ -30,7 +30,7 @@ export default (a: any, b: any) => {
     return interpolateRgb(a, b);
   }
   if (Array.isArray(b)) {
-    if (typeof b !== 'number') {
+    if (typeof b[0] !== 'number') {
       // if (hasNaN(a[0])) {
       //   return interpolateObjectArray(b, b);
       // }
