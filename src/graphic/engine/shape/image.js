@@ -11,32 +11,39 @@ class ImageShape extends Rect {
     this._attrs.type = 'image';
   }
 
-  createPath(context) {
-    const attrs = this.get('attrs');
-    const { src } = attrs;
-
+  draw(context) {
+    // 如果图片还在loading中直接返回，等下次绘制
     if (this.get('loading')) {
       return;
     }
 
+    // 如果已经有image对象，直接绘制，会调用createPath绘制
     const image = this.get('image');
-
     if (image) {
-      this.drawImage(context, image);
-    } else {
-      if (src && Image) {
-        this.set('loading', true);
-        const image = new Image();
-        image.src = src;
-        // 设置跨域
-        image.crossOrigin = 'Anonymous';
-        image.onload = () => {
-          this.set('loading', false);
-          this.set('image', image);
-          this.drawImage(context, image);
-        };
-      }
+      super.draw(context);
+      return;
     }
+
+    const attrs = this.get('attrs');
+    const { src } = attrs;
+
+    if (src && window.Image) {
+      this.set('loading', true);
+      const image = new Image();
+      image.src = src;
+      // 设置跨域
+      image.crossOrigin = 'Anonymous';
+      image.onload = () => {
+        this.set('loading', false);
+        this.set('image', image);
+        this.draw(context);
+      };
+    }
+  }
+
+  createPath(context) {
+    const image = this.get('image');
+    this.drawImage(context, image);
   }
 
   drawImage(context, image) {
@@ -44,17 +51,23 @@ class ImageShape extends Rect {
     if (destroyed) {
       return;
     }
-    const { x, y, width, height, sx, sy, swidth, sheight, radius } = attrs;
+    const { x, y, width, height, sx, sy, swidth, sheight, radius, fillOpacity } = attrs;
     if (radius) {
       context.save();
       this.createRadiusPath(context, x, y, width, height, radius);
       context.clip();
+    }
+    // 设置透明度
+    const originOpacity = context.globalAlpha;
+    if (!isNil(fillOpacity)) {
+      context.globalAlpha = fillOpacity;
     }
     if (!isNil(sx) && !isNil(sy) && !isNil(swidth) && !isNil(sheight)) {
       context.drawImage(image, sx, sy, swidth, sheight, x, y, width, height);
     } else {
       context.drawImage(image, x, y, width, height);
     }
+    context.globalAlpha = originOpacity;
     if (radius) {
       // 因为 save 和 restore 会一定程度上影响绘图性能，所以只在必要是调用
       context.restore();
