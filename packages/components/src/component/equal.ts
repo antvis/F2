@@ -16,7 +16,7 @@ function equal(a: any, b: any): boolean {
   }
 
   // null 和 undefined
-  if (a == null || b == null) {
+  if (a == null || b == null || isNaN(a) || isNaN(b)) {
     return false;
   }
 
