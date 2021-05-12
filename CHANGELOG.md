@@ -1,3 +1,13 @@
+#### 3.8.8 (2021-05-12)
+
+##### New Features
+
+*  image shape 支持fillOpacity设置 ([5e700130](https://github.com/antvis/f2/commit/5e7001301fb56c4a3dcfef1086f93643f3a51eda))
+
+##### Bug Fixes
+
+*  修复添加图片后，toDataURL 报SecurityError ([6c9f36f0](https://github.com/antvis/f2/commit/6c9f36f0b6b136d485d8595a483b4420a7977735))
+
 #### 3.8.7 (2021-05-07)
 
 ##### Bug Fixes
