@@ -30,14 +30,15 @@ class ImageShape extends Rect {
     if (src && window.Image) {
       this.set('loading', true);
       const image = new Image();
-      image.src = src;
-      // 设置跨域
-      image.crossOrigin = 'Anonymous';
+      // 设置跨域, 等同于 image.crossOrigin = 'anonymous'
+      image.crossOrigin = '';
       image.onload = () => {
         this.set('loading', false);
         this.set('image', image);
         this.draw(context);
       };
+      // src 一定要在 crossOrigin 之后，否则 toDataURL 就会报 SecurityError
+      image.src = src;
     }
   }
 
