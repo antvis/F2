@@ -8,6 +8,7 @@ export interface CanvasProps {
   height?: number | string;
   padding?: (string | number)[];
   animate?: boolean;
+  canvasRef?: RefObject<HTMLCanvasElement>;
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {
@@ -16,7 +17,8 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   constructor(props: CanvasProps) {
     super(props);
-    this.canvasRef = React.createRef();
+    const { canvasRef } = props;
+    this.canvasRef = canvasRef || React.createRef();
   }
 
   componentDidMount() {
@@ -49,8 +51,8 @@ class ReactCanvas extends React.Component<CanvasProps> {
         width: "100%",
         height: "100%",
         display: "block",
-        padding: "0",
-        margin: "0",
+        padding: 0,
+        margin: 0,
       },
     });
   }

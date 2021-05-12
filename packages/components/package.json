@@ -6,7 +6,7 @@
   "types": "es/index.d.ts",
   "dependencies": {
     "@ali/f2-jsx": "^0.1.0",
-    "@ali/f2x-util": "*",
+    "@ali/f2x-util": "^0.1.0",
     "@antv/f2": "^3.8.1",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
