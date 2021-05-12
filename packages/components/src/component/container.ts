@@ -127,7 +127,7 @@ class ContainerComponent extends Component {
     component.__shape = shape;
   }
 
-  update(props: any) {
+  update(props: any, forceUpdate?) {
     super.update(props);
     const { components, layout } = this;
     // 只处理数据和children的变化
@@ -184,8 +184,7 @@ class ContainerComponent extends Component {
         }
         return newComponent;
       }
-
-      if (!equal(props, component.__props)) {
+      if (!equal(props, component.__props) || forceUpdate) {
         component.update(props);
       }
 

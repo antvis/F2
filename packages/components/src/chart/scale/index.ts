@@ -5,6 +5,7 @@ import {
   each,
   firstValue,
   isString,
+  getRange,
 } from '@antv/util';
 
 import {
@@ -78,16 +79,17 @@ class ScaleController {
       cfg.nice = true;
     }
 
-    // if (type !== 'cat' && type !== 'timeCat') {
-    //   if (!def || !(def.min && def.max)) {
-    //     const { min, max } = Array.getRange(values);
-    //     cfg.min = min;
-    //     cfg.max = max;
-    //     cfg.nice = true;
-    //   }
-    // } else {
-    //   cfg.isRounding = false; // used for tickCount calculation
-    // }
+    if (type !== 'cat' && type !== 'timeCat') {
+      if (!def || !(def.min && def.max)) {
+        const { min, max } = getRange(values);
+        cfg.min = min;
+        cfg.max = max;
+        cfg.nice = true;
+      }
+    } else {
+      cfg.isRounding = false; // used for tickCount calculation
+    }
+    
 
     return cfg;
   }

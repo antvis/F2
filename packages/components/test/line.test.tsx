@@ -55,24 +55,33 @@ describe('Line', () => {
     expect(colorCallback.mock.calls.length).not.toBe(0);
   })
   
-  it.skip('Line use order', () => {
+  it('Line use order', () => {
     const { type, props } = (
-      <Chart data={ crossData } context={ context }>
-        <Line
-          position="type*sold"
-          order={['genre', ['Sports', 'Action']]}
-          color={'genre'}
-          size={20}
-        />
-        <Axis field="type"/>
-        <Axis field="sold"/>
-      </Chart>
+      <Canvas context={context}>
+        <Chart
+          data={crossData}
+          scale={{
+            sold: { min: 0 },
+          }}
+          coord={{
+            type: "rect",
+          }}
+        >
+          <Line
+            position="type*sold"
+            order={["genre", ["Sports", "Action"]]}
+            color={"genre"}
+          />
+          <Axis field="type" />
+          <Axis field="sold" />
+        </Chart>
+      </Canvas>
     );
 
     // @ts-ignore
     const chart = new type(props);
     chart.render();
-    expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe("#2FC25B");
+    expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe("#2FC25B");
   })
 
 });
