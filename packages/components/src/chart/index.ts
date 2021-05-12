@@ -107,9 +107,15 @@ class Chart extends Container {
   }
 
   update(props) {
-    super.update(props);
     const { scale, data } = props;
-    const { components } = this;
+    const { components, props: originProps } = this;
+
+    if(data && data !== originProps.data) {
+      super.update(props, true);
+    } else {
+      super.update(props);
+    }
+    
     map(components, (component) => {
       component.chart = this;
     });
