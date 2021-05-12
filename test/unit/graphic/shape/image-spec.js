@@ -57,10 +57,21 @@ describe('imageShape', function() {
     container.addShape('image', {
       attrs: {
         x: 100,
-        y: 100,
+        y: 0,
         src,
         width: 50,
         height: 50
+      }
+    });
+
+    container.addShape('image', {
+      attrs: {
+        x: 200,
+        y: 0,
+        src,
+        width: 50,
+        height: 50,
+        fillOpacity: 0
       }
     });
 
@@ -73,7 +84,7 @@ describe('imageShape', function() {
       // 第一个image圆角区域
       const imageData1 = context.getImageData(0, 0, 1, 1).data;
       // 第二个image圆角区域
-      const imageData2 = context.getImageData(100, 100, 1, 1).data;
+      const imageData2 = context.getImageData(100, 0, 1, 1).data;
       expect(imageData1[0]).toBe(0);
       expect(imageData1[1]).toBe(0);
       expect(imageData1[2]).toBe(0);
@@ -83,6 +94,13 @@ describe('imageShape', function() {
       expect(imageData2[1]).not.toBe(0);
       expect(imageData2[2]).not.toBe(0);
       expect(imageData2[3]).not.toBe(0);
+
+      // 第3个测试透明度
+      const imageData3 = context.getImageData(200, 0, 1, 1).data;
+      expect(imageData3[0]).toBe(0);
+      expect(imageData3[1]).toBe(0);
+      expect(imageData3[2]).toBe(0);
+      expect(imageData3[3]).toBe(0);
       done();
     }, 100);
   });
