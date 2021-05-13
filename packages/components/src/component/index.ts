@@ -15,6 +15,8 @@ class Component {
   __shape: any;
   __props: any;
   __mounted = false;
+  // 表示是否需要调用render渲染
+  __shouldRender = true;
   // actions: any;
 
   // TODO for TypeScript
@@ -44,6 +46,7 @@ class Component {
   update(props: any) {
     this.__props = props;
     this.props = props;
+    this.__isDirty = true;
   }
   // TODO
   forceUpdate() {

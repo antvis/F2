@@ -25,11 +25,6 @@ function equal(a: any, b: any): boolean {
     return true;
   }
 
-  // 值类型，Number String Boolean
-  if (typeof a !== 'object') {
-    return false;
-  }
-
   if (objToString(a) !== objToString(b)) {
     return false;
   }
@@ -37,6 +32,11 @@ function equal(a: any, b: any): boolean {
   // 如果是function， 则认为是相对
   if (isFunction(a)) {
     return true;
+  }
+
+  // 值类型，Number String Boolean
+  if (typeof a !== 'object') {
+    return false;
   }
 
   if (isArray(a)) {
