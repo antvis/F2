@@ -29,7 +29,7 @@ function interpolateObjectArray(a, b) {
       c[i] = x[i](t);
     }
     // 清除补间的多余点
-    if (t = 1) {
+    if (t === 1) {
       return b;
     }
     return c;
