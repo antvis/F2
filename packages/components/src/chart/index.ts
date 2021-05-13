@@ -108,10 +108,17 @@ class Chart extends Container {
 
   update(props) {
     const { scale, data } = props;
-    const { components, props: originProps } = this;
+    const { components, props: originProps, scaleController } = this;
+    const { defs } = scaleController;
 
     if(data && data !== originProps.data) {
+      // 数据更新后，组件强制update
       super.update(props, true);
+      // 数据更新后，也需要更新度量
+      each(defs, (cfg, field) => {
+        scaleController.setDef(field, cfg)
+        scaleController.createScale(field, data);
+      })
     } else {
       super.update(props);
     }
@@ -122,7 +129,6 @@ class Chart extends Container {
 
     // TODO: scale和数据更新的变化
     if (scale) {
-      const { scaleController } = this;
       each(scale, (cfg, field) => {
         scaleController.setDef(field, cfg)
         scaleController.createScale(field, data);
@@ -158,6 +164,7 @@ class Chart extends Container {
   }
 
   convertPoint(point: Point) {
+    // console.log(' chart point: ', point);
     // const { x } = point;
     const { coord } = this;
     return coord.convertPoint(point);
