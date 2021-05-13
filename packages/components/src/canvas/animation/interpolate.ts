@@ -25,12 +25,13 @@ function interpolateObjectArray(a, b) {
   }
 
   return (t) => {
+    // 清除补间的多余点
+    if (t >= 1) {
+      return b;
+    }
+
     for (i = 0; i < maxLen; ++i) {
       c[i] = x[i](t);
-    }
-    // 清除补间的多余点
-    if (t === 1) {
-      return b;
     }
     return c;
   };
