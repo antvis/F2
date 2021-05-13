@@ -49,12 +49,12 @@ class Geometry extends Component {
     this.defineAttr("color", color, theme.colors);
     this.defineAttr("size", size, theme.sizes);
 
-    this._initEvent();
   }
 
   willMount() {
     this._initAttrs();
     this._processData();
+    this._initEvent();
   }
 
   // 定义Geometry上的事件，其他图形的事件自己定义
