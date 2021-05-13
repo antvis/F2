@@ -1,6 +1,7 @@
 import { map, px2hd } from '@ali/f2x-util';
 import { each, isString, upperFirst } from '@antv/util';
 import Container from '../component/container';
+import equal from '../component/equal';
 import ScaleController from './scale';
 import Plot from './plot';
 import * as Coord from './coord';
@@ -108,17 +109,35 @@ class Chart extends Container {
 
   update(props) {
     const { scale, data } = props;
-    const { components, props: originProps, scaleController } = this;
-    const { defs } = scaleController;
+    const { scaleController, components, props: originProps } = this;
 
-    if(data && data !== originProps.data) {
-      // 数据更新后，组件强制update
+    // 数据是否有变化
+    const dataChanged = data && data !== originProps.data;
+
+    // 记录变化的scale
+    const updateScale = {};
+    // scale是否有变化
+    if (!equal(originProps.scale, scale)) {
+      each(scale, (cfg, field) => {
+        scaleController.setDef(field, cfg);
+        updateScale[field] = true;
+      });
+    }
+
+    // 如果数据有变化，所有已实例化的scale都需要重新更新
+    if (dataChanged) {
+      each(this.scales, (cfg, field) => {
+        updateScale[field] = true;
+      });
+    }
+
+    // 更新所有需要变化的scale
+    each(updateScale, (v, field) => {
+      scaleController.createScale(field, data);
+    });
+
+    if(dataChanged) {
       super.update(props, true);
-      // 数据更新后，也需要更新度量
-      each(defs, (cfg, field) => {
-        scaleController.setDef(field, cfg)
-        scaleController.createScale(field, data);
-      })
     } else {
       super.update(props);
     }
@@ -127,13 +146,6 @@ class Chart extends Container {
       component.chart = this;
     });
 
-    // TODO: scale和数据更新的变化
-    if (scale) {
-      each(scale, (cfg, field) => {
-        scaleController.setDef(field, cfg)
-        scaleController.createScale(field, data);
-      });
-    }
     this.resetLayout();
   }
 
