@@ -10,17 +10,29 @@ import {
 // }
 
 function interpolateObjectArray(a, b) {
+  const na = a ? a.length : 0;
   const nb = b ? b.length : 0;
-  const na = a ? Math.min(nb, a.length) : 0;
-  const x = new Array(na);
-  const c = new Array(nb);
-  let i;
+  const maxLen = Math.max(nb, na);
+  const c = new Array(maxLen)
+  const x = new Array(maxLen)
 
-  for (i = 0; i < na; ++i) x[i] = interpolateObject(a[i], b[i]);
-  for (; i < nb; ++i) c[i] = b[i];
+  let i;
+  // 将a、b长度补齐后再进行插值计算
+  for (i = 0; i < maxLen; i++) {
+    const ia = i < na ? (a || [])[i] : (a || [])[na - 1]
+    const ib = i < nb ? (b || [])[i] : (b || [])[nb - 1]
+    x[i] = interpolateObject(ia, ib)
+  }
 
   return (t) => {
-    for (i = 0; i < na; ++i) c[i] = x[i](t);
+    // 清除补间的多余点
+    if (t >= 1) {
+      return b;
+    }
+
+    for (i = 0; i < maxLen; ++i) {
+      c[i] = x[i](t);
+    }
     return c;
   };
 }
