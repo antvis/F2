@@ -46,7 +46,6 @@ class Component {
   update(props: any) {
     this.__props = props;
     this.props = props;
-    this.__isDirty = true;
   }
   // TODO
   forceUpdate() {
