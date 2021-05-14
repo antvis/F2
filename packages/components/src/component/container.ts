@@ -90,6 +90,9 @@ class ContainerComponent extends Component {
     const appendProps = this._getAppendProps();
 
     map(components, (component: Component) => {
+      if (!component.__shouldRender) {
+        return;
+      }
       this.renderComponent(component, appendProps);
     });
 
@@ -186,6 +189,10 @@ class ContainerComponent extends Component {
       }
       if (!equal(props, component.__props) || forceUpdate) {
         component.update(props);
+        component.__shouldRender = true;
+      } else {
+        // 没有变化，不需要重新render
+        component.__shouldRender = false;
       }
 
       return component;

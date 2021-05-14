@@ -16,8 +16,13 @@ function equal(a: any, b: any): boolean {
   }
 
   // null 和 undefined
-  if (a == null || b == null || isNaN(a) || isNaN(b)) {
+  if (a == null || b == null) {
     return false;
+  }
+
+  // 特殊处理NaN
+  if (Number.isNaN(a) && Number.isNaN(b)) {
+    return true;
   }
 
   if (objToString(a) !== objToString(b)) {

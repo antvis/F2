@@ -113,6 +113,9 @@ class Animator {
       element.remove(true);
     }
 
+    // 清空 不需要重复执行
+    element.set('animation', null);
+
     this.end = true;
   }
 }
