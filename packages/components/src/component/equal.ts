@@ -79,6 +79,4 @@ function equal(a: any, b: any): boolean {
   return true;
 }
 
-export default (a, b) => {
-  return equal(a, b);
-}
+export default equal;

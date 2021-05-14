@@ -319,8 +319,10 @@ describe('layout', () => {
     canvas.draw();
 
     const children = group.get('children');
+    const textShape = children[0];
 
-    expect(children[0].get('attrs').x).toBeCloseTo(-7.217994689941406, 1);
+    const left = -(textShape.getBBox().width / 2);
+    expect(textShape.get('attrs').x).toBeCloseTo(left, 3);
     // expect(children[0].get('attrs').x).toBe(0);
     // expect(children[0].get('attrs').y).toBe(6);
     // expect(children[0].get('attrs').textBaseline).toBe('middle');
