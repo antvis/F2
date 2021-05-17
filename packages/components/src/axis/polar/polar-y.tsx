@@ -1,7 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import F2 from '@antv/f2';
-
-const { G } = F2;
+import { G } from '@antv/f2/lib/core';
 const { Vector2 } = G;
 
 export default (props) => {

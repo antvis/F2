@@ -1,7 +1,6 @@
-import F2 from '@antv/f2';
+import { G } from '@antv/f2/lib/core';
 import Base from './base';
 
-const { G } = F2;
 const { Matrix, Vector2 } = G;
 
 class Polar extends Base {

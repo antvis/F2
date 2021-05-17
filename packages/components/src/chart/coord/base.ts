@@ -1,7 +1,6 @@
-import F2 from '@antv/f2';
+import { G } from '@antv/f2/lib/core';
 import { mix } from '@antv/util';
 
-const { G } = F2;
 const { Matrix: MatrixUtil, Vector2 } = G;
 
 const defaultMatrix = [ 1, 0, 0, 1, 0, 0 ];

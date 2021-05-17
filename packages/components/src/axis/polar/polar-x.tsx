@@ -1,7 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
-import F2 from '@antv/f2';
+import { G } from '@antv/f2/lib/core';
 
-const { G } = F2;
 const { Vector2 } = G;
 
 // 相对圆心偏移量的点
