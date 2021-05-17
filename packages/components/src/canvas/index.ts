@@ -1,11 +1,10 @@
-import F2 from '@antv/f2';
+import { G } from '@antv/f2/lib/core';
 import createComponentTree from './createComponentTree';
 import Component from '../component';
 import Container from '../component/container';
 import Layout from './layout';
 import Animation from './animation';
 
-const { G } = F2;
 const { createCanvas } = G;
 
 interface ChartUpdateProps {

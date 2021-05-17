@@ -1,7 +1,6 @@
 import { ELEMENT_DELETE } from '../elementStatus';
-import F2 from '@antv/f2';
+import { G } from '@antv/f2/lib/core';
 
-const { G } = F2;
 const { Shape } = G;
 
 function createClipElement(type: string, config) {
