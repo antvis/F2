@@ -33,6 +33,7 @@ export default View => {
       const mappedArray = this._mapping();
       const size = this.getDefaultSize();
       return <View
+        {...this.props}
         mappedArray={ mappedArray }
         size={ size }
       />
