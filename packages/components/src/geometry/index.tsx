@@ -265,8 +265,6 @@ class Geometry extends Component {
     const groupedArray = this._groupData(data);
     // 保存原数据
     this.groupedArray = this._saveGroupedOrigin(groupedArray);
-    // 根据order排序
-    this._sortByOrder(this.groupedArray)
     // 根据adjust分组
     this.groupedArray = this._adjustData(this.groupedArray);
   }
@@ -407,16 +405,6 @@ class Geometry extends Component {
       };
     }
     return mappedData;
-  }
-
-  _sortByOrder(groupedArray) {
-    const { props } = this;
-    if(props.order) {
-      const [ field, order ] = props.order;
-      groupedArray.sort((p,c) => {
-        return order.indexOf(p[field]) - order.indexOf(c[field])
-      })
-    }
   }
 
   _mappingData(data, attrs) {
