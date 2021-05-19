@@ -44,11 +44,22 @@ function compareArray(nextElement: any[], lastElement: any[]) {
     }
     const { key } = element;
     // 如果有 key 认为是 map 生成的，否则认为是 jsx 的子元素结构
-    const lastChild = key !== undefined ? cache[key] : lastElement[i];
-
-    // 标记为更新
-    if (lastChild) {
-      lastChild.status = ELEMENT_UPDATE;
+    if (key !== undefined) {
+      const lastChild = cache[key];
+      // key 命中
+      if (lastChild) {
+        // 标记已处理
+        lastChild._processed = true;
+        return compareElement(element, lastChild);
+      }
+      // 有key，且未命中的话，认为是新增的元素
+      return compareElement(element, null);
+    }
+    // 没有key，按索引顺序处理
+    const lastChild = lastElement[i];
+    if(lastChild) {
+      // 标记为已处理
+      lastChild._processed = true;
     }
 
     // 递归比较元素
@@ -58,8 +69,8 @@ function compareArray(nextElement: any[], lastElement: any[]) {
   // 再从lastElement里面找到被删除的元素
   for (let i = 0, len = lastElement.length; i < len; i++) {
     const element = lastElement[i];
-    // 如果之前存在，且这次不是更新的，说明是被删除的元素
-    if (element && element.status !== ELEMENT_UPDATE) {
+    // 如果未被处理到，则标记为删除，且添加到新列表里
+    if (element && !element._processed) {
       // 标记为已删除，且添加到新列表
       newElement.push(deleteElement(element));
     }
@@ -91,27 +102,43 @@ function compareElement(nextElement, lastElement) {
 
   // 普通的jsx元素， 且是更新
   if (!isArray(nextElement) && !isArray(lastElement)) {
-    const { _cache: _nextCache, props: nextProps } = nextElement;
-    const { _cache: _lastCache, props: lastProps } = lastElement;
+    const { type: nextType, _cache: _nextCache, props: nextProps } = nextElement;
+    const { type: lastType, _cache: _lastCache, props: lastProps } = lastElement;
 
-    // 保留缓存值
-    nextElement._cache = {
-      ..._lastCache,
-      ..._nextCache,
+    // 类型变了，处理成 删除 + 新增，返回数组
+    if (nextType !== lastType) {
+      return [
+        deleteElement(lastElement),
+        nextElement,
+      ]
     }
 
-    // 继续比较子元素
-    nextProps.children = compareElement(nextProps.children, lastProps.children);
+    // 保留缓存值
+    const _cache = {
+      ..._lastCache,
+      ..._nextCache,
+    };
 
-    return nextElement;
+    // 继续比较子元素
+    const children = compareElement(nextProps.children, lastProps.children);
+
+    // 生成新对象
+    return {
+      ...nextElement,
+      _cache,
+      props: {
+        ...nextProps,
+        children,
+      },
+      status: ELEMENT_UPDATE,
+    };
   }
 
-  // 有一个类型变了，可能是三元运算，处理成 删除 + 新建，要返回数组
+  // 一个数组，一个非数组
   if (!isArray(nextElement) || !isArray(lastElement)) {
-    return [
-      nextElement,
-      deleteElement(lastElement),
-    ];
+    const nextElementArray = isArray(nextElement) ? nextElement : [ nextElement ];
+    const lastElementArray = isArray(lastElement) ? lastElement : [ lastElement ];
+    return compareArray(nextElementArray, lastElementArray);
   }
 
   return nextElement;
@@ -120,8 +147,3 @@ function compareElement(nextElement, lastElement) {
 
 // 因为要实现删除元素的动画，所以需要保留删除的元素，diff 后需要创建一颗新树， 实际渲染也需要拿这颗树来进行
 export default compareElement;
-
-// export default (nextElement: JSX.Element, lastElement: JSX.Element) => {
-//   const newElement = compareElement(nextElement, lastElement);
-//   return newElement;
-// }

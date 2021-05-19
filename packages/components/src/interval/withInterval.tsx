@@ -7,7 +7,7 @@ import Geometry from '../geometry';
 export default View => {
   return class Interval extends Geometry {
     getDefaultSize() {
-      const { chart } = this;
+      const { chart, groupedArray, adjust } = this;
       const size = this.getAttr('size');
       if (!size) {
         const xScale = this.getXScale();
@@ -17,6 +17,9 @@ export default View => {
         const { width } = plot;
         // 绘制区和空白区 1:1
         const widthRatio = 0.5;
+        if (adjust && adjust.type === 'dodge') {
+          return width * normalizeSize * widthRatio / groupedArray.length;
+        }
         return width * normalizeSize * widthRatio;
       }
     }
