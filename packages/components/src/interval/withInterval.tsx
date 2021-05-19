@@ -1,9 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import Geometry from '../geometry';
 
-/**
- * TODO 实现分类柱图
- */
 export default View => {
   return class Interval extends Geometry {
     getDefaultSize() {
