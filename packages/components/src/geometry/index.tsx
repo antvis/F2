@@ -7,6 +7,7 @@ import {
   isNil,
 } from "@antv/util";
 import { toTimeStamp } from "@ali/f2x-util";
+import * as Adjust from './adjust';
 import Component from "../component";
 import Chart from "../chart";
 import * as Attr from "../chart/attr";
@@ -33,6 +34,7 @@ class Geometry extends Component {
 
   chart: Chart;
   attrs: any = {};
+  adjust: any;
   attrOptions: any = {};
   groupedArray: any[];
 
@@ -264,7 +266,7 @@ class Geometry extends Component {
     const { data } = chart.props;
     const groupedArray = this._groupData(data);
 
-    this.groupedArray = groupedArray;
+    this.groupedArray = this._adjustData(groupedArray);
   }
 
   update(props) {
@@ -286,6 +288,55 @@ class Geometry extends Component {
   getYScale() {
     const { attrs } = this;
     return attrs["y"].scale;
+  }
+
+  _numberic(data) {
+    const { attrs } = this;
+    const scales = [attrs.x.scale, attrs.y.scale];
+    for (let j = 0, len = data.length; j < len; j++) {
+      const obj = data[j];
+      const count = Math.min(2, scales.length);
+      for (let i = 0; i < count; i++) {
+        const scale = scales[i];
+        if (scale.isCategory) {
+          const field = scale.field;
+          obj[field] = scale.translate(obj[field]);
+        }
+      }
+    }
+  }
+
+  _adjustData(groupedArray) {
+    const { props } = this;
+    const { position, adjust } = props;
+    if (!adjust) {
+      return groupedArray;
+    }
+    const adjustCfg = typeof adjust === 'string' ? {
+      type: adjust,
+    }: adjust;
+    const adjustType = upperFirst(adjustCfg.type);
+    if (!Adjust[adjustType]) {
+      throw new Error('not support such adjust : ' + adjust);
+    }
+    const [xField, yField] = parseFields(position);
+    const adjustInstance = new Adjust[adjustType]({
+      xField,
+      yField,
+      ...adjustCfg,
+    });
+
+    for (let i = 0, len = groupedArray.length; i < len; i++) {
+      // 如果是dodge, 需要处理数字再处理
+      if (adjustCfg.type === 'dodge') {
+        this._numberic(groupedArray[i]);
+      }
+    }
+    adjustInstance.processAdjust(groupedArray);
+
+    this.adjust = adjustInstance;
+
+    return groupedArray;
   }
 
   _getGroupScales() {
