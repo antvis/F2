@@ -7,7 +7,7 @@ import {
   isNil,
 } from "@antv/util";
 import { toTimeStamp } from "@ali/f2x-util";
-import * as Adjust from './adjust';
+import * as Adjust from "./adjust";
 import Component from "../component";
 import Chart from "../chart";
 import * as Attr from "../chart/attr";
@@ -50,7 +50,6 @@ class Geometry extends Component {
     this.defineAttr("y", { field: y, coord });
     this.defineAttr("color", color, theme.colors);
     this.defineAttr("size", size, theme.sizes);
-
   }
 
   willMount() {
@@ -235,9 +234,6 @@ class Geometry extends Component {
     } else {
       rst = tmp;
     }
-
-    
-
     return rst;
   }
 
@@ -264,9 +260,15 @@ class Geometry extends Component {
   _processData() {
     const { chart } = this;
     const { data } = chart.props;
-    const groupedArray = this._groupData(data);
 
-    this.groupedArray = this._adjustData(groupedArray);
+    // 根据分类度量进行数据分组
+    const groupedArray = this._groupData(data);
+    // 保存原数据
+    this.groupedArray = this._saveGroupedOrigin(groupedArray);
+    // 根据order排序
+    this._sortByOrder(this.groupedArray)
+    // 根据adjust分组
+    this.groupedArray = this._adjustData(this.groupedArray);
   }
 
   update(props) {
@@ -386,22 +388,39 @@ class Geometry extends Component {
     return mappedArray;
   }
 
+  _saveGroupedOrigin(groupedArray) {
+    const _groupedArray = [];
+    for (let i = 0, len = groupedArray.length; i < len; i++) {
+      const subData = groupedArray[i];
+      const tempData = this._saveOrigin(subData);
+      _groupedArray.push(tempData);
+    }
+    return _groupedArray;
+  }
+
   _saveOrigin(data) {
-    const { chart } = this;
-    const { theme } = chart;
     const mappedData = new Array(data.length);
     for (let i = 0, len = data.length; i < len; i++) {
       mappedData[i] = {
-        // 设置默认样式
-        color: theme.defaultColor,
-        origin: data[i],
+        [FIELD_ORIGIN]: { ...data[i] },
+        ...data[i],
       };
     }
     return mappedData;
   }
 
+  _sortByOrder(groupedArray) {
+    const { props } = this;
+    if(props.order) {
+      const [ field, order ] = props.order;
+      groupedArray.sort((p,c) => {
+        return order.indexOf(p[field]) - order.indexOf(c[field])
+      })
+    }
+  }
+
   _mappingData(data, attrs) {
-    const mappedData = this._saveOrigin(data);
+    const mappedData = data;
     for (const type in attrs) {
       if (attrs.hasOwnProperty(type)) {
         const attr = attrs[type];
