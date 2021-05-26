@@ -21,16 +21,6 @@ export default View => {
       }
     }
 
-    _getBasePoint() {
-      const { chart } = this;
-      const yScale = this.getYScale();
-      return chart.convertPoint({
-        x: 0,
-        y: yScale.scale(0)
-      })
-    }
-
-
     mount() {
       const xScale = this.getXScale();
       const { values } = xScale;
@@ -40,10 +30,13 @@ export default View => {
       // 2边留空
       xScale.range = [offset, 1 - offset];
     }
+
     render() {
+      const { startOnZero = true } = this.props;
       const mappedArray = this._mapping();
       const size = this.getDefaultSize();
-      const basePoint = this._getBasePoint()
+      const basePoint = this.getBasePoint(startOnZero);
+
       return <View
         {...this.props}
         basePoint={basePoint}
