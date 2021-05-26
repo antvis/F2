@@ -20,6 +20,17 @@ export default View => {
         return width * normalizeSize * widthRatio;
       }
     }
+
+    _getBasePoint() {
+      const { chart } = this;
+      const yScale = this.getYScale();
+      return chart.convertPoint({
+        x: 0,
+        y: yScale.scale(0)
+      })
+    }
+
+
     mount() {
       const xScale = this.getXScale();
       const { values } = xScale;
@@ -32,8 +43,10 @@ export default View => {
     render() {
       const mappedArray = this._mapping();
       const size = this.getDefaultSize();
+      const basePoint = this._getBasePoint()
       return <View
         {...this.props}
+        basePoint={basePoint}
         mappedArray={ mappedArray }
         size={ size }
       />
