@@ -18,9 +18,11 @@ export default View => {
         return { color, points, size, data: data };
       });
       const { props } = this;
+      const { startOnZero } = props;
       return (
         <View
           { ...props }
+          basePoint = {this.getBasePoint(startOnZero)}
           mappedData={ mappedData }
         />
       );
