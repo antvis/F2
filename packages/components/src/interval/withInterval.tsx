@@ -20,6 +20,7 @@ export default View => {
         return width * normalizeSize * widthRatio;
       }
     }
+
     mount() {
       const xScale = this.getXScale();
       const { values } = xScale;
@@ -29,11 +30,16 @@ export default View => {
       // 2边留空
       xScale.range = [offset, 1 - offset];
     }
+
     render() {
+      const { startOnZero = true } = this.props;
       const mappedArray = this._mapping();
       const size = this.getDefaultSize();
+      const basePoint = this.getBasePoint(startOnZero);
+
       return <View
         {...this.props}
+        basePoint={basePoint}
         mappedArray={ mappedArray }
         size={ size }
       />

@@ -269,6 +269,23 @@ class Geometry extends Component {
     this.groupedArray = this._adjustData(this.groupedArray);
   }
 
+  getBasePoint(startOnZero?) {
+    const { chart } = this;
+    const { plot } = chart;
+    const yScale = this.getYScale();
+    const xScale = this.getYScale();
+    
+    // 从坐标值的0点开始绘制
+    if (startOnZero === true) {
+      return chart.convertPoint({
+        x: Math.max(0, xScale.scale(0)),
+        y: Math.max(0, yScale.scale(0)),
+      });
+    }
+
+    return plot.br;
+  }
+
   update(props) {
     super.update(props);
 
