@@ -3,6 +3,7 @@ import { extendMap, batch2hd } from '@ali/f2x-util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
 import getAnimation from './animation';
+import { ELEMENT_DELETE } from './elementStatus';
 
 // 转换成布局所需要的布局树
 function createNodeTree(element: any, container: any) {
@@ -62,7 +63,7 @@ function mergeLayout(parent: any, layout: any) {
 
 
 function createElement(node: any, container: any, parentLayout: any) {
-  const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, children, status } = node;
+  const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, renderChildren, children: nodeChildren, status } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
   const elementAttrs = {
@@ -81,6 +82,8 @@ function createElement(node: any, container: any, parentLayout: any) {
       status,
       attrs: elementAttrs
     });
+    // 如果元素被删除了，就不会有renderChildren， 直接拿node.children渲染
+    const children = renderChildren ? renderChildren : nodeChildren;
     // 只有group才需要处理children
     if (children && children.length) {
       for (let i = 0, len = children.length; i < len; i++) {
@@ -102,11 +105,33 @@ function createElement(node: any, container: any, parentLayout: any) {
   return element;
 }
 
+// 过滤删除的元素，让其不参与布局计算
+function filterDeleteElement(node) {
+  const { status, children } = node;
+  if (status === ELEMENT_DELETE) {
+    return null;
+  }
+  if (!children || !children.length) {
+    return node;
+  }
+
+  const newChildren = children.filter((child) => {
+    return !!filterDeleteElement(child);
+  });
+
+  // 要保留引用
+  node.children = newChildren;
+  node.renderChildren = children;
+
+  return node;
+}
+
 export default (element: JSX.Element, container: any) => {
   if (!element) {
     return;
   }
   const nodeTree = createNodeTree(element, container);
-  computeLayout(nodeTree);
+  const computeLayoutTree = filterDeleteElement(nodeTree);
+  computeLayout(computeLayoutTree);
   return createElement(nodeTree, container, null);
 }
