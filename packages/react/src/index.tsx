@@ -32,8 +32,8 @@ class ReactCanvas extends React.Component<CanvasProps> {
       // context 内部创建，不能被覆盖
       context,
     });
-    canvas.render();
     this.canvas = canvas;
+    canvas.render();
   }
 
   componentDidUpdate() {
@@ -59,7 +59,7 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   componentWillUnmount() {
     const { canvas } = this;
-    canvas.destroy();
+    canvas?.destroy();
   }
 }
 

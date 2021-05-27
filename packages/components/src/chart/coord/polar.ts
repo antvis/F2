@@ -3,7 +3,12 @@ import Base from './base';
 
 const { Matrix, Vector2 } = G;
 
-class Polar extends Base {
+interface IPolar {
+  start: any;
+  end: any;
+}
+
+class Polar extends Base implements IPolar {
 
   startAngle: number;
   endAngle: number;
@@ -11,8 +16,6 @@ class Polar extends Base {
   innerRadius: number;
   isPolar: boolean;
   radius: number;
-  start: any;
-  end: any;
   x: any;
   y: any;
   circleRadius: any;

@@ -3,7 +3,7 @@ import {
   interpolateNumberArray,
   interpolateRgb,
   interpolateObject
-} from 'd3-interpolate';
+} from './d3-interpolate';
 
 // const hasNaN = (obj) => {
 //   return Object.keys(obj).find(key => isNaN(obj[key]))

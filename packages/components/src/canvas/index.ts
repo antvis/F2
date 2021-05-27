@@ -20,12 +20,14 @@ interface ChartProps extends ChartUpdateProps {
   context: any,
 }
 
+interface IF2Canvas {
+  container: any;
+}
+
 // 顶层Canvas标签
-class Canvas extends Component {
-  // 对应G的canvas
+class Canvas extends Component implements IF2Canvas {
   canvas: any;
   component: Container;
-  container: any;
   animation?: Animation;
 
   constructor(props: ChartProps) {

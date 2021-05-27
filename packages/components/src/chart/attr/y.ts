@@ -1,7 +1,10 @@
 import Position from './position';
 
-class Y extends Position {
+interface IAxisY {
   coord: any;
+}
+
+class Y extends Position implements IAxisY {
 
   constructor(cfg) {
     super(cfg);
