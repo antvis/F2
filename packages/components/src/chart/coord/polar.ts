@@ -6,6 +6,8 @@ const { Matrix, Vector2 } = G;
 interface IPolar {
   start: any;
   end: any;
+  x: any;
+  y: any;
 }
 
 class Polar extends Base implements IPolar {
@@ -16,8 +18,6 @@ class Polar extends Base implements IPolar {
   innerRadius: number;
   isPolar: boolean;
   radius: number;
-  x: any;
-  y: any;
   circleRadius: any;
 
   _initDefaultCfg() {
@@ -34,6 +34,8 @@ class Polar extends Base implements IPolar {
 
   init(start, end) {
     super.init(start, end);
+    this.start = start;
+    this.end = start;
     const self = this;
     const inner = self.inner || self.innerRadius;
     const width = Math.abs(end.x - start.x);

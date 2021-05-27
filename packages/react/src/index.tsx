@@ -59,7 +59,7 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   componentWillUnmount() {
     const { canvas } = this;
-    canvas?.destroy();
+    canvas.destroy();
   }
 }
 
