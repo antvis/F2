@@ -14,6 +14,8 @@ class Base {
   plot: any;
   start: any;
   end: any;
+  x:any;
+  y: any;
   matrix: number[];
   center: any;
   scale: any;

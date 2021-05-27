@@ -1,10 +1,19 @@
 import Base from './base';
 
-class Rect extends Base {
+interface IRect {
+  start: any;
+  end: any;
+  x: any,
+  y: any
+}
+
+class Rect extends Base implements IRect {
 
   isRect: boolean;
-  x: any;
-  y: any;
+
+  constructor(props) {
+    super(props);
+  }
 
   _initDefaultCfg() {
     this.type = 'rect';
@@ -14,10 +23,13 @@ class Rect extends Base {
 
   init(start, end) {
     super.init(start, end);
+    this.start = start;
+    this.end = end;
     this.x = {
       start: start.x,
       end: end.x
     };
+
 
     this.y = {
       start: start.y,
