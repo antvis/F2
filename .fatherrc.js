@@ -1,18 +1,19 @@
 export default {
   pkgs: [
-    'util',
-    'jsx',
-    'components',
-    'react',
-    'fund-charts',
-    'tinker-components',
-    'wealth-chart-components'
+    "util",
+    "jsx",
+    "components",
+    "react",
+    "fund-charts",
+    "tinker-components",
+    "wealth-chart-components",
   ],
   cjs: {
-    type: 'babel'
+    type: "babel",
   },
   esm: {
-    type: 'babel'
+    type: "babel",
   },
   runtimeHelpers: true,
-}
+
+};

@@ -1,8 +1,10 @@
 import Position from './position';
 
-class X extends Position {
+interface IAttrX {
   coord: any;
+}
 
+class X extends Position implements IAttrX {
   constructor(cfg) {
     super(cfg);
     this.type = 'x';

@@ -1,10 +1,15 @@
 import Base from './base';
 
-class Position extends Base {
+interface IBase {
+  coord: any;
+}
+
+class Position extends Base implements IBase {
   coord: any;
 
   constructor(cfg) {
     super(cfg);
+    this.coord = cfg.coord
   }
 
   mapping(value) {

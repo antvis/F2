@@ -23,10 +23,13 @@ interface Props {
   theme?: any;
 }
 
-// 统计图表
-class Chart extends Container {
-  scales: any;
+interface IChart {
   props: Props;
+}
+
+// 统计图表
+class Chart extends Container implements IChart {
+  scales: any;
   plot: Plot;
   coord: any;
   theme: any;

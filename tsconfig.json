@@ -6,7 +6,8 @@
     "jsxFactory": "jsx",
     "jsxFragmentFactory": "Fragment",
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "useDefineForClassFields": false,
   },
   "exclude": [
     "scripts",
