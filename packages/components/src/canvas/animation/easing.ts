@@ -1,3 +1,5 @@
+// https://github.com/tweenjs/tween.js
+
 function linear(k) {
   return k;
 }
@@ -30,6 +32,22 @@ function cubicInOut(k) {
     return 0.5 * k * k * k;
   }
   return 0.5 * ((k -= 2) * k * k + 2);
+}
+
+function quarticIn(k) {
+  return k * k * k * k;
+}
+
+function quarticOut(k) {
+  return 1 - k * k * k * k;
+}
+
+function quarticInOut(k) {
+  if ((k *= 2) < 1) {
+    return 0.5 * k * k * k * k;
+  }
+
+  return -0.5 * ((k -= 2) * k * k * k - 2);
 }
 
 function elasticIn(k) {
@@ -138,6 +156,9 @@ export {
   cubicIn,
   cubicOut,
   cubicInOut,
+  quarticIn,
+  quarticOut,
+  quarticInOut,
   elasticIn,
   elasticOut,
   elasticInOut,
