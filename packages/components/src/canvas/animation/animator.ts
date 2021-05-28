@@ -52,7 +52,7 @@ class Animator {
     this.totalDuration = duration + delay;
 
     // 更新到初始状态
-    this.update(0);
+    this.update(0, 0);
   }
 
   to(time: number) {
@@ -68,7 +68,7 @@ class Animator {
     // 最大为1
     const t = time >= totalDuration ? 1 : (time - delay) / duration;
 
-    this.update(easing(t));
+    this.update(easing(t), time);
 
     // 最后一帧
     if (t === 1) {
@@ -76,7 +76,7 @@ class Animator {
     }
   }
 
-  update(t: number) {
+  update(t: number, time) {
     const { element, clip, interpolates, property, onFrame } = this;
     let attrs = {};
     for (let i = property.length - 1; i >= 0; i--) {
@@ -86,7 +86,7 @@ class Animator {
     if (onFrame) {
       attrs = {
         ...attrs,
-        ...this.onFrame(t)
+        ...this.onFrame(t, time)
       }
     }
     if (clip) {

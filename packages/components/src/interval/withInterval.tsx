@@ -32,13 +32,14 @@ export default View => {
     }
 
     render() {
-      const { startOnZero = true } = this.props;
+      const { props } = this;
+      const { startOnZero = true } = props;
       const mappedArray = this._mapping();
       const size = this.getDefaultSize();
       const basePoint = this.getBasePoint(startOnZero);
 
       return <View
-        {...this.props}
+        { ...props }
         basePoint={basePoint}
         mappedArray={ mappedArray }
         size={ size }

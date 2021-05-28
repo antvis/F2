@@ -53,7 +53,7 @@ class Canvas extends Component implements IF2Canvas {
       height: canvasHeight
     });
 
-    const componentTree = createComponentTree(children);
+    const componentTree = createComponentTree(children, { width: canvasWidth, height: canvasHeight });
     const component = new Container({ children: componentTree, animate });
     component.init({ layout, container: canvas });
 
@@ -104,11 +104,16 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   update(props: ChartUpdateProps) {
-    const { component } = this;
+    const { component, canvas } = this;
     // 只处理数据，和children的变化
     const { children } = props;
 
-    const componentTree = createComponentTree(children);
+    const {
+      width,
+      height
+    } = canvas._attrs;
+
+    const componentTree = createComponentTree(children, { width, height });
     component.update({ children: componentTree });
 
     component.willMount()

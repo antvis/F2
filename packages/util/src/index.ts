@@ -1,4 +1,4 @@
-import { isDate } from '@antv/util'
+import { isDate, isPlainObject } from '@antv/util'
 import formatter from './formatter'
 
 // 默认设置50
@@ -57,7 +57,7 @@ function batch2hd(value: any) {
       return batch2hd(v);
     });
   }
-  if (isObject(value)) {
+  if (isPlainObject(value)) {
     const result: any = {};
     for (const key in value) {
       if (value.hasOwnProperty(key)) {

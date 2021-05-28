@@ -102,11 +102,19 @@ function compareElement(nextElement, lastElement) {
 
   // 普通的jsx元素， 且是更新
   if (!isArray(nextElement) && !isArray(lastElement)) {
-    const { type: nextType, _cache: _nextCache, props: nextProps } = nextElement;
-    const { type: lastType, _cache: _lastCache, props: lastProps } = lastElement;
+    const { key: nextKey, type: nextType, _cache: _nextCache, props: nextProps } = nextElement;
+    const { key: lastKey, type: lastType, _cache: _lastCache, props: lastProps } = lastElement;
 
     // 类型变了，处理成 删除 + 新增，返回数组
     if (nextType !== lastType) {
+      return [
+        deleteElement(lastElement),
+        nextElement,
+      ]
+    }
+
+    // key 变了
+    if ((nextKey !== undefined || lastKey !== undefined) && nextKey !== lastKey) {
       return [
         deleteElement(lastElement),
         nextElement,

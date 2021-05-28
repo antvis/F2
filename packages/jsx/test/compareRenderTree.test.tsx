@@ -28,6 +28,20 @@ describe('compareRenderTree', () => {
     });
   });
 
+  describe('一个节点存在key', () => {
+    it('一个节点存在key', () => {
+      const nextElement = (<group key="2"></group>);
+      const lastElement = (<group key="1"></group>);
+
+      const renderElement = compareRenderTree(nextElement, lastElement);
+      expect(renderElement.length).toBe(2);
+      expect(renderElement[0].key).toBe('1');
+      expect(renderElement[0].status).toBe('delete');
+      expect(renderElement[1].key).toBe('2');
+      expect(renderElement[1].status).toBe(undefined);
+    });
+  });
+
 
   describe('数组', () => {
     it('不存在key', () => {
