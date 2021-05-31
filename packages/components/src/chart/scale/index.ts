@@ -80,17 +80,19 @@ class ScaleController {
     }
 
     if (type !== 'cat' && type !== 'timeCat') {
-      if (!def || !(def.min && def.max)) {
+      if (!def) {
         const { min, max } = getRange(values);
-        cfg.min = min;
-        cfg.max = max;
+        if (isNil(min)) {
+          cfg.min = min;
+        }
+        if (isNil(max)) {
+          cfg.max = max;
+        }
         cfg.nice = true;
       }
     } else {
       cfg.isRounding = false; // used for tickCount calculation
     }
-    
-
     return cfg;
   }
 
@@ -152,6 +154,17 @@ class ScaleController {
     scales[field] = newScale;
 
     return newScale;
+  }
+
+  updateScale(field, cfg) {
+    const { scales } = this;
+    const scale = scales[field];
+
+    // 触发ticks重新计算
+    cfg.ticks = [];
+
+    scale.change(cfg);
+    return scale;
   }
 }
 
