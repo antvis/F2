@@ -80,12 +80,12 @@ class ScaleController {
     }
 
     if (type !== 'cat' && type !== 'timeCat') {
-      if (!def) {
+      if (!def || isNil(def.min) || isNil(def.max)) {
         const { min, max } = getRange(values);
-        if (isNil(min)) {
+        if (isNil(def.min)) {
           cfg.min = min;
         }
-        if (isNil(max)) {
+        if (isNil(def.max)) {
           cfg.max = max;
         }
         cfg.nice = true;
