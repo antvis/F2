@@ -208,9 +208,11 @@ class Geometry extends Component {
 
     dataArray.forEach(function (data) {
       data.forEach(function (obj) {
-        let originValue = isNil(obj[FIELD_ORIGIN]) ? obj[xfield] : obj[FIELD_ORIGIN][xfield];
+        let originValue = isNil(obj[FIELD_ORIGIN])
+          ? obj[xfield]
+          : obj[FIELD_ORIGIN][xfield];
         if (self._isEqual(originValue, xValue, xScale)) {
-          tmp.push({...obj, ...obj[FIELD_ORIGIN]})
+          tmp.push({ ...obj, ...obj[FIELD_ORIGIN] });
         }
       });
     });
@@ -274,7 +276,7 @@ class Geometry extends Component {
     const { plot } = chart;
     const yScale = this.getYScale();
     const xScale = this.getYScale();
-    
+
     // 从坐标值的0点开始绘制
     if (startOnZero === true) {
       return chart.convertPoint({
@@ -329,12 +331,15 @@ class Geometry extends Component {
     if (!adjust) {
       return groupedArray;
     }
-    const adjustCfg = typeof adjust === 'string' ? {
-      type: adjust,
-    }: adjust;
+    const adjustCfg =
+      typeof adjust === "string"
+        ? {
+            type: adjust,
+          }
+        : adjust;
     const adjustType = upperFirst(adjustCfg.type);
     if (!Adjust[adjustType]) {
-      throw new Error('not support such adjust : ' + adjust);
+      throw new Error("not support such adjust : " + adjust);
     }
     const [xField, yField] = parseFields(position);
     const adjustInstance = new Adjust[adjustType]({
@@ -345,7 +350,7 @@ class Geometry extends Component {
 
     for (let i = 0, len = groupedArray.length; i < len; i++) {
       // 如果是dodge, 需要处理数字再处理
-      if (adjustCfg.type === 'dodge') {
+      if (adjustCfg.type === "dodge") {
         this._numberic(groupedArray[i]);
       }
     }
