@@ -89,6 +89,7 @@ class Canvas extends Component implements IF2Canvas {
     const { canvas, container, animation } = this;
     // 执行动画
     if (animation) {
+      animation.abort();
       animation.play(container);
     } else {
       canvas.draw();
@@ -119,9 +120,6 @@ class Canvas extends Component implements IF2Canvas {
     component.willMount()
     component.mount();
     component.render();
-    if(animation) {
-      animation.abort();
-    }
     this.draw();
 
     // if (data && data !== this.props.data) {
