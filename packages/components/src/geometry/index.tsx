@@ -65,15 +65,6 @@ class Geometry extends Component {
     ["onPressStart", "onPress", "onPressEnd"].forEach((eventName) => {
       if (props[eventName]) {
         canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
-          const { direction } = ev;
-          // 上下滑动不处理
-          if (direction === "up" || direction === "down") {
-            return;
-          }
-          // 按压滑动时，禁止页面滑动
-          if (eventName === "onPress") {
-            ev.preventDefault();
-          }
           ev.geometry = this;
           props[eventName](ev);
         });
