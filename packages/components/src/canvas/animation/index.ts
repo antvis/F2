@@ -88,6 +88,10 @@ class Animation {
       canvas.draw();
     })
   }
+
+  abort() {
+    this.timeline.abort();
+  }
 }
 
 export default Animation;

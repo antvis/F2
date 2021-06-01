@@ -28,9 +28,9 @@ class Timeline {
       onEnd();
       return;
     }
-    // 上次动画未结束，则清除计时器,停止播放
+    // 上次动画未结束
     if (this.playing) {
-      this.abort();
+      return;
     }
     this.duration = duration;
     const {
@@ -81,6 +81,7 @@ class Timeline {
       return;
     }
     cancelAnimationFrame(this.animationFrameNumber);
+    this.playing = false;
     this.animationFrameNumber = null;
   }
 }
