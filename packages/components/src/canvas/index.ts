@@ -119,7 +119,9 @@ class Canvas extends Component implements IF2Canvas {
     component.willMount()
     component.mount();
     component.render();
-    animation.abort();
+    if(animation) {
+      animation.abort();
+    }
     this.draw();
 
     // if (data && data !== this.props.data) {
