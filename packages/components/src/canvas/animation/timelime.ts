@@ -3,6 +3,10 @@ const requestAnimationFrame = typeof window === 'object' && window.requestAnimat
   return setTimeout(fn, 16);
 };
 
+const cancelAnimationFrame = typeof window === 'object' && window.cancelAnimationFrame ? window.cancelAnimationFrame : function(number) {
+  return clearTimeout(number);
+}; 
+
 const clock = typeof performance === 'object' && performance.now ? performance : Date;
 
 type UpdateCallback = (time: number) => void;
@@ -16,6 +20,8 @@ class Timeline {
   pausedTime = 0;
   // 动画持续时间
   duration: number;
+  // 计时器id
+  animationFrameNumber;
 
   play(duration: number, onUpdate: UpdateCallback, onEnd: EndCallback) {
     if (duration <= 0) {
@@ -57,9 +63,9 @@ class Timeline {
         return;
       }
       onUpdate(time);
-      requestAnimationFrame(play);
+      this.animationFrameNumber = requestAnimationFrame(play);
     };
-    requestAnimationFrame(play);
+    this.animationFrameNumber = requestAnimationFrame(play);
   }
 
   pause() {
@@ -68,6 +74,15 @@ class Timeline {
 
   stop() {
     this.playing = false;
+  }
+
+  abort() {
+    if(!this.animationFrameNumber) {
+      return;
+    }
+    cancelAnimationFrame(this.animationFrameNumber);
+    this.playing = false;
+    this.animationFrameNumber = null;
   }
 }
 

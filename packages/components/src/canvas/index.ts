@@ -89,6 +89,7 @@ class Canvas extends Component implements IF2Canvas {
     const { canvas, container, animation } = this;
     // 执行动画
     if (animation) {
+      animation.abort();
       animation.play(container);
     } else {
       canvas.draw();
@@ -104,7 +105,7 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   update(props: ChartUpdateProps) {
-    const { component, canvas } = this;
+    const { component, canvas,  animation } = this;
     // 只处理数据，和children的变化
     const { children } = props;
 
