@@ -1,6 +1,8 @@
 import { isNil } from '../../../util/common';
 import Rect from './rect';
 
+const imageCaches = {};
+
 class ImageShape extends Rect {
   _initProperties() {
     super._initProperties();
@@ -28,6 +30,13 @@ class ImageShape extends Rect {
     const { src } = attrs;
 
     if (src && window.Image) {
+      const cacheImage = this.get('cacheImage');
+      // 如果有缓存，则直接从缓存中拿
+      if (cacheImage && imageCaches[src]) {
+        this.set('image', imageCaches[src]);
+        this.draw(context);
+        return;
+      }
       this.set('loading', true);
       const image = new Image();
       // 设置跨域, 等同于 image.crossOrigin = 'anonymous'
@@ -39,6 +48,11 @@ class ImageShape extends Rect {
       };
       // src 一定要在 crossOrigin 之后，否则 toDataURL 就会报 SecurityError
       image.src = src;
+
+      // 设置全局缓存
+      if (cacheImage) {
+        imageCaches[src] = image;
+      }
     }
   }
 
