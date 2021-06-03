@@ -30,12 +30,49 @@ describe('imageShape', function() {
       }
     });
 
+    const image2 = container.addShape('image', {
+      cacheImage: true,
+      attrs: {
+        x: 0,
+        y: 0,
+        src: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+        width: 50,
+        height: 50,
+        sx: 0,
+        sy: 0,
+        swidth: 512,
+        sheight: 512
+      }
+    });
+
+    const image3 = container.addShape('image', {
+      cacheImage: true,
+      attrs: {
+        x: 0,
+        y: 0,
+        src: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+        width: 50,
+        height: 50,
+        sx: 0,
+        sy: 0,
+        swidth: 512,
+        sheight: 512
+      }
+    });
+
     expect(imageShape.get('loading')).toBe(false);
     canvas.draw(); // 绘制
     expect(imageShape.get('loading')).toBe(true);
     expect(imageShape.get('image')).toBe(null);
 
-    container.remove(true);
+    expect(image2.get('loading')).toBe(true);
+    expect(image2.get('image')).toBe(null);
+
+    expect(image3.get('loading')).toBe(false);
+    expect(image3.get('image')).toBeInstanceOf(window.Image);
+
+
+    // container.remove(true);
   });
 
   it('image radius', function(done) {
