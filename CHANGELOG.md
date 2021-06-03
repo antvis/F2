@@ -1,3 +1,9 @@
+#### 3.8.9 (2021-06-03)
+
+##### New Features
+
+*  图片添加缓存配置，防止重复加载的抖动 ([bc95e200](https://github.com/antvis/f2/commit/bc95e2006b449a3373328a5fab53faa9db8fb568))
+
 #### 3.8.8 (2021-05-12)
 
 ##### New Features
