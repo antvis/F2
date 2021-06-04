@@ -66,12 +66,14 @@ function createElement(node: any, container: any, parentLayout: any) {
   const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, renderChildren, children: nodeChildren, status } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
-  const elementAttrs = {
-    ...getShapeAttrs(type, layout),
-    ...attrs,
-  };
   // 该元素上一次的attrs
   const { attrs: lastAttrs } = _cache;
+
+  const elementAttrs = {
+    ...getShapeAttrs(type, layout),
+    ...lastAttrs,
+    ...attrs,
+  };
   // 缓存这次新的attrs
   _cache.attrs = elementAttrs;
 

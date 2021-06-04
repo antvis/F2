@@ -71,7 +71,11 @@ class Animation {
 
     for (let i = 0, len = deleteElements.length; i < len; i++) {
       const element = deleteElements[i];
-      element.remove(true);
+      const { children } = element._attrs;
+      // 因为group的子元素也有可能有动画，所以这里先把叶子节点删除掉，等动画结束后，再把所有删除的元素删除掉
+      if (!children || !children.length) {
+        element.remove(true);
+      }
     }
 
     // 开始播放动画
@@ -85,6 +89,11 @@ class Animation {
         canvas.draw();
       }
     }, () => {
+
+      for (let i = 0, len = deleteElements.length; i < len; i++) {
+        const element = deleteElements[i];
+        element.remove(true);
+      }
       canvas.draw();
     })
   }

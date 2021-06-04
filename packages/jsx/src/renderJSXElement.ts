@@ -13,8 +13,8 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
 
   // combo otherProps
   element.props = {
-    ...props,
     ...otherProps,
+    ...props,
     children,
   };
 
@@ -28,8 +28,8 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
     return renderJSXElement({
       ...newElement,
       // 保留原始的key和ref
-      key,
-      ref,
+      key: key !== undefined ? key : newElement.key,
+      ref: ref !== undefined ? ref : newElement.ref,
     }, null);
   }
   // return element if type is string

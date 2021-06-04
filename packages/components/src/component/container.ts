@@ -104,7 +104,7 @@ class ContainerComponent extends Component {
     const { __shape, __lastElement, container, animate, props } = component;
     // 先把之前的图形清除掉
     if (__shape) {
-      __shape.remove(true);
+      container.clear();
     }
 
     // 支持function形式，为了更的自定义
@@ -125,9 +125,17 @@ class ContainerComponent extends Component {
     const renderElement = animate !== false ? compareRenderTree(element, __lastElement) : element;
     if (!renderElement) return null;
 
-    // 生成G的节点树
-    const shape = render(renderElement, container);
-    component.__shape = shape;
+    // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
+    if (isArray(renderElement)) {
+      for (let i = 0, len = renderElement.length; i < len; i++) {
+        const shape = render(renderElement[i], container);
+        // 删除的节点在前面，所以这里保留后面的结构就可以了
+        component.__shape = shape;
+      }
+    } else {
+      const shape = render(renderElement, container);
+      component.__shape = shape;
+    }
   }
 
   update(props: any, forceUpdate?) {

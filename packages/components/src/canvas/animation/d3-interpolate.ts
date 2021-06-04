@@ -1,6 +1,9 @@
 /* eslint-disable */
 // @ts-nocheck
 // https://d3js.org/d3-interpolate/ v2.0.1 Copyright 2020 Mike Bostock
+// import * as d3Color from 'd3-color';
+import * as d3Color from './d3-color';
+
 function basis(t1, v0, v1, v2, v3) {
   var t2 = t1 * t1, t3 = t2 * t1;
   return ((1 - 3 * t1 + 3 * t2 - t3) * v0
