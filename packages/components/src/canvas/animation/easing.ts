@@ -50,6 +50,30 @@ function quarticInOut(k) {
   return -0.5 * ((k -= 2) * k * k * k - 2);
 }
 
+function quinticIn(k) {
+  return k * k * k * k * k
+}
+
+function quinticOut(k) {
+  return --k * k * k * k * k + 1
+}
+
+function quinticInOut(k) {
+  if ((k *= 2) < 1) {
+    return 0.5 * k * k * k * k * k
+  }
+
+  return 0.5 * ((k -= 2) * k * k * k * k + 2)
+}
+
+function exponentialIn(k) {
+  return k === 0 ? 0 : Math.pow(1024, k - 1)
+}
+
+function exponentialOut(k) {
+  return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+}
+
 function elasticIn(k) {
   let s;
   let a = 0.1;
@@ -167,5 +191,10 @@ export {
   backInOut,
   bounceIn,
   bounceOut,
-  bounceInOut
+  bounceInOut,
+  exponentialIn,
+  exponentialOut,
+  quinticIn,
+  quinticOut,
+  quinticInOut
 };

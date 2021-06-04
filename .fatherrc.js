@@ -7,6 +7,7 @@ export default {
     "fund-charts",
     "tinker-components",
     "wealth-chart-components",
+    "storytelling",
   ],
   cjs: {
     type: "babel",

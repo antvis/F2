@@ -13,6 +13,7 @@
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5",
     "d3-cloud": "^1.2.5",
+    "d3-color": "^2.0.0",
     "d3-hierarchy": "^2.0.0"
   },
   "files": [
@@ -24,5 +25,8 @@
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"
   },
-  "author": "yezengyue@gmail.com"
+  "author": "yezengyue@gmail.com",
+  "devDependencies": {
+    "@alipay/tango": "^2.1.0"
+  }
 }
