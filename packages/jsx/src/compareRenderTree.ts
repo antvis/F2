@@ -3,8 +3,18 @@ import JSX from './interface';
 import { map } from '@ali/f2x-util';
 import { ELEMENT_DELETE, ELEMENT_UPDATE } from './elementStatus';
 
-const isArray = Array.isArray;
+function mix(source, target) {
+  for (const key in target) {
+    if (target.hasOwnProperty(key) &&
+      target[key] !== undefined
+    ) {
+      source[key] = target[key];
+    }
+  }
+  return source;
+}
 
+const isArray = Array.isArray;
 
 // 处理删除的元素
 function deleteElement(element) {
@@ -122,10 +132,7 @@ function compareElement(nextElement, lastElement) {
     }
 
     // 保留缓存值
-    const _cache = {
-      ..._lastCache,
-      ..._nextCache,
-    };
+    const _cache = mix(_nextCache, _lastCache);
 
     // 继续比较子元素
     const children = compareElement(nextProps.children, lastProps.children);
