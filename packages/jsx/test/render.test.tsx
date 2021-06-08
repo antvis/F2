@@ -386,8 +386,12 @@ describe('layout', () => {
           </group>
         </group>
       );
+      // 新增和变化的元素不保留上次的attrs
+      groupJSXElement.props.children[0]._cache = { attrs: { x: 100, y: 200, width: 10, height: 10 } };
       // 把中间的元素标记为删除
       groupJSXElement.props.children[1].status = ELEMENT_DELETE;
+      // 删除的元素保留attrs
+      groupJSXElement.props.children[1]._cache = { attrs: { x: 0, y: 200, width: 10, height: 10 } };
       groupJSXElement.props.children[2].props.children[1].status = ELEMENT_DELETE;
       const group = render(groupJSXElement, container);
       canvas.draw();
@@ -399,9 +403,9 @@ describe('layout', () => {
       expect(children[0].get('attrs').height).toBe(200);
 
       expect(children[1].get('attrs').x).toBe(0);
-      expect(children[1].get('attrs').y).toBe(0);
-      expect(children[1].get('attrs').width).toBe(0);
-      expect(children[1].get('attrs').height).toBe(0);
+      expect(children[1].get('attrs').y).toBe(200);
+      expect(children[1].get('attrs').width).toBe(10);
+      expect(children[1].get('attrs').height).toBe(10);
 
       expect(children[2].get('attrs').x).toBe(100);
       expect(children[2].get('attrs').y).toBe(0);
@@ -414,10 +418,10 @@ describe('layout', () => {
       expect(subChildren[0].get('attrs').width).toBe(100);
       expect(subChildren[0].get('attrs').height).toBe(200);
 
-      expect(children[1].get('attrs').x).toBe(0);
-      expect(children[1].get('attrs').y).toBe(0);
-      expect(children[1].get('attrs').width).toBe(0);
-      expect(children[1].get('attrs').height).toBe(0);
+      expect(subChildren[1].get('attrs').x).toBe(0);
+      expect(subChildren[1].get('attrs').y).toBe(0);
+      expect(subChildren[1].get('attrs').width).toBe(0);
+      expect(subChildren[1].get('attrs').height).toBe(0);
 
     });
 
