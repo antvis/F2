@@ -16,6 +16,13 @@
     "d3-color": "^2.0.0",
     "d3-hierarchy": "^2.0.0"
   },
+  "devDependencies": {
+    "@alipay/tango": "^2.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
   "files": [
     "src",
     "dist",
@@ -25,8 +32,5 @@
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"
   },
-  "author": "yezengyue@gmail.com",
-  "devDependencies": {
-    "@alipay/tango": "^2.1.0"
-  }
+  "author": "yezengyue@gmail.com"
 }

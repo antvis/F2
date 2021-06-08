@@ -1,4 +1,4 @@
-import { G } from '@antv/f2/lib/core';
+import { G } from '@antv/f2';
 import { mix } from '@antv/util';
 
 const { Matrix: MatrixUtil, Vector2 } = G;
