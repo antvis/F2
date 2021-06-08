@@ -71,7 +71,8 @@ function createElement(node: any, container: any, parentLayout: any) {
 
   const elementAttrs = {
     ...getShapeAttrs(type, layout),
-    ...lastAttrs,
+    // 因为删除的元素不参与布局计算，所以只有在删除的时候才保留lastAttrs, 新增和更新的时候都让其重新计算
+    ...status === ELEMENT_DELETE ? lastAttrs : null,
     ...attrs,
   };
   // 缓存这次新的attrs
