@@ -1,5 +1,5 @@
 import { ELEMENT_DELETE } from '../elementStatus';
-import { G } from '@antv/f2/lib/core';
+import { G } from '@antv/f2';
 
 const { Shape } = G;
 

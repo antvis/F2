@@ -1,4 +1,4 @@
-import { G } from '@antv/f2/lib/core';
+import { G } from '@antv/f2';
 import createComponentTree from './createComponentTree';
 import Component from '../component';
 import Container from '../component/container';

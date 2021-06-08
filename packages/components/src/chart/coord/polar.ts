@@ -1,4 +1,4 @@
-import { G } from '@antv/f2/lib/core';
+import { G } from '@antv/f2';
 import Base from './base';
 
 const { Matrix, Vector2 } = G;
