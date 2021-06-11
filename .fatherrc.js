@@ -16,5 +16,6 @@ export default {
     type: "babel",
   },
   runtimeHelpers: true,
-
+  lessInBabelMode: true,
+  cssModules: true,
 };
