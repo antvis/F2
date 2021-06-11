@@ -16,6 +16,7 @@ function createComponentTree(element: JSX.Element, appendProps) {
       key,
       ref,
       props: {
+        ...appendProps,
         ...props,
         children,
       },
@@ -33,6 +34,7 @@ function createComponentTree(element: JSX.Element, appendProps) {
       key,
       ref,
       props: {
+        ...appendProps,
         ...props,
         children,
       },
