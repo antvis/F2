@@ -98,6 +98,11 @@ class Animation {
     })
   }
 
+  // 直接跳到动画最终态
+  end() {
+    this.timeline.end();
+  }
+
   abort() {
     this.timeline.abort();
   }

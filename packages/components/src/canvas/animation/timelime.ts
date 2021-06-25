@@ -22,6 +22,8 @@ class Timeline {
   duration: number;
   // 计时器id
   animationFrameNumber;
+  onUpdate: UpdateCallback;
+  onEnd: EndCallback;
 
   play(duration: number, onUpdate: UpdateCallback, onEnd: EndCallback) {
     if (duration <= 0) {
@@ -32,7 +34,10 @@ class Timeline {
     if (this.playing) {
       return;
     }
+    // 记录 duration、onUpdate、onEnd
     this.duration = duration;
+    this.onUpdate = onUpdate;
+    this.onEnd = onEnd;
     const {
       paused,
       pausedTime
@@ -74,6 +79,18 @@ class Timeline {
 
   stop() {
     this.playing = false;
+  }
+
+  end() {
+    if (!this.playing) {
+      return;
+    }
+    // 停掉动画
+    this.abort();
+
+    // 更新到最后一帧状态
+    this.onUpdate(this.duration);
+    this.onEnd();
   }
 
   abort() {
