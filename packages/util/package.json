@@ -1,6 +1,6 @@
 {
   "name": "@ali/f2x-util",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
