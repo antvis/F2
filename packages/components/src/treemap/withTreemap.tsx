@@ -1,6 +1,8 @@
 import { jsx } from '@ali/f2-jsx';
 import Component from '../component';
 import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
+import { Category } from '@ali/f2-attr';
+
 
 export default View => {
   return class Treemap extends Component {
@@ -8,11 +10,16 @@ export default View => {
     treemapLayout() {
       const { props, layout } = this;
       const { width, height } = layout;
-      const { data, xField, yField, space = 0 } = props;
-  
+      const { data, value, color, space = 0 } = props;
+
+      const colorAttr = new Category({
+        ...color,
+        data,
+      });
+
       const root = hierarchy({ children: data })
-        .sum(function(d) { return d[yField]; })
-        .sort((a, b) => b[yField] - a[yField]);
+        .sum(function(d) { return d[value]; })
+        .sort((a, b) => b[value] - a[value]);
   
       const treemapLayout = treemap()
         // 默认treemapSquarify
@@ -30,12 +37,14 @@ export default View => {
   
       return nodes.children.map(item => {
         const { data, x0, y0, x1, y1 } = item;
+        const color = colorAttr.mapping(data[colorAttr.field]);
         return {
           data,
           x0,
           y0,
           x1,
           y1,
+          color,
         }
       });
     }

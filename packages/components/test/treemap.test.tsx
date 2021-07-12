@@ -51,8 +51,20 @@ describe('Treemap', () => {
       <Canvas context={ context }>
         <Treemap
           data={ data }
-          xField="name"
-          yField="value"
+          color={{
+            field: 'name',
+            values: [
+              '#1890FF',
+              '#2FC25B',
+              '#FACC14',
+              '#223273',
+              '#8543E0',
+              '#13C2C2',
+              '#3436C7',
+              '#F04864'
+            ],
+          }}
+          value="value"
           space={ 4 }
         />
       </Canvas>
