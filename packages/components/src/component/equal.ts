@@ -20,6 +20,11 @@ function equal(a: any, b: any): boolean {
     return false;
   }
 
+  // 特殊处理NaN
+  if (Number.isNaN(a) && Number.isNaN(b)) {
+    return true;
+  }
+
   if (objToString(a) !== objToString(b)) {
     return false;
   }
@@ -74,6 +79,4 @@ function equal(a: any, b: any): boolean {
   return true;
 }
 
-export default (a, b) => {
-  return equal(a, b);
-}
+export default equal;

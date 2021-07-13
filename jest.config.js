@@ -13,5 +13,8 @@ module.exports = {
     'tsx',
     'js',
     'json'
-  ]
+  ],
+  transform: {
+    "\\.(less|css)$": 'jest-less-loader'
+  }
 };

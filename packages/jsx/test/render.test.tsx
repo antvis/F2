@@ -1,6 +1,7 @@
 
 import * as F2 from '@antv/f2';
 import { render, jsx } from '../src';
+import { ELEMENT_DELETE } from '../src/elementStatus';
 
 const { G } = F2;
 
@@ -52,10 +53,8 @@ describe('render', () => {
         />
       </group>, container);
     canvas.draw();
-    expect(shape.get('children').length).toBe(2);
-    expect(shape.get('children')[0].get('type')).toBe('rect');
 
-    const background = shape.get('children')[0].get('attrs');
+    const background = shape.get('attrs');
     expect(background.fill).toBe('gray');
     expect(background.width).toBe(100);
     expect(background.height).toBe(100);
@@ -141,7 +140,7 @@ describe('render', () => {
   });
 });
 
-describe.skip('render style alias', () => {
+describe('render style alias', () => {
   it('group', () => {
     const container = canvas.addGroup();
     const group = render(
@@ -321,8 +320,10 @@ describe('layout', () => {
     canvas.draw();
 
     const children = group.get('children');
+    const textShape = children[0];
 
-    expect(children[0].get('attrs').x).toBeCloseTo(-7.217994689941406, 1);
+    const left = -(textShape.getBBox().width / 2);
+    expect(textShape.get('attrs').x).toBeCloseTo(left, 3);
     // expect(children[0].get('attrs').x).toBe(0);
     // expect(children[0].get('attrs').y).toBe(6);
     // expect(children[0].get('attrs').textBaseline).toBe('middle');
@@ -332,5 +333,142 @@ describe('layout', () => {
     // expect(children[1].get('attrs').textBaseline).toBe('middle');
 
     // container.remove(true);
+  });
+
+  describe('delete element', () => {
+    it('删除元素不参布局计算', () => {
+      const container = canvas.addGroup();
+      const groupJSXElement = (
+        <group style={{
+          flexDirection: 'row',
+          width: 200,
+          height: 200,
+          flexWrap: 'wrap',
+        }}>
+          <rect
+            style={{
+              flex: 1,
+            }}
+            attrs={{
+              fill: '#f00',
+            }}
+          />
+          <rect
+            style={{
+              flex: 1,
+            }}
+            attrs={{
+              fill: '#0f0',
+            }}
+          />
+          <group
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+            }}
+          >
+            <rect
+              style={{
+                flex: 1,
+              }}
+              attrs={{
+                fill: '#00f',
+              }}
+            />
+            <rect
+              style={{
+                flex: 1,
+              }}
+              attrs={{
+                fill: '#0f0',
+              }}
+            />
+          </group>
+        </group>
+      );
+      // 新增和变化的元素不保留上次的attrs
+      groupJSXElement.props.children[0]._cache = { attrs: { x: 100, y: 200, width: 10, height: 10 } };
+      // 把中间的元素标记为删除
+      groupJSXElement.props.children[1].status = ELEMENT_DELETE;
+      // 删除的元素保留attrs
+      groupJSXElement.props.children[1]._cache = { attrs: { x: 0, y: 200, width: 10, height: 10 } };
+      groupJSXElement.props.children[2].props.children[1].status = ELEMENT_DELETE;
+      const group = render(groupJSXElement, container);
+      canvas.draw();
+
+      const children = group.get('children');
+      expect(children[0].get('attrs').x).toBe(0);
+      expect(children[0].get('attrs').y).toBe(0);
+      expect(children[0].get('attrs').width).toBe(100);
+      expect(children[0].get('attrs').height).toBe(200);
+
+      expect(children[1].get('attrs').x).toBe(0);
+      expect(children[1].get('attrs').y).toBe(200);
+      expect(children[1].get('attrs').width).toBe(10);
+      expect(children[1].get('attrs').height).toBe(10);
+
+      expect(children[2].get('attrs').x).toBe(100);
+      expect(children[2].get('attrs').y).toBe(0);
+      expect(children[2].get('attrs').width).toBe(100);
+      expect(children[2].get('attrs').height).toBe(200);
+
+      const subChildren = children[2].get('children');
+      expect(subChildren[0].get('attrs').x).toBe(100);
+      expect(subChildren[0].get('attrs').y).toBe(0);
+      expect(subChildren[0].get('attrs').width).toBe(100);
+      expect(subChildren[0].get('attrs').height).toBe(200);
+
+      expect(subChildren[1].get('attrs').x).toBe(0);
+      expect(subChildren[1].get('attrs').y).toBe(0);
+      expect(subChildren[1].get('attrs').width).toBe(0);
+      expect(subChildren[1].get('attrs').height).toBe(0);
+
+    });
+
+    it('删除元素不参布局计算-根元素', () => {
+      const container = canvas.addGroup();
+      const groupJSXElement = (
+        <group style={{
+          flexDirection: 'row',
+          width: 200,
+          height: 200,
+          flexWrap: 'wrap',
+        }}>
+          <rect
+            style={{
+              flex: 1,
+            }}
+            attrs={{
+              fill: '#f00',
+            }}
+          />
+          <rect
+            style={{
+              flex: 1,
+            }}
+            attrs={{
+              fill: '#0f0',
+            }}
+          />
+        </group>
+      );
+      // 把中间的元素标记为删除
+      // @ts-ignore
+      groupJSXElement.status = ELEMENT_DELETE;
+      const group = render(groupJSXElement, container);
+      canvas.draw();
+
+      const children = group.get('children');
+      expect(children.length).toBe(2);
+      expect(children[0].get('attrs').x).toBe(0);
+      expect(children[0].get('attrs').y).toBe(0);
+      expect(children[0].get('attrs').width).toBe(0);
+      expect(children[0].get('attrs').height).toBe(0);
+
+      expect(children[1].get('attrs').x).toBe(0);
+      expect(children[1].get('attrs').y).toBe(0);
+      expect(children[1].get('attrs').width).toBe(0);
+      expect(children[1].get('attrs').height).toBe(0);
+    });
   });
 });

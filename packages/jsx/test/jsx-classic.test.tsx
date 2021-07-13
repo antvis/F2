@@ -15,6 +15,21 @@ describe('jsx classic 模式', () => {
     expect(group.props.children.type).toBe('text');
   });
 
+  it('one children map', () => {
+    const group = (
+      <group>
+        {
+          [1, 2].map(item => {
+            return <text />
+          })
+        }
+      </group>
+    );
+
+    expect(group.props.children.length).toBe(2);
+    expect(group.props.children[0].type).toBe('text');
+  });
+
   it('tagName multiple children', () => {
     const ref = {};
     const group = (

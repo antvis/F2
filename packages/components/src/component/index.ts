@@ -1,16 +1,22 @@
-import Layout from '../chart/layout';
+import Layout from '../canvas/layout';
 
 class Component {
-  chart: any;
   container: any;
   props: any;
   layout: Layout;
 
+  animate: boolean;
+
   /**
    * @private
    */
+  // 上一次render生成的jsx element
+  __lastElement: any;
   __shape: any;
   __props: any;
+  __mounted = false;
+  // 表示是否需要调用render渲染
+  __shouldRender = true;
   // actions: any;
 
   // TODO for TypeScript
@@ -21,14 +27,16 @@ class Component {
   }
 
   constructor(props: any) {
+    const { animate } = props;
     this.__props = props;
     this.props = props;
+    this.animate = animate;
   }
-  init({ chart, container, layout }) {
-    this.chart = chart;
+  init({ container, layout }) {
     this.layout = layout;
     this.container = container;
-    this.mount();
+  }
+  willMount() {
   }
   mount() {
   }
@@ -46,6 +54,8 @@ class Component {
     return null;
   }
   destroy() {
+    const { container } = this;
+    container.clear();
   }
 }
 

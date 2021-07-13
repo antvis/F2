@@ -10,6 +10,7 @@ const map = {
   text,
   circle,
   marker,
+  group: rect,
 }
 
 export default (type: string, layout) => {

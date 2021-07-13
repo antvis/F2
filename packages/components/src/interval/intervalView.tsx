@@ -1,33 +1,43 @@
-import { jsx } from '@ali/f2-jsx';
-
-function getRectRange(points) {
-  const xValues = [];
-  const yValues = [];
-  for (let i = 0, len = points.length; i < len; i++) {
-    const point = points[i];
-    xValues.push(point.x);
-    yValues.push(point.y);
-  }
-  const xMin = Math.min.apply(null, xValues);
-  const yMin = Math.min.apply(null, yValues);
-  const xMax = Math.max.apply(null, xValues);
-  const yMax = Math.max.apply(null, yValues);
-
-  return {
-    x: xMin,
-    y: yMin,
-    width: xMax - xMin,
-    height: yMax - yMin
-  };
-}
+import { jsx } from "@ali/f2-jsx";
 
 export default (props) => {
-  const { points, color } = props;
-  const rectCfg = getRectRange(points);
-  return <rect
-    attrs={{
-      ...rectCfg,
-      fill: color,
-    }}
-  />;
-}
+  const { mappedArray, size, basePoint } = props;
+
+  return (
+    <group>
+      {mappedArray.map((dataArray) => {
+        return dataArray.map((item) => {
+          const { color, x, y } = item;
+          return (
+            <rect
+              attrs={{
+                fill: color,
+                // 数据点在柱子中间
+                x: x - size / 2,
+                y: basePoint.y,
+                width: size,
+                // y轴从底部开始画
+                height: y - basePoint.y,
+              }}
+              animation={{
+                appear: {
+                  easing: "linear",
+                  duration: 350,
+                  property: ["y", "height"],
+                  start: {
+                    y: basePoint.y,
+                    height: 0,
+                  },
+                  end: {
+                    y: basePoint.y,
+                    height: y - basePoint.y,
+                  },
+                },
+              }}
+            />
+          );
+        });
+      })}
+    </group>
+  );
+};

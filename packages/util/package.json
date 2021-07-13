@@ -1,9 +1,10 @@
 {
   "name": "@ali/f2x-util",
-  "version": "0.0.12",
+  "version": "0.1.7",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
+  "sideEffects": false,
   "files": [
     "src",
     "dist",
@@ -12,6 +13,7 @@
   ],
   "dependencies": {
     "@alipay/tango": "^2.0.1",
+    "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5",
     "fecha": "^2.3.3"
   },

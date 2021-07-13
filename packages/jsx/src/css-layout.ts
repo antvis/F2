@@ -1206,6 +1206,7 @@ function layoutNode(node, parentMaxWidth, parentDirection) {
 
 /* eslint-enable */
 function computeLayout(node) {
+  if (!node) return node;
   const { style, children } = node;
   if (style) {
     fillNodes(node);

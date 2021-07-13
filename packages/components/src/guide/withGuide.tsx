@@ -9,29 +9,30 @@ function isInBBox(bbox, point) {
 
 export default View => {
   return class Guide extends Component {
+    chart: any;
     triggerRef: any;
 
     mount() {
-      const { chart, props } = this;
-      const { onClick } = props;
-      const canvas = chart.get('canvas');
-      // 创建ref
-      this.triggerRef = {};
+      // const { chart, props } = this;
+      // const { onClick } = props;
+      // const canvas = chart.get('canvas');
+      // // 创建ref
+      // this.triggerRef = {};
 
-      canvas.on('click', ev => {
-        const { points } = ev;
-        const shape = this.triggerRef.current;
-        if (!shape) return;
-        const bbox = shape.getBBox();
-        if (isInBBox(bbox, points[0])) {
-          ev.shape = shape;
-          onClick && onClick(ev);
-        }
-      });
+      // canvas.on('click', ev => {
+      //   const { points } = ev;
+      //   const shape = this.triggerRef.current;
+      //   if (!shape) return;
+      //   const bbox = shape.getBBox();
+      //   if (isInBBox(bbox, points[0])) {
+      //     ev.shape = shape;
+      //     onClick && onClick(ev);
+      //   }
+      // });
     }
     parsePoint(record) {
       const { chart } = this;
-      const coord = chart.get('coord');
+      const { coord } = chart;
       const xScale = chart.getXScale();
 
       // 只取第一个yScale

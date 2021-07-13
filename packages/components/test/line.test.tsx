@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Line, Axis } from '../src';
+import Canvas, { Chart, Line, Axis } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
@@ -24,43 +23,65 @@ const crossData = [
 describe('Line', () => {
   it('Line color callback', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Line
-          position="genre*sold"
-          color={[ 'type', () => {
-              colorCallback();
-              return 'red';
-            }
-          ]}
-          smooth={ true }
-          lineDash={ [4, 4] }
-        />
-      </Chart>
+      <Canvas context={ context }>
+        <Chart
+          data={ data }
+          scale={{
+            sold: { min: 0 }
+          }}
+          coord={{
+            type: 'rect'
+          }}
+        >
+          <Line
+            position="genre*sold"
+            color={[ 'type', () => {
+                colorCallback();
+                return 'red';
+              }
+            ]}
+            smooth={ true }
+            // shape="line"
+            lineDash={ [4, 4] }
+          />
+        </Chart>
+      </Canvas>
     );
 
-    const chart = new type(props);
-    chart.render();
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
 
     expect(colorCallback.mock.calls.length).not.toBe(0);
   })
   
   it('Line use order', () => {
     const { type, props } = (
-      <Chart data={ crossData } context={ context }>
-        <Line
-          position="type*sold"
-          order={['genre', ['Sports', 'Action']]}
-          color={'genre'}
-          size={20}
-        />
-        <Axis field="type"/>
-        <Axis field="sold"/>
-      </Chart>
+      <Canvas context={context}>
+        <Chart
+          data={crossData}
+          scale={{
+            sold: { min: 0 },
+          }}
+          coord={{
+            type: "rect",
+          }}
+        >
+          <Line
+            position="type*sold"
+            order={["genre", ["Sports", "Action"]]}
+            color={"genre"}
+          />
+          <Axis field="type" />
+          <Axis field="sold" />
+        </Chart>
+      </Canvas>
     );
 
+    // @ts-ignore
     const chart = new type(props);
     chart.render();
-    expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe("#2FC25B");
+    expect(chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.strokeStyle).toBe("#2FC25B");
   })
 
 });

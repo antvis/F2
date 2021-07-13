@@ -13,5 +13,7 @@ export default function(type: string | Function, config: any, ...children: any[]
     ref,
     type,
     props,
+    // 存储一些过程中的cache值
+    _cache: {},
   };
 };

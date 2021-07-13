@@ -2,10 +2,12 @@ import JSX from './interface';
 import { extendMap, batch2hd } from '@ali/f2x-util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
+import getAnimation from './animation';
+import { ELEMENT_DELETE } from './elementStatus';
 
 // 转换成布局所需要的布局树
-function createNodeTree(element: JSX.Element, container: any) {
-  const { key, ref, type, props } = element;
+function createNodeTree(element: any, container: any) {
+  const { key, ref, _cache, type, props, status } = element;
   const children = extendMap(props.children, (child) => {
     return createNodeTree(child, container);
   });
@@ -36,11 +38,15 @@ function createNodeTree(element: JSX.Element, container: any) {
   return {
     key,
     ref,
+    _cache,
     type,
     props,
+    children,
+    status,
+
+    // 处理px2hd之后的配置
     style,
     attrs,
-    children,
   }
 }
 
@@ -57,22 +63,30 @@ function mergeLayout(parent: any, layout: any) {
 
 
 function createElement(node: any, container: any, parentLayout: any) {
-  const { key, ref, type, props, style, attrs, layout: originLayout, children } = node;
+  const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, renderChildren, children: nodeChildren, status } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
+  // 该元素上一次的attrs
+  const { attrs: lastAttrs } = _cache;
+
+  const elementAttrs = {
+    ...getShapeAttrs(type, layout),
+    // 因为删除的元素不参与布局计算，所以只有在删除的时候才保留lastAttrs, 新增和更新的时候都让其重新计算
+    ...status === ELEMENT_DELETE ? lastAttrs : null,
+    ...attrs,
+  };
+  // 缓存这次新的attrs
+  _cache.attrs = elementAttrs;
+
+  
   let element;
   if (type === 'group') {
-    element = container.addGroup();
-    // TODO： 后续让G里的group继承rect
-    if (attrs && layout) {
-      const defaultAttrs = getShapeAttrs('rect', layout);
-      element.addShape('rect', {
-        attrs: {
-          ...defaultAttrs,
-          ...attrs,
-        }
-      });
-    }
+    element = container.addGroup({
+      status,
+      attrs: elementAttrs
+    });
+    // 如果元素被删除了，就不会有renderChildren， 直接拿node.children渲染
+    const children = renderChildren ? renderChildren : nodeChildren;
     // 只有group才需要处理children
     if (children && children.length) {
       for (let i = 0, len = children.length; i < len; i++) {
@@ -80,19 +94,39 @@ function createElement(node: any, container: any, parentLayout: any) {
       }
     }
   } else {
-    const defaultAttrs = getShapeAttrs(type, layout);
     element = container.addShape(type, {
       ...props,
-      attrs: {
-        ...defaultAttrs,
-        ...attrs,
-      },
+      status,
+      attrs: elementAttrs
     });
   }
+  const animation = getAnimation(element, props.animation, elementAttrs, lastAttrs);
+  element.set('animation', animation);
   if (ref) {
     ref.current = element;
   }
   return element;
+}
+
+// 过滤删除的元素，让其不参与布局计算
+function filterDeleteElement(node) {
+  const { status, children } = node;
+  if (status === ELEMENT_DELETE) {
+    return null;
+  }
+  if (!children || !children.length) {
+    return node;
+  }
+
+  const newChildren = children.filter((child) => {
+    return !!filterDeleteElement(child);
+  });
+
+  // 要保留引用
+  node.children = newChildren;
+  node.renderChildren = children;
+
+  return node;
 }
 
 export default (element: JSX.Element, container: any) => {
@@ -100,6 +134,7 @@ export default (element: JSX.Element, container: any) => {
     return;
   }
   const nodeTree = createNodeTree(element, container);
-  computeLayout(nodeTree);
+  const computeLayoutTree = filterDeleteElement(nodeTree);
+  computeLayout(computeLayoutTree);
   return createElement(nodeTree, container, null);
 }

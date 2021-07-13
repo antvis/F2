@@ -1,41 +1,44 @@
-import React, { RefObject } from "react";
-import Chart from "@ali/f2-components";
+import React, { RefObject } from 'react';
+import Canvas from '@ali/f2-components';
 
-export interface ChartProps {
+export interface CanvasProps {
   className?: string;
   pixelRatio?: number;
   width?: number | string;
   height?: number | string;
-  data: any;
   padding?: (string | number)[];
   animate?: boolean;
+  canvasRef?: RefObject<HTMLCanvasElement>;
 }
 
-class ReactChart extends React.Component<ChartProps> {
+class ReactCanvas extends React.Component<CanvasProps> {
   canvasRef: RefObject<HTMLCanvasElement>;
-  chart: Chart;
+  canvas: Canvas;
 
-  constructor(props: ChartProps) {
+  constructor(props: CanvasProps) {
     super(props);
-    this.canvasRef = React.createRef();
+    const { canvasRef } = props;
+    this.canvasRef = canvasRef || React.createRef();
   }
 
   componentDidMount() {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
-    const context = canvasEl.getContext("2d");
-
-    const chart = new Chart({
+    const context = canvasEl.getContext('2d');
+    const canvas = new Canvas({
+      // 已经有高清方案，这里默认用1
+      pixelRatio: 1,
       ...props,
+      // context 内部创建，不能被覆盖
       context,
     });
-    chart.render();
-    this.chart = chart;
+    this.canvas = canvas;
+    canvas.render();
   }
 
   componentDidUpdate() {
-    const { chart, props } = this;
-    chart.update(props);
+    const { canvas, props } = this;
+    canvas.update(props);
   }
 
   render() {
@@ -48,16 +51,16 @@ class ReactChart extends React.Component<ChartProps> {
         width: "100%",
         height: "100%",
         display: "block",
-        padding: "0",
-        margin: "0",
+        padding: 0,
+        margin: 0,
       },
     });
   }
 
   componentWillUnmount() {
-    const { chart } = this;
-    chart.destroy();
+    const { canvas } = this;
+    canvas.destroy();
   }
 }
 
-export default ReactChart;
+export default ReactCanvas;

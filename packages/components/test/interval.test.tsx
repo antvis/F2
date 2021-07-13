@@ -1,39 +1,62 @@
 import { jsx } from '@ali/f2-jsx';
-import Chart, { Interval, Coord, Tooltip } from '../src';
+import Canvas, { Chart, Axis, Interval, Tooltip } from '../src';
 import { createContext } from './util';
 const context = createContext();
 
 const data = [
-  { genre: 'Sports', sold: 275, type: 'a' },
-  { genre: 'Strategy', sold: 115, type: 'a' },
-  { genre: 'Action', sold: 120, type: 'a' },
-  { genre: 'Shooter', sold: 350, type: 'a' },
-  { genre: 'Other', sold: 150, type: 'a' }
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: -110 }
 ];
 
 describe('Interval', () => {
   it('render', () => {
     const ref = {};
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        {/* <Coord type="polar" transposed={ false } /> */}
-        <Interval
-          ref={ ref }
-          position="genre*sold"
-          color="genre"
-          onPress={ (ev) => {
-            const { points, geometry } = ev || {};
-            const point = points[0];
-            const records = geometry.getSnapRecords(point);
-            console.log(records);
-          } }
-        />
-        <Tooltip geometryRef={ ref } records={ [{ x: 179.5, y: 280 }] } />
-      </Chart>
+      <Canvas context={ context }>
+        <Chart data={ data } >
+          <Axis field="genre" />
+          <Axis field="sold" min={ 0 } />
+          <Interval
+            // ref={ ref }
+            position="genre*sold"
+            color="genre"
+            // onPress={ (ev) => {
+            //   const { points, geometry } = ev || {};
+            //   const point = points[0];
+            //   const records = geometry.getSnapRecords(point);
+            //   console.log(records);
+            // } }
+          />
+          {/* <Tooltip geometryRef={ ref } records={ [{ x: 179.5, y: 280 }] } /> */}
+        </Chart>
+      </Canvas>
     );
 
     // @ts-ignore
-    const chart = new type(props);
-    chart.render();
+    const canvas = new type(props);
+    canvas.render();
+  })
+
+  it('startOnZero', () => {
+    const { type, props } = (
+      <Canvas context={ context }>
+        <Chart data={ data } >
+          <Axis field="genre" />
+          <Axis field="sold" min={ 0 } />
+          <Interval
+            startOnZero={false}
+            position="genre*sold"
+            color="genre"
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
   })
 });

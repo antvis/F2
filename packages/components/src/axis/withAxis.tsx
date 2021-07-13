@@ -1,5 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import { batch2hd } from '@ali/f2x-util';
+import Chart from '../chart';
 import Component from '../component';
 
 function getDefaultStyle(props) {
@@ -33,10 +34,13 @@ function getDefaultStyle(props) {
 export default View => {
   return class Axis extends Component {
 
+    chart: Chart;
     dimType: 'x' | 'y';
     style: any;
+    lastLayout: any;
 
-    mount() {
+    init(config) {
+      super.init(config);
       const { props, chart } = this;
       const {
         field,
@@ -45,58 +49,62 @@ export default View => {
         tickCount,
         range,
         formatter,
-        ticks,
+        // ticks,
         mask,
         min,
         max,
+        nice,
       } = props;
 
-      // 设置scale
       chart.scale(field, {
         type,
         tickCount,
         range,
-        formatter,
         mask,
+        formatter,
         min,
         max,
-        ticks
+        nice
       });
+    }
 
+    mount() {
+      const { props, chart } = this;
+      const {
+        field,
+        visible,
+      } = props;
+      if (visible === false) {
+        return;
+      }
+      const { coord } = chart;
+      const { transposed } = coord;
+      const xScale = chart.getXScale();
+      const dimType = field === xScale.field ? 'x' : 'y';
+      const otherDim = dimType === 'x' ? 'y' : 'x';
+
+      this.dimType = transposed ? otherDim : dimType;
       this.style = getDefaultStyle(props);
 
-      // geom 可能在axis后面添加
-      chart.on('beforegeomdraw', () => {
-        if (visible === false) {
-          return;
-        }
-        const coord = chart.get('coord');
-        const { transposed } = coord;
-        const xScale = chart.getXScale();
-        const dimType = field === xScale.field ? 'x' : 'y';
-        const otherDim = dimType === 'x' ? 'y' : 'x';
+      const ticks = this.getTicks();
+      // TODO: 应该记录上下左右大小，然后还原，一个boolean不太够
 
-        this.dimType = transposed ? otherDim : dimType;
-
-        const ticks = this.getTicks();
-        this._updateLayout(ticks);
-      });
+      this._updateLayout(ticks);
     }
     update(props) {
       this.style = getDefaultStyle(props);
     }
     getTicks() {
-      const { props, chart } = this;
+      const { chart, props } = this;
+      const { scales } = chart;
       const { field } = props;
-      const scale = chart.get('scales')[field];
-      const ticks = scale.getTicks();
-      return ticks;
+      return scales[field].getTicks();
     }
     // 获取ticks最大的宽高
     getMaxBBox(ticks) {
-      const { chart, style } = this;
+      const { style, container } = this;
       const { label, labelOffset } = style;
-      const group = chart.get('backPlot').addGroup();
+      const group = container.addGroup();
       let width = 0;
       let height = 0;
       ticks.forEach(tick => {
@@ -120,8 +128,8 @@ export default View => {
       }
     }
     _updateLayout(ticks) {
-      const { dimType, chart, props, layout } = this;
-      const coord = chart.get('coord');
+      const { dimType, chart, props } = this;
+      const { coord } = chart;
       const { isPolar } = coord;
       // 极坐标下，y轴 不计算
       if (isPolar && dimType === 'y') {
@@ -129,7 +137,7 @@ export default View => {
       }
       const { width, height } = this.getMaxBBox(ticks);
       if (isPolar) {
-        layout.update({
+        chart.updateLayout({
           top: height,
           right: -width,
           bottom: -height,
@@ -140,35 +148,36 @@ export default View => {
       const { position } = props;
       if (dimType === 'y') {
         if (position === 'right') {
-          layout.update({ right: -width });
+          chart.updateLayout({ right: -width });
           return;
         }
-        layout.update({ left: width });
+        chart.updateLayout({ left: width });
         return;
       }
       if (position === 'top') {
-        layout.update({ top: height });
+        chart.updateLayout({ top: height });
         return;
       }
-      layout.update({ bottom: -height });
+      chart.updateLayout({ bottom: -height });
     }
 
     convertPoint() {
       const { chart, props } = this;
-      const { field} = props;
+      const { field } = props;
 
-      const coord = chart.get('coord');
       const xScale = chart.getXScale();
       const ticks = this.getTicks();
 
       const dimType = field === xScale.field ? 'x' : 'y';
       const otherDim = dimType === 'x' ? 'y' : 'x';
       return ticks.map(tick => {
-        const start = coord.convertPoint({
+        // @ts-ignore
+        const start = chart.convertPoint({
           [dimType]: tick.value,
           [otherDim]: 0,
         });
-        const end = coord.convertPoint({
+        // @ts-ignore
+        const end = chart.convertPoint({
           [dimType]: tick.value,
           [otherDim]: 1,
         });
@@ -184,7 +193,7 @@ export default View => {
       if (visible === false) {
         return null;
       }
-      const coord = chart.get('coord');
+      const { coord, plot } = chart;
       const isPolar = coord.isPolar;
       const ticks = this.convertPoint();
 
@@ -196,6 +205,7 @@ export default View => {
         dimType={ dimType }
         isPolar={ isPolar }
         coord={ coord }
+        plot={ plot }
         style={ style }
         { ...props }
         ticks={ ticks }
