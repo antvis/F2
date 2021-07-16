@@ -1,2 +1,2 @@
-import Dodge from '@antv/adjust/lib/dodge';
+import Dodge from '@antv/adjust/lib/adjusts/dodge';
 export default Dodge;
