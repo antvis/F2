@@ -57,12 +57,12 @@ export default View => {
       const { props } = this;
       const { records } = props;
 
-      // points 里面已经配置好各点的style了
-      const points = records.map(record => this.parsePoint(record));
+      // guides 里面已经配置好各个guide的style了
+      const guides = records.map(record => this.parsePoint(record));
 
       return <View
         triggerRef={ this.triggerRef }
-        points={ points }
+        guides={ guides }
         { ...props }
       />
     }

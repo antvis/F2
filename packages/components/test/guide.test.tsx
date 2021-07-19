@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { jsx } from "@ali/f2-jsx";
-import Canvas, { Chart, Axis, Line, withGuide } from "../src";
+import Canvas, { Chart, Axis, Line, withGuide, Guide } from "../src";
 import { createContext } from "./util";
 const context = createContext();
 // import data from '../../fund-charts/test/data/managerData'
@@ -13,45 +13,12 @@ const data = [
   { genre: "Other", sold: 150, type: "a" },
 ];
 
-// 文字辅助
-const GuideTextView = (props) => {
-  const { points, triggerRef } = props;
-  const baseAttrs = {
-    textBaseline: "center",
-  };
-  return (
-    <group ref={triggerRef}>
-      {points.map((item) => {
-        const { point, style, attrs, offsetX, offsetY, content } = item;
-        const { x, y } = point;
-        const posX = x + (offsetX || 0);
-        const posY = y + (offsetY || 0);
-        return (
-          <group>
-            <text
-              attrs={{
-                text: content,
-                x: posX,
-                y: posY,
-                ...baseAttrs,
-                ...attrs,
-              }}
-            />
-          </group>
-        );
-      })}
-    </group>
-  );
-};
-
-const TextGuide = withGuide(GuideTextView);
-
 describe("Guide ", () => {
   it("withGuide 正常case", () => {
     const { type, props } = (
       <Canvas height={500} width={500} context={context} animate={false}>
         <Chart data={data}>
-          <TextGuide
+          <Guide
             onClick={(ev) => {
               console.log('ev: ', ev.points);
             }}
@@ -66,11 +33,14 @@ describe("Guide ", () => {
                 // offsetX: 20,
               },
               {
-                type: "text",
+                type: "image",
                 position: ["Strategy", 115],
-                content: 'hello world',
-                attrs: { fill: "#000", fontSize: "24px" },
-                offsetY: -10,
+                src: 'https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png',
+                attrs: {
+                   height: 24,
+                   width: 24 
+                  },
+                offsetY: -4,
               },
             ]}
           />
@@ -84,7 +54,8 @@ describe("Guide ", () => {
 
     const container = chart.container;
     // console.log(container);
-
-    expect(container.get('children')[0]._attrs.children[0]._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.attrs.text).toBe('hello world');
+          
+    expect(container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.attrs.src).toBe('https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png');
+    
   });
 });
