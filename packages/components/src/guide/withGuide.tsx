@@ -1,5 +1,6 @@
 import { jsx } from '@ali/f2-jsx';
 import Component from '../component/index';
+import { isArray, isFunction } from '@ali/f2x-util';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -13,37 +14,50 @@ export default View => {
     triggerRef: any;
 
     mount() {
-      // const { chart, props } = this;
-      // const { onClick } = props;
-      // const canvas = chart.get('canvas');
+      const { container, props } = this;
+      const { onClick } = props;
+      const canvas = container.get("canvas");
       // // 创建ref
-      // this.triggerRef = {};
+      this.triggerRef = {};
 
-      // canvas.on('click', ev => {
-      //   const { points } = ev;
-      //   const shape = this.triggerRef.current;
-      //   if (!shape) return;
-      //   const bbox = shape.getBBox();
-      //   if (isInBBox(bbox, points[0])) {
-      //     ev.shape = shape;
-      //     onClick && onClick(ev);
-      //   }
-      // });
+      canvas.on('click', ev => {
+        const { points } = ev;
+        const shape = this.triggerRef.current;
+        if (!shape) return;
+        const bbox = shape.getBBox();
+        if (isInBBox(bbox, points[0])) {
+          ev.shape = shape;
+          onClick && onClick(ev);
+        }
+      });
     }
     parsePoint(record) {
+      const { position: originPosition } = record;
       const { chart } = this;
       const { coord } = chart;
       const xScale = chart.getXScale();
 
+      let position = []
+      if(isFunction(originPosition)) {
+        position = originPosition();
+      } else if (isArray(originPosition) && originPosition.length === 2) {
+        position= originPosition;
+      }
+
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
-      const x = xScale.scale(record[xScale.field]);
-      const y = yScale.scale(record[yScale.field]);
-      return coord.convertPoint({ x, y });
+      const x = xScale.scale(position[0]);
+      const y = yScale.scale(position[1]);
+      return {
+        ... record,
+        point: coord.convertPoint({ x, y })
+      };
     }
     render() {
       const { props } = this;
       const { records } = props;
+
+      // points 里面已经配置好各点的style了
       const points = records.map(record => this.parsePoint(record));
 
       return <View
