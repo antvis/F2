@@ -46,7 +46,7 @@ const GuideTextView = (props) => {
 
 const TextGuide = withGuide(GuideTextView);
 
-describe.only("Guide ", () => {
+describe("Guide ", () => {
   it("withGuide 正常case", () => {
     const { type, props } = (
       <Canvas height={500} width={500} context={context} animate={false}>
