@@ -6,7 +6,7 @@ export default (props) => {
     <group>
       {
         nodes.map(node => {
-          const { x0, y0, x1, y1 } = node;
+          const { x0, y0, x1, y1, color } = node;
           return (
             <rect
               attrs={{
@@ -14,7 +14,7 @@ export default (props) => {
                 y: y0,
                 width: x1 - x0,
                 height: y1 - y0,
-                fill: 'gray',
+                fill: color,
                 radius: '8px'
               }}
             />
