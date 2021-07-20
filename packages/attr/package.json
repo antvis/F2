@@ -1,6 +1,6 @@
 {
   "name": "@ali/f2-attr",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
@@ -12,8 +12,8 @@
     "es"
   ],
   "dependencies": {
-    "@antv/util": "~2.0.6",
     "@antv/scale": "~0.3.3",
+    "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5"
   },
   "publishConfig": {
