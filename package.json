@@ -7,6 +7,7 @@
     "clean": "lerna clean",
     "dev": "npm run test-watch packages/runtime/test/index.test.ts",
     "build": "father build",
+    "build-watch": "father build -w",
     "test": "npm run build && jest",
     "test-live": "npm run test-watch packages",
     "test-watch": "DEBUG_MODE=1 jest --watch",
