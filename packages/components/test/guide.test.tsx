@@ -71,9 +71,9 @@ describe("Guide ", () => {
     const container = chart.container;
     // console.log(container);
 
-    // expect(
-    //   container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs
-    //     .children[1]._attrs.children[0]._attrs.attrs.src
-    // ).toBe("https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png");
+    // 10个图例 和1条线
+    expect(
+      container._attrs.children[0]._attrs.children.length
+    ).toBe(11);
   });
 });

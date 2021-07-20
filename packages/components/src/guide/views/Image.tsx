@@ -34,8 +34,8 @@ export default (props: ImageGuideProps) => {
     <group style={style} ref={triggerRef}>
       <image
         attrs={{
-          ...attrs,
           ...baseAttrs,
+          ...attrs,
           x: posX,
           y: posY,
           src,
