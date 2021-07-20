@@ -1,6 +1,13 @@
 // @ts-nocheck
 import { jsx } from "@ali/f2-jsx";
-import Canvas, { Chart, Axis, Line, withGuide, ImageGuide, TextGuide } from "../src";
+import Canvas, {
+  Chart,
+  Axis,
+  Line,
+  withGuide,
+  ImageGuide,
+  TextGuide,
+} from "../src";
 import { createContext } from "./util";
 const context = createContext();
 // import data from '../../fund-charts/test/data/managerData'
@@ -18,16 +25,15 @@ describe("Guide ", () => {
     const { type, props } = (
       <Canvas height={500} width={500} context={context} animate={false}>
         <Chart data={data}>
-
           {/* 折线 */}
           <Line position="genre*sold" color="type" />
 
           {/* 文字Guide */}
           {data.map((item) => {
-            const { sold, genre } = item;
+            const { sold } = item;
             return (
               <TextGuide
-                position={[genre, sold]}
+                records={[item]}
                 onClick={(ev) => {
                   console.log("ev: ", ev.points);
                 }}
@@ -44,10 +50,9 @@ describe("Guide ", () => {
 
           {/* 图片Guide */}
           {data.map((item) => {
-            const { sold, genre } = item;
             return (
               <ImageGuide
-                position={[genre, sold]}
+                records={[item]}
                 onClick={(ev) => {
                   console.log("ev: ", ev.points);
                 }}
@@ -71,8 +76,6 @@ describe("Guide ", () => {
     // console.log(container);
 
     // 10个图例 和1条线
-    expect(
-      container._attrs.children[0]._attrs.children.length
-    ).toBe(11);
+    expect(container._attrs.children[0]._attrs.children.length).toBe(11);
   });
 });

@@ -63,7 +63,7 @@ describe('geometry', () => {
             ref={ componentRef }
             position="genre*sold"
             color="type"
-            adjust="dodge"
+            // adjust="dodge"
           />
         </Chart>
       </Canvas>

@@ -31,30 +31,24 @@ export default (View) => {
         }
       });
     }
-    parsePoint() {
-      const { position: originPosition } = this.props;
+    parsePoint(record) {
       const { chart } = this;
       const { coord } = chart;
       const xScale = chart.getXScale();
 
-      let position = [];
-      if (isFunction(originPosition)) {
-        position = originPosition();
-      } else if (isArray(originPosition) && originPosition.length === 2) {
-        position = originPosition;
-      }
-
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
-      const x = xScale.scale(position[0]);
-      const y = yScale.scale(position[1]);
+      const x = xScale.scale(record[xScale.field]);
+      const y = yScale.scale(record[yScale.field]);
+      
       return coord.convertPoint({ x, y });
     }
     render() {
       const { props } = this;
-      const point = this.parsePoint();
+      const { records } = props;
+      const points = records.map(record => this.parsePoint(record));
 
-      return <View triggerRef={this.triggerRef} point={point} {...props} />;
+      return <View ref={this.triggerRef} points={points} {...props} />;
     }
   };
 };
