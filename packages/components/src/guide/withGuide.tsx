@@ -1,5 +1,6 @@
-import { jsx } from '@ali/f2-jsx';
-import Component from '../component/index';
+import { jsx } from "@ali/f2-jsx";
+import Component from "../component/index";
+import { isArray, isFunction } from "@ali/f2x-util";
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -7,28 +8,28 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default View => {
+export default (View) => {
   return class Guide extends Component {
     chart: any;
     triggerRef: any;
 
     mount() {
-      // const { chart, props } = this;
-      // const { onClick } = props;
-      // const canvas = chart.get('canvas');
+      const { container, props } = this;
+      const { onClick } = props;
+      const canvas = container.get("canvas");
       // // 创建ref
-      // this.triggerRef = {};
+      this.triggerRef = {};
 
-      // canvas.on('click', ev => {
-      //   const { points } = ev;
-      //   const shape = this.triggerRef.current;
-      //   if (!shape) return;
-      //   const bbox = shape.getBBox();
-      //   if (isInBBox(bbox, points[0])) {
-      //     ev.shape = shape;
-      //     onClick && onClick(ev);
-      //   }
-      // });
+      canvas.on("click", (ev) => {
+        const { points } = ev;
+        const shape = this.triggerRef.current;
+        if (!shape) return;
+        const bbox = shape.getBBox();
+        if (isInBBox(bbox, points[0])) {
+          ev.shape = shape;
+          onClick && onClick(ev);
+        }
+      });
     }
     parsePoint(record) {
       const { chart } = this;
@@ -39,6 +40,7 @@ export default View => {
       const yScale = chart.getYScales()[0];
       const x = xScale.scale(record[xScale.field]);
       const y = yScale.scale(record[yScale.field]);
+      
       return coord.convertPoint({ x, y });
     }
     render() {
@@ -46,11 +48,7 @@ export default View => {
       const { records } = props;
       const points = records.map(record => this.parsePoint(record));
 
-      return <View
-        triggerRef={ this.triggerRef }
-        points={ points }
-        { ...props }
-      />
+      return <View ref={this.triggerRef} points={points} {...props} />;
     }
-  }
-}
+  };
+};

@@ -1,5 +1,11 @@
 import withGuide from './withGuide';
-import GuideView from './guideView';
+import ImageGuideView from './views/Image'
+import TextGuideView from './views/Text'
 
-export { withGuide, GuideView };
-export default withGuide(GuideView);
+const DefaultGuideView = () => null;
+
+const ImageGuide = withGuide(ImageGuideView);
+const TextGuide = withGuide(TextGuideView);
+
+export default withGuide(DefaultGuideView);
+export { withGuide, ImageGuide, TextGuide }

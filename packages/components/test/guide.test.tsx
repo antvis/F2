@@ -1,30 +1,70 @@
 // @ts-nocheck
-import { jsx } from '@ali/f2-jsx';
-import Canvas, { Chart, Axis, Line, Guide } from '../src';
-import { createContext } from './util';
+import { jsx } from "@ali/f2-jsx";
+import Canvas, {
+  Chart,
+  Axis,
+  Line,
+  withGuide,
+  ImageGuide,
+  TextGuide,
+} from "../src";
+import { createContext } from "./util";
 const context = createContext();
-import data from '../../fund-charts/test/data/managerData'
+// import data from '../../fund-charts/test/data/managerData'
 
-// const data = [
-//   { genre: 'Sports', sold: 275, type: 'a' },
-//   { genre: 'Strategy', sold: 115, type: 'a' },
-//   { genre: 'Action', sold: 120, type: 'a' },
-//   { genre: 'Shooter', sold: 350, type: 'a' },
-//   { genre: 'Other', sold: 150, type: 'a' }
-// ];
+const data = [
+  { genre: "Sports", sold: 275, type: "a" },
+  { genre: "Strategy", sold: 115, type: "a" },
+  { genre: "Action", sold: 120, type: "a" },
+  { genre: "Shooter", sold: 350, type: "a" },
+  { genre: "Other", sold: 150, type: "a" },
+];
 
-describe('Guide test', () => {
-  it('render', () => {
+describe("Guide ", () => {
+  it("withGuide 正常case", () => {
     const { type, props } = (
-      <Canvas context={ context } pixelRatio={ window.devicePixelRatio } animate={ false }>
-        <Chart data={ data.data } >
-          <Line
-            position="reportDateTimestamp*rate"
-            color={'codeType'}
-          />
-          {/* <Guide
-            records={ [{ genre: 'Sports', sold: 275 }] }
-          /> */}
+      <Canvas height={500} width={500} context={context} animate={false}>
+        <Chart data={data}>
+          {/* 折线 */}
+          <Line position="genre*sold" color="type" />
+
+          {/* 文字Guide */}
+          {data.map((item) => {
+            const { sold } = item;
+            return (
+              <TextGuide
+                records={[item]}
+                onClick={(ev) => {
+                  console.log("ev: ", ev.points);
+                }}
+                content={sold + "个"}
+                attrs={{
+                  fill: "#000",
+                  fontSize: "24px",
+                }}
+                offsetY={-20}
+                offsetX={-15}
+              />
+            );
+          })}
+
+          {/* 图片Guide */}
+          {data.map((item) => {
+            return (
+              <ImageGuide
+                records={[item]}
+                onClick={(ev) => {
+                  console.log("ev: ", ev.points);
+                }}
+                src="https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png"
+                attrs={{
+                  height: 24,
+                  width: 24,
+                }}
+                offsetY={-4}
+              />
+            );
+          })}
         </Chart>
       </Canvas>
     );
@@ -32,13 +72,10 @@ describe('Guide test', () => {
     const chart = new type(props);
     chart.render();
 
-    // const container = chart.container;
+    const container = chart.container;
     // console.log(container);
 
-    // expect(container.get('children').length).toBe(2);
-
-
-
-    
-  })
+    // 10个图例 和1条线
+    expect(container._attrs.children[0]._attrs.children.length).toBe(11);
+  });
 });
