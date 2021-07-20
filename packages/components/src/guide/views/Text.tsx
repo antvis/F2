@@ -14,7 +14,7 @@ type TextGuideProps = {
 const defaultProps: TextGuideProps = {
   offsetX: 0,
   offsetY: 0,
-  points: []]
+  points: [],
   content: null,
 };
 
