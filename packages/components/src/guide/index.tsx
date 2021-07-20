@@ -4,11 +4,8 @@ import TextGuideView from './views/Text'
 
 const DefaultGuideView = () => null;
 
-const Guides  = {
-  ImageGuide: withGuide(ImageGuideView),
-  TextGuide: withGuide(TextGuideView)
-}
-
+const ImageGuide = withGuide(ImageGuideView);
+const TextGuide = withGuide(TextGuideView);
 
 export default withGuide(DefaultGuideView);
-export { withGuide, Guides }
+export { withGuide, ImageGuide, TextGuide }

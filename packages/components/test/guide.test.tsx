@@ -1,11 +1,10 @@
 // @ts-nocheck
 import { jsx } from "@ali/f2-jsx";
-import Canvas, { Chart, Axis, Line, withGuide, Guides } from "../src";
+import Canvas, { Chart, Axis, Line, withGuide, ImageGuide, TextGuide } from "../src";
 import { createContext } from "./util";
 const context = createContext();
 // import data from '../../fund-charts/test/data/managerData'
 
-const { ImageGuide, TextGuide } = Guides;
 const data = [
   { genre: "Sports", sold: 275, type: "a" },
   { genre: "Strategy", sold: 115, type: "a" },
