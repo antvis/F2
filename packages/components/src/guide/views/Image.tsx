@@ -8,6 +8,7 @@ type ImageGuideProps = {
   // TODO: 后续补充
   attrs?: any;
   style?: any;
+  triggerRef?: any;
 };
 
 const defaultProps: ImageGuideProps = {
@@ -19,10 +20,10 @@ const defaultProps: ImageGuideProps = {
 
 export default (props: ImageGuideProps) => {
   const cfg = { ...defaultProps, ...props };
-  const { point, style, attrs, offsetX, offsetY, src } = cfg;
+  const { point, style, attrs, offsetX, offsetY, src, triggerRef } = cfg;
   const baseAttrs = {
-    textBaseline: "center",
-    fill: "#000",
+    height: 10,
+    width: 10,
   };
   const { x, y } = point || {};
   const { height = 0, width = 0 } = attrs;
@@ -30,7 +31,7 @@ export default (props: ImageGuideProps) => {
   const posY = y + (offsetY || 0) - width / 2;
 
   return (
-    <group style={style}>
+    <group style={style} ref={triggerRef}>
       <image
         attrs={{
           ...attrs,

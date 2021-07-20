@@ -1,10 +1,11 @@
 // @ts-nocheck
 import { jsx } from "@ali/f2-jsx";
-import Canvas, { Chart, Axis, Line, withGuide, Guide } from "../src";
+import Canvas, { Chart, Axis, Line, withGuide, Guides } from "../src";
 import { createContext } from "./util";
 const context = createContext();
 // import data from '../../fund-charts/test/data/managerData'
 
+const { ImageGuide, TextGuide } = Guides;
 const data = [
   { genre: "Sports", sold: 275, type: "a" },
   { genre: "Strategy", sold: 115, type: "a" },
@@ -18,33 +19,48 @@ describe("Guide ", () => {
     const { type, props } = (
       <Canvas height={500} width={500} context={context} animate={false}>
         <Chart data={data}>
-          <Guide
-            onClick={(ev) => {
-              console.log('ev: ', ev.points);
-            }}
-            records={[
-              {
-                type: "text",
-                position: ["Sports", 275],
-                content: 275,
-                attrs: { fill: "#000", fontSize: "24px" },
-                style: { display: "flex" },
-                offsetY: -10,
-                // offsetX: 20,
-              },
-              {
-                type: "image",
-                position: ["Strategy", 115],
-                src: 'https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png',
-                attrs: {
-                   height: 24,
-                   width: 24 
-                  },
-                offsetY: -4,
-              },
-            ]}
-          />
+
+          {/* 折线 */}
           <Line position="genre*sold" color="type" />
+
+          {/* 文字Guide */}
+          {data.map((item) => {
+            const { sold, genre } = item;
+            return (
+              <TextGuide
+                position={[genre, sold]}
+                onClick={(ev) => {
+                  console.log("ev: ", ev.points);
+                }}
+                content={sold + "个"}
+                attrs={{
+                  fill: "#000",
+                  fontSize: "24px",
+                }}
+                offsetY={-20}
+                offsetX={-15}
+              />
+            );
+          })}
+
+          {/* 图片Guide */}
+          {data.map((item) => {
+            const { sold, genre } = item;
+            return (
+              <ImageGuide
+                position={[genre, sold]}
+                onClick={(ev) => {
+                  console.log("ev: ", ev.points);
+                }}
+                src="https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png"
+                attrs={{
+                  height: 24,
+                  width: 24,
+                }}
+                offsetY={-4}
+              />
+            );
+          })}
         </Chart>
       </Canvas>
     );
@@ -54,8 +70,10 @@ describe("Guide ", () => {
 
     const container = chart.container;
     // console.log(container);
-          
-    expect(container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.attrs.src).toBe('https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png');
-    
+
+    // expect(
+    //   container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs
+    //     .children[1]._attrs.children[0]._attrs.attrs.src
+    // ).toBe("https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png");
   });
 });

@@ -1,6 +1,6 @@
-import { jsx } from '@ali/f2-jsx';
-import Component from '../component/index';
-import { isArray, isFunction } from '@ali/f2x-util';
+import { jsx } from "@ali/f2-jsx";
+import Component from "../component/index";
+import { isArray, isFunction } from "@ali/f2x-util";
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -8,7 +8,7 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default View => {
+export default (View) => {
   return class Guide extends Component {
     chart: any;
     triggerRef: any;
@@ -20,7 +20,7 @@ export default View => {
       // // 创建ref
       this.triggerRef = {};
 
-      canvas.on('click', ev => {
+      canvas.on("click", (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape) return;
@@ -31,40 +31,30 @@ export default View => {
         }
       });
     }
-    parsePoint(record) {
-      const { position: originPosition } = record;
+    parsePoint() {
+      const { position: originPosition } = this.props;
       const { chart } = this;
       const { coord } = chart;
       const xScale = chart.getXScale();
 
-      let position = []
-      if(isFunction(originPosition)) {
+      let position = [];
+      if (isFunction(originPosition)) {
         position = originPosition();
       } else if (isArray(originPosition) && originPosition.length === 2) {
-        position= originPosition;
+        position = originPosition;
       }
 
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
       const x = xScale.scale(position[0]);
       const y = yScale.scale(position[1]);
-      return {
-        ... record,
-        point: coord.convertPoint({ x, y })
-      };
+      return coord.convertPoint({ x, y });
     }
     render() {
       const { props } = this;
-      const { records } = props;
+      const point = this.parsePoint();
 
-      // guides 里面已经配置好各个guide的style了
-      const guides = records.map(record => this.parsePoint(record));
-
-      return <View
-        triggerRef={ this.triggerRef }
-        guides={ guides }
-        { ...props }
-      />
+      return <View triggerRef={this.triggerRef} point={point} {...props} />;
     }
-  }
-}
+  };
+};

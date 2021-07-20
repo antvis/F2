@@ -8,6 +8,7 @@ type TextGuideProps = {
   // TODO: 后续补充
   attrs?: any;
   style?: any;
+  triggerRef?: any;
 };
 
 const defaultProps: TextGuideProps = {
@@ -19,7 +20,7 @@ const defaultProps: TextGuideProps = {
 
 export default (props: TextGuideProps) => {
   const cfg = { ...defaultProps, ...props };
-  const { point, style, attrs, offsetX, offsetY, content } = cfg;
+  const { point, style, attrs, offsetX, offsetY, content, triggerRef } = cfg;
   const baseAttrs = {
     textBaseline: "center",
     fill: "#000",
@@ -29,7 +30,7 @@ export default (props: TextGuideProps) => {
   const posY = y + (offsetY || 0);
 
   return (
-    <group style={style}>
+    <group style={style} ref={triggerRef}>
       <text
         attrs={{
           text: content,
