@@ -1,6 +1,6 @@
 import { jsx } from "@ali/f2-jsx";
 import Component from "../component/index";
-import { isArray, isFunction } from "@ali/f2x-util";
+import { isString } from "@antv/util";
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -31,22 +31,59 @@ export default (View) => {
         }
       });
     }
+
+    // 解析record里的模板字符串，如min、max、50%...
+    parseReplaceStr(value, scale) {
+      const { min, max } = scale;
+      const absRange = Math.abs(min) + Math.abs(max);
+      const replaceMap = { min, max, median: absRange / 2 };
+
+      // 传入的是 min、max、median 的
+      if (replaceMap[value]) {
+        return replaceMap[value];
+      }
+
+      // 传入的是 xx%
+      if (
+        isString(value) &&
+        value.indexOf("%") != -1 &&
+        !isNaN(Number(value.slice(0, -1)))
+      ) {
+        const rateValue = Number(value.slice(0, -1));
+        const percent = (rateValue / 100) * absRange;
+        if (percent <= min) {
+          return min;
+        }
+        if (percent >= max) {
+          return max;
+        }
+        return percent;
+      }
+
+      return value;
+    }
+
     parsePoint(record) {
       const { chart } = this;
       const { coord } = chart;
       const xScale = chart.getXScale();
-
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
-      const x = xScale.scale(record[xScale.field]);
-      const y = yScale.scale(record[yScale.field]);
-      
+
+      // 解析record
+      const xValue = this.parseReplaceStr(record[xScale.field], xScale);
+      const yValue = this.parseReplaceStr(record[yScale.field], yScale);
+
+      // 归一化
+      const x = xScale.scale(xValue);
+      const y = yScale.scale(yValue);
+
       return coord.convertPoint({ x, y });
     }
     render() {
       const { props } = this;
       const { records } = props;
-      const points = records.map(record => this.parsePoint(record));
+      const points = records.map((record) => this.parsePoint(record));
 
       return <View ref={this.triggerRef} points={points} {...props} />;
     }
