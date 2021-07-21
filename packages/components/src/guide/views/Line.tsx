@@ -13,7 +13,7 @@ const defaultProps = {};
 
 const baseAttrs = {
   stroke: "#999",
-  lineDash: [0, 2, 2],
+  lineDash: [0, '2px', '2px'],
   lineWidth: "3px",
 }
 
