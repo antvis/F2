@@ -2,13 +2,12 @@ import { jsx } from "@ali/f2-jsx";
 
 type ImageGuideProps = {
   src: string;
-  offsetX?: number;
-  offsetY?: number;
   points?: { x: number; y: number }[] | null;
   // TODO: 后续补充
   attrs?: any;
   style?: any;
-  triggerRef?: any;
+  offsetX?: number;
+  offsetY?: number;
 };
 
 const defaultProps: ImageGuideProps = {
@@ -17,14 +16,14 @@ const defaultProps: ImageGuideProps = {
   points: [],
   src: "",
 };
+const baseAttrs = {
+  height: '10px',
+  width: '10px',
+};
 
 export default (props: ImageGuideProps) => {
   const cfg = { ...defaultProps, ...props };
   const { points, style, attrs, offsetX, offsetY, src } = cfg;
-  const baseAttrs = {
-    height: 10,
-    width: 10,
-  };
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = attrs;
   const posX = x + (offsetX || 0) - height / 2;
