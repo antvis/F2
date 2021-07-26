@@ -1,24 +1,41 @@
-import { jsx } from '@ali/f2-jsx';
-import Component from '../component';
-import { partition, hierarchy } from 'd3-hierarchy';
-import { Category } from '@ali/f2-attr';
+import { jsx } from "@ali/f2-jsx";
+import Component from "../component";
+import { partition, hierarchy } from "d3-hierarchy";
+import { Category } from "@ali/f2-attr";
+import { isInBBox } from "@ali/f2x-util";
 
 function rootParent(data) {
   let d = data;
-  while (d.depth > 1){
+  while (d.depth > 1) {
     d = d.parent;
   }
   return d;
 }
 
-export default View => {
+export default (View) => {
   return class Sunburst extends Component {
-
     color: Category;
+    triggerRef: any[];
 
     mount() {
-      const { props } = this;
-      const { data, color } = props;
+      const { props, container } = this;
+      const canvas = container.get("canvas");
+      const { data, color, onClick } = props;
+
+      this.triggerRef = [];
+
+      canvas.on("click", (ev) => {
+        const { points } = ev;
+        const shape = this.triggerRef.find((ref) => {
+          return isInBBox(ref.current.getBBox(), points[0]);
+        });
+        if (shape) {
+          ev.shape = shape;
+          ev.payload = shape.payload;
+          onClick && onClick(ev);
+        }
+      });
+
       this.color = new Category({
         ...color,
         data,
@@ -39,27 +56,49 @@ export default View => {
       }
     }
 
+    _computeText = (text, attrs) => {
+      const { container } = this;
+      const group = container.addGroup();
+      const shape = group.addShape("text", {
+        attrs: {
+          ...attrs,
+          x: 0,
+          y: 0,
+          text: text,
+        },
+      });
+      const bbox = shape.getBBox();
+      shape.remove();
+      return { width: bbox.width, height: bbox.height };
+    };
+
     sunburst() {
       const { props } = this;
       const { data, value } = props;
 
       const root = hierarchy({ children: data })
-        .sum(function(d) { return d[value]; })
+        .sum(function (d) {
+          return d[value];
+        })
         .sort((a, b) => b[value] - a[value]);
 
       const nodes = partition()(root);
       const { children } = nodes;
       this._mapping(children);
-      return nodes.children;
+      return nodes;
     }
 
     render() {
       const nodes = this.sunburst();
-      const { props } = this;
-      return <View
-        nodes={ nodes }
-        { ...props }
-      />;
+      const { props, _computeText } = this;
+      return (
+        <View
+          {...props}
+          nodes={nodes}
+          computeText={_computeText}
+          triggerRef={this.triggerRef}
+        />
+      );
     }
-  }
-}
+  };
+};

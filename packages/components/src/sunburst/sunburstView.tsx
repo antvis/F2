@@ -2,6 +2,7 @@ import { jsx } from '@ali/f2-jsx';
 
 export default (props) => {
   const { nodes, layout } = props;
+  const nodeChildren = nodes.children;
   const { left, right, top, bottom } = layout;
   const x = left + (right - left) / 2;
   const y = top + (bottom - top) / 2;
@@ -41,5 +42,5 @@ export default (props) => {
     );
   };
 
-  return renderNodes(nodes);
+  return renderNodes(nodeChildren);
 }
