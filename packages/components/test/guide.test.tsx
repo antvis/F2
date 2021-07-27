@@ -105,7 +105,7 @@ describe("Guide ", () => {
         {/* 折线 */}
         <Line position="genre*sold" color="type" />
         {data.map((item) => {
-          return <LineGuide records={[{genre: item.genre, sold: 'min' }, {genre: item.genre, sold: 'max' }]} />;
+          return <LineGuide records={[{genre: item.genre, sold: 'min' }, {genre: item.genre, sold: item.sold }]} offsetY={[60, 0]}  />;
         })}
       </Chart>
     );
