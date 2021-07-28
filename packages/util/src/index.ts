@@ -152,6 +152,12 @@ function toTimeStamp(value) {
   return value;
 }
 
+function isInBBox(bbox, point) {
+  const { minX, maxX, minY, maxY } = bbox;
+  const { x, y } = point;
+  return minX <= x && maxX >= x && minY <= y && maxY >= y;
+}
+
 export {
   isString,
   isArray,
@@ -166,4 +172,5 @@ export {
   parsePadding,
   formatter,
   toTimeStamp,
+  isInBBox
 };
