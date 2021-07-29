@@ -17,8 +17,8 @@ const defaultProps: ImageGuideProps = {
   src: "",
 };
 const baseAttrs = {
-  height: '10px',
-  width: '10px',
+  height: 20,
+  width: 20,
 };
 
 export default (props: ImageGuideProps) => {
