@@ -35,7 +35,7 @@ export default (props: PointGuideProps) => {
         attrs={{
           x: posX,
           y: posY,
-          r: size / 2,
+          r: size / 2 + 'px',
           fill: color,
           ...baseAttrs,
           ...attrs,

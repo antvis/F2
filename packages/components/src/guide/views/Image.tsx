@@ -17,8 +17,8 @@ const defaultProps: ImageGuideProps = {
   src: "",
 };
 const baseAttrs = {
-  height: 20,
-  width: 20,
+  height: '20px',
+  width: '20px',
 };
 
 export default (props: ImageGuideProps) => {
@@ -35,6 +35,8 @@ export default (props: ImageGuideProps) => {
         attrs={{
           ...baseAttrs,
           ...attrs,
+          height: height + 'px',
+          width: width + 'px',
           x: posX,
           y: posY,
           src,
