@@ -74,7 +74,7 @@ export default (View) => {
 
     sunburst() {
       const { props } = this;
-      const { data, value, sort } = props;
+      const { data, value, sort = true } = props;
 
       const root = hierarchy({ children: data }).sum(function (d) {
         return d[value];
