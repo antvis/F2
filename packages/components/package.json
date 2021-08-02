@@ -1,6 +1,6 @@
 {
   "name": "@ali/f2-components",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
