@@ -2,7 +2,7 @@ import { jsx } from "@ali/f2-jsx";
 import Component from "../component";
 import { partition, hierarchy } from "d3-hierarchy";
 import { Category } from "@ali/f2-attr";
-import { isInBBox } from "@ali/f2x-util";
+import { isInBBox, isFunction } from "@ali/f2x-util";
 
 function rootParent(data) {
   let d = data;
@@ -74,13 +74,17 @@ export default (View) => {
 
     sunburst() {
       const { props } = this;
-      const { data, value } = props;
+      const { data, value, sort } = props;
 
-      const root = hierarchy({ children: data })
-        .sum(function (d) {
-          return d[value];
-        })
-        .sort((a, b) => b[value] - a[value]);
+      const root = hierarchy({ children: data }).sum(function (d) {
+        return d[value];
+      });
+
+      // 内置按value大小顺序排序，支持传入sort函数
+      if (sort === true || isFunction(sort)) {
+        const sortFn = isFunction(sort) ? sort : (a, b) => b[value] - a[value];
+        root.sort(sortFn);
+      }
 
       const nodes = partition()(root);
       const { children } = nodes;
