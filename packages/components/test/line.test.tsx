@@ -178,7 +178,7 @@ describe("Line", () => {
         <Chart
           data={data2}
           scale={{
-            score: { min: 0, type: 'linear' },
+            score: { min: 0, type: "linear" },
             item: { type: "cat" },
           }}
           coord={{
@@ -186,7 +186,6 @@ describe("Line", () => {
           }}
         >
           <Line position="item*score" color={"user"} />
-          <Point position="item*score" color={"user"} />
           <Axis field="item" />
           <Axis field="score" />
         </Chart>
@@ -195,8 +194,17 @@ describe("Line", () => {
 
     // @ts-ignore
     const canvas = new type(props);
+    const { container } = canvas;
     canvas.render();
 
-    // expect(colorCallback.mock.calls.length).not.toBe(0);
+    // x计算准确
+    expect(
+      container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs.points.map(
+        (i) => i.x
+      )
+    ).toStrictEqual([
+      179.5, 247.88437708312455, 252.03258514404297, 213.69218854156227, 179.5,
+      145.30781145843773, 155.32247161865234, 162.40390572921885, 179.5,
+    ]);
   });
 });
