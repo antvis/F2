@@ -37,6 +37,7 @@ class Geometry extends Component {
   adjust: any;
   attrOptions: any = {};
   groupedArray: any[];
+  isInCircle: boolean = false;
 
   init(config) {
     super.init(config);
@@ -45,6 +46,10 @@ class Geometry extends Component {
     const { theme, coord } = chart;
     const { position, color, size } = props;
     const [x, y] = parseFields(position);
+
+    if (coord.type === "polar") {
+      this.isInCircle = true;
+    }
 
     this.defineAttr("x", { field: x, coord });
     this.defineAttr("y", { field: y, coord });
@@ -56,6 +61,7 @@ class Geometry extends Component {
     this._initAttrs();
     this._processData();
     this._initEvent();
+    this._adjustScale();
   }
 
   // 定义Geometry上的事件，其他图形的事件自己定义
@@ -429,26 +435,69 @@ class Geometry extends Component {
     return mappedData;
   }
 
+  // 极坐标系下需要同时传入x,y做mapping，所以放到了Geometry层做处理
+  _convertPolarPoint(record) {
+    const { coord } = this.chart;
+    const xScale = this.getXScale();
+    const yScale = this.getYScale();
+    const { field: xField } = xScale;
+    const { field: yField } = yScale;
+    const yValue = record[yField];
+    const xValue = record[xField];
+    const point = coord.convertPoint({
+      x: xScale.scale(xValue),
+      y: yScale.scale(yValue),
+    });
+
+    return point;
+  }
+
   _mappingData(data, attrs) {
     const mappedData = data;
     for (const type in attrs) {
       if (attrs.hasOwnProperty(type)) {
         const attr = attrs[type];
-        const { scale } = attr;
+        const { scale, coord } = attr;
         const { field } = scale;
-
+        
         for (let i = 0, len = data.length; i < len; i++) {
           const record = data[i];
           const mappedRecord = mappedData[i];
           const value = record[field];
-          const mappedValue = attr.mapping(value);
-          mappedRecord[type] = mappedValue;
-          mappedData[i] = mappedRecord;
+          let mappedValue;
+          
+          // 极坐标
+          if (coord && coord.isPolar) {
+            const point = this._convertPolarPoint(record);
+            mappedRecord[type] = point[type];
+            mappedData[i] = mappedRecord;
+          } else {
+            mappedValue = attr.mapping(value);
+            mappedRecord[type] = mappedValue;
+            mappedData[i] = mappedRecord;
+          }
         }
       }
     }
     return mappedData;
   }
+
+  // 根据坐标系来处理一些特殊的scale配置
+  _adjustScale() {
+    const xScale = this.getXScale();
+    const { values } = xScale || {};
+    
+    const count = (values || []).length;
+
+    // 极坐标系下，需要保留一个步长
+    if(this.isInCircle) {
+      xScale.change({
+        range: [ 0, 1 - 1 / count ]
+      });
+    }
+    
+  }
 }
 
 export default Geometry;
+ 
