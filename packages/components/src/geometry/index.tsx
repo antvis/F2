@@ -470,12 +470,11 @@ class Geometry extends Component {
           if (coord && coord.isPolar) {
             const point = this._convertPolarPoint(record);
             mappedRecord[type] = point[type];
-            mappedData[i] = mappedRecord;
           } else {
             mappedValue = attr.mapping(value);
             mappedRecord[type] = mappedValue;
-            mappedData[i] = mappedRecord;
           }
+          mappedData[i] = mappedRecord;
         }
       }
     }
