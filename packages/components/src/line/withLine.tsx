@@ -5,6 +5,9 @@ import Geometry from '../geometry';
 export default View => {
   return class Line extends Geometry {
     render() {
+      const { props } = this;
+      const { startOnZero } = props;
+
       const mappedArray = this._mapping();
       const mappedData = mappedArray.map(mappedItem => {
         const { color, size } = mappedItem[0];
@@ -17,13 +20,13 @@ export default View => {
         }
         return { color, points, size, data: data };
       });
-      const { props } = this;
-      const { startOnZero } = props;
+      
       return (
         <View
           { ...props }
           basePoint = {this.getBasePoint(startOnZero)}
           mappedData={ mappedData }
+          isInCircle={this.isInCircle} // 坐标系类型
         />
       );
     }
