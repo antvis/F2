@@ -1,5 +1,5 @@
 {
-  "name": "@ali/f2-attr",
+  "name": "@ali/f2-graphic",
   "version": "0.0.1",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -12,10 +12,9 @@
     "es"
   ],
   "dependencies": {
-    "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
-    "@ali/f2x-util": "*",
-    "@babel/runtime": "^7.12.5"
+    "@babel/runtime": "^7.12.5",
+    "@ali/f2x-util": "*"
   },
   "publishConfig": {
     "registry": "https://registry.npm.alibaba-inc.com"

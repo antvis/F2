@@ -1,6 +1,5 @@
 import { jsx } from '@ali/f2-jsx';
-import { G } from '@antv/f2';
-const { Vector2 } = G;
+import { Vector2 } from '@ali/f2-graphic';
 
 export default (props) => {
   const { ticks, coord, style } = props;

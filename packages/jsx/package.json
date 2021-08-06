@@ -10,7 +10,7 @@
     "css-layout": "1.1.1"
   },
   "devDependencies": {
-    "@antv/f2": "~3.8.1"
+    "@ali/f2-graphic": "*"
   },
   "files": [
     "jsx-runtime.js",
