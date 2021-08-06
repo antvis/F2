@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { jsx, Fragment } from '@ali/f2-jsx';
-import * as F2 from '@antv/f2';
+// import * as F2 from '@antv/f2';
 import Chart, { Line, Interval, Area, Axis  } from '../src';
 import ComboComponent from '../src/component/container';
 import Placeholder from '../src/component/placeholder';
@@ -62,7 +62,7 @@ describe.skip('Chart', () => {
 
     const chart: Chart = new type(props);
 
-    expect(chart.chart).toBeInstanceOf(F2.Chart);
+    // expect(chart.chart).toBeInstanceOf(F2.Chart);
     chart.render();
 
     const container = chart.container;

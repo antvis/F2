@@ -1,8 +1,5 @@
-import { G } from '@antv/f2';
+import { Matrix,Vector2  } from '@ali/f2-graphic';
 import Base from './base';
-
-const { Matrix, Vector2 } = G;
-
 interface IPolar {
   start: any;
   end: any;

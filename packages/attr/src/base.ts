@@ -1,6 +1,8 @@
 import { Scale } from '@antv/scale';
 import { deepMix } from '@antv/util';
-import { values as arrayValues } from './util/array';
+import { ArrayUtil } from '@ali/f2x-util';
+
+const { values: arrayValues } = ArrayUtil;
 
 class Base {
   field: string;

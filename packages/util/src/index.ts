@@ -1,5 +1,7 @@
 import { isDate, isPlainObject } from '@antv/util'
 import formatter from './formatter'
+import * as ArrayUtil from './array'
+import * as DOMUtil from './dom'
 
 // 默认设置50
 let ONE_REM: number;
@@ -172,5 +174,7 @@ export {
   parsePadding,
   formatter,
   toTimeStamp,
-  isInBBox
+  isInBBox,
+  ArrayUtil,
+  DOMUtil,
 };

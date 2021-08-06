@@ -1,11 +1,9 @@
-import { G } from '@antv/f2';
+import { createCanvas } from '@ali/f2-graphic';
 import createComponentTree from './createComponentTree';
 import Component from '../component';
 import Container from '../component/container';
 import Layout from './layout';
 import Animation from './animation';
-
-const { createCanvas } = G;
 
 interface ChartUpdateProps {
   pixelRatio?: number,
