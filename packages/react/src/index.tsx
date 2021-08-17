@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React, { RefObject, forwardRef } from "react";
 import Canvas from "@ali/f2-components";
 
 class ErrorBoundary extends React.Component<
@@ -21,7 +21,7 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       const { fallback } = this.props;
-      return fallback || <></>;
+      return fallback || null;
     }
 
     return this.props.children;
@@ -36,6 +36,8 @@ export interface CanvasProps {
   padding?: (string | number)[];
   animate?: boolean;
   canvasRef?: RefObject<HTMLCanvasElement>;
+  ref?: RefObject<HTMLCanvasElement>;
+  fallback?: React.Component;
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {
@@ -90,11 +92,17 @@ class ReactCanvas extends React.Component<CanvasProps> {
   }
 }
 
-export default (props) => {
+
+export default forwardRef((
+  props: CanvasProps,
+  ref: RefObject<HTMLCanvasElement>
+) => {
   const { fallback } = props;
-  return (
-    <ErrorBoundary fallback={fallback}>
-      <ReactCanvas {...props} />
-    </ErrorBoundary>
-  );
-};
+  return React.createElement(ErrorBoundary, {
+    fallback: fallback,
+    children: React.createElement(ReactCanvas, {
+      ...props,
+      ref,
+    }),
+  });
+});
