@@ -54,8 +54,7 @@ export default (View) => {
         // 如果点击绑定了多个元素，则默认用第一个
         const shape = targets[0];
         if (shape) {
-          const { _attrs } = shape;
-          ev.shape = _attrs;
+          ev.shape = shape;
           onClick && onClick(ev);
         }
       });
