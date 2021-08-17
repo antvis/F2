@@ -3,6 +3,7 @@ import Component from "../component";
 import { partition, hierarchy } from "d3-hierarchy";
 import { Category } from "@ali/f2-attr";
 import { isInBBox, isFunction } from "@ali/f2x-util";
+import { isArray } from "@antv/util";
 
 function rootParent(data) {
   let d = data;
@@ -15,23 +16,47 @@ function rootParent(data) {
 export default (View) => {
   return class Sunburst extends Component {
     color: Category;
-    triggerRef: any[];
+    shapeTreeRef: any;
+
+
+    // 根据做呗欧典
+    findShapeByPoint(shapeTree, point: any, result = []) {
+      const { _attrs = {} } = shapeTree || {};
+      const { children, type, canClick } = _attrs;
+
+      if (type === "group") {
+        if (children && children.length && !canClick) {
+          for (let i = 0, len = children.length; i < len; i++) {
+            this.findShapeByPoint(children[i], point, result);
+          }
+        } else if (canClick) {
+          if (isInBBox(shapeTree.getBBox(), point) && canClick) {
+            result.push(shapeTree);
+          }
+        }
+      } else {
+        if (isInBBox(shapeTree.getBBox(), point) && canClick) {
+          result.push(shapeTree);
+        }
+      }
+    }
 
     mount() {
       const { props, container } = this;
       const canvas = container.get("canvas");
       const { data, color, onClick } = props;
 
-      this.triggerRef = [];
+      this.shapeTreeRef = {};
 
       canvas.on("click", (ev) => {
         const { points } = ev;
-        const shape = this.triggerRef.find((ref) => {
-          return isInBBox(ref.current.getBBox(), points[0]);
-        });
+        const targets = [];
+        this.findShapeByPoint(this.shapeTreeRef.current, points[0], targets);
+        // 如果点击绑定了多个元素，则默认用第一个
+        const shape = targets[0]
         if (shape) {
-          ev.shape = shape;
-          ev.payload = shape.payload;
+          const { _attrs } = shape;
+          ev.shape = _attrs;
           onClick && onClick(ev);
         }
       });
@@ -97,10 +122,10 @@ export default (View) => {
       const { props, _computeText } = this;
       return (
         <View
+          ref={this.shapeTreeRef}
           {...props}
           nodes={nodes}
           computeText={_computeText}
-          triggerRef={this.triggerRef}
         />
       );
     }
