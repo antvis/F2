@@ -22,7 +22,8 @@ export default (View) => {
     // 根据做呗欧典
     findShapeByPoint(shapeTree, point: any, result = []) {
       const { _attrs = {} } = shapeTree || {};
-      const { children, type, canClick } = _attrs;
+      const { children, type, className } = _attrs;
+      const canClick = className === 'canClick';
 
       if (type === "group") {
         if (children && children.length && !canClick) {
