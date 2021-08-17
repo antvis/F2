@@ -18,21 +18,19 @@ export default (View) => {
     color: Category;
     shapeTreeRef: any;
 
-
-    // 根据做呗欧典
     findShapeByPoint(shapeTree, point: any, result = []) {
       const { _attrs = {} } = shapeTree || {};
       const { children, type, className } = _attrs;
-      const canClick = className === 'canClick';
+      const canClick = className === "canClick";
 
       if (type === "group") {
-        if (children && children.length && !canClick) {
-          for (let i = 0, len = children.length; i < len; i++) {
-            this.findShapeByPoint(children[i], point, result);
-          }
-        } else if (canClick) {
+        if (canClick) {
           if (isInBBox(shapeTree.getBBox(), point) && canClick) {
             result.push(shapeTree);
+          }
+        } else if (children && children.length) {
+          for (let i = 0, len = children.length; i < len; i++) {
+            this.findShapeByPoint(children[i], point, result);
           }
         }
       } else {
@@ -54,7 +52,7 @@ export default (View) => {
         const targets = [];
         this.findShapeByPoint(this.shapeTreeRef.current, points[0], targets);
         // 如果点击绑定了多个元素，则默认用第一个
-        const shape = targets[0]
+        const shape = targets[0];
         if (shape) {
           const { _attrs } = shape;
           ev.shape = _attrs;
