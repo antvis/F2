@@ -2,7 +2,7 @@ import { jsx } from "@ali/f2-jsx";
 import Component from "../component";
 import { partition, hierarchy } from "d3-hierarchy";
 import { Category } from "@ali/f2-attr";
-import { isFunction } from "@ali/f2x-util";
+import { isFunction, isInBBox } from "@ali/f2x-util";
 
 function rootParent(data) {
   let d = data;
@@ -25,8 +25,14 @@ export default (View) => {
       this.triggerRef = {};
 
       canvas.on("click", (ev) => {
-        ev.triggerRef = this.triggerRef;
-        onClick && onClick(ev);
+        const { points } = ev;
+        const shape = this.triggerRef.current;
+        if (!shape) return;
+        const bbox = shape.getBBox();
+        if (isInBBox(bbox, points[0])) {
+          ev.shape = shape;
+          onClick && onClick(ev);
+        }
       });
 
       this.color = new Category({
@@ -90,8 +96,8 @@ export default (View) => {
       const { props, _computeText } = this;
       return (
         <View
-          ref={this.triggerRef}
           {...props}
+          ref={this.triggerRef}
           nodes={nodes}
           computeText={_computeText}
         />
