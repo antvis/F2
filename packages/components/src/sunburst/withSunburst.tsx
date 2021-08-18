@@ -2,7 +2,7 @@ import { jsx } from "@ali/f2-jsx";
 import Component from "../component";
 import { partition, hierarchy } from "d3-hierarchy";
 import { Category } from "@ali/f2-attr";
-import { isInBBox, isFunction } from "@ali/f2x-util";
+import { isFunction, isInBBox } from "@ali/f2x-util";
 
 function rootParent(data) {
   let d = data;
@@ -15,23 +15,22 @@ function rootParent(data) {
 export default (View) => {
   return class Sunburst extends Component {
     color: Category;
-    triggerRef: any[];
+    triggerRef: any;
 
     mount() {
       const { props, container } = this;
       const canvas = container.get("canvas");
       const { data, color, onClick } = props;
 
-      this.triggerRef = [];
+      this.triggerRef = {};
 
       canvas.on("click", (ev) => {
         const { points } = ev;
-        const shape = this.triggerRef.find((ref) => {
-          return isInBBox(ref.current.getBBox(), points[0]);
-        });
-        if (shape) {
+        const shape = this.triggerRef.current;
+        if (!shape) return;
+        const bbox = shape.getBBox();
+        if (isInBBox(bbox, points[0])) {
           ev.shape = shape;
-          ev.payload = shape.payload;
           onClick && onClick(ev);
         }
       });
@@ -98,9 +97,9 @@ export default (View) => {
       return (
         <View
           {...props}
+          ref={this.triggerRef}
           nodes={nodes}
           computeText={_computeText}
-          triggerRef={this.triggerRef}
         />
       );
     }

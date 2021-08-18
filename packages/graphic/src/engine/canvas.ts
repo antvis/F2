@@ -16,6 +16,16 @@ class Canvas extends EventEmit {
   _getAriaLabel: any;
   clear: any;
 
+  // Container
+  getChildren: any
+  addShape: any
+  addGroup: any
+  contain: any
+  sort: any
+  add: any
+  _setEvn: any
+  offset: any;
+
   get(name) {
     return this._attrs[name];
   }

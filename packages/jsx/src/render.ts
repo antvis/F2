@@ -1,5 +1,6 @@
 import JSX from './interface';
 import { extendMap, batch2hd } from '@ali/f2x-util';
+import { omit } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
 import getAnimation from './animation';
@@ -78,13 +79,14 @@ function createElement(node: any, container: any, parentLayout: any) {
   // 缓存这次新的attrs
   _cache.attrs = elementAttrs;
 
-  
   let element;
   if (type === 'group') {
     element = container.addGroup({
+      ...omit(props, ['children']),
       status,
       attrs: elementAttrs
     });
+
     // 如果元素被删除了，就不会有renderChildren， 直接拿node.children渲染
     const children = renderChildren ? renderChildren : nodeChildren;
     // 只有group才需要处理children
