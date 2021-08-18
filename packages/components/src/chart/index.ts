@@ -19,7 +19,7 @@ interface Props {
   coord?: any;
   start?: Point;
   end?: Point;
-  children: any;
+  children?: any;
   theme?: any;
 }
 
