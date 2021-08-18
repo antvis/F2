@@ -28,7 +28,7 @@ function App(props: any) {
 
 describe('<Canvas >', () => {
   it('Chart render', () => {
-    const chartRef = React.createRef<ReactCanvas>();
+    const chartRef = React.createRef<typeof ReactCanvas>();
     const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={ chartRef } lineRef={ lineRef } />);
