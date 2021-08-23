@@ -45,7 +45,7 @@ class GeometryTest extends Geometry {
   }
 }
 
-describe('geometry', () => {
+describe.skip('adjust', () => {
   let canvas;
   const chartRef = { current: null };
   const componentRef = { current: null };
@@ -63,7 +63,7 @@ describe('geometry', () => {
             ref={ componentRef }
             position="genre*sold"
             color="type"
-            adjust="dodge"
+            // adjust="dodge"
           />
         </Chart>
       </Canvas>

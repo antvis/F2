@@ -1,7 +1,9 @@
 export default {
   pkgs: [
     "util",
+    "graphic",
     "jsx",
+    "attr",
     "components",
     "react",
     "fund-charts",

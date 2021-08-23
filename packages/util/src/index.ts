@@ -1,5 +1,7 @@
 import { isDate, isPlainObject } from '@antv/util'
 import formatter from './formatter'
+import * as ArrayUtil from './array'
+import * as DOMUtil from './dom'
 
 // 默认设置50
 let ONE_REM: number;
@@ -152,6 +154,12 @@ function toTimeStamp(value) {
   return value;
 }
 
+function isInBBox(bbox, point) {
+  const { minX, maxX, minY, maxY } = bbox;
+  const { x, y } = point;
+  return minX <= x && maxX >= x && minY <= y && maxY >= y;
+}
+
 export {
   isString,
   isArray,
@@ -166,4 +174,7 @@ export {
   parsePadding,
   formatter,
   toTimeStamp,
+  isInBBox,
+  ArrayUtil,
+  DOMUtil,
 };

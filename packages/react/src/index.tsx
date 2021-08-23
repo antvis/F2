@@ -1,5 +1,32 @@
-import React, { RefObject } from 'react';
-import Canvas from '@ali/f2-components';
+import React, { RefObject, forwardRef } from "react";
+import Canvas from "@ali/f2-components";
+
+class ErrorBoundary extends React.Component<
+  { fallback: React.Component },
+  { hasError: boolean }
+> {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("图表渲染失败: ", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      const { fallback } = this.props;
+      return fallback || null;
+    }
+
+    return this.props.children;
+  }
+}
 
 export interface CanvasProps {
   className?: string;
@@ -9,6 +36,9 @@ export interface CanvasProps {
   padding?: (string | number)[];
   animate?: boolean;
   canvasRef?: RefObject<HTMLCanvasElement>;
+  ref?: RefObject<HTMLCanvasElement>;
+  fallback?: React.Component;
+  children?: any
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {
@@ -24,7 +54,7 @@ class ReactCanvas extends React.Component<CanvasProps> {
   componentDidMount() {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
-    const context = canvasEl.getContext('2d');
+    const context = canvasEl.getContext("2d");
     const canvas = new Canvas({
       // 已经有高清方案，这里默认用1
       pixelRatio: 1,
@@ -63,4 +93,17 @@ class ReactCanvas extends React.Component<CanvasProps> {
   }
 }
 
-export default ReactCanvas;
+
+export default forwardRef((
+  props: CanvasProps,
+  ref: RefObject<HTMLCanvasElement>
+) => {
+  const { fallback } = props;
+  return React.createElement(ErrorBoundary, {
+    fallback: fallback,
+    children: React.createElement(ReactCanvas, {
+      ...props,
+      ref,
+    }),
+  });
+}) as any;

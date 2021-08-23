@@ -1,7 +1,7 @@
 import { jsx } from '@ali/f2-jsx';
-import { G } from '@antv/f2';
+import { Vector2 } from '@ali/f2-graphic';
 
-const { Vector2 } = G;
+// const { Vector2 } = G;
 
 // 相对圆心偏移量的点
 function getOffsetPoint(center, point, offset) {

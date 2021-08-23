@@ -1,2 +1,2 @@
-import Stack from '@antv/adjust/lib/stack';
+import Stack from '@antv/adjust/lib/adjusts/stack';
 export default Stack;
