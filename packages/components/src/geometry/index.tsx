@@ -303,6 +303,7 @@ class Geometry extends Component {
     });
     this._initAttrs();
     this._processData();
+    this._adjustScale();
   }
 
   getXScale() {
