@@ -4,17 +4,16 @@
     "target": "esnext",
     "declaration": true,
     "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": ".", 
-    "types": [],
+    "typeRoots": ["./src/typings"],
+    "useDefineForClassFields": false,
+    "allowJs": false,
+    "baseUrl": ".",
     "paths": {
-      "@*": ["../f2-next/src/*"],
-      "react": [
-        "typings.d.ts"
-      ],
+      "@*": ["src/*"]
     }
   }
 }
