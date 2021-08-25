@@ -1,4 +1,4 @@
-import { DOMUtil } from '@ali/f2x-util';
+import * as DOMUtil from '../util/dom'
 const { convertPoints } = DOMUtil;
 
 // 计算滑动的方向

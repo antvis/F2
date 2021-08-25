@@ -1,5 +1,5 @@
 import { upperFirst, isArray } from '@antv/util';
-import { ArrayUtil as Array } from '@ali/f2x-util';
+import * as Array from '../util/array';
 import Shape from './shape';
 
 const SHAPE_MAP = {};

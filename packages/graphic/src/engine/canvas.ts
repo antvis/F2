@@ -2,7 +2,7 @@ import EventEmit from '../event/emit';
 import EventController from '../event/controller';
 import CanvasElement from './canvas-element';
 import { mix, isString,  substitute } from '@antv/util';
-import { DOMUtil } from '@ali/f2x-util'
+import * as DOMUtil from '../util/dom'
 import Container from './container';
 import Group from './group';
 import { requestAnimationFrame } from '../util/requestAnimationFrame';

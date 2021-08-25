@@ -1,5 +1,5 @@
 import { isNil, isString } from '@antv/util';
-import { DOMUtil } from '@ali/f2x-util'
+import * as DOMUtil from '../../util/dom'
 import Shape from './shape';
 import RectUtil from '../../util/rect';
 
