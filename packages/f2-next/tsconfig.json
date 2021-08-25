@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "declaration": true,
+    "jsx": "react",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "typeRoots": ["./src/typings"],
+    "useDefineForClassFields": false,
+    "allowJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@*": ["src/*"]
+    }
+  }
+}

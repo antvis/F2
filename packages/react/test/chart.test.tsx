@@ -3,8 +3,11 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactCanvas from '../src';
-import Cavnas, { Chart, Line } from '@ali/f2-components'
+import { Components, Canvas } from '@ali/f2-next'
 
+const { Chart, Line }  = Components
+
+// @ts-ignore
 Enzyme.configure({ adapter: new Adapter() });
 
 const data = [
@@ -37,7 +40,7 @@ describe('<Canvas >', () => {
     const reactChart = chartRef.current;
     const line = lineRef.current;
     // 断言实例生成和ref正确性
-    expect(reactChart.canvas).toBeInstanceOf(Cavnas);
+    expect(reactChart.canvas).toBeInstanceOf(Canvas);
     expect(line).toBeInstanceOf(Line);
     expect(line.props.a).toBeUndefined();
 

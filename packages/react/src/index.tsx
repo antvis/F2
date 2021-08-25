@@ -1,5 +1,6 @@
+// @ts-nocheck
 import React, { RefObject, forwardRef } from "react";
-import Canvas from "@ali/f2-components";
+import { Canvas } from "@ali/f2-next";
 
 class ErrorBoundary extends React.Component<
   { fallback: React.Component },
@@ -38,7 +39,7 @@ export interface CanvasProps {
   canvasRef?: RefObject<HTMLCanvasElement>;
   ref?: RefObject<HTMLCanvasElement>;
   fallback?: React.Component;
-  children?: any
+  children?: any;
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {

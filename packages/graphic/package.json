@@ -12,7 +12,6 @@
     "es"
   ],
   "dependencies": {
-    "@ali/f2x-util": "^0.2.1",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5"
   },

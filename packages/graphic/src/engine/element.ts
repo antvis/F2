@@ -2,7 +2,7 @@ import { mix, isObject, isArray } from '@antv/util';
 import MatrixUtil from '../util/matrix';
 import Vector2 from '../util/vector2';
 import { parseStyle } from '../util/style-parse';
-import { ArrayUtil as Array } from '@ali/f2x-util';
+import * as Array from '../util/array';
 
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',
