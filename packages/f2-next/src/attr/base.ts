@@ -1,47 +1,37 @@
 import { Scale } from '@antv/scale';
-import { deepMix } from '@antv/util';
-import { ArrayUtil } from '@util';
-
-const { values: arrayValues } = ArrayUtil;
+import { mix } from '@antv/util';
+import { values as arrayValues } from '../util/array';
 
 class Base {
+  data: any;
   field: string;
-  options: any;
   scale: Scale;
+  range: any[];
 
-  constructor(cfg) {
-    const options = deepMix({}, cfg);
-    const { field, data } = options;
+  constructor(options) {
+    mix(this, options);
 
-    this.field = field;
-    this.options = options;
-
-    if (data) {
-      this.source(data);
+    const { scale, field, data } = this;
+    if (!scale && data) {
+      const values = arrayValues(data, field);
+      this.scale = this.createScale({ values });
     }
-  }
-
-  source(data: any[]) {
-    const { options } = this;
-    const { field } = options;
-    const values = arrayValues(data, field);
-    this.values(values);
-  }
-
-  // 设置scale的值域
-  values(values: any[]) {
-    // const { scale } = this;
-    // if (scale) {
-    //   // scale.change()
-    // }
-    this.scale = this.createScale({ values });
-  }
-
-  mapping(value): any {
   }
 
   createScale(scale): Scale {
     return null;
+  }
+
+  // 数据映射方法
+  mapping(value): any {
+  }
+
+  update(options) {
+    mix(this, options);
+  }
+
+  setRange(range) {
+    this.range = range;
   }
 }
 

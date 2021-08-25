@@ -1,15 +1,14 @@
-import { Identity } from '@antv/scale';
+import { Identity as IdentityScale } from '@antv/scale';
 import Base from './base';
 
-class CategoryAttr extends Base {
-
+class Identity extends Base {
   createScale(scale) {
-    return new Identity(scale);
+    return new IdentityScale(scale);
   }
 
   mapping(value: any) {
-    const { scale, options } = this;
+    return value;
   }
 }
 
-export default CategoryAttr;
+export default Identity;

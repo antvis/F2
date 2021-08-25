@@ -1,17 +1,15 @@
-import { Linear } from '@antv/scale';
+import { Linear as LinearScale } from '@antv/scale';
 import { isArray } from '@antv/util';
 import Base from './base';
 
-class LinearAttr extends Base {
+class Linear extends Base {
 
   createScale(scale) {
-    return new Linear(scale);
+    return new LinearScale(scale);
   }
 
   mapping(value: any) {
-    const { scale, options } = this;
-    // 值域的范围
-    const { range } = options;
+    const { scale, range } = this;
     const [ min, max ] = range;
 
     if (isArray(value)) {
@@ -23,4 +21,4 @@ class LinearAttr extends Base {
   }
 }
 
-export default LinearAttr;
+export default Linear;
