@@ -9,11 +9,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "typeRoots": ["./src/typings"],
-    "useDefineForClassFields": false,
-    "allowJs": false,
-    "baseUrl": ".",
-    "paths": {
-      "@*": ["src/*"]
-    }
+    "useDefineForClassFields": false
   }
 }

@@ -1,8 +1,13 @@
-import { jsx } from "@jsx";
-import { Category } from "@attr";
-import Component from "../component";
+// @ts-nocheck
+import { jsx } from "../../jsx";
+import Component from "../../component";
 import { partition, hierarchy } from "d3-hierarchy";
-import { isFunction, isInBBox } from "@ali/f2x-util";
+import { Category } from "../../attr";
+import { isInBBox, isFunction } from "../../util";
+import { applyMixins } from '../../mixins';
+import CoordMixin from '../../mixins/coord';
+import { mix } from "@antv/util"
+import { mappingRect } from '../interval/position';
 
 function rootParent(data) {
   let d = data;
@@ -12,25 +17,32 @@ function rootParent(data) {
   return d;
 }
 
-export default (View) => {
-  return class Sunburst extends Component {
+
+export default (View): any => {
+  class Sunburst extends Component implements CoordMixin {
     color: Category;
-    triggerRef: any;
+    triggerRef: any[];
 
     mount() {
-      const { props, container } = this;
+      const { props, layout, container } = this;
+
+      const { coord } = props;
+
+      this.coord = this.createCoord(coord, layout);
+
       const canvas = container.get("canvas");
       const { data, color, onClick } = props;
 
-      this.triggerRef = {};
+      this.triggerRef = [];
 
       canvas.on("click", (ev) => {
         const { points } = ev;
-        const shape = this.triggerRef.current;
-        if (!shape) return;
-        const bbox = shape.getBBox();
-        if (isInBBox(bbox, points[0])) {
+        const shape = this.triggerRef.find((ref) => {
+          return isInBBox(ref.current.getBBox(), points[0]);
+        });
+        if (shape) {
           ev.shape = shape;
+          ev.payload = shape.payload;
           onClick && onClick(ev);
         }
       });
@@ -42,12 +54,14 @@ export default (View) => {
     }
 
     _mapping(children) {
-      const { color: colorAttr } = this;
+      const { color: colorAttr, coord } = this;
       for (let i = 0, len = children.length; i < len; i++) {
         const node = children[i];
         const root = rootParent(node);
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
+        const rect = mappingRect(coord, { xMin: node.x0, xMax: node.x1, yMin: node.y0, yMax: node.y1 });
+        mix(node, rect);
         // 递归处理
         if (node.children && node.children.length) {
           this._mapping(node.children);
@@ -92,16 +106,21 @@ export default (View) => {
     }
 
     render() {
-      const nodes = this.sunburst();
-      const { props, _computeText } = this;
+      const node = this.sunburst();
+      const { coord, props, _computeText } = this;
       return (
         <View
           {...props}
-          ref={this.triggerRef}
-          nodes={nodes}
+          coord={ coord }
+          node={node}
           computeText={_computeText}
+          triggerRef={this.triggerRef}
         />
       );
     }
   };
+
+  applyMixins(Sunburst, [ CoordMixin ]);
+
+  return Sunburst;
 };

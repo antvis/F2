@@ -1,23 +1,23 @@
-import { jsx } from '@jsx';
+import { jsx } from '../../jsx';
 
 export default (props) => {
-  const { nodes, layout } = props;
-  const { width, height } = layout;
+  const { node } = props;
+  const { children } = node;
 
   const renderNodes = (nodes) => {
     return (
       <group>
         {
           nodes.map(node => {
-            const { x0, y0, x1, y1, color, children } = node;
+            const { xMin, xMax, yMin, yMax, color, children } = node;
             return (
               <group>
                 <rect
                   attrs={{
-                    x: x0 * width,
-                    y: height - y0 * height,
-                    width: (x1 - x0) * width,
-                    height: (y1 - y0) * height,
+                    x: xMin,
+                    y: yMin,
+                    width: xMax - xMin,
+                    height: yMax - yMin,
                     lineWidth: '1px',
                     stroke: '#fff',
                     fill: color,
@@ -34,5 +34,5 @@ export default (props) => {
     );
   };
 
-  return renderNodes(nodes);
+  return renderNodes(children);
 }

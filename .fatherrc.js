@@ -1,7 +1,7 @@
 export default {
   pkgs: [
-    "f2-next",
     "graphic",
+    "f2-next",
     "react",
     // "util",
     // "graphic",

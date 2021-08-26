@@ -1,43 +1,56 @@
-import { jsx } from "@jsx";
+import { jsx } from '../../jsx';
+import { isArray } from '@antv/util';
 
-export default (props) => {
-  const { mappedArray, size, basePoint } = props;
-
+export default (props: any) => {
+  const { coord, mappedArray } = props;
+  const { center, type: coordType, transposed } = coord;
+  if (coordType === 'rect') {
+    return (
+      <group>
+        {
+          mappedArray.map(dataArray => {
+            return dataArray.map(item => {
+              const { xMin, xMax, yMin, yMax } = item;
+              const { color } = item;
+              return (
+                <rect
+                  attrs={{
+                    x: xMin,
+                    y: yMin,
+                    width: xMax - xMin,
+                    height: yMax - yMin,
+                    fill: color,
+                  }}
+                />
+              );
+            })
+          })
+        }
+      </group>
+    );
+  }
   return (
     <group>
-      {mappedArray.map((dataArray) => {
-        return dataArray.map((item) => {
-          const { color, x, y } = item;
-          return (
-            <rect
-              attrs={{
-                fill: color,
-                // 数据点在柱子中间
-                x: x - size / 2,
-                y: basePoint.y,
-                width: size,
-                // y轴从底部开始画
-                height: y - basePoint.y,
-              }}
-              animation={{
-                appear: {
-                  easing: "linear",
-                  duration: 350,
-                  property: ["y", "height"],
-                  start: {
-                    y: basePoint.y,
-                    height: 0,
-                  },
-                  end: {
-                    y: basePoint.y,
-                    height: y - basePoint.y,
-                  },
-                },
-              }}
-            />
-          );
-        });
-      })}
+      {
+        mappedArray.map(dataArray => {
+          return dataArray.map(item => {
+            const { xMin, xMax, yMin, yMax, color } = item;
+            return (
+              <sector
+                attrs={{
+                  x: center.x,
+                  y: center.y,
+                  fill: color,
+                  startAngle: xMin,
+                  endAngle: xMax,
+                  r0: yMin,
+                  r: yMax,
+                }}
+              />
+            );
+          })
+        })
+      }
     </group>
   );
-};
+}

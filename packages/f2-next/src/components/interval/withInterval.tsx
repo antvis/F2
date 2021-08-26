@@ -1,49 +1,64 @@
-import { jsx } from '@jsx';
+// @ts-nocheck
+import { jsx } from '../../jsx';
+import { mix } from '@antv/util';
 import Geometry from '../geometry';
+import { convertRect, mappingRect } from './position';
 
 export default View => {
   return class Interval extends Geometry {
+
+    startOnZero = true;
+
     getDefaultSize() {
-      const { chart, groupedArray, adjust } = this;
-      const size = this.getAttr('size');
-      if (!size) {
-        const xScale = this.getXScale();
-        const count = xScale.values.length;
-        const normalizeSize = 1 / count;
-        const { plot } = chart;
-        const { width } = plot;
-        // 绘制区和空白区 1:1
-        const widthRatio = 0.5;
-        if (adjust && adjust.type === 'dodge') {
-          return width * normalizeSize * widthRatio / groupedArray.length;
-        }
-        return width * normalizeSize * widthRatio;
+      const { attrs, chart, props } = this;
+      const { coord } = chart;
+      const { sizeRatio } = props;
+      const { x } = attrs;
+      const { scale } = x;
+      const { values } = scale;
+
+      if (sizeRatio) {
+        return 1 / values.length * sizeRatio;
       }
+      let ratio = 1;
+      // 极坐标默认 1， 直接坐标默认 0.5
+      if (!coord.isPolar) {
+        ratio = 0.5;
+      }
+      return 1 / values.length * ratio;
     }
 
-    mount() {
-      const xScale = this.getXScale();
-      const { values } = xScale;
-      const count = values.length;
-      // 留一个位置的空间
-      const offset = 1 / count * 0.5;
-      // 2边留空
-      xScale.range = [offset, 1 - offset];
+    mapping() {
+      const { chart } = this;
+      const { coord } = chart;
+      const y0 = this.getY0Value();
+      const defaultSize = this.getDefaultSize();
+      const mappedArray = super.mapping();
+
+      for (let i = 0; i < mappedArray.length; i++) {
+        const data = mappedArray[i];
+        for (let j = 0; j < data.length; j++) {
+          const record = data[j];
+          const { x, y, size = defaultSize } = record;
+          const rect = convertRect({ x, y, size, y0 });
+          mix(record, mappingRect(coord, rect));
+        }
+      }
+
+      return mappedArray;
     }
 
     render() {
       const { props } = this;
-      const { startOnZero = true } = props;
-      const mappedArray = this._mapping();
-      const size = this.getDefaultSize();
-      const basePoint = this.getBasePoint(startOnZero);
-
-      return <View
-        { ...props }
-        basePoint={basePoint}
-        mappedArray={ mappedArray }
-        size={ size }
-      />
+      const { chart } = props;
+      const { coord } = chart;
+      const data = this.mapping();
+      return (
+        <View
+          coord={ coord }
+          mappedArray={ data }
+        />
+      );
     }
   }
 }

@@ -1,5 +1,6 @@
-import { jsx } from '../../../lib/jsx';
-import Canvas, { Sunburst } from '../../../lib/components';
+import { jsx } from '../../../src/jsx';
+import { Polar } from '../../../src/coord';
+import Canvas, { Sunburst } from '../../../src/components';
 import { createContext } from '../util';
 import data from './data';
 const context = createContext();
@@ -23,9 +24,17 @@ describe('Treemap', () => {
       <Canvas context={ context }>
         <Sunburst
           data={ data.children }
+          coord={{
+            // type: Polar,
+            // transposed: true,
+            // left: 100,
+            // top: 100,
+            // right: 100,
+            // bottom: 100,
+          }}
           color={{
             field: 'name',
-            values: [
+            range: [
               '#1890FF',
               '#2FC25B',
               '#FACC14',

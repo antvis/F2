@@ -1,20 +1,17 @@
-import { Category } from '@antv/scale';
+import { Category as CategoryScale } from '@antv/scale';
 import Base from './base';
 
-class CategoryAttr extends Base {
+class Category extends Base {
 
   createScale(scale) {
-    return new Category(scale);
+    return new CategoryScale(scale);
   }
 
   mapping(value: any) {
-    const { scale, options } = this;
-    // 值域列表
-    const { values } = options;
-
+    const { scale, range } = this;
     const index = scale.translate(value);
-    return values[index % values.length];
+    return range[index % range.length];
   }
 }
 
-export default CategoryAttr;
+export default Category;
