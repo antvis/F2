@@ -2,7 +2,7 @@
 import Coord from '../coord';
 import { mix, each } from '@antv/util';
 import { Scale } from '@antv/scale';
-import Container from '../component/container';
+import Container from '../base/container';
 import { applyMixins } from '../mixins';
 import ThemeMixin from '../mixins/theme';
 import CoordMixin from '../mixins/coord';

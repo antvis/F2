@@ -1,6 +1,6 @@
 import { render, renderJSXElement, compareRenderTree } from '../jsx';
 import { map, mapTwo, isArray } from '../util';
-import Component from './index';
+import Component from './component';
 import PlaceholderComponent from './placeholder';
 import equal from './equal';
 

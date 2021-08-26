@@ -8,8 +8,8 @@ class Polar extends Base {
   startAngle: number;
   endAngle: number;
 
-  init(option: Option) {
-    super.init(option);
+  update(option: Option) {
+    super.update(option);
 
     const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2 } = this;
     // 半径取宽高的最小值

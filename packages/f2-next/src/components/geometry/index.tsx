@@ -8,7 +8,7 @@ import {
   isNil,
   mix,
 } from "@antv/util";
-import Component from "../../component";
+import Component from "../../base/component";
 import { group as arrayGroup, merge as arrayMerge } from '../../util/array'
 import Chart from '../../chart';
 import * as Adjust from "../../adjust";
