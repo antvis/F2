@@ -42,7 +42,7 @@ class Geometry extends Component implements AttrMixin {
   createAttrOption: (option) => any;
   createAttr: (option) => any;
   setAttrRange: () => any;
-  getAttr: () => any;
+  getAttr: (attrName: string) => any;
   getAttrValue: () => any;
 
 
@@ -60,7 +60,7 @@ class Geometry extends Component implements AttrMixin {
     // 收集需要创建scale的字段
     each(attrOptions, option => {
       const { field } = option;
-      chart.scale(field);
+      chart.setScale(field);
     });
   }
 
@@ -98,7 +98,7 @@ class Geometry extends Component implements AttrMixin {
     const { startOnZero = defaultStartOnZero } = props;
     if (startOnZero) {
       const { y } = attrs;
-      chart.adjustStartZero(y.scale);
+      chart.scale.adjustStartZero(y.scale);
     }
   }
 
@@ -242,7 +242,7 @@ class Geometry extends Component implements AttrMixin {
     const { attrs, chart } = this;
     const { y } = attrs;
     const { scale } = y;
-    return chart.getZeroValue(scale);
+    return chart.scale.getZeroValue(scale);
   }
 
   getAttrs() {
@@ -314,6 +314,16 @@ class Geometry extends Component implements AttrMixin {
       mappedArray[i] = mappedData;
     }
     return mappedArray;
+  }
+
+  getXScale() {
+    const xAttr = this.getAttr('x')
+    return xAttr.scale;
+  }
+
+  getYScale() {
+    const yAttr = this.getAttr('y')
+    return yAttr.scale;
   }
 }
 

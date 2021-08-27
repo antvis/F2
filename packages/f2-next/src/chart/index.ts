@@ -33,16 +33,11 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   coord: Coord;
   createCoord: (coord, layout) => Coord;
 
-  scales: any;
   scale: any;
-  scaleOptions: any;
-  createScales: (scales: string, data: any) => Scale;
   createScale: () => any;
-  updateScale: () => any;
+  setScale: any;
   getScale: (field) => any;
-  adjustStartZero: (scale) => any;
   updateScales: () => any;
-  getZeroValue: (scale) => any;
 
   theme: any;
   setTheme: (theme) => any;
@@ -54,7 +49,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     // 记录data, 全局唯一
     this.data = data;
     // 初始化scales
-    this.scales = {};
+    this.scale = this.createScale();
   }
 
 
@@ -83,7 +78,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     const { scale } = props;
     // 定义scale
     each(scale, (def, field) => {
-      this.scale(field, def);
+      this.setScale(field, def);
     });
 
     super.willMount();
@@ -111,7 +106,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     // 1. _syncYScales
   }
 
-  getXScale() {
+  getXScales() {
     // const xField = xxxx
     // return this.getScale(xField);
   }
