@@ -5,8 +5,8 @@ class Rect extends Base {
 
   type = 'rect';
 
-  init(option: Option) {
-    super.init(option);
+  update(option: Option) {
+    super.update(option);
 
     const { left, top, right, bottom } = this;
     const x: Range = [left, right];

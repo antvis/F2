@@ -1,8 +1,8 @@
 import { createCanvas } from '@ali/f2-graphic';
 import createComponentTree from './createComponentTree';
-import Component from '../component';
-import Container from '../component/container';
-import Layout from './layout';
+import Component from '../base/component';
+import Container from '../base/container';
+import Layout from '../base/layout';
 import Animation from './animation';
 
 interface ChartUpdateProps {
@@ -19,7 +19,7 @@ interface ChartProps extends ChartUpdateProps {
 }
 
 interface IF2Canvas {
-  container: any;
+  container: any; 
 }
 
 // 顶层Canvas标签
@@ -47,8 +47,8 @@ class Canvas extends Component implements IF2Canvas {
 
     // 初始化默认的布局
     const layout = new Layout({
-      right: canvasWidth,
-      bottom: canvasHeight
+      width: canvasWidth,
+      height: canvasHeight
     });
 
     const componentTree = createComponentTree(children, { canvas: this, width: canvasWidth, height: canvasHeight, context, layout });

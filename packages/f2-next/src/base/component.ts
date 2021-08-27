@@ -1,4 +1,4 @@
-import Layout from '../canvas/layout';
+import Layout from './layout';
 
 class Component {
   container: any;

@@ -1,5 +1,5 @@
 import { map } from '../util';
-import Container from '../component/container';
+import Container from '../base/container';
 
 function createComponentTree(element: JSX.Element, appendProps) {
   if (!element) return element;

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { jsx } from "../../jsx";
-import Component from "../../component";
+import Component from "../../base/component";
 import { partition, hierarchy } from "d3-hierarchy";
 import { Category } from "../../attr";
 import { isInBBox, isFunction } from "../../util";
