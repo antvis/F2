@@ -4,7 +4,7 @@ import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Interval } from '../../../src/components';
 import { createContext } from '../util';
-const context = createContext();
+const context = createContext('饼图');
 
 const data = [
   { a: '1', genre: 'Sports', sold: 5 },
