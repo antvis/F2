@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   isString,
   isArray,
@@ -30,6 +29,7 @@ class Geometry extends Component implements AttrMixin {
   attrs: any = {};
   adjust: any;
   dataArray: any;
+  attrOptions: any;
 
   // y 轴是否从0开始
   startOnZero = false;
@@ -39,6 +39,12 @@ class Geometry extends Component implements AttrMixin {
     this.attrOptions = {};
     this.attrs = {};
   }
+  createAttrOption: (option) => any;
+  createAttr: (option) => any;
+  setAttrRange: () => any;
+  getAttr: () => any;
+  getAttrValue: () => any;
+
 
   willMount() {
     const { chart, props } = this;

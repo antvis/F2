@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Coord from '../coord';
 import { mix, each } from '@antv/util';
 import { Scale } from '@antv/scale';
@@ -36,9 +35,14 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
   scales: any;
   scale: any;
+  scaleOptions: any;
   createScales: (scales: string, data: any) => Scale;
   createScale: () => any;
   updateScale: () => any;
+  getScale: (field) => any;
+  adjustStartZero: (scale) => any;
+  updateScales: () => any;
+  getZeroValue: (scale) => any;
 
   theme: any;
   setTheme: (theme) => any;
@@ -52,6 +56,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     // 初始化scales
     this.scales = {};
   }
+
 
   // 会调用子组件的 constructor 创建组件实例
   createComponent(child) {
