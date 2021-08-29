@@ -9,7 +9,7 @@ export { default as Geometry } from './geometry';
 // // // export { default as Coord } from './coord';
 // // export { default as Area, withArea, AreaView } from './area';
 export { default as Interval, withInterval, IntervalView } from './interval';
-// // export { default as Point, withPoint, PointView } from './point';
+export { default as Point, withPoint, PointView } from './point';
 // // export { default as Axis, withAxis, AxisView } from './axis';
 // // export { default as Legend, withLegend, LegendView } from './legend';
 // // export { default as Guide, withGuide, ImageGuide, TextGuide, PointGuide, LineGuide } from './guide';

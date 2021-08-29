@@ -15,6 +15,19 @@ class Rect extends Base {
     this.x = x;
     this.y = y;
   }
+
+  convertPoint(point) {
+    const { x, y, transposed } = this;
+    const xDim = transposed ? 'y' : 'x';
+    const yDim = transposed ? 'x' : 'y';
+
+    const [xStart, xEnd] = x;
+    const [yStart, yEnd] = y;
+    return {
+      x: xStart + (xEnd - xStart) * point[xDim],
+      y: yStart + (yEnd - yStart) * point[yDim]
+    };
+  }
 }
 
 export default Rect;
