@@ -76,7 +76,18 @@ describe("Point Chart", () => {
           }}
           scale={}
         >
-          <Point x="x" y="y" color="name" size={["z", [10, 40]]} />
+          <Point
+            x="x"
+            y="y"
+            color={{
+              field: "name",
+              values: ["#1890ff"],
+            }}
+            size={{
+              field: "z",
+              values: [10, 40],
+            }}
+          />
         </Chart>
       </Canvas>
     );

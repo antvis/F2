@@ -7,16 +7,11 @@ class Attr {
   attrs: any;
 
   createAttrOption(option) {
-    // TODO:待实现callback和固定值域的映射
+    // FIXME:这个地方如果只想指定某个具体的值作为值域的话挺麻烦
     if (!option) return null;
     if (isString(option)) {
       return {
         field: option,
-      }
-    } else if (isArray(option)) {
-      return {
-        field: option[0],
-        values: option[1]
       }
     }
     return option;
