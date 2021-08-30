@@ -262,7 +262,7 @@ class Geometry extends Component implements AttrMixin {
     };
 
     each(mapAttrs, (attr, attrName) => {
-      const range = ranges[attrName];
+      const range = attr.values || ranges[attrName];
       attr.setRange(range);
     });
 

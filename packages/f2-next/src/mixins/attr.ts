@@ -1,15 +1,22 @@
 import { isString } from '@antv/util';
 import { Linear, Category } from '../attr';
+import { isArray } from '@antv/util';
 
 class Attr {
   attrOptions: any;
   attrs: any;
 
   createAttrOption(option) {
+    // TODO:待实现callback和固定值域的映射
     if (!option) return null;
     if (isString(option)) {
       return {
         field: option,
+      }
+    } else if (isArray(option)) {
+      return {
+        field: option[0],
+        values: option[1]
       }
     }
     return option;

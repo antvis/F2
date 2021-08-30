@@ -6,7 +6,7 @@ import { mappingPoint } from "./position";
 
 export default (View) => {
   return class Interval extends Geometry {
-    //  归一值映射到坐标点
+    // 归一值映射到坐标点
     mapping() {
       const { chart } = this;
       const { coord } = chart;
