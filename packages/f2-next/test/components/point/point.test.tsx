@@ -61,10 +61,10 @@ describe("Point Chart", () => {
     canvas.render();
   });
 
-  it("基础点图 - 配置size入参", async () => {
+  it("气泡图 - 配置size入参", async () => {
     const res = await fetch(url2);
     const data = await res.json();
-    const context = createContext("基础点图 - 配置size入参");
+    const context = createContext("气泡图 - 配置size入参");
     const chartRef = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
