@@ -41,9 +41,9 @@ class Geometry extends Component implements AttrMixin {
   }
   createAttrOption: (option) => any;
   createAttr: (option) => any;
-  setAttrRange: () => any;
+  setAttrRange: (attrName: string, range) => any;
   getAttr: (attrName: string) => any;
-  getAttrValue: () => any;
+  getAttrValue: (attrName, record) => any;
 
 
   willMount() {
@@ -245,74 +245,115 @@ class Geometry extends Component implements AttrMixin {
     return chart.scale.getZeroValue(scale);
   }
 
-  getAttrs() {
-    const { attrs, props } = this;
-    const { chart } = props;
-    const { theme } = chart;
-
-    const mapAttrs = { ...attrs };
-
-    // 构造各属性的定义域
-    const ranges = {
-      x: [0, 1],
-      y: [0, 1],
-      color: theme.colors,
-      size: theme.sizes,
-      shape: theme.shapes,
-    };
-
-    each(mapAttrs, (attr, attrName) => {
-      const range = ranges[attrName];
-      attr.setRange(range);
-    });
-
-    return mapAttrs;
-  }
-
   // 获取
   _getAttrsDefaultValue() {
     const { props } = this;
     const { chart } = props;
     const { theme } = chart;
     return {
-      color: theme.colors[0], 
-      // y0,
-      // size,
+      color: theme.colors[0],
     }
   }
 
-  // 数据映射
-  mapping() {
-    const { dataArray } = this;
-    const attrs = this.getAttrs();
+  _getAttrsRange() {
+    const { chart } = this;
+    const { theme } = chart;
+
+    // 构造各属性的定义域
+    const ranges = {
+      color: theme.colors,
+      size: theme.sizes,
+      shape: theme.shapes,
+    };
+
+    return ranges;
+  }
+
+  // 映射除 x, y 之外的图形属性
+  _mappingAttrs(dataArray) {
+    const { x, y, ...attrs } = this.attrs;
     const attrNames = Object.keys(attrs);
     const attrNamesLength = attrNames.length;
-    const defaultValues = this._getAttrsDefaultValue();
 
+    // 设置各属性的定义域
+    const attrsRange = this._getAttrsRange();
+    for (let key = 0; key < attrNamesLength; key++) {
+      const attrName = attrNames[key];
+      this.setAttrRange(attrName, attrsRange[attrName]);
+    }
+
+    // 默认值
+    const defaultValues = this._getAttrsDefaultValue();
     const dataArrayLength = dataArray.length;
     const mappedArray = new Array(dataArrayLength);
     for (let i = 0; i < dataArrayLength; i++) {
       const data = dataArray[i];
-      const dataLength = data.length;
-      const mappedData = new Array(dataLength);
-      for (let i = 0; i < dataLength; i++) {
+
+      // 图形属性映射，因为每组里面这些属性的值都是相同的，所以只需要映射第一个就可以了
+      const attrsValue = {};
+      for (let key = 0; key < attrNamesLength; key++) {
+        const attrName = attrNames[key];
+        attrsValue[attrName] = this.getAttrValue(attrName, data[0]);
+      }
+
+      // 生成映射后的数据对象
+      const mappedData = new Array(data.length);
+      for (let i = 0, len = data.length; i < len; i++) {
         const record = data[i];
         const result = {
           ...record,
           ...defaultValues,
-        }
-        for (let key = 0; key < attrNamesLength; key++) {
-          const attrName = attrNames[key];
-          const attr = attrs[attrName];
-          const { field } = attr;
-          const value = record[field];
-          const mappedValue = attr.mapping(value);
-          result[attrName] = mappedValue;
+          ...attrsValue,
         }
         mappedData[i] = result;
       }
       mappedArray[i] = mappedData;
     }
+    return mappedArray;
+  }
+
+  _normalizePosition(dataArray) {
+    const { x, y } = this.attrs;
+    const { field: xField } = x;
+    const { field: yField } = y;
+    for (let i = 0; i < dataArray.length; i++) {
+      const data = dataArray[i];
+      for (let j = 0, len = data.length; j < len; j++) {
+        const record = data[j];
+        record.position = {
+          x: x.normalize(record[xField]),
+          y: y.normalize(record[yField]),
+        };
+      }
+    }
+    return dataArray;
+  }
+
+  _convertPosition(dataArray) {
+    const { x, y } = this.attrs;
+    for (let i = 0; i < dataArray.length; i++) {
+      const data = dataArray[i];
+      for (let j = 0, len = data.length; j < len; j++) {
+        const record = data[j];
+        const { position } = record;
+        record.x = x.convert(position.x);
+        record.y = y.convert(position.y);
+      }
+    }
+    return dataArray;
+  }
+
+  // 数据映射
+  mapping() {
+    const { dataArray } = this;
+
+    let mappedArray;
+    mappedArray = this._mappingAttrs(dataArray);
+
+    // 位置映射拆分成2个阶段，归一化和坐标映射
+    mappedArray = this._normalizePosition(mappedArray);
+    mappedArray = this._convertPosition(mappedArray);
+
     return mappedArray;
   }
 

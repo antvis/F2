@@ -1,6 +1,10 @@
 import Layout from '../base/layout';
 import { Range, Point, Option } from './types';
 
+function transposedRect({ xMin, xMax, yMin, yMax }) {
+  return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
+}
+
 class Base extends Layout {
 
   type: string;
@@ -13,8 +17,8 @@ class Base extends Layout {
   center: Point;
 
   // x，y 的值域，在极坐标中对应的就是弧度和半径
-  x: Range;
-  y: Range;
+  x: Range = [0, 1];
+  y: Range = [0, 1];
 
   constructor(option: Option) {
     super(option);
@@ -38,6 +42,21 @@ class Base extends Layout {
 
   convertPoint(point) {
     return point;
+  }
+
+  convertRect(rect) {
+    const { x: xRange, y: yRange, transposed } = this;
+    const [xStart, xEnd] = xRange;
+    const [yStart, yEnd] = yRange;
+
+    const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
+
+    return {
+      xMin: xStart + (xEnd - xStart) * xMin,
+      xMax: xStart + (xEnd - xStart) * xMax,
+      yMin: yStart + (yEnd - yStart) * yMin,
+      yMax: yStart + (yEnd - yStart) * yMax,
+    }
   }
 }
 
