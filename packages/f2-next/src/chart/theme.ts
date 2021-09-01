@@ -1,32 +1,26 @@
 
-const color1 = '#E8E8E8'; // color of axis-line and axis-grid
-const color2 = '#808080'; // color of axis label
 
-const defaultAxis = {
-  label: {
-    fill: color2,
-    fontSize: 10
-  },
+const axis = {
+  labelOffset: '15px',
   line: {
-    stroke: color1,
-    lineWidth: 1
+    stroke: '#E8E8E8',
+    lineWidth: '1px',
+  },
+  label: {
+    fill: '#808080',
+    fontSize: '20px',
   },
   grid: {
-    type: 'line',
-    stroke: color1,
-    lineWidth: 1,
-    lineDash: [ 2 ]
-  },
-  tickLine: null,
-  labelOffset: 7.5
+    stroke: '#E8E8E8',
+    lineWidth: '1px',
+    lineDash: [ '4px' ]
+  }
 };
 
 const Theme = {
   fontFamily: '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
-  defaultColor: '#1890FF',
   pixelRatio: 1,
   padding: ['30px', '30px', '30px', '30px'],
-  // appendPadding: 15,
   colors: [
     '#1890FF',
     '#2FC25B',
@@ -55,7 +49,8 @@ const Theme = {
     area: {
       fillOpacity: 0.1
     }
-  }
+  },
+  axis
 };
 
 export default Theme;

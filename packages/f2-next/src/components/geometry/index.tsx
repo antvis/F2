@@ -24,6 +24,7 @@ const GROUP_ATTRS = ["color", "size", "shape"];
 
 class Geometry extends Component implements AttrMixin {
 
+  isGeometry = true;
   chart: Chart;
   data: any;
   attrs: any = {};
@@ -354,13 +355,15 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getXScale() {
-    const xAttr = this.getAttr('x')
-    return xAttr.scale;
+    const { chart, attrOptions } = this;
+    const { field } = attrOptions.x;
+    return chart.getScale(field);
   }
 
   getYScale() {
-    const yAttr = this.getAttr('y')
-    return yAttr.scale;
+    const { chart, attrOptions } = this;
+    const { field } = attrOptions.y;
+    return chart.getScale(field);
   }
 
   getSnapRecords(point) {
