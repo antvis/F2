@@ -5,7 +5,7 @@ export default Canvas;
 // // export { default as Chart } from './chart';
 
 export { default as Geometry } from './geometry';
-// // export { default as Line, withLine, LineView } from './line';
+export { default as Line, withLine, LineView } from './line';
 // // // export { default as Coord } from './coord';
 // // export { default as Area, withArea, AreaView } from './area';
 export { default as Interval, withInterval, IntervalView } from './interval';

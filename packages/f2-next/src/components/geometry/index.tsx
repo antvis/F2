@@ -28,8 +28,12 @@ class Geometry extends Component implements AttrMixin {
   data: any;
   attrs: any = {};
   adjust: any;
+
+  // 预处理后的数据
   dataArray: any;
   attrOptions: any;
+  // 映射完成后的数据
+  mappedArray: any;
 
   // y 轴是否从0开始
   startOnZero = false;
@@ -320,26 +324,17 @@ class Geometry extends Component implements AttrMixin {
       const data = dataArray[i];
       for (let j = 0, len = data.length; j < len; j++) {
         const record = data[j];
-        record.position = {
+        const position = {
           x: x.normalize(record[xField]),
           y: y.normalize(record[yField]),
         };
+        mix(record, { position, ...position });
       }
     }
     return dataArray;
   }
 
   _convertPosition(dataArray) {
-    const { x, y } = this.attrs;
-    for (let i = 0; i < dataArray.length; i++) {
-      const data = dataArray[i];
-      for (let j = 0, len = data.length; j < len; j++) {
-        const record = data[j];
-        const { position } = record;
-        record.x = x.convert(position.x);
-        record.y = y.convert(position.y);
-      }
-    }
     return dataArray;
   }
 
@@ -354,6 +349,7 @@ class Geometry extends Component implements AttrMixin {
     mappedArray = this._normalizePosition(mappedArray);
     mappedArray = this._convertPosition(mappedArray);
 
+    this.mappedArray = mappedArray;
     return mappedArray;
   }
 
@@ -365,6 +361,36 @@ class Geometry extends Component implements AttrMixin {
   getYScale() {
     const yAttr = this.getAttr('y')
     return yAttr.scale;
+  }
+
+  getSnapRecords(point) {
+    const { chart, mappedArray } = this;
+    const { coord } = chart;
+    const invertPoint = coord.invertPoint(point);
+
+    // 如果不在coord坐标范围内，直接返回空
+    if (invertPoint.x < 0 || invertPoint.y < 0) {
+      return [];
+    }
+
+    let rst = [];
+    for (let i = 0; i < mappedArray.length; i++) {
+      const data = mappedArray[i];
+
+      let min = Infinity;
+      let minRecord = null;
+      for (let j = 0, len = data.length; j < len; j++) {
+        const record = data[j];
+        const { position } = record;
+        const offset = Math.abs(invertPoint.x - position.x);
+        if (min > offset) {
+          min = offset;
+          minRecord = record;
+        }
+      }
+      rst.push(minRecord);
+    }
+    return rst;
   }
 }
 

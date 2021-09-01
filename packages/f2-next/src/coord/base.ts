@@ -40,6 +40,7 @@ class Base extends Layout {
     return false;
   }
 
+  // 把归一后的值映射到对应的定义域
   convertPoint(point) {
     return point;
   }
@@ -57,6 +58,11 @@ class Base extends Layout {
       yMin: yStart + (yEnd - yStart) * yMin,
       yMax: yStart + (yEnd - yStart) * yMax,
     }
+  }
+
+  // 把canvas坐标的点位映射回归一后的值
+  invertPoint(point) {
+    return point;
   }
 }
 
