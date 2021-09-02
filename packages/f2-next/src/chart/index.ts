@@ -107,12 +107,25 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   }
 
   getXScales() {
-    // const xField = xxxx
-    // return this.getScale(xField);
+    const { components } = this;
+    return components.filter(component => {
+      // @ts-ignore
+      return component.isGeometry;
+    }).map(component => {
+      // @ts-ignore
+      return component.getXScale();
+    });
   }
 
   getYScales() {
-
+    const { components } = this;
+    return components.filter(component => {
+      // @ts-ignore
+      return component.isGeometry;
+    }).map(component => {
+      // @ts-ignore
+      return component.getYScale();
+    });
   }
 }
 

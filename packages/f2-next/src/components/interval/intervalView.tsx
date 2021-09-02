@@ -3,7 +3,7 @@ import { isArray } from '@antv/util';
 
 export default (props: any) => {
   const { coord, mappedArray } = props;
-  const { center, type: coordType, transposed } = coord;
+  const { center, type: coordType } = coord;
   if (coordType === 'rect') {
     return (
       <group>

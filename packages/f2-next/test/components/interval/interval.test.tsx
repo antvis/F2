@@ -2,7 +2,7 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import { Interval } from "../../../src/components";
+import { Interval, Axis } from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -29,7 +29,7 @@ describe("Chart", () => {
           data={data}
           coord={
             {
-              // type: Rect,
+              // type: Polar,
               // transposed: true,
               // left: 100,
               // top: 100,
@@ -37,13 +37,15 @@ describe("Chart", () => {
               // bottom: 100,
             }
           }
-          scale={
-            {
-              // genre: {},
-              // sold: {},
-            }
-          }
+          scale={{
+            // genre: {},
+            // sold: {},
+          }}
         >
+          <Axis field="genre"/>
+          {/* <Axis field="genre" position="top"/> */}
+          <Axis field="sold" />
+          {/* <Axis field="sold" position="right" /> */}
           <Interval
             x="genre"
             y="sold"
