@@ -7,7 +7,6 @@ import { isInBBox, isFunction } from "../../util";
 import { applyMixins } from '../../mixins';
 import CoordMixin from '../../mixins/coord';
 import { mix } from "@antv/util"
-import { mappingRect } from '../interval/position';
 
 function rootParent(data) {
   let d = data;
@@ -60,7 +59,7 @@ export default (View): any => {
         const root = rootParent(node);
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
-        const rect = mappingRect(coord, { xMin: node.x0, xMax: node.x1, yMin: node.y0, yMax: node.y1 });
+        const rect = coord.convertRect({ xMin: node.x0, xMax: node.x1, yMin: node.y0, yMax: node.y1 });
         mix(node, rect);
         // 递归处理
         if (node.children && node.children.length) {
