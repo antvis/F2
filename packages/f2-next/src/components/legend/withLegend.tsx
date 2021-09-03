@@ -1,50 +1,27 @@
-import { jsx } from '../../jsx';
+import { jsx, render, renderJSXElement } from '../../jsx';
 import Component from '../../base/component';
-import Layout from '../../base/layout';
 
 export default View => {
   return class Legend extends Component {
 
     chart: any;
-    layout: Layout;
-
-    getGeometry() {
-      const { chart } = this;
-      
-      const geometrys = chart.getGeometrys();
-      // 默认处理第一个图形
-      return geometrys[0];
-    }
 
     mount() {
-      // const { layout } = this;
-      // this.layout = new Layout({
-      //   left: layout.left,
-      //   top: layout.top,
-      //   width: 0,
-      //   height: 0,
-      // });
-      // this.getItems();
+      const { chart, container } = this;
+      const { coord } = chart;
+      const shape = render(renderJSXElement(this.render()), container);
+      const bbox = shape.getBBox();
+      shape.remove();
+      const { top, height } = coord;
+      coord.update({
+        top: top + bbox.height,
+        height: height - bbox.height,
+      });
     }
 
     getItems() {
-      const geometry = this.getGeometry();
-      const colorOption = geometry.getAttrOption('color');
-      if (!colorOption) return null;
-      const { field } = colorOption;
       const { chart } = this;
-      const scale = chart.getScale(field);
-      if (!scale.isCategory) return null;
-
-      return [{
-        color: 'red',
-        name: '1',
-        value: '11'
-      }, {
-        color: 'red',
-        name: '1',
-        value: '11'
-      }]
+      return chart.getLegendItems();
     }
 
     render() {

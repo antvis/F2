@@ -26,6 +26,7 @@ const GROUP_ATTRS = ["color", "size", "shape"];
 class Geometry extends Component implements AttrMixin {
 
   isGeometry = true;
+  isInit = false;
   chart: Chart;
   data: any;
   attrs: any = {};
@@ -71,10 +72,18 @@ class Geometry extends Component implements AttrMixin {
     });
   }
 
-  mount() {
+  _init() {
+    if (this.isInit) {
+      return;
+    }
     this._createAttrs();
     this._adjustScales();
     this._processData();
+    this.isInit = true;
+  }
+
+  mount() {
+    this._init();
   }
 
   _createAttrs() {
@@ -422,12 +431,37 @@ class Geometry extends Component implements AttrMixin {
         const originValue = record[FIELD_ORIGIN][xfield];
         if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
           rst.push(record);
-        } else if (originValue === value){
+        } else if (originValue === value) {
           rst.push(record);
         }
       }
     }
     return rst;
+  }
+
+  getLegendItems() {
+    // TODO 挪到chart里去
+    if (!this.isInit) {
+      this._init();
+    }
+    const colorAttr = this.getAttr('color');
+    if (!colorAttr) return null;
+    const { scale } = colorAttr;
+    if (!scale.isCategory) return null;
+    const { chart } = this;
+    const { theme } = chart;
+    const ticks = scale.getTicks();
+    colorAttr.setRange(theme.colors);
+    const items = ticks.map(tick => {
+      const { text, tickValue } = tick;
+      const color = colorAttr.mapping(tickValue) || theme.colors[0];
+      return {
+        color,
+        name: text, // for display
+        tickValue,
+      };
+    });
+    return items;
   }
 }
 

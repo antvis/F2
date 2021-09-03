@@ -7,15 +7,14 @@ export default (props) => {
   return (
     <group
       style={{
-        flexDirection: 'row',
         width,
       }}
     >
       <group
         style={{
+          display: 'flex',
           flexDirection: 'row',
           // paddingLeft: '10px',
-          flexWrap: 'wrap',
           flex: 1,
         }}
         attrs={{
@@ -27,10 +26,12 @@ export default (props) => {
           records.map(record => {
             return (
               <group style={{
+                display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 // justifyContent: 'center',
                 padding: [ '6px', '10px', '6px', '10px' ],
+                // width: '100px'
               }}>
                 <circle
                   attrs={{

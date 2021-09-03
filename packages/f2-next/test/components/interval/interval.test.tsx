@@ -46,13 +46,13 @@ describe("Chart", () => {
           {/* <Axis field="genre" position="top"/> */}
           <Axis field="sold" />
           {/* <Axis field="sold" position="right" /> */}
+          <Legend />
           <Interval
             x="genre"
             y="sold"
             color="genre"
             // adjust="stack"
           />
-          <Legend />
           <Tooltip />
         </Chart>
       </Canvas>

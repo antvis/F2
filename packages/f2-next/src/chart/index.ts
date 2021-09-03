@@ -121,6 +121,13 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     return geometrys[0].getSnapRecords(point);
   }
 
+  getLegendItems(point) {
+    const geometrys = this.getGeometrys();
+    if (!geometrys.length) return;
+    // @ts-ignore
+    return geometrys[0].getLegendItems(point);
+  }
+
   getXScales() {
     const geometrys = this.getGeometrys();
     return geometrys.map(component => {
