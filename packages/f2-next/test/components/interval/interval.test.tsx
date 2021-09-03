@@ -2,7 +2,7 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import { Interval, Axis } from "../../../src/components";
+import { Interval, Axis, Legend, Tooltip } from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -52,6 +52,8 @@ describe("Chart", () => {
             color="genre"
             // adjust="stack"
           />
+          <Legend />
+          <Tooltip />
         </Chart>
       </Canvas>
     );

@@ -42,8 +42,8 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   theme: any;
   setTheme: (theme) => any;
 
-  constructor(props) {
-    super(props)
+  constructor(props, context?, updater?) {
+    super(props, context, updater);
 
     const { data } = props;
     // 记录data, 全局唯一
@@ -106,23 +106,32 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     // 1. _syncYScales
   }
 
-  getXScales() {
+  getGeometrys() {
     const { components } = this;
     return components.filter(component => {
       // @ts-ignore
       return component.isGeometry;
-    }).map(component => {
+    });
+  }
+
+  getSnapRecords(point) {
+    const geometrys = this.getGeometrys();
+    if (!geometrys.length) return;
+    // @ts-ignore
+    return geometrys[0].getSnapRecords(point);
+  }
+
+  getXScales() {
+    const geometrys = this.getGeometrys();
+    return geometrys.map(component => {
       // @ts-ignore
       return component.getXScale();
     });
   }
 
   getYScales() {
-    const { components } = this;
-    return components.filter(component => {
-      // @ts-ignore
-      return component.isGeometry;
-    }).map(component => {
+    const geometrys = this.getGeometrys();
+    return geometrys.map(component => {
       // @ts-ignore
       return component.getYScale();
     });

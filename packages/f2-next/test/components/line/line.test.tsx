@@ -2,7 +2,7 @@
 import { jsx } from '../../../src';
 import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
-import { Line } from '../../../src/components';
+import { Line, Axis } from '../../../src/components';
 import { createContext } from '../util';
 
 
@@ -25,7 +25,7 @@ describe('Chart', () => {
           ref={ chartRef }
           data={ data }
           coord={{
-            // type: Polar,
+            type: Polar,
             // transposed: true,
             // left: 10,
             // top: 10,
@@ -37,6 +37,8 @@ describe('Chart', () => {
             // sold: {},
           }}
         >
+          <Axis field="genre" />
+          <Axis field="sold" />
           <Line
             ref={ lineRef }
             x="genre"
