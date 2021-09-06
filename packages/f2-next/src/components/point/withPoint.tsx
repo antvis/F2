@@ -2,7 +2,7 @@
 import { jsx } from "../../jsx";
 import { mix } from "@antv/util";
 import Geometry from "../geometry";
-import { mappingPoint } from "./position";
+import { mappingPoint } from "./util";
 
 export default (View) => {
   return class Interval extends Geometry {
