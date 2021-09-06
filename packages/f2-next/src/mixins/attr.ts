@@ -1,5 +1,6 @@
 import { isString } from '@antv/util';
 import { Linear, Category } from '../attr';
+import { isArray } from '@antv/util';
 
 class Attr {
   attrOptions: any;
@@ -27,6 +28,13 @@ class Attr {
   setAttrRange(attrName: string, range) {
     const attr = this.attrs[attrName];
     attr.range = range;
+  }
+
+  // 获取属性映射的值域
+  getAttrRange(attrName) {
+    const attr = this.attrs[attrName];
+    if(!attr) return;
+    return attr.range;
   }
 
   getAttr(attrName: string) {

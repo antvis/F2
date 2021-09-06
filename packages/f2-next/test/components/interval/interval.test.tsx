@@ -18,7 +18,7 @@ const data = [
   { type: "b", genre: "Other", sold: 40 },
 ];
 
-describe("Chart", () => {
+describe("Interval Chart", () => {
   it("基础柱状图", () => {
     const context = createContext("基础柱状图");
     const chartRef = { current: null };
