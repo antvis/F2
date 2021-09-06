@@ -4,6 +4,7 @@ import Component from '../base/component';
 import Container from '../base/container';
 import Layout from '../base/layout';
 import Animation from './animation';
+import { px2hd } from '../util';
 
 interface ChartUpdateProps {
   pixelRatio?: number,
@@ -25,12 +26,14 @@ interface IF2Canvas {
 // 顶层Canvas标签
 class Canvas extends Component implements IF2Canvas {
   canvas: any;
+  context: CanvasRenderingContext2D;
   component: Container;
   animation?: Animation;
 
   constructor(props: ChartProps) {
     super(props);
     const { context, pixelRatio, width, height, animate = true, children } = props;
+    this.context = context;
 
     // 创建G的canvas
     const canvas = createCanvas({
@@ -125,6 +128,22 @@ class Canvas extends Component implements IF2Canvas {
   destroy() {
     const { component } = this;
     component.destroy();
+  }
+
+  px2hd = px2hd
+
+  measureText(text, font) {
+    const { context } = this;
+    const {
+      fontSize = 12,
+      fontFamily = 'normal',
+      fontStyle = 'normal',
+      fontWeight = 'normal',
+      fontVariant = 'normal',
+    } = this.px2hd(font);
+  
+    context.font = `${fontStyle} ${fontVariant} ${fontWeight} ${fontSize}px ${fontFamily}`;
+    return context.measureText(text);
   }
 }
 

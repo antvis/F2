@@ -33,6 +33,14 @@ class Base {
   setRange(range) {
     this.range = range;
   }
+
+  normalize(value: any) {
+    return value;
+  }
+
+  convert(value) {
+    return value;
+  }
 }
 
 export default Base;

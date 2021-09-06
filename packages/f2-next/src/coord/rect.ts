@@ -17,15 +17,22 @@ class Rect extends Base {
   }
 
   convertPoint(point) {
-    const { x, y, transposed } = this;
+    const { transposed, x, y } = this;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
-
-    const [xStart, xEnd] = x;
-    const [yStart, yEnd] = y;
     return {
-      x: xStart + (xEnd - xStart) * point[xDim],
-      y: yStart + (yEnd - yStart) * point[yDim]
+      x: x[0] + (x[1] - x[0]) * point[xDim],
+      y: y[0] + (y[1] - y[0]) * point[yDim]
+    };
+  }
+
+  invertPoint(point) {
+    const { transposed, x, y } = this;
+    const xDim = transposed ? 'y' : 'x';
+    const yDim = transposed ? 'x' : 'y';
+    return {
+      [xDim]: (point.x - x[0]) / (x[1] - x[0]),
+      [yDim]: (point.y - y[0]) / (y[1] - y[0])
     };
   }
 }

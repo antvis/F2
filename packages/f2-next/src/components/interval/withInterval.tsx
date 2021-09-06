@@ -2,7 +2,7 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
-import { convertRect, mappingRect } from './position';
+import { convertRect, mappingRect } from './util';
 
 export default View => {
   return class Interval extends Geometry {
@@ -28,23 +28,21 @@ export default View => {
       return 1 / values.length * ratio;
     }
 
-    mapping() {
+    _convertPosition(mappedArray) {
       const { chart } = this;
       const { coord } = chart;
       const y0 = this.getY0Value();
       const defaultSize = this.getDefaultSize();
-      const mappedArray = super.mapping();
 
       for (let i = 0; i < mappedArray.length; i++) {
         const data = mappedArray[i];
         for (let j = 0; j < data.length; j++) {
           const record = data[j];
-          const { x, y, size = defaultSize } = record;
-          const rect = convertRect({ x, y, size, y0 });
-          mix(record, mappingRect(coord, rect));
+          const { position, size = defaultSize } = record;
+          const rect = convertRect({ ...position, size, y0 });
+          mix(record, coord.convertRect(rect));
         }
       }
-
       return mappedArray;
     }
 
