@@ -97,7 +97,6 @@ class Geometry extends Component implements AttrMixin {
       });
     });
 
-    console.log('debug', attrs)
   }
 
   _adjustScales() {
