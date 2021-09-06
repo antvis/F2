@@ -5,6 +5,7 @@ import Container from '../base/container';
 import Layout from '../base/layout';
 import Animation from './animation';
 import { px2hd } from '../util';
+import { createUpdater } from './updater';
 
 interface ChartUpdateProps {
   pixelRatio?: number,
@@ -54,8 +55,10 @@ class Canvas extends Component implements IF2Canvas {
       height: canvasHeight
     });
 
+    const updater = createUpdater(this);
+
     const componentTree = createComponentTree(children, { canvas: this, width: canvasWidth, height: canvasHeight, context, layout });
-    const component = new Container({ children: componentTree, animate });
+    const component = new Container({ children: componentTree, animate }, {}, updater);
     component.init({ layout, container: canvas });
 
     this.canvas = canvas;

@@ -1,9 +1,15 @@
 import Layout from './layout';
 
 class Component {
-  container: any;
   props: any;
+  state: any;
+  context: any;
+  refs: {
+    [key: string]: any;
+  }
+  container: any;
   layout: Layout;
+  updater: any;
 
   animate: boolean;
 
@@ -19,17 +25,13 @@ class Component {
   __shouldRender = true;
   // actions: any;
 
-  // TODO for TypeScript
-  state: any;
-  context: any;
-  refs: {
-    [key: string]: any;
-  }
-
-  constructor(props: any) {
+  constructor(props: any, context?, updater?) {
     const { animate } = props;
     this.__props = props;
     this.props = props;
+    this.context = context;
+    this.updater = updater;
+    this.state = {};
     this.animate = animate;
   }
   init({ container, layout }) {
@@ -42,8 +44,8 @@ class Component {
   // TODO mounted
   mount() {
   }
-  // TODO
-  setState() {
+  setState(partialState) {
+    this.updater.enqueueSetState(this, partialState);
   }
   beforeUpdate() {
   }

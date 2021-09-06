@@ -21,13 +21,19 @@ export default View => {
     }
 
     parsePoints(dataArray) {
+      const { chart } = this;
+      const { coord } = chart;
       return dataArray.map(data => {
         const { color, shape, size } = data[0];
+        const points = data;
+        if (coord.isPolar) {
+          points.push(data[0]);
+        }
         return {
           color,
           shape,
           size,
-          points: data,
+          points,
         }
       });
     }

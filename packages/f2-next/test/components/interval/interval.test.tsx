@@ -2,7 +2,7 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import { Interval, Axis } from "../../../src/components";
+import { Interval, Axis, Legend, Tooltip } from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -46,12 +46,14 @@ describe("Interval Chart", () => {
           {/* <Axis field="genre" position="top"/> */}
           <Axis field="sold" />
           {/* <Axis field="sold" position="right" /> */}
+          <Legend />
           <Interval
             x="genre"
             y="sold"
             color="genre"
             // adjust="stack"
           />
+          <Tooltip />
         </Chart>
       </Canvas>
     );

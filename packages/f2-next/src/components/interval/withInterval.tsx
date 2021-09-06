@@ -40,6 +40,7 @@ export default View => {
           const record = data[j];
           const { position, size = defaultSize } = record;
           const rect = convertRect({ ...position, size, y0 });
+          mix(position, rect);
           mix(record, coord.convertRect(rect));
         }
       }

@@ -8,12 +8,13 @@ import {
   mix,
 } from "@antv/util";
 import Component from "../../base/component";
-import { group as arrayGroup, merge as arrayMerge } from '../../util/array'
+import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array'
 import Chart from '../../chart';
 import * as Adjust from "../../adjust";
 import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
+import { toTimeStamp } from '../../util/index'
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = "origin";
@@ -25,6 +26,7 @@ const GROUP_ATTRS = ["color", "size", "shape"];
 class Geometry extends Component implements AttrMixin {
 
   isGeometry = true;
+  isInit = false;
   chart: Chart;
   data: any;
   attrs: any = {};
@@ -48,6 +50,7 @@ class Geometry extends Component implements AttrMixin {
   createAttr: (option) => any;
   setAttrRange: (attrName: string, range) => any;
   getAttr: (attrName: string) => any;
+  getAttrOption: (attrName: string) => any;
   getAttrValue: (attrName, record) => any;
   getAttrRange: (attrName) => any;
 
@@ -69,10 +72,18 @@ class Geometry extends Component implements AttrMixin {
     });
   }
 
-  mount() {
+  _init() {
+    if (this.isInit) {
+      return;
+    }
     this._createAttrs();
     this._adjustScales();
     this._processData();
+    this.isInit = true;
+  }
+
+  mount() {
+    this._init();
   }
 
   _createAttrs() {
@@ -370,10 +381,41 @@ class Geometry extends Component implements AttrMixin {
     return chart.getScale(field);
   }
 
+  _getSnap(scale, invertPointX) {
+    if (scale.isCategory) {
+      return scale.invert(invertPointX);
+    }
+
+    // linear 类型
+    const invertValue = scale.invert(invertPointX);
+    const values = scale.values;
+    const len = values.length;
+    // 如果只有1个点直接返回第1个点
+    if (len === 1) {
+      return values[0];
+    }
+    // 第1个点和第2个点之间
+    if ((values[0] + values[1]) / 2 > invertValue) {
+      return values[0];
+    }
+    // 最后2个点
+    if ((values[len - 2] + values[len - 1]) / 2 <= invertValue) {
+      return values[len - 1];
+    }
+    for (let i = 1; i < len; i++) {
+      // 中间的点
+      if ((values[i - 1] + values[i]) / 2 <= invertValue && (values[i + 1] + values[i]) / 2 > invertValue) {
+        return values[i];
+      }
+    }
+    return null;
+  }
+
   getSnapRecords(point) {
     const { chart, mappedArray } = this;
     const { coord } = chart;
     const invertPoint = coord.invertPoint(point);
+    const xScale = this.getXScale();
 
     // 如果不在coord坐标范围内，直接返回空
     if (invertPoint.x < 0 || invertPoint.y < 0) {
@@ -381,23 +423,49 @@ class Geometry extends Component implements AttrMixin {
     }
 
     let rst = [];
+    const value = this._getSnap(xScale, invertPoint.x);
+    if (!value) {
+      return rst;
+    }
+    const { field: xfield } = xScale;
     for (let i = 0; i < mappedArray.length; i++) {
       const data = mappedArray[i];
-
-      let min = Infinity;
-      let minRecord = null;
       for (let j = 0, len = data.length; j < len; j++) {
         const record = data[j];
-        const { position } = record;
-        const offset = Math.abs(invertPoint.x - position.x);
-        if (min > offset) {
-          min = offset;
-          minRecord = record;
+        const originValue = record[FIELD_ORIGIN][xfield];
+        if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
+          rst.push(record);
+        } else if (originValue === value) {
+          rst.push(record);
         }
       }
-      rst.push(minRecord);
     }
     return rst;
+  }
+
+  getLegendItems() {
+    // TODO 挪到chart里去
+    if (!this.isInit) {
+      this._init();
+    }
+    const colorAttr = this.getAttr('color');
+    if (!colorAttr) return null;
+    const { scale } = colorAttr;
+    if (!scale.isCategory) return null;
+    const { chart } = this;
+    const { theme } = chart;
+    const ticks = scale.getTicks();
+    colorAttr.setRange(theme.colors);
+    const items = ticks.map(tick => {
+      const { text, tickValue } = tick;
+      const color = colorAttr.mapping(tickValue) || theme.colors[0];
+      return {
+        color,
+        name: text, // for display
+        tickValue,
+      };
+    });
+    return items;
   }
 }
 

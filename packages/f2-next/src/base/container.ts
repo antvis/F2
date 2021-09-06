@@ -7,8 +7,8 @@ import equal from './equal';
 class ContainerComponent extends Component {
   components: Component[];
 
-  constructor(props: any) {
-    super(props);
+  constructor(props: any, context?, updater?) {
+    super(props, context, updater);
 
     const { children } = props;
     const components = map(children, (child: JSX.Element) => {
@@ -62,7 +62,7 @@ class ContainerComponent extends Component {
 
     // 这里 一定是 F2 Component 了
     // @ts-ignore
-    const component = new type(props);
+    const component = new type(props, {}, this.updater);
 
     // 设置ref
     if (ref) {

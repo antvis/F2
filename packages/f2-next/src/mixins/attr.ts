@@ -41,6 +41,10 @@ class Attr {
     return this.attrs[attrName];
   }
 
+  getAttrOption(attrName: string) {
+    return this.attrOptions[attrName];
+  }
+
   getAttrValue(attrName: string, record: any) {
     const attr = this.attrs[attrName];
     if (!attr) return null;
