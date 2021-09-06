@@ -9,6 +9,7 @@
     "build": "father build",
     "build-watch": "father build -w",
     "test": "npm run build && jest",
+    "test-cov": "jest --coverage",
     "test-live": "npm run test-watch packages",
     "test-watch": "DEBUG_MODE=1 jest --watch",
     "coverage": "jest --coverage",

@@ -85,7 +85,7 @@ describe("Point Chart", () => {
             }}
             size={{
               field: "z",
-              values: [10, 40],
+              range: [10, 40, 60, 80],
             }}
           />
         </Chart>

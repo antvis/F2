@@ -7,7 +7,6 @@ class Attr {
   attrs: any;
 
   createAttrOption(option) {
-    // FIXME:这个地方如果只想指定某个具体的值作为值域的话挺麻烦
     if (!option) return null;
     if (isString(option)) {
       return {
@@ -29,6 +28,13 @@ class Attr {
   setAttrRange(attrName: string, range) {
     const attr = this.attrs[attrName];
     attr.range = range;
+  }
+
+  // 获取属性映射的值域
+  getAttrRange(attrName) {
+    const attr = this.attrs[attrName];
+    if(!attr) return;
+    return attr.range;
   }
 
   getAttr(attrName: string) {

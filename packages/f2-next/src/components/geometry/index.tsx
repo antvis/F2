@@ -49,7 +49,7 @@ class Geometry extends Component implements AttrMixin {
   setAttrRange: (attrName: string, range) => any;
   getAttr: (attrName: string) => any;
   getAttrValue: (attrName, record) => any;
-
+  getAttrRange: (attrName) => any;
 
   willMount() {
     const { chart, props } = this;
@@ -96,6 +96,8 @@ class Geometry extends Component implements AttrMixin {
         scale,
       });
     });
+
+    console.log('debug', attrs)
   }
 
   _adjustScales() {
@@ -264,7 +266,7 @@ class Geometry extends Component implements AttrMixin {
     const { chart } = this;
     const { theme } = chart;
 
-    // 构造各属性的定义域
+    // 构造各属性的值域
     const ranges = {
       color: theme.colors,
       size: theme.sizes,
@@ -280,11 +282,14 @@ class Geometry extends Component implements AttrMixin {
     const attrNames = Object.keys(attrs);
     const attrNamesLength = attrNames.length;
 
-    // 设置各属性的定义域
+    // 设置各属性的值域
     const attrsRange = this._getAttrsRange();
     for (let key = 0; key < attrNamesLength; key++) {
       const attrName = attrNames[key];
-      this.setAttrRange(attrName, attrsRange[attrName]);
+
+      if(!this.getAttrRange(attrName)) {
+        this.setAttrRange(attrName, attrsRange[attrName]);
+      }
     }
 
     // 默认值
