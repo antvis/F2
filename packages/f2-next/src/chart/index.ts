@@ -86,11 +86,19 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
   mount() {
     const { props } = this;
-    const { theme, coord, layout } = props;
+    const { theme, coord, layout, canvas } = props;
     // 初始化默认主题
-    this.theme = mix({}, defaultTheme, theme);
+    this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
+    const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
+    
     // 创建坐标系
-    this.coord = this.createCoord(coord, layout);
+    this.coord = this.createCoord({
+      left: paddingLeft,
+      top: paddingTop,
+      right: paddingRight,
+      bottom: paddingBottom,
+      ...coord,
+    }, layout);
     // 创建scale
     this.updateScales();
     super.mount();
