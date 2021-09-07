@@ -7,6 +7,7 @@ import ThemeMixin from '../mixins/theme';
 import CoordMixin from '../mixins/coord';
 import ScaleMixin from '../mixins/scale';
 import defaultTheme from './theme';
+import Layout from '../base/layout';
 
 interface Point {
   x: number;
@@ -73,6 +74,56 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     return childComponent;
   }
 
+  layoutCoord() {
+    const { components } = this;
+    if (!components || !components.length) {
+      return;
+    }
+    const { layout } = this;
+    const coordLayout = layout.clone();
+
+    components.forEach(component => {
+      // @ts-ignore
+      if (!component || !component.getLayout) {
+        return;
+      }
+      let { left, top, width, height } = coordLayout;
+      // @ts-ignore
+      const childLayout = component.getLayout();
+      const { position, width: childWidth, height: childHeight } = childLayout;
+      // @ts-ignore
+      component.setLayout({ left, top, width: childWidth - left, height: childHeight - top });
+
+      // 计算剩余的占位
+      // 占用宽度
+      switch (position) {
+        case 'left':
+          left += childWidth;
+          width -= childWidth;
+          break;
+        case 'right':
+          width -= childWidth;
+          break;
+        case 'top':
+          top += childHeight;
+          height -= childHeight;
+          break;
+        case 'bottom':
+          height -= childHeight;
+          break;
+      }
+      coordLayout.update({ left, top, width, height });
+    });
+
+    // 更新coord
+    this.coord.update({
+      left: coordLayout.left,
+      top: coordLayout.top,
+      width: coordLayout.width,
+      height: coordLayout.height,
+    });
+  }
+
   willMount() {
     const { props } = this;
     const { scale } = props;
@@ -90,15 +141,16 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     // 初始化默认主题
     this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
     const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
-    
+
+    this.layout = new Layout({
+      left: layout.left + paddingLeft,
+      top: layout.top + paddingTop,
+      width: layout.width - paddingLeft - paddingRight,
+      height: layout.height -paddingTop - paddingBottom,
+    });
+
     // 创建坐标系
-    this.coord = this.createCoord({
-      left: paddingLeft,
-      top: paddingTop,
-      right: paddingRight,
-      bottom: paddingBottom,
-      ...coord,
-    }, layout);
+    this.coord = this.createCoord(coord, layout);
     // 创建scale
     this.updateScales();
     super.mount();
@@ -150,6 +202,11 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
       // @ts-ignore
       return component.getYScale();
     });
+  }
+
+  render() {
+    this.layoutCoord();
+    super.render();
   }
 }
 

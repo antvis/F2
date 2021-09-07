@@ -42,11 +42,11 @@ describe("Interval Chart", () => {
             // sold: {},
           }}
         >
-          <Axis field="genre"/>
-          {/* <Axis field="genre" position="top"/> */}
-          <Axis field="sold" />
-          {/* <Axis field="sold" position="right" /> */}
           <Legend />
+          <Axis field="genre"/>
+          <Axis field="sold" />
+          {/* <Axis field="genre" position="top"/> */}
+          {/* <Axis field="sold" position="right" /> */}
           <Interval
             x="genre"
             y="sold"

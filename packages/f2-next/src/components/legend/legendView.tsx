@@ -2,13 +2,15 @@ import { jsx } from '../../jsx';
 
 export default (props) => {
   const { items, layout } = props;
-  const { width } = layout;
+  const { left, top, width } = layout;
   return (
     <group style={{
+      left,
+      top,
       width,
       flexDirection: 'row',
       flexWrap: 'wrap',
-      paddingBottom: '20px'
+      padding: [0, '6px', '20px', 0],
     }}>
       {
         items.map(item => {
@@ -19,7 +21,7 @@ export default (props) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: [0, 0, '10px', '10px']
+              padding: ['6px', 0, 0, '6px'],
             }}>
               <circle
                 style={{
