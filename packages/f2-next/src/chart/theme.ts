@@ -17,6 +17,68 @@ const axis = {
   }
 };
 
+const guide = {
+  line: {
+    style: {
+      stroke: '#a3a3a3',
+      lineWidth: 1
+    },
+    offsetX: 0,
+    offsetY: 0,
+  },
+  text: {
+    style: {
+      fill: '#787878',
+      textAlign: 'center',
+      textBaseline: 'middle',
+    },
+    offsetX: 0,
+    offsetY: 0,
+  },
+  rect: {
+    style: {
+      fill: '#fafafa'
+    },
+  },
+  arc: {
+    style: {
+      stroke: '#a3a3a3'
+    },
+  },
+  html: {
+    offsetX: 0,
+    offsetY: 0,
+    alignX: 'center',
+    alignY: 'middle'
+  },
+  tag: {
+    offsetX: 0,
+    offsetY: 0,
+    side: 4,
+    background: {
+      padding: 5,
+      radius: 2,
+      fill: '#1890FF'
+    },
+    textStyle: {
+      fontSize: 12,
+      fill: '#fff',
+      textAlign: 'center',
+      textBaseline: 'middle'
+    }
+  },
+  point: {
+    offsetX: 0,
+    offsetY: 0,
+    style: {
+      fill: '#fff',
+      r: 3,
+      lineWidth: 2,
+      stroke: '#1890ff'
+    }
+  }
+}
+
 const Theme = {
   fontFamily: '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
   pixelRatio: 1,
@@ -50,7 +112,8 @@ const Theme = {
       fillOpacity: 0.1
     }
   },
-  axis
+  axis,
+  guide
 };
 
 export default Theme;

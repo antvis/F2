@@ -9,7 +9,7 @@ class CoordAvailable {
       };
     }
     // coord config 里面的 left top right bottom 都是相对值
-    const { left = 0, top = 0, right = 0, bottom = 0, ...other } = cfg;
+    const { left = 0, top = 0, right = 0, bottom = 0, ...other } = cfg || {};
     const { left: layoutLeft, top: layoutTop, width, height } = layout;
     const coordCfg = {
       // 默认直角坐标系
