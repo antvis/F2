@@ -1,10 +1,7 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import {
-  Guide,
-  Interval,
-} from "../../../src/components";
+import { Guide, Interval, Line, Axis } from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -42,6 +39,42 @@ describe("Guide", () => {
                 style={{
                   fill: "#000",
                   fontSize: "20px",
+                }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it("LineGuide", async () => {
+    const context = createContext("LineGuide");
+    const res = await fetch(
+      "https://gw.alipayobjects.com/os/antfincdn/m6tXpvS56l/guide-line.json"
+    );
+    const data = await res.json();
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="month" tickCount={2} />
+          <Axis field="PM"/>
+          <Line x="month" y="PM" />
+          {data.map((item) => {
+            return (
+              <Guide
+                type="line"
+                start={["min", 25]}
+                end={["max", 25]}
+                style={{
+                  stroke: "#d0502d",
+                  lineWidth: 2,
+                  lineCap: "round",
                 }}
               />
             );

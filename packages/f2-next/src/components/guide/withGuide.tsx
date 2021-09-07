@@ -1,6 +1,6 @@
 import { jsx } from "../../jsx";
 import Component from "../../base/component";
-import { isString, isArray } from "@antv/util";
+import { isString, isArray, isNil } from "@antv/util";
 import { deepMix } from "@antv/util";
 import * as guideViews from "./views";
 
@@ -41,7 +41,7 @@ export default (View) => {
       const replaceMap = { min, max, median: absRange / 2 };
 
       // 传入的是 min、max、median 的
-      if (replaceMap[value]) {
+      if (!isNil(replaceMap[value])) {
         return replaceMap[value];
       }
 

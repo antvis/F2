@@ -23,6 +23,8 @@ const guide = {
       stroke: '#a3a3a3',
       lineWidth: 1
     },
+    offsetX: 0,
+    offsetY: 0,
   },
   text: {
     style: {
