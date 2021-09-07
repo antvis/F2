@@ -1,4 +1,5 @@
 import { jsx } from "../../../jsx";
+import { deepMix } from "@antv/util";
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;
@@ -6,10 +7,15 @@ type TextGuideProps = {
   style?: any;
   offsetX?: number;
   offsetY?: number;
+  theme?: any;
 };
 
 export default (props: TextGuideProps) => {
-  const { points, style, offsetX, offsetY, content } = props;
+  const { theme = {} } = props;
+  const { points, style, offsetX, offsetY, content } = deepMix(
+    { ...theme.text },
+    props
+  );
   const { x, y } = points[0] || {};
   const posX = x + (offsetX || 0);
   const posY = y + (offsetY || 0);

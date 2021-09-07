@@ -1,15 +1,17 @@
 import { jsx } from '../../../jsx';
-import { isArray } from "@antv/util";
+import { isArray, deepMix } from "@antv/util";
 
 type LineGuideProps = {
   points?: { x: number; y: number }[] | null;
   style?: any;
   offsetX?: number | number[];
   offsetY?: number | number[];
+  theme?: any;
 };
 
 export default (props: LineGuideProps) => {
-  const { points, style, offsetX, offsetY } = props;
+  const { theme = {} } = props;
+  const { points, style, offsetX, offsetY} = deepMix({ ...theme.line }, props);
   const { x: x1, y: y1 } = points[0] || {};
   const { x: x2, y: y2 } = points[1] || {};
   
@@ -20,7 +22,7 @@ export default (props: LineGuideProps) => {
   const posY2 = y2 + (isArray(offsetY) ? offsetY[1] || 0 : offsetY || 0);
   
   return (
-    <group style={style}>
+    <group>
       <line
         attrs={{
           x1: posX1,

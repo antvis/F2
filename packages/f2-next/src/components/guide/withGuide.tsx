@@ -1,8 +1,6 @@
 import { jsx } from "../../jsx";
 import Component from "../../base/component";
-import { isString, isArray, isNil } from "@antv/util";
-import { deepMix } from "@antv/util";
-import * as guideViews from "./views";
+import { isString, isNil } from "@antv/util";
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -65,30 +63,16 @@ export default (View) => {
       return value;
     }
 
-    getPosition(): any[] {
-      const { start, end, position } = this.props;
-
-      if (isArray(position)) {
-        return [position];
-      }
-
-      if (isArray(start) && isArray(end)) {
-        return [start, end];
-      }
-      return [];
-    }
-
-    parsePoint(position) {
+    parsePoint(record) {
       const { chart } = this;
       const { coord } = chart;
-
-      // 默认只取第一个Scale
       const xScale = chart.getXScales()[0];
+      // 只取第一个yScale
       const yScale = chart.getYScales()[0];
 
       // 解析record
-      const xValue = this.parseReplaceStr(position[0], xScale);
-      const yValue = this.parseReplaceStr(position[1], yScale);
+      const xValue = this.parseReplaceStr(record[xScale.field], xScale);
+      const yValue = this.parseReplaceStr(record[yScale.field], yScale);
 
       // 归一化
       const x = xScale.scale(xValue);
@@ -97,47 +81,18 @@ export default (View) => {
       return coord.convertPoint({ x, y });
     }
 
-    getGuideView() {
-      const { type } = this.props;
-      const InnerGuideView = guideViews[type];
-      if (InnerGuideView) {
-        return InnerGuideView;
-      }
-      if (View) {
-        return View;
-      }
-      return null;
-    }
-
-    getDefaultAttrs() {
-      const { type } = this.props;
+    getGuideTheme() {
       const { theme } = this.chart;
-      return theme["guide"][type] || {};
+      return theme['guide'];
     }
 
     render() {
       const { props } = this;
-      const { style } = props;
+      const { records = [] } = props;
+      const points = records.map((record) => this.parsePoint(record));
+      const theme = this.getGuideTheme();
 
-      // 获取guide的视图
-      const GuideView = this.getGuideView();
-
-      // 将guide里的源数据映射为坐标点
-      const positions = this.getPosition();
-      const points = positions.map((position) => this.parsePoint(position));
-
-      // 获取guide图形属性
-      const defaultAttrs = this.getDefaultAttrs();
-      const guideAttrs = deepMix({ ...defaultAttrs.style }, style);
-
-      return (
-        <GuideView
-          ref={this.triggerRef}
-          {...props}
-          points={points}
-          style={guideAttrs}
-        />
-      );
+      return <View ref={this.triggerRef} points={points} theme={theme} {...props} />;
     }
   };
 };

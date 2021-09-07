@@ -1,7 +1,7 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import { Guide, Interval, Line, Axis } from "../../../src/components";
+import { LineGuide, TextGuide, PointGuide, Interval, Line, Axis } from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -32,9 +32,8 @@ describe("Guide", () => {
           {data.map((item) => {
             const { sold } = item;
             return (
-              <Guide
-                type="text"
-                position={[item.genre, item.sold]}
+              <TextGuide
+                records={[item]}
                 content={sold + "个"}
                 style={{
                   fill: "#000",
@@ -63,14 +62,15 @@ describe("Guide", () => {
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="month" tickCount={2} />
-          <Axis field="PM"/>
+          <Axis field="PM" />
           <Line x="month" y="PM" />
           {data.map((item) => {
             return (
-              <Guide
-                type="line"
-                start={["min", 25]}
-                end={["max", 25]}
+              <LineGuide
+                records={[
+                  { month: "min", PM: 25 },
+                  { month: "max", PM: 25 },
+                ]}
                 style={{
                   stroke: "#d0502d",
                   lineWidth: 2,
@@ -87,4 +87,37 @@ describe("Guide", () => {
     const canvas = new type(props);
     canvas.render();
   });
+
+  it("PointGuide", () => {
+    const context = createContext("PointGuide");
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Interval
+            x="genre"
+            y="sold"
+            color="genre"
+            // adjust="stack"
+          />
+          {data.map((item) => {
+            const { sold } = item;
+            return (
+              <PointGuide
+                records={[item]}
+                content={sold + "个"}
+                style={{
+                  r: 6
+                }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
 });
