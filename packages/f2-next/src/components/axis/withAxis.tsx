@@ -2,6 +2,7 @@ import { mix } from '@antv/util';
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import Chart from '../../chart';
+import Layout from '../../base/layout';
 
 export default View => {
   return class Axis extends Component {
@@ -46,8 +47,6 @@ export default View => {
       }
       const { theme } = chart;
       this.style = canvas.px2hd(mix({}, theme.axis, props.style));
-
-      this._updateLayout();
     }
 
     _getDimType() {
@@ -98,7 +97,7 @@ export default View => {
       return dimType === 'x' ? 'bottom' : 'left';
     }
 
-    _updateLayout() {
+    getLayout() {
       const { chart } = this;
       const { coord } = chart;
       const { isPolar } = coord;
@@ -123,24 +122,12 @@ export default View => {
       const position = this._getPosition();
 
       // 直角坐标系下
-      const { width: axisWidth, height: axisHeight } = this.getMaxBBox();
-      const { left, top, width, height } = coord;
-      switch (position) {
-        case 'left':
-          coord.update({ left: left + axisWidth, width: width - axisWidth });
-          break;
-        case 'top':
-          coord.update({ top: top + axisHeight, height: height - axisHeight });
-          break;
-        case 'right':
-          coord.update({ width: width - axisWidth });
-          break;
-        case 'bottom':
-          coord.update({ height: height - axisHeight });
-          break;
-        default:
-          break;
-      }
+      const { width, height } = this.getMaxBBox();
+      return { position, width, height };
+    }
+
+    setLayout(layout) {
+      this.layout = new Layout(layout);
     }
 
     getTicks() {
