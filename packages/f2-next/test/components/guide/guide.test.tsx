@@ -6,9 +6,11 @@ import {
   TextGuide,
   PointGuide,
   ArcGuide,
+  RectGuide,
   Interval,
   Line,
   Axis,
+  Point,
 } from "../../../src/components";
 import { createContext } from "../util";
 
@@ -168,6 +170,87 @@ describe("Guide", () => {
             }}
           />
           <Interval x="x" y="y" />
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it("RectGuide", () => {
+    const context = createContext("RectGuide");
+    const data = [
+      {
+        date: "2018-05-14",
+        pv: 709,
+      },
+      {
+        date: "2018-05-15",
+        pv: 936,
+      },
+      {
+        date: "2018-05-16",
+        pv: 627,
+      },
+      {
+        date: "2018-05-17",
+        pv: 872,
+      },
+      {
+        date: "2018-05-18",
+        pv: 824,
+      },
+      {
+        date: "2018-05-19",
+        pv: 258,
+      },
+      {
+        date: "2018-05-20",
+        pv: 59,
+      },
+      {
+        date: "2018-05-21",
+        pv: 880,
+      },
+      {
+        date: "2018-05-22",
+        pv: 995,
+      },
+      {
+        date: "2018-05-23",
+        pv: 842,
+      },
+    ];
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Line x="date" y="pv" />
+          <Point x="date" y="pv" />
+          <Axis field="date" tickCount={3} />
+          <Axis field="pv"  tickCount={5}/>
+          <RectGuide
+            records={[
+              { date: "2018-05-19", pv: "max" },
+              { date: "2018-05-20", pv: "min" },
+            ]}
+            style={{
+              fillOpacity: 0.1,
+              fill: "#fa541c",
+            }}
+          />
+          <TextGuide
+            records={[{ date: "2018-05-19", pv: "max" }]}
+            content={"weekend"}
+            style={{
+              textAlign: "start",
+              textBaseline: "top",
+              fill: "#fa541c",
+            }}
+            offsetX={-8}
+          />
         </Chart>
       </Canvas>
     );
