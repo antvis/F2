@@ -1,7 +1,15 @@
 import { jsx } from "../../../src";
 import { Polar, Rect } from "../../../src/coord";
 import { Canvas, Chart } from "../../../src";
-import { LineGuide, TextGuide, PointGuide, Interval, Line, Axis } from "../../../src/components";
+import {
+  LineGuide,
+  TextGuide,
+  PointGuide,
+  ArcGuide,
+  Interval,
+  Line,
+  Axis,
+} from "../../../src/components";
 import { createContext } from "../util";
 
 const data = [
@@ -106,7 +114,7 @@ describe("Guide", () => {
                 records={[item]}
                 content={sold + "个"}
                 style={{
-                  r: 6
+                  r: 6,
                 }}
               />
             );
@@ -120,4 +128,52 @@ describe("Guide", () => {
     canvas.render();
   });
 
+  it("ArcGuide", () => {
+    const context = createContext("ArcGuide");
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart
+          data={[
+            {
+              x: "1",
+              y: 85,
+            },
+          ]}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.8,
+          }}
+          scale={{
+            y: {
+              max: 100,
+              min: 0,
+            },
+          }}
+        >
+          <ArcGuide
+            records={[
+              {
+                x: 0,
+                y: 0,
+              },
+              {
+                x: 1,
+                y: 99.98,
+              },
+            ]}
+            style={{
+              lineWidth: 11,
+              stroke: "#ccc",
+            }}
+          />
+          <Interval x="x" y="y" />
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
 });

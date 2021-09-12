@@ -7,16 +7,17 @@ class Polar extends Base {
   isPolar = true;
   startAngle: number;
   endAngle: number;
+  innerRadius: number; // 内半径，默认为0
 
   update(option: Option) {
     super.update(option);
 
-    const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2 } = this;
+    const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2, innerRadius = 0 } = this;
     // 半径取宽高的最小值
     const radius = Math.min(width, height) / 2;
     // 极坐标下 x 表示弧度， y 代表 半径
     const x: Range = [startAngle, endAngle];
-    const y: Range = [0, radius];
+    const y: Range = [innerRadius * radius, radius];
 
     this.x = x;
     this.y = y;
