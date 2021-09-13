@@ -87,12 +87,13 @@ export default (View) => {
     }
 
     render() {
-      const { props } = this;
+      const { props, chart } = this;
       const { records = [] } = props;
+      const { coord } = chart; 
       const points = records.map((record) => this.parsePoint(record));
       const theme = this.getGuideTheme();
 
-      return <View ref={this.triggerRef} points={points} theme={theme} {...props} />;
+      return <View ref={this.triggerRef} points={points} theme={theme} {...props} coord={coord} />;
     }
   };
 };
