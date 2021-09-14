@@ -64,6 +64,7 @@ class Canvas extends Component implements IF2Canvas {
     this.canvas = canvas;
     this.container = canvas;
     this.component = component;
+    this.layout = layout;
 
     // 实例化动画模块
     this.animation = animate ? new Animation(canvas) : null;
@@ -109,7 +110,7 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   update(props: ChartUpdateProps) {
-    const { component, canvas,  animation } = this;
+    const { component, canvas, animation, layout } = this;
     // 只处理数据，和children的变化
     const { children } = props;
 
@@ -119,13 +120,11 @@ class Canvas extends Component implements IF2Canvas {
       context,
     } = canvas._attrs;
 
-    const componentTree = createComponentTree(children, { width, height, context });
+    const componentTree = createComponentTree(children, { canvas: this, width, height, context, layout });
+
     component.update({ children: componentTree });
 
-    component.willMount()
-    component.mount();
-    component.render();
-    this.draw();
+    this.render();
   }
 
   destroy() {

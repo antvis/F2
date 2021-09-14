@@ -243,8 +243,8 @@ class Geometry extends Component implements AttrMixin {
   }
 
   _processData() {
-    const { props } = this;
-    const { data: originData } = props;
+    const { chart } = this;
+    const { data: originData } = chart;
 
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
@@ -253,6 +253,10 @@ class Geometry extends Component implements AttrMixin {
     const dataArray = this._adjustData(groupedArray);
 
     this.dataArray = dataArray;
+  }
+
+  changeData() {
+    this._processData();
   }
 
   getY0Value() {
@@ -264,8 +268,7 @@ class Geometry extends Component implements AttrMixin {
 
   // 获取
   _getAttrsDefaultValue() {
-    const { props } = this;
-    const { chart } = props;
+    const { chart } = this;
     const { theme } = chart;
     return {
       color: theme.colors[0],

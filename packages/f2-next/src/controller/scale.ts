@@ -59,9 +59,9 @@ class ScaleController {
 
       if (instanceScale) {
         this.updateScale(instanceScale, scaleOption);
+      } else {
+        scales[field] = this.createScale(scaleOption);
       }
-
-      scales[field] = this.createScale(scaleOption);
     });
 
     this.scales = scales;
@@ -84,8 +84,19 @@ class ScaleController {
   }
 
   getScale(field) {
-    const { scales } = this;
-    return scales && scales[field];
+    const { scales, scaleOptions } = this;
+
+    const scale = scales && scales[field];
+    if (scale) {
+      return scale;
+    }
+    const option = scaleOptions[field];
+    if (!option) {
+      return null;
+    }
+    const newScale = this.createScale(option);
+    scales[field] = newScale;
+    return newScale;
   }
 
   adjustStartZero(scale: Scale) {

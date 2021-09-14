@@ -90,9 +90,6 @@ class ContainerComponent extends Component {
     const appendProps = this._getAppendProps();
 
     map(components, (component: Component) => {
-      if (!component.__shouldRender) {
-        return;
-      }
       this.renderComponent(component, appendProps);
     });
 
@@ -120,7 +117,7 @@ class ContainerComponent extends Component {
     // 返回的是shape的结构树
     const element = renderJSXElement(jsxElement, appendProps);
     component.__lastElement = element;
-
+  
     // 如果需要动画，才进行比较，默认为true, 只有在设置false 才关闭
     const renderElement = animate !== false ? compareRenderTree(element, __lastElement) : element;
     if (!renderElement) return null;
@@ -138,72 +135,60 @@ class ContainerComponent extends Component {
     }
   }
 
+  diffComponent(component, child) {
+    if (!child) {
+      // 销毁后，创建一个占位的组件
+      component.destroy();
+      return new PlaceholderComponent({});
+    }
+    // 如果之前是占位组件，现在有新的组件，是个新建逻辑
+    // @ts-ignore
+    if (component.placeholder) {
+      if (isArray(child)) {
+        return map(child, (c) => {
+          return this.createComponent(c);
+        });
+      }
+      return this.createComponent(child);
+    }
+
+    const { type, props } = child;
+    // 如果类型变化了
+    // @ts-ignore
+    if (!(component instanceof type)) {
+      // 销毁之前的
+      component.destroy();
+      // 创建新的
+      return this.createComponent(child);
+    }
+    if (!equal(props, component.props)) {
+      if (!component.shouldUpdate || component.shouldUpdate(props)) {
+        if (component.componentWillReceiveProps) {
+          component.componentWillReceiveProps(props);
+        }
+        component.props = props; 
+        if (component.update) {
+          component.update(props);
+        }
+      }
+    }
+    return component;
+  }
+
   update(props: any, forceUpdate?) {
     super.update(props);
     const { components, layout } = this;
     // 只处理数据和children的变化
     const { children } = props;
+
     this.components = mapTwo(components, children, (component: Component, child: JSX.Element) => {
-      if (!child) {
-        // 销毁后，创建一个占位的组件
-        component.destroy();
-        const placeholderComponent = new PlaceholderComponent({});
-        placeholderComponent.init({
-          layout,
-          container: component.container,
-        });
-        return placeholderComponent;
-      }
-      // 如果之前是占位组件，现在有新的组件，是个新建逻辑
-      // @ts-ignore
-      if (component.placeholder) {
-        if (isArray(child)) {
-          return map(child, (c) => {
-            const newComponent = this.createComponent(c);
-            newComponent.init({
-              layout,
-              container: component.container,
-            });
-            return newComponent;
-          });
-        }
-        const newComponent = this.createComponent(child);
-        newComponent.init({
-          layout,
-          container: component.container,
-        });
-        return newComponent;
+      const newComponent = this.diffComponent(component, child);
+
+      if (!newComponent.__shape && newComponent.beforeMount) {
+        newComponent.beforeMount();
       }
 
-      // TODO diff比较是否需要更新
-      const { type, props } = child;
-      // 如果类型变化了
-      // @ts-ignore
-      if (!(component instanceof type)) {
-        // 销毁之前的
-        component.destroy();
-        // 创建新的
-        const newComponent = this.createComponent(child);
-        newComponent.init({
-          layout,
-          container: component.container,
-        });
-
-        // 保留shape结构，为了实现动画的过渡变化
-        if (component.props.keepElement) {
-          newComponent.__lastElement = component.__lastElement;
-        }
-        return newComponent;
-      }
-      if (!equal(props, component.__props) || forceUpdate) {
-        component.update(props);
-        component.__shouldRender = true;
-      } else {
-        // 没有变化，不需要重新render
-        component.__shouldRender = false;
-      }
-
-      return component;
+      return newComponent;
     });
   }
 
