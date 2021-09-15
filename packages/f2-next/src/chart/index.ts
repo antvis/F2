@@ -1,5 +1,5 @@
 import Coord from '../coord';
-import { mix, each } from '@antv/util';
+import { mix, each, isNil } from '@antv/util';
 import { Scale } from '@antv/scale';
 import Container from '../base/container';
 import { applyMixins } from '../mixins';
@@ -8,6 +8,8 @@ import CoordMixin from '../mixins/coord';
 import ScaleMixin from '../mixins/scale';
 import defaultTheme from './theme';
 import Layout from '../base/layout';
+import equal from '../base/equal';
+import { map } from '../util';
 
 interface Point {
   x: number;
@@ -149,12 +151,31 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     super.mount();
   }
 
+  // 自己管理所有子组件的状态
   componentWillReceiveProps(nextProps) {
-    const { props } = this;
+    const { props, components } = this;
+    // 数据变化后，所有的子组件状态可能都有变化，需要重新更新
     if (props.data !== nextProps.data) {
       this.data = nextProps.data;
-      this.changeGetGeometryData(nextProps.data);
       this.updateScales();
+      map(components, component => {
+        component.forceUpdate();
+      });
+      return;
+    }
+
+    // theme 变化，所有字组件只需要重新render
+    if (!isNil(nextProps.theme) && equal(props.theme, nextProps.theme)) {
+      map(components, component => {
+        component.__shouldRender = true;
+      });
+    }
+
+    // theme 变化，所有字组件只需要重新render
+    if (!isNil(nextProps.coord) && equal(props.coord, nextProps.coord)) {
+      map(components, component => {
+        component.__shouldRender = true;
+      });
     }
   }
 

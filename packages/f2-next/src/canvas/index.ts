@@ -3,6 +3,7 @@ import createComponentTree from './createComponentTree';
 import Component from '../base/component';
 import Container from '../base/container';
 import Layout from '../base/layout';
+import equal from '../base/equal';
 import Animation from './animation';
 import { px2hd } from '../util';
 import { createUpdater } from './updater';
@@ -29,6 +30,7 @@ class Canvas extends Component implements IF2Canvas {
   canvas: any;
   context: CanvasRenderingContext2D;
   component: Container;
+  componentTree: any;
   animation?: Animation;
 
   constructor(props: ChartProps) {
@@ -68,6 +70,7 @@ class Canvas extends Component implements IF2Canvas {
 
     // 实例化动画模块
     this.animation = animate ? new Animation(canvas) : null;
+    this.componentTree = componentTree;
 
     this.willMount();
     this.mount();
@@ -122,8 +125,11 @@ class Canvas extends Component implements IF2Canvas {
 
     const componentTree = createComponentTree(children, { canvas: this, width, height, context, layout });
 
-    component.update({ children: componentTree });
+    if (equal(this.componentTree, componentTree)) {
+      return;
+    }
 
+    component.update({ children: componentTree });
     this.render();
   }
 

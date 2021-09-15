@@ -79,6 +79,7 @@ class Geometry extends Component implements AttrMixin {
     this._createAttrs();
     this._adjustScales();
     this._processData();
+    this._initEvent();
     this.isInit = true;
   }
 
@@ -255,8 +256,22 @@ class Geometry extends Component implements AttrMixin {
     this.dataArray = dataArray;
   }
 
-  changeData() {
+  forceUpdate() {
+    super.forceUpdate();
     this._processData();
+  }
+
+  _initEvent() {
+    const { container, props } = this;
+    const canvas = container.get("canvas");
+    ["onPressStart", "onPress", "onPressEnd", 'onPan', 'onPanStart', 'onPanEnd'].forEach((eventName) => {
+      if (props[eventName]) {
+        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+          ev.geometry = this;
+          props[eventName](ev);
+        });
+      }
+    });
   }
 
   getY0Value() {
@@ -458,7 +473,10 @@ class Geometry extends Component implements AttrMixin {
     const { chart } = this;
     const { theme } = chart;
     const ticks = scale.getTicks();
-    colorAttr.setRange(theme.colors);
+
+    if(!this.getAttrRange('color')) {
+      colorAttr.setRange(theme.colors);
+    }
     const items = ticks.map(tick => {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue) || theme.colors[0];

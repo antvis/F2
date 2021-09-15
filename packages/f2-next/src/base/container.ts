@@ -90,7 +90,11 @@ class ContainerComponent extends Component {
     const appendProps = this._getAppendProps();
 
     map(components, (component: Component) => {
+      if (!component.__shouldRender) {
+        return;
+      }
       this.renderComponent(component, appendProps);
+      component.__shouldRender = false;
     });
 
     // 自身不绘制任何内容
@@ -166,18 +170,19 @@ class ContainerComponent extends Component {
         if (component.componentWillReceiveProps) {
           component.componentWillReceiveProps(props);
         }
-        component.props = props; 
+        component.props = props;
         if (component.update) {
           component.update(props);
         }
+        component.__shouldRender = true;
       }
     }
     return component;
   }
 
-  update(props: any, forceUpdate?) {
+  update(props: any) {
     super.update(props);
-    const { components, layout } = this;
+    const { components } = this;
     // 只处理数据和children的变化
     const { children } = props;
 

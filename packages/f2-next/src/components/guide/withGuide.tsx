@@ -93,7 +93,13 @@ export default (View) => {
       const points = records.map((record) => this.parsePoint(record));
       const theme = this.getGuideTheme();
 
-      return <View ref={this.triggerRef} points={points} theme={theme} {...props} coord={coord} />;
+      return <View
+        ref={this.triggerRef}
+        points={points}
+        theme={theme}
+        coord={ coord }
+        {...props}
+      />;
     }
   };
 };

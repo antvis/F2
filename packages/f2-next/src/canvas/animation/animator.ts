@@ -7,6 +7,7 @@ import {
 import interpolate from './interpolate';
 import * as Easing from './easing';
 import { ElementStatus } from '../../jsx';
+import { each, isString } from '@antv/util';
 
 class Animator {
   // 对应G的shape
@@ -38,8 +39,15 @@ class Animator {
     this.animation = animation;
 
     const { property = [], easing, duration, delay = 0, start, end, onFrame } = animation;
-    const interpolates = property.map(key => {
-      return interpolate(start[key], end[key]);
+    const interpolates = property.map(name => {
+      if (isString(name)) {
+        return interpolate(start[name], end[name]);
+      }
+      // @ts-ignore
+      if (name.interpolate) {
+        // @ts-ignore
+        return name.interpolate(start, end);
+      }
     });
 
     this.easing = typeof easing === 'function' ? easing : (Easing[easing] || Easing.linear);
@@ -80,9 +88,15 @@ class Animator {
     const { element, clip, interpolates, property, onFrame } = this;
     let attrs = {};
     for (let i = property.length - 1; i >= 0; i--) {
-      const key = property[i];
-      attrs[key] = interpolates[i](t);
+      const name = property[i];
+      if (isString(name)) {
+        attrs[name] = interpolates[i](t);
+      } else {
+        // @ts-ignore
+        attrs[name.name] = interpolates[i](t);
+      }
     }
+    each
     if (onFrame) {
       attrs = {
         ...attrs,
