@@ -257,4 +257,6 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 // 多继承
 applyMixins(Chart, [ ThemeMixin, CoordMixin, ScaleMixin ]);
 
-export default Chart;
+class ExportChart extends Chart {}
+
+export default ExportChart;

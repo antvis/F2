@@ -23,7 +23,7 @@ export default (View) => {
       canvas.on("click", (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
-        if (!shape) return;
+        if (!shape || shape.isDestroyed()) return;
         const bbox = shape.getBBox();
         if (isInBBox(bbox, points[0])) {
           ev.shape = shape;
@@ -81,6 +81,10 @@ export default (View) => {
       return coord.convertPoint({ x, y });
     }
 
+    convertPoints(records) {
+      return records.map((record) => this.parsePoint(record));
+    }
+
     getGuideTheme() {
       const { theme } = this.chart;
       return theme['guide'];
@@ -90,7 +94,7 @@ export default (View) => {
       const { props, chart } = this;
       const { records = [] } = props;
       const { coord } = chart; 
-      const points = records.map((record) => this.parsePoint(record));
+      const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
       return <View

@@ -94,11 +94,12 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   draw() {
-    const { canvas, container, animation } = this;
+    const { canvas, container, animation, props } = this;
+    const { onAnimationEnd } = props;
     // 执行动画
     if (animation) {
       animation.abort();
-      animation.play(container);
+      animation.play(container, onAnimationEnd);
     } else {
       canvas.draw();
     }
@@ -125,9 +126,10 @@ class Canvas extends Component implements IF2Canvas {
 
     const componentTree = createComponentTree(children, { canvas: this, width, height, context, layout });
 
-    if (equal(this.componentTree, componentTree)) {
-      return;
-    }
+
+    // if (equal(this.componentTree, componentTree)) {
+    //   return;
+    // }
 
     component.update({ children: componentTree });
     this.render();

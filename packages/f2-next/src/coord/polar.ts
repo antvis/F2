@@ -21,6 +21,7 @@ class Polar extends Base {
 
     this.x = x;
     this.y = y;
+    return this;
   }
 
   isCyclic() {
