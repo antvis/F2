@@ -1,5 +1,5 @@
 import { Scale } from '@antv/scale';
-import { mix } from '@antv/util';
+import { mix, isFunction, isNil } from '@antv/util';
 import { values as arrayValues } from '../util/array';
 
 class Base {
@@ -7,6 +7,7 @@ class Base {
   field: string;
   scale: Scale;
   range: any[];
+  map: Function;
 
   constructor(options) {
     mix(this, options);
@@ -23,7 +24,17 @@ class Base {
   }
 
   // 数据映射方法
+  _mapping(value): any {
+    return value;
+  }
+
+  // 数据映射方法
   mapping(value): any {
+    const rst = isFunction(this.map) ? this.map(value) : null;
+    if (!isNil(rst)) {
+      return rst;
+    }
+    return this._mapping(value);
   }
 
   update(options) {
