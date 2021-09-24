@@ -6,7 +6,7 @@ class Identity extends Base {
     return new IdentityScale(scale);
   }
 
-  mapping(value: any) {
+  _mapping(value: any) {
     return value;
   }
 }
