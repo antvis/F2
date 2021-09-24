@@ -33,6 +33,7 @@ class Base extends Layout {
       x: left + (width / 2),
       y: top + (height / 2),
     };
+    return this;
   }
 
   // 是循环， 比如极坐标是以 2π 循环的

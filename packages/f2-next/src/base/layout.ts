@@ -7,6 +7,13 @@ interface LayoutProps {
   height?: number;
 }
 
+interface Style {
+  left?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+}
+
 class Layout {
   left = 0;
   top = 0;
@@ -24,6 +31,30 @@ class Layout {
     const { left, top, width, height } = this;
     this.right = left + width;
     this.bottom = top + height;
+
+    return this;
+  }
+
+  padding(style: Style) {
+    if (!style) {
+      return this;
+    }
+    const {
+      top: paddingTop = 0,
+      right: paddingRight = 0,
+      bottom: paddingBottom = 0,
+      left: paddingLeft = 0,
+    } = style;
+    const { top, right, bottom, left } = this;
+    this.top = top + paddingTop;
+    this.right = right - paddingRight;
+    this.bottom = bottom - paddingBottom;
+    this.left = left + paddingLeft;
+
+    this.width = this.right - this.left;
+    this.height = this.bottom - this.top;
+
+    return this;
   }
 
   clone() {

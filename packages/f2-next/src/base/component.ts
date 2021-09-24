@@ -49,13 +49,12 @@ class Component {
   }
   beforeUpdate() {
   }
-  // TODO updated
   update(props: any) {
     this.__props = props;
     this.props = props;
   }
-  // TODO
   forceUpdate() {
+    this.__shouldRender = true;
   }
   render(): JSX.Element {
     return null;

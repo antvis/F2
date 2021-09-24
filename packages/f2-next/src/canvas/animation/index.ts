@@ -33,7 +33,7 @@ class Animation {
     return new Animator(element, animation);
   }
 
-  play(container) {
+  play(container, onAnimationEnd) {
     const { canvas } = this;
     const animators: Animator[] = [];
     let maxDuration = 0;
@@ -95,6 +95,7 @@ class Animation {
         element.remove(true);
       }
       canvas.draw();
+      onAnimationEnd && onAnimationEnd();
     })
   }
 

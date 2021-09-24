@@ -1,5 +1,5 @@
 import Coord from '../coord';
-import { mix, each } from '@antv/util';
+import { mix, each, isNil } from '@antv/util';
 import { Scale } from '@antv/scale';
 import Container from '../base/container';
 import { applyMixins } from '../mixins';
@@ -8,6 +8,8 @@ import CoordMixin from '../mixins/coord';
 import ScaleMixin from '../mixins/scale';
 import defaultTheme from './theme';
 import Layout from '../base/layout';
+import equal from '../base/equal';
+import { map } from '../util';
 
 interface Point {
   x: number;
@@ -33,6 +35,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   data: any;
   coord: Coord;
   createCoord: (coord, layout) => Coord;
+  updateCoord: (coord, layout) => Coord;
 
   scale: any;
   createScale: () => any;
@@ -58,15 +61,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   createComponent(child) {
     const { props } = this;
     const { props: childProps } = child;
-    const childComponent = super.createComponent({
-      ...child,
-      props: {
-        ...childProps,
-        // 把chart数据透传进去
-        data: props.data,
-        chart: this,
-      }
-    });
+    const childComponent = super.createComponent(child);
 
     // @ts-ignore
     childComponent.chart = this;
@@ -137,33 +132,82 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
   mount() {
     const { props } = this;
-    const { theme, coord, layout, canvas } = props;
+    const { theme, layout, style, coord, canvas } = props;
     // 初始化默认主题
     this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
     const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
 
-    this.layout = new Layout({
-      left: layout.left + paddingLeft,
-      top: layout.top + paddingTop,
-      width: layout.width - paddingLeft - paddingRight,
-      height: layout.height -paddingTop - paddingBottom,
-    });
+    this.layout = layout.clone().padding({
+      left: paddingLeft,
+      top: paddingTop,
+      right: paddingRight,
+      bottom: paddingBottom,
+    }).padding(style);
 
     // 创建坐标系
-    this.coord = this.createCoord(coord, layout);
+    this.coord = this.createCoord(coord, this.layout);
     // 创建scale
     this.updateScales();
     super.mount();
   }
 
-  // update() {
+  // 自己管理所有子组件的状态
+  componentWillReceiveProps(nextProps) {
+    const { props, components } = this;
+    // 数据变化后，所有的子组件状态可能都有变化，需要重新更新
+    if (props.data !== nextProps.data) {
+      this.data = nextProps.data;
+      this.updateScales();
+      map(components, component => {
+        component.forceUpdate();
+      });
+      return;
+    }
 
-  // }
+    // theme 变化，所有字组件只需要重新render
+    if (!isNil(nextProps.theme) && equal(props.theme, nextProps.theme)) {
+      map(components, component => {
+        component.__shouldRender = true;
+      });
+    }
 
-  adjustScale() {
-    // TODO
-    // _adjustRange
-    // 1. _syncYScales
+    // theme 变化，所有字组件只需要重新render
+    if (!isNil(nextProps.coord) && equal(props.coord, nextProps.coord)) {
+      map(components, component => {
+        component.__shouldRender = true;
+      });
+    }
+  }
+
+  update() {
+    const { props } = this;
+    const { theme, layout, style, coord, canvas, data } = props;
+    this.data = data;
+    // 初始化默认主题
+    this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
+    const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
+
+    this.layout = layout.clone().padding({
+      left: paddingLeft,
+      top: paddingTop,
+      right: paddingRight,
+      bottom: paddingBottom,
+    }).padding(style);
+
+    // 创建坐标系
+    this.coord = this.updateCoord(coord, this.layout);
+    // 创建scale
+
+    super.update(props);
+  }
+
+  changeGetGeometryData(data) {
+    const geometrys = this.getGeometrys();
+    if (!geometrys.length) return;
+    geometrys.forEach(geometry => {
+      // @ts-ignore
+      geometry.changeData(data);
+    })
   }
 
   getGeometrys() {
@@ -213,4 +257,6 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 // 多继承
 applyMixins(Chart, [ ThemeMixin, CoordMixin, ScaleMixin ]);
 
-export default Chart;
+class ExportChart extends Chart {}
+
+export default ExportChart;

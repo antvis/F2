@@ -3,6 +3,7 @@ import createComponentTree from './createComponentTree';
 import Component from '../base/component';
 import Container from '../base/container';
 import Layout from '../base/layout';
+import equal from '../base/equal';
 import Animation from './animation';
 import { px2hd } from '../util';
 import { createUpdater } from './updater';
@@ -29,6 +30,7 @@ class Canvas extends Component implements IF2Canvas {
   canvas: any;
   context: CanvasRenderingContext2D;
   component: Container;
+  componentTree: any;
   animation?: Animation;
 
   constructor(props: ChartProps) {
@@ -64,9 +66,11 @@ class Canvas extends Component implements IF2Canvas {
     this.canvas = canvas;
     this.container = canvas;
     this.component = component;
+    this.layout = layout;
 
     // 实例化动画模块
     this.animation = animate ? new Animation(canvas) : null;
+    this.componentTree = componentTree;
 
     this.willMount();
     this.mount();
@@ -90,11 +94,12 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   draw() {
-    const { canvas, container, animation } = this;
+    const { canvas, container, animation, props } = this;
+    const { onAnimationEnd } = props;
     // 执行动画
     if (animation) {
       animation.abort();
-      animation.play(container);
+      animation.play(container, onAnimationEnd);
     } else {
       canvas.draw();
     }
@@ -109,7 +114,7 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   update(props: ChartUpdateProps) {
-    const { component, canvas,  animation } = this;
+    const { component, canvas, animation, layout } = this;
     // 只处理数据，和children的变化
     const { children } = props;
 
@@ -119,13 +124,15 @@ class Canvas extends Component implements IF2Canvas {
       context,
     } = canvas._attrs;
 
-    const componentTree = createComponentTree(children, { width, height, context });
-    component.update({ children: componentTree });
+    const componentTree = createComponentTree(children, { canvas: this, width, height, context, layout });
 
-    component.willMount()
-    component.mount();
-    component.render();
-    this.draw();
+
+    // if (equal(this.componentTree, componentTree)) {
+    //   return;
+    // }
+
+    component.update({ children: componentTree });
+    this.render();
   }
 
   destroy() {

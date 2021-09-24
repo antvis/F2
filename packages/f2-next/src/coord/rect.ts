@@ -14,6 +14,7 @@ class Rect extends Base {
 
     this.x = x;
     this.y = y;
+    return this;
   }
 
   convertPoint(point) {

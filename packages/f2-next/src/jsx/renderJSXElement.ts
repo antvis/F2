@@ -4,7 +4,7 @@ import { map } from '../util';
 // 主要是把function节点，全部转换成string标签节点
 function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
   if (!element) return element;
-  const { type, key, ref, props } = element;
+  const { type, key, ref, props, _cache = {} } = element;
 
   // render children first
   const children = map(props.children, (child: JSX.Element) => {
@@ -12,10 +12,16 @@ function renderJSXElement(element: JSX.Element, otherProps: any): JSX.Element {
   });
 
   // combo otherProps
-  element.props = {
-    ...otherProps,
-    ...props,
-    children,
+  element = {
+    type,
+    key,
+    ref,
+    _cache,
+    props: {
+      ...otherProps,
+      ...props,
+      children,
+    },
   };
 
   if (typeof type === 'function') {

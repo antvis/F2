@@ -1,28 +1,15 @@
-import { each, isObject, mix } from '@antv/util';
-import { values as arrayValues } from '../util/array';
-import { Scale, Linear, Category } from '@antv/scale';
+import { each, isObject, mix, isNil, isFunction } from '@antv/util';
+import { values as arrayValues, getRange } from '../util/array';
+import { registerTickMethod, Scale, getScale } from '@antv/scale';
+import CatTick from './scale/cat-tick';
+import LinearTick from './scale/linear-tick';
 
-function adjustCategoryOption(option) {
-  if (option.range) {
-    return option;
-  }
-  const { values } = option;
-  const count = values.length;
+// 覆盖0.3.x的 cat 方法
+registerTickMethod('cat', CatTick);
+registerTickMethod('time-cat', CatTick);
+// 覆盖linear 度量的tick算法
+registerTickMethod('wilkinson-extended', LinearTick);
 
-  let range = [0, 1];
-  // 如果只有一项，显示在中间
-  if (count === 1) {
-    range = [0.5, 1];
-  } else {
-    // 前后都留半个 1 / count
-    const offset = 1 / count * 0.5;
-    range = [ offset, 1 - offset ];
-  }
-
-  option.range = range;
-
-  return option;
-}
 
 class ScaleController {
 
@@ -46,37 +33,90 @@ class ScaleController {
     this.scaleOptions = scaleOptions;
   }
 
+  _getType(option) {
+    const { type, values } = option;
+    if (type) {
+      return type;
+    }
+    if (typeof values[0] === 'number') {
+      return 'linear';
+    }
+    return 'cat';
+  }
+
+  _getOption(option) {
+    const { values } = option;
+    const type = this._getType(option);
+
+    option.type = type;
+
+    // linear 类型
+    if (type === 'linear') {
+      // 设置默认nice
+      if (typeof option.nice !== 'boolean') {
+        option.nice = true;
+      }
+      // 重置最大最小
+      const { min, max } = getRange(values);
+      if (isNil(option.min)) {
+        option.min = min;
+      }
+      if (isNil(option.max)) {
+        option.max = max;
+      }
+
+      return option;
+    }
+    // 分类类型
+    if (type === 'cat') {
+      if (option.range) {
+        return option;
+      }
+      const count = values.length;
+      let range = [0, 1];
+      // 如果只有一项，显示在中间
+      if (count === 1) {
+        range = [0.5, 1];
+      } else {
+        // 前后都留半个 1 / count
+        const offset = 1 / count * 0.5;
+        range = [ offset, 1 - offset ];
+      }
+      option.range = range;
+      return option;
+    }
+    return option;
+  }
+
   // 根据 scaleOptions scale的定义，批量更新所有scale
   updateScales(data) {
     const { scaleOptions, scales = {} } = this;
     each(scaleOptions, (option, field) => {
       const values = option.values ? option.values : arrayValues(data, field);
       const instanceScale = scales[field];
-      const scaleOption = {
+      const scaleOption = this._getOption({
         ...option,
+        field,
         values,
-      };
+      });
 
       if (instanceScale) {
         this.updateScale(instanceScale, scaleOption);
+      } else {
+        scales[field] = this.createScale(scaleOption);
       }
-
-      scales[field] = this.createScale(scaleOption);
     });
 
     this.scales = scales;
   }
 
   createScale(option) {
-    const { type, values } = option;
-    if (type) {
-      return new type({ ...option, values });
+    const { type } = option;
+    if (isFunction(type)) {
+      return new type(option);
     }
-    if (typeof values[0] === 'number') {
-      return new Linear({ ...option, values });
-    }
-    const newOption = adjustCategoryOption({ ...option, values });
-    return new Category(newOption);
+    const Scale = getScale(type);
+    return new Scale(option);
   }
 
   updateScale(scale, option) {
@@ -84,8 +124,19 @@ class ScaleController {
   }
 
   getScale(field) {
-    const { scales } = this;
-    return scales && scales[field];
+    const { scales, scaleOptions } = this;
+
+    const scale = scales && scales[field];
+    if (scale) {
+      return scale;
+    }
+    const option = scaleOptions[field];
+    if (!option) {
+      return null;
+    }
+    const newScale = this.createScale(option);
+    scales[field] = newScale;
+    return newScale;
   }
 
   adjustStartZero(scale: Scale) {

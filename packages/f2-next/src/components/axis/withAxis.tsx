@@ -1,4 +1,4 @@
-import { mix } from '@antv/util';
+import { mix, deepMix } from '@antv/util';
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import Chart from '../../chart';
@@ -46,7 +46,7 @@ export default View => {
         return;
       }
       const { theme } = chart;
-      this.style = canvas.px2hd(mix({}, theme.axis, props.style));
+      this.style = canvas.px2hd(deepMix({}, theme.axis, props.style));
     }
 
     _getDimType() {
