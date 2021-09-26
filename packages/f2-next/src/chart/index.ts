@@ -31,7 +31,10 @@ interface IChart {
 }
 
 // 统计图表
-class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMixin {
+class Chart
+  extends Container
+  implements IChart, ThemeMixin, CoordMixin, ScaleMixin
+{
   data: any;
   coord: Coord;
   createCoord: (coord, layout) => Coord;
@@ -56,7 +59,6 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     this.scale = this.createScale();
   }
 
-
   // 会调用子组件的 constructor 创建组件实例
   createComponent(child) {
     const { props } = this;
@@ -77,7 +79,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     const { layout } = this;
     const coordLayout = layout.clone();
 
-    components.forEach(component => {
+    components.forEach((component) => {
       // @ts-ignore
       if (!component || !component.getLayout) {
         return;
@@ -87,7 +89,12 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
       const childLayout = component.getLayout();
       const { position, width: childWidth, height: childHeight } = childLayout;
       // @ts-ignore
-      component.setLayout({ left, top, width: childWidth - left, height: childHeight - top });
+      component.setLayout({
+        left,
+        top,
+        width: childWidth - left,
+        height: childHeight - top,
+      });
 
       // 计算剩余的占位
       // 占用宽度
@@ -137,12 +144,15 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
     const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
 
-    this.layout = layout.clone().padding({
-      left: paddingLeft,
-      top: paddingTop,
-      right: paddingRight,
-      bottom: paddingBottom,
-    }).padding(style);
+    this.layout = layout
+      .clone()
+      .padding({
+        left: paddingLeft,
+        top: paddingTop,
+        right: paddingRight,
+        bottom: paddingBottom,
+      })
+      .padding(style);
 
     // 创建坐标系
     this.coord = this.createCoord(coord, this.layout);
@@ -158,7 +168,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     if (props.data !== nextProps.data) {
       this.data = nextProps.data;
       this.updateScales();
-      map(components, component => {
+      map(components, (component) => {
         component.forceUpdate();
       });
       return;
@@ -166,15 +176,15 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
     // theme 变化，所有字组件只需要重新render
     if (!isNil(nextProps.theme) && equal(props.theme, nextProps.theme)) {
-      map(components, component => {
-        component.__shouldRender = true;
+      map(components, (component) => {
+        component.forceUpdate();
       });
     }
 
-    // theme 变化，所有字组件只需要重新render
+    // coord 变化，所有字组件只需要重新render
     if (!isNil(nextProps.coord) && equal(props.coord, nextProps.coord)) {
-      map(components, component => {
-        component.__shouldRender = true;
+      map(components, (component) => {
+        component.forceUpdate();
       });
     }
   }
@@ -187,12 +197,15 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
     this.theme = canvas.px2hd(mix({}, defaultTheme, theme));
     const { paddingLeft, paddingTop, paddingRight, paddingBottom } = this.theme;
 
-    this.layout = layout.clone().padding({
-      left: paddingLeft,
-      top: paddingTop,
-      right: paddingRight,
-      bottom: paddingBottom,
-    }).padding(style);
+    this.layout = layout
+      .clone()
+      .padding({
+        left: paddingLeft,
+        top: paddingTop,
+        right: paddingRight,
+        bottom: paddingBottom,
+      })
+      .padding(style);
 
     // 创建坐标系
     this.coord = this.updateCoord(coord, this.layout);
@@ -204,15 +217,15 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
   changeGetGeometryData(data) {
     const geometrys = this.getGeometrys();
     if (!geometrys.length) return;
-    geometrys.forEach(geometry => {
+    geometrys.forEach((geometry) => {
       // @ts-ignore
       geometry.changeData(data);
-    })
+    });
   }
 
   getGeometrys() {
     const { components } = this;
-    return components.filter(component => {
+    return components.filter((component) => {
       // @ts-ignore
       return component.isGeometry;
     });
@@ -234,7 +247,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
   getXScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getXScale();
     });
@@ -242,7 +255,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 
   getYScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getYScale();
     });
@@ -255,7 +268,7 @@ class Chart extends Container implements IChart, ThemeMixin, CoordMixin, ScaleMi
 }
 
 // 多继承
-applyMixins(Chart, [ ThemeMixin, CoordMixin, ScaleMixin ]);
+applyMixins(Chart, [ThemeMixin, CoordMixin, ScaleMixin]);
 
 class ExportChart extends Chart {}
 

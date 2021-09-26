@@ -1,9 +1,5 @@
 // 动画的元素
-import {
-  Animation,
-  EasingFunction,
-  InterpolateFunction,
-} from './interface';
+import { Animation, EasingFunction, InterpolateFunction } from './interface';
 import interpolate from './interpolate';
 import * as Easing from './easing';
 import { ElementStatus } from '../../jsx';
@@ -33,13 +29,20 @@ class Animator {
   onFrame?: any;
   end = false;
 
-
   constructor(element: any, animation: Animation) {
     this.element = element;
     this.animation = animation;
 
-    const { property = [], easing, duration, delay = 0, start, end, onFrame } = animation;
-    const interpolates = property.map(name => {
+    const {
+      property = [],
+      easing,
+      duration,
+      delay = 0,
+      start,
+      end,
+      onFrame,
+    } = animation;
+    const interpolates = property.map((name) => {
       if (isString(name)) {
         return interpolate(start[name], end[name]);
       }
@@ -50,7 +53,8 @@ class Animator {
       }
     });
 
-    this.easing = typeof easing === 'function' ? easing : (Easing[easing] || Easing.linear);
+    this.easing =
+      typeof easing === 'function' ? easing : Easing[easing] || Easing.linear;
     this.property = property;
     this.interpolates = interpolates;
     this.duration = duration;
@@ -96,12 +100,11 @@ class Animator {
         attrs[name.name] = interpolates[i](t);
       }
     }
-    each
     if (onFrame) {
       attrs = {
         ...attrs,
-        ...this.onFrame(t, time)
-      }
+        ...this.onFrame(t, time),
+      };
     }
     if (clip) {
       clip.attr(attrs);
@@ -123,7 +126,7 @@ class Animator {
     }
 
     // 如果当前元素状态被标记为删除，等动画结束后直接删除
-    if(element._attrs.status === ElementStatus.ELEMENT_DELETE) {
+    if (element._attrs.status === ElementStatus.ELEMENT_DELETE) {
       element.remove(true);
     }
 
