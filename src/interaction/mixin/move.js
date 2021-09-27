@@ -1,4 +1,4 @@
-import { each, isNil, uniq, directionEnabled } from '../../util/common';
+import { each, isNil, uniq, directionEnabled, isNumber } from '../../util/common';
 import { getLimitRange, getFieldRange } from '../helper';
 import { getTickMethod } from '../../scale';
 
@@ -12,6 +12,15 @@ const TOUCH_EVENTS = [
 ];
 const DAY_TIMESTAMPS = 86400000;
 
+function convertPoints(point) {
+  const { x, y, clientX, clientY } = point;
+  // 小程序环境会有x,y
+  if (isNumber(x) || isNumber(y)) {
+    return { x, y };
+  }
+  return { x: clientX, y: clientY };
+}
+
 function _handleMove(e) {
   if (e.type === 'swipe' && e.deltaTime > 350) { // 区分 pan 操作和 swipe 操作
     return null;
@@ -21,8 +30,10 @@ function _handleMove(e) {
   let deltaY;
   if (TOUCH_EVENTS.indexOf(e.type) !== -1) { // support touch and miniprogram
     const currentPoint = e.touches[0];
-    deltaX = currentPoint.x - lastPoint.x;
-    deltaY = currentPoint.y - lastPoint.y;
+    const deltaLastPoint = convertPoints(lastPoint);
+    const deltaCurrentPoint = convertPoints(currentPoint);
+    deltaX = deltaCurrentPoint.x - deltaLastPoint.x;
+    deltaY = deltaCurrentPoint.y - deltaLastPoint.y;
     this.lastPoint = currentPoint;
   } else if (currentDeltaX !== null && currentDeltaY !== null) {
     deltaX = e.deltaX - currentDeltaX;
