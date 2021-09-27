@@ -10,15 +10,17 @@ class ContainerComponent extends Component {
   constructor(props: any, context?, updater?) {
     super(props, context, updater);
 
-    const { children } = props;
+    const { children, animate } = props;
     const components = map(children, (child: JSX.Element) => {
       if (!child) {
         return new PlaceholderComponent({});
       }
       const component = this.createComponent(child);
+      component.animate = animate;
       return component;
     });
     this.components = components;
+    this.animate = animate;
   }
 
   init(config) {
@@ -29,7 +31,7 @@ class ContainerComponent extends Component {
       component.init({
         ...config,
         // 为每个组件都创建一个独立节点
-        container: container.addGroup()
+        container: container.addGroup(),
       });
     });
   }
@@ -82,7 +84,7 @@ class ContainerComponent extends Component {
       height,
       // plot,
       layout,
-    }
+    };
   }
 
   render() {
@@ -121,9 +123,10 @@ class ContainerComponent extends Component {
     // 返回的是shape的结构树
     const element = renderJSXElement(jsxElement, appendProps);
     component.__lastElement = element;
-  
+
     // 如果需要动画，才进行比较，默认为true, 只有在设置false 才关闭
-    const renderElement = animate !== false ? compareRenderTree(element, __lastElement) : element;
+    const renderElement =
+      animate !== false ? compareRenderTree(element, __lastElement) : element;
     if (!renderElement) return null;
 
     // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
@@ -186,15 +189,19 @@ class ContainerComponent extends Component {
     // 只处理数据和children的变化
     const { children } = props;
 
-    this.components = mapTwo(components, children, (component: Component, child: JSX.Element) => {
-      const newComponent = this.diffComponent(component, child);
+    this.components = mapTwo(
+      components,
+      children,
+      (component: Component, child: JSX.Element) => {
+        const newComponent = this.diffComponent(component, child);
 
-      if (!newComponent.__shape && newComponent.beforeMount) {
-        newComponent.beforeMount();
+        if (!newComponent.__shape && newComponent.beforeMount) {
+          newComponent.beforeMount();
+        }
+
+        return newComponent;
       }
-
-      return newComponent;
-    });
+    );
   }
 
   destroy() {
