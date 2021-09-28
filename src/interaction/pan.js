@@ -69,7 +69,7 @@ class Pan extends Interaction {
     if (e.type === 'touchstart' || e.type === 'touchStart') {
       this.lastPoint = e.touches[0];
     }
-    this._handleMove(e);
+    // this._handleMove(e);
   }
 
   process(e) {
