@@ -1,6 +1,6 @@
-import { isDate, isPlainObject } from '@antv/util'
-import formatter from './formatter'
-import * as ArrayUtil from './array'
+import { isDate, isPlainObject } from '@antv/util';
+import formatter from './formatter';
+import * as ArrayUtil from './array';
 
 // 默认设置50
 let ONE_REM: number;
@@ -27,14 +27,14 @@ function px2hd(px: number): number {
 function is(type: string) {
   return (value: any) => {
     return Object.prototype.toString.call(value) === `[object ${type}]`;
-  }
+  };
 }
 
 const isNumber = is('Number');
 const isString = is('String');
 const isArray = is('Array');
 const isObject = is('Object');
-const isFunction = is('Function')
+const isFunction = is('Function');
 
 function parsePadding(padding: any) {
   if (isNumber(padding) || isString(padding)) {
@@ -44,7 +44,7 @@ function parsePadding(padding: any) {
   const right = padding[1] ? padding[1] : padding[0];
   const bottom = padding[2] ? padding[2] : top;
   const left = padding[3] ? padding[3] : right;
-  return [ top, right, bottom, left ];
+  return [top, right, bottom, left];
 }
 
 function batch2hd(value: any) {
@@ -66,7 +66,7 @@ function batch2hd(value: any) {
         if (!rst) {
           result[key] = rst;
           continue;
-        };
+        }
         if (key === 'padding' || key === 'margin') {
           const paddingArray = parsePadding(rst);
           result[`${key}Top`] = paddingArray[0];
@@ -90,7 +90,7 @@ function extendMap(arr: any[], fn: Function) {
     return arr;
   }
   if (!isArray(arr)) {
-    return [ fn(arr) ];
+    return [fn(arr)];
   }
   let newArray: any = [];
   for (let i = 0; i < arr.length; i++) {
@@ -110,12 +110,12 @@ const map = (children: any, fn: any) => {
     return fn(children);
   }
   if (isArray(children)) {
-    return children.map(child => {
+    return children.map((child) => {
       return map(child, fn);
     });
   }
   return fn(children);
-}
+};
 
 // components 和 children 需要是相同的2棵树
 // @ts-ignore

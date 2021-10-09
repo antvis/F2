@@ -5,16 +5,10 @@ module.exports = {
   collectCoverage: false,
   collectCoverageFrom: [
     'packages/*/src/**/*.{ts,tsx,js}',
-    '!**/node_modules/**'
+    '!**/node_modules/**',
   ],
   testRegex: '/test/.*\\.test\\.tsx?$',
-  moduleFileExtensions: [
-    'ts',
-    'tsx',
-    'js',
-    'json'
-  ],
   transform: {
-    "\\.(less|css)$": 'jest-less-loader'
-  }
+    '\\.(less|css)$': 'jest-less-loader',
+  },
 };

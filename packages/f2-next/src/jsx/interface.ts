@@ -10,10 +10,10 @@ interface Props {
 declare global {
   namespace JSX {
     interface Element {
-      key: string,
-      ref?: Ref,
-      type: string | Function,
-      props: Props,
+      key: string;
+      ref?: Ref;
+      type: string | Function;
+      props: Props;
       _cache: any;
     }
     interface ElementClass {

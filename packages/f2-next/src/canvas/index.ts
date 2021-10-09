@@ -9,20 +9,35 @@ import { px2hd } from '../util';
 import { createUpdater } from './updater';
 
 interface ChartUpdateProps {
-  pixelRatio?: number,
-  width?: number | string,
-  height?: number | string,
-  padding?: (number | string)[],
-  animate?: boolean,
-  children?: any
+  pixelRatio?: number;
+  width?: number | string;
+  height?: number | string;
+  padding?: (number | string)[];
+  animate?: boolean;
+  children?: any;
 }
 
 interface ChartProps extends ChartUpdateProps {
-  context: any,
+  context: any;
 }
 
 interface IF2Canvas {
-  container: any; 
+  container: any;
+}
+
+function measureText(context: CanvasRenderingContext2D) {
+  return (text: string, font) => {
+    const {
+      fontSize = 12,
+      fontFamily = 'normal',
+      fontStyle = 'normal',
+      fontWeight = 'normal',
+      fontVariant = 'normal',
+    } = this.px2hd(font);
+
+    context.font = `${fontStyle} ${fontVariant} ${fontWeight} ${fontSize}px ${fontFamily}`;
+    return context.measureText(text);
+  };
 }
 
 // 顶层Canvas标签
@@ -35,7 +50,14 @@ class Canvas extends Component implements IF2Canvas {
 
   constructor(props: ChartProps) {
     super(props);
-    const { context, pixelRatio, width, height, animate = true, children } = props;
+    const {
+      context,
+      pixelRatio,
+      width,
+      height,
+      animate = true,
+      children,
+    } = props;
     this.context = context;
 
     // 创建G的canvas
@@ -46,21 +68,36 @@ class Canvas extends Component implements IF2Canvas {
       height,
     });
 
-    const {
-      width: canvasWidth,
-      height: canvasHeight
-    } = canvas._attrs;
+    const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
 
     // 初始化默认的布局
     const layout = new Layout({
       width: canvasWidth,
-      height: canvasHeight
+      height: canvasHeight,
     });
 
     const updater = createUpdater(this);
 
-    const componentTree = createComponentTree(children, { canvas: this, width: canvasWidth, height: canvasHeight, context, layout });
-    const component = new Container({ children: componentTree, animate }, {}, updater);
+    const global = {
+      width: canvasWidth,
+      height: canvasHeight,
+      context,
+      px2hd,
+      measureText: measureText(context),
+    };
+
+    const componentTree = createComponentTree(children, {
+      canvas: this,
+      width: canvasWidth,
+      height: canvasHeight,
+      context,
+      layout,
+    });
+    const component = new Container(
+      { children: componentTree, animate },
+      {},
+      updater
+    );
     component.init({ layout, container: canvas });
 
     this.canvas = canvas;
@@ -118,18 +155,15 @@ class Canvas extends Component implements IF2Canvas {
     // 只处理数据，和children的变化
     const { children } = props;
 
-    const {
+    const { width, height, context } = canvas._attrs;
+
+    const componentTree = createComponentTree(children, {
+      canvas: this,
       width,
       height,
       context,
-    } = canvas._attrs;
-
-    const componentTree = createComponentTree(children, { canvas: this, width, height, context, layout });
-
-
-    // if (equal(this.componentTree, componentTree)) {
-    //   return;
-    // }
+      layout,
+    });
 
     component.update({ children: componentTree });
     this.render();
@@ -140,21 +174,7 @@ class Canvas extends Component implements IF2Canvas {
     component.destroy();
   }
 
-  px2hd = px2hd
-
-  measureText(text, font) {
-    const { context } = this;
-    const {
-      fontSize = 12,
-      fontFamily = 'normal',
-      fontStyle = 'normal',
-      fontWeight = 'normal',
-      fontVariant = 'normal',
-    } = this.px2hd(font);
-  
-    context.font = `${fontStyle} ${fontVariant} ${fontWeight} ${fontSize}px ${fontFamily}`;
-    return context.measureText(text);
-  }
+  px2hd = px2hd;
 }
 
 export default Canvas;

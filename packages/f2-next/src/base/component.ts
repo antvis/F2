@@ -6,7 +6,7 @@ class Component {
   context: any;
   refs: {
     [key: string]: any;
-  }
+  };
   container: any;
   layout: Layout;
   updater: any;
@@ -33,22 +33,20 @@ class Component {
     this.updater = updater;
     this.state = {};
     this.animate = animate;
+    this.__shouldRender = true;
   }
   init({ container, layout }) {
     this.layout = layout;
     this.container = container;
   }
   // TODO beforeMount
-  willMount() {
-  }
+  willMount() {}
   // TODO mounted
-  mount() {
-  }
+  mount() {}
   setState(partialState) {
     this.updater.enqueueSetState(this, partialState);
   }
-  beforeUpdate() {
-  }
+  beforeUpdate() {}
   update(props: any) {
     this.__props = props;
     this.props = props;
