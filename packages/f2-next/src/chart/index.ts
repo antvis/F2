@@ -99,7 +99,8 @@ class Chart
       }
       let { left, top, width, height } = coordLayout;
       // @ts-ignore
-      const childLayout = component.getLayout() || {};
+      const childLayout = component.getLayout();
+      if (!childLayout) return;
       const { position, width: childWidth, height: childHeight } = childLayout;
       // @ts-ignore
       component.setLayout({

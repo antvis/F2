@@ -4,9 +4,8 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect, mappingRect } from './util';
 
-export default View => {
+export default (View) => {
   return class Interval extends Geometry {
-
     startOnZero = true;
 
     getDefaultSize() {
@@ -18,14 +17,14 @@ export default View => {
       const { values } = scale;
 
       if (sizeRatio) {
-        return 1 / values.length * sizeRatio;
+        return (1 / values.length) * sizeRatio;
       }
       let ratio = 1;
       // 极坐标默认 1， 直接坐标默认 0.5
       if (!coord.isPolar) {
         ratio = 0.5;
       }
-      return 1 / values.length * ratio;
+      return (1 / values.length) * ratio;
     }
 
     _convertPosition(mappedArray) {
@@ -51,12 +50,7 @@ export default View => {
       const { chart } = this;
       const { coord } = chart;
       const data = this.mapping();
-      return (
-        <View
-          coord={ coord }
-          mappedArray={ data }
-        />
-      );
+      return <View coord={coord} mappedArray={data} />;
     }
-  }
-}
+  };
+};

@@ -1,4 +1,3 @@
-
 function createUpdater(canvas) {
   const setStateQueue = [];
   const renderQueue = [];
@@ -16,7 +15,7 @@ function createUpdater(canvas) {
       }
 
       // 如果stateChange是一个方法，也就是setState的第二种形式
-      if (typeof state === "function") {
+      if (typeof state === 'function') {
         Object.assign(
           component.state,
           state(component.prevState, component.props)

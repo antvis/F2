@@ -6,25 +6,28 @@ import {
   upperFirst,
   isNil,
   mix,
-} from "@antv/util";
-import Component from "../../base/component";
-import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array'
+} from '@antv/util';
+import Component from '../../base/component';
+import {
+  group as arrayGroup,
+  merge as arrayMerge,
+  values,
+} from '../../util/array';
 import Chart from '../../chart';
-import * as Adjust from "../../adjust";
+import * as Adjust from '../../adjust';
 import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
-import { toTimeStamp } from '../../util/index'
+import { toTimeStamp } from '../../util/index';
 
 // 保留原始数据的字段
-const FIELD_ORIGIN = "origin";
+const FIELD_ORIGIN = 'origin';
 // 需要映射的属性名
 const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
-const GROUP_ATTRS = ["color", "size", "shape"];
+const GROUP_ATTRS = ['color', 'size', 'shape'];
 
 class Geometry extends Component implements AttrMixin {
-
   isGeometry = true;
   isInit = false;
   chart: Chart;
@@ -66,7 +69,7 @@ class Geometry extends Component implements AttrMixin {
     this.attrOptions = attrOptions;
 
     // 收集需要创建scale的字段
-    each(attrOptions, option => {
+    each(attrOptions, (option) => {
       const { field } = option;
       chart.setScale(field);
     });
@@ -108,7 +111,6 @@ class Geometry extends Component implements AttrMixin {
         scale,
       });
     });
-
   }
 
   _adjustScales() {
@@ -186,14 +188,14 @@ class Geometry extends Component implements AttrMixin {
       return groupedArray;
     }
     const adjustCfg =
-      typeof adjust === "string"
+      typeof adjust === 'string'
         ? {
             type: adjust,
           }
         : adjust;
     const adjustType = upperFirst(adjustCfg.type);
     if (!Adjust[adjustType]) {
-      throw new Error("not support such adjust : " + adjust);
+      throw new Error('not support such adjust : ' + adjust);
     }
     const { x, y } = attrs;
     const xField = x.field;
@@ -206,14 +208,14 @@ class Geometry extends Component implements AttrMixin {
 
     if (adjustType === 'Dodge') {
       for (let i = 0, len = groupedArray.length; i < len; i++) {
-      // 如果是dodge, 需要处理数字再处理
+        // 如果是dodge, 需要处理数字再处理
         this._numberic(groupedArray[i]);
       }
     }
     adjustInstance.processAdjust(groupedArray);
 
     if (adjustType === 'Stack') {
-      this._updateStackRange(yField, y.scale, groupedArray)
+      this._updateStackRange(yField, y.scale, groupedArray);
     }
     this.adjust = adjustInstance;
 
@@ -238,7 +240,7 @@ class Geometry extends Component implements AttrMixin {
     if (min < scale.min || max > scale.max) {
       scale.change({
         min,
-        max
+        max,
       });
     }
   }
@@ -263,8 +265,15 @@ class Geometry extends Component implements AttrMixin {
 
   _initEvent() {
     const { container, props } = this;
-    const canvas = container.get("canvas");
-    ["onPressStart", "onPress", "onPressEnd", 'onPan', 'onPanStart', 'onPanEnd'].forEach((eventName) => {
+    const canvas = container.get('canvas');
+    [
+      'onPressStart',
+      'onPress',
+      'onPressEnd',
+      'onPan',
+      'onPanStart',
+      'onPanEnd',
+    ].forEach((eventName) => {
       if (props[eventName]) {
         canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
           ev.geometry = this;
@@ -287,7 +296,7 @@ class Geometry extends Component implements AttrMixin {
     const { theme } = chart;
     return {
       color: theme.colors[0],
-    }
+    };
   }
 
   _getAttrsRange() {
@@ -315,7 +324,7 @@ class Geometry extends Component implements AttrMixin {
     for (let key = 0; key < attrNamesLength; key++) {
       const attrName = attrNames[key];
 
-      if(!this.getAttrRange(attrName)) {
+      if (!this.getAttrRange(attrName)) {
         this.setAttrRange(attrName, attrsRange[attrName]);
       }
     }
@@ -342,7 +351,7 @@ class Geometry extends Component implements AttrMixin {
           ...record,
           ...defaultValues,
           ...attrsValue,
-        }
+        };
         mappedData[i] = result;
       }
       mappedArray[i] = mappedData;
@@ -422,7 +431,10 @@ class Geometry extends Component implements AttrMixin {
     }
     for (let i = 1; i < len; i++) {
       // 中间的点
-      if ((values[i - 1] + values[i]) / 2 <= invertValue && (values[i + 1] + values[i]) / 2 > invertValue) {
+      if (
+        (values[i - 1] + values[i]) / 2 <= invertValue &&
+        (values[i + 1] + values[i]) / 2 > invertValue
+      ) {
         return values[i];
       }
     }
@@ -474,10 +486,10 @@ class Geometry extends Component implements AttrMixin {
     const { theme } = chart;
     const ticks = scale.getTicks();
 
-    if(!this.getAttrRange('color')) {
+    if (!this.getAttrRange('color')) {
       colorAttr.setRange(theme.colors);
     }
-    const items = ticks.map(tick => {
+    const items = ticks.map((tick) => {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue) || theme.colors[0];
       return {
@@ -490,7 +502,6 @@ class Geometry extends Component implements AttrMixin {
   }
 }
 
-applyMixins(Geometry, [ AttrMixin ]);
+applyMixins(Geometry, [AttrMixin]);
 
 export default Geometry;
- 

@@ -16,16 +16,16 @@ const colors = [
   'rgb(29, 223, 163)',
   'rgb(35, 171, 216)',
   'rgb(76, 110, 219)',
-]
+];
 
-describe('Treemap', () => {
+describe('Sunburst', () => {
   it('render', () => {
     const { type, props } = (
-      <Canvas context={ context }>
+      <Canvas context={context}>
         <Sunburst
-          data={ data.children }
+          data={data.children}
           coord={{
-            // type: Polar,
+            type: Polar,
             // transposed: true,
             // left: 100,
             // top: 100,
@@ -34,16 +34,7 @@ describe('Treemap', () => {
           }}
           color={{
             field: 'name',
-            range: [
-              '#1890FF',
-              '#2FC25B',
-              '#FACC14',
-              '#223273',
-              '#8543E0',
-              '#13C2C2',
-              '#3436C7',
-              '#F04864'
-            ],
+            range: colors,
           }}
           value="value"
         />
@@ -53,5 +44,5 @@ describe('Treemap', () => {
     // @ts-ignore
     const canvas = new type(props);
     canvas.render();
-  })
+  });
 });
