@@ -1,10 +1,10 @@
-const createContext = (title = '') => {
+const createContext = (title = '', { height = '150px', width = '200px' }: any = {}) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');
   titleEl.innerText = title + ':';
   titleEl.style.fontSize = '12px'
-  canvasEl.style.width = '200px';
-  canvasEl.style.height = '150px';
+  canvasEl.style.width = width
+  canvasEl.style.height = height;
   document.body.appendChild(titleEl);
   document.body.appendChild(canvasEl);
   const context = canvasEl.getContext('2d');
