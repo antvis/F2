@@ -131,23 +131,32 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   draw() {
-    const { canvas, container, animation, props } = this;
+    const { canvas } = this;
+    canvas.draw();
+  }
+  
+  render() {
+    const { component, container, animation, props } = this;
     const { onAnimationEnd } = props;
-    // 执行动画
+    
+    // 构建/更新shape树
+    component.render();
+
     if (animation) {
       animation.abort();
       animation.play(container, onAnimationEnd);
     } else {
-      canvas.draw();
+      this.draw();
     }
+
+    return null;
   }
 
-  render() {
+  // 静态渲染，不播放动画，直接渲染终态
+  staicRender() {
     const { component } = this;
-
     component.render();
     this.draw();
-    return null;
   }
 
   update(props: ChartUpdateProps) {

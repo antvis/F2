@@ -224,7 +224,7 @@ class Context {
   private render() {
     const { chart, canvas } = this;
     chart.forceUpdate();
-    canvas.render();
+    canvas.staicRender();
   }
 
   destroy() { }
