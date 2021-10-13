@@ -5,7 +5,7 @@ class ScaleMixin {
   data: any;
   scale: ScaleController;
 
-  createScale() {
+  createScaleController() {
     return new ScaleController();
   }
 

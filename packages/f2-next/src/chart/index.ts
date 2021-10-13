@@ -6,6 +6,7 @@ import { applyMixins } from '../mixins';
 import ThemeMixin from '../mixins/theme';
 import CoordMixin from '../mixins/coord';
 import ScaleMixin from '../mixins/scale';
+import InteractionMixin from '../mixins/interaction';
 import defaultTheme from './theme';
 import Layout from '../base/layout';
 import equal from '../base/equal';
@@ -33,21 +34,30 @@ interface IChart {
 // 统计图表
 class Chart
   extends Container
-  implements IChart, ThemeMixin, CoordMixin, ScaleMixin
-{
+  implements IChart, ThemeMixin, CoordMixin, ScaleMixin, InteractionMixin {
   data: any;
+  
+  // 坐标系
   coord: Coord;
   createCoord: (coord, layout) => Coord;
   updateCoord: (coord, layout) => Coord;
 
+  // 度量
   scale: any;
-  createScale: () => any;
+  createScaleController: () => any;
   setScale: any;
   getScale: (field) => any;
   updateScales: () => any;
 
+  // 主题
   theme: any;
   setTheme: (theme) => any;
+
+  // 交互
+  interaction: any;
+  createInteractionController: ({ chart: any }) => any;
+  setInteraction: (type, cfg) => any;
+  initInteractions: () => any;
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
@@ -56,7 +66,9 @@ class Chart
     // 记录data, 全局唯一
     this.data = data;
     // 初始化scales
-    this.scale = this.createScale();
+    this.scale = this.createScaleController();
+    // 创建交互事件控制器
+    this.interaction = this.createInteractionController({ chart: this });
   }
 
   // 会调用子组件的 constructor 创建组件实例
@@ -65,6 +77,7 @@ class Chart
     const { props: childProps } = child;
     const childComponent = super.createComponent(child);
 
+    // chart下的子组件上下文均挂载chart实例
     // @ts-ignore
     childComponent.chart = this;
 
@@ -129,11 +142,18 @@ class Chart
 
   willMount() {
     const { props } = this;
-    const { scale } = props;
+    const { scale, interactions = [] } = props;
+
     // 定义scale
     each(scale, (def, field) => {
       this.setScale(field, def);
     });
+
+    // 定义事件
+    interactions.forEach(interaction => {
+      const { type, ...cfg } = interaction;
+      this.setInteraction(type, cfg)
+    })
 
     super.willMount();
   }
@@ -159,6 +179,8 @@ class Chart
     this.coord = this.createCoord(coord, this.layout);
     // 创建scale
     this.updateScales();
+    // 初始化交互事件，需要放到scale创建之后
+    this.initInteractions();
     super.mount();
   }
 
@@ -182,7 +204,7 @@ class Chart
       });
     }
 
-    // coord 变化，所有字组件只需要重新render
+    // coord 变化，所有子组件只需要重新render
     if (!isNil(nextProps.coord) && equal(props.coord, nextProps.coord)) {
       map(components, (component) => {
         component.forceUpdate();
@@ -222,6 +244,17 @@ class Chart
     // 创建scale
 
     super.update(props);
+  }
+
+  forceUpdate() {
+    const { components } = this;
+    map(components, (component) => {
+      if (!component) {
+        return;
+      }
+      component.forceUpdate();
+    });
+    super.forceUpdate();
   }
 
   changeGetGeometryData(data) {
@@ -271,15 +304,19 @@ class Chart
     });
   }
 
-  render() {
+  getCanvas() {
+    return this.props.canvas.canvas;
+  }
+
+  render(): JSX.Element {
     this.layoutCoord();
-    super.render();
+    return super.render();
   }
 }
 
 // 多继承
-applyMixins(Chart, [ThemeMixin, CoordMixin, ScaleMixin]);
+applyMixins(Chart, [ThemeMixin, CoordMixin, ScaleMixin, InteractionMixin]);
 
-class ExportChart extends Chart {}
+class ExportChart extends Chart { }
 
 export default ExportChart;
