@@ -102,17 +102,17 @@ class Chart
       switch (position) {
         case 'left':
           left += childWidth;
-          width -= childWidth;
+          width = Math.max(0, width - childWidth);
           break;
         case 'right':
-          width -= childWidth;
+          width = Math.max(0, width - childWidth);
           break;
         case 'top':
           top += childHeight;
-          height -= childHeight;
+          height = Math.max(0, height - childHeight);;
           break;
         case 'bottom':
-          height -= childHeight;
+          height = Math.max(0, height - childHeight);;
           break;
       }
       coordLayout.update({ left, top, width, height });
@@ -190,6 +190,15 @@ class Chart
     }
   }
 
+  _getAppendProps() {
+    // chart内的子组件默认注入的props
+    const { coord } = this;
+    const _appendProps = super._getAppendProps();
+    return {
+      ..._appendProps,
+      coord,
+    }
+  }
   update() {
     const { props } = this;
     const { theme, layout, style, coord, canvas, data } = props;
