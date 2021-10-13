@@ -23,6 +23,8 @@ class Component {
   __mounted = false;
   // 表示是否需要调用render渲染
   __shouldRender = true;
+  // 上次渲染时的ViewProps
+  __viewProps: any;
   // actions: any;
 
   constructor(props: any, context?, updater?) {

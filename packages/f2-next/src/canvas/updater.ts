@@ -35,7 +35,7 @@ function createUpdater(canvas) {
     }
 
     if (shouldRender) {
-      canvas.render();
+      canvas.draw();
     }
   }
 

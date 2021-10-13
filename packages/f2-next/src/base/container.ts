@@ -92,11 +92,7 @@ class ContainerComponent extends Component {
     const appendProps = this._getAppendProps();
 
     map(components, (component: Component) => {
-      if (!component.__shouldRender) {
-        return;
-      }
       this.renderComponent(component, appendProps);
-      component.__shouldRender = false;
     });
 
     // 自身不绘制任何内容
@@ -104,11 +100,7 @@ class ContainerComponent extends Component {
   }
 
   renderComponent(component: Component, appendProps?: any) {
-    const { __shape, __lastElement, container, animate, props } = component;
-    // 先把之前的图形清除掉
-    if (__shape) {
-      container.clear();
-    }
+    const { __shouldRender, __shape, __lastElement, container, animate, props, __viewProps } = component;
 
     // 支持function形式，为了更的自定义
     const { animation } = props;
@@ -118,10 +110,26 @@ class ContainerComponent extends Component {
 
     // 返回的是jsx的element树
     const jsxElement = component.render();
+
     if (!jsxElement) return null;
+
+    // 非dirtyComponent需要对比props，如果相同则不渲染
+    if (__shouldRender !== true) {
+      if (equal(__viewProps, jsxElement.props)) {
+        return null;
+      }
+    }
+
+    // 先把之前的图形清除掉
+    if (__shape) {
+      container.clear();
+    }
 
     // 返回的是shape的结构树
     const element = renderJSXElement(jsxElement, appendProps);
+
+    component.__shouldRender = false;
+    component.__viewProps = jsxElement.props;
     component.__lastElement = element;
 
     // 如果需要动画，才进行比较，默认为true, 只有在设置false 才关闭
