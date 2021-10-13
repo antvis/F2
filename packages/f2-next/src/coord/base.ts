@@ -6,7 +6,6 @@ function transposedRect({ xMin, xMax, yMin, yMax }) {
 }
 
 class Base extends Layout {
-
   type: string;
   // 用来特殊标识是否是极坐标
   isPolar: boolean;
@@ -30,8 +29,8 @@ class Base extends Layout {
 
     const { left, top, width, height } = this;
     this.center = {
-      x: left + (width / 2),
-      y: top + (height / 2),
+      x: left + width / 2,
+      y: top + height / 2,
     };
     return this;
   }
@@ -53,12 +52,17 @@ class Base extends Layout {
 
     const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
 
+    const x0 = xStart + (xEnd - xStart) * xMin;
+    const x1 = xStart + (xEnd - xStart) * xMax;
+    const y0 = yStart + (yEnd - yStart) * yMin;
+    const y1 = yStart + (yEnd - yStart) * yMax;
+
     return {
-      xMin: xStart + (xEnd - xStart) * xMin,
-      xMax: xStart + (xEnd - xStart) * xMax,
-      yMin: yStart + (yEnd - yStart) * yMin,
-      yMax: yStart + (yEnd - yStart) * yMax,
-    }
+      xMin: Math.min(x0, x1),
+      xMax: Math.max(x0, x1),
+      yMin: Math.min(y0, y1),
+      yMax: Math.max(y0, y1),
+    };
   }
 
   // 把canvas坐标的点位映射回归一后的值

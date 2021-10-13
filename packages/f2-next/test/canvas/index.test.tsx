@@ -5,15 +5,30 @@ const context = createContext();
 class Test extends Component {
   render() {
     return (
-      <rect
-        attrs={{
-          x: 10,
-          y: 10,
-          width: 10,
-          height: 10,
-          fill: 'red',
+      <group
+        style={{
+          width: '100px',
+          height: '40px',
         }}
-      />
+        attrs={{
+          fill: '#1677FF',
+          radius: '8px',
+        }}
+      >
+        <text
+          attrs={{
+            text: '按钮',
+            fill: '#fff',
+            textAlign: 'center',
+            fontSize: '20px',
+            // x: 10,
+            // y: 10,
+            // width: 10,
+            // height: 10,
+            // fill: 'red',
+          }}
+        />
+      </group>
     );
   }
 }
@@ -21,16 +36,14 @@ class Test extends Component {
 describe('Canvas', () => {
   it('初始化', () => {
     const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
-        <Test />
+      <Canvas context={context} pixelRatio={2}>
         <Test />
       </Canvas>
     );
 
-    console.log(props);
-
     // @ts-ignored
     const canvas = new Canvas(props);
+    canvas.render();
     // const testComponent = canvas.component.components;
 
     // expect(context.canvas.width).toBe(359);

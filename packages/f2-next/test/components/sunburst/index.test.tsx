@@ -24,14 +24,16 @@ describe('Sunburst', () => {
       <Canvas context={context}>
         <Sunburst
           data={data.children}
-          coord={{
-            type: Polar,
-            // transposed: true,
-            // left: 100,
-            // top: 100,
-            // right: 100,
-            // bottom: 100,
-          }}
+          coord={
+            {
+              // type: Polar,
+              // transposed: true,
+              // left: 100,
+              // top: 100,
+              // right: 100,
+              // bottom: 100,
+            }
+          }
           color={{
             field: 'name',
             range: colors,
