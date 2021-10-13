@@ -19,7 +19,7 @@ class ContainerComponent extends Component {
       component.animate = animate;
       return component;
     });
-    this.components = isArray(components) ? components : [components];
+    this.components = components;
     this.animate = animate;
   }
 

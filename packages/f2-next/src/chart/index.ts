@@ -55,7 +55,7 @@ class Chart
 
   // 交互
   interaction: any;
-  creteInteractionController: ({ chart: any }) => any;
+  createInteractionController: ({ chart: any }) => any;
   setInteraction: (type, cfg) => any;
   initInteractions: () => any;
 
@@ -68,7 +68,7 @@ class Chart
     // 初始化scales
     this.scale = this.createScaleController();
     // 创建交互事件控制器
-    this.interaction = this.creteInteractionController({ chart: this });
+    this.interaction = this.createInteractionController({ chart: this });
   }
 
   // 会调用子组件的 constructor 创建组件实例

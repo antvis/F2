@@ -4,7 +4,7 @@ class InteractionMixin {
 
   interaction: InteractionController;
 
-  creteInteractionController({ chart }) {
+  createInteractionController({ chart }) {
     return new InteractionController(chart);
   }
 
