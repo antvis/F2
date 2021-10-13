@@ -19,7 +19,7 @@ const data = [
 ];
 
 describe('Interval Chart', () => {
-  it('基础柱状图', () => {
+  it.only('基础柱状图', () => {
     const context = createContext('基础柱状图');
     const chartRef = { current: null };
     const { type, props } = (

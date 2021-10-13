@@ -1,6 +1,6 @@
-import { jsx } from '../../lib/jsx';
-import Canvas, { Gauge } from '../../src/components';
-import { createContext } from './util';
+import { jsx } from '../../../src/jsx';
+import Canvas, { Gauge } from '../../../src/components';
+import { createContext } from '../util';
 const context = createContext();
 
 describe('Gauge', () => {

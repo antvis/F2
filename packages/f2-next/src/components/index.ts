@@ -12,9 +12,16 @@ export { default as Interval, withInterval, IntervalView } from './interval';
 export { default as Point, withPoint, PointView } from './point';
 export { default as Axis, withAxis, AxisView } from './axis';
 export { default as Legend, withLegend, LegendView } from './legend';
-export { default as Guide, withGuide, TextGuide, PointGuide, LineGuide, ArcGuide, RectGuide } from './guide';
+export {
+  default as Guide,
+  withGuide,
+  TextGuide,
+  PointGuide,
+  LineGuide,
+  ArcGuide,
+  RectGuide,
+} from './guide';
 export { default as Tooltip, withTooltip, TooltipView } from './tooltip';
-// // export { default as Treemap, withTreemap, TreemapView } from './treemap';
+export { default as Treemap, withTreemap, TreemapView } from './treemap';
 export { default as Sunburst, withSunburst, SunburstView } from './sunburst';
-// // export { default as Gauge } from './gauge';
-
+export { default as Gauge } from './gauge';

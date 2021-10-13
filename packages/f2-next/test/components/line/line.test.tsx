@@ -23,14 +23,16 @@ describe('Chart', () => {
         <Chart
           ref={chartRef}
           data={data}
-          coord={{
-            type: Polar,
-            // transposed: true,
-            // left: 10,
-            // top: 10,
-            // right: 100,
-            // bottom: 100,
-          }}
+          coord={
+            {
+              // type: Polar,
+              // transposed: true,
+              // left: 10,
+              // top: 10,
+              // right: 100,
+              // bottom: 100,
+            }
+          }
           scale={
             {
               // genre: {},
