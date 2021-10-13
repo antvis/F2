@@ -1,6 +1,5 @@
 import { isArray } from '@antv/util';
 
-
 function convertRect({ x, y, size, y0 }) {
   let xMin: number;
   let xMax: number;
@@ -27,10 +26,7 @@ function convertRect({ x, y, size, y0 }) {
     xMax,
     yMin,
     yMax,
-  }
+  };
 }
 
-
-export {
-  convertRect,
-};
+export { convertRect };

@@ -9,6 +9,6 @@ const createContext = (title = '', { height = '150px', width = '200px' }: any = 
   document.body.appendChild(canvasEl);
   const context = canvasEl.getContext('2d');
   return context;
-}
+};
 
 export { createContext };

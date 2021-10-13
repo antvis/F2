@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { jsx } from "../../jsx";
-import Component from "../../base/component";
-import { partition, hierarchy } from "d3-hierarchy";
-import { Category } from "../../attr";
-import { isInBBox, isFunction } from "../../util";
+import { jsx } from '../../jsx';
+import Component from '../../base/component';
+import { partition, hierarchy } from 'd3-hierarchy';
+import { Category } from '../../attr';
+import { isInBBox, isFunction } from '../../util';
 import { applyMixins } from '../../mixins';
 import CoordMixin from '../../mixins/coord';
-import { mix } from "@antv/util"
+import { mix } from '@antv/util';
 
 function rootParent(data) {
   let d = data;
@@ -15,7 +15,6 @@ function rootParent(data) {
   }
   return d;
 }
-
 
 export default (View): any => {
   class Sunburst extends Component implements CoordMixin {
@@ -29,12 +28,12 @@ export default (View): any => {
 
       this.coord = this.createCoord(coord, layout);
 
-      const canvas = container.get("canvas");
+      const canvas = container.get('canvas');
       const { data, color, onClick } = props;
 
       this.triggerRef = [];
 
-      canvas.on("click", (ev) => {
+      canvas.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.find((ref) => {
           return isInBBox(ref.current.getBBox(), points[0]);
@@ -59,7 +58,12 @@ export default (View): any => {
         const root = rootParent(node);
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
-        const rect = coord.convertRect({ xMin: node.x0, xMax: node.x1, yMin: node.y0, yMax: node.y1 });
+        const rect = coord.convertRect({
+          xMin: node.x0,
+          xMax: node.x1,
+          yMin: node.y0,
+          yMax: node.y1,
+        });
         mix(node, rect);
         // 递归处理
         if (node.children && node.children.length) {
@@ -71,7 +75,7 @@ export default (View): any => {
     _computeText = (text, attrs) => {
       const { container } = this;
       const group = container.addGroup();
-      const shape = group.addShape("text", {
+      const shape = group.addShape('text', {
         attrs: {
           ...attrs,
           x: 0,
@@ -110,16 +114,16 @@ export default (View): any => {
       return (
         <View
           {...props}
-          coord={ coord }
+          coord={coord}
           node={node}
           computeText={_computeText}
           triggerRef={this.triggerRef}
         />
       );
     }
-  };
+  }
 
-  applyMixins(Sunburst, [ CoordMixin ]);
+  applyMixins(Sunburst, [CoordMixin]);
 
   return Sunburst;
 };
