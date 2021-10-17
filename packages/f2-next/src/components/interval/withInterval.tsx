@@ -19,11 +19,26 @@ export default (View) => {
       if (sizeRatio) {
         return (1 / values.length) * sizeRatio;
       }
-      let ratio = 1;
-      // 极坐标默认 1， 直接坐标默认 0.5
-      if (!coord.isPolar) {
-        ratio = 0.5;
+
+      const defaultWithRatio = {
+        column: 1 / 2, // 直方图、柱图
+        rose: 0.999999, // 玫瑰图
+        multiplePie: 3 / 4, // 多饼图
+      };
+
+      const count = values.length;
+
+      let ratio;
+      if (coord.isPolar) {
+        if (coord.transposed && count > 1) {
+          ratio = defaultWithRatio.multiplePie;
+        } else {
+          ratio = defaultWithRatio.rose;
+        }
+      } else {
+        ratio = defaultWithRatio.column;
       }
+
       return (1 / values.length) * ratio;
     }
 
