@@ -17,6 +17,9 @@
     "lerna": "lerna publish"
   },
   "dependencies": {},
+  "resolutions": {
+    "signal-exit": "3.0.3"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.10",
@@ -27,7 +30,7 @@
     "babel-jest": "^26.6.3",
     "father": "^2.30.0",
     "jest": "^26.6.3",
-    "jest-electron": "^0.1.11",
+    "@alipay/jest-electron": "^0.1.11",
     "jest-less-loader": "^0.1.1",
     "lerna": "^2.11.0",
     "ts-jest": "^26.4.4",

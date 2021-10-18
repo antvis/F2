@@ -1,6 +1,6 @@
 module.exports = {
-  runner: 'jest-electron/runner',
-  testEnvironment: 'jest-electron/environment',
+  runner: '@alipay/jest-electron/runner',
+  testEnvironment: '@alipay/jest-electron/environment',
   preset: 'ts-jest',
   collectCoverage: false,
   collectCoverageFrom: [
