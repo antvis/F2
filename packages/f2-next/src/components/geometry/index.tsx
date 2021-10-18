@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   isString,
   isArray,
@@ -44,11 +45,6 @@ class Geometry extends Component implements AttrMixin {
   // y 轴是否从0开始
   startOnZero = false;
 
-  constructor(props) {
-    super(props);
-    this.attrOptions = {};
-    this.attrs = {};
-  }
   createAttrOption: (option) => any;
   createAttr: (option) => any;
   setAttrRange: (attrName: string, range) => any;
@@ -57,11 +53,32 @@ class Geometry extends Component implements AttrMixin {
   getAttrValue: (attrName, record) => any;
   getAttrRange: (attrName) => any;
 
-  willMount() {
-    const { chart, props } = this;
-    const attrOptions = {};
+  constructor(props) {
+    super(props);
+    this._init();
+  }
 
-    ATTRS.forEach((attrName) => {
+  _init() {
+    this._prepareAttrs();
+    this._createAttrs();
+    this._adjustScales();
+    this._processData();
+  }
+
+  willUpdate() {
+    this._init();
+  }
+
+  didMount() {
+    this._initEvent();
+  }
+
+  _prepareAttrs() {
+    const { props } = this;
+    const { chart } = props;
+
+    const attrOptions = {};
+    ATTRS.forEach(attrName => {
       if (props[attrName]) {
         attrOptions[attrName] = this.createAttrOption(props[attrName]);
       }
@@ -69,29 +86,17 @@ class Geometry extends Component implements AttrMixin {
     this.attrOptions = attrOptions;
 
     // 收集需要创建scale的字段
-    each(attrOptions, (option) => {
+    each(attrOptions, option => {
       const { field, ...cfg } = option;
       chart.setScale(field, cfg);
     });
-  }
 
-  _init() {
-    if (this.isInit) {
-      return;
-    }
-    this._createAttrs();
-    this._adjustScales();
-    this._processData();
-    this._initEvent();
-    this.isInit = true;
-  }
-
-  mount() {
-    this._init();
+    this.attrOptions = attrOptions;
+    this.attrs = {};
   }
 
   _createAttrs() {
-    const { attrOptions, attrs, chart } = this;
+    const { attrOptions, attrs, props } = this;
 
     // @ts-ignore
     const { x, y } = attrOptions;
@@ -103,6 +108,7 @@ class Geometry extends Component implements AttrMixin {
     x.type = Linear;
     y.type = Linear;
 
+    const { chart } = props;
     each(attrOptions, (option, attrName) => {
       const { field } = option;
       const scale = chart.getScale(field);
@@ -114,8 +120,8 @@ class Geometry extends Component implements AttrMixin {
   }
 
   _adjustScales() {
-    const { chart, attrs, props, startOnZero: defaultStartOnZero } = this;
-    const { startOnZero = defaultStartOnZero } = props;
+    const { attrs, props, startOnZero: defaultStartOnZero } = this;
+    const { chart, startOnZero = defaultStartOnZero } = props;
     if (startOnZero) {
       const { y } = attrs;
       chart.scale.adjustStartZero(y.scale);
@@ -125,7 +131,7 @@ class Geometry extends Component implements AttrMixin {
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
-    each(GROUP_ATTRS, function (attrName) {
+    each(GROUP_ATTRS, function(attrName) {
       const attr = attrs[attrName];
       if (attr) {
         const { scale } = attr;
@@ -145,7 +151,7 @@ class Geometry extends Component implements AttrMixin {
 
     const appendConditions = {};
     const names = [];
-    groupScales.forEach((scale) => {
+    groupScales.forEach(scale => {
       const field = scale.field;
       names.push(field);
     });
@@ -246,8 +252,8 @@ class Geometry extends Component implements AttrMixin {
   }
 
   _processData() {
-    const { chart } = this;
-    const { data: originData } = chart;
+    const { props } = this;
+    const { data: originData } = props;
 
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
@@ -273,9 +279,9 @@ class Geometry extends Component implements AttrMixin {
       'onPan',
       'onPanStart',
       'onPanEnd',
-    ].forEach((eventName) => {
+    ].forEach(eventName => {
       if (props[eventName]) {
-        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+        canvas.on(eventName.substr(2).toLowerCase(), ev => {
           ev.geometry = this;
           props[eventName](ev);
         });
@@ -284,7 +290,8 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getY0Value() {
-    const { attrs, chart } = this;
+    const { attrs, props } = this;
+    const { chart } = props;
     const { y } = attrs;
     const { scale } = y;
     return chart.scale.getZeroValue(scale);
@@ -292,16 +299,16 @@ class Geometry extends Component implements AttrMixin {
 
   // 获取
   _getAttrsDefaultValue() {
-    const { chart } = this;
-    const { theme } = chart;
+    const { context } = this;
+    const { theme } = context;
     return {
       color: theme.colors[0],
     };
   }
 
   _getAttrsRange() {
-    const { chart } = this;
-    const { theme } = chart;
+    const { context } = this;
+    const { theme } = context;
 
     // 构造各属性的值域
     const ranges = {
@@ -397,14 +404,16 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getXScale() {
-    const { chart, attrOptions } = this;
+    const { props, attrOptions } = this;
     const { field } = attrOptions.x;
+    const { chart } = props;
     return chart.getScale(field);
   }
 
   getYScale() {
-    const { chart, attrOptions } = this;
+    const { props, attrOptions } = this;
     const { field } = attrOptions.y;
+    const { chart } = props;
     return chart.getScale(field);
   }
 
@@ -442,8 +451,8 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getSnapRecords(point) {
-    const { chart, mappedArray } = this;
-    const { coord } = chart;
+    const { props, mappedArray } = this;
+    const { coord } = props;
     const invertPoint = coord.invertPoint(point);
     const xScale = this.getXScale();
 
@@ -474,22 +483,18 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getLegendItems() {
-    // TODO 挪到chart里去
-    if (!this.isInit) {
-      this._init();
-    }
     const colorAttr = this.getAttr('color');
     if (!colorAttr) return null;
     const { scale } = colorAttr;
     if (!scale.isCategory) return null;
-    const { chart } = this;
-    const { theme } = chart;
+    const { context } = this;
+    const { theme } = context;
     const ticks = scale.getTicks();
 
     if (!this.getAttrRange('color')) {
       colorAttr.setRange(theme.colors);
     }
-    const items = ticks.map((tick) => {
+    const items = ticks.map(tick => {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue) || theme.colors[0];
       return {

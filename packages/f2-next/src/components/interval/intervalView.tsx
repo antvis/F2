@@ -8,7 +8,7 @@ export default (props: any) => {
     return (
       <group>
         {mappedArray.map((dataArray, index) => {
-          return dataArray.map((item) => {
+          return dataArray.map(item => {
             const { xMin, xMax, yMin, yMax, color } = item;
             return (
               <rect
@@ -22,13 +22,18 @@ export default (props: any) => {
                 animation={{
                   appear: {
                     easing: 'linear',
-                    duration: 300,
-                    // delay: 300 * index,
+                    duration: 450,
+                    // delay: 450 * index,
                     property: ['y', 'height'],
                     start: {
                       y: yMax,
                       height: 0,
                     },
+                  },
+                  update: {
+                    easing: 'linear',
+                    duration: 450,
+                    property: ['x', 'y', 'width', 'height'],
                   },
                 }}
               />
@@ -40,8 +45,8 @@ export default (props: any) => {
   }
   return (
     <group>
-      {mappedArray.map((dataArray) => {
-        return dataArray.map((item) => {
+      {mappedArray.map(dataArray => {
+        return dataArray.map(item => {
           const { xMin, xMax, yMin, yMax, color } = item;
           return (
             <sector

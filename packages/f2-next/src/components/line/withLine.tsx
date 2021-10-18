@@ -2,12 +2,11 @@ import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
 
-
 export default View => {
   return class Line extends Geometry {
     _convertPosition(mappedArray) {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
 
       for (let i = 0; i < mappedArray.length; i++) {
         const data = mappedArray[i];
@@ -21,8 +20,8 @@ export default View => {
     }
 
     parsePoints(dataArray) {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       return dataArray.map(data => {
         const { color, shape, size } = data[0];
         const points = data;
@@ -34,21 +33,16 @@ export default View => {
           shape,
           size,
           points,
-        }
+        };
       });
     }
 
     render() {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       const mapped = this.mapping();
       const mappedArray = this.parsePoints(mapped);
-      return (
-        <View
-          coord={ coord }
-          mappedArray={ mappedArray }
-        />
-      );
+      return <View coord={coord} mappedArray={mappedArray} />;
     }
-  }
-}
+  };
+};

@@ -1,7 +1,13 @@
 // @ts-nocheck
 
-import { jsx } from '../../lib/jsx';
-import Canvas, { Chart, Interval, Area, Line, Axis } from '../../lib/components';
+import { jsx } from '../../src/jsx';
+import Canvas, {
+  Chart,
+  Interval,
+  Area,
+  Line,
+  Axis
+} from '../../src/components';
 import { createContext } from './util';
 const context = createContext();
 
@@ -18,11 +24,8 @@ const data = [
 describe('Axis', () => {
   it.only('render', () => {
     const { type, props } = (
-      <Canvas context={ context } pixelRatio={ window.devicePixelRatio } >
-        <Chart
-          data={ data }
-          end={{ x: 180, y: 400 }}
-        >
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart data={data} end={{ x: 180, y: 400 }}>
           <Axis
             field="genre"
             // position="top"
@@ -32,15 +35,8 @@ describe('Axis', () => {
             //   lineWidth: '4px',
             // }}
           />
-          <Axis
-            field="sold"
-          />
-          <Line
-            position="genre*sold"
-            color="type"
-            size="type"
-            smooth
-          />
+          <Axis field="sold" />
+          <Line position="genre*sold" color="type" size="type" smooth />
         </Chart>
       </Canvas>
     );
@@ -54,8 +50,12 @@ describe('Axis', () => {
     const container = chart.container._attrs.children[0];
 
     expect(container.get('children').length).toBe(3);
-    expect(container.get('children')[0].get('children')[0].get('children').length).toBe(11);
-
+    expect(
+      container
+        .get('children')[0]
+        .get('children')[0]
+        .get('children').length
+    ).toBe(11);
 
     // const children = container.get('children')[0].get('children')[0].get('children');
     // expect(children[5].get('children')[0].get('attrs').y).toBe(0);
@@ -63,10 +63,10 @@ describe('Axis', () => {
 
   it('render with Transposed Coord', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Coord transposed={true}/>
-        <Axis field="genre"/>
-        <Axis field="sold"/>
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
+        <Coord transposed={true} />
+        <Axis field="genre" />
+        <Axis field="sold" />
         <Interval position={`genre*sold`} />
       </Chart>
     );
@@ -79,32 +79,33 @@ describe('Axis', () => {
 
     expect(container.get('children').length).toBe(4);
     // Y轴的文案符合预期
-    expect(container.get('children')[1]._attrs.children['0']._attrs.children[10]._attrs.attrs.text).toBe('Other');
+    expect(
+      container.get('children')[1]._attrs.children['0']._attrs.children[10]
+        ._attrs.attrs.text
+    ).toBe('Other');
   });
 
   it('using ticks param', () => {
     const config = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Coord transposed={true}/>
-        <Axis field="genre" ticks={['Other']}/>
-        <Axis field="sold"/>
-        <Interval position={`genre*sold`}/>
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
+        <Coord transposed={true} />
+        <Axis field="genre" ticks={['Other']} />
+        <Axis field="sold" />
+        <Interval position={`genre*sold`} />
       </Chart>
     );
-    expect(config.props.children[1].props.ticks.length).toBe(1)
+    expect(config.props.children[1].props.ticks.length).toBe(1);
   });
-
-
 
   it('render label using textAligns', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Coord/>
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
+        <Coord />
         <Axis
           field="genre"
           label={{
-            fill: "#CCCCCC",
-            fontSize: "22px",
+            fill: '#CCCCCC',
+            fontSize: '22px',
             align: 'between'
           }}
         />
@@ -120,27 +121,29 @@ describe('Axis', () => {
     const container = chart.container;
 
     expect(container.get('children').length).toBe(4);
-  
-    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[6]._attrs.attrs.textAlign).toBe('start');
-    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[7]._attrs.attrs.textAlign).toBe('center');
-    expect(container._attrs.children[1]._attrs.children[0]._attrs.children[10]._attrs.attrs.textAlign).toBe('end');
-  })
 
+    expect(
+      container._attrs.children[1]._attrs.children[0]._attrs.children[6]._attrs
+        .attrs.textAlign
+    ).toBe('start');
+    expect(
+      container._attrs.children[1]._attrs.children[0]._attrs.children[7]._attrs
+        .attrs.textAlign
+    ).toBe('center');
+    expect(
+      container._attrs.children[1]._attrs.children[0]._attrs.children[10]._attrs
+        .attrs.textAlign
+    ).toBe('end');
+  });
 });
 
 describe('Axis rect transposed', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Coord transposed={ true } />
-        <Axis
-          field="genre"
-          visible={ true }
-        />
-        <Axis
-          field="sold"
-          visible={ true }
-        />
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
+        <Coord transposed={true} />
+        <Axis field="genre" visible={true} />
+        <Axis field="sold" visible={true} />
         <Interval position="genre*sold" />
       </Chart>
     );
@@ -148,21 +151,18 @@ describe('Axis rect transposed', () => {
     // @ts-ignore
     const chart = new type(props);
     chart.render();
-  })
+  });
 });
 
 describe('Axis polar', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
-        <Coord type="polar" transposed={ false }/>
-        <Axis
-          field="genre"
-          visible={ true }
-        />
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
+        <Coord type="polar" transposed={false} />
+        <Axis field="genre" visible={true} />
         <Axis
           field="sold"
-          visible={ true }
+          visible={true}
           // tickLine={{
           //   length: '10px',
           //   stroke: '#000',
@@ -176,5 +176,5 @@ describe('Axis polar', () => {
     // @ts-ignore
     const chart = new type(props);
     chart.render();
-  })
+  });
 });

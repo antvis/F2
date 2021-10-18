@@ -1,5 +1,10 @@
-import { jsx } from '../../../../lib/jsx';
-import Canvas, { Component, Chart, Line, Interval } from '../../../../lib/components';
+import { jsx } from '../../../../src/jsx';
+import Canvas, {
+  Component,
+  Chart,
+  Line,
+  Interval,
+} from '../../../../src/components';
 
 export default (
   <Canvas>
@@ -8,4 +13,4 @@ export default (
       <Interval />
     </Chart>
   </Canvas>
-)
+);

@@ -1,9 +1,9 @@
 import { jsx } from '../../jsx';
 
-export default (props) => {
+export default props => {
   const { items, layout, position, maxItemWidth, coord } = props;
-  const { left, bottom, top, width, height } = layout;
-  
+  const { left, top, right, bottom, width, height } = layout;
+
   const legendStyle: any = {
     width,
     flexDirection: 'row',
@@ -13,29 +13,28 @@ export default (props) => {
 
   const isVertical = position === 'left' || position === 'right';
 
-
   if (isVertical) {
     legendStyle.width = maxItemWidth;
   }
-  
-  if(position === 'left' || position === 'top') {
+
+  if (position === 'left' || position === 'top') {
     legendStyle.top = top;
     legendStyle.left = left;
   }
 
-  if(position === 'right') {
+  if (position === 'right') {
     legendStyle.top = top;
-    legendStyle.left = maxItemWidth ? left + coord.width : left;
+    legendStyle.left = right - maxItemWidth;
   }
-  
+
   if (position === 'bottom') {
-    legendStyle.top = maxItemWidth ? top + coord.bottom : bottom;
+    legendStyle.top = bottom - maxItemWidth;
     legendStyle.left = left;
   }
 
   return (
     <group style={legendStyle}>
-      {items.map((item) => {
+      {items.map(item => {
         const { color, name, value } = item;
         return (
           <group

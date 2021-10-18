@@ -1,6 +1,6 @@
 import { getTickMethod } from '@antv/scale';
-import { getRange } from "@antv/util";
-import { toTimeStamp } from '../../util/index';
+import { getRange } from '@antv/util';
+import { toTimeStamp } from '../../util';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
@@ -8,7 +8,9 @@ function isValuesEqual(values, newValues) {
     return false;
   }
   const lastIndex = values.length - 1;
-  return values[0] === newValues[0] && values[lastIndex] === newValues[lastIndex];
+  return (
+    values[0] === newValues[0] && values[lastIndex] === newValues[lastIndex]
+  );
 }
 
 // 不同交互之间共享的上下文
@@ -39,12 +41,12 @@ class Context {
     this.values = values;
 
     if (this.range !== defaultRange) {
-      this.repaint(this.range)
+      this.repaint(this.range);
     }
   }
 
   // TODO:数据或者scale发生变化后做一些处理
-  update() { }
+  update() {}
 
   // 缩放的主轴scale
   getPinchScale() {
@@ -75,7 +77,7 @@ class Context {
     const { startRange: range, minScale } = this;
     const [start, end] = range;
 
-    const zoomOffset = (1 - zoom);
+    const zoomOffset = 1 - zoom;
     const rangeLen = end - start;
     const rangeOffset = rangeLen * zoomOffset;
     const leftOffset = rangeOffset * leftScale;
@@ -180,17 +182,18 @@ class Context {
 
     const { tickCount } = scale;
     // 根据当前数据的比例，和定义的tickCount计算应该需要多少个ticks
-    const newTickCount = Math.round(tickCount * values.length / newValues.length);
+    const newTickCount = Math.round(
+      (tickCount * values.length) / newValues.length
+    );
 
     const catTicks = getTickMethod('cat');
     const ticks = catTicks({
       tickCount: newTickCount,
-      values
+      values,
     });
 
     return ticks;
   }
-
 
   repaint(range?) {
     const scale = this.getPinchScale();
@@ -208,7 +211,10 @@ class Context {
     const newTicks = this.getZoomedTicks(newValues);
 
     // 如果新数组和当前显示的数组相同，则不更新
-    if (isValuesEqual(currentValues, newValues) && isValuesEqual(currentTicks, newTicks)) {
+    if (
+      isValuesEqual(currentValues, newValues) &&
+      isValuesEqual(currentTicks, newTicks)
+    ) {
       return;
     }
 
@@ -227,7 +233,7 @@ class Context {
     canvas.staicRender();
   }
 
-  destroy() { }
+  destroy() {}
 }
 
 export default Context;
