@@ -1,6 +1,6 @@
 import { getTickMethod } from '@antv/scale';
 import { getRange } from "@antv/util";
-import { toTimeStamp } from '@ali/f2x-util';
+import { toTimeStamp } from '../../util/index';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
