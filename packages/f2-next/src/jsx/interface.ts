@@ -14,7 +14,9 @@ declare global {
       ref?: Ref;
       type: string | Function;
       props: Props;
+      // children: Element;
       _cache: any;
+      [key: string]: any;
     }
     interface ElementClass {
       render(): any;
