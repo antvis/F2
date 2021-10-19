@@ -3,7 +3,7 @@ import { jsx } from '../../lib/jsx';
 import { Canvas, Chart } from '../../src';
 import { Line, Axis } from '../../src/components';
 import { Rect, Polar } from '../../src/coord';
-import { createContext } from "./util";
+import { createContext } from "../util";
 
 const colorCallback = jest.fn();
 

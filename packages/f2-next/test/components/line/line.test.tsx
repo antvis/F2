@@ -3,7 +3,7 @@ import { jsx } from '../../../src';
 import { Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Line, Point, Axis, Tooltip } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
 
 const data = [{
   date: '2017-06-05',
@@ -292,6 +292,10 @@ describe('折线图', () => {
           data={data}
           coord={{
             type: Rect,
+          }}
+          theme={{
+            colors: ['#2FC25B'],
+            sizes: ['12px']
           }}
         >
           <Axis

@@ -97,7 +97,7 @@ const Theme = {
     line: [ 'line', 'dash' ],
     point: [ 'circle', 'hollowCircle' ]
   },
-  sizes: [ 2, 4, 6, 8 ],
+  sizes: [ 4, 8, 10, 12 ],
   shape: {
     line: {
       lineWidth: 2,
@@ -117,4 +117,3 @@ const Theme = {
 };
 
 export default Theme;
- 

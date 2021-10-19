@@ -39,9 +39,9 @@ export default View => {
     }
 
     render() {
-      const { chart, props } = this;
-      const { coord } = chart;
+      const { props } = this;
       const { smooth, lineWidth } = props;
+      const { coord } = props;
       const mapped = this.mapping();
       const mappedArray = this.parsePoints(mapped);
       return (
