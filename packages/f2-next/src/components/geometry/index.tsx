@@ -296,6 +296,7 @@ class Geometry extends Component implements AttrMixin {
     const { theme } = chart;
     return {
       color: theme.colors[0],
+      size: theme.sizes[0],
     };
   }
 
