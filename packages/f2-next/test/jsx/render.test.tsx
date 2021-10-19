@@ -1,7 +1,12 @@
-
 // import * as F2 from '@antv/f2';
-import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../lib/jsx';
-import { ELEMENT_DELETE } from '../../lib/jsx/elementStatus';
+import {
+  render,
+  renderJSXElement,
+  jsx,
+  Fragment,
+  compareRenderTree
+} from '../../src/jsx';
+import { ELEMENT_DELETE } from '../../src/jsx/elementStatus';
 import { Canvas } from '@ali/f2-graphic';
 
 const canvasEl = document.createElement('canvas');
@@ -11,7 +16,7 @@ document.body.appendChild(canvasEl);
 const context = canvasEl.getContext('2d');
 
 const canvas = new Canvas({
-  context,
+  context
 });
 
 describe('render', () => {
@@ -19,15 +24,18 @@ describe('render', () => {
     const container = canvas.addGroup();
     const group = render(
       <group>
-        <rect attrs={{
-          x: 0,
-          y: 0,
-          width: 10,
-          height: 10,
-          fill: 'red'
-        }}
+        <rect
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 10,
+            height: 10,
+            fill: 'red'
+          }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
     expect(!!group).toBe(true);
     expect(group.get('children').length).toBe(1);
@@ -39,18 +47,24 @@ describe('render', () => {
   it('group with background', () => {
     const container = canvas.addGroup();
     const shape = render(
-      <group style={{ width: 100, height: 100 }} attrs={{
-        fill: 'gray'
-      }}>
-        <rect attrs={{
-          x: 0,
-          y: 0,
-          width: 10,
-          height: 10,
-          fill: 'red'
+      <group
+        style={{ width: 100, height: 100 }}
+        attrs={{
+          fill: 'gray'
         }}
+      >
+        <rect
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 10,
+            height: 10,
+            fill: 'red'
+          }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
 
     const background = shape.get('attrs');
@@ -66,7 +80,7 @@ describe('render', () => {
     const group1 = render(<group></group>, container);
     const group2 = render(<group />, container);
     canvas.draw();
-    
+
     expect(group1.get('children').length).toBe(0);
     expect(group2.get('children').length).toBe(0);
   });
@@ -74,14 +88,17 @@ describe('render', () => {
   it('shape', () => {
     const container = canvas.addGroup();
     const shape = render(
-      <rect attrs={{
+      <rect
+        attrs={{
           x: 0,
           y: 0,
           width: 10,
           height: 10,
           fill: 'red'
         }}
-      />, container);
+      />,
+      container
+    );
     canvas.draw();
     expect(shape.get('type')).toBe('rect');
 
@@ -92,15 +109,18 @@ describe('render', () => {
     const ref = { current: null };
     const container = canvas.addGroup();
     const shape = render(
-      <rect attrs={{
+      <rect
+        attrs={{
           x: 0,
           y: 0,
           width: 10,
           height: 10,
           fill: 'red'
         }}
-        ref={ ref }
-      />, container);
+        ref={ref}
+      />,
+      container
+    );
     canvas.draw();
     expect(ref.current).toBe(shape);
 
@@ -112,16 +132,20 @@ describe('render', () => {
     const rectRef = { current: null };
     const container = canvas.addGroup();
     const group = render(
-      <group ref={ groupRef }>
-        <rect ref={ rectRef } attrs={{
-          x: 0,
-          y: 0,
-          width: 10,
-          height: 10,
-          fill: 'red'
-        }}
+      <group ref={groupRef}>
+        <rect
+          ref={rectRef}
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 10,
+            height: 10,
+            fill: 'red'
+          }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
     expect(groupRef.current).toBe(group);
     expect(rectRef.current.get('type')).toBe('rect');
@@ -144,15 +168,18 @@ describe('render style alias', () => {
     const container = canvas.addGroup();
     const group = render(
       <group>
-        <rect style={{
-          left: 0,
-          top: 0,
-          width: 10,
-          height: 10,
-          backgroundColor: 'red'
-        }}
+        <rect
+          style={{
+            left: 0,
+            top: 0,
+            width: 10,
+            height: 10,
+            backgroundColor: 'red'
+          }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
     expect(!!group).toBe(true);
     expect(group.get('children').length).toBe(1);
@@ -165,25 +192,31 @@ describe('layout', () => {
   it('flex direction default column', () => {
     const container = canvas.addGroup();
     const group = render(
-      <group style={{
-        width: '200px',
-        height: '200px',
-        }}>
-        <rect style={{
+      <group
+        style={{
+          width: '200px',
+          height: '200px'
+        }}
+      >
+        <rect
+          style={{
             flex: 1
           }}
           attrs={{
             fill: 'gray'
           }}
         />
-        <rect style={{
+        <rect
+          style={{
             flex: 1
           }}
           attrs={{
             fill: 'red'
           }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
 
     const children = group.get('children');
@@ -204,37 +237,45 @@ describe('layout', () => {
   it('flex direction row', () => {
     const container = canvas.addGroup();
     const group = render(
-      <group style={{
-        flexDirection: 'row',
-        padding: ['20px', '40px'],
-        width: '380px',
-        height: '200px',
-        }}>
-        <rect style={{
+      <group
+        style={{
+          flexDirection: 'row',
+          padding: ['20px', '40px'],
+          width: '380px',
+          height: '200px'
+        }}
+      >
+        <rect
+          style={{
             flex: 1
           }}
           attrs={{
             fill: 'gray'
           }}
         />
-        <rect style={{
+        <rect
+          style={{
             flex: 1
           }}
           attrs={{
             fill: 'red'
           }}
         />
-        <group style={{
-          flex: 1
-        }}>
+        <group
+          style={{
+            flex: 1
+          }}
+        >
           <text
             attrs={{
               fill: '#000',
-              text: '123',
+              text: '123'
             }}
           />
         </group>
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
 
     const children = group.get('children');
@@ -259,31 +300,39 @@ describe('layout', () => {
   it('text render', () => {
     const container = canvas.addGroup();
     const group = render(
-      <group style={{
+      <group
+        style={{
           flexDirection: 'row',
           width: '20px',
           height: '200px',
-          flexWrap: 'wrap',
-        }}>
+          flexWrap: 'wrap'
+        }}
+      >
         <text
-          style={{
-            // flex: 1,
-          }}
+          style={
+            {
+              // flex: 1,
+            }
+          }
           attrs={{
             fill: '#000',
-            text: '111',
+            text: '111'
           }}
         />
         <text
-          style={{
-            // flex: 1,
-          }}
+          style={
+            {
+              // flex: 1,
+            }
+          }
           attrs={{
             fill: '#000',
-            text: '222',
+            text: '222'
           }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
 
     const children = group.get('children');
@@ -301,21 +350,27 @@ describe('layout', () => {
   it('margin percent', () => {
     const container = canvas.addGroup();
     const group = render(
-      <group style={{
+      <group
+        style={{
           // padding: '20px',
-          marginLeft: '-50%',
+          marginLeft: '-50%'
           // marginTop: '-50%',
-        }}>
+        }}
+      >
         <text
-          style={{
-            // flex: 1,
-          }}
+          style={
+            {
+              // flex: 1,
+            }
+          }
           attrs={{
             fill: '#000',
-            text: '111',
+            text: '111'
           }}
         />
-      </group>, container);
+      </group>,
+      container
+    );
     canvas.draw();
 
     const children = group.get('children');
@@ -338,59 +393,65 @@ describe('layout', () => {
     it('删除元素不参布局计算', () => {
       const container = canvas.addGroup();
       const groupJSXElement = (
-        <group style={{
-          flexDirection: 'row',
-          width: 200,
-          height: 200,
-          flexWrap: 'wrap',
-        }}>
+        <group
+          style={{
+            flexDirection: 'row',
+            width: 200,
+            height: 200,
+            flexWrap: 'wrap'
+          }}
+        >
           <rect
             style={{
-              flex: 1,
+              flex: 1
             }}
             attrs={{
-              fill: '#f00',
+              fill: '#f00'
             }}
           />
           <rect
             style={{
-              flex: 1,
+              flex: 1
             }}
             attrs={{
-              fill: '#0f0',
+              fill: '#0f0'
             }}
           />
           <group
             style={{
               flex: 1,
-              flexDirection: 'row',
+              flexDirection: 'row'
             }}
           >
             <rect
               style={{
-                flex: 1,
+                flex: 1
               }}
               attrs={{
-                fill: '#00f',
+                fill: '#00f'
               }}
             />
             <rect
               style={{
-                flex: 1,
+                flex: 1
               }}
               attrs={{
-                fill: '#0f0',
+                fill: '#0f0'
               }}
             />
           </group>
         </group>
       );
       // 新增和变化的元素不保留上次的attrs
-      groupJSXElement.props.children[0]._cache = { attrs: { x: 100, y: 200, width: 10, height: 10 } };
+      groupJSXElement.props.children[0]._cache = {
+        attrs: { x: 100, y: 200, width: 10, height: 10 }
+      };
       // 把中间的元素标记为删除
       groupJSXElement.props.children[1].status = ELEMENT_DELETE;
       // 删除的元素保留attrs
-      groupJSXElement.props.children[1]._cache = { attrs: { x: 0, y: 200, width: 10, height: 10 } };
+      groupJSXElement.props.children[1]._cache = {
+        attrs: { x: 0, y: 200, width: 10, height: 10 }
+      };
       groupJSXElement.props.children[2].props.children[1].status = ELEMENT_DELETE;
       const group = render(groupJSXElement, container);
       canvas.draw();
@@ -421,32 +482,33 @@ describe('layout', () => {
       expect(subChildren[1].get('attrs').y).toBe(0);
       expect(subChildren[1].get('attrs').width).toBe(0);
       expect(subChildren[1].get('attrs').height).toBe(0);
-
     });
 
     it('删除元素不参布局计算-根元素', () => {
       const container = canvas.addGroup();
       const groupJSXElement = (
-        <group style={{
-          flexDirection: 'row',
-          width: 200,
-          height: 200,
-          flexWrap: 'wrap',
-        }}>
+        <group
+          style={{
+            flexDirection: 'row',
+            width: 200,
+            height: 200,
+            flexWrap: 'wrap'
+          }}
+        >
           <rect
             style={{
-              flex: 1,
+              flex: 1
             }}
             attrs={{
-              fill: '#f00',
+              fill: '#f00'
             }}
           />
           <rect
             style={{
-              flex: 1,
+              flex: 1
             }}
             attrs={{
-              fill: '#0f0',
+              fill: '#0f0'
             }}
           />
         </group>

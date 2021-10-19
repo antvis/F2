@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import { partition, hierarchy } from 'd3-hierarchy';
@@ -7,6 +6,7 @@ import { isInBBox, isFunction } from '../../util';
 import { applyMixins } from '../../mixins';
 import CoordMixin from '../../mixins/coord';
 import { mix } from '@antv/util';
+import Coord from '../../coord';
 
 function rootParent(data) {
   let d = data;
@@ -18,24 +18,35 @@ function rootParent(data) {
 
 export default (View): any => {
   class Sunburst extends Component implements CoordMixin {
+    coord: Coord;
     color: Category;
     triggerRef: any[];
 
-    mount() {
-      const { props, layout, container } = this;
+    createCoord: (coord, option) => Coord;
+    updateCoord: (coord, option) => Coord;
 
-      const { coord } = props;
+    constructor(props, context) {
+      super(props, context);
+      const { coord, color, data } = props;
+      const { width, height, theme } = context;
+      this.coord = this.createCoord(coord, { width, height });
+      this.color = new Category({
+        range: theme.colors,
+        ...color,
+        data
+      });
+    }
 
-      this.coord = this.createCoord(coord, layout);
-
+    didMount() {
+      const { props, container } = this;
+      const { onClick } = props;
       const canvas = container.get('canvas');
-      const { data, color, onClick } = props;
 
       this.triggerRef = [];
 
-      canvas.on('click', (ev) => {
+      canvas.on('click', ev => {
         const { points } = ev;
-        const shape = this.triggerRef.find((ref) => {
+        const shape = this.triggerRef.find(ref => {
           return isInBBox(ref.current.getBBox(), points[0]);
         });
         if (shape) {
@@ -43,11 +54,6 @@ export default (View): any => {
           ev.payload = shape.payload;
           onClick && onClick(ev);
         }
-      });
-
-      this.color = new Category({
-        ...color,
-        data,
       });
     }
 
@@ -62,7 +68,7 @@ export default (View): any => {
           xMin: node.x0,
           xMax: node.x1,
           yMin: node.y0,
-          yMax: node.y1,
+          yMax: node.y1
         });
         mix(node, rect);
         // 递归处理
@@ -72,27 +78,11 @@ export default (View): any => {
       }
     }
 
-    _computeText = (text, attrs) => {
-      const { container } = this;
-      const group = container.addGroup();
-      const shape = group.addShape('text', {
-        attrs: {
-          ...attrs,
-          x: 0,
-          y: 0,
-          text: text,
-        },
-      });
-      const bbox = shape.getBBox();
-      shape.remove();
-      return { width: bbox.width, height: bbox.height };
-    };
-
     sunburst() {
       const { props } = this;
       const { data, value, sort = true } = props;
 
-      const root = hierarchy({ children: data }).sum(function (d) {
+      const root = hierarchy({ children: data }).sum(function(d) {
         return d[value];
       });
 
@@ -110,13 +100,12 @@ export default (View): any => {
 
     render() {
       const node = this.sunburst();
-      const { coord, props, _computeText } = this;
+      const { coord, props } = this;
       return (
         <View
           {...props}
           coord={coord}
           node={node}
-          computeText={_computeText}
           triggerRef={this.triggerRef}
         />
       );

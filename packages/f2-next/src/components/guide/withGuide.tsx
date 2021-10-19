@@ -1,6 +1,6 @@
-import { jsx } from "../../jsx";
-import Component from "../../base/component";
-import { isString, isNil } from "@antv/util";
+import { jsx } from '../../jsx';
+import Component from '../../base/component';
+import { isString, isNil } from '@antv/util';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -8,19 +8,19 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default (View) => {
+export default View => {
   return class Guide extends Component {
     chart: any;
     triggerRef: any;
 
-    mount() {
-      const { container, props } = this;
+    didMount() {
+      const { context, props } = this;
+      const { canvas } = context;
       const { onClick } = props;
-      const canvas = container.get("canvas");
       // 创建ref
       this.triggerRef = {};
 
-      canvas.on("click", (ev) => {
+      canvas.on('click', ev => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;
@@ -46,7 +46,7 @@ export default (View) => {
       // 传入的是 xx%
       if (
         isString(value) &&
-        value.indexOf("%") != -1 &&
+        value.indexOf('%') != -1 &&
         !isNaN(Number(value.slice(0, -1)))
       ) {
         const rateValue = Number(value.slice(0, -1));
@@ -64,8 +64,8 @@ export default (View) => {
     }
 
     parsePoint(record) {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { chart, coord } = props;
       const xScale = chart.getXScales()[0];
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
@@ -82,28 +82,30 @@ export default (View) => {
     }
 
     convertPoints(records) {
-      return records.map((record) => this.parsePoint(record));
+      return records.map(record => this.parsePoint(record));
     }
 
     getGuideTheme() {
-      const { theme } = this.chart;
-      return theme['guide'];
+      const { context } = this;
+      const { theme } = context;
+      return theme.guide;
     }
 
     render() {
-      const { props, chart } = this;
-      const { records = [] } = props;
-      const { coord } = chart; 
+      const { props } = this;
+      const { coord, records = [] } = props;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
-      return <View
-        ref={this.triggerRef}
-        points={points}
-        theme={theme}
-        coord={ coord }
-        {...props}
-      />;
+      return (
+        <View
+          ref={this.triggerRef}
+          points={points}
+          theme={theme}
+          coord={coord}
+          {...props}
+        />
+      );
     }
   };
 };

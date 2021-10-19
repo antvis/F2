@@ -1,5 +1,5 @@
-import { jsx } from '../../../lib/jsx';
-import Canvas, { Component } from '../../../lib/components';
+import { jsx } from '../../../src/jsx';
+import Canvas, { Component } from '../../../src/components';
 import { createContext } from '../util';
 const context = createContext();
 
@@ -21,12 +21,12 @@ class Test extends Component {
           appear: {
             easing: 'linear',
             duration: 10,
-            property: [ 'width' ],
+            property: ['width'],
             start: {
-              width: 10,
+              width: 10
             },
             end: {
-              width: 100,
+              width: 100
             },
             onFrame,
             onEnd
@@ -38,12 +38,12 @@ class Test extends Component {
 }
 
 describe('Canvas', () => {
-  it('测试动画', (done) => {
+  it('测试动画', done => {
     const { type, props } = (
-      <Canvas context={ context } pixelRatio={ 1 }>
+      <Canvas context={context} pixelRatio={1}>
         <Test />
       </Canvas>
-    )
+    );
 
     // @ts-ignore
     const canvas: Canvas = new type(props);
@@ -54,7 +54,6 @@ describe('Canvas', () => {
     const rect = testComponent.container._attrs.children[0];
     expect(rect._attrs.attrs.width).toBe(10);
 
-
     // 动画结束后
     setTimeout(() => {
       expect(rect._attrs.attrs.width).toBe(100);
@@ -62,6 +61,5 @@ describe('Canvas', () => {
       expect(onEnd.mock.calls.length).toBe(1);
       done();
     }, 100);
-
   });
 });

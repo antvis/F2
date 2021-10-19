@@ -1,5 +1,11 @@
-import { jsx } from '../../lib/jsx';
-import Canvas, { Chart, Interval, Area, Line, Axis } from '../../lib/components';
+import { jsx } from '../../src/jsx';
+import Canvas, {
+  Chart,
+  Interval,
+  Area,
+  Line,
+  Axis
+} from '../../src/components';
 import { createContext } from './util';
 const context = createContext();
 
@@ -15,10 +21,10 @@ describe('Interval', () => {
   it('render', () => {
     const ref = {};
     const { type, props } = (
-      <Canvas context={ context }>
-        <Chart data={ data } >
+      <Canvas context={context}>
+        <Chart data={data}>
           <Axis field="genre" />
-          <Axis field="sold" min={ 0 } />
+          <Axis field="sold" min={0} />
           <Interval
             // ref={ ref }
             position="genre*sold"
@@ -38,19 +44,15 @@ describe('Interval', () => {
     // @ts-ignore
     const canvas = new type(props);
     canvas.render();
-  })
+  });
 
   it('startOnZero', () => {
     const { type, props } = (
-      <Canvas context={ context }>
-        <Chart data={ data } >
+      <Canvas context={context}>
+        <Chart data={data}>
           <Axis field="genre" />
-          <Axis field="sold" min={ 0 } />
-          <Interval
-            startOnZero={false}
-            position="genre*sold"
-            color="genre"
-          />
+          <Axis field="sold" min={0} />
+          <Interval startOnZero={false} position="genre*sold" color="genre" />
         </Chart>
       </Canvas>
     );
@@ -58,5 +60,5 @@ describe('Interval', () => {
     // @ts-ignore
     const canvas = new type(props);
     canvas.render();
-  })
+  });
 });

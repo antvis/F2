@@ -1,43 +1,20 @@
-import { jsx, render, renderJSXElement } from '../../jsx';
+import { jsx } from '../../jsx';
+import { renderShape } from '../../base/diff';
 import Component from '../../base/component';
-import Layout from '../../base/layout';
 
-export default (View) => {
+export default View => {
   return class Legend extends Component {
-    chart: any;
-
     maxItemWidth: number;
 
-    getLayout() {
-      const { container, props } = this;
-      const { position = 'top' } = props;
-      const isVertical = position === 'left' || position === 'right';
-
-      const shape = render(renderJSXElement(this.render()), container);
-      const maxItemWidth = this.getMaxItemWidth(shape);
-      const { height, width } = shape.get('attrs');
-      this.maxItemWidth = maxItemWidth;
-      
-      shape.remove();
-
-      if (isVertical) {
-        return { position, height, width: maxItemWidth };
-      }
-      return { position, width, height };
-    }
-
-    setLayout(layout) {
-      this.layout = new Layout(layout);
-    }
-
     getItems() {
-      const { chart } = this;
+      const { props } = this;
+      const { chart } = props;
       return chart.getLegendItems();
     }
 
     getMaxItemWidth(legendShape) {
       let maxItemWidth = 0;
-      (legendShape.get('children') || []).forEach((child) => {
+      (legendShape.get('children') || []).forEach(child => {
         const childWidth = child.getBBox().width;
         if (childWidth > maxItemWidth) {
           maxItemWidth = childWidth;
@@ -46,20 +23,29 @@ export default (View) => {
       return maxItemWidth;
     }
 
-    render() {
-      const { layout, props, maxItemWidth } = this;
-      // 自定义items
-      if (props.items) {
-        return <View {...props} />;
+    willMount() {
+      const { props } = this;
+      const shape = renderShape(this, this.render(), false);
+      const { height, width } = shape.get('attrs');
+
+      const { position = 'top', chart } = props;
+      const isVertical = position === 'left' || position === 'right';
+      if (!isVertical) {
+        chart.layoutCoord(position, { width, height });
+        return;
       }
-      const items = this.getItems();
+      const maxItemWidth = this.getMaxItemWidth(shape);
+      this.maxItemWidth = maxItemWidth;
+      chart.layoutCoord(position, { width: maxItemWidth, height });
+    }
+
+    render() {
+      const { props, maxItemWidth, context } = this;
+      const { width } = context;
+      const items = props.items || this.getItems();
+
       return (
-        <View
-          {...props}
-          items={items}
-          layout={layout}
-          maxItemWidth={maxItemWidth}
-        />
+        <View {...props} items={items} maxItemWidth={maxItemWidth || width} />
       );
     }
   };

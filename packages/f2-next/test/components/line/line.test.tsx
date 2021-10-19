@@ -3,7 +3,7 @@ import { jsx } from '../../../src';
 import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Line, Axis } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
 
 const data = [
   { a: '1', genre: 'Sports', sold: 5 },

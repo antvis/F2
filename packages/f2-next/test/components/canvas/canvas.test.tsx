@@ -1,5 +1,5 @@
-import { jsx } from '../../../lib/jsx';
-import Canvas, { Component } from '../../../lib/components';
+import { jsx } from '../../../src/jsx';
+import Canvas, { Component } from '../../../src/components';
 import { createContext } from '../util';
 const context = createContext();
 
@@ -22,10 +22,10 @@ class Test extends Component {
 describe('Canvas', () => {
   it('初始化', () => {
     const { type, props } = (
-      <Canvas context={ context } pixelRatio={ 1 }>
+      <Canvas context={context} pixelRatio={1}>
         <Test />
       </Canvas>
-    )
+    );
 
     // @ts-ignore
     const canvas: Canvas = new type(props);

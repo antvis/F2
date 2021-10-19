@@ -1,8 +1,6 @@
-
-import { jsx, compareRenderTree, render } from '../../lib/jsx';
+import { jsx, compareRenderTree, render } from '../../src/jsx';
 
 describe('compareRenderTree', () => {
-
   describe('null', () => {
     it('都为null', () => {
       const renderElement = compareRenderTree(null, null);
@@ -13,14 +11,18 @@ describe('compareRenderTree', () => {
   describe('删除', () => {
     it('单节点', () => {
       const nextElement = null;
-      const lastElement = (<text />);
+      const lastElement = <text />;
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.status).toBe('delete');
     });
 
     it('存在子节点', () => {
       const nextElement = null;
-      const lastElement = (<group><text /></group>);
+      const lastElement = (
+        <group>
+          <text />
+        </group>
+      );
 
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.status).toBe('delete');
@@ -30,8 +32,8 @@ describe('compareRenderTree', () => {
 
   describe('一个节点存在key', () => {
     it('一个节点存在key', () => {
-      const nextElement = (<group key="2"></group>);
-      const lastElement = (<group key="1"></group>);
+      const nextElement = <group key="2"></group>;
+      const lastElement = <group key="1"></group>;
 
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.length).toBe(2);
@@ -41,7 +43,6 @@ describe('compareRenderTree', () => {
       expect(renderElement[1].status).toBe(undefined);
     });
   });
-
 
   describe('数组', () => {
     it('不存在key', () => {
@@ -102,7 +103,7 @@ describe('compareRenderTree', () => {
       const lastElement = (
         <group>
           <text />
-          { null }
+          {null}
           <rect />
         </group>
       );
@@ -124,7 +125,7 @@ describe('compareRenderTree', () => {
       const nextElement = (
         <group>
           <text />
-          { null }
+          {null}
           <text />
         </group>
       );
@@ -198,20 +199,16 @@ describe('compareRenderTree', () => {
     it('不存在key map', () => {
       const nextElement = (
         <group>
-          {
-            [1, 2].map(i => {
-              return <text />
-            })
-          }
+          {[1, 2].map(i => {
+            return <text />;
+          })}
         </group>
       );
       const lastElement = (
         <group>
-          {
-            [1, 3].map(i => {
-              return <text />
-            })
-          }
+          {[1, 3].map(i => {
+            return <text />;
+          })}
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
@@ -224,14 +221,14 @@ describe('compareRenderTree', () => {
     it('存在key', () => {
       const nextElement = (
         <group>
-          <text key={ 1 }/>
-          <text key={ 2 }/>
+          <text key={1} />
+          <text key={2} />
         </group>
       );
       const lastElement = (
         <group>
-          <text key={ 1 }/>
-          <text key={ 3 }/>
+          <text key={1} />
+          <text key={3} />
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
@@ -251,20 +248,16 @@ describe('compareRenderTree', () => {
     it('存在key map', () => {
       const nextElement = (
         <group>
-          {
-            [1, 2].map(i => {
-              return <text key={ i }/>
-            })
-          }
+          {[1, 2].map(i => {
+            return <text key={i} />;
+          })}
         </group>
       );
       const lastElement = (
         <group>
-          {
-            [1, 3].map(i => {
-              return <text key={ i }/>
-            })
-          }
+          {[1, 3].map(i => {
+            return <text key={i} />;
+          })}
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
@@ -275,6 +268,5 @@ describe('compareRenderTree', () => {
       expect(renderElement.props.children[1].status).toBe(undefined);
       expect(renderElement.props.children[2].status).toBe('delete');
     });
-
   });
 });

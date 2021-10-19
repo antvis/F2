@@ -1,7 +1,11 @@
 import JSX from './interface';
 
 // 实现jsx-classic 入口
-export default function(type: string | Function, config: any, ...children: any[]): JSX.Element {
+export default function (
+  type: string | Function,
+  config: any,
+  ...children: any[]
+): JSX.Element {
   const { key, ref, ...props } = config || {};
 
   // 保持和automatic模式一致
@@ -16,4 +20,4 @@ export default function(type: string | Function, config: any, ...children: any[]
     // 存储一些过程中的cache值
     _cache: {},
   };
-};
+}

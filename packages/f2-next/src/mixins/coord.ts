@@ -5,19 +5,15 @@ class CoordAvailable {
   createCoord(cfg, layout): Coord {
     if (isFunction(cfg)) {
       cfg = {
-        type: cfg,
+        type: cfg
       };
     }
-    const { left, top, width, height } = layout;
     const coordCfg = {
       // 默认直角坐标系
       type: Rect,
-      ...cfg,
-      left,
-      top,
-      width,
-      height,
-    }
+      ...layout,
+      ...cfg
+    };
     const { type, ...option } = coordCfg;
     const coord = new type(option);
     return coord;

@@ -1,9 +1,9 @@
 import { jsx } from '../../jsx';
 
-export default (props) => {
-  const { records, layout } = props;
+export default props => {
+  const { records, context } = props;
   if (!records || !records.length) return null;
-  const { width } = layout;
+  const { width } = context;
   return (
     <group
       style={{
@@ -22,39 +22,39 @@ export default (props) => {
           fill: 'rgba(0, 0, 0, 0.65)',
         }}
       >
-        {
-          records.map(record => {
-            return (
-              <group style={{
+        {records.map(record => {
+          return (
+            <group
+              style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 // justifyContent: 'center',
-                padding: [ '6px', '10px', '6px', '10px' ],
+                padding: ['6px', '10px', '6px', '10px'],
                 // width: '100px'
-              }}>
-                <circle
-                  attrs={{
-                    fill: record.color,
-                    r: '6px',
-                    lineWidth: '2px',
-                    stroke: '#fff'
-                  }}
-                />
-                <text
-                  style={{
-                    marginLeft: '16px'
-                  }}
-                  attrs={{
-                    fill: 'black',
-                    text: record['genre']
-                  }}
-                />
-              </group>
-            );
-          })
-        }
+              }}
+            >
+              <circle
+                attrs={{
+                  fill: record.color,
+                  r: '6px',
+                  lineWidth: '2px',
+                  stroke: '#fff',
+                }}
+              />
+              <text
+                style={{
+                  marginLeft: '16px',
+                }}
+                attrs={{
+                  fill: 'black',
+                  text: record['genre'],
+                }}
+              />
+            </group>
+          );
+        })}
       </group>
     </group>
   );
-}
+};
