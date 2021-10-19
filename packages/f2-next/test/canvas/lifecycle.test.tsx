@@ -44,7 +44,7 @@ class Test extends Component {
           y: 0,
           fill: 'red',
           width,
-          height: 10
+          height: 10,
         }}
         animation={{
           appear: {
@@ -52,15 +52,15 @@ class Test extends Component {
             duration: 300,
             property: ['width'],
             start: {
-              width: 0
+              width: 0,
             },
-            end: {}
+            end: {},
           },
           update: {
             easing: 'linear',
             duration: 300,
-            property: ['width']
-          }
+            property: ['width'],
+          },
         }}
       />
     );
@@ -108,10 +108,11 @@ class TestContainer extends Component {
 
 describe('Canvas', () => {
   it('生命周期', () => {
+    const ref = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <TestContainer>
-          <Test width={100} />
+          <Test width={100} ref={ref} />
           <Test width={100} />
         </TestContainer>
       </Canvas>
@@ -127,12 +128,17 @@ describe('Canvas', () => {
         (
           <Canvas context={context} pixelRatio={2}>
             <TestContainer>
-              <Test width={200} />
+              <Test width={200} ref={ref} />
             </TestContainer>
           </Canvas>
         ).props
       );
     }, 1000);
+
+    setTimeout(() => {
+      console.log('调用forceUpdate');
+      ref.current.forceUpdate();
+    }, 2000);
     // const testComponent = canvas.component.components;
 
     // expect(context.canvas.width).toBe(359);
