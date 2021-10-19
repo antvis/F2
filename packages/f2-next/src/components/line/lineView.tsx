@@ -2,7 +2,7 @@ import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 
 export default (props: any) => {
-  const { mappedArray } = props;
+  const { mappedArray, smooth, lineWidth = '4px' } = props;
 
   return (
     <group>
@@ -15,7 +15,8 @@ export default (props: any) => {
                 attrs={{
                   points: points,
                   stroke: color,
-                  lineWidth: '4px',
+                  lineWidth: lineWidth,
+                  smooth: smooth,
                 }}
               />
             </group>

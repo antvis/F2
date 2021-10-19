@@ -24,7 +24,7 @@ export default View => {
       const { chart } = this;
       const { coord } = chart;
       return dataArray.map(data => {
-        const { color, shape, size } = data[0];
+        const { color, shape, size, smooth } = data[0];
         const points = data;
         if (coord.isPolar) {
           points.push(data[0]);
@@ -34,19 +34,23 @@ export default View => {
           shape,
           size,
           points,
+          smooth,
         }
       });
     }
 
     render() {
-      const { chart } = this;
+      const { chart, props } = this;
       const { coord } = chart;
+      const { smooth, lineWidth } = props;
       const mapped = this.mapping();
       const mappedArray = this.parsePoints(mapped);
       return (
         <View
           coord={ coord }
           mappedArray={ mappedArray }
+          smooth={smooth}
+          lineWidth={lineWidth}
         />
       );
     }
