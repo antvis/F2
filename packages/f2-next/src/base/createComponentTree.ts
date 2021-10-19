@@ -23,7 +23,7 @@ function createComponentTree(element: JSX.Element, otherProps) {
   return createComponentTree(newElement, otherProps);
 }
 
-export default (children: JSX.Element[], otherProps) => {
+export default (children: JSX.Element[], otherProps?) => {
   return Children.map(children, (child: JSX.Element) => {
     return createComponentTree(child, otherProps);
   });
