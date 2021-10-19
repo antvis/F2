@@ -26,7 +26,6 @@ function createUpdater(canvas) {
 
       component.prevState = component.state;
     }
-    console.log(renderQueue);
     const renderComponents = [].concat(renderQueue);
     canvas.renderComponents(renderComponents);
     // 清空
@@ -39,7 +38,7 @@ function createUpdater(canvas) {
     }
     setStateQueue.push({
       component,
-      state
+      state,
     });
     if (renderQueue.indexOf(component) < 0) {
       renderQueue.push(component);
@@ -53,7 +52,7 @@ function createUpdater(canvas) {
     enqueueForceUpdate: enqueueSetState,
     // enqueueReplaceState: function(publicInstance, completeState) {
     // },
-    enqueueSetState
+    enqueueSetState,
   };
 
   return updater;

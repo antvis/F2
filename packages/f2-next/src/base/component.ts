@@ -14,6 +14,7 @@ class Component {
   animate: boolean;
   constructor(props, context?, updater?) {
     this.props = props;
+    this.state = {};
     this.context = context;
     this.updater = updater;
   }
