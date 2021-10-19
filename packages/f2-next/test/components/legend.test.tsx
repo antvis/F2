@@ -1,5 +1,12 @@
-import { jsx } from '../../lib/jsx';
-import Canvas, { Chart, Interval, Area, Line, Axis, Legend } from '../../lib/components';
+import { jsx } from '../../src/jsx';
+import Canvas, {
+  Chart,
+  Interval,
+  Area,
+  Line,
+  Axis,
+  Legend
+} from '../../src/components';
 import { createContext } from './util';
 const context = createContext();
 
@@ -14,23 +21,25 @@ const data = [
 describe.skip('Legend test', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context } pixelRatio={ window.devicePixelRatio }>
+      <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
         <Line position="genre*sold" />
-        <Legend items={[
-          { name: 'Sports' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-          { name: 'Strategy' },
-        ]} />
+        <Legend
+          items={[
+            { name: 'Sports' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' },
+            { name: 'Strategy' }
+          ]}
+        />
       </Chart>
     );
 
@@ -42,5 +51,5 @@ describe.skip('Legend test', () => {
     // console.log(container);
 
     // expect(container.get('children').length).toBe(2);
-  })
+  });
 });

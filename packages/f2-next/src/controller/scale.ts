@@ -10,27 +10,32 @@ registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
 
-
 class ScaleController {
-
+  data: any;
   // scale 实例的配置
   scaleOptions: any;
   // scale 实例
   scales: any;
+
+  constructor(data) {
+    this.data = data;
+    this.scaleOptions = {};
+    this.scales = {};
+  }
 
   // 更新或创建scale
   scale(field, option: any = {}) {
     if (isObject(field)) {
       option = field;
     } else {
-      option.field = field; 
+      option.field = field;
     }
-
     field = option.field;
-    const scaleOptions = this.scaleOptions || {};
+    const { scaleOptions, scales } = this;
     const oldOption = scaleOptions[field] || {};
     scaleOptions[field] = mix(oldOption, option);
-    this.scaleOptions = scaleOptions;
+    // 如果scale有更新，scale 也需要重新创建
+    scales[field] = undefined;
   }
 
   _getType(option) {
@@ -79,8 +84,8 @@ class ScaleController {
         range = [0.5, 1];
       } else {
         // 前后都留半个 1 / count
-        const offset = 1 / count * 0.5;
-        range = [ offset, 1 - offset ];
+        const offset = (1 / count) * 0.5;
+        range = [offset, 1 - offset];
       }
       option.range = range;
       return option;
@@ -123,10 +128,10 @@ class ScaleController {
     scale.change(option);
   }
 
-  getScale(field) {
-    const { scales, scaleOptions } = this;
+  getScale(field: string) {
+    const { scales, scaleOptions, data } = this;
 
-    const scale = scales && scales[field];
+    const scale = scales[field];
     if (scale) {
       return scale;
     }
@@ -134,7 +139,13 @@ class ScaleController {
     if (!option) {
       return null;
     }
-    const newScale = this.createScale(option);
+    const values = option.values ? option.values : arrayValues(data, field);
+    const scaleOption = this._getOption({
+      ...option,
+      field,
+      values,
+    });
+    const newScale = this.createScale(scaleOption);
     scales[field] = newScale;
     return newScale;
   }
@@ -149,11 +160,11 @@ class ScaleController {
     }
     if (min > 0) {
       scale.change({
-        min: 0
+        min: 0,
       });
     } else if (max < 0) {
       scale.change({
-        max: 0
+        max: 0,
       });
     }
   }
@@ -165,7 +176,7 @@ class ScaleController {
 
     if (min >= 0) {
       value = min;
-    } else if (max <= 0){
+    } else if (max <= 0) {
       value = max;
     } else {
       value = 0;

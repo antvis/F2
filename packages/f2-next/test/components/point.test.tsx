@@ -1,5 +1,12 @@
-import { jsx } from '../../lib/jsx';
-import Canvas, { Chart, Interval, Area, Line, Axis, Point } from '../../lib/components';
+import { jsx } from '../../src/jsx';
+import Canvas, {
+  Chart,
+  Interval,
+  Area,
+  Line,
+  Axis,
+  Point
+} from '../../src/components';
 import { createContext } from './util';
 const context = createContext();
 
@@ -14,14 +21,12 @@ const data = [
 describe.skip('Point', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
-        <Point
-          position="genre*sold"
-        />
+      <Chart data={data} context={context}>
+        <Point position="genre*sold" />
       </Chart>
     );
     // @ts-ignore
     const chart = new type(props);
     chart.render();
-  })
+  });
 });

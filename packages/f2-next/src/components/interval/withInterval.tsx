@@ -4,14 +4,13 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect, mappingRect } from './util';
 
-export default (View) => {
+export default View => {
   return class Interval extends Geometry {
     startOnZero = true;
 
     getDefaultSize() {
-      const { attrs, chart, props } = this;
-      const { coord } = chart;
-      const { sizeRatio } = props;
+      const { attrs, props } = this;
+      const { coord, sizeRatio } = props;
       const { x } = attrs;
       const { scale } = x;
       const { values } = scale;
@@ -43,8 +42,8 @@ export default (View) => {
     }
 
     _convertPosition(mappedArray) {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       const y0 = this.getY0Value();
       const defaultSize = this.getDefaultSize();
 
@@ -62,8 +61,8 @@ export default (View) => {
     }
 
     render() {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       const data = this.mapping();
       return <View coord={coord} mappedArray={data} />;
     }

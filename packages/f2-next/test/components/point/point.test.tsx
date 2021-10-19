@@ -1,19 +1,19 @@
 // @ts-nocheck
-import { jsx } from "../../../src";
-import { Polar, Rect } from "../../../src/coord";
-import { Canvas, Chart } from "../../../src";
-import { Point } from "../../../src/components";
-import { createContext } from "../util";
+import { jsx } from '../../../src';
+import { Polar, Rect } from '../../../src/coord';
+import { Canvas, Chart } from '../../../src';
+import { Point } from '../../../src/components';
+import { createContext } from '../../util';
 
-const url = "https://gw.alipayobjects.com/os/antfincdn/6HodecuhvM/scatter.json";
-const url2 = "https://gw.alipayobjects.com/os/antfincdn/aN68ysvGFa/index.json";
+const url = 'https://gw.alipayobjects.com/os/antfincdn/6HodecuhvM/scatter.json';
+const url2 = 'https://gw.alipayobjects.com/os/antfincdn/aN68ysvGFa/index.json';
 
-describe("Point Chart", () => {
-  it("基础点图", async () => {
+describe('Point Chart', () => {
+  it('基础点图', async () => {
     const res = await fetch(url);
     const data = await res.json();
 
-    const context = createContext("基础点图");
+    const context = createContext('基础点图');
     const chartRef = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -35,11 +35,11 @@ describe("Point Chart", () => {
     canvas.render();
   });
 
-  it("基础点图 - 极坐标", async () => {
+  it('基础点图 - 极坐标', async () => {
     const res = await fetch(url);
     const data = await res.json();
 
-    const context = createContext("基础点图 - 极坐标");
+    const context = createContext('基础点图 - 极坐标');
     const chartRef = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -61,10 +61,10 @@ describe("Point Chart", () => {
     canvas.render();
   });
 
-  it("气泡图 - 配置size入参", async () => {
+  it('气泡图 - 配置size入参', async () => {
     const res = await fetch(url2);
     const data = await res.json();
-    const context = createContext("气泡图 - 配置size入参");
+    const context = createContext('气泡图 - 配置size入参');
     const chartRef = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -80,11 +80,11 @@ describe("Point Chart", () => {
             x="x"
             y="y"
             color={{
-              field: "name",
-              values: ["#1890ff"],
+              field: 'name',
+              values: ['#1890ff'],
             }}
             size={{
-              field: "z",
+              field: 'z',
               range: [10, 40, 60, 80],
             }}
           />

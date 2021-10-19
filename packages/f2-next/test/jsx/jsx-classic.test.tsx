@@ -1,10 +1,16 @@
-import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../lib/jsx';
+import {
+  render,
+  renderJSXElement,
+  jsx,
+  Fragment,
+  compareRenderTree
+} from '../../src/jsx';
 
 describe('jsx classic 模式', () => {
   it('tagName one children', () => {
     const ref = {};
     const group = (
-      <group a={1} ref={ ref }>
+      <group a={1} ref={ref}>
         <text />
       </group>
     );
@@ -18,11 +24,9 @@ describe('jsx classic 模式', () => {
   it('one children map', () => {
     const group = (
       <group>
-        {
-          [1, 2].map(item => {
-            return <text />
-          })
-        }
+        {[1, 2].map(item => {
+          return <text />;
+        })}
       </group>
     );
 
@@ -33,18 +37,16 @@ describe('jsx classic 模式', () => {
   it('tagName multiple children', () => {
     const ref = {};
     const group = (
-      <group a={1} ref={ ref }>
+      <group a={1} ref={ref}>
         <text />
         <text />
-        { true ? null : <text /> }
-        {
-          [1, 2].map(item => {
-            return <text />
-          })
-        }
+        {true ? null : <text />}
+        {[1, 2].map(item => {
+          return <text />;
+        })}
       </group>
     );
-    
+
     expect(group.type).toBe('group');
     expect(group.ref === ref).toBe(true);
     expect(group.props.a).toBe(1);
@@ -59,7 +61,7 @@ describe('jsx classic 模式', () => {
       <>
         <text />
       </>
-    )
+    );
     expect(typeof fragment.type).toBe('function');
     expect(fragment.props.children.type).toBe('text');
   });

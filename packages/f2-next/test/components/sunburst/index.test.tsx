@@ -1,7 +1,7 @@
 import { jsx } from '../../../src/jsx';
 import { Polar } from '../../../src/coord';
-import Canvas, { Sunburst } from '../../../src/components';
-import { createContext } from '../util';
+import { Canvas, Sunburst } from '../../../src';
+import { createContext } from '../../util';
 import data from './data';
 const context = createContext();
 
@@ -15,7 +15,7 @@ const colors = [
   'rgb(82, 246, 103)',
   'rgb(29, 223, 163)',
   'rgb(35, 171, 216)',
-  'rgb(76, 110, 219)',
+  'rgb(76, 110, 219)'
 ];
 
 describe('Sunburst', () => {
@@ -28,15 +28,15 @@ describe('Sunburst', () => {
             {
               // type: Polar,
               // transposed: true,
-              // left: 100,
-              // top: 100,
-              // right: 100,
-              // bottom: 100,
+              // left: 10,
+              // top: 10,
+              // width: 100,
+              // height: 100
             }
           }
           color={{
-            field: 'name',
-            range: colors,
+            field: 'name'
+            // range: colors
           }}
           value="value"
         />

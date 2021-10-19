@@ -8,101 +8,101 @@ import { createContext } from "./util";
 const colorCallback = jest.fn();
 
 const data = [
-  { genre: "Sports", sold: 275, type: "a" },
-  { genre: "Strategy", sold: 115, type: "a" },
-  { genre: "Action", sold: 120, type: "a" },
-  { genre: "Shooter", sold: 350, type: "b" },
-  { genre: "Other", sold: 150, type: "b" },
+  { genre: 'Sports', sold: 275, type: 'a' },
+  { genre: 'Strategy', sold: 115, type: 'a' },
+  { genre: 'Action', sold: 120, type: 'a' },
+  { genre: 'Shooter', sold: 350, type: 'b' },
+  { genre: 'Other', sold: 150, type: 'b' }
 ];
 
 const data2 = [
   {
-    item: "Design",
-    user: "用户 A",
-    score: 70,
+    item: 'Design',
+    user: '用户 A',
+    score: 70
   },
   {
-    item: "Design",
-    user: "用户 B",
-    score: 30,
+    item: 'Design',
+    user: '用户 B',
+    score: 30
   },
   {
-    item: "Development",
-    user: "用户 A",
-    score: 60,
+    item: 'Development',
+    user: '用户 A',
+    score: 60
   },
   {
-    item: "Development",
-    user: "用户 B",
-    score: 70,
+    item: 'Development',
+    user: '用户 B',
+    score: 70
   },
   {
-    item: "Marketing",
-    user: "用户 A",
-    score: 50,
+    item: 'Marketing',
+    user: '用户 A',
+    score: 50
   },
   {
-    item: "Marketing",
-    user: "用户 B",
-    score: 60,
+    item: 'Marketing',
+    user: '用户 B',
+    score: 60
   },
   {
-    item: "Users",
-    user: "用户 A",
-    score: 40,
+    item: 'Users',
+    user: '用户 A',
+    score: 40
   },
   {
-    item: "Users",
-    user: "用户 B",
-    score: 50,
+    item: 'Users',
+    user: '用户 B',
+    score: 50
   },
   {
-    item: "Test",
-    user: "用户 A",
-    score: 60,
+    item: 'Test',
+    user: '用户 A',
+    score: 60
   },
   {
-    item: "Test",
-    user: "用户 B",
-    score: 70,
+    item: 'Test',
+    user: '用户 B',
+    score: 70
   },
   {
-    item: "Language",
-    user: "用户 A",
-    score: 70,
+    item: 'Language',
+    user: '用户 A',
+    score: 70
   },
   {
-    item: "Language",
-    user: "用户 B",
-    score: 50,
+    item: 'Language',
+    user: '用户 B',
+    score: 50
   },
   {
-    item: "Technology",
-    user: "用户 A",
-    score: 70,
+    item: 'Technology',
+    user: '用户 A',
+    score: 70
   },
   {
-    item: "Technology",
-    user: "用户 B",
-    score: 40,
+    item: 'Technology',
+    user: '用户 B',
+    score: 40
   },
   {
-    item: "Support",
-    user: "用户 A",
-    score: 60,
+    item: 'Support',
+    user: '用户 A',
+    score: 60
   },
   {
-    item: "Support",
-    user: "用户 B",
-    score: 40,
-  },
+    item: 'Support',
+    user: '用户 B',
+    score: 40
+  }
 ];
 
 const crossData = [
-  { genre: "Sports", sold: 275, type: "a" },
-  { genre: "Sports", sold: 115, type: "b" },
-  { genre: "Action", sold: 120, type: "a" },
-  { genre: "Action", sold: 350, type: "b" },
+  { genre: 'Sports', sold: 275, type: 'a' },
+  { genre: 'Sports', sold: 115, type: 'b' },
+  { genre: 'Action', sold: 120, type: 'a' },
+  { genre: 'Action', sold: 350, type: 'b' }
 ];
 
 describe("Line", () => {
@@ -113,7 +113,7 @@ describe("Line", () => {
         <Chart
           data={data}
           scale={{
-            sold: { min: 0 },
+            sold: { min: 0 }
           }}
           coord={{
             type: Rect,
@@ -152,7 +152,7 @@ describe("Line", () => {
         <Chart
           data={crossData}
           scale={{
-            sold: { min: 0 },
+            sold: { min: 0 }
           }}
           coord={{
             type: Rect,
@@ -186,8 +186,8 @@ describe("Line", () => {
         <Chart
           data={data2}
           scale={{
-            score: { min: 0, type: "linear" },
-            item: { type: "cat" },
+            score: { min: 0, type: 'linear' },
+            item: { type: 'cat' }
           }}
           coord={{
             type: Polar,

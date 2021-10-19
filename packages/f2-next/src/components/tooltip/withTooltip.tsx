@@ -3,36 +3,34 @@ import Component from '../../base/component';
 
 export default View => {
   return class Tooltip extends Component {
-
-    chart: any;
-
-    constructor(props, context?, updater?) {
-      super(props, context, updater);
+    constructor(props) {
+      super(props);
       this.state = {
-        records: null
-      }
+        records: null,
+      };
     }
 
-    mount() {
+    didMount() {
       this._initEvent();
     }
 
     _initEvent() {
-      const { props } = this;
-      const canvas = props.canvas.canvas;
+      const { context } = this;
+      const { canvas } = context;
 
-      canvas.on('press', (ev) => {
+      canvas.on('press', ev => {
         const { points } = ev;
         this.show(points[0]);
       });
 
-      canvas.on('pressend', (ev) => {
+      canvas.on('pressend', ev => {
         this.hide();
       });
     }
 
     show(point) {
-      const { chart } = this;
+      const { props } = this;
+      const { chart } = props;
       const records = chart.getSnapRecords(point);
       this.setState({
         records,
@@ -41,7 +39,7 @@ export default View => {
 
     hide() {
       this.setState({
-        records: null
+        records: null,
       });
     }
     render() {
@@ -50,12 +48,7 @@ export default View => {
       if (visible === false) {
         return null;
       }
-      return (
-        <View
-          { ...props }
-          { ...state }
-        />
-      );
+      return <View {...props} {...state} />;
     }
-  }
-}
+  };
+};

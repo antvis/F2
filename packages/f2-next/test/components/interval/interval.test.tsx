@@ -3,7 +3,7 @@ import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
 
 const data = [
   { type: 'a', genre: 'Sports', sold: 5 },
@@ -19,7 +19,7 @@ const data = [
 ];
 
 describe('Interval Chart', () => {
-  it.only('基础柱状图', () => {
+  it('基础柱状图', () => {
     const context = createContext('基础柱状图');
     const chartRef = { current: null };
     const { type, props } = (

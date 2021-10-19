@@ -5,7 +5,6 @@ function createUpdater(canvas) {
   function process() {
     let item;
     let component;
-    let shouldRender = false;
     while ((item = setStateQueue.shift())) {
       const { state, component } = item;
 
@@ -27,16 +26,10 @@ function createUpdater(canvas) {
 
       component.prevState = component.state;
     }
-
-    while ((component = renderQueue.shift())) {
-      component.__shouldRender = true;
-      component.render();
-      shouldRender = true;
-    }
-
-    if (shouldRender) {
-      canvas.draw();
-    }
+    const renderComponents = [].concat(renderQueue);
+    canvas.renderComponents(renderComponents);
+    // 清空
+    renderQueue.length = 0;
   }
 
   function enqueueSetState(component, state) {
@@ -56,8 +49,7 @@ function createUpdater(canvas) {
     // isMounted: function(publicInstance) {
     //   return false;
     // },
-    // enqueueForceUpdate: function(publicInstance) {
-    // },
+    enqueueForceUpdate: enqueueSetState,
     // enqueueReplaceState: function(publicInstance, completeState) {
     // },
     enqueueSetState,

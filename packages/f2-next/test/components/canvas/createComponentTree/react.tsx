@@ -1,6 +1,6 @@
 /* @jsx React.createElement */
 import React from 'react';
-import Canvas, { Chart, Line, Interval } from '../../../../lib/components';
+import Canvas, { Chart, Line, Interval } from '../../../../src/components';
 
 export default (
   <Canvas>
@@ -9,4 +9,4 @@ export default (
       <Interval />
     </Chart>
   </Canvas>
-)
+);

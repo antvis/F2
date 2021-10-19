@@ -1,20 +1,29 @@
-// @ts-nocheck
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import { Category } from '../../attr';
 import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 import { applyMixins } from '../../mixins';
 import CoordMixin from '../../mixins/coord';
+import Coord from '../../coord';
 
 export default (View): any => {
   class Treemap extends Component implements CoordMixin {
-    mount() {
-      const { props, layout } = this;
-      const { data, coord, color } = props;
-      this.coord = this.createCoord(coord, layout);
+    coord: Coord;
+    color: Category;
+    triggerRef: any[];
+
+    createCoord: (coord, option) => Coord;
+    updateCoord: (coord, option) => Coord;
+
+    constructor(props, context) {
+      super(props, context);
+      const { coord, color, data } = props;
+      const { width, height, theme } = context;
+      this.coord = this.createCoord(coord, { width, height });
       this.color = new Category({
+        range: theme.colors,
         ...color,
-        data,
+        data
       });
     }
     treemapLayout() {
@@ -22,7 +31,7 @@ export default (View): any => {
       const { data, value, space = 0 } = props;
 
       const root = hierarchy({ children: data })
-        .sum(function (d) {
+        .sum(function(d) {
           return d[value];
         })
         .sort((a, b) => b[value] - a[value]);
@@ -40,19 +49,19 @@ export default (View): any => {
       // .paddingBottom(options.paddingBottom)
       // .paddingLeft(options.paddingLeft);
       const nodes = treemapLayout(root);
-      return nodes.children.map((item) => {
+      return nodes.children.map(item => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
         const rect = coord.convertRect({
           xMin: x0,
           xMax: x1,
           yMin: y0,
-          yMax: y1,
+          yMax: y1
         });
         return {
           data,
           color,
-          ...rect,
+          ...rect
         };
       });
     }

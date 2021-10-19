@@ -1,5 +1,13 @@
-import { jsx } from '../../lib/jsx';
-import Canvas, { Chart, Interval, Area, Line, Axis, Point, Tooltip } from '../../lib/components';
+import { jsx } from '../../src/jsx';
+import Canvas, {
+  Chart,
+  Interval,
+  Area,
+  Line,
+  Axis,
+  Point,
+  Tooltip
+} from '../../src/components';
 import { createContext } from './util';
 const context = createContext();
 
@@ -14,17 +22,14 @@ const data = [
 describe.skip('Tooltip', () => {
   it('render', () => {
     const { type, props } = (
-      <Chart data={ data } context={ context }>
+      <Chart data={data} context={context}>
         <Line
           position="genre*sold"
           // onPress={ (ev) => {
           //   console.log(ev.records);
           // }}
         />
-        <Tooltip
-          visible={ true }
-          records={ [{ x: 179.5, y: 340 }] }
-        />
+        <Tooltip visible={true} records={[{ x: 179.5, y: 340 }]} />
       </Chart>
     );
 
@@ -36,5 +41,5 @@ describe.skip('Tooltip', () => {
     // console.log(container);
 
     // expect(container.get('children').length).toBe(2);
-  })
+  });
 });

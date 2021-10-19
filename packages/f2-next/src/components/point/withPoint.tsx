@@ -1,15 +1,15 @@
 // @ts-nocheck
-import { jsx } from "../../jsx";
-import { mix } from "@antv/util";
-import Geometry from "../geometry";
-import { mappingPoint } from "./util";
+import { jsx } from '../../jsx';
+import { mix } from '@antv/util';
+import Geometry from '../geometry';
+import { mappingPoint } from './util';
 
-export default (View) => {
+export default View => {
   return class Interval extends Geometry {
     // 归一值映射到坐标点
     mapping() {
-      const { chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       const mappedArray = super.mapping();
 
       for (let i = 0; i < mappedArray.length; i++) {
@@ -23,8 +23,8 @@ export default (View) => {
     }
 
     render() {
-      const { props, chart } = this;
-      const { coord } = chart;
+      const { props } = this;
+      const { coord } = props;
       const data = this.mapping();
       return <View coord={coord} mappedArray={data} />;
     }

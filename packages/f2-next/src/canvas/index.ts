@@ -1,12 +1,18 @@
+// @ts-nocheck
 import { createCanvas } from '@ali/f2-graphic';
 import createComponentTree from './createComponentTree';
 import Component from '../base/component';
 import Container from '../base/container';
+import Timeline from '../timeline';
 import Layout from '../base/layout';
 import equal from '../base/equal';
 import Animation from './animation';
-import { px2hd } from '../util';
+import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from './updater';
+import { Children } from '..';
+import { isArray } from '@antv/util';
+import theme from '../theme';
+import { renderChildren, renderComponent } from '../base/diff';
 
 interface ChartUpdateProps {
   pixelRatio?: number;
@@ -25,27 +31,33 @@ interface IF2Canvas {
   container: any;
 }
 
-function measureText(context: CanvasRenderingContext2D) {
+function measureText(canvas, px2hd) {
   return (text: string, font) => {
-    const {
-      fontSize = 12,
-      fontFamily = 'normal',
-      fontStyle = 'normal',
-      fontWeight = 'normal',
-      fontVariant = 'normal',
-    } = this.px2hd(font);
-
-    context.font = `${fontStyle} ${fontVariant} ${fontWeight} ${fontSize}px ${fontFamily}`;
-    return context.measureText(text);
+    const { fontSize, fontFamily, fontStyle, fontWeight, fontVariant } = font;
+    const shape = canvas.addShape('text', {
+      attrs: {
+        x: 0,
+        y: 0,
+        fontSize: px2hd(fontSize),
+        fontFamily,
+        fontStyle,
+        fontWeight,
+        fontVariant,
+        text,
+      },
+    });
+    const { width, height } = shape.getBBox();
+    shape.remove(true);
+    return {
+      width,
+      height,
+    };
   };
 }
 
 // 顶层Canvas标签
 class Canvas extends Component implements IF2Canvas {
   canvas: any;
-  context: CanvasRenderingContext2D;
-  component: Container;
-  componentTree: any;
   animation?: Animation;
 
   constructor(props: ChartProps) {
@@ -57,8 +69,8 @@ class Canvas extends Component implements IF2Canvas {
       height,
       animate = true,
       children,
+      px2hd = defaultPx2hd,
     } = props;
-    this.context = context;
 
     // 创建G的canvas
     const canvas = createCanvas({
@@ -76,114 +88,73 @@ class Canvas extends Component implements IF2Canvas {
       height: canvasHeight,
     });
 
+    // 组件更新器
     const updater = createUpdater(this);
 
-    const global = {
+    // 供全局使用的一些变量
+    const componentContext = {
+      canvas,
       width: canvasWidth,
       height: canvasHeight,
-      context,
+      theme: px2hd(theme),
       px2hd,
-      measureText: measureText(context),
+      measureText: measureText(canvas, px2hd),
     };
 
-    const componentTree = createComponentTree(children, {
-      canvas: this,
-      width: canvasWidth,
-      height: canvasHeight,
-      context,
-      layout,
-    });
-    const component = new Container(
-      { children: componentTree, animate },
-      {},
-      updater
-    );
-    component.init({ layout, container: canvas });
+    // 动画模块
+    const animation = animate ? new Animation(canvas) : null;
 
     this.canvas = canvas;
     this.container = canvas;
-    this.component = component;
     this.layout = layout;
-
-    // 实例化动画模块
-    this.animation = animate ? new Animation(canvas) : null;
-    this.componentTree = componentTree;
-
-    this.willMount();
-    this.mount();
+    this.context = componentContext;
+    this.updater = updater;
+    this.global = global;
+    this.animation = animation;
   }
 
-  willMount() {
-    const { __mounted, component } = this;
-    if (__mounted) {
+  renderComponents(components: Component[]) {
+    if (!components || !components.length) {
       return;
     }
-    component.willMount();
-  }
-
-  mount() {
-    const { __mounted, component } = this;
-    if (__mounted) {
-      return;
-    }
-    component.mount();
-    component.__mounted = true;
-  }
-
-  draw() {
-    const { canvas } = this;
-    canvas.draw();
-  }
-  
-  render() {
-    const { component, container, animation, props } = this;
-    const { onAnimationEnd } = props;
-    
-    // 构建/更新shape树
-    component.render();
-
-    if (animation) {
-      animation.abort();
-      animation.play(container, onAnimationEnd);
-    } else {
-      this.draw();
-    }
-
-    return null;
-  }
-
-  // 静态渲染，不播放动画，直接渲染终态
-  staicRender() {
-    const { component } = this;
-    component.render();
+    renderComponent(components);
     this.draw();
   }
 
-  update(props: ChartUpdateProps) {
-    const { component, canvas, animation, layout } = this;
-    // 只处理数据，和children的变化
-    const { children } = props;
-
-    const { width, height, context } = canvas._attrs;
-
-    const componentTree = createComponentTree(children, {
-      canvas: this,
-      width,
-      height,
-      context,
-      layout,
-    });
-
-    component.update({ children: componentTree });
+  update(nextProps) {
+    const { props } = this;
+    if (equal(nextProps, props)) {
+      return;
+    }
+    this.props = nextProps;
     this.render();
   }
 
-  destroy() {
-    const { component } = this;
-    component.destroy();
+  draw() {
+    const { canvas, animation, props, children } = this;
+    if (!animation) {
+      canvas.draw();
+      return;
+    }
+    // 查找timeline
+    const timeline = Timeline.find(children);
+    const { onAnimationEnd } = props;
+    // 执行动画
+    animation.abort();
+    animation.play(canvas, () => {
+      if (!timeline || !timeline.next()) {
+        onAnimationEnd && onAnimationEnd();
+      }
+    });
   }
 
-  px2hd = px2hd;
+  render() {
+    const { children: lastChildren, props } = this;
+    const { children: nextChildren } = props;
+    renderChildren(this, nextChildren, lastChildren);
+    this.draw();
+    return null;
+  }
 }
 
 export default Canvas;
