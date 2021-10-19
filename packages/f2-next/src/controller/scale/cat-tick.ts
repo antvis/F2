@@ -10,7 +10,7 @@ export default cfg => {
   }
 
   // 获取间隔步长, 最小是1
-  const step = Math.round(values.length / (tickCount - 1)) || 1;
+  const step = Math.floor(values.length / (tickCount - 1)) || 1;
   const ticks = [];
 
   // 按间隔数取对应节点
