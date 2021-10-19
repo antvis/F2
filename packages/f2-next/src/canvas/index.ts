@@ -1,8 +1,7 @@
 // @ts-nocheck
 import { createCanvas } from '@ali/f2-graphic';
-import createComponentTree from './createComponentTree';
+import { mix } from '@antv/util';
 import Component from '../base/component';
-import Container from '../base/container';
 import Timeline from '../timeline';
 import Layout from '../base/layout';
 import equal from '../base/equal';
@@ -11,7 +10,7 @@ import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from './updater';
 import { Children } from '..';
 import { isArray } from '@antv/util';
-import theme from '../theme';
+import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
 
 interface ChartUpdateProps {
@@ -70,6 +69,7 @@ class Canvas extends Component implements IF2Canvas {
       animate = true,
       children,
       px2hd = defaultPx2hd,
+      theme: customTheme,
     } = props;
 
     // 创建G的canvas
@@ -81,6 +81,9 @@ class Canvas extends Component implements IF2Canvas {
     });
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
+
+    // 初始化 theme
+    const theme = px2hd(mix({}, defaultTheme, customTheme));
 
     // 初始化默认的布局
     const layout = new Layout({
@@ -96,7 +99,7 @@ class Canvas extends Component implements IF2Canvas {
       canvas,
       width: canvasWidth,
       height: canvasHeight,
-      theme: px2hd(theme),
+      theme,
       px2hd,
       measureText: measureText(canvas, px2hd),
     };
@@ -111,6 +114,7 @@ class Canvas extends Component implements IF2Canvas {
     this.updater = updater;
     this.global = global;
     this.animation = animation;
+    this.theme = theme;
   }
 
   renderComponents(components: Component[]) {
