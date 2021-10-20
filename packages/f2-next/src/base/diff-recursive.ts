@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { render, renderJSXElement, compareRenderTree } from '../jsx';
 import { isArray, isUndefined } from '@antv/util';
 import Component from './component';

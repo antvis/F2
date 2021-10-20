@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { map } from '../util';
 import Container from '../base/container';
 
