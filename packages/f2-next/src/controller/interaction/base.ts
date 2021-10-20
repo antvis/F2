@@ -40,7 +40,7 @@ export default class Base {
 
   _bindEvents(chart) {
     const { startEvent, processEvent, endEvent, resetEvent } = this;
-    const canvas = chart.getCanvas();
+    const canvas = this.context.canvas
     // 统一绑定事件
     canvas.on(startEvent, this._start);
     canvas.on(processEvent, this._process);
@@ -49,8 +49,8 @@ export default class Base {
   }
 
   _clearEvents() {
-    const { chart, startEvent, processEvent, endEvent, resetEvent } = this;
-    const canvas = chart.getCanvas();
+    const { startEvent, processEvent, endEvent, resetEvent } = this;
+    const canvas = this.context.canvas
 
     // 统一解绑事件
     canvas.off(startEvent, this._start);

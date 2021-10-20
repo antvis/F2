@@ -52,7 +52,6 @@ class Chart extends Component
   interaction: any;
   createInteractionController: ({ chart: any }) => any;
   setInteraction: (type, cfg) => any;
-  initInteractions: () => any;
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
@@ -267,6 +266,6 @@ class Chart extends Component
 // 多继承
 applyMixins(Chart, [CoordMixin, ScaleMixin, InteractionMixin]);
 
-class ExportChart extends Chart {}
+class ExportChart extends Chart { }
 
 export default ExportChart;

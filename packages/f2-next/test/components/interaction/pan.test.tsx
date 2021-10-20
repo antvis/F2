@@ -3,24 +3,24 @@ import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart, Component } from '../../../src';
 import { Interval, Axis, Legend, Tooltip, Line } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
 
 class Interaction {}
 
 class CustomInteraction extends Interaction {}
 
 class InjectTestComponent extends Component {
-  mount() {
-    const interactionContext = this.chart.interaction.context
+  didMount() {
+    const interactionContext = this.props.chart.interaction.context;
     window.interactionContext = interactionContext;
     // debug:
-    interactionContext.doZoom(0.5, 0.5, 1.5)
-    for (let i = 0; i <= 100; i++ ) {
-      setTimeout(() =>{
+    interactionContext.doZoom(0.5, 0.5, 1.5);
+    for (let i = 0; i <= 100; i++) {
+      setTimeout(() => {
         // interactionContext.doZoom(0.5, 0.5, 1.5)
-        interactionContext.start()
-        interactionContext.doMove(-0.001 * i)
-      }, i*100)
+        interactionContext.start();
+        interactionContext.doMove(-0.001 * i);
+      }, i * 100);
     }
   }
 }
@@ -51,15 +51,13 @@ describe('Interaction 交互', () => {
               // bottom: 100,
             }
           }
-          scale={
-            {
-              // genre: {},
-              reportDateTimestamp: {
-                range: [0, 1],
-                mask: 'MM-DD'
-              },
-            }
-          }
+          scale={{
+            // genre: {},
+            reportDateTimestamp: {
+              range: [0, 1],
+              mask: 'MM-DD',
+            },
+          }}
           interactions={[
             {
               type: 'pan', // 平移
@@ -80,7 +78,7 @@ describe('Interaction 交互', () => {
           ]}
         >
           {/* <Legend /> */}
-          <Axis field="reportDateTimestamp" type="timeCat"/>
+          <Axis field="reportDateTimestamp" type="timeCat" />
           <Axis field="rate" />
           {/* <Axis field="genre" position="top"/> */}
           {/* <Axis field="sold" position="right" /> */}
@@ -90,7 +88,7 @@ describe('Interaction 交互', () => {
             color="codeType"
             // adjust="stack"
           />
-          <InjectTestComponent/>
+          <InjectTestComponent />
           {/* <Tooltip /> */}
         </Chart>
       </Canvas>
