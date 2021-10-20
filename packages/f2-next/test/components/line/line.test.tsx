@@ -2,7 +2,7 @@
 import { jsx } from '../../../src';
 import { Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
-import { Line, Point, Axis, Tooltip } from '../../../src/components';
+import { Line, Point, Axis, Tooltip, Legend } from '../../../src/components';
 import { createContext } from '../../util';
 
 const data = [{
@@ -157,6 +157,9 @@ const data = [{
   value: 60
 }];
 
+const { offsetWidth } = document.body;
+const height = offsetWidth * 0.75;
+
 describe('折线图', () => {
   it('基础折线图', () => {
     const BASE = '基础折线图';
@@ -218,15 +221,21 @@ describe('折线图', () => {
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio} width={offsetWidth} height={height}>
+      <Canvas
+        context={context}
+        pixelRatio={window.devicePixelRatio}
+        width={offsetWidth}
+        height={height}
+        theme={{
+          colors: ['#2FC25B'],
+        }}
+        padding="8px"
+      >
         <Chart
           ref={chartRef}
           data={data}
           coord={{
             type: Rect,
-          }}
-          theme={{
-            colors: ['#2FC25B'],
           }}
         >
           <Axis
@@ -286,16 +295,18 @@ describe('折线图', () => {
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio} width={offsetWidth} height={height}>
+      <Canvas
+        context={context}
+        pixelRatio={window.devicePixelRatio}
+        width={offsetWidth}
+        height={height}
+        theme={{ sizes: [8] }}
+      >
         <Chart
           ref={chartRef}
           data={data}
           coord={{
             type: Rect,
-          }}
-          theme={{
-            colors: ['#2FC25B'],
-            sizes: ['12px']
           }}
         >
           <Axis
@@ -327,44 +338,216 @@ describe('折线图', () => {
     const data = [{
       time: '2016-08-08 00:00:00',
       tem: 10,
-      type: 1,
     }, {
       time: '2016-08-08 00:10:00',
       tem: 22,
-      type: 1,
     }, {
       time: '2016-08-08 00:30:00',
       tem: 20,
-      type: 1,
     }, {
       time: '2016-08-09 00:35:00',
       tem: 26,
-      type: 1,
     }, {
       time: '2016-08-09 01:00:00',
       tem: 20,
-      type: 1,
     }, {
       time: '2016-08-09 01:20:00',
       tem: 26,
-      type: 1,
     }, {
       time: '2016-08-10 01:40:00',
       tem: 28,
-      type: 1,
     }, {
       time: '2016-08-10 02:00:00',
       tem: 20,
-      type: 1,
     }, {
       time: '2016-08-10 02:20:00',
       tem: 18,
-      type: 1,
     }];
     const context = createContext(SMOOTH);
     const chartRef = { current: null };
     const lineRef = { current: null };
-    const pointRef = { current: null };
+    const { offsetWidth } = document.body;
+    const height = offsetWidth * 0.75;
+    const { type, props } = (
+      <Canvas
+        context={context}
+        pixelRatio={window.devicePixelRatio}
+        width={offsetWidth}
+        height={height}
+        theme={{
+          shapes: {
+            line: [ 'smooth' ], // 通过 theme 设置全局 line style
+          }
+        }}
+      >
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Rect,
+          }}
+          scale={{
+            time: {
+              type: 'timeCat',
+              tickCount: 3,
+            },
+            tem: {
+              tickCount: 5,
+            },
+          }}
+        >
+          <Axis
+            field="time"
+            style={{
+              label: { align: 'between' }
+            }}
+          />
+          <Axis field="tem" />
+          <Line
+            x="time"
+            y="tem"
+            ref={lineRef}
+          />
+          <Tooltip />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new type(props);
+    canvas.render();
+
+    console.log(SMOOTH, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
+  });
+
+  // TODO(@buli): 折线图平移
+
+  // TODO(@buli): 曲线平移
+
+  it('走势对比', () => {
+    const MULTIPLE_SERIES = '走势对比';
+    const context = createContext(MULTIPLE_SERIES);
+    const chartRef = { current: null };
+    const lineRef = { current: null };
+    fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
+      .then(res => res.json())
+      .then(data => {
+        const { type, props } = (
+          <Canvas context={context} pixelRatio={window.devicePixelRatio} width={offsetWidth} height={height}>
+            <Chart
+              ref={chartRef}
+              data={data}
+              coord={{
+                type: Rect,
+              }}
+              scale={{
+              }}
+            >
+              <Axis
+                field="date"
+                tickCount={3}
+                style={{
+                  label: { align: 'between' }
+                }}
+              />
+              <Axis field="value" tickCount={5} />
+              <Line
+                ref={lineRef}
+                x="date"
+                y="value"
+                lineWidth="4px"
+                color="type"
+              />
+              {/* TODO(@buli): 动态 legend value */}
+              <Legend position="top" />
+            </Chart>
+          </Canvas>
+        );
+
+        const canvas = new type(props);
+        canvas.render();
+
+        console.log(MULTIPLE_SERIES, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
+      });
+  });
+
+  it('虚实线对比', () => {
+    const MULTIPLE_SHAPE = '虚实线对比';
+    const data = [{
+      time: '2016-08-08 00:00:00',
+      value: 10,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-08 00:10:00',
+      value: 22,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-08 00:30:00',
+      value: 16,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-09 00:35:00',
+      value: 26,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-09 01:00:00',
+      value: 12,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-09 01:20:00',
+      value: 26,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-10 01:40:00',
+      value: 18,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-10 02:00:00',
+      value: 26,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-10 02:20:00',
+      value: 12,
+      type: '预期收益率'
+    }, {
+      time: '2016-08-08 00:00:00',
+      value: 4,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-08 00:10:00',
+      value: 3,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-08 00:30:00',
+      value: 6,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-09 00:35:00',
+      value: -12,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-09 01:00:00',
+      value: 1,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-09 01:20:00',
+      value: 9,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-10 01:40:00',
+      value: 13,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-10 02:00:00',
+      value: -3,
+      type: '实际收益率'
+    }, {
+      time: '2016-08-10 02:20:00',
+      value: 11,
+      type: '实际收益率'
+    }];
+    const context = createContext(MULTIPLE_SHAPE);
+    const chartRef = { current: null };
+    const lineRef = { current: null };
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
     const { type, props } = (
@@ -378,24 +561,34 @@ describe('折线图', () => {
           scale={{
             time: {
               type: 'timeCat',
+              mask: 'hh:mm',
+              range: [0, 1],
             },
+            value: {
+              formatter: (value) => `${value}%`,
+            }
           }}
         >
           <Axis
             field="time"
             tickCount={3}
             style={{
-              label: { align: 'between' }
+              label: {
+                // align 默认值为 center，可能会导致首尾 tick label 超出画布范围
+                align: 'between'
+              }
             }}
           />
-          <Axis field="tem" tickCount={5} />
+          <Axis field="value" tickCount={3} />
           <Line
-            x="time"
-            y="tem"
             ref={lineRef}
-            smooth
+            x="time"
+            y="value"
+            lineWidth="4px"
+            shape="type"
+            color="type"
           />
-          <Tooltip />
+          <Legend position="top" />
         </Chart>
       </Canvas>
     );
@@ -403,6 +596,190 @@ describe('折线图', () => {
     const canvas = new type(props);
     canvas.render();
 
-    console.log(SMOOTH, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
+    console.log(MULTIPLE_SHAPE, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
+  });
+
+  it('折线锚点', () => {
+    const ANCHOR_POINT = '折线锚点';
+    const data = [{
+      date: '2017-06-05',
+      value: 11.6,
+      tag: 0
+    }, {
+      date: '2017-06-06',
+      value: 12.9,
+      tag: 0
+    }, {
+      date: '2017-06-07',
+      value: 13.5,
+      tag: 0
+    }, {
+      date: '2017-06-08',
+      value: 8.6,
+      tag: 2
+    }, {
+      date: '2017-06-09',
+      value: 7.3,
+      tag: 2
+    }, {
+      date: '2017-06-10',
+      value: 8.5,
+      tag: 0
+    }, {
+      date: '2017-06-11',
+      value: 7.3,
+      tag: 0
+    }, {
+      date: '2017-06-12',
+      value: 6.8,
+      tag: 0
+    }, {
+      date: '2017-06-13',
+      value: 9.2,
+      tag: 0
+    }, {
+      date: '2017-06-14',
+      value: 13.0,
+      tag: 1
+    }, {
+      date: '2017-06-15',
+      value: 24.5,
+      tag: 0
+    }, {
+      date: '2017-06-16',
+      value: 13,
+      tag: 0
+    }, {
+      date: '2017-06-17',
+      value: 11.5,
+      tag: 1
+    }, {
+      date: '2017-06-18',
+      value: 11.1,
+      tag: 0
+    }, {
+      date: '2017-06-19',
+      value: 30.9,
+      tag: 0
+    }, {
+      date: '2017-06-20',
+      value: 20.6,
+      tag: 1
+    }, {
+      date: '2017-06-21',
+      value: 13.7,
+      tag: 1
+    }, {
+      date: '2017-06-22',
+      value: 12.8,
+      tag: 1
+    }, {
+      date: '2017-06-23',
+      value: 8.5,
+      tag: 0
+    }, {
+      date: '2017-06-24',
+      value: 9.4,
+      tag: 1
+    }, {
+      date: '2017-06-25',
+      value: 7.1,
+      tag: 0
+    }, {
+      date: '2017-06-26',
+      value: 10.6,
+      tag: 0
+    }, {
+      date: '2017-06-27',
+      value: 8.4,
+      tag: 0
+    }, {
+      date: '2017-06-28',
+      value: 9.3,
+      tag: 0
+    }, {
+      date: '2017-06-29',
+      value: 8.5,
+      tag: 0
+    }, {
+      date: '2017-06-30',
+      value: 7.3,
+      tag: 0
+    }];
+    const context = createContext(ANCHOR_POINT);
+    const chartRef = { current: null };
+    const lineRef = { current: null };
+    const { offsetWidth } = document.body;
+    const height = offsetWidth * 0.75;
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio} width={offsetWidth} height={height}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Rect,
+          }}
+          scale={{
+            date: {
+              type: 'timeCat',
+              tickCount: 3,
+            },
+            value: {
+              tickCount: 5,
+              min: 0,
+              formatter: (val) => `${val.toFixed(2)}%`,
+            },
+            tag: {
+              type: 'cat'
+            }
+          }}
+        >
+          <Axis
+            field="date"
+            style={{
+              label: { align: 'between' }
+            }}
+          />
+          <Axis field="value" />
+          <Line
+            ref={lineRef}
+            x="date"
+            y="value"
+            lineWidth="4px"
+          />
+          <Point
+            x="date"
+            y="value"
+            size={{
+              field: 'tag',
+              map: (val) => val ? 6 : 0,
+            }}
+            color={{
+              field: 'tag',
+              map: (val) => val === 2 ? '#518DFE' : '#F35833',
+            }}
+          />
+          <Legend
+            position="top"
+            items={
+              [{
+                name: '买入点',
+                marker: 'circle',
+                color: '#F35833'
+              }, {
+                name: '卖出点',
+                marker: 'circle',
+                color: '#518DFE'
+              }]
+            }
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new type(props);
+    canvas.render();
+
+    console.log(ANCHOR_POINT, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
   });
 });

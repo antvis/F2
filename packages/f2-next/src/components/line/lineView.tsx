@@ -2,13 +2,13 @@ import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 
 export default (props: any) => {
-  const { mappedArray, smooth, lineWidth = '4px' } = props;
+  const { mappedArray, lineWidth = '4px' } = props;
 
   return (
     <group>
       {
         mappedArray.map(item => {
-          const { color, points } = item;
+          const { color, points, lineDash, smooth } = item;
           return (
             <group>
               <polyline
@@ -16,7 +16,8 @@ export default (props: any) => {
                   points: points,
                   stroke: color,
                   lineWidth: lineWidth,
-                  smooth: smooth,
+                  lineDash,
+                  smooth,
                 }}
               />
             </group>

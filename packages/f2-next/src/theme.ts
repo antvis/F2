@@ -94,7 +94,7 @@ const Theme = {
     '#F04864'
   ],
   shapes: {
-    line: [ 'line', 'dash' ],
+    line: [ 'line', 'dash', 'smooth' ],
     point: [ 'circle', 'hollowCircle' ]
   },
   sizes: [ 4, 8, 10, 12 ],

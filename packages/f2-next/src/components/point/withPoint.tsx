@@ -5,7 +5,7 @@ import Geometry from '../geometry';
 import { mappingPoint } from './util';
 
 export default View => {
-  return class Interval extends Geometry {
+  return class Line extends Geometry {
     // 归一值映射到坐标点
     mapping() {
       const { props } = this;
