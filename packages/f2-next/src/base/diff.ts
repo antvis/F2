@@ -1,5 +1,5 @@
 import { render, renderJSXElement, compareRenderTree } from '../jsx';
-import { isArray, isUndefined } from '@antv/util';
+import { isArray, isUndefined, isBoolean } from '@antv/util';
 import Component from './component';
 import equal from './equal';
 import createComponentTree from './createComponentTree';
@@ -10,10 +10,17 @@ function renderShape(
   children: JSX.Element,
   animate?: boolean
 ) {
-  // @ts-ignore
-  const { container, __lastElement, context } = component;
+  const {
+    container,
+    // @ts-ignore
+    __lastElement,
+    context,
+    animate: componentAnimate,
+  } = component;
   // 先清空绘制内容
   container.clear();
+
+  animate = isBoolean(animate) ? animate : componentAnimate;
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
   const shapeElement = renderJSXElement(children, { context });
@@ -26,12 +33,24 @@ function renderShape(
   if (!renderElement) return null;
   // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
   if (isArray(renderElement)) {
-    return renderElement.map(element => {
-      return render(element, container);
+    return renderElement.map((element) => {
+      return render(element, container, animate);
     });
   } else {
-    return render(renderElement, container);
+    return render(renderElement, container, animate);
   }
+}
+
+function setComponentAnimate(child: Component, parent: Component) {
+  const { animate: parentAnimate } = parent;
+  // 如果父组件不需要动画，子组件全不不执行动画
+  if (parentAnimate === false) {
+    child.animate = false;
+    return;
+  }
+  const { props: childProps } = child;
+  const { animate: childAnimate } = childProps;
+  child.animate = isBoolean(childAnimate) ? childAnimate : parentAnimate;
 }
 
 function createComponent(parent: Component, element: JSX.Element): Component {
@@ -39,7 +58,7 @@ function createComponent(parent: Component, element: JSX.Element): Component {
   const { container, context, updater } = parent;
   // 这里 一定是 F2 Component 了
   // @ts-ignore
-  const component = new type(props, context, updater);
+  const component: Component = new type(props, context, updater);
 
   // 设置ref
   if (ref) {
@@ -79,7 +98,7 @@ function renderComponent(component: Component | Component[]) {
 }
 
 function destroyElement(elements: JSX.Element) {
-  Children.map(elements, element => {
+  Children.map(elements, (element) => {
     if (!element) return;
     const { component } = element;
     if (!component) {
@@ -114,19 +133,22 @@ function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
 
   // diff
   const { type: nextType, props: nextProps } = nextElement;
-  const { type: lastType, props: lastProps, component } = lastElement;
+  const {
+    type: lastType,
+    props: lastProps,
+    component: lastComponent,
+  } = lastElement;
 
   if (nextType !== lastType) {
     destroyElement(lastElement);
     return nextElement;
   }
 
+  // 保留component， 等下一阶段处理
+  nextElement.component = lastComponent;
   if (equal(nextProps, lastProps)) {
     return null;
   }
-
-  // 保留component， 等下一阶段处理
-  nextElement.component = component;
   return nextElement;
 }
 function diff(parent: Component, nextChildren, lastChildren) {
@@ -163,14 +185,18 @@ function diff(parent: Component, nextChildren, lastChildren) {
   // 3. 处理 create 和 Receive props
   const shouldRenderComponnet = shouldProcessChildren.map(
     (element: JSX.Element) => {
-      const { component, props } = element;
+      let { component } = element;
       if (!component) {
-        element.component = createComponent(parent, element);
+        component = createComponent(parent, element);
       } else if (component.willReceiveProps) {
+        const { props } = element;
         component.willReceiveProps(props);
         component.props = props;
       }
-      return element.component;
+
+      element.component = component;
+      setComponentAnimate(component, parent);
+      return component;
     }
   );
 
@@ -204,7 +230,7 @@ function renderChildren(parent: Component, nextChildren, lastChildren) {
   if (isContainer(newChildren)) {
     newChildren = diff(parent, newChildren, lastChildren);
   } else {
-    renderShape(parent, nextChildren, true);
+    renderShape(parent, nextChildren);
   }
   return newChildren;
 }

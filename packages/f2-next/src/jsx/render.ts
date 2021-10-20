@@ -31,7 +31,7 @@ function createNodeTree(element: any, container: any) {
       width,
       height,
       ...style,
-    }
+    };
     // 无用，销毁掉
     shape.remove(true);
   }
@@ -48,7 +48,7 @@ function createNodeTree(element: any, container: any) {
     // 处理px2hd之后的配置
     style,
     attrs,
-  }
+  };
 }
 
 function mergeLayout(parent: any, layout: any) {
@@ -59,12 +59,28 @@ function mergeLayout(parent: any, layout: any) {
     ...layout,
     left: parentLeft + left,
     top: parentTop + top,
-  }
+  };
 }
 
-
-function createElement(node: any, container: any, parentLayout: any) {
-  const { _cache = {}, key, ref, type, props, style, attrs, layout: originLayout, renderChildren, children: nodeChildren, status } = node;
+function createElement(
+  node: any,
+  container: any,
+  parentLayout: any,
+  animate: boolean
+) {
+  const {
+    _cache = {},
+    key,
+    ref,
+    type,
+    props,
+    style,
+    attrs,
+    layout: originLayout,
+    renderChildren,
+    children: nodeChildren,
+    status,
+  } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
   // 该元素上一次的attrs
@@ -73,7 +89,7 @@ function createElement(node: any, container: any, parentLayout: any) {
   const elementAttrs = {
     ...getShapeAttrs(type, layout),
     // 因为删除的元素不参与布局计算，所以只有在删除的时候才保留lastAttrs, 新增和更新的时候都让其重新计算
-    ...status === ELEMENT_DELETE ? lastAttrs : null,
+    ...(status === ELEMENT_DELETE ? lastAttrs : null),
     ...attrs,
   };
   // 缓存这次新的attrs
@@ -84,7 +100,7 @@ function createElement(node: any, container: any, parentLayout: any) {
     element = container.addGroup({
       ...omit(props, ['children']),
       status,
-      attrs: elementAttrs
+      attrs: elementAttrs,
     });
 
     // 如果元素被删除了，就不会有renderChildren， 直接拿node.children渲染
@@ -92,18 +108,25 @@ function createElement(node: any, container: any, parentLayout: any) {
     // 只有group才需要处理children
     if (children && children.length) {
       for (let i = 0, len = children.length; i < len; i++) {
-        createElement(children[i], element, layout);
+        createElement(children[i], element, layout, animate);
       }
     }
   } else {
     element = container.addShape(type, {
       ...props,
       status,
-      attrs: elementAttrs
+      attrs: elementAttrs,
     });
   }
-  const animation = getAnimation(element, props.animation, elementAttrs, lastAttrs);
-  element.set('animation', animation);
+  if (animate !== false) {
+    const animation = getAnimation(
+      element,
+      props.animation,
+      elementAttrs,
+      lastAttrs
+    );
+    element.set('animation', animation);
+  }
   if (ref) {
     ref.current = element;
   }
@@ -131,12 +154,12 @@ function filterDeleteElement(node) {
   return node;
 }
 
-export default (element: JSX.Element, container: any) => {
+export default (element: JSX.Element, container: any, animate?: boolean) => {
   if (!element) {
     return;
   }
   const nodeTree = createNodeTree(element, container);
   const computeLayoutTree = filterDeleteElement(nodeTree);
   computeLayout(computeLayoutTree);
-  return createElement(nodeTree, container, null);
-}
+  return createElement(nodeTree, container, null, animate);
+};
