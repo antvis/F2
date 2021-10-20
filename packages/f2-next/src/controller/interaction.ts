@@ -44,10 +44,4 @@ export default class interactionController {
     return this.context;
   }
 
-  init() {
-    if (this.context) {
-      this.context.init();
-    }
-  }
-
 }
