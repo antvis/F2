@@ -112,8 +112,8 @@ describe('Canvas', () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <TestContainer>
-          <Test width={100} ref={ref} />
-          <Test width={100} />
+          <Test width={10} ref={ref} />
+          <Test width={10} />
         </TestContainer>
       </Canvas>
     );
@@ -128,7 +128,7 @@ describe('Canvas', () => {
         (
           <Canvas context={context} pixelRatio={2}>
             <TestContainer>
-              <Test width={200} ref={ref} />
+              <Test width={20} ref={ref} />
             </TestContainer>
           </Canvas>
         ).props
@@ -139,6 +139,19 @@ describe('Canvas', () => {
       console.log('调用forceUpdate');
       ref.current.forceUpdate();
     }, 2000);
+
+    setTimeout(() => {
+      console.log('无动画更新');
+      canvas.update(
+        (
+          <Canvas context={context} pixelRatio={2}>
+            <TestContainer animate={false}>
+              <Test width={30} ref={ref} />
+            </TestContainer>
+          </Canvas>
+        ).props
+      );
+    }, 3000);
     // const testComponent = canvas.component.components;
 
     // expect(context.canvas.width).toBe(359);
