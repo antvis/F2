@@ -34,7 +34,7 @@ export default View => {
       return mix({}, lineShapeMap.default, lineShapeMap[shape]);
     }
 
-    // 合并优先级数据映射后的 style(color, size, shape) > props.style
+    // 解析 shape 样式并合并
     _mergeStyle(dataItem) {
       const { color, shape, size } = dataItem;
       // 'line' | 'smooth' | 'dash' 三种 shapes 映射到具体的 line attrs
