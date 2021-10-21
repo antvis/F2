@@ -20,6 +20,7 @@ import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
+import { AttrRange } from './interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -27,7 +28,6 @@ const FIELD_ORIGIN = 'origin';
 const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
-
 class Geometry extends Component implements AttrMixin {
   isGeometry = true;
   isInit = false;
@@ -35,6 +35,7 @@ class Geometry extends Component implements AttrMixin {
   data: any;
   attrs: any = {};
   adjust: any;
+  ranges: AttrRange = {}; // 各属性值域
 
   // 预处理后的数据
   dataArray: any;
@@ -60,6 +61,7 @@ class Geometry extends Component implements AttrMixin {
 
   _init() {
     this._prepareAttrs();
+    this._initAttrRanges();
     this._createAttrs();
     this._adjustScales();
     this._processData();
@@ -297,27 +299,28 @@ class Geometry extends Component implements AttrMixin {
     return chart.scale.getZeroValue(scale);
   }
 
-  // 获取
+  // 从值域中第一个值获取属性默认 value
   _getAttrsDefaultValue() {
-    const { context } = this;
-    const { theme } = context;
+    const { color = [], size = [], shape = [] } = this.ranges;
     return {
-      color: theme.colors[0],
-      size: theme.sizes[0],
-    };
+      color: color[0],
+      size: size[0],
+      shape: shape[0],
+    }
   }
 
-  _getAttrsRange() {
-    const { context } = this;
-    const { theme } = context;
+  // 初始化各属性值域
+  _initAttrRanges() {
+    const { props } = this;
+    const { theme } = props?.chart?.context;
 
-    // 构造各属性的值域
+    // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
     const ranges = {
       color: theme.colors,
       size: theme.sizes,
-      shape: theme.shapes,
     };
 
+    this.ranges = ranges;
     return ranges;
   }
 
@@ -328,12 +331,11 @@ class Geometry extends Component implements AttrMixin {
     const attrNamesLength = attrNames.length;
 
     // 设置各属性的值域
-    const attrsRange = this._getAttrsRange();
     for (let key = 0; key < attrNamesLength; key++) {
       const attrName = attrNames[key];
 
       if (!this.getAttrRange(attrName)) {
-        this.setAttrRange(attrName, attrsRange[attrName]);
+        this.setAttrRange(attrName, this.ranges[attrName]);
       }
     }
 

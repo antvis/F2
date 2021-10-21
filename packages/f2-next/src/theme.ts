@@ -100,9 +100,17 @@ const Theme = {
   sizes: [ 4, 8, 10, 12 ],
   shape: {
     line: {
-      lineWidth: 2,
-      lineJoin: 'round',
-      lineCap: 'round'
+      default: {
+        lineWidth: 2,
+        lineJoin: 'round',
+        lineCap: 'round'
+      },
+      smooth: {
+        smooth: true,
+      },
+      dash: {
+        lineDash: [4, 4],
+      },
     },
     point: {
       lineWidth: 0,

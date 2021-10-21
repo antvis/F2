@@ -4,80 +4,20 @@ import Geometry from '../geometry';
 
 export default View => {
   return class Line extends Geometry {
-    _getAttrsRange() {
-      const { context } = this;
-      const { theme } = context;
+    constructor(props, context) {
+      super(props);
+      this._getShapeRanges(context);
+    }
 
-      // 构造各属性的值域
+    // 获取 line 类型 shape range
+    _getShapeRanges = (context) => {
+      const { theme } = context;
       const ranges = {
-        color: theme.colors,
-        size: theme.sizes,
+        ...this.ranges,
         shape: theme.shapes.line,
       };
-
+      this.ranges = ranges;
       return ranges;
-    }
-
-    _getAttrsDefaultValue() {
-      const { context } = this;
-      const { theme } = context;
-      return {
-        color: theme.colors[0],
-        size: theme.sizes[0],
-        shape: theme.shapes.line[0],
-      };
-    }
-
-    _mappingAttrs(dataArray) {
-      const { x, y, ...attrs } = this.attrs;
-      const attrNames = Object.keys(attrs);
-      const attrNamesLength = attrNames.length;
-
-      // 设置各属性的值域
-      const attrsRange = this._getAttrsRange();
-      for (let key = 0; key < attrNamesLength; key++) {
-        const attrName = attrNames[key];
-
-        if (!this.getAttrRange(attrName)) {
-          this.setAttrRange(attrName, attrsRange[attrName]);
-        }
-      }
-
-      // 默认值
-      const defaultValues = this._getAttrsDefaultValue();
-      const dataArrayLength = dataArray.length;
-      const mappedArray = new Array(dataArrayLength);
-      for (let i = 0; i < dataArrayLength; i++) {
-        const data = dataArray[i];
-
-        // 图形属性映射，因为每组里面这些属性的值都是相同的，所以只需要映射第一个就可以了
-        const attrsValue = {};
-        for (let key = 0; key < attrNamesLength; key++) {
-          const attrName = attrNames[key];
-          attrsValue[attrName] = this.getAttrValue(attrName, data[0]);
-        }
-
-        // 生成映射后的数据对象
-        const mappedData = new Array(data.length);
-        for (let i = 0, len = data.length; i < len; i++) {
-          const record = data[i];
-          const result = {
-            ...record,
-            ...defaultValues,
-            ...attrsValue,
-          };
-          mappedData[i] = result;
-        }
-        mappedArray[i] = mappedData;
-      }
-      return mappedArray;
-    }
-
-    mapping() {
-      const originMapped = super.mapping();
-      const mappedArray = this._mappingAttrs(originMapped);
-      this.mappedArray = mappedArray;
-      return mappedArray;
     }
 
     _convertPosition(mappedArray) {
@@ -95,49 +35,53 @@ export default View => {
       return mappedArray;
     }
 
-    parsePoints(dataArray) {
+    // 获取主题中默认 line shape 样式
+    _getThemeShape(shape: string | undefined) {
+      const { context } = this;
+      const { theme } = context;
+      const { line: lineShapeMap } = theme.shape;
+      return mix({}, lineShapeMap.default, lineShapeMap[shape]);
+    }
+
+    // 合并优先级数据映射后的 style(color, size, shape) > props.style
+    _mergeStyle(dataItem, propsStyle) {
+      const { color, shape, size } = dataItem;
+      // 'line' | 'smooth' | 'dash' 三种 shapes 映射到具体的 line attrs
+      const themeStyle = this._getThemeShape(shape);
+      return {
+        ...propsStyle,
+        ...themeStyle,
+        size,
+        color,
+      };
+    }
+
+    parsePoints(dataArray, style) {
       const { props } = this;
       const { coord } = props;
       return dataArray.map(data => {
-        const { color, shape, size } = data[0];
         const points = data;
         if (coord.isPolar) {
           points.push(data[0]);
         }
-        const extLineAttrs: any = {};
-        switch (shape) {
-          case 'line':
-            break;
-          case 'dash':
-            extLineAttrs.lineDash = [4, 4];
-            break;
-          case 'smooth':
-            extLineAttrs.smooth = true;
-            break;
-          default:
-            break;
-        }
+        const lineStyle = this._mergeStyle(data[0], style);
         return {
-          color,
-          size,
+          ...lineStyle,
           points,
-          ...extLineAttrs,
         }
       });
     }
 
     render() {
       const { props } = this;
-      const { smooth, lineWidth } = props;
+      const { style } = props;
       const { coord } = props;
       const mapped = this.mapping();
-      const mappedArray = this.parsePoints(mapped);
+      const mappedArray = this.parsePoints(mapped, style);
       return (
         <View
           coord={ coord }
           mappedArray={ mappedArray }
-          smooth={smooth}
-          lineWidth={lineWidth}
         />
       );
     }
