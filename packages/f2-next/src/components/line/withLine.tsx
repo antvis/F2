@@ -1,24 +1,14 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
+import { ShapeType } from '../geometry/interface';
 
 export default View => {
   return class Line extends Geometry {
+    shapeType: ShapeType = 'line';
     constructor(props, context) {
       super(props, context);
-      this._getShapeRanges();
-    }
-
-    // 获取 line 类型 shape range
-    _getShapeRanges = () => {
-      const { context } = this;
-      const { theme } = context;
-      const ranges = {
-        ...this.ranges,
-        shape: theme.shapes.line,
-      };
-      this.ranges = ranges;
-      return ranges;
+      this.ranges.shape = this.context.theme.shapes[this.shapeType];
     }
 
     _convertPosition(mappedArray) {

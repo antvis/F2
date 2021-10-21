@@ -3,9 +3,16 @@ import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { mappingPoint } from './util';
+import { ShapeType } from '../geometry/interface';
 
 export default View => {
   return class Line extends Geometry {
+    shapeType: ShapeType = 'point';
+    constructor(props, context) {
+      super(props, context);
+      this.ranges.shape = this.context.theme.shapes[this.shapeType];
+    }
+
     // 归一值映射到坐标点
     mapping() {
       const { props } = this;

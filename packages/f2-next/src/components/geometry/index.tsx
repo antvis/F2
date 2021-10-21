@@ -20,7 +20,7 @@ import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
-import { AttrRange } from './interface';
+import { AttrRange, ShapeType } from './interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -36,6 +36,7 @@ class Geometry extends Component implements AttrMixin {
   attrs: any = {};
   adjust: any;
   ranges: AttrRange = {}; // 各属性值域
+  shapeType?: ShapeType;
 
   // 预处理后的数据
   dataArray: any;
@@ -315,13 +316,12 @@ class Geometry extends Component implements AttrMixin {
     const { theme } = context;
 
     // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
-    const ranges = {
+    this.ranges = {
       color: theme.colors,
       size: theme.sizes,
     };
 
-    this.ranges = ranges;
-    return ranges;
+    return this.ranges;
   }
 
   // 映射除 x, y 之外的图形属性

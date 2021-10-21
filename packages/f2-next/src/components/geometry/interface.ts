@@ -3,3 +3,5 @@ export interface AttrRange {
   color?: any[];
   size?: any[];
 }
+
+export type ShapeType = 'line' | 'point' | 'area' | 'polygon' | 'schema';
