@@ -12,10 +12,6 @@ class InteractionMixin {
     this.interaction.createInteraction(type, cfg)
   }
 
-  initInteractions() {
-    this.interaction.init();
-  }
-
 }
 
 

@@ -27,11 +27,14 @@ class Component {
     return null;
   }
   didUnmount() {}
-  setState(partialState) {
-    this.updater.enqueueSetState(this, partialState);
+  setState(partialState, callback?: () => void) {
+    this.updater.enqueueSetState(this, partialState, callback);
   }
   forceUpdate() {
     this.updater.enqueueForceUpdate(this, {});
+  }
+  setAnimate(animate: boolean) {
+    this.animate = animate;
   }
 }
 
