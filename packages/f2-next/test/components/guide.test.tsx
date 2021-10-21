@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { jsx } from '../../src/jsx';
-import Canvas, {
-  Chart,
+import{
   Axis,
   Line,
   withGuide,
@@ -10,7 +9,8 @@ import Canvas, {
   TextGuide,
   LineGuide
 } from '../../src/components';
-import { createContext } from './util';
+import { Canvas, Chart } from '../../src';
+import { createContext } from '../util';
 // import data from '../../fund-charts/test/data/managerData'
 
 const data = [
@@ -29,6 +29,7 @@ const renderChart = Component => {
     </Canvas>
   );
 
+  console.log('type: ', type);
   const chart = new type(props);
   chart.render();
 
@@ -41,7 +42,7 @@ describe('Guide ', () => {
     const container = renderChart(
       <Chart data={data}>
         {/* 折线 */}
-        <Line position="genre*sold" color="type" />
+        <Line x="genre" y="sold" color="type" />
 
         {/* 文字Guide */}
         {data.map(item => {
@@ -64,7 +65,7 @@ describe('Guide ', () => {
         })}
 
         {/* 图片Guide */}
-        {data.map(item => {
+        {data.map((item, key) => {
           return (
             <ImageGuide
               records={[item]}
@@ -91,7 +92,7 @@ describe('Guide ', () => {
     const container = renderChart(
       <Chart data={data}>
         {/* 折线 */}
-        <Line position="genre*sold" color="type" />
+        <Line x="genre" y="sold" color="type" />
         {data.map(item => {
           return <PointGuide records={[item]} />;
         })}
@@ -103,7 +104,7 @@ describe('Guide ', () => {
     const container = renderChart(
       <Chart data={data}>
         {/* 折线 */}
-        <Line position="genre*sold" color="type" />
+        <Line x="genre" y="sold" color="type" />
         {data.map(item => {
           return (
             <LineGuide
@@ -125,7 +126,7 @@ describe('Guide ', () => {
     const container = renderChart(
       <Chart data={data}>
         {/* 折线 */}
-        <Line position="genre*sold" color="type" />
+        <Line x="genre" y="sold" color="type" />
         {data.map(item => {
           return (
             <PointGuide
@@ -156,7 +157,7 @@ describe('Guide ', () => {
     const GuideY1 =
       container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY1).toBe(285);
+    expect(GuideY1).toBe(300);
     const GuideY2 =
       container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
@@ -164,14 +165,14 @@ describe('Guide ', () => {
     const GuideY3 =
       container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY3).toBe(15);
+    expect(GuideY3).toBe(0);
   });
 
   it('使用百分比字符串代表位置', () => {
     const container = renderChart(
       <Chart data={data} theme={{ padding: [0, 0, 0, 0] }}>
         {/* 折线 */}
-        <Line position="genre*sold" color="type" />
+        <Line x="genre" y="sold" color="type" />
         {data.map((item, index) => {
           return (
             <PointGuide

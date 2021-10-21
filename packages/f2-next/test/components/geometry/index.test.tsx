@@ -1,7 +1,7 @@
 import { jsx } from '../../../src/jsx';
-import Canvas, { Chart, Interval, Axis } from '../../../src/components';
 import Geometry from '../../../src/components/geometry';
-import { createContext } from '../util';
+import { createContext } from '../../util';
+import { Canvas, Chart, Interval, Axis } from '../../../src';
 const context = createContext();
 
 const data = [{ genre: 'Sports', sold: 275, type: 'a' }];
@@ -13,7 +13,7 @@ const data1 = [
 
 class GeometryTest extends Geometry {
   render() {
-    const mappedArray = this._mapping();
+    const mappedArray = this.mapping();
     return (
       <group>
         {mappedArray.map(dataArray => {
@@ -45,7 +45,7 @@ describe('geometry', () => {
     const { type, props } = (
       <Canvas context={context}>
         <Chart ref={chartRef} data={data}>
-          <GeometryTest ref={componentRef} position="genre*sold" />
+          <GeometryTest ref={componentRef} x="genre" y="sold" />
         </Chart>
       </Canvas>
     );
@@ -54,7 +54,7 @@ describe('geometry', () => {
     canvas = new type(props);
     canvas.render();
 
-    expect(chartRef.current.scales.genre.values).toEqual(['Sports']);
+    expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports']);
 
     const container = componentRef.current.container;
     const group = container.get('children')[0];
@@ -65,7 +65,7 @@ describe('geometry', () => {
   it('geometry update', () => {
     const newChart = (
       <Chart data={data1}>
-        <GeometryTest ref={componentRef} position="genre*sold" />
+        <GeometryTest ref={componentRef} x="genre" y="sold"/>
       </Chart>
     );
 
@@ -73,7 +73,7 @@ describe('geometry', () => {
       children: newChart
     });
 
-    expect(chartRef.current.scales.genre.values).toEqual([
+    expect(chartRef.current.scale.scales.genre.values).toEqual([
       'Sports',
       'Strategy'
     ]);

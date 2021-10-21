@@ -1,12 +1,6 @@
 import { jsx } from '../../src/jsx';
-import Canvas, {
-  Chart,
-  Interval,
-  Area,
-  Line,
-  Axis
-} from '../../src/components';
-import { createContext } from './util';
+import { createContext } from '../util';
+import { Canvas, Chart, Interval, Axis } from '../../src';
 const context = createContext();
 
 const data = [
@@ -14,7 +8,7 @@ const data = [
   { genre: 'Strategy', sold: 115 },
   { genre: 'Action', sold: 120 },
   { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: -110 }
+  { genre: 'Other', sold: -110 },
 ];
 
 describe('Interval', () => {
@@ -27,7 +21,8 @@ describe('Interval', () => {
           <Axis field="sold" min={0} />
           <Interval
             // ref={ ref }
-            position="genre*sold"
+            x="genre"
+            y="sold"
             color="genre"
             // onPress={ (ev) => {
             //   const { points, geometry } = ev || {};
@@ -52,7 +47,7 @@ describe('Interval', () => {
         <Chart data={data}>
           <Axis field="genre" />
           <Axis field="sold" min={0} />
-          <Interval startOnZero={false} position="genre*sold" color="genre" />
+          <Interval startOnZero={false} x="genre" y="sold" color="genre" />
         </Chart>
       </Canvas>
     );

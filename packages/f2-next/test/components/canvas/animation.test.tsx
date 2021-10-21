@@ -1,6 +1,6 @@
 import { jsx } from '../../../src/jsx';
-import Canvas, { Component } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
+import { Canvas, Component } from '../../../src';
 const context = createContext();
 
 const onFrame = jest.fn();
@@ -47,11 +47,12 @@ describe('Canvas', () => {
 
     // @ts-ignore
     const canvas: Canvas = new type(props);
-    const testComponent = canvas.component.components;
+    const testComponent = canvas.children;
 
     canvas.render();
     // @ts-ignore
-    const rect = testComponent.container._attrs.children[0];
+    const rect = canvas.children.component.container._attrs.children[0];
+    
     expect(rect._attrs.attrs.width).toBe(10);
 
     // 动画结束后

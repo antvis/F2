@@ -1,6 +1,6 @@
 import { jsx } from '../../../src/jsx';
-import Canvas, { Component } from '../../../src/components';
-import { createContext } from '../util';
+import { createContext } from '../../util';
+import { Canvas, Component } from '../../../src';
 const context = createContext();
 
 class Test extends Component {
@@ -29,17 +29,17 @@ describe('Canvas', () => {
 
     // @ts-ignore
     const canvas: Canvas = new type(props);
-    const testComponent = canvas.component.components;
+    const testComponent = canvas.props.children.type;
 
-    expect(context.canvas.width).toBe(359);
-    expect(context.canvas.height).toBe(400);
+    expect(context.canvas.width).toBe(200);
+    expect(context.canvas.height).toBe(150);
 
-    expect(testComponent).toBeInstanceOf(Test);
+    expect(testComponent).toBe(Test);
 
     canvas.render();
 
     // @ts-ignore
-    const rect = testComponent.container._attrs.children[0];
+    const rect = canvas.children.component.container._attrs.children[0];
     expect(rect._attrs.type).toBe('rect');
     expect(rect._attrs.attrs.fill).toBe('red');
   });

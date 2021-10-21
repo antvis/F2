@@ -1,6 +1,6 @@
 import { isString } from '@antv/util';
 import { Linear, Category } from '../attr';
-import { isArray } from '@antv/util';
+import { isFunction } from '@antv/util';
 
 class Attr {
   attrOptions: any;
@@ -48,7 +48,10 @@ class Attr {
   getAttrValue(attrName: string, record: any) {
     const attr = this.attrs[attrName];
     if (!attr) return null;
-    const { field } = attr;
+    const { field, callback } = attr;
+    if(isFunction(callback)) {
+      return callback(record[field]);
+    }
     return attr.mapping(record[field]);
   }
 }

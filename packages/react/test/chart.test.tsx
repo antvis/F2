@@ -3,9 +3,8 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactCanvas from '../src';
-import { Components, Canvas } from '@ali/f2-next'
+import { Chart, Line , Canvas } from '@ali/f2-next'
 
-const { Chart, Line }  = Components
 
 // @ts-ignore
 Enzyme.configure({ adapter: new Adapter() });
@@ -23,7 +22,7 @@ function App(props: any) {
   return (
     <ReactCanvas ref={ chartRef } width={ 100 } height={ 100 } className="newClass">
       <Chart data={ data }>
-        <Line ref={ lineRef } position="genre*sold" a={ a } />
+        <Line ref={ lineRef } x="genre" y="sold" a={ a } />
       </Chart>
     </ReactCanvas>
   );
