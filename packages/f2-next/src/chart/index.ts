@@ -86,6 +86,11 @@ class Chart extends Component
     this.coord = coord;
     this.scale = scaleController;
     this.interaction = interactionController;
+
+    // state
+    this.state = {
+      zoomRange: [0, 1]
+    }
   }
 
   // 重置绘制大小
@@ -258,6 +263,7 @@ class Chart extends Component
         chart: this,
         coord,
         layout,
+        zoomRange: this.state.zoomRange,
       });
     });
   }

@@ -233,14 +233,11 @@ class Context {
   }
 
   private render() {
-    const { chart, canvas } = this;
-    chart.children = Children.map(chart.children, child => {
-      return Children.cloneElement(child, {
-        zoomRange: this.range 
-      });
+    const { chart } = this;
+    chart.setAnimate(false);
+    chart.setState({
+      zoomRange: this.range,
     });
-    renderComponent(chart);
-    canvas.draw();
   }
 
   destroy() { }
