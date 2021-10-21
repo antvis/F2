@@ -66,6 +66,17 @@ class Layout {
       height,
     });
   }
+
+  static fromStyle(style) {
+    const { left, top, width, height, padding } = style;
+    const [paddingTop, paddingRight, paddingBottom, paddingLeft] = padding;
+    return new Layout({
+      left: left + paddingLeft,
+      top: top + paddingTop,
+      width: width - paddingLeft - paddingRight,
+      height: height - paddingTop - paddingBottom,
+    });
+  }
 }
 
 export default Layout;

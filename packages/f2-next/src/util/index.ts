@@ -37,13 +37,13 @@ const isObject = is('Object');
 const isFunction = is('Function');
 
 function parsePadding(padding: any) {
-  if (isNumber(padding) || isString(padding)) {
+  if (isNumber(padding)) {
     return [padding, padding, padding, padding];
   }
   const top = padding[0];
-  const right = padding[1] ? padding[1] : padding[0];
-  const bottom = padding[2] ? padding[2] : top;
-  const left = padding[3] ? padding[3] : right;
+  const right = isNumber(padding[1]) ? padding[1] : padding[0];
+  const bottom = isNumber(padding[2]) ? padding[2] : top;
+  const left = isNumber(padding[3]) ? padding[3] : right;
   return [top, right, bottom, left];
 }
 
@@ -69,6 +69,7 @@ function batch2hd(value: any) {
         }
         if (key === 'padding' || key === 'margin') {
           const paddingArray = parsePadding(rst);
+          result[key] = paddingArray;
           result[`${key}Top`] = paddingArray[0];
           result[`${key}Right`] = paddingArray[1];
           result[`${key}Bottom`] = paddingArray[2];

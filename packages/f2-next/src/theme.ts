@@ -1,5 +1,3 @@
-
-
 const axis = {
   labelOffset: '15px',
   line: {
@@ -13,15 +11,15 @@ const axis = {
   grid: {
     stroke: '#E8E8E8',
     lineWidth: '1px',
-    lineDash: [ '4px' ]
-  }
+    lineDash: ['4px'],
+  },
 };
 
 const guide = {
   line: {
     style: {
       stroke: '#a3a3a3',
-      lineWidth: 1
+      lineWidth: 1,
     },
     offsetX: 0,
     offsetY: 0,
@@ -37,19 +35,19 @@ const guide = {
   },
   rect: {
     style: {
-      fill: '#fafafa'
+      fill: '#fafafa',
     },
   },
   arc: {
     style: {
-      stroke: '#a3a3a3'
+      stroke: '#a3a3a3',
     },
   },
   html: {
     offsetX: 0,
     offsetY: 0,
     alignX: 'center',
-    alignY: 'middle'
+    alignY: 'middle',
   },
   tag: {
     offsetX: 0,
@@ -58,14 +56,14 @@ const guide = {
     background: {
       padding: 5,
       radius: 2,
-      fill: '#1890FF'
+      fill: '#1890FF',
     },
     textStyle: {
       fontSize: 12,
       fill: '#fff',
       textAlign: 'center',
-      textBaseline: 'middle'
-    }
+      textBaseline: 'middle',
+    },
   },
   point: {
     offsetX: 0,
@@ -74,15 +72,20 @@ const guide = {
       fill: '#fff',
       r: 3,
       lineWidth: 2,
-      stroke: '#1890ff'
-    }
-  }
-}
+      stroke: '#1890ff',
+    },
+  },
+};
+
+const chart = {
+  padding: ['30px', '30px', '30px', '30px'],
+};
 
 const Theme = {
-  fontFamily: '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
+  fontFamily:
+    '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
   pixelRatio: 1,
-  padding: ['30px', '30px', '30px', '30px'],
+  padding: [0, 0, 0, 0],
   colors: [
     '#1890FF',
     '#2FC25B',
@@ -91,30 +94,30 @@ const Theme = {
     '#8543E0',
     '#13C2C2',
     '#3436C7',
-    '#F04864'
+    '#F04864',
   ],
+  chart,
   shapes: {
-    line: [ 'line', 'dash' ],
-    point: [ 'circle', 'hollowCircle' ]
+    line: ['line', 'dash'],
+    point: ['circle', 'hollowCircle'],
   },
-  sizes: [ 2, 4, 6, 8 ],
+  sizes: [2, 4, 6, 8],
   shape: {
     line: {
       lineWidth: 2,
       lineJoin: 'round',
-      lineCap: 'round'
+      lineCap: 'round',
     },
     point: {
       lineWidth: 0,
-      size: 3
+      size: 3,
     },
     area: {
-      fillOpacity: 0.1
-    }
+      fillOpacity: 0.1,
+    },
   },
   axis,
-  guide
+  guide,
 };
 
 export default Theme;
- 

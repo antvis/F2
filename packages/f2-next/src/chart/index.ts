@@ -1,5 +1,4 @@
 import { mix, each, isNil } from '@antv/util';
-import { Scale } from '@antv/scale';
 import Component from '../base/component';
 import { applyMixins } from '../mixins';
 import CoordMixin from '../mixins/coord';
@@ -7,10 +6,7 @@ import ScaleMixin from '../mixins/scale';
 import InteractionMixin from '../mixins/interaction';
 import Layout from '../base/layout';
 import Coord from '../coord';
-import equal from '../base/equal';
-import { map } from '../util';
 import Children from '../children';
-import Geometry from '../components/geometry';
 
 interface Point {
   x: number;
@@ -31,8 +27,10 @@ interface IChart {
 }
 
 // 统计图表
-class Chart extends Component
-  implements IChart, CoordMixin, ScaleMixin, InteractionMixin {
+class Chart
+  extends Component
+  implements IChart, CoordMixin, ScaleMixin, InteractionMixin
+{
   data: any;
   layout: Layout;
 
@@ -55,13 +53,13 @@ class Chart extends Component
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
-
     const { data, coord: coordOption, scale, interactions = [] } = props;
-    const { width, height } = context;
 
-    const layout = new Layout({ width, height });
+    const style = this.getStyle(props, context);
+    // 显示范围
+    const layout = Layout.fromStyle(style);
     // 创建坐标系
-    const coord = this.createCoord(coordOption, { width, height });
+    const coord = this.createCoord(coordOption, layout);
     // 初始化scales
     const scaleController = this.createScaleController(data);
     // 创建交互事件控制器
@@ -75,7 +73,7 @@ class Chart extends Component
     });
 
     // 定义事件
-    interactions.forEach(interaction => {
+    interactions.forEach((interaction) => {
       const { type, ...cfg } = interaction;
       interactionController.createInteraction(type, cfg);
     });
@@ -89,8 +87,21 @@ class Chart extends Component
 
     // state
     this.state = {
-      zoomRange: [0, 1]
-    }
+      zoomRange: [0, 1],
+    };
+  }
+
+  private getStyle(props, context) {
+    const { theme, px2hd, left, top, width, height } = context;
+    const { style } = props;
+    return px2hd({
+      left,
+      top,
+      width,
+      height,
+      ...theme.chart,
+      ...style,
+    });
   }
 
   // 重置绘制大小
@@ -213,7 +224,7 @@ class Chart extends Component
   getGeometrys() {
     const { children } = this;
     const geometrys: Component[] = [];
-    Children.toArray(children).forEach(element => {
+    Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
       if (component && component.isGeometry) {
@@ -239,7 +250,7 @@ class Chart extends Component
 
   getXScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getXScale();
     });
@@ -247,7 +258,7 @@ class Chart extends Component
 
   getYScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getYScale();
     });
@@ -257,7 +268,7 @@ class Chart extends Component
     // this.resetCoord();
     const { props, layout, coord } = this;
     const { children, data } = props;
-    return Children.map(children, child => {
+    return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         data,
         chart: this,
@@ -272,6 +283,6 @@ class Chart extends Component
 // 多继承
 applyMixins(Chart, [CoordMixin, ScaleMixin, InteractionMixin]);
 
-class ExportChart extends Chart { }
+class ExportChart extends Chart {}
 
 export default ExportChart;
