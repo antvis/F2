@@ -5,12 +5,13 @@ import Geometry from '../geometry';
 export default View => {
   return class Line extends Geometry {
     constructor(props, context) {
-      super(props);
-      this._getShapeRanges(context);
+      super(props, context);
+      this._getShapeRanges();
     }
 
     // 获取 line 类型 shape range
-    _getShapeRanges = (context) => {
+    _getShapeRanges = () => {
+      const { context } = this;
       const { theme } = context;
       const ranges = {
         ...this.ranges,

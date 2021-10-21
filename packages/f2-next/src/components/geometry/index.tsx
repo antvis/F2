@@ -54,8 +54,8 @@ class Geometry extends Component implements AttrMixin {
   getAttrValue: (attrName, record) => any;
   getAttrRange: (attrName) => any;
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this._init();
   }
 
@@ -311,8 +311,8 @@ class Geometry extends Component implements AttrMixin {
 
   // 初始化各属性值域
   _initAttrRanges() {
-    const { props } = this;
-    const { theme } = props?.chart?.context;
+    const { context } = this;
+    const { theme } = context;
 
     // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
     const ranges = {
