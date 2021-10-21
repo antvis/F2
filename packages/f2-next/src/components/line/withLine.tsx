@@ -44,19 +44,18 @@ export default View => {
     }
 
     // 合并优先级数据映射后的 style(color, size, shape) > props.style
-    _mergeStyle(dataItem, propsStyle) {
+    _mergeStyle(dataItem) {
       const { color, shape, size } = dataItem;
       // 'line' | 'smooth' | 'dash' 三种 shapes 映射到具体的 line attrs
       const themeStyle = this._getThemeShape(shape);
       return {
-        ...propsStyle,
         ...themeStyle,
         size,
         color,
       };
     }
 
-    parsePoints(dataArray, style) {
+    parsePoints(dataArray) {
       const { props } = this;
       const { coord } = props;
       return dataArray.map(data => {
@@ -64,7 +63,7 @@ export default View => {
         if (coord.isPolar) {
           points.push(data[0]);
         }
-        const lineStyle = this._mergeStyle(data[0], style);
+        const lineStyle = this._mergeStyle(data[0]);
         return {
           ...lineStyle,
           points,
@@ -77,11 +76,12 @@ export default View => {
       const { style } = props;
       const { coord } = props;
       const mapped = this.mapping();
-      const mappedArray = this.parsePoints(mapped, style);
+      const mappedArray = this.parsePoints(mapped);
       return (
         <View
           coord={ coord }
           mappedArray={ mappedArray }
+          style={ style }
         />
       );
     }

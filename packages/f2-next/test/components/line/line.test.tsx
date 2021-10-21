@@ -279,9 +279,6 @@ describe('折线图', () => {
           pixelRatio={window.devicePixelRatio}
           width={offsetWidth}
           height={height}
-          theme={{
-            colors: ['#2FC25B'],
-          }}
           padding="8px"
         >
           <Chart
@@ -302,7 +299,7 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" tickCount={5} />
-            <Line ref={lineRef} x="date" y="value" />
+            <Line ref={lineRef} x="date" y="value" style={{ stroke: '#2FC25B' }} />
           </Chart>
         </Canvas>
       );
@@ -441,11 +438,12 @@ describe('折线图', () => {
           pixelRatio={window.devicePixelRatio}
           width={offsetWidth}
           height={height}
-          theme={{
-            shapes: {
-              line: ['smooth'], // 通过 theme 设置全局 line style
-            },
-          }}
+          // 方式一：通过 theme 设置全局 line style
+          // theme={{
+          //   shapes: {
+          //     line: ['smooth'],
+          //   },
+          // }}
         >
           <Chart
             ref={chartRef}
@@ -470,7 +468,8 @@ describe('折线图', () => {
               }}
             />
             <Axis field="tem" />
-            <Line x="time" y="tem" ref={lineRef} />
+            {/* 方式二：通过 props style 传入 */}
+            <Line x="time" y="tem" ref={lineRef} style={{ smooth: true }} />
             <Tooltip />
           </Chart>
         </Canvas>

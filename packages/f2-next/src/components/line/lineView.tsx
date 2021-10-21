@@ -2,8 +2,7 @@ import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 
 export default (props: any) => {
-  const { mappedArray } = props;
-
+  const { mappedArray, style } = props;
   return (
     <group>
       {
@@ -18,6 +17,7 @@ export default (props: any) => {
                   lineWidth: lineWidth ?? size,
                   lineDash,
                   smooth,
+                  ...style,
                 }}
               />
             </group>
