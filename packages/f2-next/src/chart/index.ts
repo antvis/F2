@@ -52,7 +52,6 @@ class Chart extends Component
   interaction: any;
   createInteractionController: ({ chart: any }) => any;
   setInteraction: (type, cfg) => any;
-  initInteractions: () => any;
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
@@ -87,6 +86,11 @@ class Chart extends Component
     this.coord = coord;
     this.scale = scaleController;
     this.interaction = interactionController;
+
+    // state
+    this.state = {
+      zoomRange: [0, 1]
+    }
   }
 
   // 重置绘制大小
@@ -259,6 +263,7 @@ class Chart extends Component
         chart: this,
         coord,
         layout,
+        zoomRange: this.state.zoomRange,
       });
     });
   }
@@ -267,6 +272,6 @@ class Chart extends Component
 // 多继承
 applyMixins(Chart, [CoordMixin, ScaleMixin, InteractionMixin]);
 
-class ExportChart extends Chart {}
+class ExportChart extends Chart { }
 
 export default ExportChart;

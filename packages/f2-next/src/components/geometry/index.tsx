@@ -102,7 +102,7 @@ class Geometry extends Component implements AttrMixin {
     const { x, y } = attrOptions;
 
     if (!x || !y) {
-      throw new Error('x, y are is required !');
+      throw new Error('x, y are required !');
     }
     // x, y 都是固定Linear 映射
     x.type = Linear;

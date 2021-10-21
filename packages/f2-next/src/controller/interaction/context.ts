@@ -1,6 +1,8 @@
 import { getTickMethod } from '@antv/scale';
 import { getRange } from '@antv/util';
 import { toTimeStamp } from '../../util';
+import { renderComponent } from '../../base/diff'
+import Children from '../../children'
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
@@ -32,21 +34,12 @@ class Context {
 
   constructor(chart) {
     this.chart = chart;
-    this.canvas = chart.props.canvas;
+    this.canvas = chart.context.canvas;
   }
 
-  init() {
-    const scale = this.getPinchScale();
-    const values = [].concat(scale.values);
-    this.values = values;
-
-    if (this.range !== defaultRange) {
-      this.repaint(this.range);
-    }
-  }
 
   // TODO:数据或者scale发生变化后做一些处理
-  update() {}
+  update() { }
 
   // 缩放的主轴scale
   getPinchScale() {
@@ -130,6 +123,7 @@ class Context {
     // 设置当前的范围
     this.range = [start, end];
   }
+
   updateFollowScale(pinchScale, pinchValues) {
     const { chart } = this;
     const followScale = this.getFollowScale();
@@ -159,12 +153,20 @@ class Context {
     if (!scale) {
       return;
     }
+    const { field } = scale;
     const { chart } = this;
-    chart.scale.updateScale(scale, cfg);
+    chart.setScale(field, cfg)
+  }
+
+  getDefaultValues() {
+    if (this.values) { return this.values }
+    const { values } = this.getPinchScale();
+    this.values = [].concat(values);
+    return this.values;
   }
 
   getZoomedValues(range) {
-    const { values } = this;
+    const values = this.getDefaultValues();
 
     let [start, end] = range;
     const len = values.length;
@@ -177,7 +179,7 @@ class Context {
   }
 
   getZoomedTicks(newValues) {
-    const { values } = this;
+    const values = this.getDefaultValues();
     const scale = this.getPinchScale();
 
     const { tickCount } = scale;
@@ -197,6 +199,9 @@ class Context {
 
   repaint(range?) {
     const scale = this.getPinchScale();
+    if (!scale) {
+      return;
+    }
     const { values: currentValues, ticks: currentTicks } = scale;
 
     // 更新range(数据窗口)
@@ -228,12 +233,17 @@ class Context {
   }
 
   private render() {
-    const { chart, canvas } = this;
-    chart.forceUpdate();
-    canvas.staicRender();
+    const { chart } = this;
+    const { animate } = chart;
+    chart.setAnimate(false);
+    chart.setState({
+      zoomRange: this.range,
+    }, () => {
+      chart.setAnimate(animate);
+    });
   }
 
-  destroy() {}
+  destroy() { }
 }
 
 export default Context;
