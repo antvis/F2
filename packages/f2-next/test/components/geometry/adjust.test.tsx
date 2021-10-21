@@ -1,7 +1,7 @@
 import { jsx } from '../../../src/jsx';
-import Canvas, { Chart, Interval, Axis } from '../../../src/components';
 import Geometry from '../../../src/components/geometry';
-import { createContext } from '../util';
+import { createContext } from '../../util';
+import { Canvas, Chart, Interval, Axis } from '../../../src';
 const context = createContext();
 
 const data = [
@@ -20,7 +20,7 @@ const data = [
 
 class GeometryTest extends Geometry {
   render() {
-    const mappedArray = this._mapping();
+    const mappedArray = this.mapping();
     return (
       <group>
         {mappedArray.map(dataArray => {

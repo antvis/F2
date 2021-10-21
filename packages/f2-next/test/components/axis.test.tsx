@@ -1,14 +1,6 @@
-// @ts-nocheck
-
 import { jsx } from '../../src/jsx';
-import Canvas, {
-  Chart,
-  Interval,
-  Area,
-  Line,
-  Axis
-} from '../../src/components';
-import { createContext } from './util';
+import { createContext } from '../util';
+import { Canvas, Chart, Interval, Axis, Line } from '../../src';
 const context = createContext();
 
 const data = [
@@ -36,7 +28,7 @@ describe('Axis', () => {
             // }}
           />
           <Axis field="sold" />
-          <Line position="genre*sold" color="type" size="type" smooth />
+          <Line x="genre" y="sold" color="type" size="type" smooth />
         </Chart>
       </Canvas>
     );
@@ -64,7 +56,7 @@ describe('Axis', () => {
   it('render with Transposed Coord', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
-        <Coord transposed={true} />
+        {/* <Coord transposed={true} /> */}
         <Axis field="genre" />
         <Axis field="sold" />
         <Interval position={`genre*sold`} />
@@ -88,7 +80,7 @@ describe('Axis', () => {
   it('using ticks param', () => {
     const config = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
-        <Coord transposed={true} />
+        {/* <Coord transposed={true} /> */}
         <Axis field="genre" ticks={['Other']} />
         <Axis field="sold" />
         <Interval position={`genre*sold`} />
@@ -100,7 +92,7 @@ describe('Axis', () => {
   it('render label using textAligns', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
-        <Coord />
+        {/* <Coord /> */}
         <Axis
           field="genre"
           label={{
@@ -141,7 +133,7 @@ describe('Axis rect transposed', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
-        <Coord transposed={true} />
+        {/* <Coord transposed={true} /> */}
         <Axis field="genre" visible={true} />
         <Axis field="sold" visible={true} />
         <Interval position="genre*sold" />
@@ -158,7 +150,7 @@ describe('Axis polar', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
-        <Coord type="polar" transposed={false} />
+        {/* <Coord type="polar" transposed={false} /> */}
         <Axis field="genre" visible={true} />
         <Axis
           field="sold"

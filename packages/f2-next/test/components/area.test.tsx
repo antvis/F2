@@ -1,6 +1,6 @@
 import { jsx } from '../../src/jsx';
-import Canvas, { Chart, Interval, Area } from '../../src/components';
-import { createContext } from './util';
+import { Canvas, Chart } from '../../src';
+import { createContext } from '../util';
 const context = createContext();
 
 const data = [
@@ -15,7 +15,6 @@ describe.skip('Area', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={data} context={context}>
-        <Area position="genre*sold" />
       </Chart>
     );
     // @ts-ignore

@@ -1,13 +1,6 @@
 import { jsx } from '../../src/jsx';
-import Canvas, {
-  Chart,
-  Interval,
-  Area,
-  Line,
-  Axis,
-  Point
-} from '../../src/components';
-import { createContext } from './util';
+import { createContext } from '../util';
+import { Canvas, Chart, Point } from '../../src';
 const context = createContext();
 
 const data = [

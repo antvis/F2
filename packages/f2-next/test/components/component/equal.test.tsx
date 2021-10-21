@@ -1,4 +1,4 @@
-import equal from '../../../src/components/component/equal';
+import equal from '../../../src/base/equal';
 
 describe('equal', () => {
   it('equal', () => {
