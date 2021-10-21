@@ -1,16 +1,11 @@
-// @ts-nocheck
 import { createCanvas } from '@ali/f2-graphic';
-import createComponentTree from './createComponentTree';
 import Component from '../base/component';
-import Container from '../base/container';
 import Timeline from '../timeline';
 import Layout from '../base/layout';
 import equal from '../base/equal';
 import Animation from './animation';
 import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from './updater';
-import { Children } from '..';
-import { isArray } from '@antv/util';
 import theme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
 
@@ -21,6 +16,7 @@ interface ChartUpdateProps {
   padding?: (number | string)[];
   animate?: boolean;
   children?: any;
+  px2hd: any;
 }
 
 interface ChartProps extends ChartUpdateProps {
@@ -59,6 +55,7 @@ function measureText(canvas, px2hd) {
 class Canvas extends Component implements IF2Canvas {
   canvas: any;
   animation?: Animation;
+  layout: Layout;
 
   constructor(props: ChartProps) {
     super(props);
@@ -68,7 +65,6 @@ class Canvas extends Component implements IF2Canvas {
       width,
       height,
       animate = true,
-      children,
       px2hd = defaultPx2hd,
     } = props;
 
@@ -93,6 +89,7 @@ class Canvas extends Component implements IF2Canvas {
 
     // 供全局使用的一些变量
     const componentContext = {
+      root: this,
       canvas,
       width: canvasWidth,
       height: canvasHeight,
@@ -102,14 +99,14 @@ class Canvas extends Component implements IF2Canvas {
     };
 
     // 动画模块
-    const animation = animate ? new Animation(canvas) : null;
+    const animation = new Animation(canvas);
 
     this.canvas = canvas;
     this.container = canvas;
     this.layout = layout;
     this.context = componentContext;
     this.updater = updater;
-    this.global = global;
+    this.animate = animate;
     this.animation = animation;
   }
 
@@ -131,8 +128,8 @@ class Canvas extends Component implements IF2Canvas {
   }
 
   draw() {
-    const { canvas, animation, props, children } = this;
-    if (!animation) {
+    const { canvas, animate, animation, props, children } = this;
+    if (animate === false) {
       canvas.draw();
       return;
     }

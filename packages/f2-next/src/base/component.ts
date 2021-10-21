@@ -33,6 +33,9 @@ class Component {
   forceUpdate() {
     this.updater.enqueueForceUpdate(this, {});
   }
+  setAnimate(animate: boolean) {
+    this.animate = animate;
+  }
 }
 
 // 标识是否是组件
