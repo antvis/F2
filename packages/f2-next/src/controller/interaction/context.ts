@@ -234,11 +234,12 @@ class Context {
 
   private render() {
     const { chart } = this;
+    const { animate } = chart;
     chart.setAnimate(false);
     chart.setState({
       zoomRange: this.range,
     }, () => {
-      chart.setAnimate(true);
+      chart.setAnimate(animate);
     });
   }
 
