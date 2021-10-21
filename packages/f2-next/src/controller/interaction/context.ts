@@ -237,6 +237,8 @@ class Context {
     chart.setAnimate(false);
     chart.setState({
       zoomRange: this.range,
+    }, () => {
+      chart.setAnimate(true);
     });
   }
 

@@ -13,15 +13,22 @@ class InjectTestComponent extends Component {
   didMount() {
     const interactionContext = this.props.chart.interaction.context;
     window.interactionContext = interactionContext;
-    // debug:
     interactionContext.doZoom(0.5, 0.5, 1.5);
-    for (let i = 0; i <= 100; i++) {
+
+    for (let i = 0; i <= 9; i++) {
       setTimeout(() => {
         // interactionContext.doZoom(0.5, 0.5, 1.5)
         interactionContext.start();
         interactionContext.doMove(-0.001 * i);
       }, i * 100);
     }
+
+    setTimeout(() => {
+      // expect: 这里播放动画
+      this.props.chart.setState({
+        zoomRange: [0, 0],
+      });
+    }, 1000);
   }
 }
 
