@@ -1,14 +1,7 @@
 import { jsx } from '../../src/jsx';
-import Canvas, {
-  Chart,
-  Interval,
-  Area,
-  Line,
-  Axis,
-  Point,
-  Tooltip
-} from '../../src/components';
-import { createContext } from './util';
+import { Line, Tooltip } from '../../src/components';
+import { createContext } from '../util';
+import { Canvas, Chart } from '../../src';
 const context = createContext();
 
 const data = [
@@ -16,7 +9,7 @@ const data = [
   { genre: 'Strategy', sold: 115, type: 'a' },
   { genre: 'Action', sold: 120, type: 'a' },
   { genre: 'Shooter', sold: 350, type: 'a' },
-  { genre: 'Other', sold: 150, type: 'a' }
+  { genre: 'Other', sold: 150, type: 'a' },
 ];
 
 describe.skip('Tooltip', () => {

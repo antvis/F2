@@ -13,6 +13,7 @@ export {
   LineGuide,
   ArcGuide,
   RectGuide,
+  ImageGuide,
 } from './guide';
 export { default as Tooltip, withTooltip, TooltipView } from './tooltip';
 export { default as Treemap, withTreemap, TreemapView } from './treemap';

@@ -1,9 +1,7 @@
-import { jsx } from '../../lib/jsx';
-// import Canvas, { Chart, Interval, Area, Line, Axis } from '../../lib/components';
-import { Canvas, Chart } from '../../src';
-import { Line, Axis } from '../../src/components';
-import { Rect, Polar } from '../../src/coord';
-import { createContext } from "../util";
+import { jsx } from '../../src/jsx';
+import { createContext } from '../util';
+import { Canvas, Chart, Line, Axis } from '../../src';
+import { Polar, Rect } from '../../src/coord';
 
 const colorCallback = jest.fn();
 
@@ -12,108 +10,108 @@ const data = [
   { genre: 'Strategy', sold: 115, type: 'a' },
   { genre: 'Action', sold: 120, type: 'a' },
   { genre: 'Shooter', sold: 350, type: 'b' },
-  { genre: 'Other', sold: 150, type: 'b' }
+  { genre: 'Other', sold: 150, type: 'b' },
 ];
 
 const data2 = [
   {
     item: 'Design',
     user: '用户 A',
-    score: 70
+    score: 70,
   },
   {
     item: 'Design',
     user: '用户 B',
-    score: 30
+    score: 30,
   },
   {
     item: 'Development',
     user: '用户 A',
-    score: 60
+    score: 60,
   },
   {
     item: 'Development',
     user: '用户 B',
-    score: 70
+    score: 70,
   },
   {
     item: 'Marketing',
     user: '用户 A',
-    score: 50
+    score: 50,
   },
   {
     item: 'Marketing',
     user: '用户 B',
-    score: 60
+    score: 60,
   },
   {
     item: 'Users',
     user: '用户 A',
-    score: 40
+    score: 40,
   },
   {
     item: 'Users',
     user: '用户 B',
-    score: 50
+    score: 50,
   },
   {
     item: 'Test',
     user: '用户 A',
-    score: 60
+    score: 60,
   },
   {
     item: 'Test',
     user: '用户 B',
-    score: 70
+    score: 70,
   },
   {
     item: 'Language',
     user: '用户 A',
-    score: 70
+    score: 70,
   },
   {
     item: 'Language',
     user: '用户 B',
-    score: 50
+    score: 50,
   },
   {
     item: 'Technology',
     user: '用户 A',
-    score: 70
+    score: 70,
   },
   {
     item: 'Technology',
     user: '用户 B',
-    score: 40
+    score: 40,
   },
   {
     item: 'Support',
     user: '用户 A',
-    score: 60
+    score: 60,
   },
   {
     item: 'Support',
     user: '用户 B',
-    score: 40
-  }
+    score: 40,
+  },
 ];
 
 const crossData = [
   { genre: 'Sports', sold: 275, type: 'a' },
   { genre: 'Sports', sold: 115, type: 'b' },
   { genre: 'Action', sold: 120, type: 'a' },
-  { genre: 'Action', sold: 350, type: 'b' }
+  { genre: 'Action', sold: 350, type: 'b' },
 ];
 
-describe("Line", () => {
-  it("Line color callback", () => {
-    const context = createContext("Line color callback");
+describe('Line', () => {
+  const context = createContext();
+  it('Line color callback', () => {
     const { type, props } = (
       <Canvas context={context}>
         <Chart
           data={data}
           scale={{
-            sold: { min: 0 }
+            sold: { min: 0 },
           }}
           coord={{
             type: Rect,
@@ -122,14 +120,13 @@ describe("Line", () => {
           <Line
             x="genre"
             y="sold"
-            // color={[
-            //   "type",
-            //   () => {
-            //     colorCallback();
-            //     return "red";
-            //   },
-            // ]}
-            color="type"
+            color={{
+              field: 'type',
+              callback: () => {
+                colorCallback()
+                return 'red'
+              },
+            }}
             smooth={true}
             // shape="line"
             lineDash={[4, 4]}
@@ -145,24 +142,24 @@ describe("Line", () => {
     // expect(colorCallback.mock.calls.length).not.toBe(0);
   });
 
-  it("Line use order", () => {
-    const context = createContext("Line use order");
+  it('Line use order', () => {
+    const context = createContext();
     const { type, props } = (
       <Canvas context={context}>
         <Chart
           data={crossData}
           scale={{
-            sold: { min: 0 }
+            sold: { min: 0 },
           }}
           coord={{
             type: Rect,
           }}
         >
           <Line
-            order={["genre", ["Sports", "Action"]]}
             x="type"
             y="sold"
-            color={"genre"}
+            order={['genre', ['Sports', 'Action']]}
+            color={'genre'}
           />
           <Axis field="type" />
           <Axis field="sold" />
@@ -172,28 +169,30 @@ describe("Line", () => {
 
     // @ts-ignore
     const chart = new type(props);
+    console.log('chart: ', chart);
     chart.render();
-    // expect(
-    //   chart.container._attrs.children[0]._attrs.children[0]._attrs.children[0]
-    //     ._attrs.children[0]._attrs.attrs.strokeStyle
-    // ).toBe("#2FC25B");
+    expect(
+      chart.children.component.children[0].component.container._attrs
+        .children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs
+        .strokeStyle
+    ).toBe('#1890FF');
   });
 
-  it("polar", () => {
-    const context = createContext("Line use order");
+  it('polar', () => {
+    const context = createContext();
     const { type, props } = (
       <Canvas context={context}>
         <Chart
           data={data2}
           scale={{
             score: { min: 0, type: 'linear' },
-            item: { type: 'cat' }
+            item: { type: 'cat' },
           }}
           coord={{
             type: Polar,
           }}
         >
-          <Line x="item" y="score" color={"user"} />
+          <Line x="item" y="score" color={'user'} />
           <Axis field="item" />
           <Axis field="score" />
         </Chart>
@@ -202,7 +201,7 @@ describe("Line", () => {
 
     // @ts-ignore
     const canvas = new type(props);
-    const { container } = canvas;
+    // const { container } = canvas;
     canvas.render();
 
     // x计算准确
