@@ -12,7 +12,7 @@ const data = [
   { type: 'b', genre: 'Strategy', sold: 10 },
   { type: 'b', genre: 'Action', sold: 20 },
   { type: 'b', genre: 'Shooter', sold: 20 },
-  { type: 'b', genre: 'Other', sold: 40 }
+  { type: 'b', genre: 'Other', sold: 40 },
 ];
 
 describe('Chart', () => {

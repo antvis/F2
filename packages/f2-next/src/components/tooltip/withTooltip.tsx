@@ -1,7 +1,7 @@
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 
-export default View => {
+export default (View) => {
   return class Tooltip extends Component {
     constructor(props) {
       super(props);
@@ -15,16 +15,23 @@ export default View => {
     }
 
     _initEvent() {
-      const { context } = this;
+      const { context, props } = this;
       const { canvas } = context;
+      const {
+        triggerOn = 'press',
+        triggerOff = 'pressend',
+        alwaysShow = false,
+      } = props;
 
-      canvas.on('press', ev => {
+      canvas.on(triggerOn, (ev) => {
         const { points } = ev;
         this.show(points[0]);
       });
 
-      canvas.on('pressend', ev => {
-        this.hide();
+      canvas.on(triggerOff, (ev) => {
+        if (!alwaysShow) {
+          this.hide();
+        }
       });
     }
 

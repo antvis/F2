@@ -18,6 +18,8 @@ interface ChartUpdateProps {
   animate?: boolean;
   children?: any;
   px2hd: any;
+  theme: any;
+  style: any;
 }
 
 interface ChartProps extends ChartUpdateProps {
@@ -68,6 +70,7 @@ class Canvas extends Component implements IF2Canvas {
       animate = true,
       px2hd = defaultPx2hd,
       theme: customTheme,
+      style: customStyle,
     } = props;
 
     // 创建G的canvas
@@ -80,14 +83,21 @@ class Canvas extends Component implements IF2Canvas {
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
 
-    // 初始化 theme
-    const theme = px2hd(mix({}, defaultTheme, customTheme));
+    const theme = px2hd({
+      ...defaultTheme,
+      ...customTheme,
+    });
 
-    // 初始化默认的布局
-    const layout = new Layout({
+    const style = px2hd({
+      left: 0,
+      top: 0,
       width: canvasWidth,
       height: canvasHeight,
+      padding: theme.padding,
+      ...customStyle,
     });
+
+    const layout = Layout.fromStyle(style);
 
     // 组件更新器
     const updater = createUpdater(this);
@@ -96,8 +106,10 @@ class Canvas extends Component implements IF2Canvas {
     const componentContext = {
       root: this,
       canvas,
-      width: canvasWidth,
-      height: canvasHeight,
+      left: layout.left,
+      top: layout.top,
+      width: layout.width,
+      height: layout.height,
       theme,
       px2hd,
       measureText: measureText(canvas, px2hd),

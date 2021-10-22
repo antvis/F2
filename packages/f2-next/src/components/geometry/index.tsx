@@ -81,7 +81,7 @@ class Geometry extends Component implements AttrMixin {
     const { chart } = props;
 
     const attrOptions = {};
-    ATTRS.forEach(attrName => {
+    ATTRS.forEach((attrName) => {
       if (props[attrName]) {
         attrOptions[attrName] = this.createAttrOption(props[attrName]);
       }
@@ -89,7 +89,7 @@ class Geometry extends Component implements AttrMixin {
     this.attrOptions = attrOptions;
 
     // 收集需要创建scale的字段
-    each(attrOptions, option => {
+    each(attrOptions, (option) => {
       const { field, ...cfg } = option;
       chart.setScale(field, cfg);
     });
@@ -134,7 +134,7 @@ class Geometry extends Component implements AttrMixin {
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
-    each(GROUP_ATTRS, function(attrName) {
+    each(GROUP_ATTRS, function (attrName) {
       const attr = attrs[attrName];
       if (attr) {
         const { scale } = attr;
@@ -154,7 +154,7 @@ class Geometry extends Component implements AttrMixin {
 
     const appendConditions = {};
     const names = [];
-    groupScales.forEach(scale => {
+    groupScales.forEach((scale) => {
       const field = scale.field;
       names.push(field);
     });
@@ -282,9 +282,9 @@ class Geometry extends Component implements AttrMixin {
       'onPan',
       'onPanStart',
       'onPanEnd',
-    ].forEach(eventName => {
+    ].forEach((eventName) => {
       if (props[eventName]) {
-        canvas.on(eventName.substr(2).toLowerCase(), ev => {
+        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
           ev.geometry = this;
           props[eventName](ev);
         });
@@ -458,6 +458,7 @@ class Geometry extends Component implements AttrMixin {
     const { coord } = props;
     const invertPoint = coord.invertPoint(point);
     const xScale = this.getXScale();
+    const yScale = this.getYScale();
 
     // 如果不在coord坐标范围内，直接返回空
     if (invertPoint.x < 0 || invertPoint.y < 0) {
@@ -469,12 +470,17 @@ class Geometry extends Component implements AttrMixin {
     if (!value) {
       return rst;
     }
-    const { field: xfield } = xScale;
+    const { field: xField } = xScale;
+    const { field: yField } = yScale;
     for (let i = 0; i < mappedArray.length; i++) {
       const data = mappedArray[i];
       for (let j = 0, len = data.length; j < len; j++) {
-        const record = data[j];
-        const originValue = record[FIELD_ORIGIN][xfield];
+        const record = {
+          ...data[j],
+          xField,
+          yField,
+        };
+        const originValue = record[FIELD_ORIGIN][xField];
         if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
           rst.push(record);
         } else if (originValue === value) {
@@ -497,7 +503,7 @@ class Geometry extends Component implements AttrMixin {
     if (!this.getAttrRange('color')) {
       colorAttr.setRange(theme.colors);
     }
-    const items = ticks.map(tick => {
+    const items = ticks.map((tick) => {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue) || theme.colors[0];
       return {
