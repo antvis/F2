@@ -1,5 +1,5 @@
 import { isString } from '@antv/util';
-import { Linear, Category } from '../attr';
+import { Linear, Category, Identity } from '../attr';
 import { isFunction } from '@antv/util';
 
 class Attr {
@@ -20,6 +20,13 @@ class Attr {
     const { type, scale } = option;
     const { values } = scale;
     const firstValue = values[0];
+
+    // identity
+    if (scale && scale.type === 'identity') {
+      return new Identity(option);
+    }
+
+    // linear & category
     const AttrConstructor = type ? type : typeof firstValue === 'number' ? Linear : Category;
     return new AttrConstructor(option);
   }
@@ -33,7 +40,7 @@ class Attr {
   // 获取属性映射的值域
   getAttrRange(attrName) {
     const attr = this.attrs[attrName];
-    if(!attr) return;
+    if (!attr) return;
     return attr.range;
   }
 
@@ -47,9 +54,15 @@ class Attr {
 
   getAttrValue(attrName: string, record: any) {
     const attr = this.attrs[attrName];
+
     if (!attr) return null;
-    const { field, callback } = attr;
-    if(isFunction(callback)) {
+    const { field, callback, scale } = attr;
+
+    if (scale.type === 'identity') {
+      return attr.mapping(field)
+    }
+
+    if (isFunction(callback)) {
       return callback(record[field]);
     }
     return attr.mapping(record[field]);

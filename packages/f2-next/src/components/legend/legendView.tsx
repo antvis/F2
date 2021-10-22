@@ -15,6 +15,8 @@ export default props => {
 
   if (isVertical) {
     legendStyle.width = maxItemWidth;
+    legendStyle.flexDirection = 'column';
+    legendStyle.alignItems = 'flex-start';
   }
 
   if (position === 'left' || position === 'top') {

@@ -1,4 +1,4 @@
-import { each, isObject, mix, isNil, isFunction } from '@antv/util';
+import { each, isObject, mix, isNil, isFunction, isNumber } from '@antv/util';
 import { values as arrayValues, getRange } from '../util/array';
 import { registerTickMethod, Scale, getScale } from '@antv/scale';
 import CatTick from './scale/cat-tick';
@@ -39,9 +39,12 @@ class ScaleController {
   }
 
   _getType(option) {
-    const { type, values } = option;
+    const { type, values, field } = option;
     if (type) {
       return type;
+    }
+    if (isNumber(field) || (isNil(values[0]) && field)) {
+      return 'identity';
     }
     if (typeof values[0] === 'number') {
       return 'linear';
@@ -50,10 +53,18 @@ class ScaleController {
   }
 
   _getOption(option) {
-    const { values } = option;
+    const { values, field } = option;
     const type = this._getType(option);
 
     option.type = type;
+
+    // identity
+    if (type === 'identity') {
+      option.value = field;
+      option.field = field.toString()
+      option.values = [field]
+      return option;
+    }
 
     // linear 类型
     if (type === 'linear') {

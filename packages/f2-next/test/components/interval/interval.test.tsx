@@ -137,19 +137,4 @@ describe('Interval Chart', () => {
     canvas.render();
   });
 
-  it('玫瑰图', () => {
-    const chartRef = { current: null };
-    const context = createContext('玫瑰图');
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart ref={chartRef} data={data} coord={{ type: Polar }} scale={}>
-          <Interval x="genre" y="sold" color="type" adjust="stack" />
-        </Chart>
-      </Canvas>
-    );
-
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
-  });
 });
