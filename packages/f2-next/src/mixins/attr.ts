@@ -1,18 +1,30 @@
-import { isString } from '@antv/util';
+import { isString, isObject } from '@antv/util';
 import { Linear, Category, Identity } from '../attr';
 import { isFunction } from '@antv/util';
 
+type AttrOption = {
+  field: string | Record<any, any>
+  range?: any[]
+}
 class Attr {
   attrOptions: any;
   attrs: any;
 
-  createAttrOption(option) {
+  createAttrOption(option: AttrOption) {
     if (!option) return null;
+
     if (isString(option)) {
       return {
         field: option,
       }
     }
+
+    if (isObject(option)) {
+      if (!option.field) {
+        option.field = option
+      }
+    }
+
     return option;
   }
 
