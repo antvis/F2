@@ -3,7 +3,7 @@ export default (layout) => {
   const r = width / 2;
   return {
     x: left + r,
-    y: top + r,
+    y: top,
     radius: r,
-  }
-}
+  };
+};

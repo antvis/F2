@@ -4,7 +4,7 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect, mappingRect } from './util';
 
-export default View => {
+export default (View) => {
   return class Interval extends Geometry {
     startOnZero = true;
 
@@ -55,6 +55,7 @@ export default View => {
           const rect = convertRect({ ...position, size, y0 });
           mix(position, rect);
           mix(record, coord.convertRect(rect));
+          mix(record, coord.convertPoint(position));
         }
       }
       return mappedArray;

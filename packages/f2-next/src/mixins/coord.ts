@@ -1,18 +1,27 @@
-import Coord, { Rect } from '../coord';
-import { isFunction } from '@antv/util';
+import Coord, { Rect, Polar } from '../coord';
+import { isString, isFunction } from '@antv/util';
 
-class CoordAvailable {
-  createCoord(cfg, layout): Coord {
-    if (isFunction(cfg)) {
+const coordMap = {
+  rect: Rect,
+  polar: Polar,
+};
+
+class CoordMixin {
+  createCoord(cfg: any, layout): Coord {
+    if (isString(cfg)) {
       cfg = {
-        type: cfg
+        type: coordMap[cfg] || Rect,
+      };
+    } else if (isFunction(cfg)) {
+      cfg = {
+        type: cfg,
       };
     }
     const coordCfg = {
       // 默认直角坐标系
       type: Rect,
       ...layout,
-      ...cfg
+      ...cfg,
     };
     const { type, ...option } = coordCfg;
     const coord = new type(option);
@@ -24,4 +33,4 @@ class CoordAvailable {
   }
 }
 
-export default CoordAvailable;
+export default CoordMixin;
