@@ -157,7 +157,7 @@ describe('Guide ', () => {
     const GuideY1 =
       container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY1).toBe(300);
+    expect(GuideY1).toBe(285);
     const GuideY2 =
       container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
@@ -165,7 +165,7 @@ describe('Guide ', () => {
     const GuideY3 =
       container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY3).toBe(0);
+    expect(GuideY3).toBe(15);
   });
 
   it('使用百分比字符串代表位置', () => {
@@ -203,7 +203,7 @@ describe('Guide ', () => {
     const GuideY1 =
       container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY1).toBe(0);
+    expect(GuideY1).toBe(15);
     const GuideY2 =
       container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
@@ -211,6 +211,6 @@ describe('Guide ', () => {
     const GuideY3 =
       container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs
         .children[0]._attrs.attrs.y;
-    expect(GuideY3).toBe(300);
+    expect(GuideY3).toBe(285);
   });
 });

@@ -7,6 +7,9 @@ import InteractionMixin from '../mixins/interaction';
 import Layout from '../base/layout';
 import Coord from '../coord';
 import Children from '../children';
+// types
+import ScaleController from '../controller/scale';
+import InteractionController from '../controller/interaction';
 
 interface Point {
   x: number;
@@ -29,8 +32,7 @@ interface IChart {
 // 统计图表
 class Chart
   extends Component
-  implements IChart, CoordMixin, ScaleMixin, InteractionMixin
-{
+  implements IChart, CoordMixin, ScaleMixin, InteractionMixin {
   data: any;
   layout: Layout;
 
@@ -40,14 +42,14 @@ class Chart
   updateCoord: (coord, layout) => Coord;
 
   // 度量
-  scale: any;
+  scale: ScaleController;
   createScaleController: (data) => any;
   setScale: any;
   getScale: (field) => any;
   updateScales: (data) => any;
 
   // 交互
-  interaction: any;
+  interaction: InteractionController;
   createInteractionController: ({ chart: any }) => any;
   setInteraction: (type, cfg) => any;
 
@@ -61,9 +63,9 @@ class Chart
     // 创建坐标系
     const coord = this.createCoord(coordOption, layout);
     // 初始化scales
-    const scaleController = this.createScaleController(data);
+    const scaleController: ScaleController = this.createScaleController(data);
     // 创建交互事件控制器
-    const interactionController = this.createInteractionController({
+    const interactionController: InteractionController = this.createInteractionController({
       chart: this,
     });
 
@@ -283,6 +285,6 @@ class Chart
 // 多继承
 applyMixins(Chart, [CoordMixin, ScaleMixin, InteractionMixin]);
 
-class ExportChart extends Chart {}
+class ExportChart extends Chart { }
 
 export default ExportChart;
