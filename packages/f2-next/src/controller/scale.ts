@@ -43,7 +43,7 @@ class ScaleController {
     if (type) {
       return type;
     }
-    if (isNumber(field) || isNil(values[0]) && field) {
+    if (isNumber(field) || (isNil(values[0]) && field)) {
       return 'identity';
     }
     if (typeof values[0] === 'number') {
