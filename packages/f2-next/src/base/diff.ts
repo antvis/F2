@@ -14,6 +14,7 @@ function renderShape(
     // @ts-ignore
     __lastElement,
     context,
+    updater,
     animate: componentAnimate,
   } = component;
   // 先清空绘制内容
@@ -22,7 +23,7 @@ function renderShape(
   animate = isBoolean(animate) ? animate : componentAnimate;
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
-  const shapeElement = renderJSXElement(children, { context });
+  const shapeElement = renderJSXElement(children, context, updater);
   // @ts-ignore
   component.__lastElement = shapeElement;
   const renderElement =
