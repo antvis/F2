@@ -206,6 +206,7 @@ class Geometry extends Component implements AttrMixin {
     const { x, y } = attrs;
     const xField = x.field;
     const yField = y.field;
+    console.log('adjustCfg: ', adjustCfg);
     const adjustInstance = new Adjust[adjustType]({
       xField,
       yField,

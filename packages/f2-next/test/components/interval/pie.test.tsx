@@ -283,7 +283,11 @@ describe('饼图', () => {
           coord={{
             type: Polar,
           }}
-          scale={{}}
+          scale={{
+            population: {
+              min: 0
+            }
+          }}
         >
           <Interval x="year" y="population" color="year" />
           <Legend position="right" />

@@ -1,6 +1,6 @@
 const createContext = (
   title = '',
-  { height = '150px', width = '200px' }: any = {}
+  { height = '225px', width = '300px' }: any = {}
 ) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');

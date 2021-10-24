@@ -9,7 +9,7 @@ export default (View) => {
     startOnZero = true;
 
     getDefaultSize() {
-      const { attrs, props } = this;
+      const { attrs, props, adjust, dataArray } = this;
       const { coord, sizeRatio } = props;
       const { x } = attrs;
       const { scale } = x;
@@ -38,7 +38,14 @@ export default (View) => {
         ratio = defaultWithRatio.column;
       }
 
-      return (1 / values.length) * ratio;
+      const size = (1 / values.length) * ratio;
+
+      // 分组时size要除以类别个数
+      if (adjust && adjust.type === 'dodge') {
+        return size / dataArray.length;
+      }
+
+      return size;
     }
 
     _convertPosition(mappedArray) {
