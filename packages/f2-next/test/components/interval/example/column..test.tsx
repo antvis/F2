@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { jsx } from '../../../src';
-import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart } from '../../../src';
-import { Interval, Axis, Legend, Tooltip } from '../../../src/components';
-import { createContext } from '../../util';
+import { jsx } from '../../../../src';
+import { Polar, Rect } from '../../../../src/coord';
+import { Canvas, Chart } from '../../../../src';
+import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
+import { createContext } from '../../../util';
 
-describe('柱图示例', () => {
+describe('柱状图示例', () => {
   // 基础
   it('基础柱状图', () => {
     const context = createContext('基础柱状图', {
@@ -393,74 +393,91 @@ describe('柱图示例', () => {
 
   it('层叠柱图', () => {
     const context = createContext('层叠柱图', {
-    height: '300px',
+      height: '300px',
       width: '400px',
     });
-    const data =  [{
-      name: 'London',
-      月份: 'Jan.',
-      月均降雨量: 18.9
-    }, {
-      name: 'London',
-      月份: 'Feb.',
-      月均降雨量: 28.8
-    }, {
-      name: 'London',
-      月份: 'Mar.',
-      月均降雨量: 39.3
-    }, {
-      name: 'London',
-      月份: 'Apr.',
-      月均降雨量: 81.4
-    }, {
-      name: 'London',
-      月份: 'May.',
-      月均降雨量: 47
-    }, {
-      name: 'London',
-      月份: 'Jun.',
-      月均降雨量: 20.3
-    }, {
-      name: 'London',
-      月份: 'Jul.',
-      月均降雨量: 24
-    }, {
-      name: 'London',
-      月份: 'Aug.',
-      月均降雨量: 35.6
-    }, {
-      name: 'Berlin',
-      月份: 'Jan.',
-      月均降雨量: 12.4
-    }, {
-      name: 'Berlin',
-      月份: 'Feb.',
-      月均降雨量: 23.2
-    }, {
-      name: 'Berlin',
-      月份: 'Mar.',
-      月均降雨量: 34.5
-    }, {
-      name: 'Berlin',
-      月份: 'Apr.',
-      月均降雨量: 99.7
-    }, {
-      name: 'Berlin',
-      月份: 'May.',
-      月均降雨量: 52.6
-    }, {
-      name: 'Berlin',
-      月份: 'Jun.',
-      月均降雨量: 35.5
-    }, {
-      name: 'Berlin',
-      月份: 'Jul.',
-      月均降雨量: 37.4
-    }, {
-      name: 'Berlin',
-      月份: 'Aug.',
-      月均降雨量: 42.4
-    }];
+    const data = [
+      {
+        name: 'London',
+        月份: 'Jan.',
+        月均降雨量: 18.9,
+      },
+      {
+        name: 'London',
+        月份: 'Feb.',
+        月均降雨量: 28.8,
+      },
+      {
+        name: 'London',
+        月份: 'Mar.',
+        月均降雨量: 39.3,
+      },
+      {
+        name: 'London',
+        月份: 'Apr.',
+        月均降雨量: 81.4,
+      },
+      {
+        name: 'London',
+        月份: 'May.',
+        月均降雨量: 47,
+      },
+      {
+        name: 'London',
+        月份: 'Jun.',
+        月均降雨量: 20.3,
+      },
+      {
+        name: 'London',
+        月份: 'Jul.',
+        月均降雨量: 24,
+      },
+      {
+        name: 'London',
+        月份: 'Aug.',
+        月均降雨量: 35.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jan.',
+        月均降雨量: 12.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Feb.',
+        月均降雨量: 23.2,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Mar.',
+        月均降雨量: 34.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Apr.',
+        月均降雨量: 99.7,
+      },
+      {
+        name: 'Berlin',
+        月份: 'May.',
+        月均降雨量: 52.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jun.',
+        月均降雨量: 35.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jul.',
+        月均降雨量: 37.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Aug.',
+        月均降雨量: 42.4,
+      },
+    ];
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
@@ -480,87 +497,104 @@ describe('柱图示例', () => {
       height: '300px',
       width: '400px',
     });
-    const data =  [{
-      country: 'Europe',
-      year: '1750',
-      value: 163,
-      percent: 0.24511278195488723
-    }, {
-      country: 'Asia',
-      year: '1750',
-      value: 502,
-      percent: 0.7548872180451128
-    }, {
-      country: 'Europe',
-      year: '1800',
-      value: 203,
-      percent: 0.24224343675417662
-    }, {
-      country: 'Asia',
-      year: '1800',
-      value: 635,
-      percent: 0.7577565632458234
-    }, {
-      country: 'Europe',
-      year: '1850',
-      value: 276,
-      percent: 0.2543778801843318
-    }, {
-      country: 'Asia',
-      year: '1850',
-      value: 809,
-      percent: 0.7456221198156682
-    }, {
-      country: 'Europe',
-      year: '1900',
-      value: 408,
-      percent: 0.3011070110701107
-    }, {
-      country: 'Asia',
-      year: '1900',
-      value: 947,
-      percent: 0.6988929889298893
-    }, {
-      country: 'Europe',
-      year: '1950',
-      value: 547,
-      percent: 0.2806567470497691
-    }, {
-      country: 'Asia',
-      year: '1950',
-      value: 1402,
-      percent: 0.7193432529502309
-    }, {
-      country: 'Europe',
-      year: '1999',
-      value: 729,
-      percent: 0.16708686683474674
-    }, {
-      country: 'Asia',
-      year: '1999',
-      value: 3634,
-      percent: 0.8329131331652533
-    }, {
-      country: 'Europe',
-      year: '2050',
-      value: 628,
-      percent: 0.10651289009497965
-    }, {
-      country: 'Asia',
-      year: '2050',
-      value: 5268,
-      percent: 0.8934871099050203
-    }, {
-      country: 'Europe',
-      year: '2100',
-      value: 828,
-      percent: 0.10227272727272728
-    }, {
-      country: 'Asia',
-      year: '2100',
-      value: 7268,
-      percent: 0.8977272727272727
-    }];
+    const data = [
+      {
+        country: 'Europe',
+        year: '1750',
+        value: 163,
+        percent: 0.24511278195488723,
+      },
+      {
+        country: 'Asia',
+        year: '1750',
+        value: 502,
+        percent: 0.7548872180451128,
+      },
+      {
+        country: 'Europe',
+        year: '1800',
+        value: 203,
+        percent: 0.24224343675417662,
+      },
+      {
+        country: 'Asia',
+        year: '1800',
+        value: 635,
+        percent: 0.7577565632458234,
+      },
+      {
+        country: 'Europe',
+        year: '1850',
+        value: 276,
+        percent: 0.2543778801843318,
+      },
+      {
+        country: 'Asia',
+        year: '1850',
+        value: 809,
+        percent: 0.7456221198156682,
+      },
+      {
+        country: 'Europe',
+        year: '1900',
+        value: 408,
+        percent: 0.3011070110701107,
+      },
+      {
+        country: 'Asia',
+        year: '1900',
+        value: 947,
+        percent: 0.6988929889298893,
+      },
+      {
+        country: 'Europe',
+        year: '1950',
+        value: 547,
+        percent: 0.2806567470497691,
+      },
+      {
+        country: 'Asia',
+        year: '1950',
+        value: 1402,
+        percent: 0.7193432529502309,
+      },
+      {
+        country: 'Europe',
+        year: '1999',
+        value: 729,
+        percent: 0.16708686683474674,
+      },
+      {
+        country: 'Asia',
+        year: '1999',
+        value: 3634,
+        percent: 0.8329131331652533,
+      },
+      {
+        country: 'Europe',
+        year: '2050',
+        value: 628,
+        percent: 0.10651289009497965,
+      },
+      {
+        country: 'Asia',
+        year: '2050',
+        value: 5268,
+        percent: 0.8934871099050203,
+      },
+      {
+        country: 'Europe',
+        year: '2100',
+        value: 828,
+        percent: 0.10227272727272728,
+      },
+      {
+        country: 'Asia',
+        year: '2100',
+        value: 7268,
+        percent: 0.8977272727272727,
+      },
+    ];
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
@@ -570,6 +604,56 @@ describe('柱图示例', () => {
         </Chart>
       </Canvas>
     );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it('南丁格尔玫瑰图', () => {
+    const data = [
+      {
+        year: '2001',
+        population: 41.8,
+      },
+      {
+        year: '2002',
+        population: 25.8,
+      },
+      {
+        year: '2003',
+        population: 31.7,
+      },
+      {
+        year: '2004',
+        population: 46,
+      },
+      {
+        year: '2005',
+        population: 28,
+      },
+    ];
+    const context = createContext('南丁格尔玫瑰图');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+          }}
+          scale={{
+            population: {
+              min: 0,
+            },
+          }}
+        >
+          <Interval x="year" y="population" color="year" />
+          <Legend position="right" />
+        </Chart>
+      </Canvas>
+    );
+
     // @ts-ignore
     const canvas = new type(props);
     canvas.render();
