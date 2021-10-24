@@ -1,4 +1,4 @@
-import { isArray, isFunction } from '../util';
+import { isArray, isFunction, isPlainObject } from '@antv/util';
 
 function objToString(obj: any) {
   return Object.prototype.toString.call(obj);
@@ -49,6 +49,10 @@ function equal(a: any, b: any): boolean {
       }
     }
     return true;
+  }
+
+  if (!isPlainObject(a)) {
+    return false;
   }
 
   const ka = objectKeys(a);

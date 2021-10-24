@@ -11,34 +11,19 @@ registerTickMethod('time-cat', CatTick);
 registerTickMethod('wilkinson-extended', LinearTick);
 
 class ScaleController {
-  data: any;
+  private data: any;
   // scale 实例的配置
-  scaleOptions: any;
+  private options: any;
   // scale 实例
-  scales: any;
+  private scales: any;
 
   constructor(data) {
     this.data = data;
-    this.scaleOptions = {};
+    this.options = {};
     this.scales = {};
   }
 
-  // 更新或创建scale
-  scale(field, option: any = {}) {
-    if (isObject(field)) {
-      option = field;
-    } else {
-      option.field = field;
-    }
-    field = option.field;
-    const { scaleOptions, scales } = this;
-    const oldOption = scaleOptions[field] || {};
-    scaleOptions[field] = mix(oldOption, option);
-    // 如果scale有更新，scale 也需要重新创建
-    scales[field] = undefined;
-  }
-
-  _getType(option) {
+  private _getType(option) {
     const { type, values, field } = option;
     if (type) {
       return type;
@@ -52,7 +37,7 @@ class ScaleController {
     return 'cat';
   }
 
-  _getOption(option) {
+  private _getOption(option) {
     const { values, field } = option;
     const type = this._getType(option);
 
@@ -61,8 +46,8 @@ class ScaleController {
     // identity
     if (type === 'identity') {
       option.value = field;
-      option.field = field.toString()
-      option.values = [field]
+      option.field = field.toString();
+      option.values = [field];
       return option;
     }
 
@@ -104,49 +89,53 @@ class ScaleController {
     return option;
   }
 
-  // 根据 scaleOptions scale的定义，批量更新所有scale
-  updateScales(data) {
-    const { scaleOptions, scales = {} } = this;
-    each(scaleOptions, (option, field) => {
-      const values = option.values ? option.values : arrayValues(data, field);
-      const instanceScale = scales[field];
-      const scaleOption = this._getOption({
-        ...option,
-        field,
-        values,
-      });
-
-      if (instanceScale) {
-        this.updateScale(instanceScale, scaleOption);
-      } else {
-        scales[field] = this.createScale(scaleOption);
-      }
-    });
-
-    this.scales = scales;
-  }
-
-  createScale(option) {
+  private createScale(option) {
     const { type } = option;
     if (isFunction(type)) {
       return new type(option);
     }
-    const Scale = getScale(type);
-    return new Scale(option);
+    const ScaleClass = getScale(type);
+    return new ScaleClass(option);
   }
 
-  updateScale(scale, option) {
-    scale.change(option);
+  // 更新或创建scale
+  setScale(field: string, option: any = {}) {
+    const { options, scales } = this;
+    options[field] = mix({}, options[field], option);
+    // 如果scale有更新，scale 也需要重新创建
+    if (scales[field]) {
+      delete scales[field];
+    }
   }
 
-  getScale(field: string) {
-    const { scales, scaleOptions, data } = this;
+  create(options) {
+    this.update(options);
+  }
+
+  update(options) {
+    if (!options) return;
+    each(options, (option, field: string) => {
+      this.setScale(field, option);
+    });
+    // 为了让外部感知到scale有变化
+    this.scales = {
+      ...this.scales,
+    };
+  }
+
+  changeData(data) {
+    this.data = data;
+    this.scales = {};
+  }
+
+  getScale(field: string): Scale {
+    const { scales, options, data } = this;
 
     const scale = scales[field];
     if (scale) {
       return scale;
     }
-    const option = scaleOptions[field];
+    const option = options[field];
     if (!option) {
       return null;
     }
@@ -161,10 +150,18 @@ class ScaleController {
     return newScale;
   }
 
+  getScales() {
+    const { options, scales } = this;
+    each(options, (option, field: string) => {
+      this.getScale(field);
+    });
+    return scales;
+  }
+
   adjustStartZero(scale: Scale) {
-    const { scaleOptions } = this;
+    const { options } = this;
     const { field, min, max } = scale;
-    const option = scaleOptions[field];
+    const option = options[field];
     // 如果有定义，则不处理
     if (option && option.min) {
       return;
