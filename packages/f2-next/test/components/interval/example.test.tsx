@@ -111,7 +111,7 @@ describe('柱图示例', () => {
     const canvas = new type(props);
     canvas.render();
   });
-  it.only('渐变色柱状图', () => {
+  it('渐变色柱状图', () => {
     const context = createContext('区间柱状图', {
       height: '300px',
       width: '400px',
@@ -120,27 +120,27 @@ describe('柱图示例', () => {
       {
         year: '2014 年',
         sales: 145,
-        name: '1'
+        name: '1',
       },
       {
         year: '2015 年',
         sales: 121,
-        name: '1'
+        name: '1',
       },
       {
         year: '2016 年',
         sales: 100,
-        name: '1'
+        name: '1',
       },
       {
         year: '2017 年',
         sales: 97,
-        name: '1'
+        name: '1',
       },
       {
         year: '2018 年',
         sales: 85,
-        name: '1'
+        name: '1',
       },
     ];
     const { type, props } = (
@@ -148,16 +148,64 @@ describe('柱图示例', () => {
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Interval
-            x="year"
-            y="sales"
-            color="l(90) 0:#1890ff 1:#70cdd0"
-          />
+          <Interval x="year" y="sales" color="l(90) 0:#1890ff 1:#70cdd0" />
         </Chart>
       </Canvas>
     );
     // @ts-ignore
     const canvas = new type(props);
     canvas.render();
+  });
+
+  it('纹理柱状图', () => {
+    const context = createContext('纹理柱状图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        year: '1951 年',
+        sales: 38,
+      },
+      {
+        year: '1952 年',
+        sales: 52,
+      },
+      {
+        year: '1956 年',
+        sales: 61,
+      },
+      {
+        year: '1957 年',
+        sales: 145,
+      },
+      {
+        year: '1958 年',
+        sales: 48,
+      },
+    ];
+
+    // @ts-ignore
+    const img = new Image();
+    img.src =
+      'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
+
+    img.onload = function () {
+      const pattern = context.createPattern(img, 'repeat');
+
+      const { type, props } = (
+        <Canvas context={context}>
+          <Chart data={data}>
+            <Axis field="year" />
+            <Axis field="sales" />
+            <Interval x="year" y="sales" color={pattern} />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new type(props);
+
+      canvas.render();
+    };
   });
 });
