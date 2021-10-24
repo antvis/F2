@@ -2,7 +2,6 @@ import { render, renderJSXElement, compareRenderTree } from '../jsx';
 import { isArray, isUndefined, isBoolean } from '@antv/util';
 import Component from './component';
 import equal from './equal';
-import createComponentTree from './createComponentTree';
 import Children from '../children';
 
 function renderShape(
@@ -15,6 +14,7 @@ function renderShape(
     // @ts-ignore
     __lastElement,
     context,
+    updater,
     animate: componentAnimate,
   } = component;
   // 先清空绘制内容
@@ -23,7 +23,7 @@ function renderShape(
   animate = isBoolean(animate) ? animate : componentAnimate;
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
-  const shapeElement = renderJSXElement(children, { context });
+  const shapeElement = renderJSXElement(children, context, updater);
   // @ts-ignore
   component.__lastElement = shapeElement;
   const renderElement =
@@ -56,9 +56,19 @@ function setComponentAnimate(child: Component, parent: Component) {
 function createComponent(parent: Component, element: JSX.Element): Component {
   const { type, props, key, ref } = element;
   const { container, context, updater } = parent;
-  // 这里 一定是 F2 Component 了
+
+  let component: Component;
   // @ts-ignore
-  const component: Component = new type(props, context, updater);
+  if (type.prototype && type.prototype.isF2Component) {
+    // @ts-ignore
+    component = new type(props, context, updater);
+  } else {
+    component = new Component(props, context, updater);
+    component.render = function () {
+      // @ts-ignore
+      return type(props, context, updater);
+    };
+  }
 
   // 设置ref
   if (ref) {
@@ -107,7 +117,7 @@ function destroyElement(elements: JSX.Element) {
     if (component.willUnmount) {
       component.willUnmount();
     }
-    destroyElement(component.element);
+    destroyElement(component.children);
     const { container } = component;
     container.remove(true);
     if (component.didUnmount) {
@@ -217,22 +227,20 @@ function isContainer(children: JSX.Element) {
   if (!children) return false;
   if (!isArray(children)) {
     const { type } = children;
-    // @ts-ignore
-    return type.prototype && type.prototype.isF2Component;
+    return typeof type === 'function';
   }
   return isContainer(children[0]);
 }
 
 function renderChildren(parent: Component, nextChildren, lastChildren) {
-  const { context } = parent;
-  let newChildren = createComponentTree(nextChildren, { context });
-  parent.children = newChildren;
-  if (isContainer(newChildren)) {
-    newChildren = diff(parent, newChildren, lastChildren);
+  parent.children = nextChildren;
+
+  if (isContainer(nextChildren)) {
+    nextChildren = diff(parent, nextChildren, lastChildren);
   } else {
     renderShape(parent, nextChildren);
   }
-  return newChildren;
+  return nextChildren;
 }
 
 export { renderChildren, diff, renderComponent, renderShape };
