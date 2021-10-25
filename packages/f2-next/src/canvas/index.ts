@@ -59,6 +59,7 @@ class Canvas extends Component implements IF2Canvas {
   canvas: any;
   animation?: Animation;
   layout: Layout;
+  theme: any;
 
   constructor(props: ChartProps) {
     super(props);
