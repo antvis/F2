@@ -117,11 +117,15 @@ const Theme = {
       },
     },
     point: {
-      lineWidth: 0,
-      size: 3,
+      default: {
+        lineWidth: 0,
+        size: 3,
+      }
     },
     area: {
-      fillOpacity: 0.1,
+      default: {
+        fillOpacity: 0.1,
+      }
     },
   },
   axis,

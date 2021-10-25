@@ -3,7 +3,7 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { ShapeType } from '../geometry/interface';
 
-export default View => {
+export default (View) => {
   return class Line extends Geometry {
     shapeType: ShapeType = 'line';
     constructor(props, context) {
@@ -26,39 +26,19 @@ export default View => {
       return mappedArray;
     }
 
-    // 获取主题中默认 line shape 样式
-    _getThemeShape(shape: string | undefined) {
-      const { context } = this;
-      const { theme } = context;
-      const { line: lineShapeMap } = theme.shape;
-      return mix({}, lineShapeMap.default, lineShapeMap[shape]);
-    }
-
-    // 解析 shape 样式并合并
-    _mergeStyle(dataItem) {
-      const { color, shape, size } = dataItem;
-      // 'line' | 'smooth' | 'dash' 三种 shapes 映射到具体的 line attrs
-      const themeStyle = this._getThemeShape(shape);
-      return {
-        ...themeStyle,
-        size,
-        color,
-      };
-    }
-
     parsePoints(dataArray) {
       const { props } = this;
       const { coord } = props;
-      return dataArray.map(data => {
+      return dataArray.map((data) => {
         const points = data;
         if (coord.isPolar) {
           points.push(data[0]);
         }
-        const lineStyle = this._mergeStyle(data[0]);
+        const lineStyle = this.mergeStyle(data[0]);
         return {
           ...lineStyle,
           points,
-        }
+        };
       });
     }
 
@@ -68,13 +48,7 @@ export default View => {
       const { coord } = props;
       const mapped = this.mapping();
       const mappedArray = this.parsePoints(mapped);
-      return (
-        <View
-          coord={ coord }
-          mappedArray={ mappedArray }
-          style={ style }
-        />
-      );
+      return <View coord={coord} mappedArray={mappedArray} style={style} />;
     }
   };
 };

@@ -307,7 +307,7 @@ class Geometry extends Component implements AttrMixin {
       color: color[0],
       size: size[0],
       shape: shape[0],
-    }
+    };
   }
 
   // 初始化各属性值域
@@ -513,6 +513,26 @@ class Geometry extends Component implements AttrMixin {
       };
     });
     return items;
+  }
+
+  // 获取主题中默认 line shape 样式
+  _getThemeShape(shape: string | undefined) {
+    const { context } = this;
+    const { theme } = context;
+    const shapeMap = theme.shape[this.shapeType];
+    return mix({}, shapeMap.default, shapeMap[shape]);
+  }
+
+  // 解析 shape 样式并合并
+  mergeStyle(dataItem) {
+    const { color, shape, size } = dataItem;
+    // shapes 映射到具体的 line attrs
+    const themeStyle = this._getThemeShape(shape);
+    return {
+      ...themeStyle,
+      size,
+      color,
+    };
   }
 }
 
