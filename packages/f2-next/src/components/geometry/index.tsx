@@ -46,6 +46,8 @@ class Geometry extends Component implements AttrMixin {
 
   // y 轴是否从0开始
   startOnZero = false;
+  // 是否连接空值
+  connectNulls: boolean = false;
 
   createAttrOption: (option) => any;
   createAttr: (option) => any;

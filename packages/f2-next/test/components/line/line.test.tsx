@@ -255,7 +255,7 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" tickCount={5} />
-            <Line ref={lineRef} x="date" y="value" lineWidth="4px" />
+            <Line ref={lineRef} x="date" y="value" />
           </Chart>
         </Canvas>
       );
@@ -961,4 +961,111 @@ describe('折线图', () => {
   //     lineRef.current.getSnapRecords({ x: 100, y: 100 })
   //   );
   // });
+  describe('其他折线图', () => {
+    it('存在空值', () => {
+      const { offsetWidth } = document.body;
+      const height = offsetWidth * 0.75;
+      fetch('https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json')
+        .then(res => res.json())
+        .then(data => {
+          const NULL_VALUE = '存在空值';
+          const context = createContext(NULL_VALUE);
+          const lineRef = { current: null };
+          const { type, props } = (
+            <Canvas
+              context={context}
+              pixelRatio={window.devicePixelRatio}
+              width={offsetWidth}
+              height={height}
+            >
+              <Chart
+                data={data}
+                coord={{
+                  type: Rect,
+                }}
+                scale={{
+                  count: {
+                    min: 0,
+                    max: 100,
+                  }
+                }}
+              >
+                <Axis
+                  field="year"
+                  style={{
+                    textAlign: 'start',
+                    textBaseline: 'middle',
+                    rotate: Math.PI / 2
+                  }}
+                />
+                <Axis field="count" />
+                <Line
+                  ref={lineRef}
+                  x="year"
+                  y="count"
+                  color={{
+                    field: 'medalType',
+                    map: (val) => {
+                      if (val === 'Gold Medals') {
+                        return '#f3ac32';
+                      } else if (val === 'Silver Medals') {
+                        return '#b8b8b8';
+                      } else if (val === 'Bronze Medals') {
+                        return '#bb6e36';
+                      }
+                    }
+                  }}
+                />
+              </Chart>
+            </Canvas>
+          );
+
+          const canvas = new type(props);
+          canvas.render();
+          console.log(NULL_VALUE, lineRef.current.getSnapRecords({ x: 100, y: 100 }))
+        });
+    });
+
+    it('连接空值数据', () => {
+      const data = [{
+        day: '周一',
+        value: 300
+      }, {
+        day: '周二',
+        value: 400
+      }, {
+        day: '周三',
+        value: null
+      }, {
+        day: '周四',
+        value: 500
+      }, {
+        day: '周五',
+        value: 490
+      }, {
+        day: '周六',
+        value: 600
+      }, {
+        day: '周日',
+        value: 900
+      }];
+      const CONNECT_NULL = '连接空值数据';
+      const context = createContext(CONNECT_NULL);
+      const lineRef = { current: null };
+      const { offsetWidth } = document.body;
+      const height = offsetWidth * 0.75;
+      const { type, props } = (
+        <Canvas context={context} width={offsetWidth} height={height} pixelRatio={window.devicePixelRatio}>
+          <Chart data={data}>
+            <Axis field="day" />
+            <Axis field="value" />
+            <Line ref={lineRef} x="day" y="value" connectNulls />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new type(props);
+      canvas.render();
+    });
+  });
 });

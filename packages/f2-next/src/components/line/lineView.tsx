@@ -10,16 +10,20 @@ export default (props: any) => {
           const { color, points, size, lineWidth, lineDash, smooth } = item;
           return (
             <group>
-              <polyline
-                attrs={{
-                  points: points,
-                  stroke: color,
-                  lineWidth: lineWidth ?? size,
-                  lineDash,
-                  smooth,
-                  ...style,
-                }}
-              />
+              {
+                points.map(list => (
+                  <polyline
+                    attrs={{
+                      points: list,
+                      stroke: color,
+                      lineWidth: lineWidth ?? size,
+                      lineDash,
+                      smooth,
+                      ...style,
+                    }}
+                  />
+                ))
+              }
             </group>
           );
         })

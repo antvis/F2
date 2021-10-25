@@ -2,6 +2,8 @@ import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { ShapeType } from '../geometry/interface';
+import { splitArray } from '../geometry/util';
+import { each } from '@antv/util';
 
 export default (View) => {
   return class Line extends Geometry {
@@ -40,6 +42,17 @@ export default (View) => {
           points,
         };
       });
+    }
+
+    splitPoints(mappedArray) {
+      const { field: yField } = this.attrOptions.y;
+      const { connectNulls: defaultConnectNulls } = this;
+      const { connectNulls = defaultConnectNulls } = this.props;
+      each(mappedArray, function(obj) {
+        const splitArrayObj = splitArray(obj.points, yField, connectNulls);
+        obj.points = splitArrayObj;
+      });
+      return mappedArray;
     }
 
     render() {
