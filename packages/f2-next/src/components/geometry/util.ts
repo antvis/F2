@@ -6,7 +6,7 @@ function splitArray(data, yField, connectNulls) {
   let tmp = [];
   let yValue;
   each(data, function(obj) {
-    yValue = obj._origin ? obj._origin[yField] : obj[yField];
+    yValue = obj.origin ? obj.origin[yField] : obj[yField];
     if (connectNulls) {
       if (!isNil(yValue)) {
         tmp.push(obj);
