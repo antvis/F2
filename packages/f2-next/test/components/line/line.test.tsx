@@ -987,6 +987,9 @@ describe('折线图', () => {
                   count: {
                     min: 0,
                     max: 100,
+                  },
+                  year: {
+                    tickCount: 3,
                   }
                 }}
               >
@@ -1016,6 +1019,7 @@ describe('折线图', () => {
                     }
                   }}
                 />
+                <Legend position="top" />
               </Chart>
             </Canvas>
           );
