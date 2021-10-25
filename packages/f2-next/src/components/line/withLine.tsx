@@ -60,7 +60,8 @@ export default (View) => {
       const { style } = props;
       const { coord } = props;
       const mapped = this.mapping();
-      const mappedArray = this.parsePoints(mapped);
+      const mappedArray = this.splitPoints(this.parsePoints(mapped));
+      console.log(mappedArray);
       return <View coord={coord} mappedArray={mappedArray} style={style} />;
     }
   };
