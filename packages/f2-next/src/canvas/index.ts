@@ -1,4 +1,5 @@
 import { createCanvas } from '@ali/f2-graphic';
+import { mix } from '@antv/util';
 import Component from '../base/component';
 import Timeline from '../timeline';
 import Layout from '../base/layout';
@@ -124,6 +125,7 @@ class Canvas extends Component implements IF2Canvas {
     this.updater = updater;
     this.animate = animate;
     this.animation = animation;
+    this.theme = theme;
   }
 
   renderComponents(components: Component[]) {

@@ -98,22 +98,34 @@ const Theme = {
   ],
   chart,
   shapes: {
-    line: ['line', 'dash'],
-    point: ['circle', 'hollowCircle'],
+    line: [ 'line', 'dash', 'smooth' ],
+    point: [ 'circle', 'hollowCircle' ]
   },
-  sizes: [2, 4, 6, 8],
+  sizes: [ 4, 8, 10, 12 ],
   shape: {
     line: {
-      lineWidth: 2,
-      lineJoin: 'round',
-      lineCap: 'round',
+      default: {
+        lineWidth: 2,
+        lineJoin: 'round',
+        lineCap: 'round'
+      },
+      smooth: {
+        smooth: true,
+      },
+      dash: {
+        lineDash: [4, 4],
+      },
     },
     point: {
-      lineWidth: 0,
-      size: 3,
+      default: {
+        lineWidth: 0,
+        size: 3,
+      }
     },
     area: {
-      fillOpacity: 0.1,
+      default: {
+        fillOpacity: 0.1,
+      }
     },
   },
   axis,
