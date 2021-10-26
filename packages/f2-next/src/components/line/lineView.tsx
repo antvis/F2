@@ -2,22 +2,28 @@ import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 
 export default (props: any) => {
-  const { mappedArray } = props;
-
+  const { mappedArray, style } = props;
   return (
     <group>
       {
         mappedArray.map(item => {
-          const { color, points } = item;
+          const { color, dataArray, size, lineWidth, lineDash, smooth } = item;
           return (
             <group>
-              <polyline
-                attrs={{
-                  points: points,
-                  stroke: color,
-                  lineWidth: '4px',
-                }}
-              />
+              {
+                dataArray.map(data => (
+                  <polyline
+                    attrs={{
+                      points: data,
+                      stroke: color,
+                      lineWidth: lineWidth ?? size,
+                      lineDash,
+                      smooth,
+                      ...style,
+                    }}
+                  />
+                ))
+              }
             </group>
           );
         })

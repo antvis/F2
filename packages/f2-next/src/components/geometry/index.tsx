@@ -20,6 +20,7 @@ import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
+import { AttrRange, ShapeType } from './interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -27,7 +28,6 @@ const FIELD_ORIGIN = 'origin';
 const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
-
 class Geometry extends Component implements AttrMixin {
   isGeometry = true;
   isInit = false;
@@ -35,6 +35,8 @@ class Geometry extends Component implements AttrMixin {
   data: any;
   attrs: any = {};
   adjust: any;
+  ranges: AttrRange = {}; // 各属性值域
+  shapeType?: ShapeType;
 
   // 预处理后的数据
   dataArray: any;
@@ -44,6 +46,8 @@ class Geometry extends Component implements AttrMixin {
 
   // y 轴是否从0开始
   startOnZero = false;
+  // 是否连接空值
+  connectNulls: boolean = false;
 
   createAttrOption: (option) => any;
   createAttr: (option) => any;
@@ -53,13 +57,14 @@ class Geometry extends Component implements AttrMixin {
   getAttrValue: (attrName, record) => any;
   getAttrRange: (attrName) => any;
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this._init();
   }
 
   _init() {
     this._prepareAttrs();
+    this._initAttrRanges();
     this._createAttrs();
     this._adjustScales();
     this._processData();
@@ -297,27 +302,28 @@ class Geometry extends Component implements AttrMixin {
     return chart.scale.getZeroValue(scale);
   }
 
-  // 获取
+  // 从值域中第一个值获取属性默认 value
   _getAttrsDefaultValue() {
-    const { context } = this;
-    const { theme } = context;
+    const { color = [], size = [], shape = [] } = this.ranges;
     return {
-      color: theme.colors[0],
+      color: color[0],
+      size: size[0],
+      shape: shape[0],
     };
   }
 
-  _getAttrsRange() {
+  // 初始化各属性值域
+  _initAttrRanges() {
     const { context } = this;
     const { theme } = context;
 
-    // 构造各属性的值域
-    const ranges = {
+    // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
+    this.ranges = {
       color: theme.colors,
       size: theme.sizes,
-      shape: theme.shapes,
     };
 
-    return ranges;
+    return this.ranges;
   }
 
   // 映射除 x, y 之外的图形属性
@@ -327,12 +333,11 @@ class Geometry extends Component implements AttrMixin {
     const attrNamesLength = attrNames.length;
 
     // 设置各属性的值域
-    const attrsRange = this._getAttrsRange();
     for (let key = 0; key < attrNamesLength; key++) {
       const attrName = attrNames[key];
 
       if (!this.getAttrRange(attrName)) {
-        this.setAttrRange(attrName, attrsRange[attrName]);
+        this.setAttrRange(attrName, this.ranges[attrName]);
       }
     }
 
@@ -510,6 +515,26 @@ class Geometry extends Component implements AttrMixin {
       };
     });
     return items;
+  }
+
+  // 获取主题中默认 line shape 样式
+  _getThemeShape(shape: string | undefined) {
+    const { context } = this;
+    const { theme } = context;
+    const shapeMap = theme.shape[this.shapeType];
+    return mix({}, shapeMap.default, shapeMap[shape]);
+  }
+
+  // 解析 shape 样式并合并
+  mergeStyle(dataItem) {
+    const { color, shape, size } = dataItem;
+    // shapes 映射到具体的 line attrs
+    const themeStyle = this._getThemeShape(shape);
+    return {
+      ...themeStyle,
+      size,
+      color,
+    };
   }
 }
 

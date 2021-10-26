@@ -1,8 +1,16 @@
 import { render, renderJSXElement, compareRenderTree } from '../jsx';
-import { isArray, isUndefined, isBoolean } from '@antv/util';
+import { isArray, isUndefined, isBoolean, pick } from '@antv/util';
 import Component from './component';
 import equal from './equal';
 import Children from '../children';
+
+function pickElement(element) {
+  if (!element) return element;
+  return Children.map(element, (item) => {
+    // 只需要这几个元素就可以了
+    return pick(item, ['key', 'ref', 'type', 'props']);
+  });
+}
 
 function renderShape(
   component: Component,
@@ -130,15 +138,16 @@ function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
   if (!nextElement && !lastElement) {
     return null;
   }
-  // 新建
-  if (nextElement && !lastElement) {
-    return nextElement;
-  }
 
   // 删除
   if (!nextElement && lastElement) {
     destroyElement(lastElement);
     return null;
+  }
+
+  // 新建
+  if (nextElement && !lastElement) {
+    return nextElement;
   }
 
   // diff
@@ -233,6 +242,8 @@ function isContainer(children: JSX.Element) {
 }
 
 function renderChildren(parent: Component, nextChildren, lastChildren) {
+  // react 生成的 element 是 not extensible 的，这里新建一个新对象，并把需要的内容pick 出来
+  nextChildren = pickElement(nextChildren);
   parent.children = nextChildren;
 
   if (isContainer(nextChildren)) {

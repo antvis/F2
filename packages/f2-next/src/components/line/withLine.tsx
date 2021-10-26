@@ -1,9 +1,18 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
+import { ShapeType } from '../geometry/interface';
+import { splitArray } from '../geometry/util';
+import { each } from '@antv/util';
 
-export default View => {
+export default (View) => {
   return class Line extends Geometry {
+    shapeType: ShapeType = 'line';
+    constructor(props, context) {
+      super(props, context);
+      this.ranges.shape = this.context.theme.shapes[this.shapeType];
+    }
+
     _convertPosition(mappedArray) {
       const { props } = this;
       const { coord } = props;
@@ -22,27 +31,37 @@ export default View => {
     parsePoints(dataArray) {
       const { props } = this;
       const { coord } = props;
-      return dataArray.map(data => {
-        const { color, shape, size } = data[0];
+      return dataArray.map((data) => {
         const points = data;
         if (coord.isPolar) {
           points.push(data[0]);
         }
+        const lineStyle = this.mergeStyle(data[0]);
         return {
-          color,
-          shape,
-          size,
+          ...lineStyle,
           points,
         };
       });
     }
 
+    splitPoints(mappedArray) {
+      const { field: yField } = this.attrOptions.y;
+      const { connectNulls: defaultConnectNulls } = this;
+      const { connectNulls = defaultConnectNulls } = this.props;
+      each(mappedArray, function(obj) {
+        const splitArrayObj = splitArray(obj.points, yField, connectNulls);
+        obj.dataArray = splitArrayObj;
+      });
+      return mappedArray;
+    }
+
     render() {
       const { props } = this;
+      const { style } = props;
       const { coord } = props;
       const mapped = this.mapping();
-      const mappedArray = this.parsePoints(mapped);
-      return <View coord={coord} mappedArray={mappedArray} />;
+      const mappedArray = this.splitPoints(this.parsePoints(mapped));
+      return <View coord={coord} mappedArray={mappedArray} style={style} />;
     }
   };
 };
