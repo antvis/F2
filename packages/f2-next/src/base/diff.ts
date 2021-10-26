@@ -144,8 +144,6 @@ function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
     destroyElement(lastElement);
     return null;
   }
-  // react 生成的 element 是 not extensible 的，这里新建一个新对象，并把需要的内容pick 出来
-  nextElement = pickElement(nextElement);
 
   // 新建
   if (nextElement && !lastElement) {
@@ -244,6 +242,8 @@ function isContainer(children: JSX.Element) {
 }
 
 function renderChildren(parent: Component, nextChildren, lastChildren) {
+  // react 生成的 element 是 not extensible 的，这里新建一个新对象，并把需要的内容pick 出来
+  nextChildren = pickElement(nextChildren);
   parent.children = nextChildren;
 
   if (isContainer(nextChildren)) {
