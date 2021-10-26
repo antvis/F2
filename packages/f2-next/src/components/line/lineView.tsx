@@ -7,19 +7,23 @@ export default (props: any) => {
     <group>
       {
         mappedArray.map(item => {
-          const { color, points, size, lineWidth, lineDash, smooth } = item;
+          const { color, dataArray, size, lineWidth, lineDash, smooth } = item;
           return (
             <group>
-              <polyline
-                attrs={{
-                  points: points,
-                  stroke: color,
-                  lineWidth: lineWidth ?? size,
-                  lineDash,
-                  smooth,
-                  ...style,
-                }}
-              />
+              {
+                dataArray.map(data => (
+                  <polyline
+                    attrs={{
+                      points: data,
+                      stroke: color,
+                      lineWidth: lineWidth ?? size,
+                      lineDash,
+                      smooth,
+                      ...style,
+                    }}
+                  />
+                ))
+              }
             </group>
           );
         })
