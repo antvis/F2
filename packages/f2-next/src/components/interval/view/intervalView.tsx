@@ -1,14 +1,15 @@
-import { jsx } from '../../jsx';
-import { isArray } from '@antv/util';
+import { jsx } from '../../../jsx';
 
 export default (props: any) => {
   const { coord, mappedArray } = props;
   const { center, type: coordType } = coord;
+
+  // 直角坐标系
   if (coordType === 'rect') {
     return (
       <group>
-        {mappedArray.map((dataArray, index) => {
-          return dataArray.map(item => {
+        {mappedArray.map((dataArray) => {
+          return dataArray.map((item) => {
             const { xMin, xMax, yMin, yMax, color } = item;
             return (
               <rect
@@ -23,7 +24,6 @@ export default (props: any) => {
                   appear: {
                     easing: 'linear',
                     duration: 450,
-                    // delay: 450 * index,
                     property: ['y', 'height'],
                     start: {
                       y: yMax,
@@ -43,10 +43,12 @@ export default (props: any) => {
       </group>
     );
   }
+
+  // 极坐标系
   return (
     <group>
-      {mappedArray.map(dataArray => {
-        return dataArray.map(item => {
+      {mappedArray.map((dataArray) => {
+        return dataArray.map((item) => {
           const { xMin, xMax, yMin, yMax, color } = item;
           return (
             <sector

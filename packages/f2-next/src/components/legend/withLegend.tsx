@@ -36,6 +36,7 @@ export default View => {
       }
       const maxItemWidth = this.getMaxItemWidth(shape);
       this.maxItemWidth = maxItemWidth;
+      shape.remove();
       chart.layoutCoord(position, { width: maxItemWidth, height });
     }
 

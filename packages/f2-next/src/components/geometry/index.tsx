@@ -92,8 +92,8 @@ class Geometry extends Component implements AttrMixin {
 
     // 收集需要创建scale的字段
     each(attrOptions, (option) => {
-      const { field, ...cfg } = option;
-      chart.setScale(field, cfg);
+      const { field } = option;
+      chart.setScale(field);
     });
 
     this.attrOptions = attrOptions;

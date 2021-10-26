@@ -4,12 +4,12 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect, mappingRect } from './util';
 
-export default (View) => {
+export default (Views) => {
   return class Interval extends Geometry {
     startOnZero = true;
 
     getDefaultSize() {
-      const { attrs, props } = this;
+      const { attrs, props, adjust, dataArray } = this;
       const { coord, sizeRatio } = props;
       const { x } = attrs;
       const { scale } = x;
@@ -38,7 +38,14 @@ export default (View) => {
         ratio = defaultWithRatio.column;
       }
 
-      return (1 / values.length) * ratio;
+      const size = (1 / values.length) * ratio;
+
+      // 分组时size要除以类别个数
+      if (adjust && adjust.type === 'dodge') {
+        return size / dataArray.length;
+      }
+
+      return size;
     }
 
     _convertPosition(mappedArray) {
@@ -63,9 +70,13 @@ export default (View) => {
 
     render() {
       const { props } = this;
-      const { coord } = props;
+      const { coord, shape = 'rect' } = props;
+      const View = Views[shape];
+
+      if (!View) return null;
+
       const data = this.mapping();
-      return <View coord={coord} mappedArray={data} />;
+      return <View coord={coord} mappedArray={data} shape={shape} />;
     }
   };
 };

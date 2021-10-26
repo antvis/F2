@@ -3,8 +3,9 @@ import {
   renderJSXElement,
   jsx,
   Fragment,
-  compareRenderTree
+  compareRenderTree,
 } from '../../src/jsx';
+import { createUpdater } from '../../src/canvas/updater';
 
 const ViewA = () => {
   return <text />;
@@ -25,7 +26,8 @@ const ViewB = () => {
 
 describe('renderJSXElement', () => {
   it('renderJSXElement', () => {
-    const view = renderJSXElement(<ViewB />, { a: 1 });
+    const updater = createUpdater({});
+    const view = renderJSXElement(<ViewB />, { a: 1 }, updater);
     expect(view.type).toBe('group');
     expect(view.props.children.length).toBe(2);
     expect(view.props.children[0].type).toBe('text');
@@ -33,10 +35,11 @@ describe('renderJSXElement', () => {
   });
 
   it('renderJSXElement return null', () => {
-    const empty = renderJSXElement(null, { a: 1 });
+    const updater = createUpdater({});
+    const empty = renderJSXElement(null, { a: 1 }, updater);
     expect(empty).toBeNull();
 
-    const viewNull = renderJSXElement(<ViewNull />, { a: 1 });
+    const viewNull = renderJSXElement(<ViewNull />, { a: 1 }, updater);
     expect(viewNull).toBeNull();
   });
 });
