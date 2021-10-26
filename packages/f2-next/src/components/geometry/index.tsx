@@ -57,7 +57,7 @@ class Geometry extends Component implements AttrMixin {
   getAttrValue: (attrName, record) => any;
   getAttrRange: (attrName) => any;
 
-  constructor(props, context) {
+  constructor(props, context?) {
     super(props, context);
     this._init();
   }

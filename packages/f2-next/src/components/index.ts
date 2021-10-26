@@ -1,6 +1,6 @@
 export { default as Geometry } from './geometry';
 export { default as Line, withLine, LineView } from './line';
-// // // export { default as Area, withArea, AreaView } from './area';
+export { default as Area, withArea, AreaView } from './area';
 export { default as Interval, withInterval, IntervalView } from './interval';
 export { default as Point, withPoint, PointView } from './point';
 export { default as Axis, withAxis, AxisView } from './axis';
