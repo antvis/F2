@@ -50,7 +50,7 @@ export default (View) => {
       const { connectNulls = defaultConnectNulls } = this.props;
       each(mappedArray, function(obj) {
         const splitArrayObj = splitArray(obj.points, yField, connectNulls);
-        obj.points = splitArrayObj;
+        obj.dataArray = splitArrayObj;
       });
       return mappedArray;
     }
