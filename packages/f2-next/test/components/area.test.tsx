@@ -33,7 +33,6 @@ const data = [{
 }];
 describe('Area', () => {
   it('render', () => {
-    const areaRef = { current: null };
     const { type, props } = (
       <Canvas
         context={context}
@@ -55,7 +54,7 @@ describe('Area', () => {
         }}>
           <Axis field="time" />
           <Axis field="tem" />
-          <Area x="time" y="tem" ref={areaRef} />
+          <Area x="time" y="tem" />
           <Line x="time" y="tem" />
         </Chart>
       </Canvas>
@@ -63,6 +62,5 @@ describe('Area', () => {
     // @ts-ignore
     const chart = new type(props);
     chart.render();
-    console.log(areaRef.current.getSnapRecords({ x: 100, y: 100 }));
   });
 });
