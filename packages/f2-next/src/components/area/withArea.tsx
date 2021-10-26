@@ -52,7 +52,7 @@ export default (View) => {
       const { field: yField } = this.attrOptions.y;
       const { connectNulls: defaultConnectNulls } = this;
       const { connectNulls = defaultConnectNulls } = this.props;
-      each(mappedArray, function(obj) {
+      each(mappedArray, function (obj) {
         const dataArray = splitArray(obj.points, yField, connectNulls);
         obj.dataArray = dataArray;
       });
@@ -63,11 +63,11 @@ export default (View) => {
     _generatePolygonPoints(mappedArray) {
       const y0 = this.getY0Value();
       const { coord } = this.props;
-      const p = coord.convertPoint({x: 0, y: y0});
-      each(mappedArray, function(obj) {
+      const p = coord.convertPoint({ x: 0, y: y0 });
+      each(mappedArray, function (obj) {
         const { dataArray } = obj;
         if (dataArray?.length) {
-          each(dataArray, function(data) {
+          each(dataArray, function (data) {
             const start = {
               x: data[0].x,
               y: p.y,
@@ -90,7 +90,7 @@ export default (View) => {
       const { props } = this;
       const mapped = this.mapping();
       const { coord, style } = props;
-      return <View coord={coord} mappedArray={mapped} style={style} />
+      return <View coord={coord} mappedArray={mapped} style={style} />;
     }
-  }
+  };
 };

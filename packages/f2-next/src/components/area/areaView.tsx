@@ -1,6 +1,5 @@
 import { jsx } from '../../jsx';
 
-
 export default (props: any) => {
   const { mappedArray, style } = props;
   return (
