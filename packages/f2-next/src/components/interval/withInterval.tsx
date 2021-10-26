@@ -4,7 +4,7 @@ import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect, mappingRect } from './util';
 
-export default (View) => {
+export default (Views) => {
   return class Interval extends Geometry {
     startOnZero = true;
 
@@ -70,9 +70,13 @@ export default (View) => {
 
     render() {
       const { props } = this;
-      const { coord } = props;
+      const { coord, shape = 'rect' } = props;
+      const View = Views[shape];
+
+      if (!View) return null;
+
       const data = this.mapping();
-      return <View coord={coord} mappedArray={data} />;
+      return <View coord={coord} mappedArray={data} shape={shape} />;
     }
   };
 };
