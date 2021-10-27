@@ -98,11 +98,13 @@ const Theme = {
   ],
   chart,
   shapes: {
-    line: [ 'line', 'dash', 'smooth' ],
-    point: [ 'circle', 'hollowCircle' ]
+    line: ['line', 'dash', 'smooth'],
+    point: ['circle', 'hollowCircle'],
+    area: ['area', 'smooth'],
+    interval: ['rect', 'pyramid', 'funnel']
   },
-  sizes: [ 4, 8, 10, 12 ],
-  shape: {
+  sizes: [4, 8, 10, 12],
+  geometry: {
     line: {
       default: {
         lineWidth: 2,
@@ -127,6 +129,9 @@ const Theme = {
         fillOpacity: 0.1,
       }
     },
+    interval: {
+      default: {}
+    }
   },
   axis,
   guide,

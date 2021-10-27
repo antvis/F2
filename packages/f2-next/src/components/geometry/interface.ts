@@ -4,4 +4,4 @@ export interface AttrRange {
   size?: any[];
 }
 
-export type GeomType = 'line' | 'point' | 'area' | 'polygon' | 'schema';
+export type GeomType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
