@@ -2,9 +2,12 @@ import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
 import { convertRect } from './util';
+import { GeomType } from '../geometry/interface';
 
 export default (Views) => {
   return class Interval extends Geometry {
+    geomType: GeomType = 'interval';
+
     startOnZero = true;
 
     getDefaultSize() {

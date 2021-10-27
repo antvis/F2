@@ -1,26 +1,20 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
-import { ShapeType } from '../geometry/interface';
+import { GeomType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
 import { each } from '@antv/util';
 
 export default (View) => {
   return class Area extends Geometry {
-    shapeType: ShapeType = 'area';
-
-    constructor(props, context) {
-      super(props, context);
-      this.ranges.shape = this.context.theme.shapes[this.shapeType];
-    }
+    geomType: GeomType = 'area';
 
     parsePoints(dataArray) {
       // 1. 添加 points
       const withPoints = dataArray.map((data) => {
         const points = data;
-        const lineStyle = this.mergeStyle(data[0]);
         return {
-          ...lineStyle,
+          ...data[0],
           points,
         };
       });
@@ -89,8 +83,8 @@ export default (View) => {
     render() {
       const { props } = this;
       const mapped = this.mapping();
-      const { coord, style } = props;
-      return <View coord={coord} mappedArray={mapped} style={style} />;
+      const { coord } = props;
+      return <View coord={coord} mappedArray={mapped} />;
     }
   };
 };

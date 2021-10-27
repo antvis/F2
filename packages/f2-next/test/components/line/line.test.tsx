@@ -526,6 +526,87 @@ describe('折线图', () => {
                   y="value"
                   lineWidth="4px"
                   color="type"
+                  shape="type"
+                />
+                {/* TODO(@buli): 动态 legend value */}
+                <Legend position="top" />
+              </Chart>
+            </Canvas>
+          );
+
+          const canvas = new type(props);
+          canvas.render();
+
+          console.log(
+            MULTIPLE_SERIES,
+            lineRef.current.getSnapRecords({ x: 100, y: 100 })
+          );
+        });
+    });
+
+    it('style支持传入函数', () => {
+      const MULTIPLE_SERIES = 'style支持传入函数';
+      const context = createContext(MULTIPLE_SERIES);
+      const chartRef = { current: null };
+      const lineRef = { current: null };
+      fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const { type, props } = (
+            <Canvas
+              context={context}
+              pixelRatio={window.devicePixelRatio}
+              width={offsetWidth}
+              height={height}
+            >
+              <Chart
+                ref={chartRef}
+                data={data}
+                coord={{
+                  type: Rect,
+                }}
+                scale={{}}
+              >
+                <Axis
+                  field="date"
+                  tickCount={3}
+                  style={{
+                    label: { align: 'between' },
+                  }}
+                />
+                <Axis field="value" tickCount={5} />
+                <Line
+                  ref={lineRef}
+                  x="date"
+                  y="value"
+                  lineWidth="4px"
+                  color={{
+                    field: 'type',
+                    callback: (type) => {
+                      if(type === '金属') {
+                        return '#666'
+                      }
+                      return 'red'
+                    }
+                  }}
+                  style={{
+                    field: 'type', // 可选指定field
+                    smooth: true, // 传入非函数的值
+                    stroke: (type) => { // 传入函数
+                      if(type === '金属') {
+                        return '#666'
+                      }
+                      return 'red'
+                    },
+                    lineWidth: (type) => {
+                      if(type === '金属') {
+                        return 2
+                      }
+                      return 1
+                    }
+                  }}
                 />
                 {/* TODO(@buli): 动态 legend value */}
                 <Legend position="top" />
@@ -682,7 +763,17 @@ describe('折线图', () => {
               x="time"
               y="value"
               lineWidth="4px"
-              shape="type"
+              shape={{
+                field: 'type',
+                callback: (type) => {
+                  if (type === '预期收益率') {
+                    return 'line';
+                  }
+                  if (type === '实际收益率') {
+                    return 'dash';
+                  }
+                },
+              }}
               color="type"
             />
             <Legend position="top" />
@@ -965,9 +1056,11 @@ describe('折线图', () => {
     it('存在空值', () => {
       const { offsetWidth } = document.body;
       const height = offsetWidth * 0.75;
-      fetch('https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json')
-        .then(res => res.json())
-        .then(data => {
+      fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json'
+      )
+        .then((res) => res.json())
+        .then((data) => {
           const NULL_VALUE = '存在空值';
           const context = createContext(NULL_VALUE);
           const lineRef = { current: null };
@@ -990,7 +1083,7 @@ describe('折线图', () => {
                   },
                   year: {
                     tickCount: 3,
-                  }
+                  },
                 }}
               >
                 <Axis
@@ -998,7 +1091,7 @@ describe('折线图', () => {
                   style={{
                     textAlign: 'start',
                     textBaseline: 'middle',
-                    rotate: Math.PI / 2
+                    rotate: Math.PI / 2,
                   }}
                 />
                 <Axis field="count" />
@@ -1016,7 +1109,7 @@ describe('折线图', () => {
                       } else if (val === 'Bronze Medals') {
                         return '#bb6e36';
                       }
-                    }
+                    },
                   }}
                 />
                 <Legend position="top" />
@@ -1026,40 +1119,56 @@ describe('折线图', () => {
 
           const canvas = new type(props);
           canvas.render();
-          console.log(NULL_VALUE, lineRef.current.getSnapRecords({ x: 100, y: 100 }))
+          console.log(
+            NULL_VALUE,
+            lineRef.current.getSnapRecords({ x: 100, y: 100 })
+          );
         });
     });
 
     it('连接空值数据', () => {
-      const data = [{
-        day: '周一',
-        value: 300
-      }, {
-        day: '周二',
-        value: 400
-      }, {
-        day: '周三',
-        value: null
-      }, {
-        day: '周四',
-        value: 500
-      }, {
-        day: '周五',
-        value: 490
-      }, {
-        day: '周六',
-        value: 600
-      }, {
-        day: '周日',
-        value: 900
-      }];
+      const data = [
+        {
+          day: '周一',
+          value: 300,
+        },
+        {
+          day: '周二',
+          value: 400,
+        },
+        {
+          day: '周三',
+          value: null,
+        },
+        {
+          day: '周四',
+          value: 500,
+        },
+        {
+          day: '周五',
+          value: 490,
+        },
+        {
+          day: '周六',
+          value: 600,
+        },
+        {
+          day: '周日',
+          value: 900,
+        },
+      ];
       const CONNECT_NULL = '连接空值数据';
       const context = createContext(CONNECT_NULL);
       const lineRef = { current: null };
       const { offsetWidth } = document.body;
       const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas context={context} width={offsetWidth} height={height} pixelRatio={window.devicePixelRatio}>
+        <Canvas
+          context={context}
+          width={offsetWidth}
+          height={height}
+          pixelRatio={window.devicePixelRatio}
+        >
           <Chart data={data}>
             <Axis field="day" />
             <Axis field="value" />
