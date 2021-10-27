@@ -1,8 +1,7 @@
-// @ts-nocheck
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
-import { convertRect, mappingRect } from './util';
+import { convertRect } from './util';
 
 export default (Views) => {
   return class Interval extends Geometry {
@@ -52,14 +51,14 @@ export default (Views) => {
       const { props } = this;
       const { coord } = props;
       const y0 = this.getY0Value();
-      const defaultSize = this.getDefaultSize();
+      const intervalSize = this.getDefaultSize();
 
       for (let i = 0; i < mappedArray.length; i++) {
         const data = mappedArray[i];
         for (let j = 0; j < data.length; j++) {
           const record = data[j];
-          const { position, size = defaultSize } = record;
-          const rect = convertRect({ ...position, size, y0 });
+          const { position } = record;
+          const rect = convertRect({ ...position, size: intervalSize, y0 });
           mix(position, rect);
           mix(record, coord.convertRect(rect));
           mix(record, coord.convertPoint(position));
