@@ -15,9 +15,13 @@ export default (View) => {
     }
 
     parsePoints(dataArray) {
+      const { coord } = this.props;
       // 1. 添加 points
       const withPoints = dataArray.map((data) => {
         const points = data;
+        if (coord.isPolar) {
+          points.push(data[0]);
+        }
         const lineStyle = this.mergeStyle(data[0]);
         return {
           ...lineStyle,
@@ -63,18 +67,21 @@ export default (View) => {
     _generatePolygonPoints(mappedArray) {
       const y0 = this.getY0Value();
       const { coord } = this.props;
+      // 零点映射到绝对坐标
       const p = coord.convertPoint({ x: 0, y: y0 });
+      // 如果 startOnZero，则取 yStart 坐标，否则取零点 y 坐标
+      const y = this.props.startOnZero ? coord.y[0] : p.y;
       each(mappedArray, function (obj) {
         const { dataArray } = obj;
         if (dataArray?.length) {
           each(dataArray, function (data) {
             const start = {
               x: data[0].x,
-              y: p.y,
+              y,
             };
             const end = {
               x: data[data.length - 1].x,
-              y: p.y,
+              y,
             };
             // 插入头尾坐标
             data.unshift(start);
@@ -86,6 +93,7 @@ export default (View) => {
       return mappedArray;
     }
 
+    // TODO: smooth
     render() {
       const { props } = this;
       const mapped = this.mapping();
