@@ -74,7 +74,7 @@ function createComponent(parent: Component, element: JSX.Element): Component {
     component = new Component(props, context, updater);
     component.render = function () {
       // @ts-ignore
-      return type(props, context, updater);
+      return type(this.props, context, updater);
     };
   }
 
@@ -207,9 +207,11 @@ function diff(parent: Component, nextChildren, lastChildren) {
       let { component } = element;
       if (!component) {
         component = createComponent(parent, element);
-      } else if (component.willReceiveProps) {
+      } else {
         const { props } = element;
-        component.willReceiveProps(props);
+        if (component.willReceiveProps) {
+          component.willReceiveProps(props);
+        }
         component.props = props;
       }
 

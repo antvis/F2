@@ -1,14 +1,13 @@
 import { jsx } from '../../jsx';
 
-export default props => {
-  console.log('treemapView', props);
+export default (props) => {
   const { nodes, coord } = props;
   if (coord.isPolar) {
     const { center } = coord;
     const { x, y } = center;
     return (
       <group>
-        {nodes.map(node => {
+        {nodes.map((node) => {
           const { xMin, xMax, yMin, yMax, color } = node;
           return (
             <sector
@@ -22,7 +21,7 @@ export default props => {
                 r0: yMin,
                 r: yMax,
                 anticlockwise: false,
-                fill: color
+                fill: color,
               }}
             />
           );
@@ -32,7 +31,7 @@ export default props => {
   }
   return (
     <group>
-      {nodes.map(node => {
+      {nodes.map((node) => {
         const { xMin, xMax, yMin, yMax, color } = node;
         return (
           <rect
@@ -44,7 +43,7 @@ export default props => {
               fill: color,
               lineWidth: '4px',
               stroke: '#fff',
-              radius: '8px'
+              radius: '8px',
             }}
           />
         );

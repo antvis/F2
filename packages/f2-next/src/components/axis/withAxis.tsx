@@ -1,29 +1,45 @@
 import { mix, deepMix } from '@antv/util';
 import { jsx } from '../../jsx';
+import equal from '../../base/equal';
 import Component from '../../base/component';
 import Chart from '../../chart';
 
-export default View => {
+export default (View) => {
   return class Axis extends Component {
     chart: Chart;
     style: any;
 
     constructor(props) {
       super(props);
-      const {
-        chart,
-        field,
-        type,
-        tickCount,
-        range,
-        formatter,
-        mask,
-        min,
-        max,
-        nice,
-      } = props;
+      const { chart, field } = props;
 
-      chart.setScale(field, {
+      const scaleOption = this.getScaleOption(props);
+      chart.setScale(field, scaleOption);
+    }
+
+    willReceiveProps(nextProps) {
+      const { props: lastProps } = this;
+      const { chart, field } = nextProps;
+
+      const nextScaleOption = this.getScaleOption(nextProps);
+      const lastScaleOption = this.getScaleOption(lastProps);
+      if (!equal(nextScaleOption, lastScaleOption)) {
+        chart.setScale(field, nextScaleOption);
+      }
+    }
+
+    willMount() {
+      this.updateCoord();
+    }
+
+    willUpdate() {
+      this.updateCoord();
+    }
+
+    getScaleOption(props) {
+      const { type, tickCount, range, mask, formatter, min, max, nice } = props;
+
+      return {
         type,
         tickCount,
         range,
@@ -32,14 +48,14 @@ export default View => {
         min,
         max,
         nice,
-      });
+      };
     }
 
     _getDimType() {
       const { props } = this;
       const { field, chart } = props;
       const xScales = chart.getXScales();
-      const scales = xScales.filter(scale => {
+      const scales = xScales.filter((scale) => {
         return scale.field === field;
       });
       return scales.length > 0 ? 'x' : 'y';
@@ -51,7 +67,7 @@ export default View => {
       const { label, labelOffset } = style;
       let width = 0;
       let height = 0;
-      ticks.forEach(tick => {
+      ticks.forEach((tick) => {
         const bbox = measureText(tick.text, label);
         width = Math.max(width, bbox.width);
         height = Math.max(height, bbox.height);
@@ -86,7 +102,7 @@ export default View => {
       const dimType = this._getDimType();
       const otherDim = dimType === 'x' ? 'y' : 'x';
 
-      return ticks.map(tick => {
+      return ticks.map((tick) => {
         const start = coord.convertPoint({
           [dimType]: tick.value,
           [otherDim]: 0,
@@ -102,9 +118,18 @@ export default View => {
       });
     }
 
-    updateCoord(box) {
-      const { props } = this;
-      const { chart, coord } = props;
+    // 主要是计算coord的布局
+    updateCoord() {
+      const { props, context } = this;
+      const { visible, style, chart, coord } = props;
+      if (visible === false) {
+        return;
+      }
+
+      const { theme, px2hd } = context;
+      this.style = px2hd(deepMix({}, theme.axis, style));
+      const ticks = this.getTicks();
+      const bbox = this.getMaxBBox(ticks, this.style);
       const {
         isPolar,
         left,
@@ -113,7 +138,7 @@ export default View => {
         height: coordHeight,
       } = coord;
       const dimType = this._getDimType();
-      const { width, height } = box;
+      const { width, height } = bbox;
 
       if (isPolar) {
         // 机坐标系的 y 不占位置
@@ -131,22 +156,7 @@ export default View => {
 
       // 直角坐标系下
       const position = this._getPosition();
-      chart.layoutCoord(position, box);
-    }
-
-    willMount() {
-      // 主要是计算coord的布局
-      const { props, context } = this;
-      const { visible, style } = props;
-      if (visible === false) {
-        return;
-      }
-
-      const { theme, px2hd } = context;
-      this.style = px2hd(deepMix({}, theme.axis, style));
-      const ticks = this.getTicks();
-      const bbox = this.getMaxBBox(ticks, this.style);
-      this.updateCoord(bbox);
+      chart.layoutCoord(position, bbox);
     }
 
     render() {
@@ -155,6 +165,7 @@ export default View => {
       if (visible === false) {
         return null;
       }
+
       const ticks = this.getTicks();
       const position = this._getPosition();
       const dimType = this._getDimType();

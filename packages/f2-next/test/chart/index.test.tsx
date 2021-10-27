@@ -25,13 +25,12 @@ describe('Chart', () => {
             {
               // type: Polar,
               // transposed: true,
-              // left: 100,
-              // top: 100,
-              // right: 100,
-              // bottom: 100,
             }
           }
           scale={{}}
+          // style={{
+          //   left: 50,
+          // }}
         >
           <Axis field="genre" />
           <Axis field="sold" />
@@ -43,5 +42,26 @@ describe('Chart', () => {
     // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
+
+    setTimeout(() => {
+      console.log('调用update');
+      canvas.update(
+        (
+          <Canvas context={context} pixelRatio={2}>
+            <Chart
+              data={data}
+              style={{
+                left: 50,
+                width: 100,
+              }}
+            >
+              <Axis field="genre" />
+              <Axis field="sold" />
+              <Interval x="genre" y="sold" color="genre" />
+            </Chart>
+          </Canvas>
+        ).props
+      );
+    }, 1000);
   });
 });
