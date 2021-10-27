@@ -1,8 +1,4 @@
-import {
-  isArray,
-  isNil,
-  each
-} from '@antv/util';
+import { isArray, isNil, each } from '@antv/util';
 
 function merge(dataArray) {
   let rst = [];
@@ -25,7 +21,7 @@ function values(data, name) {
           tmpMap[value] = true;
         }
       } else {
-        each(value, val => {
+        each(value, (val) => {
           if (!tmpMap[val]) {
             rst.push(val);
             tmpMap[val] = true;
@@ -57,11 +53,11 @@ function firstValue(data, name) {
 function groupToMap(data, fields) {
   if (!fields) {
     return {
-      0: data
+      0: data,
     };
   }
 
-  const callback = function(row) {
+  const callback = function (row) {
     let unique = '_';
     for (let i = 0, l = fields.length; i < l; i++) {
       unique += row[fields[i]] && row[fields[i]].toString();
@@ -73,10 +69,11 @@ function groupToMap(data, fields) {
   for (let i = 0, len = data.length; i < len; i++) {
     const row = data[i];
     const key = callback(row);
+    row.key = key;
     if (groups[key]) {
       groups[key].push(row);
     } else {
-      groups[key] = [ row ];
+      groups[key] = [row];
     }
   }
 
@@ -85,13 +82,13 @@ function groupToMap(data, fields) {
 
 function group(data, fields, appendConditions = {}) {
   if (!fields) {
-    return [ data ];
+    return [data];
   }
   const groups = groupToMap(data, fields);
   const array = [];
   if (fields.length === 1 && appendConditions[fields[0]]) {
     const values = appendConditions[fields[0]];
-    each(values, value => {
+    each(values, (value) => {
       value = '_' + value;
       array.push(groups[value]);
     });
@@ -118,23 +115,15 @@ function getRange(values) {
   if (!values.length) {
     return {
       min: 0,
-      max: 0
+      max: 0,
     };
   }
   const max = Math.max.apply(null, values);
   const min = Math.min.apply(null, values);
   return {
     min,
-    max
+    max,
   };
 }
 
-export {
-  merge,
-  values,
-  firstValue,
-  group,
-  groupToMap,
-  remove,
-  getRange
-};
+export { merge, values, firstValue, group, groupToMap, remove, getRange };

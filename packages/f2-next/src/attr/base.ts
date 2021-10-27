@@ -1,5 +1,5 @@
 import { Scale } from '@antv/scale';
-import { mix, isFunction, isNil } from '@antv/util';
+import { mix, isFunction, isNil, isArray } from '@antv/util';
 import { values as arrayValues } from '../util/array';
 
 class Base {
@@ -46,7 +46,14 @@ class Base {
   }
 
   normalize(value: any) {
-    return value;
+    const { scale } = this;
+
+    if (isArray(value)) {
+      return value.map((v) => {
+        return scale.scale(v);
+      });
+    }
+    return scale.scale(value);
   }
 
   convert(value) {
