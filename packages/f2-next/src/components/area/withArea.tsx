@@ -1,17 +1,17 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
-import { ShapeType } from '../geometry/interface';
+import { GeomType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
 import { each } from '@antv/util';
 
 export default (View) => {
   return class Area extends Geometry {
-    shapeType: ShapeType = 'area';
+    geomType: GeomType = 'area';
 
     constructor(props, context) {
       super(props, context);
-      this.ranges.shape = this.context.theme.shapes[this.shapeType];
+      this.ranges.shape = this.context.theme.shapes[this.geomType];
     }
 
     parsePoints(dataArray) {

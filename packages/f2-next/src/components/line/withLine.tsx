@@ -1,16 +1,16 @@
 import { jsx } from '../../jsx';
 import { mix } from '@antv/util';
 import Geometry from '../geometry';
-import { ShapeType } from '../geometry/interface';
+import { GeomType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
 import { each } from '@antv/util';
 
 export default (View) => {
   return class Line extends Geometry {
-    shapeType: ShapeType = 'line';
+    geomType: GeomType = 'line';
     constructor(props, context) {
       super(props, context);
-      this.ranges.shape = this.context.theme.shapes[this.shapeType];
+      this.ranges.shape = this.context.theme.shapes[this.geomType];
     }
 
     _convertPosition(mappedArray) {

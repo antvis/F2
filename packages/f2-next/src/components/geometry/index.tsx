@@ -20,7 +20,7 @@ import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
-import { AttrRange, ShapeType } from './interface';
+import { AttrRange, GeomType } from './interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -36,7 +36,7 @@ class Geometry extends Component implements AttrMixin {
   attrs: any = {};
   adjust: any;
   ranges: AttrRange = {}; // 各属性值域
-  shapeType?: ShapeType;
+  geomType?: GeomType;
 
   // 预处理后的数据
   dataArray: any;
@@ -517,11 +517,11 @@ class Geometry extends Component implements AttrMixin {
     return items;
   }
 
-  // 获取主题中默认 line shape 样式
+  // 获取主题中默认的 shape 样式
   _getThemeShape(shape: string | undefined) {
     const { context } = this;
     const { theme } = context;
-    const shapeMap = theme.shape[this.shapeType];
+    const shapeMap = theme.shape[this.geomType];
     return mix({}, shapeMap.default, shapeMap[shape]);
   }
 
