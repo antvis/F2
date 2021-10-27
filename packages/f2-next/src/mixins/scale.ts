@@ -13,7 +13,7 @@ class ScaleMixin {
   // }
 
   setScale(field: string, option: any = {}) {
-    this.scale.scale(field, option);
+    this.scale.setScale(field, option);
   }
 
   getScale(field: string) {
@@ -21,8 +21,8 @@ class ScaleMixin {
   }
 
   updateScales(data) {
-    this.scale.data = data;
-    this.scale.updateScales(data);
+    this.scale.changeData(data);
+    // this.scale.updateScales(data);
   }
 }
 

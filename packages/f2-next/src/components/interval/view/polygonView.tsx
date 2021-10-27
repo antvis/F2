@@ -1,5 +1,5 @@
 import { jsx } from '../../../jsx';
-import { getMiddlePoint } from '../../../util';
+import { getMiddlePoint } from '../../../util/coord';
 import { convertToPoints } from '../util';
 
 // 金字塔图和漏斗图的View
