@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { mix } from '@antv/util';
+import { isArray, mix } from '@antv/util';
 import Geometry from '../geometry';
 import { ShapeType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
@@ -22,7 +22,7 @@ export default (View) => {
         for (let j = 0; j < data.length; j++) {
           const record = data[j];
           const { x, y } = record;
-          mix(record, coord.convertPoint({ x, y }));
+          mix(record, coord.convertPoint({ x, y: isArray(y) ? y[1] : y }));
         }
       }
       return mappedArray;

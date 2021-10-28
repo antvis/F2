@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { mix } from '@antv/util';
+import { isArray, mix } from '@antv/util';
 import Geometry from '../geometry';
 import { ShapeType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
@@ -8,6 +8,7 @@ import { each } from '@antv/util';
 export default (View) => {
   return class Area extends Geometry {
     shapeType: ShapeType = 'area';
+    startOnZero: boolean = true; // 面积图默认设为从0开始
 
     constructor(props, context) {
       super(props, context);
@@ -36,15 +37,25 @@ export default (View) => {
     }
 
     _convertPosition(mappedArray) {
-      const { props } = this;
+      const { props, startOnZero: defaultStartOnZero } = this;
       const { coord } = props;
+      const { startOnZero = defaultStartOnZero } = props;
+
+      const originY = this.getY0Value(); // 坐标轴 y0
+      const originCoord = coord.convertPoint({ x: 0, y: originY }); // 零点映射到绝对坐标
+      // 面积图基线 y 坐标: 如果不从0开始，则取零点 y 坐标，否则取 yStart
+      const baseY = startOnZero ? originCoord.y : coord.y[0];
 
       for (let i = 0; i < mappedArray.length; i++) {
         const data = mappedArray[i];
         for (let j = 0; j < data.length; j++) {
           const record = data[j];
           const { x, y } = record;
-          mix(record, coord.convertPoint({ x, y }));
+
+          // stack 转换后的 y 为一个数组
+          mix(record, coord.convertPoint({ x, y: isArray(y) ? y[1] : y }));
+          const py0 = isArray(y) ? coord.convertPoint({ x, y: y[0] }).y : baseY;
+          record.y0 = py0;
         }
       }
       const mapped = this.parsePoints(mappedArray);
@@ -65,30 +76,15 @@ export default (View) => {
 
     // 生成多边形 points
     _generatePolygonPoints(mappedArray) {
-      const y0 = this.getY0Value();
-      const { coord } = this.props;
-      // 零点映射到绝对坐标
-      const p = coord.convertPoint({ x: 0, y: y0 });
-      // 如果 startOnZero，则取 yStart 坐标，否则取零点 y 坐标
-      const y = this.props.startOnZero ? coord.y[0] : p.y;
       each(mappedArray, function (obj) {
-        const { dataArray } = obj;
-        if (dataArray?.length) {
-          each(dataArray, function (data) {
-            const start = {
-              x: data[0].x,
-              y,
-            };
-            const end = {
-              x: data[data.length - 1].x,
-              y,
-            };
-            // 插入头尾坐标
-            data.unshift(start);
-            data.push(end);
-          });
-          obj.dataArray = dataArray;
-        }
+        const { dataArray: pointsArray } = obj;
+        each(pointsArray, function (points) {
+          const bottomPoints = points
+            .map(({ x, y0 }) => ({ x, y: y0 }))
+            .reverse();
+          points.push(...bottomPoints);
+        });
+        obj.dataArray = pointsArray;
       });
       return mappedArray;
     }
