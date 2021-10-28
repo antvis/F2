@@ -1,9 +1,9 @@
 import { jsx } from '../../jsx';
-import { isArray, mix } from '@antv/util';
+import { isArray, mix, each } from '@antv/util';
 import Geometry from '../geometry';
 import { GeomType } from '../geometry/interface';
+import { Stack } from '../../adjust';
 import { splitArray } from '../geometry/util';
-import { each } from '@antv/util';
 
 export default (View) => {
   return class Area extends Geometry {
@@ -46,9 +46,10 @@ export default (View) => {
           const record = data[j];
           const { x, y } = record;
 
-          // stack 转换后的 y 为一个数组
-          mix(record, coord.convertPoint({ x, y: isArray(y) ? y[1] : y }));
-          const py0 = isArray(y) ? coord.convertPoint({ x, y: y[0] }).y : baseY;
+          // stack 转换后的 y 为一个数组 [y0, y1]
+          const isStack = this.adjust instanceof Stack;
+          mix(record, coord.convertPoint({ x, y: isStack ? y[1] : y }));
+          const py0 = isStack ? coord.convertPoint({ x, y: y[0] }).y : baseY;
           record.y0 = py0;
         }
       }
