@@ -32,8 +32,7 @@ export default (View) => {
 
     _convertPosition(mappedArray) {
       const { props, startOnZero: defaultStartOnZero } = this;
-      const { coord } = props;
-      const { startOnZero = defaultStartOnZero } = props;
+      const { coord, startOnZero = defaultStartOnZero } = props;
 
       const originY = this.getY0Value(); // 坐标轴 y0
       const originCoord = coord.convertPoint({ x: 0, y: originY }); // 零点映射到绝对坐标
