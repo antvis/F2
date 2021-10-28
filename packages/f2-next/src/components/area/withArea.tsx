@@ -18,7 +18,6 @@ export default (View) => {
         if (coord.isPolar) {
           points.push(data[0]);
         }
-        // const lineStyle = this.mergeStyle(data[0]);
         return {
           ...data[0],
           points,
