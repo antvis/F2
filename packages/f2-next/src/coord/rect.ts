@@ -1,3 +1,4 @@
+import { isArray } from '_@antv_util@2.0.17@@antv/util';
 import Base from './base';
 import { Range, Option } from './types';
 
@@ -16,13 +17,24 @@ class Rect extends Base {
     return this;
   }
 
+  _zoomVal(range, val) {
+    return range[0] + (range[1] - range[0]) * val;
+  }
+
   convertPoint(point) {
     const { transposed, x, y } = this;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
+    const [originX, originY] = [point[xDim], point[yDim]];
+    const targetX = isArray(originX)
+      ? originX.map((val) => this._zoomVal(x, val))
+      : this._zoomVal(x, originX);
+    const targetY = isArray(originY)
+      ? originY.map((val) => this._zoomVal(y, val))
+      : this._zoomVal(y, originY);
     return {
-      x: x[0] + (x[1] - x[0]) * point[xDim],
-      y: y[0] + (y[1] - y[0]) * point[yDim],
+      x: targetX,
+      y: targetY,
     };
   }
 

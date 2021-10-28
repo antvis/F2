@@ -37,7 +37,7 @@ export default (View) => {
 
       const originY = this.getY0Value(); // 坐标轴 y0
       const originCoord = coord.convertPoint({ x: 0, y: originY }); // 零点映射到绝对坐标
-      // 面积图基线 y 坐标: 如果不从0开始，则取零点 y 坐标，否则取 yStart
+      // 面积图基线 y 坐标: 如果从0开始，则取零点 y 坐标，否则取 yStart
       const baseY = startOnZero ? originCoord.y : coord.y[0];
 
       for (let i = 0; i < mappedArray.length; i++) {
@@ -46,11 +46,13 @@ export default (View) => {
           const record = data[j];
           const { x, y } = record;
 
-          // stack 转换后的 y 为一个数组 [y0, y1]
           const isStack = this.adjust?.type === 'stack';
-          mix(record, coord.convertPoint({ x, y: isStack ? y[1] : y }));
-          const py0 = isStack ? coord.convertPoint({ x, y: y[0] }).y : baseY;
-          record.y0 = py0;
+          // stack 转换后的 y 为一个数组 [y0, y1]
+          mix(record, coord.convertPoint({ x, y }));
+          // 如果不为 stack，统一将 y 转换为数组
+          if (!isStack) {
+            record.y = [baseY, record.y];
+          }
         }
       }
       const mapped = this.parsePoints(mappedArray);
@@ -73,11 +75,12 @@ export default (View) => {
     _generatePolygonPoints(mappedArray) {
       each(mappedArray, function (obj) {
         const { dataArray: pointsArray } = obj;
-        each(pointsArray, function (points) {
+        each(pointsArray, function (points, index) {
+          const topPoints = points.map(({ x, y }) => ({ x, y: y[0] }));
           const bottomPoints = points
-            .map(({ x, y0 }) => ({ x, y: y0 }))
+            .map(({ x, y }) => ({ x, y: y[1] }))
             .reverse();
-          points.push(...bottomPoints);
+          pointsArray[index] = [...topPoints, ...bottomPoints];
         });
         obj.dataArray = pointsArray;
       });
