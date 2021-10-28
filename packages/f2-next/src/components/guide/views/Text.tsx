@@ -1,5 +1,5 @@
-import { jsx } from "../../../jsx";
-import { deepMix } from "@antv/util";
+import { jsx } from '../../../jsx';
+import { deepMix } from '@antv/util';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;
@@ -27,6 +27,13 @@ export default (props: TextGuideProps) => {
         x: posX,
         y: posY,
         ...style,
+      }}
+      animation={{
+        update: {
+          easing: 'linear',
+          duration: 450,
+          property: ['x', 'y'],
+        },
       }}
     />
   );

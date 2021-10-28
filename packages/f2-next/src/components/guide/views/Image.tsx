@@ -1,5 +1,4 @@
-
-import { jsx } from "../../../jsx";
+import { jsx } from '../../../jsx';
 
 type ImageGuideProps = {
   src: string;
@@ -14,7 +13,7 @@ const defaultProps: ImageGuideProps = {
   offsetX: 0,
   offsetY: 0,
   points: [],
-  src: "",
+  src: '',
 };
 const baseAttrs = {
   height: '20px',
@@ -40,6 +39,13 @@ export default (props: ImageGuideProps) => {
           x: posX,
           y: posY,
           src,
+        }}
+        animation={{
+          update: {
+            easing: 'linear',
+            duration: 450,
+            property: ['x', 'y'],
+          },
         }}
       />
     </group>
