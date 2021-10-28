@@ -1,4 +1,12 @@
-import { jsx, Canvas, Chart, Timeline, Axis, Interval } from '../../src';
+import {
+  jsx,
+  Canvas,
+  Chart,
+  Timeline,
+  Axis,
+  Interval,
+  TextGuide,
+} from '../../src';
 import { createContext } from '../util';
 
 const context = createContext('动态排序', { width: '300px', height: '500px' });
@@ -47,7 +55,7 @@ describe('Chart', () => {
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
         </Chart> */}
-        <Timeline delay={300}>
+        <Timeline delay={200}>
           {data.map((item) => {
             return (
               <Chart
@@ -59,6 +67,22 @@ describe('Chart', () => {
                 <Axis field="genre" />
                 <Axis field="sold" />
                 <Interval x="genre" y="sold" color="genre" />
+                {item.map((record) => {
+                  return (
+                    <TextGuide
+                      key={record.genre}
+                      records={[record]}
+                      content={record.sold}
+                      offsetX={10}
+                      style={{
+                        fill: '#666',
+                        fontSize: '30px',
+                        textAlign: 'start',
+                        textBaseline: 'middle',
+                      }}
+                    />
+                  );
+                })}
               </Chart>
             );
           })}

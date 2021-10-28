@@ -27,7 +27,7 @@ const guide = {
   text: {
     style: {
       fill: '#787878',
-      textAlign: 'center',
+      // textAlign: 'center',
       textBaseline: 'middle',
     },
     offsetX: 0,
@@ -101,7 +101,7 @@ const Theme = {
     line: ['line', 'dash', 'smooth'],
     point: ['circle', 'hollowCircle'],
     area: ['area', 'smooth'],
-    interval: ['rect', 'pyramid', 'funnel']
+    interval: ['rect', 'pyramid', 'funnel'],
   },
   sizes: [4, 8, 10, 12],
   geometry: {
@@ -109,7 +109,7 @@ const Theme = {
       default: {
         lineWidth: 2,
         lineJoin: 'round',
-        lineCap: 'round'
+        lineCap: 'round',
       },
       smooth: {
         smooth: true,
@@ -122,16 +122,16 @@ const Theme = {
       default: {
         lineWidth: 0,
         size: 3,
-      }
+      },
     },
     area: {
       default: {
         fillOpacity: 0.1,
-      }
+      },
     },
     interval: {
-      default: {}
-    }
+      default: {},
+    },
   },
   axis,
   guide,

@@ -202,7 +202,7 @@ function diff(parent: Component, nextChildren, lastChildren) {
     return true;
   });
   // 3. 处理 create 和 Receive props
-  const shouldRenderComponnet = shouldProcessChildren.map(
+  const shouldRenderComponent = shouldProcessChildren.map(
     (element: JSX.Element) => {
       let { component } = element;
       if (!component) {
@@ -222,7 +222,7 @@ function diff(parent: Component, nextChildren, lastChildren) {
   );
 
   // 4. 处理 render
-  renderComponent(shouldRenderComponnet);
+  renderComponent(shouldRenderComponent);
 
   // 按子组件顺序渲染内容
   childrenArray.forEach((element: JSX.Element) => {

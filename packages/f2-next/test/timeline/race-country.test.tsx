@@ -6,18 +6,19 @@ import {
   Axis,
   Interval,
   TextGuide,
+  ImageGuide,
 } from '../../src';
 import { createContext } from '../util';
-import data from './data/china-gdp.json';
+import data from './data/race-country.json';
 
-const context = createContext('动态排序-中国gdp变化', {
+const context = createContext('动态排序-收入排名变化', {
   width: '300px',
   height: '500px',
 });
 
 function sort(data) {
   return data.sort((a, b) => {
-    return a.value - b.value;
+    return a.income - b.income;
   });
 }
 
@@ -56,19 +57,19 @@ describe('Chart', () => {
                 }}
               >
                 <Year year={year} />
-                <Axis field="city" />
-                <Axis field="value" />
-                <Interval x="city" y="value" color="city" />
+                <Axis field="country" />
+                <Axis field="income" />
+                <Interval x="country" y="income" color="country" />
                 {data[year].map((record) => {
                   return (
                     <TextGuide
-                      key={record.city}
+                      key={record.country}
                       records={[record]}
-                      content={Number(record.value).toFixed(2)}
+                      content={record.emoji}
                       offsetX={4}
-                      attrs={{
+                      style={{
                         fill: '#666',
-                        fontSize: '30px',
+                        fontSize: '40px',
                         textBaseline: 'middle',
                       }}
                     />
