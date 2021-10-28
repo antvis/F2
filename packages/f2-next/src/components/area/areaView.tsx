@@ -1,11 +1,11 @@
 import { jsx } from '../../jsx';
 
 export default (props: any) => {
-  const { mappedArray, style } = props;
+  const { mappedArray } = props;
   return (
     <group>
       {mappedArray.map((item) => {
-        const { color, dataArray, fillOpacity } = item;
+        const { color, dataArray, shape } = item;
         return (
           <group>
             {dataArray.map((data) => {
@@ -15,8 +15,7 @@ export default (props: any) => {
                     points: data,
                     lineWidth: 1,
                     fill: color,
-                    fillOpacity,
-                    ...style,
+                    ...shape,
                   }}
                 />
               );

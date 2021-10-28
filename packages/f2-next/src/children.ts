@@ -32,22 +32,22 @@ function compareArray(
   for (let i = 0, len = Math.max(nextLength, lastLength); i < len; i++) {
     const element = nextElements[i];
     if (!element) {
-      callback(element, lastElements[i]);
-      break;
+      compare(element, lastElements[i], callback);
+      continue;
     }
     const { key } = element;
     // 有key值定义
     if (key !== undefined) {
       const lastElement = keyed[key];
       if (lastElement) delete keyed[key];
-      callback(element, lastElement);
-      break;
+      compare(element, lastElement, callback);
+      continue;
     }
-    callback(element, lastElements[i]);
+    compare(element, lastElements[i], callback);
   }
   // 说明是删除的元素
-  Object.keys(keyed).forEach(key => {
-    callback(null, keyed[key]);
+  Object.keys(keyed).forEach((key) => {
+    compare(null, keyed[key], callback);
   });
 }
 

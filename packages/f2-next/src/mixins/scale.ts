@@ -8,10 +8,6 @@ class ScaleMixin {
     return new ScaleController(data);
   }
 
-  // setData(data) {
-  //   this.scale.data = data;
-  // }
-
   setScale(field: string, option: any = {}) {
     this.scale.setScale(field, option);
   }
@@ -20,10 +16,6 @@ class ScaleMixin {
     return this.scale.getScale(field);
   }
 
-  updateScales(data) {
-    this.scale.changeData(data);
-    // this.scale.updateScales(data);
-  }
 }
 
 export default ScaleMixin;

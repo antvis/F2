@@ -27,7 +27,7 @@ const guide = {
   text: {
     style: {
       fill: '#787878',
-      textAlign: 'center',
+      // textAlign: 'center',
       textBaseline: 'middle',
     },
     offsetX: 0,
@@ -98,16 +98,18 @@ const Theme = {
   ],
   chart,
   shapes: {
-    line: [ 'line', 'dash', 'smooth' ],
-    point: [ 'circle', 'hollowCircle' ]
+    line: ['line', 'dash', 'smooth'],
+    point: ['circle', 'hollowCircle'],
+    area: ['area', 'smooth'],
+    interval: ['rect', 'pyramid', 'funnel'],
   },
-  sizes: [ 4, 8, 10, 12 ],
-  shape: {
+  sizes: [4, 8, 10, 12],
+  geometry: {
     line: {
       default: {
         lineWidth: 2,
         lineJoin: 'round',
-        lineCap: 'round'
+        lineCap: 'round',
       },
       smooth: {
         smooth: true,
@@ -120,12 +122,15 @@ const Theme = {
       default: {
         lineWidth: 0,
         size: 3,
-      }
+      },
     },
     area: {
       default: {
         fillOpacity: 0.1,
-      }
+      },
+    },
+    interval: {
+      default: {},
     },
   },
   axis,

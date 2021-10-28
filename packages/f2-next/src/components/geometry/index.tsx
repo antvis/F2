@@ -1,13 +1,4 @@
-// @ts-nocheck
-import {
-  isString,
-  isArray,
-  isFunction,
-  each,
-  upperFirst,
-  isNil,
-  mix,
-} from '@antv/util';
+import { isObject, each, upperFirst, isNil, mix, omit } from '@antv/util';
 import Component from '../../base/component';
 import {
   group as arrayGroup,
@@ -20,7 +11,7 @@ import { Linear, Category } from '../../attr';
 import { applyMixins } from '../../mixins';
 import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
-import { AttrRange, ShapeType } from './interface';
+import { AttrRange, GeomType } from './interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -34,9 +25,9 @@ class Geometry extends Component implements AttrMixin {
   chart: Chart;
   data: any;
   attrs: any = {};
+  defaultRanges: AttrRange = {}; // 各属性的默认值域
   adjust: any;
-  ranges: AttrRange = {}; // 各属性值域
-  shapeType?: ShapeType;
+  geomType?: GeomType;
 
   // 预处理后的数据
   dataArray: any;
@@ -302,28 +293,80 @@ class Geometry extends Component implements AttrMixin {
     return chart.scale.getZeroValue(scale);
   }
 
-  // 从值域中第一个值获取属性默认 value
-  _getAttrsDefaultValue() {
-    const { color = [], size = [], shape = [] } = this.ranges;
-    return {
-      color: color[0],
-      size: size[0],
-      shape: shape[0],
-    };
+  // 获取全局主题配置里的属性默认值域
+  getDefaultRange(attrName) {
+    const { context } = this;
+    const { theme } = context;
+    if (attrName === 'shape') {
+      return theme.shapes[this.geomType];
+    }
+    return this.defaultRanges[attrName];
   }
 
-  // 初始化各属性值域
+  // 初始化各属性默认值域
   _initAttrRanges() {
     const { context } = this;
     const { theme } = context;
 
     // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
-    this.ranges = {
+    this.defaultRanges = {
       color: theme.colors,
       size: theme.sizes,
     };
 
-    return this.ranges;
+    return this.defaultRanges;
+  }
+
+  // 根据各属性映射的值域来获取真正的绘图属性
+  getAttrsStyle(attrsValue, record) {
+    const { context, props } = this;
+    const { theme } = context;
+    const { style }: { style: { field?: string } } = props;
+
+    const attrsStyle = {};
+    each(attrsValue, (value, attrName) => {
+      if (attrName === 'shape') {
+        const shapeStyleMap = theme.geometry[this.geomType];
+        const shapeStyle = {};
+
+        // 处理style里的function入参
+        if (isObject(style)) {
+          const { field } = style;
+          each(omit(style, ['field']), (attr, key) => {
+            if (typeof attr === 'function') {
+              shapeStyle[key] = attr(record[field]);
+            } else {
+              shapeStyle[key] = attr;
+            }
+          });
+        }
+
+        attrsStyle[attrName] = mix(
+          {},
+          shapeStyleMap.default, // 默认样式
+          shapeStyleMap[value], // shape特有的样式
+          shapeStyle // 传入的特定样式
+        );
+      } else {
+        attrsStyle[attrName] = value;
+      }
+    });
+
+    return attrsStyle;
+  }
+
+  // 从值域中第一个值获取属性默认 value
+  _getAttrsDefaultValue() {
+    const { context } = this;
+    const { theme } = context;
+    const { color, size } = this.defaultRanges;
+    const shape = theme.shapes[this.geomType] || [];
+
+    return {
+      color: color[0],
+      size: size[0],
+      shape: shape[0],
+    };
   }
 
   // 映射除 x, y 之外的图形属性
@@ -337,7 +380,8 @@ class Geometry extends Component implements AttrMixin {
       const attrName = attrNames[key];
 
       if (!this.getAttrRange(attrName)) {
-        this.setAttrRange(attrName, this.ranges[attrName]);
+        const attrRange = this.getDefaultRange(attrName);
+        this.setAttrRange(attrName, attrRange);
       }
     }
 
@@ -348,12 +392,15 @@ class Geometry extends Component implements AttrMixin {
     for (let i = 0; i < dataArrayLength; i++) {
       const data = dataArray[i];
 
-      // 图形属性映射，因为每组里面这些属性的值都是相同的，所以只需要映射第一个就可以了
-      const attrsValue = {};
+      // 将数据映射成图形属性（color/size/shape...), 因为每组里面这些属性的值都是相同的，所以只需要映射第一个就可以了
+      let attrsValue: any = {};
       for (let key = 0; key < attrNamesLength; key++) {
         const attrName = attrNames[key];
         attrsValue[attrName] = this.getAttrValue(attrName, data[0]);
       }
+
+      // 把attrs的value补齐
+      attrsValue = mix({}, defaultValues, attrsValue);
 
       // 生成映射后的数据对象
       const mappedData = new Array(data.length);
@@ -361,8 +408,7 @@ class Geometry extends Component implements AttrMixin {
         const record = data[i];
         const result = {
           ...record,
-          ...defaultValues,
-          ...attrsValue,
+          ...this.getAttrsStyle(attrsValue, record),
         };
         mappedData[i] = result;
       }
@@ -396,8 +442,9 @@ class Geometry extends Component implements AttrMixin {
   // 数据映射
   mapping() {
     const { dataArray } = this;
-
     let mappedArray;
+
+    // 图形属性映射
     mappedArray = this._mappingAttrs(dataArray);
 
     // 位置映射拆分成2个阶段，归一化和坐标映射
@@ -496,7 +543,7 @@ class Geometry extends Component implements AttrMixin {
   getLegendItems() {
     const colorAttr = this.getAttr('color');
     if (!colorAttr) return null;
-    const { scale } = colorAttr;
+    const { scale, field } = colorAttr;
     if (!scale.isCategory) return null;
     const { context } = this;
     const { theme } = context;
@@ -507,7 +554,8 @@ class Geometry extends Component implements AttrMixin {
     }
     const items = ticks.map((tick) => {
       const { text, tickValue } = tick;
-      const color = colorAttr.mapping(tickValue) || theme.colors[0];
+      const color =
+        this.getAttrValue('color', { [field]: tickValue }) || theme.colors[0];
       return {
         color,
         name: text, // for display
@@ -515,26 +563,6 @@ class Geometry extends Component implements AttrMixin {
       };
     });
     return items;
-  }
-
-  // 获取主题中默认 line shape 样式
-  _getThemeShape(shape: string | undefined) {
-    const { context } = this;
-    const { theme } = context;
-    const shapeMap = theme.shape[this.shapeType];
-    return mix({}, shapeMap.default, shapeMap[shape]);
-  }
-
-  // 解析 shape 样式并合并
-  mergeStyle(dataItem) {
-    const { color, shape, size } = dataItem;
-    // shapes 映射到具体的 line attrs
-    const themeStyle = this._getThemeShape(shape);
-    return {
-      ...themeStyle,
-      size,
-      color,
-    };
   }
 }
 

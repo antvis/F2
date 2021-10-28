@@ -8,7 +8,7 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default View => {
+export default (View) => {
   return class Guide extends Component {
     chart: any;
     triggerRef: any;
@@ -20,7 +20,7 @@ export default View => {
       // 创建ref
       this.triggerRef = {};
 
-      canvas.on('click', ev => {
+      canvas.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;
@@ -82,7 +82,7 @@ export default View => {
     }
 
     convertPoints(records) {
-      return records.map(record => this.parsePoint(record));
+      return records.map((record) => this.parsePoint(record));
     }
 
     getGuideTheme() {

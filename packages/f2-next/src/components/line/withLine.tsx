@@ -1,17 +1,13 @@
 import { jsx } from '../../jsx';
 import { isArray, mix } from '@antv/util';
 import Geometry from '../geometry';
-import { ShapeType } from '../geometry/interface';
+import { GeomType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
 import { each } from '@antv/util';
 
 export default (View) => {
   return class Line extends Geometry {
-    shapeType: ShapeType = 'line';
-    constructor(props, context) {
-      super(props, context);
-      this.ranges.shape = this.context.theme.shapes[this.shapeType];
-    }
+    geomType: GeomType = 'line';
 
     _convertPosition(mappedArray) {
       const { props } = this;
@@ -36,9 +32,8 @@ export default (View) => {
         if (coord.isPolar) {
           points.push(data[0]);
         }
-        const lineStyle = this.mergeStyle(data[0]);
         return {
-          ...lineStyle,
+          ...data[0],
           points,
         };
       });

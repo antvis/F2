@@ -1,7 +1,6 @@
 import { isDate, isPlainObject } from '@antv/util';
 import formatter from './formatter';
 import * as ArrayUtil from './array';
-
 // 默认设置50
 let ONE_REM: number;
 try {
