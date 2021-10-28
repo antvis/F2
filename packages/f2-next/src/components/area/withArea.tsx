@@ -47,7 +47,7 @@ export default (View) => {
           const { x, y } = record;
 
           // stack 转换后的 y 为一个数组 [y0, y1]
-          const isStack = this.adjust instanceof Stack;
+          const isStack = this.adjust?.type === 'stack';
           mix(record, coord.convertPoint({ x, y: isStack ? y[1] : y }));
           const py0 = isStack ? coord.convertPoint({ x, y: y[0] }).y : baseY;
           record.y0 = py0;
