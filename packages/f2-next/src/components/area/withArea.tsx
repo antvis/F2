@@ -49,7 +49,7 @@ export default (View) => {
           const isStack = this.adjust?.type === 'stack';
           // stack 转换后的 y 为一个数组 [y0, y1]
           mix(record, coord.convertPoint({ x, y }));
-          // 如果不为 stack，统一将 y 转换为数组
+          // 如果不为 stack，统一将 y 转换为数组，以便下一步填充多边形底部点
           if (!isStack) {
             record.y = [baseY, record.y];
           }
