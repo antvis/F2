@@ -1,6 +1,13 @@
 import { jsx, Canvas, Chart, Timeline, Axis, Interval } from '../../src';
 import { createContext } from '../util';
-const context = createContext();
+
+const context = createContext('动态排序', { width: '300px', height: '500px' });
+
+function sort(data) {
+  return data.sort((a, b) => {
+    return a.sold - b.sold;
+  });
+}
 
 const data = [
   [
@@ -30,10 +37,25 @@ describe('Chart', () => {
   it('Chart render', () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
+        {/* <Chart
+          data={sort(data[1])}
+          coord={{
+            transposed: true,
+          }}
+        >
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+        </Chart> */}
         <Timeline delay={300}>
-          {data.map(item => {
+          {data.map((item) => {
             return (
-              <Chart data={item}>
+              <Chart
+                data={sort(item)}
+                coord={{
+                  transposed: true,
+                }}
+              >
                 <Axis field="genre" />
                 <Axis field="sold" />
                 <Interval x="genre" y="sold" color="genre" />

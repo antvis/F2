@@ -80,11 +80,14 @@ export default (View) => {
 
     _getPosition() {
       const { props } = this;
-      const { position } = props;
+      const { position, coord } = props;
       if (position) {
         return position;
       }
       const dimType = this._getDimType();
+      if (coord.transposed) {
+        return dimType === 'x' ? 'left' : 'bottom';
+      }
       return dimType === 'x' ? 'bottom' : 'left';
     }
 
