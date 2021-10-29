@@ -1,4 +1,4 @@
-import { isArray } from '_@antv_util@2.0.17@@antv/util';
+import { isArray } from '@antv/util';
 import Base from './base';
 import { Range, Option } from './types';
 
