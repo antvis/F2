@@ -18,7 +18,7 @@ export default (View) => {
         for (let j = 0; j < data.length; j++) {
           const record = data[j];
           const { x, y } = record;
-          mix(record, coord.convertPoint({ x, y: isArray(y) ? y[1] : y }));
+          mix(record, coord.convertPoint({ x, y }));
         }
       }
       return mappedArray;
