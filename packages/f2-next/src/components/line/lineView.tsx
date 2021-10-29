@@ -78,6 +78,11 @@ export default (props: any) => {
                     ...shape,
                   }}
                   animation={{
+                    update: {
+                      easing: 'linear',
+                      duration: 450,
+                      property: ['points'],
+                    },
                     appear,
                   }}
                 />
