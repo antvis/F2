@@ -1,3 +1,4 @@
+import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 
 function concat(dataArray) {
@@ -9,15 +10,24 @@ function concat(dataArray) {
   return result;
 }
 
+function formatPoint(point) {
+  const { y } = point;
+  return {
+    x: point.x,
+    y: isArray(y) ? y[1] : y,
+  };
+}
+
 function getPoint(points, t: number) {
-  const firstPoint = points[0];
-  const lastPoint = points[points.length - 1];
+  const formatedPoints = points.map(p => formatPoint(p));
+  const firstPoint = formatedPoints[0];
+  const lastPoint = formatedPoints[formatedPoints.length - 1];
   const xOffset = lastPoint.x - firstPoint.x;
   const x = firstPoint.x + xOffset * t;
 
-  for (let i = 1; i < points.length; i++) {
-    const point = points[i];
-    const prevPoint = points[i - 1];
+  for (let i = 1; i < formatedPoints.length; i++) {
+    const point = formatedPoints[i];
+    const prevPoint = formatedPoints[i - 1];
     if (x >= prevPoint.x && x <= point.x) {
       // x 在 2 点之间的比例，根据比例再算出 y 的值
       const ratio = (x - prevPoint.x) / (point.x - prevPoint.x);
@@ -57,26 +67,27 @@ export default (props: any) => {
         const { color, dataArray, size, shape } = item;
         return (
           <group>
-            {dataArray.map((data) => (
-              <polyline
-                attrs={{
-                  points: data.map((item) => {
-                    return { x: item.x, y: item.y };
-                  }),
-                  stroke: color,
-                  lineWidth: size,
-                  ...shape,
-                }}
-                animation={{
-                  update: {
-                    easing: 'linear',
-                    duration: 450,
-                    property: ['points'],
-                  },
-                  appear,
-                }}
-              />
-            ))}
+            {dataArray.map((data) => {
+              const points = data.map((p) => (formatPoint(p)));
+              return (
+                <polyline
+                  attrs={{
+                    points,
+                    stroke: color,
+                    lineWidth: size,
+                    ...shape,
+                  }}
+                  animation={{
+                    update: {
+                      easing: 'linear',
+                      duration: 450,
+                      property: ['points'],
+                    },
+                    appear,
+                  }}
+                />
+              );
+            })}
             {EndView ? (
               <group
                 animation={{
