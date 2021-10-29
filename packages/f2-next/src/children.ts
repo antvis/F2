@@ -1,4 +1,4 @@
-import { isArray } from '@antv/util';
+import { isArray, isNil } from '@antv/util';
 import { map } from './util';
 
 function cloneElement(element, props) {
@@ -22,7 +22,7 @@ function compareArray(
   const lastLength = lastElements.length;
   for (let i = 0, len = lastLength; i < len; i++) {
     const element = lastElements[i];
-    if (element && element.key !== undefined) {
+    if (element && !isNil(element.key)) {
       const { key } = element;
       keyed[key] = element;
     }
@@ -37,7 +37,7 @@ function compareArray(
     }
     const { key } = element;
     // 有key值定义
-    if (key !== undefined) {
+    if (!isNil(element.key)) {
       const lastElement = keyed[key];
       if (lastElement) delete keyed[key];
       compare(element, lastElement, callback);
