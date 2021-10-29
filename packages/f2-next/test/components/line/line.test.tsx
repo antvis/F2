@@ -1,5 +1,9 @@
 // @ts-nocheck
+/* @jsx React.createElement */
 import { Rect } from '../../../src/coord';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactCanvas from '../../../../react/src/index';
 import { jsx, Component, Canvas, Chart, Timeline } from '../../../src';
 import { Line, Point, Axis, Tooltip, Legend } from '../../../src/components';
 import { createContext } from '../../util';
@@ -299,7 +303,12 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" tickCount={5} />
-            <Line ref={lineRef} x="date" y="value" style={{ stroke: '#2FC25B' }} />
+            <Line
+              ref={lineRef}
+              x="date"
+              y="value"
+              style={{ stroke: '#2FC25B' }}
+            />
           </Chart>
         </Canvas>
       );
@@ -585,27 +594,28 @@ describe('折线图', () => {
                   color={{
                     field: 'type',
                     callback: (type) => {
-                      if(type === '金属') {
-                        return '#666'
+                      if (type === '金属') {
+                        return '#666';
                       }
-                      return 'red'
-                    }
+                      return 'red';
+                    },
                   }}
                   style={{
                     field: 'type', // 可选指定field
                     smooth: true, // 传入非函数的值
-                    stroke: (type) => { // 传入函数
-                      if(type === '金属') {
-                        return '#666'
+                    stroke: (type) => {
+                      // 传入函数
+                      if (type === '金属') {
+                        return '#666';
                       }
-                      return 'red'
+                      return 'red';
                     },
                     lineWidth: (type) => {
-                      if(type === '金属') {
-                        return 2
+                      if (type === '金属') {
+                        return 2;
                       }
-                      return 1
-                    }
+                      return 1;
+                    },
                   }}
                 />
                 {/* TODO(@buli): 动态 legend value */}
@@ -1006,52 +1016,78 @@ describe('折线图', () => {
     });
   });
 
-  // TODO(@buli): 实时折线
-  // it('实时折线', () => {
-  //   const DYNAMIC = '实时折线';
-  //   const data = [];
-  //   const context = createContext(DYNAMIC);
-  //   const lineRef = { current: null };
-  //   const { offsetWidth } = document.body;
-  //   const height = offsetWidth * 0.75;
+  it.only('【bug】多次渲染折线，没有clear', () => {
+    let data = [];
+    const { offsetWidth } = document.body;
+    const height = offsetWidth * 0.75;
 
-  //   // 添加数据，模拟数据，可以指定当前时间的偏移的秒
-  //   function getRecord(offset) {
-  //     offset = offset || 0;
-  //     return {
-  //       time: new Date().getTime() + offset * 1000,
-  //       value: Math.random() + 10,
-  //     };
-  //   }
+    class TestComponent extends Component {
+      constructor(props) {
+        super(props)
+      }
+    }
 
-  //   data.push(getRecord(-2));
-  //   data.push(getRecord(-1));
-  //   data.push(getRecord());
+    // 添加数据，模拟数据，可以指定当前时间的偏移的秒
+    function getRecord(offset) {
+      offset = offset || 0;
+      return {
+        time: new Date().getTime() + offset * 1000,
+        value: Math.random() + 10,
+      };
+    }
 
-  //   const { type, props } = (
-  //     <Canvas
-  //       context={context}
-  //       pixelRatio={window.devicePixelRatio}
-  //       width={offsetWidth}
-  //       height={height}
-  //     >
-  //       <Timeline delay={300}>
-  //       </Timeline>
-  //     </Canvas>
-  //   );
+    data.push(getRecord(-2));
+    data.push(getRecord(-1));
+    data.push(getRecord());
 
-  //   const canvas = new type(props);
-  //   canvas.render();
+    class ChartComponent extends React.Component<any, any> {
+      constructor(props) {
+        super(props);
+        this.state = {
+          data,
+        };
+      }
 
-  //   setInterval(function() {
-  //     data.push(getRecord());
-  //   }, 1000);
+      componentDidMount() {
+        // 更新数据
+        setTimeout( ()=> {
+          const { data } = this.state;
+          this.setState({ data: [].concat(data, getRecord()) });
+        }, 1000);
+      }
 
-  //   console.log(
-  //     DYNAMIC,
-  //     lineRef.current.getSnapRecords({ x: 100, y: 100 })
-  //   );
-  // });
+      render() {
+        const { data } = this.state;
+        return (
+          <div className="">
+            <ReactCanvas width={offsetWidth} height={height}>
+              <Chart
+                data={data}
+                scale={{
+                  time: {
+                    type: 'timeCat',
+                  },
+                }}
+              >
+                <Line x="time" y="value" />
+                <TestComponent/>
+              </Chart>
+            </ReactCanvas>
+          </div>
+        );
+      }
+    }
+
+    const appDOM = document.createElement('div');
+    appDOM.id = 'app';
+    document.body.appendChild(appDOM);
+
+    const Element = <ChartComponent />;
+
+    // For debug
+    ReactDOM.render(Element, document.getElementById('app'));
+  });
+
   describe('其他折线图', () => {
     it('存在空值', () => {
       const { offsetWidth } = document.body;
