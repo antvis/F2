@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { mix } from '@antv/util';
+import { isArray, mix } from '@antv/util';
 import Geometry from '../geometry';
 import { GeomType } from '../geometry/interface';
 import { splitArray } from '../geometry/util';
