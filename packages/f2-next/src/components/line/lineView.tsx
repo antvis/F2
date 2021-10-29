@@ -11,10 +11,19 @@ export default (props: any) => {
             {dataArray.map((data) => (
               <polyline
                 attrs={{
-                  points: data,
-                  stroke:  color,
-                  lineWidth:size,
-                  ...shape
+                  points: data.map((item) => {
+                    return { x: item.x, y: item.y };
+                  }),
+                  stroke: color,
+                  lineWidth: size,
+                  ...shape,
+                }}
+                animation={{
+                  update: {
+                    easing: 'linear',
+                    duration: 450,
+                    property: ['points'],
+                  },
                 }}
               />
             ))}
