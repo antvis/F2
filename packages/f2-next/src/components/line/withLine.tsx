@@ -43,7 +43,7 @@ export default (View) => {
       const { field: yField } = this.attrOptions.y;
       const { connectNulls: defaultConnectNulls } = this;
       const { connectNulls = defaultConnectNulls } = this.props;
-      each(mappedArray, function(obj) {
+      each(mappedArray, function (obj) {
         const splitArrayObj = splitArray(obj.points, yField, connectNulls);
         obj.dataArray = splitArrayObj;
       });
@@ -55,7 +55,14 @@ export default (View) => {
       const { style, coord } = props;
       const mapped = this.mapping();
       const mappedArray = this.splitPoints(this.parsePoints(mapped));
-      return <View coord={coord} mappedArray={mappedArray} style={style} />;
+      return (
+        <View
+          {...props}
+          coord={coord}
+          mappedArray={mappedArray}
+          style={style}
+        />
+      );
     }
   };
 };
