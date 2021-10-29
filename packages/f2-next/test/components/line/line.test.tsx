@@ -1016,7 +1016,7 @@ describe('折线图', () => {
     });
   });
 
-  it.only('【bug】多次渲染折线，没有clear', () => {
+  it.only('动态折线图', () => {
     let data = [];
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
@@ -1050,10 +1050,12 @@ describe('折线图', () => {
 
       componentDidMount() {
         // 更新数据
-        setTimeout( ()=> {
-          const { data } = this.state;
-          this.setState({ data: [].concat(data, getRecord()) });
-        }, 1000);
+        for(let i=40; i>0; i--) {
+          setTimeout( ()=> {
+            const { data } = this.state;
+            this.setState({ data: [].concat(data, getRecord()) });
+          }, i * 1000);
+        }
       }
 
       render() {
@@ -1067,9 +1069,14 @@ describe('折线图', () => {
                   time: {
                     type: 'timeCat',
                   },
+                  value: {
+                    min: 0
+                  }
                 }}
               >
                 <Line x="time" y="value" />
+                <Axis field="value"/>
+                <Axis field="time"/>
                 <TestComponent/>
               </Chart>
             </ReactCanvas>
