@@ -32,9 +32,10 @@ export default (props) => {
   return (
     <group>
       {nodes.map((node) => {
-        const { xMin, xMax, yMin, yMax, color } = node;
+        const { key, xMin, xMax, yMin, yMax, color } = node;
         return (
           <rect
+            key={key}
             attrs={{
               x: xMin,
               y: yMin,
@@ -44,6 +45,26 @@ export default (props) => {
               lineWidth: '4px',
               stroke: '#fff',
               radius: '8px',
+            }}
+            animation={{
+              appear: {
+                easing: 'linear',
+                duration: 450,
+                property: ['fillOpacity', 'strokeOpacity'],
+                start: {
+                  fillOpacity: 0,
+                  strokeOpacity: 0,
+                },
+                end: {
+                  fillOpacity: 1,
+                  strokeOpacity: 1,
+                },
+              },
+              update: {
+                easing: 'linear',
+                duration: 450,
+                property: ['x', 'y', 'width', 'height', 'radius', 'lineWidth'],
+              },
             }}
           />
         );

@@ -69,7 +69,7 @@ function groupToMap(data, fields) {
   for (let i = 0, len = data.length; i < len; i++) {
     const row = data[i];
     const key = callback(row);
-    row.key = key;
+    row.key = row.key || key;
     if (groups[key]) {
       groups[key].push(row);
     } else {
