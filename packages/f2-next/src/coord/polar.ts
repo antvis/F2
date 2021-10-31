@@ -1,26 +1,42 @@
 import Base from './base';
 import { Range, Option } from './types';
 
+interface PolarOption extends Option {
+  radius: number; // 内半径比例
+  innerRadius: number; // 半径 0~1 默认为1
+}
+
 class Polar extends Base {
 
   type = 'polar';
   isPolar = true;
   startAngle: number;
   endAngle: number;
-  innerRadius: number; // 内半径，默认为0
+  radius: number; // 半径
+  innnerRadius: number; // 内半径
+  
+  option: PolarOption;
 
-  update(option: Option) {
+  update(option: PolarOption) {
     super.update(option);
 
-    const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2, innerRadius = 0 } = this;
+    if (!this.option) {
+      this.option = option;
+    }
+
+    const { radius: radiusRatio = 1, innerRadius: innerRadiusRatio = 0 } = this.option;
+
+    const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2 } = this;
     // 半径取宽高的最小值
-    const radius = Math.min(width, height) / 2;
+    const radius = radiusRatio * (Math.min(width, height) / 2);
     // 极坐标下 x 表示弧度， y 代表 半径
     const x: Range = [startAngle, endAngle];
-    const y: Range = [innerRadius * radius, radius];
+    const y: Range = [innerRadiusRatio * radius, radius];
 
     this.x = x;
     this.y = y;
+    this.radius = radius;
+    this.innnerRadius = innerRadiusRatio * radius;
     return this;
   }
 
