@@ -1,11 +1,11 @@
 {
   "name": "@ali/f2-next",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "dependencies": {
-    "@ali/f2-graphic": "^0.0.1-alpha.1",
+    "@ali/f2-graphic": "^0.0.1-alpha.2",
     "@alipay/tango": "^2.0.1",
     "@antv/adjust": "~0.1.1",
     "@antv/scale": "~0.3.3",
