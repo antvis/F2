@@ -3,7 +3,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactCanvas from '../src';
-import { Chart, Line , Canvas } from '@ali/f2-next'
+import { Chart, Line , Canvas } from '@antv/f2'
 
 
 // @ts-ignore

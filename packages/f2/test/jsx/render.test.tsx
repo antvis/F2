@@ -7,7 +7,7 @@ import {
   compareRenderTree
 } from '../../src/jsx';
 import { ELEMENT_DELETE } from '../../src/jsx/elementStatus';
-import { Canvas } from '@ali/f2-graphic';
+import { Canvas } from '@antv/f2-graphic';
 
 const canvasEl = document.createElement('canvas');
 canvasEl.style.width = '359px';

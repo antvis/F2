@@ -1,5 +1,5 @@
 import { jsx } from '../../../jsx';
-import { Vector2 } from '@ali/f2-graphic';
+import { Vector2 } from '@antv/f2-graphic';
 
 export default (props) => {
   const { ticks, coord, style } = props;

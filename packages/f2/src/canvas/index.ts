@@ -1,4 +1,4 @@
-import { createCanvas } from '@ali/f2-graphic';
+import { createCanvas } from '@antv/f2-graphic';
 import { mix } from '@antv/util';
 import Component from '../base/component';
 import Timeline from '../timeline';

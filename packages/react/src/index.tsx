@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { RefObject, forwardRef } from "react";
-import { Canvas } from "@ali/f2-next";
+import { Canvas } from "@antv/f2";
 
 class ErrorBoundary extends React.Component<
   { fallback: React.Component },

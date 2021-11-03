@@ -1,5 +1,5 @@
 import { ELEMENT_DELETE } from '../elementStatus';
-import { Shape } from '@ali/f2-graphic';
+import { Shape } from '@antv/f2-graphic';
 
 function createClipElement(type: string, config) {
   return new Shape[type](config);
