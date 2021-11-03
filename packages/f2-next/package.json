@@ -6,7 +6,6 @@
   "types": "es/index.d.ts",
   "dependencies": {
     "@ali/f2-graphic": "^0.0.1",
-    "@alipay/tango": "^2.0.1",
     "@antv/adjust": "~0.1.1",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
@@ -18,7 +17,6 @@
     "fecha": "^2.3.3"
   },
   "devDependencies": {
-    "@alipay/tango": "^2.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
