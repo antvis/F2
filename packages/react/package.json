@@ -20,8 +20,13 @@
     "lib",
     "es"
   ],
-  "publishConfig": {
-    "registry": "https://registry.npm.alibaba-inc.com"
+  "homepage": "https://github.com/antvis/f2",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2"
   },
-  "author": "yezengyue@gmail.com"
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  }
 }
