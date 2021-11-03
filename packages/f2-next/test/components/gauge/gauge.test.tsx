@@ -8,7 +8,7 @@ describe('Gauge', () => {
     const { type, props } = (
       <Canvas context={context}>
         <Gauge
-          center={{ x: 200, y: 150 }}
+          center={{ x: 150, y: 150 }}
           startAngle={Math.PI}
           endAngle={Math.PI * 2}
           percent={0.5}
