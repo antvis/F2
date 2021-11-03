@@ -18,4 +18,5 @@ export {
 export { default as Tooltip, withTooltip, TooltipView } from './tooltip';
 export { default as Treemap, withTreemap, TreemapView } from './treemap';
 export { default as Sunburst, withSunburst, SunburstView } from './sunburst';
+export { default as PieLabel, withPieLabel, PieLabelView } from './pieLabel'
 export { default as Gauge } from './gauge';
