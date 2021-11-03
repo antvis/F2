@@ -1,7 +1,7 @@
 export default {
   pkgs: [
     "graphic",
-    "f2-next",
+    "f2",
     "react",
   ],
   cjs: {
