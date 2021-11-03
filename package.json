@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@antv/data-set": "^0.10.2",
-    "@antv/gatsby-theme-antv": "^1.0.0-beta.11",
+    "@antv/gatsby-theme-antv": "1.1.12",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -49,7 +49,6 @@
     "babel-eslint": "~10.1.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-transform-remove-strict-mode": "~0.0.2",
-    "babel-preset-gatsby": "^0.4.0",
     "body-parser": "^1.18.2",
     "chai": "~4.2.0",
     "commander": "~2.9.0",
