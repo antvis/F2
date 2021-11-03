@@ -15,8 +15,8 @@ export default (props, context) => {
   const defaultTextAttrs = {
     x: 0,
     y: 0,
-    fontSize: 12,
-    lineHeight: 12,
+    fontSize: '24px',
+    lineHeight: '24px',
     fill: '#808080',
   };
 
