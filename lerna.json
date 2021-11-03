@@ -2,7 +2,7 @@
   "packages": [
     "packages/*"
   ],
-  "npmClient": "tnpm",
+  "npmClient": "npm",
   "version": "independent",
   "lerna": "2.11.0"
 }
