@@ -8,7 +8,7 @@ import { ELEMENT_DELETE } from './elementStatus';
 
 // 转换成布局所需要的布局树
 function createNodeTree(element: any, container: any) {
-  const { key, ref, _cache, type, props, status } = element;
+  const { key, ref, _cache, type, props, status, animation } = element;
   const children = extendMap(props.children, (child) => {
     return createNodeTree(child, container);
   });
@@ -44,6 +44,7 @@ function createNodeTree(element: any, container: any) {
     props,
     children,
     status,
+    animation,
 
     // 处理px2hd之后的配置
     style,
@@ -80,6 +81,7 @@ function createElement(
     renderChildren,
     children: nodeChildren,
     status,
+    animation,
   } = node;
   const layout = mergeLayout(parentLayout, originLayout);
 
@@ -119,13 +121,10 @@ function createElement(
     });
   }
   if (animate !== false) {
-    const animation = getAnimation(
-      element,
-      props.animation,
-      elementAttrs,
-      lastAttrs
+    element.set(
+      'animation',
+      getAnimation(element, animation, elementAttrs, lastAttrs)
     );
-    element.set('animation', animation);
   }
   if (ref) {
     ref.current = element;

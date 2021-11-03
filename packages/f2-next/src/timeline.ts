@@ -32,9 +32,11 @@ class Timeline extends Component {
   }
 
   next() {
-    const { state } = this;
+    const { state, props } = this;
     const { index, count, delay } = state;
-    const next = index + 1;
+    const { loop } = props;
+
+    const next = loop ? (index + 1) % count : index + 1;
     if (next < count) {
       setTimeout(() => {
         this.setState({

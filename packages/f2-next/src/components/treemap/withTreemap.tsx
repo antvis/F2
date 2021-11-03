@@ -23,7 +23,7 @@ export default (View): any => {
       this.color = new Category({
         range: theme.colors,
         ...color,
-        data
+        data,
       });
     }
     treemapLayout() {
@@ -31,7 +31,7 @@ export default (View): any => {
       const { data, value, space = 0 } = props;
 
       const root = hierarchy({ children: data })
-        .sum(function(d) {
+        .sum(function (d) {
           return d[value];
         })
         .sort((a, b) => b[value] - a[value]);
@@ -49,19 +49,20 @@ export default (View): any => {
       // .paddingBottom(options.paddingBottom)
       // .paddingLeft(options.paddingLeft);
       const nodes = treemapLayout(root);
-      return nodes.children.map(item => {
+      return nodes.children.map((item) => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
         const rect = coord.convertRect({
           xMin: x0,
           xMax: x1,
           yMin: y0,
-          yMax: y1
+          yMax: y1,
         });
         return {
-          data,
+          key: data.key,
+          origin: data,
           color,
-          ...rect
+          ...rect,
         };
       });
     }

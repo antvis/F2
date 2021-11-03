@@ -5,13 +5,13 @@ function createClipElement(type: string, config) {
   return new Shape[type](config);
 }
 
-export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
-  if (!animationCfg) return null;
+export default (element: any, animation, nextAttrs, lastAttrs) => {
+  if (!animation) return null;
   // 获取shape的默认属性
   const status = element.get('status');
-  const { appear, update, leave } = animationCfg;
-  const animation = status === ELEMENT_DELETE ? leave : ( lastAttrs ? update : appear );
-  if (!animation) return;
+  // const { appear, update, leave } = animationCfg;
+  // const animation = status === ELEMENT_DELETE ? leave : ( lastAttrs ? update : appear );
+  // if (!animation) return;
   const { clip, start, end, easing, delay, duration } = animation;
 
   if (clip) {
@@ -37,6 +37,6 @@ export default (element: any, animationCfg, nextAttrs, lastAttrs) => {
     end: {
       ...(status === ELEMENT_DELETE ? null : nextAttrs),
       ...end,
-    }
-  }
-}
+    },
+  };
+};

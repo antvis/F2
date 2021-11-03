@@ -19,16 +19,20 @@ function renderShape(
 ) {
   const {
     container,
-    // @ts-ignore
-    __lastElement,
     context,
     updater,
+    // @ts-ignore
+    __lastElement,
+    // @ts-ignore
+    transformFrom,
     animate: componentAnimate,
   } = component;
   // 先清空绘制内容
   container.clear();
 
   animate = isBoolean(animate) ? animate : componentAnimate;
+  const lastElement =
+    __lastElement || (transformFrom && transformFrom.__lastElement);
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
   const shapeElement = renderJSXElement(children, context, updater);
@@ -36,7 +40,7 @@ function renderShape(
   component.__lastElement = shapeElement;
   const renderElement =
     animate !== false
-      ? compareRenderTree(shapeElement, __lastElement)
+      ? compareRenderTree(shapeElement, lastElement)
       : shapeElement;
   if (!renderElement) return null;
   // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
@@ -61,17 +65,56 @@ function setComponentAnimate(child: Component, parent: Component) {
   child.animate = isBoolean(childAnimate) ? childAnimate : parentAnimate;
 }
 
+function getTransformComponent(component: Component) {
+  if (!component) return null;
+  // @ts-ignore
+  const { __lastElement, children } = component;
+  if (__lastElement) {
+    return component;
+  }
+  if (!children) {
+    return null;
+  }
+
+  let componentFromChildren = null;
+  Children.map(children, (item) => {
+    if (componentFromChildren) return;
+    if (!item) return;
+    const component = getTransformComponent(item.component);
+    if (component) {
+      componentFromChildren = component;
+    }
+  });
+  return componentFromChildren;
+}
+
+function getTransformFromComponentRef(transformFromRef) {
+  if (!transformFromRef || !transformFromRef.current) {
+    return null;
+  }
+  const transformFromComponent = transformFromRef.current;
+  return getTransformComponent(transformFromComponent);
+}
+
 function createComponent(parent: Component, element: JSX.Element): Component {
   const { type, props, key, ref } = element;
-  const { container, context, updater } = parent;
+  const {
+    container,
+    context,
+    updater,
+    //@ts-ignore
+    transformFrom,
+  } = parent;
+
+  const { transformFrom: transformFromRef, ...receiveProps } = props;
 
   let component: Component;
   // @ts-ignore
   if (type.prototype && type.prototype.isF2Component) {
     // @ts-ignore
-    component = new type(props, context, updater);
+    component = new type(receiveProps, context, updater);
   } else {
-    component = new Component(props, context, updater);
+    component = new Component(receiveProps, context, updater);
     component.render = function () {
       // @ts-ignore
       return type(this.props, context, updater);
@@ -81,6 +124,20 @@ function createComponent(parent: Component, element: JSX.Element): Component {
   // 设置ref
   if (ref) {
     ref.current = component;
+  }
+
+  // 因为view 可能在子组件，所以这里要透传到子组件
+  if (transformFrom) {
+    // @ts-ignore
+    component.transformFrom = transformFrom;
+  }
+
+  if (transformFromRef) {
+    const transformFromComponent = transformFromRef
+      ? getTransformFromComponentRef(transformFromRef)
+      : null;
+    // @ts-ignore
+    component.transformFrom = transformFromComponent;
   }
 
   // 每个组件都新建一个独立容器
