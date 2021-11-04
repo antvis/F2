@@ -69,6 +69,9 @@ temp
 .DS_Store
 .vscode
 .idea
+es5/
+es6/
+es/
 demos/index.html
 demos/assets/screenshots
 demos/debug.html

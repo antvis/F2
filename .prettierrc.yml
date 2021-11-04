@@ -1,0 +1,4 @@
+# 详细配置请移步：https://prettier.io/docs/en/configuration.html
+---
+trailingComma: es5
+singleQuote: true

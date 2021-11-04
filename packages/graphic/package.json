@@ -1,0 +1,27 @@
+{
+  "name": "@antv/f2-graphic",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "src",
+    "dist",
+    "lib",
+    "es"
+  ],
+  "dependencies": {
+    "@antv/util": "~2.0.6",
+    "@babel/runtime": "^7.12.5"
+  },
+  "homepage": "https://github.com/antvis/f2",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  }
+}

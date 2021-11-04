@@ -1,6 +1,5 @@
 {
-  "name": "@antv/f2",
-  "version": "3.8.10-beta.1",
+  "name": "@antv/f2-next",
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -37,11 +36,14 @@
   "devDependencies": {
     "@antv/data-set": "^0.10.2",
     "@antv/gatsby-theme-antv": "1.1.12",
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.12.10",
+    "@babel/preset-typescript": "^7.12.7",
+    "@babel/preset-env": "^7.12.10",
+    "babel-jest": "^26.6.3",
     "@rollup/plugin-alias": "^3.1.0",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -59,13 +61,16 @@
     "eslint": "^6.7.2",
     "eslint-config-egg": "~4.2.0",
     "f2-svg-engine": "^0.0.2",
+    "father": "^2.30.0",
     "gatsby": "^2.17.7",
     "get-port": "~3.1.0",
     "gh-pages": "^2.1.1",
-    "jest": "^24.9.0",
-    "jest-electron": "^0.1.11",
+    "jest": "^26.6.3",
+    "jest-electron": "^0.1.12",
     "jquery": "^3.3.1",
     "jszip": "^3.1.5",
+    "jest-less-loader": "^0.1.1",
+    "lerna": "^2.11.0",
     "nightmare": "~2.10.0",
     "nunjucks": "~3.2.1",
     "open": "~7.0.0",
@@ -77,7 +82,9 @@
     "rollup-plugin-terser": "^5.3.0",
     "serve-static": "~1.12.4",
     "shelljs": "~0.7.8",
-    "typescript": "~3.9.5",
+    "ts-jest": "^26.4.4",
+    "@types/jest": "^26.0.20",
+    "typescript": "^4.1.3",
     "uglify-js": "~3.0.15"
   },
   "scripts": {
@@ -86,7 +93,9 @@
     "site:build": "npm run site:clean && BABEL_ENV=site gatsby build --prefix-paths",
     "site:clean": "BABEL_ENV=site gatsby clean",
     "site:deploy": "npm run site:build && gh-pages -d public",
-    "build": "npm run build-lib && npm run build-es && npm run build-umd && npm run build-types",
+    "build": "father build",
+    "build:watch": "father build -w",
+    "build:old": "npm run build-lib && npm run build-es && npm run build-umd && npm run build-types",
     "build-lib": "rm -rf lib && babel src --out-dir lib",
     "build-es": "rm -rf es && BABEL_ENV=esm babel src --out-dir es",
     "build-umd": "rm -rf dist && rollup --config",
@@ -102,11 +111,16 @@
     "prepublishOnly": "npm run build",
     "screenshot": "DEBUG=app:* ./bin/screenshot.js",
     "test": "jest",
+    "test:watch": "DEBUG_MODE=1 jest --watch",
     "test-unit": "jest test/unit",
     "test-bug": "jest test/bug",
     "test-live": "DEBUG_MODE=1 jest --watch",
     "test-types": "tsc --noEmit",
-    "watch": "webpack --config webpack-dev.config.js"
+    "watch": "webpack --config webpack-dev.config.js",
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean",
+    "publish": "npm run test && npm run lerna",
+    "lerna": "lerna publish"
   },
   "pre-commit": {
     "run": [
@@ -115,19 +129,14 @@
     ],
     "silent": false
   },
+  "resolutions": {
+    "signal-exit": "3.0.3"
+  },
   "jest": {
     "runner": "jest-electron/runner",
     "testEnvironment": "jest-electron/environment",
     "testRegex": "/test/.*-spec\\.js?$",
     "verbose": false
   },
-  "dependencies": {
-    "@antv/adjust": "~0.1.1",
-    "@antv/scale": "~0.3.3",
-    "@antv/util": "~2.0.6",
-    "@babel/runtime": "^7.7.7",
-    "@types/hammerjs": "^2.0.36",
-    "hammerjs": "^2.0.8",
-    "type-fest": "^0.15.1"
-  }
+  "dependencies": {}
 }

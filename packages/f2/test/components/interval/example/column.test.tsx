@@ -1,0 +1,661 @@
+// @ts-nocheck
+import { jsx } from '../../../../src';
+import { Polar, Rect } from '../../../../src/coord';
+import { Canvas, Chart } from '../../../../src';
+import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
+import { createContext } from '../../../util';
+
+describe('柱状图示例', () => {
+  // 基础
+  it('基础柱状图', () => {
+    const context = createContext('基础柱状图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        year: '1951 年',
+        sales: 38,
+      },
+      {
+        year: '1952 年',
+        sales: 52,
+      },
+      {
+        year: '1956 年',
+        sales: 61,
+      },
+      {
+        year: '1957 年',
+        sales: 145,
+      },
+      {
+        year: '1958 年',
+        sales: 48,
+      },
+      {
+        year: '1959 年',
+        sales: 38,
+      },
+      {
+        year: '1960 年',
+        sales: 38,
+      },
+      {
+        year: '1962 年',
+        sales: 38,
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Interval x="year" y="sales" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+  it('区间柱状图', () => {
+    const context = createContext('区间柱状图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        x: '分类一',
+        y: [76, 100],
+      },
+      {
+        x: '分类二',
+        y: [56, 108],
+      },
+      {
+        x: '分类三',
+        y: [38, 129],
+      },
+      {
+        x: '分类四',
+        y: [58, 155],
+      },
+      {
+        x: '分类五',
+        y: [45, 120],
+      },
+      {
+        x: '分类六',
+        y: [23, 99],
+      },
+      {
+        x: '分类七',
+        y: [18, 56],
+      },
+      {
+        x: '分类八',
+        y: [18, 34],
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="x" />
+          <Axis field="y" />
+          <Interval x="x" y="y" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+  it('渐变色柱状图', () => {
+    const context = createContext('渐变色柱状图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        year: '2014 年',
+        sales: 145,
+        name: '1',
+      },
+      {
+        year: '2015 年',
+        sales: 121,
+        name: '1',
+      },
+      {
+        year: '2016 年',
+        sales: 100,
+        name: '1',
+      },
+      {
+        year: '2017 年',
+        sales: 97,
+        name: '1',
+      },
+      {
+        year: '2018 年',
+        sales: 85,
+        name: '1',
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Interval x="year" y="sales" color="l(90) 0:#1890ff 1:#70cdd0" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it('分组柱图', () => {
+    const context = createContext('分组柱图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        name: 'London',
+        月份: 'Jan.',
+        月均降雨量: 18.9,
+      },
+      {
+        name: 'London',
+        月份: 'Feb.',
+        月均降雨量: 28.8,
+      },
+      {
+        name: 'London',
+        月份: 'Mar.',
+        月均降雨量: 39.3,
+      },
+      {
+        name: 'London',
+        月份: 'Apr.',
+        月均降雨量: 81.4,
+      },
+      {
+        name: 'London',
+        月份: 'May.',
+        月均降雨量: 47,
+      },
+      {
+        name: 'London',
+        月份: 'Jun.',
+        月均降雨量: 20.3,
+      },
+      {
+        name: 'London',
+        月份: 'Jul.',
+        月均降雨量: 24,
+      },
+      {
+        name: 'London',
+        月份: 'Aug.',
+        月均降雨量: 35.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jan.',
+        月均降雨量: 12.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Feb.',
+        月均降雨量: 23.2,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Mar.',
+        月均降雨量: 34.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Apr.',
+        月均降雨量: 99.7,
+      },
+      {
+        name: 'Berlin',
+        月份: 'May.',
+        月均降雨量: 52.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jun.',
+        月均降雨量: 35.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jul.',
+        月均降雨量: 37.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Aug.',
+        月均降雨量: 42.4,
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="月份" />
+          <Axis field="月均降雨量" />
+          <Interval
+            x="月份"
+            y="月均降雨量"
+            color="name"
+            adjust={{
+              type: 'dodge',
+              marginRatio: 0.05, // 设置分组间柱子的间距
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+  it('带负值的分组分组柱图', () => {
+    const context = createContext('带负值的分组分组柱图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        time: '周一',
+        tem: 6.9,
+        city: 'tokyo',
+      },
+      {
+        time: '周二',
+        tem: 9.5,
+        city: 'tokyo',
+      },
+      {
+        time: '周三',
+        tem: 14.5,
+        city: 'tokyo',
+      },
+      {
+        time: '周四',
+        tem: 18.2,
+        city: 'tokyo',
+      },
+      {
+        time: '周五',
+        tem: 21.5,
+        city: 'tokyo',
+      },
+      {
+        time: '周六',
+        tem: 25.2,
+        city: 'tokyo',
+      },
+      {
+        time: '周日',
+        tem: 26.5,
+        city: 'tokyo',
+      },
+      {
+        time: '周一',
+        tem: -10.8,
+        city: 'newYork',
+      },
+      {
+        time: '周二',
+        tem: -5.7,
+        city: 'newYork',
+      },
+      {
+        time: '周三',
+        tem: -11.3,
+        city: 'newYork',
+      },
+      {
+        time: '周四',
+        tem: -17,
+        city: 'newYork',
+      },
+      {
+        time: '周五',
+        tem: -22,
+        city: 'newYork',
+      },
+      {
+        time: '周六',
+        tem: -24.8,
+        city: 'newYork',
+      },
+      {
+        time: '周日',
+        tem: -24.1,
+        city: 'newYork',
+      },
+      {
+        time: '周一',
+        tem: 2.6,
+        city: 'berlin',
+      },
+      {
+        time: '周二',
+        tem: 3.5,
+        city: 'berlin',
+      },
+      {
+        time: '周三',
+        tem: 8.4,
+        city: 'berlin',
+      },
+      {
+        time: '周四',
+        tem: 13.5,
+        city: 'berlin',
+      },
+      {
+        time: '周五',
+        tem: 17,
+        city: 'berlin',
+      },
+      {
+        time: '周六',
+        tem: -18.6,
+        city: 'berlin',
+      },
+      {
+        time: '周日',
+        tem: 17.9,
+        city: 'berlin',
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="time" />
+          <Axis field="tem" />
+          <Interval x="time" y="tem" color="city" adjust="dodge" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it('层叠柱图', () => {
+    const context = createContext('层叠柱图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        name: 'London',
+        月份: 'Jan.',
+        月均降雨量: 18.9,
+      },
+      {
+        name: 'London',
+        月份: 'Feb.',
+        月均降雨量: 28.8,
+      },
+      {
+        name: 'London',
+        月份: 'Mar.',
+        月均降雨量: 39.3,
+      },
+      {
+        name: 'London',
+        月份: 'Apr.',
+        月均降雨量: 81.4,
+      },
+      {
+        name: 'London',
+        月份: 'May.',
+        月均降雨量: 47,
+      },
+      {
+        name: 'London',
+        月份: 'Jun.',
+        月均降雨量: 20.3,
+      },
+      {
+        name: 'London',
+        月份: 'Jul.',
+        月均降雨量: 24,
+      },
+      {
+        name: 'London',
+        月份: 'Aug.',
+        月均降雨量: 35.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jan.',
+        月均降雨量: 12.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Feb.',
+        月均降雨量: 23.2,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Mar.',
+        月均降雨量: 34.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Apr.',
+        月均降雨量: 99.7,
+      },
+      {
+        name: 'Berlin',
+        月份: 'May.',
+        月均降雨量: 52.6,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jun.',
+        月均降雨量: 35.5,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Jul.',
+        月均降雨量: 37.4,
+      },
+      {
+        name: 'Berlin',
+        月份: 'Aug.',
+        月均降雨量: 42.4,
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="月份" />
+          <Axis field="月均降雨量" />
+          <Interval x="月份" y="月均降雨量" color="name" adjust="stack" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it('百分比层叠柱图', () => {
+    const context = createContext('百分比层叠柱图', {
+      height: '300px',
+      width: '400px',
+    });
+    const data = [
+      {
+        country: 'Europe',
+        year: '1750',
+        value: 163,
+        percent: 0.24511278195488723,
+      },
+      {
+        country: 'Asia',
+        year: '1750',
+        value: 502,
+        percent: 0.7548872180451128,
+      },
+      {
+        country: 'Europe',
+        year: '1800',
+        value: 203,
+        percent: 0.24224343675417662,
+      },
+      {
+        country: 'Asia',
+        year: '1800',
+        value: 635,
+        percent: 0.7577565632458234,
+      },
+      {
+        country: 'Europe',
+        year: '1850',
+        value: 276,
+        percent: 0.2543778801843318,
+      },
+      {
+        country: 'Asia',
+        year: '1850',
+        value: 809,
+        percent: 0.7456221198156682,
+      },
+      {
+        country: 'Europe',
+        year: '1900',
+        value: 408,
+        percent: 0.3011070110701107,
+      },
+      {
+        country: 'Asia',
+        year: '1900',
+        value: 947,
+        percent: 0.6988929889298893,
+      },
+      {
+        country: 'Europe',
+        year: '1950',
+        value: 547,
+        percent: 0.2806567470497691,
+      },
+      {
+        country: 'Asia',
+        year: '1950',
+        value: 1402,
+        percent: 0.7193432529502309,
+      },
+      {
+        country: 'Europe',
+        year: '1999',
+        value: 729,
+        percent: 0.16708686683474674,
+      },
+      {
+        country: 'Asia',
+        year: '1999',
+        value: 3634,
+        percent: 0.8329131331652533,
+      },
+      {
+        country: 'Europe',
+        year: '2050',
+        value: 628,
+        percent: 0.10651289009497965,
+      },
+      {
+        country: 'Asia',
+        year: '2050',
+        value: 5268,
+        percent: 0.8934871099050203,
+      },
+      {
+        country: 'Europe',
+        year: '2100',
+        value: 828,
+        percent: 0.10227272727272728,
+      },
+      {
+        country: 'Asia',
+        year: '2100',
+        value: 7268,
+        percent: 0.8977272727272727,
+      },
+    ];
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="percent" />
+          <Interval x="year" y="percent" color="country" adjust="stack" />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+
+  it('南丁格尔玫瑰图', () => {
+    const data = [
+      {
+        year: '2001',
+        population: 41.8,
+      },
+      {
+        year: '2002',
+        population: 25.8,
+      },
+      {
+        year: '2003',
+        population: 31.7,
+      },
+      {
+        year: '2004',
+        population: 46,
+      },
+      {
+        year: '2005',
+        population: 28,
+      },
+    ];
+    const context = createContext('南丁格尔玫瑰图');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+          }}
+          scale={{
+            population: {
+              min: 0,
+            },
+          }}
+        >
+          <Interval x="year" y="population" color="year" />
+          <Legend position="right" />
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+  });
+});
