@@ -1,4 +1,4 @@
-import { jsx, Canvas, Component, Container } from '../../src';
+import { jsx, Canvas, Component } from '../../src';
 import { createContext } from '../util';
 const context = createContext();
 
@@ -36,15 +36,15 @@ class Test extends Component {
   }
 }
 
-describe('Canvas', () => {
+describe.skip('Canvas', () => {
   it('3.0 api', () => {
-    const canvas = new Canvas({
-      context,
-      pixelRatio: window.devicePixelRatio
-    });
+    // const canvas = new Canvas({
+    //   context,
+    //   pixelRatio: window.devicePixelRatio
+    // });
 
-    // const test = canvas.createComponent(Test, {});
+    // // const test = canvas.createComponent(Test, {});
 
-    canvas.render();
+    // canvas.render();
   });
 });

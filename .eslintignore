@@ -9,6 +9,7 @@ node_modules/
 demos/assets/
 lib/
 demos/index.html
+site/
 docs/
 public
 types/

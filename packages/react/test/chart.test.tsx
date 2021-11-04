@@ -28,7 +28,7 @@ function App(props: any) {
   );
 }
 
-describe('<Canvas >', () => {
+describe.skip('<Canvas >', () => {
   it('Chart render', () => {
     const chartRef = React.createRef<typeof ReactCanvas>();
     const lineRef = React.createRef<any>();
