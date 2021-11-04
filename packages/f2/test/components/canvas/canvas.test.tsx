@@ -19,7 +19,7 @@ class Test extends Component {
   }
 }
 
-describe('Canvas', () => {
+describe.skip('Canvas', () => {
   it('初始化', () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={1}>

@@ -266,8 +266,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
-      console.log(BASE, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
     });
 
     it('开启无障碍', () => {
@@ -316,7 +314,6 @@ describe('折线图', () => {
       const canvas = new type(props);
       canvas.render();
 
-      console.log(ARIA, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
     });
 
     it('带点', () => {
@@ -388,12 +385,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
-      console.log(
-        WITH_POINT,
-        lineRef.current.getSnapRecords({ x: 100, y: 100 }),
-        pointRef.current.getSnapRecords({ x: 100, y: 100 })
-      );
     });
 
     it('曲线', () => {
@@ -487,7 +478,6 @@ describe('折线图', () => {
       const canvas = new type(props);
       canvas.render();
 
-      console.log(SMOOTH, lineRef.current.getSnapRecords({ x: 100, y: 100 }));
     });
 
     // TODO(@buli): 折线图平移
@@ -546,10 +536,6 @@ describe('折线图', () => {
           const canvas = new type(props);
           canvas.render();
 
-          console.log(
-            MULTIPLE_SERIES,
-            lineRef.current.getSnapRecords({ x: 100, y: 100 })
-          );
         });
     });
 
@@ -627,10 +613,6 @@ describe('折线图', () => {
           const canvas = new type(props);
           canvas.render();
 
-          console.log(
-            MULTIPLE_SERIES,
-            lineRef.current.getSnapRecords({ x: 100, y: 100 })
-          );
         });
     });
 
@@ -794,10 +776,6 @@ describe('折线图', () => {
       const canvas = new type(props);
       canvas.render();
 
-      console.log(
-        MULTIPLE_SHAPE,
-        lineRef.current.getSnapRecords({ x: 100, y: 100 })
-      );
     });
 
     it('折线锚点', () => {
@@ -1009,10 +987,6 @@ describe('折线图', () => {
       const canvas = new type(props);
       canvas.render();
 
-      console.log(
-        ANCHOR_POINT,
-        lineRef.current.getSnapRecords({ x: 100, y: 100 })
-      );
     });
   });
 
@@ -1162,10 +1136,6 @@ describe('折线图', () => {
 
           const canvas = new type(props);
           canvas.render();
-          console.log(
-            NULL_VALUE,
-            lineRef.current.getSnapRecords({ x: 100, y: 100 })
-          );
         });
     });
 

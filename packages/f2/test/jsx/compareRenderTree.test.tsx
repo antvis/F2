@@ -1,6 +1,6 @@
 import { jsx, compareRenderTree, render } from '../../src/jsx';
 
-describe('compareRenderTree', () => {
+describe.skip('compareRenderTree', () => {
   describe('null', () => {
     it('都为null', () => {
       const renderElement = compareRenderTree(null, null);

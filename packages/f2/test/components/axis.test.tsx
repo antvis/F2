@@ -13,8 +13,8 @@ const data = [
   { genre: 'Other', sold: 160, type: 'b' }
 ];
 
-describe('Axis', () => {
-  it.only('render', () => {
+describe.skip('Axis', () => {
+  it('render', () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
         <Chart data={data} end={{ x: 180, y: 400 }}>
@@ -129,7 +129,7 @@ describe('Axis', () => {
   });
 });
 
-describe('Axis rect transposed', () => {
+describe.skip('Axis rect transposed', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
@@ -146,7 +146,7 @@ describe('Axis rect transposed', () => {
   });
 });
 
-describe('Axis polar', () => {
+describe.skip('Axis polar', () => {
   it('render', () => {
     const { type, props } = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>

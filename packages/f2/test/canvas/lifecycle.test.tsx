@@ -34,7 +34,7 @@ class Test extends Component {
 
   render() {
     const { props } = this;
-    console.log('Test render', props);
+    console.log('Test render');
 
     const { width = 0 } = props;
     return (
@@ -99,7 +99,7 @@ class TestContainer extends Component {
 
   render() {
     const { props } = this;
-    console.log('TestContainer render', props);
+    console.log('TestContainer render');
 
     const { children } = props;
     return children;

@@ -103,7 +103,7 @@ const crossData = [
   { genre: 'Action', sold: 350, type: 'b' },
 ];
 
-describe('Line', () => {
+describe.skip('Line', () => {
   const context = createContext();
   it('Line color callback', () => {
     const { type, props } = (
