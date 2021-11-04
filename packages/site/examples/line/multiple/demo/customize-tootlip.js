@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Point, Axis, Legend } from '@antv/f2';
 
 const data = [{
   date: '2017-06-05',
@@ -106,116 +106,64 @@ const data = [{
   tag: 0
 }];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio,
-  padding: [ 45, 'auto', 'auto' ]
-});
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        date: {
+          type: 'timeCat',
+          tickCount: 3,
+        },
+        value: {
+          tickCount: 5,
+          min: 0,
+          formatter: (val) => `${val.toFixed(2)}%`,
+        },
+        tag: {
+          type: 'cat',
+        },
+      }}
+    >
+      <Axis
+        field="date"
+        style={{
+          label: { align: 'between' },
+        }}
+      />
+      <Axis field="value" />
+      <Line x="date" y="value" lineWidth="4px" />
+      <Point
+        x="date"
+        y="value"
+        size={{
+          field: 'tag',
+          map: (val) => (val ? 4 : 0),
+        }}
+        color={{
+          field: 'tag',
+          map: (val) => (val === 2 ? '#518DFE' : '#F35833'),
+        }}
+      />
+      <Legend
+        position="top"
+        items={[
+          {
+            name: '买入点',
+            marker: 'circle',
+            color: '#F35833',
+          },
+          {
+            name: '卖出点',
+            marker: 'circle',
+            color: '#518DFE',
+          },
+        ]}
+      />
+    </Chart>
+  </Canvas>
+);
 
-chart.source(data, {
-  value: {
-    tickCount: 5,
-    min: 0,
-    formatter: function formatter(val) {
-      return val.toFixed(2) + '%';
-    }
-  },
-  date: {
-    type: 'timeCat',
-    range: [ 0, 1 ],
-    tickCount: 3
-  }
-});
-
-chart.axis('date', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.axis('value', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textBaseline = 'bottom';
-    } else if (index === total - 1) {
-      textCfg.textBaseline = 'top';
-    }
-    return textCfg;
-  }
-});
-chart.legend({
-  custom: true,
-  itemWidth: null,
-  items: [{
-    name: '买入点',
-    marker: 'circle',
-    fill: '#F35833'
-  }, {
-    name: '卖出点',
-    marker: 'circle',
-    fill: '#518DFE'
-  }]
-});
-chart.guide().html({
-  position: [ 'min', 'max' ],
-  html: `<div id="tooltipWrapper" style="height: 30px;background-color:#E9F1FF;line-height: 30px;">
-      <div id="tooltipName" style="float:left;font-size:12px;color:#2E2E2E;"></div>
-      <div id="tooltipValue" style="float:right;font-size:12px;color:#2E2E2E;"></div>
-    </div>`,
-  offsetY: -22.5
-});
-chart.tooltip({
-  showCrosshairs: true,
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const items = obj.items;
-    const originData = items[0].origin;
-    const date = originData.date;
-    const value = originData.value;
-    const tag = originData.tag;
-
-    $('#tooltipWrapper').width($('#container').width());
-    $('#tooltipWrapper').css('left', 0);
-    $('#tooltipName').css('margin-left', 15);
-    $('#tooltipValue').css('margin-right', 15);
-
-    if (tag === 1) {
-      $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/RcgYrLNGIUfTytjjijER.png">');
-    } else if (tag === 2) {
-      $('#tooltipName').html(date + '<img style="width:27.5px;vertical-align:middle;margin-left:3px;" src="https://gw.alipayobjects.com/zos/rmsportal/XzNFpOkuSLlmEWUSZErB.png">');
-    } else {
-      $('#tooltipName').text(date);
-    }
-    const color = value >= 0 ? '#FA541C' : '#1CAA3D';
-
-    $('#tooltipValue').html('涨幅：<span style="color:' + color + '">' + items[0].value + '</span>');
-    $('#tooltipWrapper').show();
-  },
-  onHide: function onHide() {
-    $('#tooltipWrapper').hide();
-  }
-});
-chart.line().position('date*value').color('#518DFE');
-chart.point()
-  .position('date*value')
-  .size('tag', function(val) {
-    return val ? 3 : 0;
-  })
-  .style('tag', {
-    fill: function fill(val) {
-      if (val === 2) {
-        return '#518DFE';
-      } else if (val === 1) {
-        return '#F35833';
-      }
-    },
-    stroke: '#fff',
-    lineWidth: 1
-  });
+const chart = new Canvas(props);
 chart.render();

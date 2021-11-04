@@ -1,4 +1,6 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Area, Line, Axis, Tooltip } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 const data = [{
   time: 'Jan.',
@@ -25,35 +27,29 @@ const data = [{
   time: 'Aug.',
   tem: 2000
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data);
-chart.tooltip({
-  showCrosshairs: true
-});
-chart.scale({
-  time: {
-    range: [ 0, 1 ]
-  },
-  tem: {
-    tickCount: 5,
-    min: 0
-  }
-});
-chart.axis('time', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.area().position('time*tem');
-chart.line().position('time*tem');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        tem: {
+          min: 0,
+          tickCount: 5,
+        },
+        time: {
+          range: [0, 1],
+        },
+      }}
+    >
+      <Axis field="time" />
+      <Axis field="tem" />
+      <Area x="time" y="tem" />
+      <Line x="time" y="tem" />
+      <Tooltip />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

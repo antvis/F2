@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Legend, Axis } from '@antv/f2';
 
 const data = [{
   time: '2016-08-08 00:00:00',
@@ -73,60 +73,51 @@ const data = [{
   value: 11,
   type: '实际收益率'
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  time: {
-    type: 'timeCat',
-    tickCount: 3,
-    mask: 'hh:mm',
-    range: [ 0, 1 ]
-  },
-  value: {
-    tickCount: 3,
-    formatter: function formatter(ivalue) {
-      return ivalue + '%';
-    }
-  }
-});
-chart.axis('time', {
-  line: null,
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.axis('tem', {
-  grid: function grid(text) {
-    if (text === '0%') {
-      return {
-        lineDash: null,
-        lineWidth: 1
-      };
-    }
-  }
-});
-chart.legend({
-  position: 'bottom',
-  offsetY: -5
-});
-chart.line()
-  .position('time*value')
-  .color('type')
-  .shape('type', function(type) {
-    if (type === '预期收益率') {
-      return 'line';
-    }
-    if (type === '实际收益率') {
-      return 'dash';
-    }
-  });
 
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        time: {
+          type: 'timeCat',
+          mask: 'hh:mm',
+          range: [0, 1],
+          tickCount: 3,
+        },
+        value: {
+          formatter: (value) => `${value}%`,
+          tickCount: 3,
+        },
+      }}
+    >
+      <Axis
+        field="time"
+        style={{ label: { align: 'between' } }}
+      />
+      <Axis field="value" />
+      <Line
+        x="time"
+        y="value"
+        lineWidth="4px"
+        shape={{
+          field: 'type',
+          callback: (type) => {
+            if (type === '预期收益率') {
+              return 'line';
+            }
+            if (type === '实际收益率') {
+              return 'dash';
+            }
+          },
+        }}
+        color="type"
+      />
+      <Legend position="top" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

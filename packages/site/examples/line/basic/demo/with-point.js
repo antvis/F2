@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Point, Axis, Tooltip } from '@antv/f2';
 
 const data = [{
   day: '周一',
@@ -23,43 +23,24 @@ const data = [{
   value: 900
 }];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Axis
+        field="day"
+        tickCount={3}
+        style={{
+          label: { align: 'between' },
+        }}
+      />
+      <Axis field="value" tickCount={5} />
+      <Line x="day" y="value" />
+      <Point x="day" y="value" />
+      <Tooltip />
+    </Chart>
+  </Canvas>
+);
 
-chart.source(data, {
-  value: {
-    tickCount: 5,
-    min: 0
-  },
-  day: {
-    range: [ 0, 1 ]
-  }
-});
-chart.tooltip({
-  showCrosshairs: true,
-  showItemMarker: false,
-  onShow: function onShow(ev) {
-    const items = ev.items;
-    items[0].name = null;
-    items[0].value = '$ ' + items[0].value;
-  }
-});
-chart.axis('day', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.line().position('day*value');
-chart.point().position('day*value').style({
-  stroke: '#fff',
-  lineWidth: 1
-});
+const chart = new Canvas(props);
 chart.render();
