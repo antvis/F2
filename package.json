@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@antv/data-set": "^0.10.2",
-    "@antv/gatsby-theme-antv": "1.1.12",
+    "@antv/gatsby-theme-antv": "~1.1.13",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
