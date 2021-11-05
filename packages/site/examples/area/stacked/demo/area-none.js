@@ -1,39 +1,29 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Area, Line, Axis } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 fetch('https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json')
   .then(res => res.json())
   .then(data => {
-    const chart = new F2.Chart({
-      id: 'container',
-      pixelRatio: window.devicePixelRatio
-    });
-    chart.source(data);
-    chart.scale('year', {
-      tickCount: 5,
-      range: [ 0, 1 ]
-    });
-    chart.axis('year', {
-      label: function label(text, index, total) {
-        const textCfg = {};
-        if (index === 0) {
-          textCfg.textAlign = 'left';
-        } else if (index === total - 1) {
-          textCfg.textAlign = 'right';
-        }
-        return textCfg;
-      }
-    });
-    chart.legend(false);
-    chart.tooltip({
-      showCrosshairs: true
-    });
-    chart.area()
-      .position('year*value')
-      .color('type')
-      .shape('smooth');
-    chart.line()
-      .position('year*value')
-      .color('type')
-      .shape('smooth');
+    const { props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart
+          data={data}
+          scale={{
+            year: {
+              tickCount: 5,
+              range: [0, 1],
+            },
+          }}
+        >
+          <Axis field="value" />
+          <Axis field="year" />
+          <Area x="year" y="value" color="type" />
+          <Line x="year" y="value" color="type" />
+        </Chart>
+      </Canvas>
+    );
+
+    const chart = new Canvas(props);
     chart.render();
   });

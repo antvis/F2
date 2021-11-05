@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Axis, Tooltip } from '@antv/f2';
 
 const data = [{
   time: '2016-08-08 00:00:00',
@@ -29,12 +29,7 @@ const data = [{
   tem: 18
 }];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-
-const defs = {
+const scale = {
   time: {
     type: 'timeCat',
     mask: 'MM/DD',
@@ -47,25 +42,32 @@ const defs = {
     alias: '日均温度'
   }
 };
-chart.source(data, defs);
-chart.axis('time', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.tooltip({
-  showCrosshairs: true
-});
-chart.line().position('time*tem').shape('smooth');
-chart.point().position('time*tem').shape('smooth')
-  .style({
-    stroke: '#fff',
-    lineWidth: 1
-  });
+const context = document.getElementById('container').getContext('2d');
+const LineChart = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={scale}
+      // 方式一：通过 theme 设置全局 line style
+      // theme={{
+      //   shapes: {
+      //     line: ['smooth'],
+      //   },
+      // }}
+    >
+      <Axis
+        field="time"
+        style={{
+          label: { align: 'between' },
+        }}
+      />
+      <Axis field="tem" />
+      {/* 方式二：通过 props style 传入 */}
+      <Line x="time" y="tem" style={{ smooth: true }} />
+      <Tooltip />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(LineChart.props);
 chart.render();

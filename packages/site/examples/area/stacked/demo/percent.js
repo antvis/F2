@@ -1,5 +1,6 @@
-import F2 from '@antv/f2';
-import _ from 'lodash';
+import { jsx, Canvas, Chart, Area, Line, Axis, Legend } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 function formatterPercent(value) {
   value = value || 0;
@@ -113,83 +114,29 @@ const data = [{
   value: 628,
   percent: 0.08196293395980161
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data, {
-  year: {
-    range: [ 0, 1 ]
-  },
-  percent: {
-    formatter: function formatter(val) {
-      return formatterPercent(val);
-    },
-    alias: 'percent(%)'
-  }
-});
-chart.axis('year', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-// 自定义图例项的 marker 图形样式
-chart.legend({
-  marker: function marker(x, y, r, ctx) {
-    // 11px * 9px
-    ctx.save();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = ctx.fillStyle;
-    ctx.moveTo(x - 5.5, y - 4);
-    ctx.lineTo(x + 5.5, y - 4);
-    ctx.stroke();
-    ctx.restore();
-    ctx.globalAlpha = 0.1;
-    ctx.moveTo(x - 5.5, y - 4);
-    ctx.lineTo(x + 5.5, y - 4);
-    ctx.lineTo(x + 5.5, y + 4);
-    ctx.lineTo(x - 5.5, y + 4);
-    ctx.closePath();
-  }
-});
-chart.tooltip({
-  showCrosshairs: true,
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const legend = chart.get('legendController').legends.top[0];
-    const tooltipItems = obj.items;
-    const legendItems = legend.items;
-    const map = {};
-    legendItems.forEach(function(item) {
-      map[item.name] = _.clone(item);
-    });
-    tooltipItems.forEach(function(item) {
-      const name = item.name;
-      const value = item.value;
-      if (map[name]) {
-        map[name].value = value;
-      }
-    });
-    legend.setItems(_.values(map));
-  },
-  onHide: function onHide() {
-    const legend = chart.get('legendController').legends.top[0];
-    legend.setItems(chart.getLegendItems().country);
-  }
-});
-chart.area()
-  .position('year*percent')
-  .color('country')
-  .adjust('stack');
-chart.line()
-  .position('year*percent')
-  .color('country')
-  .adjust('stack');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        year: {
+          range: [0, 1],
+        },
+        percent: {
+          formatter: val => formatterPercent(val),
+          alias: 'percent(%)',
+        }
+      }}
+    >
+      <Axis field="percent" />
+      <Axis field="year" />
+      <Area x="year" y="percent" color="country" adjust="stack" />
+      <Line x="year" y="percent" color="country" adjust="stack" />
+      <Legend />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

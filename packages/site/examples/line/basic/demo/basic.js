@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Axis, Tooltip } from '@antv/f2';
 
 const data = [{
   date: '2017-06-05',
@@ -152,42 +152,23 @@ const data = [{
   value: 60
 }];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
+const context = document.getElementById('container').getContext('2d');
+const LineChart = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Axis
+        field="date"
+        tickCount={3}
+        style={{
+          label: { align: 'between' },
+        }}
+      />
+      <Axis field="value" tickCount={5} />
+      <Line x="date" y="value" />
+      <Tooltip />
+    </Chart>
+  </Canvas>
+);
 
-chart.source(data, {
-  value: {
-    tickCount: 5,
-    min: 0
-  },
-  date: {
-    type: 'timeCat',
-    range: [ 0, 1 ],
-    tickCount: 3
-  }
-});
-chart.tooltip({
-  custom: true,
-  showXTip: true,
-  showYTip: true,
-  snap: true,
-  crosshairsType: 'xy',
-  crosshairsStyle: {
-    lineDash: [ 2 ]
-  }
-});
-chart.axis('date', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.line().position('date*value');
+const chart = new Canvas(LineChart.props);
 chart.render();

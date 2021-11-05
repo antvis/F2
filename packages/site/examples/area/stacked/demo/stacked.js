@@ -1,5 +1,6 @@
-import F2 from '@antv/f2';
-import _ from 'lodash';
+import { jsx, Canvas, Chart, Area, Line, Axis, Legend } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 const data = [{
   value: 63.4,
@@ -398,64 +399,36 @@ const data = [{
   city: 'Austin',
   date: '2011-11-02'
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data, {
-  date: {
-    range: [ 0, 1 ],
-    type: 'timeCat',
-    mask: 'MM-DD'
-  },
-  value: {
-    max: 300,
-    tickCount: 4
-  }
-});
-chart.tooltip({
-  showCrosshairs: true,
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const legend = chart.get('legendController').legends.top[0];
-    const tooltipItems = obj.items;
-    const legendItems = legend.items;
-    const map = {};
-    legendItems.forEach(function(item) {
-      map[item.name] = _.clone(item);
-    });
-    tooltipItems.forEach(function(item) {
-      const name = item.name;
-      const value = item.value;
-      if (map[name]) {
-        map[name].value = value;
-      }
-    });
-    legend.setItems(_.values(map));
-  },
-  onHide: function onHide() {
-    const legend = chart.get('legendController').legends.top[0];
-    legend.setItems(chart.getLegendItems().country);
-  }
-});
-chart.axis('date', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.area()
-  .position('date*value')
-  .color('city')
-  .adjust('stack');
-chart.line()
-  .position('date*value')
-  .color('city')
-  .adjust('stack');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        date: {
+          range: [0, 1],
+          type: 'timeCat',
+          mask: 'MM-DD',
+        },
+        value: {
+          max: 300,
+          tickCount: 4,
+        },
+      }}
+    >
+      <Axis field="value" />
+      <Axis field="date" />
+      <Area
+        x="date"
+        y="value"
+        color="city"
+        adjust="stack"
+      />
+      <Line x="date" y="value" color="city" adjust="stack" />
+      <Legend />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

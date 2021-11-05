@@ -1,4 +1,6 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Area, Line, Axis, Tooltip } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 const data = [{
   month: 'Jan.',
@@ -25,47 +27,30 @@ const data = [{
   month: 'Aug.',
   value: 60.32
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  month: {
-    range: [ 0, 1 ]
-  },
-  value: {
-    nice: false,
-    min: -100,
-    max: 100,
-    tickCount: 5
-  }
-});
 
-chart.axis('month', {
-  line: null,
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.axis('value', {
-  grid: function grid(text) {
-    if (text === '0') {
-      return {
-        lineDash: null,
-        lineWidth: 1
-      };
-    }
-  }
-});
-chart.tooltip({
-  showCrosshairs: true
-});
-chart.area().position('month*value');
-chart.line().position('month*value');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        month: {
+          range: [0, 1],
+        },
+        value: {
+          nice: false,
+          min: -100,
+          max: 100,
+          tickCount: 5,
+        },
+      }}
+    >
+      <Axis field="month" />
+      <Axis field="value" />
+      <Area x="month" y="value" />
+      <Line x="month" y="value" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

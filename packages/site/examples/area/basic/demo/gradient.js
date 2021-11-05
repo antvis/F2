@@ -1,4 +1,6 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Area, Line, Axis, Tooltip } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 const data = [{
   time: '2016-08-08 00:00:00',
@@ -28,43 +30,27 @@ const data = [{
   time: '2016-08-10 02:20:00',
   tem: 12
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  time: {
-    type: 'timeCat',
-    tickCount: 3,
-    range: [ 0, 1 ]
-  },
-  tem: {
-    tickCount: 5,
-    min: 0
-  }
-});
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        time: {
+          type: 'timeCat',
+          tickCount: 3,
+        },
+        tem: {
+          min: 0,
+        },
+      }}
+    >
+      <Axis field="time" />
+      <Axis field="tem" />
+      <Area x="time" y="tem" color="l(90) 0:#1890FF 1:#f7f7f7" />
+      <Line x="time" y="tem" color="l(90) 0:#1890FF 1:#f7f7f7" />
+    </Chart>
+  </Canvas>
+);
 
-chart.axis('time', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.tooltip({
-  showCrosshairs: true
-});
-
-chart.area()
-  .position('time*tem')
-  .color('l(90) 0:#1890FF 1:#f7f7f7')
-  .shape('smooth');
-chart.line()
-  .position('time*tem')
-  .color('l(90) 0:#1890FF 1:#f7f7f7')
-  .shape('smooth');
+const chart = new Canvas(props);
 chart.render();

@@ -1,4 +1,7 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Area, Line, Axis, Tooltip } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
+
 
 const data = [{
   month: 'Jan.',
@@ -25,48 +28,26 @@ const data = [{
   month: 'Aug.',
   value: 60.32
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  month: {
-    range: [ 0, 1 ]
-  },
-  value: {
-    tickCount: 5
-  }
-});
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        month: {
+          range: [0, 1],
+        },
+        value: {
+          tickCount: 5,
+        },
+      }}
+    >
+      <Axis field="month" />
+      <Axis field="value" />
+      <Area x="month" y="value" startOnZero={false} />
+      <Line x="month" y="value" />
+    </Chart>
+  </Canvas>
+);
 
-chart.axis('month', {
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-
-    return textCfg;
-  }
-});
-chart.axis('value', {
-  label: function label(text) {
-    const textCfg = {};
-    if (text <= 0) {
-      textCfg.fill = '#1CAA3D';
-      textCfg.fontWeight = 'bold';
-    }
-
-    return textCfg;
-  }
-});
-
-chart.tooltip({
-  showCrosshairs: true
-});
-chart.area({
-  startOnZero: false // 配置 x 轴基线不为 0
-}).position('month*value');
-chart.line().position('month*value');
+const chart = new Canvas(props);
 chart.render();
