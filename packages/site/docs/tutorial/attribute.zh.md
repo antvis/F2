@@ -1,6 +1,6 @@
 ---
 title: 图形属性
-order: 6
+order: 96
 ---
 
 图形属性对应视觉编码中的视觉通道，是图形语法元素中非常重要和灵活的一部分，每种几何标记都拥有自己的图形属性。F2 中支持的图形属性有下面几种：
@@ -12,7 +12,6 @@ order: 6
 3. **size**：大小，不同的几何标记对大小的定义有差异；
 
 4. **shape**：形状，几何标记的形状决定了某个具体图表类型的表现形式，例如点图，可以使用圆点、三角形、图片表示；线图可以有折线、曲线、点线等表现形式；
-
 
 ## 如何使用
 
@@ -32,7 +31,6 @@ chart.<geomType>().<attrType>(fields[, callback]);
 
 - callback，回调函数，用于定义如何解析视觉通道，如不提供则只用 F2 默认提供的视觉通道解析方式。
 
-
 除了 `attr(fields[, callback])` 的函数原型外，F2 为了用户使用的便利性，结合各个视觉通道的特点，还提供了更为便捷的使用方式，在本章后面会进行详细的介绍。
 
 语法示例：
@@ -40,12 +38,15 @@ chart.<geomType>().<attrType>(fields[, callback]);
 ```javascript
 chart.point().position('a*b').color('c');
 
-chart.interval().position('a*b').color('c', (cValue) => {
-  if (cvalue === 'fail') {
-    return 'red';
-  }
-  return 'green';
-});
+chart
+  .interval()
+  .position('a*b')
+  .color('c', (cValue) => {
+    if (cvalue === 'fail') {
+      return 'red';
+    }
+    return 'green';
+  });
 ```
 
 F2 对于每个图形属性的参数 `fields` 的解析规则如下：
@@ -54,8 +55,8 @@ F2 对于每个图形属性的参数 `fields` 的解析规则如下：
 
 - 如果是多个属性的映射，需要使用 `*` 进行连接，F2 会依次对这些字段进行解析和映射，如 `position('cut*price')`；
 
-
 <a name="4933d1a9"></a>
+
 ## position 位置属性
 
 position 位置属性的映射，用于确定由数据中的哪几个字段来确定数据在平面坐标系的位置。通俗地解释，即确定 x 轴和 y 轴的数据字段。
@@ -67,6 +68,7 @@ chart.point().position('cut*price');
 ```
 
 <a name="color"></a>
+
 ## color
 
 从可视化编码的角度对颜色进行分析，可以将颜色分为亮度、饱和度和色调三个视觉通道，其中前两个可以认为是用于编码定量和定序数据的视觉通道，而色调属于编码定性数据的视觉通道。而在 F2 中并不如此详细区分，统一使用 color 方法进行映射配置。
@@ -79,10 +81,9 @@ color 支持的映射语法如下：
 
 - `color('field', 'color1-color2-colorN')`，指定颜色的渐变路径，用于映射连续的数据；
 
-- `color('field', callback)`，使用回调函数进行颜色值的自定义；可以使用多个字段使用*号连接
+- `color('field', callback)`，使用回调函数进行颜色值的自定义；可以使用多个字段使用\*号连接
 
 - `color('#ffffff')`， 直接指定颜色常量，不进行数据映射。
-
 
 ### 分类数据的颜色映射
 
@@ -104,27 +105,33 @@ color 支持的映射语法如下：
 
 ```javascript
 // 根据单个字段计算颜色
-chart.point().position('x*y').color('z', z => {
-  if (z >= 100) {
-    return 'red';
-  }
-  return 'blue';
-});
-
-// 根据多个字段计算颜色
-chart.point().position('x*y').color('level*value', (level, value) => {
-  if (level < 2) {
-    if (value > 10) {
-      return 'green';
+chart
+  .point()
+  .position('x*y')
+  .color('z', (z) => {
+    if (z >= 100) {
+      return 'red';
     }
     return 'blue';
-  } else {
-    if (value > 20) {
-      return '#cdcdcd';
+  });
+
+// 根据多个字段计算颜色
+chart
+  .point()
+  .position('x*y')
+  .color('level*value', (level, value) => {
+    if (level < 2) {
+      if (value > 10) {
+        return 'green';
+      }
+      return 'blue';
+    } else {
+      if (value > 20) {
+        return '#cdcdcd';
+      }
+      return 'red';
     }
-    return 'red';
-  }
-});
+  });
 ```
 
 ## shape
@@ -139,7 +146,6 @@ chart.point().position('x*y').color('level*value', (level, value) => {
 
 - `shape('circle')`，指定常量，将所有数据值映射到固定的 shape。
 
-
 另外 F2 提供了自定义 shape 的功能，用户可以自己绘制需要的 shape，详见[自定义 shape](https://www.yuque.com/antv/f2/api-shape)。
 
 ### geom 和 shape
@@ -153,7 +159,8 @@ chart.point().position('x*y').color('level*value', (level, value) => {
 shape 也可以通过字段值来计算，可以在 shape 方法中指定单个或者多个字段，通过回调函数返回指定的 shape。
 
 ```javascript
-chart.point()
+chart
+  .point()
   .position('x*y')
   .shape('value', (value) => {
     if (value > 10) {
@@ -173,7 +180,6 @@ chart.point()
 
 - 对于 interval 柱状图来说，size 对应着柱子的宽度。
 
-
 所以从可视化的角度分析，大小（size)是一个复杂的视觉通道。
 
 在 F2 中，支持如下几种方式的映射语法：
@@ -186,7 +192,6 @@ chart.point()
 
 - `size(10)` 直接指定像素大小。
 
-
 在气泡图中，常常使用 size 图形属性映射，用于编码更多维度的数据。如下例，使用气泡图来可视化每个国家人均国内生产总值同人均寿命之间的相关关系，同时将各个国家人口数据映射至气泡的大小。
 
 `.size('Population', [ 4, 65 ])`
@@ -195,22 +200,28 @@ chart.point()
 
 ### 回调函数的使用
 
-size可以根据数据的字段值通过回调函数计算，可以指定多个字段
+size 可以根据数据的字段值通过回调函数计算，可以指定多个字段
 
 ```javascript
-chart.point().position('x*y').size('z', z => {
-  if (z > 10) {
-    return 20;
-  }
-  return z * 0.5;
-});
+chart
+  .point()
+  .position('x*y')
+  .size('z', (z) => {
+    if (z > 10) {
+      return 20;
+    }
+    return z * 0.5;
+  });
 
-chart.point().position('x*y').size('level*text', (level, text) => {
-  if (level === 0) {
-    return 50;
-  }
-  return text.length * 10; // 根据文本长度返回长度
-});
+chart
+  .point()
+  .position('x*y')
+  .size('level*text', (level, text) => {
+    if (level === 0) {
+      return 50;
+    }
+    return text.length * 10; // 根据文本长度返回长度
+  });
 ```
 
 ## Geom 支持的图形属性
@@ -218,11 +229,10 @@ chart.point().position('x*y').size('level*text', (level, text) => {
 前面提到过，每种几何标记支持的视觉通道有所差异，数据和视觉通道的映射关系也不完全相同。 下表列出了各个 geom 几何标记对各个图形属性的支持情况：
 
 | **几何标记** | **position** | **color** | **size** | **shape** |
-| --- | --- | --- | --- | --- |
-| point | 支持 | 支持 | 支持 | 支持 |
-| path、line | 支持 | 支持 | 支持 | 支持 |
-| area | 支持 | 支持 | `不支持` | 支持 |
-| interval | 支持 | 支持 | 支持 | 支持 |
-| polygon | 支持 | 支持 | `不支持` | 支持 |
-| schema | 支持 | 支持 | 支持 | 支持 |
-
+| ------------ | ------------ | --------- | -------- | --------- |
+| point        | 支持         | 支持      | 支持     | 支持      |
+| path、line   | 支持         | 支持      | 支持     | 支持      |
+| area         | 支持         | 支持      | `不支持` | 支持      |
+| interval     | 支持         | 支持      | 支持     | 支持      |
+| polygon      | 支持         | 支持      | `不支持` | 支持      |
+| schema       | 支持         | 支持      | 支持     | 支持      |
