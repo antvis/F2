@@ -27,8 +27,8 @@ module.exports = {
       {
         slug: 'docs/api',
         title: {
-          zh: 'API 文档',
-          en: 'API'
+          zh: '组件文档',
+          en: 'Component Documentation'
         }
       },
       {
