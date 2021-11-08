@@ -8,16 +8,17 @@ const data = [{ genre: 'Sports', sold: 275, type: 'a' }];
 
 const data1 = [
   { genre: 'Sports', sold: 275, type: 'a' },
-  { genre: 'Strategy', sold: 115, type: 'a' }
+  { genre: 'Strategy', sold: 115, type: 'a' },
 ];
 
 class GeometryTest extends Geometry {
   render() {
-    const mappedArray = this.mapping();
+    const records = this.mapping();
     return (
       <group>
-        {mappedArray.map(dataArray => {
-          return dataArray.map(item => {
+        {records.map(record => {
+          const { children } = record;
+          return children.map(item => {
             const { x, y } = item;
             return (
               <circle
@@ -25,7 +26,7 @@ class GeometryTest extends Geometry {
                   x,
                   y,
                   r: '20px',
-                  fill: '#000'
+                  fill: '#000',
                 }}
               />
             );
@@ -65,17 +66,17 @@ describe('geometry', () => {
   it('geometry update', () => {
     const newChart = (
       <Chart data={data1}>
-        <GeometryTest ref={componentRef} x="genre" y="sold"/>
+        <GeometryTest ref={componentRef} x="genre" y="sold" />
       </Chart>
     );
 
     canvas.update({
-      children: newChart
+      children: newChart,
     });
 
     expect(chartRef.current.scale.scales.genre.values).toEqual([
       'Sports',
-      'Strategy'
+      'Strategy',
     ]);
 
     const container = componentRef.current.container;

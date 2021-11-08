@@ -313,7 +313,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
     });
 
     it('带点', () => {
@@ -477,7 +476,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
     });
 
     // TODO(@buli): 折线图平移
@@ -494,8 +492,8 @@ describe('折线图', () => {
       fetch(
         'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
       )
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           const { type, props } = (
             <Canvas
               context={context}
@@ -535,7 +533,6 @@ describe('折线图', () => {
 
           const canvas = new type(props);
           canvas.render();
-
         });
     });
 
@@ -547,8 +544,8 @@ describe('折线图', () => {
       fetch(
         'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
       )
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           const { type, props } = (
             <Canvas
               context={context}
@@ -579,7 +576,7 @@ describe('折线图', () => {
                   lineWidth="4px"
                   color={{
                     field: 'type',
-                    callback: (type) => {
+                    callback: type => {
                       if (type === '金属') {
                         return '#666';
                       }
@@ -589,14 +586,14 @@ describe('折线图', () => {
                   style={{
                     field: 'type', // 可选指定field
                     smooth: true, // 传入非函数的值
-                    stroke: (type) => {
+                    stroke: type => {
                       // 传入函数
                       if (type === '金属') {
                         return '#666';
                       }
                       return 'red';
                     },
-                    lineWidth: (type) => {
+                    lineWidth: type => {
                       if (type === '金属') {
                         return 2;
                       }
@@ -612,7 +609,6 @@ describe('折线图', () => {
 
           const canvas = new type(props);
           canvas.render();
-
         });
     });
 
@@ -735,7 +731,7 @@ describe('折线图', () => {
                 range: [0, 1],
               },
               value: {
-                formatter: (value) => `${value}%`,
+                formatter: value => `${value}%`,
               },
             }}
           >
@@ -757,7 +753,7 @@ describe('折线图', () => {
               lineWidth="4px"
               shape={{
                 field: 'type',
-                callback: (type) => {
+                callback: type => {
                   if (type === '预期收益率') {
                     return 'line';
                   }
@@ -775,7 +771,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
     });
 
     it('折线锚点', () => {
@@ -938,7 +933,7 @@ describe('折线图', () => {
               value: {
                 tickCount: 5,
                 min: 0,
-                formatter: (val) => `${val.toFixed(2)}%`,
+                formatter: val => `${val.toFixed(2)}%`,
               },
               tag: {
                 type: 'cat',
@@ -958,11 +953,11 @@ describe('折线图', () => {
               y="value"
               size={{
                 field: 'tag',
-                map: (val) => (val ? 6 : 0),
+                map: val => (val ? 6 : 0),
               }}
               color={{
                 field: 'tag',
-                map: (val) => (val === 2 ? '#518DFE' : '#F35833'),
+                map: val => (val === 2 ? '#518DFE' : '#F35833'),
               }}
             />
             <Legend
@@ -986,7 +981,6 @@ describe('折线图', () => {
 
       const canvas = new type(props);
       canvas.render();
-
     });
   });
 
@@ -997,7 +991,7 @@ describe('折线图', () => {
 
     class TestComponent extends Component {
       constructor(props) {
-        super(props)
+        super(props);
       }
     }
 
@@ -1024,8 +1018,8 @@ describe('折线图', () => {
 
       componentDidMount() {
         // 更新数据
-        for(let i=40; i>0; i--) {
-          setTimeout( ()=> {
+        for (let i = 40; i > 0; i--) {
+          setTimeout(() => {
             const { data } = this.state;
             this.setState({ data: [].concat(data, getRecord()) });
           }, i * 1000);
@@ -1044,14 +1038,14 @@ describe('折线图', () => {
                     type: 'timeCat',
                   },
                   value: {
-                    min: 0
-                  }
+                    min: 0,
+                  },
                 }}
               >
                 <Line x="time" y="value" />
-                <Axis field="value"/>
-                <Axis field="time"/>
-                <TestComponent/>
+                <Axis field="value" />
+                <Axis field="time" />
+                <TestComponent />
               </Chart>
             </ReactCanvas>
           </div>
@@ -1076,8 +1070,8 @@ describe('折线图', () => {
       fetch(
         'https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json'
       )
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           const NULL_VALUE = '存在空值';
           const context = createContext(NULL_VALUE);
           const lineRef = { current: null };
@@ -1118,7 +1112,7 @@ describe('折线图', () => {
                   y="count"
                   color={{
                     field: 'medalType',
-                    map: (val) => {
+                    map: val => {
                       if (val === 'Gold Medals') {
                         return '#f3ac32';
                       } else if (val === 'Silver Medals') {

@@ -86,6 +86,7 @@ const Theme = {
     '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
   pixelRatio: 1,
   padding: [0, 0, 0, 0],
+  chart,
   colors: [
     '#1890FF',
     '#2FC25B',
@@ -96,18 +97,17 @@ const Theme = {
     '#3436C7',
     '#F04864',
   ],
-  chart,
   shapes: {
     line: ['line', 'dash', 'smooth'],
     point: ['circle', 'hollowCircle'],
     area: ['area', 'smooth'],
     interval: ['rect', 'pyramid', 'funnel'],
   },
-  sizes: [4, 8, 10, 12],
-  geometry: {
+  sizes: ['4px', '8px', '10px', '12px'],
+  shape: {
     line: {
       default: {
-        lineWidth: 2,
+        lineWidth: '2px',
         lineJoin: 'round',
         lineCap: 'round',
       },
@@ -115,13 +115,13 @@ const Theme = {
         smooth: true,
       },
       dash: {
-        lineDash: [4, 4],
+        lineDash: ['4px', '4px'],
       },
     },
     point: {
       default: {
         lineWidth: 0,
-        size: 3,
+        size: '6px',
       },
     },
     area: {

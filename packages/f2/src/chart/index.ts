@@ -78,13 +78,14 @@ class Chart extends Component implements IChart, InteractionMixin {
     scaleController.create(scale);
 
     // 创建交互事件控制器
-    const interactionController: InteractionController =
-      this.createInteractionController({
+    const interactionController: InteractionController = this.createInteractionController(
+      {
         chart: this,
-      });
+      }
+    );
 
     // 定义事件
-    interactions.forEach((interaction) => {
+    interactions.forEach(interaction => {
       const { type, ...cfg } = interaction;
       interactionController.createInteraction(type, cfg);
     });
@@ -188,7 +189,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   getGeometrys() {
     const { children } = this;
     const geometrys: Component[] = [];
-    Children.toArray(children).forEach((element) => {
+    Children.toArray(children).forEach(element => {
       if (!element) return false;
       const { component } = element;
       if (component && component.isGeometry) {
@@ -226,7 +227,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   getXScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map((component) => {
+    return geometrys.map(component => {
       // @ts-ignore
       return component.getXScale();
     });
@@ -234,7 +235,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   getYScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map((component) => {
+    return geometrys.map(component => {
       // @ts-ignore
       return component.getYScale();
     });
@@ -245,7 +246,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     const { props, state, layout, coord } = this;
     const { children, data } = props;
 
-    return Children.map(children, (child) => {
+    return Children.map(children, child => {
       return Children.cloneElement(child, {
         chart: this,
         data,
