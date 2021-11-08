@@ -114,7 +114,7 @@ const map = (children: any, fn: any) => {
     return fn(children);
   }
   if (isArray(children)) {
-    return children.map((child) => {
+    return children.map(child => {
       return map(child, fn);
     });
   }
@@ -163,6 +163,22 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
+function getElementsByClassName(element, className) {
+  if (!element || !className) return [];
+  let rst = [];
+  if (element.get('className') === className) {
+    rst.push(element);
+  }
+  const children = element.get('children');
+  if (children && children.length) {
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      rst = rst.concat(getElementsByClassName(child, className));
+    }
+  }
+  return rst;
+}
+
 export {
   isString,
   isArray,
@@ -178,4 +194,5 @@ export {
   toTimeStamp,
   isInBBox,
   ArrayUtil,
+  getElementsByClassName,
 };

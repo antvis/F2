@@ -1,11 +1,11 @@
 import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 
-function concat(dataArray) {
+function concatPoints(children) {
   let result = [];
-  for (let i = 0; i < dataArray.length; i++) {
-    const item = dataArray[i];
-    result = result.concat(item);
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    result = result.concat(child.points);
   }
   return result;
 }
@@ -39,8 +39,37 @@ function getPoint(points, t: number) {
   }
 }
 
+function AnimationEndView(props) {
+  const { record, appear, EndView } = props;
+  const { children } = record;
+  const points = concatPoints(children);
+  const { origin } = children[0];
+
+  return (
+    <group
+      animation={{
+        appear: {
+          easing: appear.easing,
+          duration: appear.duration,
+          onFrame: function(t) {
+            // 这段逻辑有点恶心。。
+            const { element } = this;
+            const children = element.get('children');
+            const point = getPoint(points, t);
+            children.forEach(child => {
+              child.moveTo(point.x, point.y);
+            });
+          },
+        },
+      }}
+    >
+      <EndView origin={origin} />
+    </group>
+  );
+}
+
 export default (props: any) => {
-  const { mappedArray, coord, animation, endView: EndView } = props;
+  const { records, coord, animation, endView: EndView } = props;
   const { left, top, width, height } = coord;
 
   const appear = {
@@ -63,12 +92,12 @@ export default (props: any) => {
   };
   return (
     <group>
-      {mappedArray.map((item) => {
-        const { color, dataArray, size, shape } = item;
+      {records.map(record => {
+        const { key, children } = record;
         return (
-          <group>
-            {dataArray.map((data) => {
-              const points = data.map((p) => (formatPoint(p)));
+          <group key={key}>
+            {children.map(child => {
+              const { points, color, size, shape } = child;
               return (
                 <polyline
                   attrs={{
@@ -89,25 +118,11 @@ export default (props: any) => {
               );
             })}
             {EndView ? (
-              <group
-                animation={{
-                  appear: {
-                    easing: appear.easing,
-                    duration: appear.duration,
-                    onFrame: function (t) {
-                      // 这段逻辑有点恶心。。
-                      const { element } = this;
-                      const children = element.get('children');
-                      const point = getPoint(concat(dataArray), t);
-                      children.forEach((child) => {
-                        child.moveTo(point.x, point.y);
-                      });
-                    },
-                  },
-                }}
-              >
-                <EndView {...item} />
-              </group>
+              <AnimationEndView
+                record={record}
+                EndView={EndView}
+                appear={appear}
+              />
             ) : null}
           </group>
         );

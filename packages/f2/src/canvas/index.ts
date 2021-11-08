@@ -1,5 +1,5 @@
 import { createCanvas } from '@antv/f2-graphic';
-import { mix } from '@antv/util';
+import { deepMix, mix } from '@antv/util';
 import Component from '../base/component';
 import Timeline from '../timeline';
 import Layout from '../base/layout';
@@ -84,10 +84,7 @@ class Canvas extends Component implements IF2Canvas {
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
 
-    const theme = px2hd({
-      ...defaultTheme,
-      ...customTheme,
-    });
+    const theme = px2hd(deepMix({}, defaultTheme, customTheme));
 
     const style = px2hd({
       left: 0,

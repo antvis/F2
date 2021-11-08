@@ -20,10 +20,11 @@ class coordController {
         type: cfg,
       };
     }
+    const { type } = cfg || {};
     return {
-      // 默认直角坐标系
-      type: Rect,
       ...cfg,
+      // 默认直角坐标系
+      type: isFunction(type) ? type : coordMap[type] || Rect,
     };
   }
 

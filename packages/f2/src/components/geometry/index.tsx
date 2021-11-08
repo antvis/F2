@@ -1,4 +1,14 @@
-import { isObject, each, upperFirst, isNil, mix, omit } from '@antv/util';
+import {
+  isString,
+  isArray,
+  isFunction,
+  each,
+  upperFirst,
+  isNil,
+  mix,
+  groupToMap,
+  isObject,
+} from '@antv/util';
 import Component from '../../base/component';
 import {
   group as arrayGroup,
@@ -8,10 +18,10 @@ import {
 import Chart from '../../chart';
 import * as Adjust from '../../adjust';
 import { Linear, Category } from '../../attr';
-import { applyMixins } from '../../mixins';
-import AttrMixin from '../../mixins/attr';
 import { toTimeStamp } from '../../util/index';
-import { AttrRange, GeomType } from './interface';
+import { GeomType } from './interface';
+import AttrController from '../../controller/attr';
+import equal from '../../base/equal';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -19,105 +29,136 @@ const FIELD_ORIGIN = 'origin';
 const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
-class Geometry extends Component implements AttrMixin {
+
+class Geometry extends Component {
   isGeometry = true;
-  isInit = false;
-  chart: Chart;
-  data: any;
-  attrs: any = {};
-  defaultRanges: AttrRange = {}; // 各属性的默认值域
+  geomType: GeomType;
+
+  attrs: any;
   adjust: any;
-  geomType?: GeomType;
 
   // 预处理后的数据
   dataArray: any;
-  attrOptions: any;
-  // 映射完成后的数据
+  records: any[];
   mappedArray: any;
-
   // y 轴是否从0开始
   startOnZero = false;
   // 是否连接空值
   connectNulls: boolean = false;
 
-  createAttrOption: (option) => any;
-  createAttr: (option) => any;
-  setAttrRange: (attrName: string, range) => any;
-  getAttr: (attrName: string) => any;
-  getAttrOption: (attrName: string) => any;
-  getAttrValue: (attrName, record) => any;
-  getAttrRange: (attrName) => any;
+  attrController: AttrController;
+
+  getDefaultCfg() {
+    return {};
+  }
 
   constructor(props, context?) {
     super(props, context);
-    this._init();
+    mix(this, this.getDefaultCfg());
+
+    const { chart } = props;
+
+    this.attrController = new AttrController(chart);
+    const { attrController } = this;
+
+    const attrOptions = this._getAttrOptions(props);
+    attrController.create(attrOptions);
   }
 
-  _init() {
-    this._prepareAttrs();
-    this._initAttrRanges();
+  willReceiveProps(nextProps) {
+    const { props: lastProps, attrController } = this;
+    const { data: nextData, adjust: nextAdjust } = nextProps;
+    const { data: lastData, adjust: lastAdjust } = lastProps;
+
+    const nextAttrOptions = this._getAttrOptions(nextProps);
+    const lastAttrOptions = this._getAttrOptions(lastProps);
+    if (!equal(nextAttrOptions, lastAttrOptions)) {
+      attrController.update(nextAttrOptions);
+      this.records = null;
+    }
+
+    // 重新处理数据
+    if (nextData !== lastData) {
+      this.records = null;
+    }
+
+    // 重新处理数据
+    if (nextAdjust !== lastAdjust) {
+      this.records = null;
+    }
+  }
+
+  willMount() {
     this._createAttrs();
-    this._adjustScales();
-    this._processData();
   }
-
   willUpdate() {
-    this._init();
+    this._createAttrs();
   }
 
   didMount() {
     this._initEvent();
   }
 
-  _prepareAttrs() {
-    const { props } = this;
+  _createAttrs() {
+    const { attrController, props } = this;
     const { chart } = props;
-
-    const attrOptions = {};
-    ATTRS.forEach((attrName) => {
-      if (props[attrName]) {
-        attrOptions[attrName] = this.createAttrOption(props[attrName]);
-      }
-    });
-    this.attrOptions = attrOptions;
-
-    // 收集需要创建scale的字段
-    each(attrOptions, (option) => {
-      const { field } = option;
-      chart.setScale(field);
-    });
-
-    this.attrOptions = attrOptions;
-    this.attrs = {};
+    const scales = chart.getScales();
+    attrController.attrs = {};
+    this.attrs = attrController.getAttrs();
   }
 
-  _createAttrs() {
-    const { attrOptions, attrs, props } = this;
-
-    // @ts-ignore
-    const { x, y } = attrOptions;
-
-    if (!x || !y) {
+  _getAttrOptions(props) {
+    if (!props.x || !props.y) {
       throw new Error('x, y are required !');
     }
+    const options = {};
+    const ranges = this._getAttrRanges();
+    const { attrController } = this;
+    ATTRS.forEach(attrName => {
+      if (!props[attrName]) return;
+      const option = attrController.parseOption(props[attrName]);
+      if (!option.range) {
+        option.range = ranges[attrName];
+      }
+      options[attrName] = option;
+    });
+    // @ts-ignore
+    const { x, y } = options;
+
     // x, y 都是固定Linear 映射
     x.type = Linear;
     y.type = Linear;
+    return options;
+  }
 
-    const { chart } = props;
-    each(attrOptions, (option, attrName) => {
-      const { field } = option;
-      const scale = chart.getScale(field);
-      attrs[attrName] = this.createAttr({
-        ...option,
-        scale,
-      });
-    });
+  _getAttrRanges() {
+    const { context, props, geomType } = this;
+    const { coord } = props;
+    const { theme } = context;
+    const { colors, sizes, shapes } = theme;
+
+    return {
+      x: coord.x,
+      y: coord.y,
+      color: colors,
+      size: sizes,
+      shape: shapes[geomType],
+    };
+  }
+
+  getDefaultAttrValues() {
+    const attrRanges = this._getAttrRanges();
+    const { color, shape } = attrRanges;
+    return {
+      color: color[0],
+      shape: shape && shape[0],
+    };
   }
 
   _adjustScales() {
     const { attrs, props, startOnZero: defaultStartOnZero } = this;
     const { chart, startOnZero = defaultStartOnZero } = props;
+    // 如果从 0 开始，只调整 y 轴 scale
     if (startOnZero) {
       const { y } = attrs;
       chart.scale.adjustStartZero(y.scale);
@@ -127,13 +168,14 @@ class Geometry extends Component implements AttrMixin {
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
-    each(GROUP_ATTRS, function (attrName) {
+    each(GROUP_ATTRS, attrName => {
       const attr = attrs[attrName];
-      if (attr) {
-        const { scale } = attr;
-        if (scale && scale.isCategory && scales.indexOf(scale) === -1) {
-          scales.push(scale);
-        }
+      if (!attr) {
+        return;
+      }
+      const { scale } = attr;
+      if (scale && scale.isCategory && scales.indexOf(scale) === -1) {
+        scales.push(scale);
       }
     });
     return scales;
@@ -142,16 +184,23 @@ class Geometry extends Component implements AttrMixin {
   _groupData(data) {
     const groupScales = this._getGroupScales();
     if (!groupScales.length) {
-      return [data];
+      return [{ children: data }];
     }
 
-    const appendConditions = {};
     const names = [];
-    groupScales.forEach((scale) => {
+    groupScales.forEach(scale => {
       const field = scale.field;
       names.push(field);
     });
-    return arrayGroup(data, names, appendConditions);
+    const groups = groupToMap(data, names);
+    const records = [];
+    for (const key in groups) {
+      records.push({
+        key: key.replace(/^_/, ''),
+        children: groups[key],
+      });
+    }
+    return records;
   }
 
   _saveOrigin(originData) {
@@ -219,6 +268,7 @@ class Geometry extends Component implements AttrMixin {
     if (adjustType === 'Stack') {
       this._updateStackRange(yField, y.scale, groupedArray);
     }
+
     this.adjust = adjustInstance;
 
     return groupedArray;
@@ -226,8 +276,8 @@ class Geometry extends Component implements AttrMixin {
 
   _updateStackRange(field, scale, dataArray) {
     const mergeArray = arrayMerge(dataArray);
-    let min = scale.min;
-    let max = scale.max;
+    let min = Infinity;
+    let max = -Infinity;
     for (let i = 0, len = mergeArray.length; i < len; i++) {
       const obj = mergeArray[i];
       const tmpMin = Math.min.apply(null, obj[field]);
@@ -239,7 +289,7 @@ class Geometry extends Component implements AttrMixin {
         max = tmpMax;
       }
     }
-    if (min < scale.min || max > scale.max) {
+    if (min !== scale.min || max !== scale.max) {
       scale.change({
         min,
         max,
@@ -253,16 +303,17 @@ class Geometry extends Component implements AttrMixin {
 
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
-    const groupedArray = this._groupData(data);
+    const records = this._groupData(data);
+    // groupedArray 是二维数组
+    const groupedArray = records.map(record => record.children);
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
 
-    this.dataArray = dataArray;
-  }
+    // 主要是调整 y 轴是否从 0 开始
+    this._adjustScales();
 
-  forceUpdate() {
-    super.forceUpdate();
-    this._processData();
+    this.dataArray = dataArray;
+    this.records = records;
   }
 
   _initEvent() {
@@ -275,9 +326,9 @@ class Geometry extends Component implements AttrMixin {
       'onPan',
       'onPanStart',
       'onPanEnd',
-    ].forEach((eventName) => {
+    ].forEach(eventName => {
       if (props[eventName]) {
-        canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+        canvas.on(eventName.substr(2).toLowerCase(), ev => {
           ev.geometry = this;
           props[eventName](ev);
         });
@@ -288,185 +339,117 @@ class Geometry extends Component implements AttrMixin {
   getY0Value() {
     const { attrs, props } = this;
     const { chart } = props;
-    const { y } = attrs;
-    const { scale } = y;
+    const { field } = attrs.y;
+    const scale = chart.getScale(field);
     return chart.scale.getZeroValue(scale);
   }
 
-  // 获取全局主题配置里的属性默认值域
-  getDefaultRange(attrName) {
-    const { context } = this;
-    const { theme } = context;
-    if (attrName === 'shape') {
-      return theme.shapes[this.geomType];
-    }
-    return this.defaultRanges[attrName];
-  }
-
-  // 初始化各属性默认值域
-  _initAttrRanges() {
-    const { context } = this;
-    const { theme } = context;
-
-    // color & size 的值域通用，shape 需要根据不同的 geometry 去获取
-    this.defaultRanges = {
-      color: theme.colors,
-      size: theme.sizes,
-    };
-
-    return this.defaultRanges;
-  }
-
   // 根据各属性映射的值域来获取真正的绘图属性
-  getAttrsStyle(attrsValue, record) {
-    const { context, props } = this;
+  _getShapeStyle(shape, origin) {
+    const { context, props, geomType } = this;
     const { theme } = context;
-    const { style }: { style: { field?: string } } = props;
+    const shapeTheme = theme.shape[geomType] || {};
+    const defaultShapeStyle = shapeTheme.default;
+    const shapeThemeStyle = shapeTheme[shape];
+    const { style } = props;
 
-    const attrsStyle = {};
-    each(attrsValue, (value, attrName) => {
-      if (attrName === 'shape') {
-        const shapeStyleMap = theme.geometry[this.geomType];
-        const shapeStyle = {};
-
-        // 处理style里的function入参
-        if (isObject(style)) {
-          const { field } = style;
-          each(omit(style, ['field']), (attr, key) => {
-            if (typeof attr === 'function') {
-              shapeStyle[key] = attr(record[field]);
-            } else {
-              shapeStyle[key] = attr;
-            }
-          });
-        }
-
-        attrsStyle[attrName] = mix(
-          {},
-          shapeStyleMap.default, // 默认样式
-          shapeStyleMap[value], // shape特有的样式
-          shapeStyle // 传入的特定样式
-        );
+    const shapeStyle = {
+      ...defaultShapeStyle,
+      ...shapeThemeStyle,
+    };
+    if (!style || !isObject(style)) {
+      return shapeStyle;
+    }
+    // @ts-ignore
+    const { field, ...styles } = style;
+    const value = field ? origin[field] : origin;
+    each(styles, (attr, key) => {
+      if (isFunction(attr)) {
+        shapeStyle[key] = attr(value);
       } else {
-        attrsStyle[attrName] = value;
+        shapeStyle[key] = attr;
+      }
+    });
+    return shapeStyle;
+  }
+
+  _mapping(records) {
+    const { attrs, props } = this;
+    const { coord } = props;
+    const attrNames = Object.keys(attrs);
+    const linearAttrs = [];
+    const nolinearAttrs = [];
+    attrNames.forEach(attrName => {
+      if (attrs[attrName].constructor === Linear) {
+        linearAttrs.push(attrName);
+      } else {
+        nolinearAttrs.push(attrName);
       }
     });
 
-    return attrsStyle;
-  }
+    const defaultAttrValues = this.getDefaultAttrValues();
 
-  // 从值域中第一个值获取属性默认 value
-  _getAttrsDefaultValue() {
-    const { context } = this;
-    const { theme } = context;
-    const { color, size } = this.defaultRanges;
-    const shape = theme.shapes[this.geomType] || [];
+    for (let i = 0, len = records.length; i < len; i++) {
+      const record = records[i];
+      const { children } = record;
+      // 非线性映射只用映射第一项就可以了
+      const attrValues = {
+        ...defaultAttrValues,
+      };
+      const firstChild = children[0];
+      for (let k = 0, len = nolinearAttrs.length; k < len; k++) {
+        const attrName = nolinearAttrs[k];
+        const attr = attrs[attrName];
+        attrValues[attrName] = attr.mapping(firstChild[attr.field]);
+      }
 
-    return {
-      color: color[0],
-      size: size[0],
-      shape: shape[0],
-    };
-  }
-
-  // 映射除 x, y 之外的图形属性
-  _mappingAttrs(dataArray) {
-    const { x, y, ...attrs } = this.attrs;
-    const attrNames = Object.keys(attrs);
-    const attrNamesLength = attrNames.length;
-
-    // 设置各属性的值域
-    for (let key = 0; key < attrNamesLength; key++) {
-      const attrName = attrNames[key];
-
-      if (!this.getAttrRange(attrName)) {
-        const attrRange = this.getDefaultRange(attrName);
-        this.setAttrRange(attrName, attrRange);
+      // 线性映射
+      const linearAttrsLength = linearAttrs.length;
+      for (let j = 0, childrenLen = children.length; j < childrenLen; j++) {
+        const child = children[j];
+        const normalized: any = {};
+        for (let k = 0; k < linearAttrsLength; k++) {
+          const attrName = linearAttrs[k];
+          const attr = attrs[attrName];
+          normalized[attrName] = attr.normalize(child[attr.field]);
+        }
+        const { x, y } = coord.convertPoint({
+          x: normalized.x,
+          y: normalized.y,
+        });
+        // 获取shape的style
+        const shape = this._getShapeStyle(attrValues.shape, child.origin);
+        mix(child, attrValues, {
+          normalized,
+          x,
+          y,
+          shape,
+        });
       }
     }
-
-    // 默认值
-    const defaultValues = this._getAttrsDefaultValue();
-    const dataArrayLength = dataArray.length;
-    const mappedArray = new Array(dataArrayLength);
-    for (let i = 0; i < dataArrayLength; i++) {
-      const data = dataArray[i];
-
-      // 将数据映射成图形属性（color/size/shape...), 因为每组里面这些属性的值都是相同的，所以只需要映射第一个就可以了
-      let attrsValue: any = {};
-      for (let key = 0; key < attrNamesLength; key++) {
-        const attrName = attrNames[key];
-        attrsValue[attrName] = this.getAttrValue(attrName, data[0]);
-      }
-
-      // 把attrs的value补齐
-      attrsValue = mix({}, defaultValues, attrsValue);
-
-      // 生成映射后的数据对象
-      const mappedData = new Array(data.length);
-      for (let i = 0, len = data.length; i < len; i++) {
-        const record = data[i];
-        const result = {
-          ...record,
-          ...this.getAttrsStyle(attrsValue, record),
-        };
-        mappedData[i] = result;
-      }
-      mappedArray[i] = mappedData;
-    }
-    return mappedArray;
-  }
-
-  _normalizePosition(dataArray) {
-    const { x, y } = this.attrs;
-    const { field: xField } = x;
-    const { field: yField } = y;
-    for (let i = 0; i < dataArray.length; i++) {
-      const data = dataArray[i];
-      for (let j = 0, len = data.length; j < len; j++) {
-        const record = data[j];
-        const position = {
-          x: x.normalize(record[xField]),
-          y: y.normalize(record[yField]),
-        };
-        mix(record, { position, ...position });
-      }
-    }
-    return dataArray;
-  }
-
-  _convertPosition(dataArray) {
-    return dataArray;
+    return records;
   }
 
   // 数据映射
   mapping() {
-    const { dataArray } = this;
-    let mappedArray;
+    if (!this.records) {
+      this._processData();
+    }
+    const { records } = this;
+    // 数据映射
+    this._mapping(records);
 
-    // 图形属性映射
-    mappedArray = this._mappingAttrs(dataArray);
-
-    // 位置映射拆分成2个阶段，归一化和坐标映射
-    mappedArray = this._normalizePosition(mappedArray);
-    mappedArray = this._convertPosition(mappedArray);
-
-    this.mappedArray = mappedArray;
-    return mappedArray;
+    return records;
   }
 
   getXScale() {
-    const { props, attrOptions } = this;
-    const { field } = attrOptions.x;
-    const { chart } = props;
-    return chart.getScale(field);
+    const { attrController } = this;
+    return attrController.getAttr('x').scale;
   }
 
   getYScale() {
-    const { props, attrOptions } = this;
-    const { field } = attrOptions.y;
-    const { chart } = props;
-    return chart.getScale(field);
+    const { attrController } = this;
+    return attrController.getAttr('y').scale;
   }
 
   _getSnap(scale, invertPointX) {
@@ -541,21 +524,15 @@ class Geometry extends Component implements AttrMixin {
   }
 
   getLegendItems() {
-    const colorAttr = this.getAttr('color');
+    const { attrController } = this;
+    const colorAttr = attrController.getAttr('color');
     if (!colorAttr) return null;
-    const { scale, field } = colorAttr;
+    const { scale } = colorAttr;
     if (!scale.isCategory) return null;
-    const { context } = this;
-    const { theme } = context;
     const ticks = scale.getTicks();
-
-    if (!this.getAttrRange('color')) {
-      colorAttr.setRange(theme.colors);
-    }
-    const items = ticks.map((tick) => {
+    const items = ticks.map(tick => {
       const { text, tickValue } = tick;
-      const color =
-        this.getAttrValue('color', { [field]: tickValue }) || theme.colors[0];
+      const color = colorAttr.mapping(tickValue);
       return {
         color,
         name: text, // for display
@@ -565,7 +542,5 @@ class Geometry extends Component implements AttrMixin {
     return items;
   }
 }
-
-applyMixins(Geometry, [AttrMixin]);
 
 export default Geometry;

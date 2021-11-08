@@ -7,7 +7,7 @@ class Base {
   field: string;
   scale: Scale;
   range: any[];
-  map: Function;
+  callback: Function;
 
   constructor(options) {
     mix(this, options);
@@ -28,15 +28,6 @@ class Base {
     return value;
   }
 
-  // 数据映射方法
-  mapping(value): any {
-    const rst = isFunction(this.map) ? this.map(value) : null;
-    if (!isNil(rst)) {
-      return rst;
-    }
-    return this._mapping(value);
-  }
-
   update(options) {
     mix(this, options);
   }
@@ -45,19 +36,30 @@ class Base {
     this.range = range;
   }
 
+  // 归一化，参数是原始数据，返回是归一化的数据
   normalize(value: any) {
     const { scale } = this;
 
     if (isArray(value)) {
-      return value.map((v) => {
+      return value.map(v => {
         return scale.scale(v);
       });
     }
     return scale.scale(value);
   }
 
+  // convert 参数是归一化的数据，返回定义域的值
   convert(value) {
     return value;
+  }
+
+  // 等于 normalize + convert， 参数是原始数据，返回是定义域的值
+  mapping(value): any {
+    const rst = isFunction(this.callback) ? this.callback(value) : null;
+    if (!isNil(rst)) {
+      return rst;
+    }
+    return this._mapping(value);
   }
 }
 
