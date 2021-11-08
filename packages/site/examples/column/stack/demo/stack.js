@@ -1,5 +1,4 @@
-import F2 from '@antv/f2';
-import _ from 'lodash';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   name: 'London',
@@ -66,41 +65,16 @@ const data = [{
   月份: 'Aug.',
   月均降雨量: 42.4
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  月均降雨量: {
-    tickCount: 5
-  }
-});
-chart.tooltip({
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const legend = chart.get('legendController').legends.top[0];
-    const tooltipItems = obj.items;
-    const legendItems = legend.items;
-    const map = {};
-    legendItems.forEach(function(item) {
-      map[item.name] = _.clone(item);
-    });
-    tooltipItems.forEach(function(item) {
-      const name = item.name;
-      const value = item.value;
-      if (map[name]) {
-        map[name].value = value;
-      }
-    });
-    legend.setItems(_.values(map));
-  },
-  onHide: function onHide() {
-    const legend = chart.get('legendController').legends.top[0];
-    legend.setItems(chart.getLegendItems().country);
-  }
-});
-chart.interval()
-  .position('月份*月均降雨量')
-  .color('name')
-  .adjust('stack');
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Axis field="月份" />
+      <Axis field="月均降雨量" />
+      <Interval x="月份" y="月均降雨量" color="name" adjust="stack" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

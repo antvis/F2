@@ -22,12 +22,11 @@ class Group extends Rect {
   }
 
   getBBox() {
-    const self = this;
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
     let maxY = -Infinity;
-    const children = self.get('children');
+    const children = this.get('children');
     for (let i = 0, length = children.length; i < length; i++) {
       const child = children[i];
       if (child.get('visible')) {

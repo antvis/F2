@@ -51,17 +51,14 @@ function isOverlap(label1, label2) {
 function findShapesByClass(shape, targetClassName) {
   const { _attrs = {} } = shape || {};
   const { children, className } = _attrs;
-  let result = [];
+  const result = [];
   if (className === targetClassName) {
     result.push(shape);
   }
 
   if (children && children.length) {
     for (let i = 0, len = children.length; i < len; i++) {
-      result.push.apply(
-        result,
-        findShapesByClass(children[i], targetClassName)
-      );
+      result.push(...findShapesByClass(children[i], targetClassName))
     }
   }
   return result;

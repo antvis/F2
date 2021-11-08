@@ -1,5 +1,4 @@
-import F2 from '@antv/f2';
-import _ from 'lodash';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   time: '周一',
@@ -86,45 +85,25 @@ const data = [{
   tem: 17.9,
   city: 'berlin'
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-
-chart.source(data, {
-  tem: {
-    tickCount: 5
-  }
-});
-chart.tooltip({
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const legend = chart.get('legendController').legends.top[0];
-    const tooltipItems = obj.items;
-    const legendItems = legend.items;
-    const map = {};
-    legendItems.forEach(function(item) {
-      map[item.name] = _.clone(item);
-    });
-    tooltipItems.forEach(function(item) {
-      const name = item.name;
-      const value = item.value;
-      if (map[name]) {
-        map[name].value = value;
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data} scale={{
+      tem: {
+        tickCount: 5
       }
-    });
-    legend.setItems(_.values(map));
-  },
-  onHide: function onHide() {
-    const legend = chart.get('legendController').legends.top[0];
-    legend.setItems(chart.getLegendItems().country);
-  }
-});
-chart.interval().position('time*tem').color('city')
-  .style('tem', {
-    radius: function radius(val) {
-      return val > 0 ? [ 4, 4, 0, 0 ] : [ 0, 0, 4, 4 ];
-    }
-  })
-  .adjust('dodge');
+    }}>
+      <Axis field="time" />
+      <Axis field="tem" />
+      <Interval x="time" y="tem" color="city" adjust="dodge" style={{
+        field: 'tem',
+        radius: (val) => {
+          return val > 0 ? [ 4, 4, 0, 0 ] : [ 0, 0, 4, 4 ];
+        }
+      }} />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

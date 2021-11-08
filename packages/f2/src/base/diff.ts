@@ -162,7 +162,7 @@ function renderComponent(component: Component | Component[]) {
   Children.map(component, (item: Component) => {
     const { children: lastChildren } = item;
     const mount = isUndefined(lastChildren);
-    let newChildren = item.render();
+    const newChildren = item.render();
     renderChildren(item, newChildren, lastChildren);
     if (mount) {
       if (item.didMount) item.didMount();

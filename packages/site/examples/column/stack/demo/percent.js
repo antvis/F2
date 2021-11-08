@@ -1,5 +1,4 @@
-import F2 from '@antv/f2';
-import _ from 'lodash';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   country: 'Europe',
@@ -82,44 +81,17 @@ const data = [{
   value: 7268,
   percent: 0.8977272727272727
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  percent: {
-    min: 0,
-    formatter: function formatter(val) {
-      return (val * 100).toFixed(0) + '%';
-    }
-  }
-});
-chart.tooltip({
-  custom: true, // 自定义 tooltip 内容框
-  onChange: function onChange(obj) {
-    const legend = chart.get('legendController').legends.top[0];
-    const tooltipItems = obj.items;
-    const legendItems = legend.items;
-    const map = {};
-    legendItems.forEach(function(item) {
-      map[item.name] = _.clone(item);
-    });
-    tooltipItems.forEach(function(item) {
-      const name = item.name;
-      const value = item.value;
-      if (map[name]) {
-        map[name].value = value;
-      }
-    });
-    legend.setItems(_.values(map));
-  },
-  onHide: function onHide() {
-    const legend = chart.get('legendController').legends.top[0];
-    legend.setItems(chart.getLegendItems().country);
-  }
-});
-chart.interval()
-  .position('year*percent')
-  .color('country')
-  .adjust('stack');
+
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Axis field="year" />
+      <Axis field="percent" />
+      <Interval x="year" y="percent" color="country" adjust="stack" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();
