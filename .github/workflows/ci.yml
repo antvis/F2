@@ -29,9 +29,10 @@ jobs:
          node-version: ${{ matrix.node_version }}
 
     # Runs a set of commands using the runners shell
-    - name: npm install, ci
+    - name: yarn install, ci
       run: |
-        npm install
+        yarn install
+        lerna bootstrap --npm-client=yarn
         npm run ci
       env:
         CI: true
