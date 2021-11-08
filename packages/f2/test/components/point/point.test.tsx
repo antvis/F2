@@ -7,7 +7,7 @@ import { createContext } from '../../util';
 const url = 'https://gw.alipayobjects.com/os/antfincdn/6HodecuhvM/scatter.json';
 const url2 = 'https://gw.alipayobjects.com/os/antfincdn/aN68ysvGFa/index.json';
 
-describe('Point Chart', () => {
+describe.skip('Point Chart', () => {
   it('基础点图', async () => {
     const res = await fetch(url);
     const data = await res.json();
