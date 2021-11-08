@@ -32,7 +32,7 @@ jobs:
     - name: yarn install, ci
       run: |
         yarn install
-        lerna bootstrap --npm-client=yarn
+        npm run bootstrap
         npm run ci
       env:
         CI: true
