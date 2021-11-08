@@ -17,8 +17,7 @@ class Polygon extends Shape {
   }
 
   createPath(context) {
-    const self = this;
-    const attrs = self.get('attrs');
+    const attrs = this.get('attrs');
     const points = attrs.points;
 
     context.beginPath();

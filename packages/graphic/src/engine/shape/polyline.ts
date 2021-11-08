@@ -33,8 +33,7 @@ class Polyline extends Shape {
   }
 
   createPath(context) {
-    const self = this;
-    const attrs = self.get('attrs');
+    const attrs = this.get('attrs');
     const { points, smooth } = attrs;
 
     const filteredPoints = _filterPoints(points);

@@ -72,8 +72,7 @@ class Rect extends Shape {
   }
 
   createPath(context) {
-    const self = this;
-    const attrs = self.get('attrs');
+    const attrs = this.get('attrs');
     const { x, y, width, height, radius } = attrs;
 
     context.beginPath();

@@ -109,32 +109,31 @@ class Element {
   }
 
   attr(name, value?) {
-    const self = this;
-    if (self.get('destroyed')) return null;
+    if (this.get('destroyed')) return null;
     const argumentsLen = arguments.length;
     if (argumentsLen === 0) {
-      return self._attrs.attrs;
+      return this._attrs.attrs;
     }
 
     if (isObject(name)) {
       this._attrs.bbox = null;
       for (const k in name) {
-        self._setAttr(k, name[k]);
+        this._setAttr(k, name[k]);
       }
-      if (self._afterAttrsSet) {
-        self._afterAttrsSet();
+      if (this._afterAttrsSet) {
+        this._afterAttrsSet();
       }
-      return self;
+      return this;
     }
     if (argumentsLen === 2) {
       this._attrs.bbox = null;
-      self._setAttr(name, value);
-      if (self._afterAttrsSet) {
-        self._afterAttrsSet();
+      this._setAttr(name, value);
+      if (this._afterAttrsSet) {
+        this._afterAttrsSet();
       }
-      return self;
+      return this;
     }
-    return self._getAttr(name);
+    return this._getAttr(name);
   }
 
   getParent() {
