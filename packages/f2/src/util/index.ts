@@ -22,7 +22,12 @@ function px2hd(px: number): number {
   return Number((px * SCALE).toFixed(1));
 }
 
-function is(type: string) {
+function is(t: 'Number'): (args: any) => args is number;
+function is(t: 'String'): (args: any) => args is string;
+function is(t: 'Array'): (args: any) => args is any[];
+function is(t: 'Object'): (args: any) => args is Object;
+function is(t: 'Function'): (args: any) => args is (a?:any) => any;
+function is(type: 'Number' | 'String' | 'Array' | 'Object' | 'Function')  {
   return (value: any) => {
     return Object.prototype.toString.call(value) === `[object ${type}]`;
   };
@@ -45,7 +50,7 @@ function parsePadding(padding: any) {
   return [top, right, bottom, left];
 }
 
-function batch2hd(value: any) {
+function batch2hd(value: string | string[] | any) {
   // 处理带px的数据
   if (isString(value) && /^-?\d+px$/.test(value)) {
     const num = value.substr(0, value.length - 2);

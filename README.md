@@ -96,7 +96,10 @@ chart.render();
 ```bash
 $ npm install
 
-# 跑测试用例
+# 先编译
+$ npm run build
+
+# 再跑测试用例
 $ npm run test-live
 
 # 监听文件变化构建，并打开 demo 页面

@@ -79,8 +79,7 @@ class Text extends Shape {
   }
 
   drawInner(context) {
-    const self = this;
-    const attrs = self._attrs.attrs;
+    const attrs = this._attrs.attrs;
     const text = attrs.text;
     let x = attrs.x;
     let y = attrs.y;
@@ -89,7 +88,7 @@ class Text extends Shape {
     }
     const textArr = attrs.textArr;
     const fontSize = attrs.fontSize * 1;
-    const spaceingY = self._getSpaceingY();
+    const spaceingY = this._getSpaceingY();
 
     if (attrs.rotate) { // do rotation
       context.translate(x, y);
@@ -101,12 +100,12 @@ class Text extends Shape {
     const textBaseline = attrs.textBaseline;
     let height;
     if (textArr) {
-      height = self._getTextHeight();
+      height = this._getTextHeight();
     }
     let subY;
 
     // context.beginPath();
-    if (self.hasFill()) {
+    if (this.hasFill()) {
       const fillOpacity = attrs.fillOpacity;
       if (!isNil(fillOpacity) && fillOpacity !== 1) {
         context.globalAlpha = fillOpacity;
@@ -128,7 +127,7 @@ class Text extends Shape {
       }
     }
 
-    if (self.hasStroke()) {
+    if (this.hasStroke()) {
       if (textArr) {
         for (let i = 0, len = textArr.length; i < len; i++) {
           const subText = textArr[i];
@@ -152,10 +151,9 @@ class Text extends Shape {
   }
 
   calculateBox() {
-    const self = this;
-    const attrs = self._attrs.attrs;
+    const attrs = this._attrs.attrs;
     const { x, y, textAlign, textBaseline } = attrs;
-    let width = self._getTextWidth(); // attrs.width
+    let width = this._getTextWidth(); // attrs.width
     if (!width) {
       return {
         minX: x,
@@ -164,7 +162,7 @@ class Text extends Shape {
         maxY: y
       };
     }
-    let height = self._getTextHeight(); // attrs.height
+    let height = this._getTextHeight(); // attrs.height
 
     if (attrs.rotate) {
       const rotatedBox = RectUtil.calcRotatedBox({

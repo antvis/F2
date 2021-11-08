@@ -61,9 +61,8 @@ class Canvas extends EventEmit {
   }
 
   _initCanvas() {
-    const self = this;
-    const el = self.get('el');
-    const context = self.get('context');
+    const el = this.get('el');
+    const context = this.get('context');
     if (!el && !context) {
       throw new Error('Please specify the id, el or context of the chart!');
     }
@@ -81,27 +80,27 @@ class Canvas extends EventEmit {
         return context;
       };
     }
-    let width = self.get('width');
+    let width = this.get('width');
     if (!width) {
       width = getWidth(canvas);
     }
 
-    let height = self.get('height');
+    let height = this.get('height');
     if (!height) {
       height = getHeight(canvas);
     }
 
-    self.set('canvas', this);
-    self.set('el', canvas);
-    self.set('context', context || canvas.getContext('2d'));
-    self.changeSize(width, height);
+    this.set('canvas', this);
+    this.set('el', canvas);
+    this.set('context', context || canvas.getContext('2d'));
+    this.changeSize(width, height);
 
     // 初始化事件控制器
     const eventController = new EventController({
       canvas: this,
       el: canvas
     });
-    self.set('eventController', eventController);
+    this.set('eventController', eventController);
   }
 
   changeSize(width, height) {
@@ -159,36 +158,35 @@ class Canvas extends EventEmit {
   }
 
   draw() {
-    const self = this;
-    function drawInner() {
-      self.set('animateHandler', requestAnimationFrame(() => {
-        self.set('animateHandler', undefined);
-        if (self.get('toDraw')) {
+    const drawInner = () => {
+      this.set('animateHandler', requestAnimationFrame(() => {
+        this.set('animateHandler', undefined);
+        if (this.get('toDraw')) {
           drawInner();
         }
       }));
-      self.beforeDraw();
+      this.beforeDraw();
       try {
-        const context = self._attrs.context;
-        self.drawChildren(context);
+        const context = this._attrs.context;
+        this.drawChildren(context);
         // 支付宝，微信小程序，需要调context.draw才能完成绘制， 所以这里直接判断是否有.draw方法
         if (context.draw) {
           context.draw();
         }
         // 设置无障碍文本
-        self.setAriaLabel();
+        this.setAriaLabel();
       } catch (ev) {
         console.warn('error in draw canvas, detail as:');
         console.warn(ev);
-        self._endDraw();
+        this._endDraw();
       }
-      self._endDraw();
+      this._endDraw();
     }
 
-    if (self.get('destroyed')) {
+    if (this.get('destroyed')) {
       return;
     }
-    if (self.get('animateHandler')) {
+    if (this.get('animateHandler')) {
       this._beginDraw();
     } else {
       drawInner();

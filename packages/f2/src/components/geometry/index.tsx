@@ -514,7 +514,7 @@ class Geometry extends Component implements AttrMixin {
       return [];
     }
 
-    let rst = [];
+    const rst = [];
     const value = this._getSnap(xScale, invertPoint.x);
     if (!value) {
       return rst;
