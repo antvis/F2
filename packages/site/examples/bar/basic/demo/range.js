@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   x: '分类一',
@@ -25,30 +25,22 @@ const data = [{
   x: '分类八',
   y: [ 18, 34 ]
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  y: {
-    tickCount: 5
-  }
-});
-chart.coord({
-  transposed: true
-});
-chart.tooltip({
-  showItemMarker: false,
-  onShow: function onShow(ev) {
-    const items = ev.items;
-    items[0].name = '范围';
-    const value = items[0].value;
-    items[0].value = value[0] + ' 至 ' + value[1];
-  }
-});
-chart.interval().position('x*y').animate({
-  appear: {
-    animation: 'shapesScaleInY'
-  }
-});
+
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        transposed: true
+      }}
+    >
+      <Axis field="x" />
+      <Axis field="y" />
+      <Interval x="x" y="y" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

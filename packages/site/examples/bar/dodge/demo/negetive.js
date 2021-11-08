@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Axis, Legend } from '@antv/f2';
 
 const data = [{
   gender: 'Male',
@@ -89,38 +89,28 @@ const data = [{
   value: 0.1,
   cate: '100 +'
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data);
-chart.coord({
-  transposed: true
-});
-chart.legend({
-  align: 'right',
-  itemWidth: 50
-});
-chart.axis('cate', {
-  line: F2.Global._defaultAxis.line,
-  grid: null
-});
-chart.axis('value', {
-  line: null,
-  grid: F2.Global._defaultAxis.grid,
-  label: function label(text, index, total) {
-    const textCfg = {};
-    if (index === 0) {
-      textCfg.textAlign = 'left';
-    } else if (index === total - 1) {
-      textCfg.textAlign = 'right';
-    }
-    return textCfg;
-  }
-});
-chart.interval()
-  .position('cate*value')
-  .color('gender')
-  .adjust('stack');
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        transposed: true
+      }}
+      scale={{
+        sales: {
+          tickCount: 5
+        }
+      }}
+    >
+      <Axis field="cate" />
+      <Axis field="value" />
+      <Interval x="cate" y="value" adjust="stack" color="gender" />
+      <Legend align="right" field="gender"/>
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

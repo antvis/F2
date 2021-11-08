@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   year: '1951 年',
@@ -25,27 +25,27 @@ const data = [{
   year: '1962 年',
   sales: 38
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data, {
-  sales: {
-    tickCount: 5
-  }
-});
-chart.coord({
-  transposed: true
-});
-chart.tooltip({
-  showItemMarker: false,
-  onShow: function onShow(ev) {
-    const items = ev.items;
-    items[0].name = null;
-    items[0].name = items[0].title;
-    items[0].value = '¥ ' + items[0].value;
-  }
-});
-chart.interval().position('year*sales');
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        transposed: true
+      }}
+      scale={{
+        sales: {
+          tickCount: 5
+        }
+      }}
+    >
+      <Axis field="year" />
+      <Axis field="sales" />
+      <Interval x="year" y="sales" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();
