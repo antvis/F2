@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
@@ -23,7 +22,7 @@ describe('Point Chart', () => {
           coord={{
             type: Rect,
           }}
-          scale={}
+          scale={{}}
         >
           <Point x="height" y="weight" color="gender" size="weight" />
         </Chart>
@@ -49,7 +48,7 @@ describe('Point Chart', () => {
           coord={{
             type: Polar,
           }}
-          scale={}
+          scale={{}}
         >
           <Point x="height" y="weight" color="gender" size="weight" />
         </Chart>
@@ -74,7 +73,7 @@ describe('Point Chart', () => {
           coord={{
             type: Rect,
           }}
-          scale={}
+          scale={{}}
         >
           <Point
             x="x"
