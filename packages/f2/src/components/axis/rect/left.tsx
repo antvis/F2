@@ -1,6 +1,7 @@
 import { jsx } from '../../../jsx';
+import { RectProps } from '../types';
 
-export default (props: any) => {
+export default (props: RectProps) => {
   const { ticks, coord, style, animation } = props;
   const { left, top, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;

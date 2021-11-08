@@ -1,5 +1,5 @@
-class Component {
-  props: any;
+class Component<T = any> {
+  props: T;
   state: any;
   context: any;
   refs: {

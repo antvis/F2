@@ -1,7 +1,8 @@
 import { jsx } from '../../../jsx';
 import { Vector2 } from '@antv/f2-graphic';
+import { PolarProps } from '../types';
 
-export default (props) => {
+export default (props: PolarProps) => {
   const { ticks, coord, style } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
