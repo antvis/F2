@@ -11,4 +11,4 @@ export default function(type: string | Function, config: any, key?: string): JSX
     // 存储一些过程中的cache值
     _cache: {},
   };
-};
+}

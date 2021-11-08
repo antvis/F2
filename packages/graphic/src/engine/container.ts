@@ -76,8 +76,7 @@ export default {
   },
 
   add(items) {
-    const self = this;
-    const children = self.get('children');
+    const children = this.get('children');
     if (!isArray(items)) {
       items = [ items ];
     }
@@ -89,19 +88,18 @@ export default {
         const descendants = parent.get('children');
         Array.remove(descendants, item);
       }
-      self._setEvn(item);
+      this._setEvn(item);
       children.push(item);
     }
 
-    return self;
+    return this;
   },
 
   _setEvn(item) {
-    const self = this;
-    const { context, canvas, aria } = self._attrs;
+    const { context, canvas, aria } = this._attrs;
     const { isGroup, type } = item._attrs;
 
-    item._attrs.parent = self;
+    item._attrs.parent = this;
     item._attrs.context = context;
     item._attrs.canvas = canvas;
     // 是否需要无障碍处理
@@ -115,7 +113,7 @@ export default {
 
     const clip = item._attrs.attrs.clip;
     if (clip) {
-      clip._attrs.parent = self;
+      clip._attrs.parent = this;
       clip._attrs.context = context;
       clip._attrs.canvas = canvas;
     }

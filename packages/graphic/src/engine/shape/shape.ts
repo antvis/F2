@@ -35,11 +35,10 @@ class Shape extends Element {
   }
 
   drawInner(context) {
-    const self = this;
-    const attrs = self.get('attrs');
-    self.createPath(context);
+    const attrs = this.get('attrs');
+    this.createPath(context);
     const originOpacity = context.globalAlpha;
-    if (self.hasFill()) {
+    if (this.hasFill()) {
       const fillOpacity = attrs.fillOpacity;
       if (!isNil(fillOpacity) && fillOpacity !== 1) {
         context.globalAlpha = fillOpacity;
@@ -49,7 +48,7 @@ class Shape extends Element {
         context.fill();
       }
     }
-    if (self.hasStroke()) {
+    if (this.hasStroke()) {
       const lineWidth = attrs.lineWidth;
       if (lineWidth > 0) {
         const strokeOpacity = attrs.strokeOpacity;

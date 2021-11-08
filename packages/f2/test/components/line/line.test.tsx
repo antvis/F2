@@ -991,7 +991,7 @@ describe('折线图', () => {
   });
 
   it('动态折线图', () => {
-    let data = [];
+    const data = [];
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
 

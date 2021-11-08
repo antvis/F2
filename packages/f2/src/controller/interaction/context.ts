@@ -168,7 +168,7 @@ class Context {
   getZoomedValues(range) {
     const values = this.getDefaultValues();
 
-    let [start, end] = range;
+    const [start, end] = range;
     const len = values.length;
     const valueStart = start * len;
     const valueEnd = end * len;
