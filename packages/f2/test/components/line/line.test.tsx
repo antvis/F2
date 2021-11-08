@@ -990,7 +990,7 @@ describe('折线图', () => {
     });
   });
 
-  it('动态折线图', () => {
+  it.skip('动态折线图', () => {
     const data = [];
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;

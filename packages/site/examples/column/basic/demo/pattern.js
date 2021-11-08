@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 
 const data = [{
   year: '1951 年',
@@ -16,32 +16,27 @@ const data = [{
   year: '1958 年',
   sales: 48
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
 
-chart.source(data, {
-  sales: {
-    tickCount: 5
-  }
-});
-chart.tooltip({
-  showItemMarker: false,
-  onShow: function onShow(ev) {
-    const items = ev.items;
-    items[0].name = null;
-    items[0].name = items[0].title;
-    items[0].value = '¥ ' + items[0].value;
-  }
-});
-// 创建纹理对象
-// 获取 canvas 上下文对像
-const ctx = chart.get('canvas').get('context');
+
 const img = new Image();
 img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
-img.onload = function() {
-  const pattern = ctx.createPattern(img, 'repeat');
-  chart.interval().position('year*sales').color(pattern);
-  chart.render();
+
+img.onload = function () {
+  const pattern = context.createPattern(img, 'repeat');
+
+  const context = document.getElementById('container').getContext('2d');
+  const { props } = (
+    <Canvas context={context}>
+      <Chart data={data}>
+        <Axis field="year" />
+        <Axis field="sales" />
+        <Interval x="year" y="sales" color={pattern} />
+      </Chart>
+    </Canvas>
+  );
+
+  const canvas = new Canvas(props);
+
+  canvas.render();
 };
+
