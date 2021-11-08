@@ -74,7 +74,7 @@ function findShapeByClassName(shape, point, className) {
   }
 }
 
-export default (View) => {
+export default View => {
   return class PieLabel extends Component {
     triggerRef: any;
     labels: [];
@@ -114,11 +114,12 @@ export default (View) => {
       let labels = [];
 
       const geometry = chart.getGeometrys()[0];
-      const { mappedArray } = geometry;
+      const { records } = geometry;
 
-      mappedArray.forEach((records) => {
-        const record = records[0];
-        const { xMin, xMax, color } = record;
+      records.forEach(record => {
+        const { children } = record;
+        const child = children[0];
+        const { xMin, xMax, color, origin } = child;
 
         // 算出锚点的基准位置
         const anchorAngle = getMiddleAngle(xMin, xMax);
@@ -134,7 +135,7 @@ export default (View) => {
         );
 
         const label: any = {
-          origin: record.origin,
+          origin,
           _anchor: anchorPoint,
           _inflection: inflectionPoint,
           x: inflectionPoint.x,
@@ -145,10 +146,10 @@ export default (View) => {
 
         // 映射label1\label2
         if (typeof label1 === 'function') {
-          label.label1 = label1(record.origin, color);
+          label.label1 = label1(origin, color);
         }
         if (typeof label2 === 'function') {
-          label.label2 = label2(record.origin, color);
+          label.label2 = label2(origin, color);
         }
 
         // 判断文本的方向
@@ -165,7 +166,7 @@ export default (View) => {
       // @ts-ignore
       const maxCountForOneSide = toInteger(height / lineHeight, 10);
 
-      halves.forEach((half) => {
+      halves.forEach(half => {
         if (half.length > maxCountForOneSide) {
           half.splice(maxCountForOneSide, half.length - maxCountForOneSide);
         }
@@ -180,7 +181,7 @@ export default (View) => {
       return labels;
     }
 
-    _handleEvent = (ev) => {
+    _handleEvent = ev => {
       const { chart, onClick } = this.props;
       const ele = this.triggerRef.current;
       const point = ev.points[0];

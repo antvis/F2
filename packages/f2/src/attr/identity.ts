@@ -6,8 +6,9 @@ class Identity extends Base {
     return new IdentityScale(scale);
   }
 
-  _mapping(value: any) {
-    return value;
+  _mapping() {
+    const { field, range } = this;
+    return field || (range && range[0]);
   }
 }
 

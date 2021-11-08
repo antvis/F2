@@ -1,19 +1,20 @@
 import { jsx } from '../../jsx';
 
 export default (props: any) => {
-  const { mappedArray } = props;
+  const { records } = props;
   return (
     <group>
-      {mappedArray.map((item) => {
-        const { color, dataArray, shape } = item;
+      {records.map(record => {
+        const { key, children } = record;
         return (
-          <group>
-            {dataArray.map((data) => {
+          <group key={key}>
+            {children.map(child => {
+              const { points, color, shape } = child;
               return (
                 <polygon
                   attrs={{
-                    points: data,
-                    lineWidth: 1,
+                    points,
+                    lineWidth: '2px',
                     fill: color,
                     ...shape,
                   }}

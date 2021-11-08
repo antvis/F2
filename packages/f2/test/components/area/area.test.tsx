@@ -1,5 +1,5 @@
-import { Rect } from '../../../src/coord';
 import { jsx } from '../../../src/jsx';
+import { Rect } from '../../../src/coord';
 import {
   Canvas,
   Chart,
@@ -851,9 +851,11 @@ describe('面积图', () => {
     });
 
     it('区域图(存在空值)', () => {
-      fetch('https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json')
-        .then((res) => res.json())
-        .then((data) => {
+      fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json'
+      )
+        .then(res => res.json())
+        .then(data => {
           const context = createContext('区域图(存在空值)');
           const { type, props } = (
             <Canvas context={context} {...defaultCanvasCfg}>
@@ -881,112 +883,134 @@ describe('面积图', () => {
 
     it('百分比层叠面积图', () => {
       const context = createContext('百分比层叠面积图');
-      const data = [{
-        country: 'Asia',
-        year: '1750',
-        value: 502,
-        percent: 0.6511024643320363
-      }, {
-        country: 'Africa',
-        year: '1750',
-        value: 106,
-        percent: 0.13748378728923477
-      }, {
-        country: 'Europe',
-        year: '1750',
-        value: 163,
-        percent: 0.21141374837872892
-      }, {
-        country: 'Asia',
-        year: '1800',
-        value: 635,
-        percent: 0.671957671957672
-      }, {
-        country: 'Africa',
-        year: '1800',
-        value: 107,
-        percent: 0.11322751322751323
-      }, {
-        country: 'Europe',
-        year: '1800',
-        value: 203,
-        percent: 0.21481481481481482
-      }, {
-        country: 'Asia',
-        year: '1850',
-        value: 809,
-        percent: 0.6764214046822743
-      }, {
-        country: 'Africa',
-        year: '1850',
-        value: 111,
-        percent: 0.09280936454849498
-      }, {
-        country: 'Europe',
-        year: '1850',
-        value: 276,
-        percent: 0.23076923076923078
-      }, {
-        country: 'Asia',
-        year: '1900',
-        value: 947,
-        percent: 0.6364247311827957
-      }, {
-        country: 'Africa',
-        year: '1900',
-        value: 133,
-        percent: 0.08938172043010753
-      }, {
-        country: 'Europe',
-        year: '1900',
-        value: 408,
-        percent: 0.27419354838709675
-      }, {
-        country: 'Asia',
-        year: '1950',
-        value: 1402,
-        percent: 0.6460829493087558
-      }, {
-        country: 'Africa',
-        year: '1950',
-        value: 221,
-        percent: 0.10184331797235023
-      }, {
-        country: 'Europe',
-        year: '1950',
-        value: 547,
-        percent: 0.252073732718894
-      }, {
-        country: 'Asia',
-        year: '1999',
-        value: 3634,
-        percent: 0.7083820662768031
-      }, {
-        country: 'Africa',
-        year: '1999',
-        value: 767,
-        percent: 0.14951267056530215
-      }, {
-        country: 'Europe',
-        year: '1999',
-        value: 729,
-        percent: 0.14210526315789473
-      }, {
-        country: 'Asia',
-        year: '2050',
-        value: 5268,
-        percent: 0.687548942834769
-      }, {
-        country: 'Africa',
-        year: '2050',
-        value: 1766,
-        percent: 0.23048812320542938
-      }, {
-        country: 'Europe',
-        year: '2050',
-        value: 628,
-        percent: 0.08196293395980161
-      }];
+      const data = [
+        {
+          country: 'Asia',
+          year: '1750',
+          value: 502,
+          percent: 0.6511024643320363,
+        },
+        {
+          country: 'Africa',
+          year: '1750',
+          value: 106,
+          percent: 0.13748378728923477,
+        },
+        {
+          country: 'Europe',
+          year: '1750',
+          value: 163,
+          percent: 0.21141374837872892,
+        },
+        {
+          country: 'Asia',
+          year: '1800',
+          value: 635,
+          percent: 0.671957671957672,
+        },
+        {
+          country: 'Africa',
+          year: '1800',
+          value: 107,
+          percent: 0.11322751322751323,
+        },
+        {
+          country: 'Europe',
+          year: '1800',
+          value: 203,
+          percent: 0.21481481481481482,
+        },
+        {
+          country: 'Asia',
+          year: '1850',
+          value: 809,
+          percent: 0.6764214046822743,
+        },
+        {
+          country: 'Africa',
+          year: '1850',
+          value: 111,
+          percent: 0.09280936454849498,
+        },
+        {
+          country: 'Europe',
+          year: '1850',
+          value: 276,
+          percent: 0.23076923076923078,
+        },
+        {
+          country: 'Asia',
+          year: '1900',
+          value: 947,
+          percent: 0.6364247311827957,
+        },
+        {
+          country: 'Africa',
+          year: '1900',
+          value: 133,
+          percent: 0.08938172043010753,
+        },
+        {
+          country: 'Europe',
+          year: '1900',
+          value: 408,
+          percent: 0.27419354838709675,
+        },
+        {
+          country: 'Asia',
+          year: '1950',
+          value: 1402,
+          percent: 0.6460829493087558,
+        },
+        {
+          country: 'Africa',
+          year: '1950',
+          value: 221,
+          percent: 0.10184331797235023,
+        },
+        {
+          country: 'Europe',
+          year: '1950',
+          value: 547,
+          percent: 0.252073732718894,
+        },
+        {
+          country: 'Asia',
+          year: '1999',
+          value: 3634,
+          percent: 0.7083820662768031,
+        },
+        {
+          country: 'Africa',
+          year: '1999',
+          value: 767,
+          percent: 0.14951267056530215,
+        },
+        {
+          country: 'Europe',
+          year: '1999',
+          value: 729,
+          percent: 0.14210526315789473,
+        },
+        {
+          country: 'Asia',
+          year: '2050',
+          value: 5268,
+          percent: 0.687548942834769,
+        },
+        {
+          country: 'Africa',
+          year: '2050',
+          value: 1766,
+          percent: 0.23048812320542938,
+        },
+        {
+          country: 'Europe',
+          year: '2050',
+          value: 628,
+          percent: 0.08196293395980161,
+        },
+      ];
       const { type, props } = (
         <Canvas context={context} {...defaultCanvasCfg}>
           <Chart
@@ -998,7 +1022,7 @@ describe('面积图', () => {
               percent: {
                 formatter: val => formatterPercent(val),
                 alias: 'percent(%)',
-              }
+              },
             }}
           >
             <Axis field="percent" />

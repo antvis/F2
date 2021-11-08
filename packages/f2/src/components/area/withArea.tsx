@@ -1,96 +1,47 @@
+import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
-import { isArray, mix, each } from '@antv/util';
-import Geometry from '../geometry';
-import { GeomType } from '../geometry/interface';
-import { Stack } from '../../adjust';
-import { splitArray } from '../geometry/util';
+import withLine from '../line/withLine';
 
-export default (View) => {
-  return class Area extends Geometry {
-    geomType: GeomType = 'area';
-    startOnZero: boolean = true; // 面积图默认设为从0开始
-
-    parsePoints(dataArray) {
-      const { coord } = this.props;
-      // 1. 添加 points
-      const withPoints = dataArray.map((data) => {
-        const points = data;
-        if (coord.isPolar) {
-          points.push(data[0]);
-        }
-        return {
-          ...data[0],
-          points,
-        };
-      });
-      // 2. 按空值分割
-      this._splitPoints(withPoints);
-      // 3. 填充多边形 point
-      this._generatePolygonPoints(withPoints);
-      return withPoints;
+export default View => {
+  return class Area extends withLine(View) {
+    getDefaultCfg() {
+      return {
+        geomType: 'area',
+        // 面积图默认设为从0开始
+        startOnZero: true,
+      };
     }
 
-    _convertPosition(mappedArray) {
+    mapping() {
+      const records = super.mapping();
+      // 坐标轴 y0
+      const y0 = this.getY0Value();
       const { props, startOnZero: defaultStartOnZero } = this;
       const { coord, startOnZero = defaultStartOnZero } = props;
+      let baseY = coord.y[0];
+      if (startOnZero) {
+        // 零点映射到绝对坐标
+        const originCoord = coord.convertPoint({ x: 0, y: y0 });
+        baseY = originCoord.y;
+      }
 
-      const originY = this.getY0Value(); // 坐标轴 y0
-      const originCoord = coord.convertPoint({ x: 0, y: originY }); // 零点映射到绝对坐标
-      // 面积图基线 y 坐标: 如果从0开始，则取零点 y 坐标，否则取 yStart
-      const baseY = startOnZero ? originCoord.y : coord.y[0];
+      for (let i = 0, len = records.length; i < len; i++) {
+        const record = records[i];
+        const { children } = record;
+        for (let j = 0, len = children.length; j < len; j++) {
+          const child = children[j];
+          const { points, bottomPoints } = child;
 
-      for (let i = 0; i < mappedArray.length; i++) {
-        const data = mappedArray[i];
-        for (let j = 0; j < data.length; j++) {
-          const record = data[j];
-          const { x, y } = record;
-
-          // stack 转换后的 y 为一个数组 [y0, y1]
-          mix(record, coord.convertPoint({ x, y }));
-          // 如果不为 stack，统一将 y 转换为数组，以便下一步填充多边形底部点
-          if (!isArray(record.y)) {
-            record.y = [baseY, record.y];
+          if (bottomPoints && bottomPoints.length) {
+            bottomPoints.reverse();
+            child.points = points.concat(bottomPoints);
+          } else {
+            points.push({ x: points[points.length - 1].x, y: baseY });
+            points.push({ x: points[0].x, y: baseY });
           }
         }
       }
-      const mapped = this.parsePoints(mappedArray);
-      return mapped;
-    }
-
-    // 空值处理
-    _splitPoints(mappedArray) {
-      const { field: yField } = this.attrOptions.y;
-      const { connectNulls: defaultConnectNulls } = this;
-      const { connectNulls = defaultConnectNulls } = this.props;
-      each(mappedArray, function (obj) {
-        const dataArray = splitArray(obj.points, yField, connectNulls);
-        obj.dataArray = dataArray;
-      });
-      return mappedArray;
-    }
-
-    // 生成多边形 points
-    _generatePolygonPoints(mappedArray) {
-      each(mappedArray, function (obj) {
-        const { dataArray: pointsArray } = obj;
-        each(pointsArray, function (points, index) {
-          const topPoints = points.map(({ x, y }) => ({ x, y: y[0] }));
-          const bottomPoints = points
-            .map(({ x, y }) => ({ x, y: y[1] }))
-            .reverse();
-          pointsArray[index] = [...topPoints, ...bottomPoints];
-        });
-        obj.dataArray = pointsArray;
-      });
-      return mappedArray;
-    }
-
-    // TODO: smooth
-    render() {
-      const { props } = this;
-      const mapped = this.mapping();
-      const { coord } = props;
-      return <View coord={coord} mappedArray={mapped} />;
+      return records;
     }
   };
 };
