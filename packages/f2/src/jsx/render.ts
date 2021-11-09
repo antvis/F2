@@ -71,11 +71,9 @@ function createElement(
 ) {
   const {
     _cache = {},
-    key,
     ref,
     type,
     props,
-    style,
     attrs,
     layout: originLayout,
     renderChildren,

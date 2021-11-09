@@ -1,5 +1,5 @@
 import { createCanvas } from '@antv/f2-graphic';
-import { deepMix, mix } from '@antv/util';
+import { deepMix } from '@antv/util';
 import Component from '../base/component';
 import Timeline from '../timeline';
 import Layout from '../base/layout';

@@ -36,7 +36,7 @@ function renderShape(
 }
 
 function createComponent(parent: Component, element: JSX.Element): Component {
-  const { type, props, key, ref } = element;
+  const { type, props, ref } = element;
   const { container, context, updater } = parent;
   // 这里 一定是 F2 Component 了
   // @ts-ignore
