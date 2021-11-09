@@ -13,7 +13,7 @@
     "@antv/f2": "4.0.0-alpha.1",
     "@antv/f2-graphic": "*",
     "@antv/f2-react": "*",
-    "@antv/gatsby-theme-antv": "1.1.12",
+    "@antv/gatsby-theme-antv": "1.1.13",
     "gatsby": "^2.17.7",
     "gh-pages": "^2.1.1"
   },
@@ -24,5 +24,8 @@
     "site:build": "npm run site:clean && gatsby build --prefix-paths",
     "site:clean": "gatsby clean",
     "site:deploy": "npm run site:build && gh-pages -d public"
+  },
+  "resolutions": {
+    "react-monaco-editor": "0.21.0"
   }
 }
