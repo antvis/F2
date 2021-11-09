@@ -58,7 +58,7 @@ class Geometry extends Component {
 
     const { chart } = props;
 
-    this.attrController = new AttrController(chart);
+    this.attrController = new AttrController(chart.scale);
     const { attrController } = this;
 
     const attrOptions = this._getAttrOptions(props);
