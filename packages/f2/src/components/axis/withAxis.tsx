@@ -1,4 +1,4 @@
-import { mix, deepMix } from '@antv/util';
+import { deepMix } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
@@ -6,28 +6,44 @@ import Chart from '../../chart';
 import Coord from '../../coord';
 import { Style } from './types';
 
-export interface WithAxisProps {
-  chart: Chart;
+export interface AxisProps {
+  /**
+   * 映射的字段名称
+   */
   field: string;
-  coord: Coord;
-  visible: boolean;
-  position: 'right' | 'left' | 'top' | 'bottom';
+  position?: 'right' | 'left' | 'top' | 'bottom';
+  /**
+   * 是否显示该坐标轴
+   */
+  visible?: boolean;
+  /**
+   * 坐标轴样式定制
+   */
+  style?: Style;
+  /**
+   * note: 作为 `<Chart />` 子元素时将自动注入
+   */
+  chart?: Chart;
+  /**
+   * note: 作为 `<Chart />` 子元素时将自动注入
+   */
+  coord?: Coord;
+  [key: string]: any;  // TODO
 }
 
 export default (View) => {
-  return class Axis extends Component {
-    chart: Chart;
+  return class Axis extends Component<AxisProps> {
     style: Style;
-
-    constructor(props: WithAxisProps) {
+  
+    constructor(props: AxisProps) {
       super(props);
-      const { chart, field } = props;
+      const { chart, field } = this.props;
 
       const scaleOption = this.getScaleOption(props);
       chart.setScale(field, scaleOption);
     }
 
-    willReceiveProps(nextProps) {
+    willReceiveProps(nextProps: AxisProps) {
       const { props: lastProps } = this;
       const { chart, field } = nextProps;
 
@@ -46,7 +62,7 @@ export default (View) => {
       this.updateCoord();
     }
 
-    getScaleOption(props) {
+    getScaleOption(props: AxisProps) {
       const { type, tickCount, range, mask, formatter, min, max, nice } = props;
 
       return {

@@ -51,11 +51,11 @@ interface Text {
 type StyleText<T = any> = T extends 'bottom' ? Text : Omit<Text, 'align'>;
 
 export interface Style<Type = void> {
-  grid: Line;
-  tickLine: TickLine;
-  line: Line;
-  labelOffset: number;
-  label: StyleText<Type>;
+  grid?: Line;
+  tickLine?: TickLine;
+  line?: Line;
+  labelOffset?: number;
+  label?: StyleText<Type>;
 }
 
 interface Point {
@@ -75,8 +75,8 @@ type RectCord = Pick<Coord, 'left' | 'right' | 'bottom' | 'top'>;
 export interface RectProps<Type = void> {
   ticks?: Tick[];
   coord?: RectCord;
-  animation?: any;
   style?: Style<Type>;
+  animation?: any;
 }
 
 export interface PolarProps {
@@ -86,12 +86,23 @@ export interface PolarProps {
   animation?: any;
 }
 
-export interface PolarAxisProps {
-  coord: Coord;
-  dimType: 'x' | 'y';
+class RectOrPolarCoord<T extends boolean> extends Coord {
+  isPolar: T
 }
 
 export interface RectAxisProps {
-  coord: Coord;
+  coord: RectOrPolarCoord<true>;
   position: 'right' | 'left' | 'top' | 'bottom';
+  ticks?: Tick[];
+  style?: Style;
+  animation?: any;
 }
+
+export interface PolarAxisProps {
+  coord: RectOrPolarCoord<false>;
+  dimType: 'x' | 'y';
+  ticks?: Tick[];
+  style?: Style;
+  animation?: any;
+}
+

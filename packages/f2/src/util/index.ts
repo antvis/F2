@@ -50,19 +50,21 @@ function parsePadding(padding: any) {
   return [top, right, bottom, left];
 }
 
-function batch2hd(value: string | string[] | any) {
+type pxstr = `${number}px`;
+
+function batch2hd(value: pxstr | pxstr[] | any) {
   // 处理带px的数据
   if (isString(value) && /^-?\d+px$/.test(value)) {
     const num = value.substr(0, value.length - 2);
     return px2hd(Number(num));
   }
   if (isArray(value)) {
-    return value.map((v: any) => {
+    return value.map((v) => {
       return batch2hd(v);
     });
   }
   if (isPlainObject(value)) {
-    const result: any = {};
+    const result = {};
     for (const key in value) {
       if (value.hasOwnProperty(key)) {
         const rst = batch2hd(value[key]);

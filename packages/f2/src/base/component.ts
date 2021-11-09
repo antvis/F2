@@ -1,7 +1,14 @@
+import { px2hd } from '../util'
+
+export interface ComponentContext {
+  px2hd: typeof px2hd;
+  [key: string]: any;
+}
+
 class Component<T = any> {
   props: T;
   state: any;
-  context: any;
+  context: ComponentContext;
   refs: {
     [key: string]: any;
   };
@@ -20,7 +27,7 @@ class Component<T = any> {
   }
   willMount() {}
   didMount() {}
-  willReceiveProps(props) {}
+  willReceiveProps(props: T) {}
   willUpdate() {}
   didUpdate() {}
   render() {

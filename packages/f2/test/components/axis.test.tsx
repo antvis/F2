@@ -81,6 +81,7 @@ describe.skip('Axis', () => {
     const config = (
       <Chart data={data} context={context} pixelRatio={window.devicePixelRatio}>
         {/* <Coord transposed={true} /> */}
+        {/* TODO ticks 待实现 */}
         <Axis field="genre" ticks={['Other']} />
         <Axis field="sold" />
         <Interval position={`genre*sold`} />
@@ -95,10 +96,12 @@ describe.skip('Axis', () => {
         {/* <Coord /> */}
         <Axis
           field="genre"
-          label={{
-            fill: '#CCCCCC',
-            fontSize: '22px',
-            align: 'between'
+          style={{
+            label: {
+              fill: '#CCCCCC',
+              fontSize: '22px',
+              align: 'between'
+            }
           }}
         />
         <Axis field="sold" />
