@@ -3,13 +3,23 @@ import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
 import Chart from '../../chart';
+import Coord from '../../coord';
+import { Style } from './types';
+
+export interface WithAxisProps {
+  chart: Chart;
+  field: string;
+  coord: Coord;
+  visible: boolean;
+  position: 'right' | 'left' | 'top' | 'bottom';
+}
 
 export default (View) => {
   return class Axis extends Component {
     chart: Chart;
-    style: any;
+    style: Style;
 
-    constructor(props) {
+    constructor(props: WithAxisProps) {
       super(props);
       const { chart, field } = props;
 

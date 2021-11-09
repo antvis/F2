@@ -21,6 +21,9 @@ module.exports = {
     'no-prototype-builtins': 0,
     'no-case-declarations': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    '@typescript-eslint/no-unused-vars': [
+      'warn', { argsIgnorePattern: "^_" }
+    ],
   },
   settings: {
     'import/parsers': {

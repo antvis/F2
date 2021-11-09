@@ -1,4 +1,6 @@
-import F2 from '@antv/f2';
+import { jsx, Canvas, Chart, Interval, Legend } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 const data = [
   { action: '浏览网站', pv: 50000, percent: 1 },
@@ -8,37 +10,37 @@ const data = [
   { action: '完成交易', pv: 8000, percent: 0.16 }
 ];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio,
-  padding: [ 60, 80, 15, 15 ]
-});
 
-chart.source(data);
-chart.axis(false);
-chart.coord({
-  transposed: true
-});
-chart.legend(true);
-chart.intervalLabel({
-  offsetX: 10,
-  label: (data, color) => {
-    return {
-      text: data.action,
-      fill: color
-    };
-  },
-  guide: data => {
-    return {
-      text: (data.percent * 100).toFixed(0) + '%',
-      fill: '#fff'
-    };
-  }
-});
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        transposed: true,
+      }}
+      scale={{
+        percent: {
+          min: 0,
+        },
+        action: {
+          range: [0, 1],
+        },
+      }}
+    >
+      <Interval
+        x="action"
+        y="percent"
+        adjust="symmetric"
+        shape="pyramid"
+        color={{
+          field: 'action',
+          range: ['#0050B3', '#1890FF', '#40A9FF', '#69C0FF', '#BAE7FF'],
+        }}
+      />
+      <Legend />
+    </Chart>
+  </Canvas>
+);
 
-chart.interval()
-  .position('action*percent')
-  .color('action', [ '#0050B3', '#1890FF', '#40A9FF', '#69C0FF', '#BAE7FF' ])
-  .adjust('symmetric')
-  .shape('pyramid');
-chart.render();
+const canvas = new Canvas(props);
+canvas.render();

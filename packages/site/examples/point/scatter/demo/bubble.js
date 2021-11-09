@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Point, Axis } from '@antv/f2';
 
 const data = [{
   x: 95,
@@ -91,74 +91,42 @@ const data = [{
   name: 'NZ',
   country: 'New Zealand'
 }];
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, {
-  x: {
-    alias: 'Daily fat intake', // 定义别名
-    tickInterval: 5, // 自定义刻度间距
-    nice: false, // 不对最大最小值优化
-    max: 96, // 自定义最大值
-    min: 62 // 自定义最小是
-  },
-  y: {
-    alias: 'Daily sugar intake',
-    tickInterval: 50,
-    nice: false,
-    max: 165,
-    min: 0
-  },
-  z: {
-    alias: 'Obesity(adults) %'
-  }
-});
-// 开始配置坐标轴
-chart.axis('x', {
-  label: function label(text) {
-    return {
-      text: text + ' gr' // 格式化坐标轴显示文本
-    };
-  },
-  grid: {
-    stroke: '#d9d9d9',
-    lineWidth: 1,
-    lineDash: [ 2, 2 ]
-  }
-});
-chart.axis('y', {
-  line: F2.Util.mix({}, F2.Global._defaultAxis.line, {
-    top: false
-  }),
-  label: function label(text) {
-    if (text > 0) {
-      return {
-        text: text + ' gr'
-      };
-    }
-  }
-});
-chart.tooltip(false);
-chart.point().position('x*y').color('#1890ff')
-  .size('z', [ 10, 40 ])
-  .shape('circle')
-  .style({
-    lineWidth: 1,
-    stroke: '#1890ff',
-    opacity: 0.3
-  });
 
-// 绘制辅助文本
-data.forEach(function(item) {
-  chart.guide().text({
-    position: [ item.x, item.y ],
-    content: item.name,
-    style: {
-      textAlign: 'center',
-      textBaseline: 'middle',
-      fill: '#1890FF'
-    }
-  });
-});
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{}}
+      scale={{
+        x: {
+          alias: 'Daily fat intake', // 定义别名
+          tickInterval: 5, // 自定义刻度间距
+          nice: false, // 不对最大最小值优化
+          max: 96, // 自定义最大值
+          min: 62 // 自定义最小是
+        },
+        y: {
+          alias: 'Daily sugar intake',
+          tickInterval: 50,
+          nice: false,
+          max: 165,
+          min: 0
+        },
+        z: {
+          alias: 'Obesity(adults) %'
+        }
+      }}
+    >
+      <Axis field="x" />
+      <Axis field="y" />
+      <Point x="x" y="y" color="#1890ff" shape="circle" size={{
+        field: 'z',
+        range: [10, 40, 60, 80],
+      }} />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

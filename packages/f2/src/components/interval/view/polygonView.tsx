@@ -4,7 +4,7 @@ import { convertToPoints } from '../util';
 
 // 金字塔图和漏斗图的View
 export default (props: any) => {
-  const { records, shape } = props;
+  const { records, shape, style } = props;
 
   // 是否倒置
   let overturn = false;
@@ -63,6 +63,7 @@ export default (props: any) => {
                     points,
                     fill: color,
                     ...shape,
+                    ...style,
                   }}
                 />
               );

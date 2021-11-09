@@ -7,6 +7,7 @@ module.exports = {
     'packages/*/src/**/*.{ts,tsx,js}',
     '!**/node_modules/**',
   ],
+  modulePathIgnorePatterns: ["packages/*/dist"],
   testPathIgnorePatterns: [],
   testRegex: '/test/.*\\.test\\.tsx?$',
   transform: {

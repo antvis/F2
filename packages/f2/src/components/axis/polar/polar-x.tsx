@@ -1,6 +1,6 @@
 import { jsx } from '../../../jsx';
 import { Vector2 } from '@antv/f2-graphic';
-
+import { PolarProps } from '../types';
 // const { Vector2 } = G;
 
 // 相对圆心偏移量的点
@@ -50,7 +50,7 @@ function getTextAlignInfo(center, point) {
   };
 }
 
-export default (props) => {
+export default (props: PolarProps) => {
   const { ticks, coord, style } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
