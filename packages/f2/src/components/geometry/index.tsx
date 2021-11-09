@@ -420,7 +420,7 @@ class Geometry extends Component {
         // 获取shape的style
         const shape = this._getShapeStyle(attrValues.shape, child.origin);
         mix(child, attrValues, {
-          normalized,
+          ...normalized,
           x,
           y,
           shape,
