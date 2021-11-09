@@ -102,7 +102,6 @@ class Geometry extends Component {
   _createAttrs() {
     const { attrController, props } = this;
     const { chart } = props;
-    const scales = chart.getScales();
     attrController.attrs = {};
     this.attrs = attrController.getAttrs();
   }

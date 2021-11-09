@@ -7,26 +7,46 @@ export default (props: any) => {
   const { records, shape, style } = props;
 
   // 是否倒置
-  const overturn = false;
+  let overturn = false;
 
   return (
     <group>
       {records.map((record, index) => {
         const { key, children } = record;
-        const lastRecord = index === 0 ? record : records[index - 1];
-        const { children: lastChildren } = lastRecord;
+        const isLastRecord = index === records.length - 1;
+        const nextRecord = isLastRecord ? record : records[index + 1];
+        const { children: nextChildren } = nextRecord;
 
-        const lastFirstPoints = convertToPoints(lastChildren[0]);
-        const lastLastPoints = convertToPoints(
-          lastChildren[lastChildren.length - 1]
-        );
+        const nextFirstPoint = convertToPoints(nextChildren[0]);
+        const nextLastPoints = convertToPoints(nextChildren[nextChildren.length - 1]);
+
+        if (!overturn) {
+          overturn = nextChildren[0].yMax > children[0].yMax;
+        }
+
+        if (overturn) {
+          nextFirstPoint.reverse();
+          nextLastPoints.reverse();
+        }
+
         const polygonPoints = children.map((child, childIndex) => {
-          const points = convertToPoints(child);
-          if (childIndex === 0) {
-            points[0] = lastFirstPoints[3];
+          let points = convertToPoints(child);
+
+          if (overturn) {
+            points.reverse();
           }
-          if (childIndex === children.length - 1) {
-            points[1] = lastLastPoints[2];
+
+          if (isLastRecord) {
+            if (shape === 'pyramid') {
+              points = [getMiddlePoint(points[0], points[1]), points[2], points[3]];
+            }
+          } else {
+            if (childIndex === 0) {
+              points[0] = nextFirstPoint[3];
+            }
+            if (childIndex === children.length - 1) {
+              points[1] = nextLastPoints[2];
+            }
           }
           return {
             ...child,
@@ -35,7 +55,7 @@ export default (props: any) => {
         });
         return (
           <group key={key}>
-            {polygonPoints.map(child => {
+            {polygonPoints.map((child) => {
               const { points, color, shape } = child;
               return (
                 <polygon
