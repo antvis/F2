@@ -1,4 +1,4 @@
-import { Scale } from '@antv/scale';
+import { Scale, ScaleConfig } from '@antv/scale';
 import { mix, isFunction, isNil, isArray } from '@antv/util';
 import { values as arrayValues } from '../util/array';
 
@@ -19,7 +19,7 @@ class Base {
     }
   }
 
-  createScale(scale): Scale {
+  createScale(scaleConfig: ScaleConfig): Scale {
     return null;
   }
 

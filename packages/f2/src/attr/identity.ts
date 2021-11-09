@@ -1,9 +1,9 @@
-import { Identity as IdentityScale } from '@antv/scale';
+import { Identity as IdentityScale, ScaleConfig } from '@antv/scale';
 import Base from './base';
 
 class Identity extends Base {
-  createScale(scale) {
-    return new IdentityScale(scale);
+  createScale(scaleConfig: ScaleConfig) {
+    return new IdentityScale(scaleConfig);
   }
 
   _mapping() {

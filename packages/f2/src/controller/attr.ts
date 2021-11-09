@@ -5,12 +5,13 @@ import {
   mix,
   isNil,
   isFunction,
-  isNumber,
 } from '@antv/util';
-import { Identity, Linear, Category } from '../attr';
+import * as Attrs from '../attr';
 import equal from '../base/equal';
 import { isArray } from '../util';
 import ScaleController from './scale';
+
+const { Identity, Linear, Category } = Attrs;
 
 type AttrOption = {
   field: string | Record<any, any>;
@@ -59,20 +60,20 @@ class AttrController {
       return new Identity(option);
     }
     const scale = this.scaleController.getScale(field);
-    const { values } = scale;
-    const firstValue = values[0];
 
     // identity
     if (scale && scale.type === 'identity') {
       return new Identity(option);
     }
 
+    
     // linear & category
-    const AttrConstructor = type
-      ? type
-      : typeof firstValue === 'number'
-      ? Linear
-      : Category;
+    let AttrConstructor = Attrs[type] || Category;
+
+    if(isFunction(type)) {
+      AttrConstructor = type;
+    }
+
     return new AttrConstructor({
       ...option,
       scale,

@@ -1,9 +1,9 @@
-import { Category as CategoryScale } from '@antv/scale';
+import { Category as CategoryScale, ScaleConfig } from '@antv/scale';
 import Base from './base';
 
 class Category extends Base {
-  createScale(scale) {
-    return new CategoryScale(scale);
+  createScale(scaleConfig: ScaleConfig) {
+    return new CategoryScale(scaleConfig);
   }
 
   _mapping(value: any) {
