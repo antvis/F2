@@ -206,7 +206,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     return geometrys[0].getSnapRecords(point);
   }
 
-  getLegendItems(point) {
+  getLegendItems(point?) {
     const geometrys = this.getGeometrys();
     if (!geometrys.length) return;
     // @ts-ignore
