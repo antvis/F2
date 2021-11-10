@@ -541,7 +541,7 @@ onEnd(ev) {}
 
 - [折线图平移](/en/examples/line/basic#pan)
 
-- [柱状图平移](/en/examples/cloumn/basic#pan)
+- [柱状图平移](/en/examples/column/basic#pan)
 
 - [散点图平移](/en/examples/point/basic#pan)
 

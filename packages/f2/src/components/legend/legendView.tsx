@@ -1,17 +1,71 @@
+import { isFunction, mix } from '@antv/util';
 import { jsx } from '../../jsx';
 
-export default props => {
-  const { items, layout, position, maxItemWidth, coord } = props;
+const Marker = ({ type, color }) => {
+  if (type === 'square') {
+    return (
+      <rect
+        style={{
+          width: '20px',
+          height: '20px',
+          marginRight: '6px',
+          marginTop: '6px',
+        }}
+        attrs={{
+          fill: color,
+          width: '14px',
+          height: '14px',
+        }}
+      />
+    );
+  }
+  return (
+    <circle
+      style={{
+        width: '20px',
+        height: '20px',
+        marginRight: '6px',
+      }}
+      attrs={{
+        fill: color,
+        r: '6px',
+      }}
+    />
+  );
+};
+
+export default (props) => {
+  const {
+    items,
+    layout,
+    position,
+    maxItemWidth,
+    coord,
+    itemFormatter,
+    style,
+    marker = 'circle', // 图例标记默认为 circle
+  } = props;
   const { left, top, right, bottom, width, height } = layout;
 
-  const legendStyle: any = {
+  const legendStyle = {
+    // default style
     width,
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: [0, '6px', '20px', 0],
+    justifyContent: 'center',
+    // custom style
+    ...style,
   };
 
   const isVertical = position === 'left' || position === 'right';
+
+  const formatValue = (value) => {
+    if (isFunction(itemFormatter)) {
+      return `: ${itemFormatter(value)}`;
+    }
+    return `: ${value}`;
+  };
 
   if (isVertical) {
     legendStyle.width = maxItemWidth;
@@ -36,7 +90,7 @@ export default props => {
 
   return (
     <group style={legendStyle}>
-      {items.map(item => {
+      {items.map((item) => {
         const { color, name, value } = item;
         return (
           <group
@@ -48,17 +102,7 @@ export default props => {
               padding: ['6px', 0, 0, '6px'],
             }}
           >
-            <circle
-              style={{
-                width: '20px',
-                height: '20px',
-                marginRight: '6px',
-              }}
-              attrs={{
-                fill: color,
-                r: '6px',
-              }}
-            />
+            <Marker color={color} type={marker} />
             <text
               attrs={{
                 fill: 'black',
@@ -69,7 +113,7 @@ export default props => {
               <text
                 attrs={{
                   fill: 'black',
-                  text: `: ${value}`,
+                  text: formatValue(value),
                 }}
               />
             ) : null}
