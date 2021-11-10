@@ -17,13 +17,6 @@ type AttrOption = {
   range?: any[];
 };
 
-const AttrTypeMap = {
-  identity: Identity,
-  linear: Linear,
-  cat: Category,
-  timeCat: Category,
-}
-
 class AttrController {
   private scaleController: ScaleController;
   // attr 实例的配置
@@ -69,15 +62,9 @@ class AttrController {
     const { values } = scale;
     const firstValue = values[0];
 
-    // 如果没有默认的 attr type，根据 scale type 去创建 attr
-    if (!type && scale && scale.type) {
-      const AttrConstructor = AttrTypeMap[scale.type];
-      if (AttrConstructor) {
-        return new AttrConstructor({
-          ...option,
-          scale,
-        });
-      }
+    // identity
+    if (scale && scale.type === 'identity') {
+      return new Identity(option);
     }
 
     // linear & category
