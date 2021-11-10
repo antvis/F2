@@ -38,7 +38,7 @@ export default class Base {
     this._bindEvents(chart);
   }
 
-  _bindEvents(chart) {
+  _bindEvents(_chart) {
     const { startEvent, processEvent, endEvent, resetEvent } = this;
     const canvas = this.context.canvas
     // 统一绑定事件
@@ -81,13 +81,13 @@ export default class Base {
   }
 
   // override
-  start(ev) { }
+  start(_ev) { }
   // override
-  process(ev) { }
+  process(_ev) { }
   // override
-  end(ev) { }
+  end(_ev) { }
   // override
-  reset(ev) { }
+  reset(_pev) { }
 
   destroy() {
     this.context.destroy();

@@ -3,7 +3,7 @@ import { RectProps } from '../types';
 
 export default (props: RectProps<'bottom'>) => {
   const { ticks, coord, style, animation } = props;
-  const { left, top, right, bottom } = coord;
+  const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
   const { align = 'center' } = label || {};
 

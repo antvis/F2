@@ -7,18 +7,21 @@ import Right from './rect/right';
 import Left from './rect/left';
 import { PolarAxisProps, RectAxisProps } from './types';
 
+function isPolar(props: PolarAxisProps | RectAxisProps): props is PolarAxisProps {
+  return props.coord.isPolar;
+}
+
 export default (props: PolarAxisProps | RectAxisProps) => {
-  const { isPolar } = props.coord;
   // 极坐标
-  if (isPolar) {
-    const { dimType } = props as PolarAxisProps;
+  if (isPolar(props)) {
+    const { dimType } = props;
     if (dimType === 'x') {
       return <PolarX { ...props } />;
     }
     return <PolarY { ...props } />;
   }
 
-  const { position } = props as RectAxisProps;
+  const { position } = props;
   // 直角坐标
   if (position === 'right') {
     return <Right { ...props } />

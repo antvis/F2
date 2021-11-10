@@ -189,6 +189,9 @@ module.exports = {
     ],
     playground: {
       playgroundDidMount: 'window.initPlayground()',
+      devDependencies: {
+        typescript: 'latest'
+      },
       container: `
         <div class="mobile-container">
           <div class="mobile-header"></div>
