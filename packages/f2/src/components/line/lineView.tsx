@@ -1,15 +1,6 @@
 import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 
-function concatPoints(children) {
-  let result = [];
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    result = result.concat(child.points);
-  }
-  return result;
-}
-
 function formatPoint(point) {
   const { y } = point;
   return {
@@ -19,7 +10,7 @@ function formatPoint(point) {
 }
 
 function getPoint(points, t: number) {
-  const formatedPoints = points.map(p => formatPoint(p));
+  const formatedPoints = points.map((p) => formatPoint(p));
   const firstPoint = formatedPoints[0];
   const lastPoint = formatedPoints[formatedPoints.length - 1];
   const xOffset = lastPoint.x - firstPoint.x;
@@ -40,9 +31,8 @@ function getPoint(points, t: number) {
 }
 
 function AnimationEndView(props) {
-  const { record, appear, EndView } = props;
+  const { record, points, appear, EndView } = props;
   const { children } = record;
-  const points = concatPoints(children);
   const { origin } = children[0];
 
   return (
@@ -56,7 +46,7 @@ function AnimationEndView(props) {
             const { element } = this;
             const children = element.get('children');
             const point = getPoint(points, t);
-            children.forEach(child => {
+            children.forEach((child) => {
               child.moveTo(point.x, point.y);
             });
           },
@@ -69,7 +59,7 @@ function AnimationEndView(props) {
 }
 
 export default (props: any) => {
-  const { records, coord, animation, endView: EndView } = props;
+  const { records, nestedPoints, coord, animation, endView: EndView } = props;
   const { left, top, width, height } = coord;
 
   const appear = {
@@ -90,14 +80,18 @@ export default (props: any) => {
     },
     ...animation,
   };
+
   return (
     <group>
-      {records.map(record => {
+      {records.map((record, index) => {
         const { key, children } = record;
+        // nestedPoints 是一个三位数组
+        const flatPoints = nestedPoints.flat().flat();
+        const pointsArray = nestedPoints[index];
+        const { color, size, shape } = children[0];
         return (
           <group key={key}>
-            {children.map(child => {
-              const { points, color, size, shape } = child;
+            {pointsArray.map((points) => {
               return (
                 <polyline
                   attrs={{
@@ -120,6 +114,7 @@ export default (props: any) => {
             {EndView ? (
               <AnimationEndView
                 record={record}
+                points={flatPoints}
                 EndView={EndView}
                 appear={appear}
               />

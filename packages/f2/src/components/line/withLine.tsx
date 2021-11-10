@@ -76,49 +76,42 @@ export default View => {
       return result;
     }
 
-    mapping() {
-      const records = super.mapping();
-      const { props, connectNulls: defaultConnectNulls } = this;
-      const { coord, connectNulls = defaultConnectNulls } = props;
-      for (let i = 0, len = records.length; i < len; i++) {
-        const record = records[i];
-        const { children } = record;
-        const { size, color, shape, y, origin } = children[0];
-        const points = children.map(child => {
-          return {
-            x: child.x,
-            y: child.y,
-          };
-        });
-        if (coord.isPolar) {
-          points.push(points[0]);
-        }
-        const splitPoints = this.splitNulls(points, connectNulls);
-
-        record.children = splitPoints.map(points => {
-          if (isArray(y)) {
-            const [topPoints, bottomPoints] = this.splitPoints(points);
-            return {
-              origin,
-              size,
-              color,
-              shape,
-              points: topPoints,
-              bottomPoints,
-            };
-          }
-          return { origin, size, color, shape, points };
-        });
+    getPoints(data) {
+      const { coord } = this.props;
+      const points = data.map((item) => ({
+        x: item.x,
+        y: item.y,
+      }));
+      // 处理极坐标
+      if (coord.isPolar) {
+        points.push(points[0]);
       }
-
-      return records;
+      // 处理堆叠
+      if (isArray(points[0].y)) {
+        const [topPoints, bottomPoints] = this.splitPoints(points);
+        return bottomPoints;
+      }
+      return points;
     }
+
+    getNestedPoints(records) {
+      const { props, connectNulls: defaultConnectNulls } = this;
+      const { connectNulls = defaultConnectNulls } = props;
+      return records.map(record => {
+        const { children } = record;
+        const points = this.getPoints(children);
+        const splitPoints = this.splitNulls(points, connectNulls);
+        return splitPoints;
+      });
+    }
+
 
     render() {
       const { props } = this;
       const { style, coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} style={style} />;
+      const nestedPoints = this.getNestedPoints(records);
+      return <View {...props} coord={coord} records={records} nestedPoints={nestedPoints} style={style} />;
     }
   };
 };
