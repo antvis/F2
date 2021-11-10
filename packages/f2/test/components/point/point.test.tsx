@@ -78,13 +78,10 @@ describe.skip('Point Chart', () => {
           <Point
             x="x"
             y="y"
-            color={{
-              field: 'name',
-              values: ['#1890ff'],
-            }}
+            color="name"
             size={{
               field: 'z',
-              range: [10, 40, 60, 80],
+              range: [10, 20, 30, 40],
             }}
           />
         </Chart>

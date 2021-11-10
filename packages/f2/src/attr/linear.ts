@@ -1,10 +1,10 @@
-import { Linear as LinearScale } from '@antv/scale';
+import { Linear as LinearScale, ScaleConfig } from '@antv/scale';
 import { isArray } from '@antv/util';
 import Base from './base';
 
 class Linear extends Base {
-  createScale(scale) {
-    return new LinearScale(scale);
+  createScale(scaleConfig: ScaleConfig) {
+    return new LinearScale(scaleConfig);
   }
 
   _mapping(value: any) {
