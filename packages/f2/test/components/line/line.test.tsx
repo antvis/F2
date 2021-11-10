@@ -953,11 +953,11 @@ describe('折线图', () => {
               y="value"
               size={{
                 field: 'tag',
-                map: val => (val ? 6 : 0),
+                callback: val => (val ? 6 : 0),
               }}
               color={{
                 field: 'tag',
-                map: val => (val === 2 ? '#518DFE' : '#F35833'),
+                callback: val => (val === 2 ? '#518DFE' : '#F35833'),
               }}
             />
             <Legend

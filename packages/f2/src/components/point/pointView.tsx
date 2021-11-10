@@ -15,7 +15,7 @@ export default (props: any) => {
                   attrs={{
                     x,
                     y,
-                    r: size ?? 4 / 2,
+                    r: (size ?? 4) / 2,
                     fill: color,
                   }}
                   animation={{
