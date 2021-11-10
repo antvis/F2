@@ -3,7 +3,7 @@ import { Animation, EasingFunction, InterpolateFunction } from './interface';
 import interpolate from './interpolate';
 import * as Easing from './easing';
 import { ElementStatus } from '../../jsx';
-import { each, isString } from '@antv/util';
+import { isString } from '@antv/util';
 
 class Animator {
   // 对应G的shape

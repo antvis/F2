@@ -19,7 +19,7 @@ class Base {
     }
   }
 
-  createScale(scale): Scale {
+  createScale(_scale): Scale {
     return null;
   }
 

@@ -97,7 +97,7 @@ function getTransformFromComponentRef(transformFromRef) {
 }
 
 function createComponent(parent: Component, element: JSX.Element): Component {
-  const { type, props, key, ref } = element;
+  const { type, props, ref } = element;
   const {
     container,
     context,

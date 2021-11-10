@@ -27,7 +27,7 @@ class Component<T = any> {
   }
   willMount() {}
   didMount() {}
-  willReceiveProps(props: T) {}
+  willReceiveProps(_props: T) {}
   willUpdate() {}
   didUpdate() {}
   render() {
