@@ -1,0 +1,52 @@
+{
+  "name": "@antv/f2",
+  "version": "4.0.0-alpha.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "keywords": [
+    "f2",
+    "charts",
+    "mobile",
+    "visualization",
+    "data visualization",
+    "canvas",
+    "2d draw",
+    "mobile visualization",
+    "interactive"
+  ],
+  "dependencies": {
+    "@antv/adjust": "~0.1.1",
+    "@antv/f2-graphic": "^0.0.2-0",
+    "@antv/scale": "~0.3.3",
+    "@antv/util": "~2.0.6",
+    "@babel/runtime": "^7.12.5",
+    "d3-cloud": "~1.2.5",
+    "d3-color": "~2.0.0",
+    "d3-hierarchy": "~2.0.0",
+    "d3-interpolate": "~2.0.1",
+    "fecha": "^2.3.3"
+  },
+  "devDependencies": {
+    "babel-plugin-module-resolver": "^4.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
+  "files": [
+    "src",
+    "dist",
+    "lib",
+    "es"
+  ],
+  "homepage": "https://github.com/antvis/f2",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  }
+}

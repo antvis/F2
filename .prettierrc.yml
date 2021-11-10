@@ -1,0 +1,13 @@
+# 详细配置请移步：https://prettier.io/docs/en/configuration.html
+---
+trailingComma: es5
+singleQuote: true
+proseWrap: never
+endOfLine: lf
+printWidth: 100
+tabWidth: 2
+useTabs: false
+semi: true
+bracketSpacing: true
+jsxBracketSameLine: false
+arrowParens: 'always'
