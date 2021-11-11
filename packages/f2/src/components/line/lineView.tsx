@@ -20,7 +20,7 @@ function formatPoint(point) {
 }
 
 function getPoint(points, t: number) {
-  const formatedPoints = points.map(p => formatPoint(p));
+  const formatedPoints = points.map((p) => formatPoint(p));
   const firstPoint = formatedPoints[0];
   const lastPoint = formatedPoints[formatedPoints.length - 1];
   const xOffset = lastPoint.x - firstPoint.x;
@@ -44,7 +44,7 @@ function AnimationEndView(props) {
   const { record, appear, EndView } = props;
   const { children } = record;
   const points = concatPoints(children);
-  const { origin } = children[0];
+  const { origin } = points[0];
 
   return (
     <group
@@ -57,7 +57,7 @@ function AnimationEndView(props) {
             const { element } = this;
             const children = element.get('children');
             const point = getPoint(points, t);
-            children.forEach(child => {
+            children.forEach((child) => {
               child.moveTo(point.x, point.y);
             });
           },
@@ -93,16 +93,18 @@ export default (props: LineViewProps) => {
   };
   return (
     <group>
-      {records.map(record => {
+      {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
-            {children.map(child => {
+            {children.map((child) => {
               const { points, color, size, shape } = child;
               return (
                 <polyline
                   attrs={{
-                    points,
+                    points: points.map((point) => {
+                      return { x: point.x, y: point.y };
+                    }),
                     stroke: color,
                     lineWidth: size,
                     ...shape,
@@ -119,11 +121,7 @@ export default (props: LineViewProps) => {
               );
             })}
             {EndView ? (
-              <AnimationEndView
-                record={record}
-                EndView={EndView}
-                appear={appear}
-              />
+              <AnimationEndView record={record} EndView={EndView} appear={appear} />
             ) : null}
           </group>
         );
