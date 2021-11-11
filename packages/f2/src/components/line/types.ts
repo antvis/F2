@@ -15,9 +15,9 @@ export interface LineViewProps {
 }
 
 export interface LineProps extends GeometryProps {
-  coord: Coord;
-  connectNulls: boolean;
-  data: any;
-  adjust: any;
+  coord?: Coord;
+  connectNulls?: boolean;
+  data?: any;
+  adjust?: any;
   endView?: (origin: any) => JSX.Element;
 }
