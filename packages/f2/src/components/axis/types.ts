@@ -1,4 +1,5 @@
 import Coord from '../../coord';
+import Chart from '../../chart';
 
 interface Line {
   lineWidth?: number;
@@ -55,7 +56,7 @@ export interface Style<Type = void> {
   tickLine?: TickLine;
   line?: Line;
   labelOffset?: number;
-  label?: StyleText<Type>;
+  label: StyleText<Type>;
 }
 
 interface Point {
@@ -106,3 +107,27 @@ export interface PolarAxisProps {
   animation?: any;
 }
 
+export interface AxisProps {
+  /**
+   * 映射的字段名称
+   */
+  field: string;
+  position?: 'right' | 'left' | 'top' | 'bottom';
+  /**
+   * 是否显示该坐标轴
+   */
+  visible?: boolean;
+  /**
+   * 坐标轴样式定制
+   */
+  style?: Style;
+  /**
+   * note: 作为 `<Chart />` 子元素时将自动注入
+   */
+  chart?: Chart;
+  /**
+   * note: 作为 `<Chart />` 子元素时将自动注入
+   */
+  coord?: Coord;
+  [key: string]: any;  // TODO
+}

@@ -2,34 +2,7 @@ import { deepMix } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
-import Chart from '../../chart';
-import Coord from '../../coord';
-import { Style } from './types';
-
-export interface AxisProps {
-  /**
-   * 映射的字段名称
-   */
-  field: string;
-  position?: 'right' | 'left' | 'top' | 'bottom';
-  /**
-   * 是否显示该坐标轴
-   */
-  visible?: boolean;
-  /**
-   * 坐标轴样式定制
-   */
-  style?: Style;
-  /**
-   * note: 作为 `<Chart />` 子元素时将自动注入
-   */
-  chart?: Chart;
-  /**
-   * note: 作为 `<Chart />` 子元素时将自动注入
-   */
-  coord?: Coord;
-  [key: string]: any;  // TODO
-}
+import { Style, AxisProps } from './types';
 
 export default (View) => {
   return class Axis extends Component<AxisProps> {

@@ -28,7 +28,7 @@ export default (View) => {
         this.show(points[0]);
       });
 
-      canvas.on(triggerOff, (ev) => {
+      canvas.on(triggerOff, (_ev) => {
         if (!alwaysShow) {
           this.hide();
         }

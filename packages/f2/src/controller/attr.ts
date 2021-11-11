@@ -5,6 +5,7 @@ import {
   mix,
   isNil,
   isFunction,
+  upperFirst,
 } from '@antv/util';
 import * as Attrs from '../attr';
 import equal from '../base/equal';
@@ -66,11 +67,14 @@ class AttrController {
       return new Identity(option);
     }
 
-    
     // linear & category
-    let AttrConstructor = Attrs[type] || Category;
+    let AttrConstructor = Category;
 
-    if(isFunction(type)) {
+    if (isString(type)) {
+      AttrConstructor = Attrs[upperFirst(type)] || Category;
+    }
+
+    if (isFunction(type)) {
       AttrConstructor = type;
     }
 

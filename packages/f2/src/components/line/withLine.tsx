@@ -1,9 +1,10 @@
 import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 import Geometry from '../geometry';
+import { LineProps } from './types';
 
 export default View => {
-  return class Line extends Geometry {
+  return class Line extends Geometry<LineProps> {
     getDefaultCfg() {
       return {
         geomType: 'line',
@@ -83,23 +84,17 @@ export default View => {
       for (let i = 0, len = records.length; i < len; i++) {
         const record = records[i];
         const { children } = record;
-        const { size, color, shape, y, origin } = children[0];
-        const points = children.map(child => {
-          return {
-            x: child.x,
-            y: child.y,
-          };
-        });
+        const { size, color, shape, y } = children[0];
+        const points = children;
         if (coord.isPolar) {
           points.push(points[0]);
         }
         const splitPoints = this.splitNulls(points, connectNulls);
 
-        record.children = splitPoints.map(points => {
+        record.children = splitPoints.map((points) => {
           if (isArray(y)) {
             const [topPoints, bottomPoints] = this.splitPoints(points);
             return {
-              origin,
               size,
               color,
               shape,
@@ -107,7 +102,7 @@ export default View => {
               bottomPoints,
             };
           }
-          return { origin, size, color, shape, points };
+          return { size, color, shape, points };
         });
       }
 
@@ -116,9 +111,9 @@ export default View => {
 
     render() {
       const { props } = this;
-      const { style, coord } = props;
+      const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} style={style} />;
+      return <View {...props} coord={coord} records={records} />;
     }
   };
 };
