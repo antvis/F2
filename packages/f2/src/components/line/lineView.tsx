@@ -1,5 +1,6 @@
 import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
+import { LineViewProps } from './types'
 
 function concatPoints(children) {
   let result = [];
@@ -68,7 +69,7 @@ function AnimationEndView(props) {
   );
 }
 
-export default (props: any) => {
+export default (props: LineViewProps) => {
   const { records, coord, animation, endView: EndView } = props;
   const { left, top, width, height } = coord;
 

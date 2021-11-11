@@ -1,9 +1,10 @@
 import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 import Geometry from '../geometry';
+import { LineProps } from './types';
 
-export default (View) => {
-  return class Line extends Geometry {
+export default View => {
+  return class Line extends Geometry<LineProps> {
     getDefaultCfg() {
       return {
         geomType: 'line',
@@ -110,9 +111,9 @@ export default (View) => {
 
     render() {
       const { props } = this;
-      const { style, coord } = props;
+      const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} style={style} />;
+      return <View {...props} coord={coord} records={records} />;
     }
   };
 };

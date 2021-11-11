@@ -19,7 +19,7 @@ import Chart from '../../chart';
 import * as Adjust from '../../adjust';
 import { Linear, Category } from '../../attr';
 import { toTimeStamp } from '../../util/index';
-import { GeomType } from './interface';
+import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 
@@ -30,7 +30,7 @@ const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
 
-class Geometry extends Component {
+class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   isGeometry = true;
   geomType: GeomType;
 

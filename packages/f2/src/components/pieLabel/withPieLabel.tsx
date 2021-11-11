@@ -102,7 +102,7 @@ export default View => {
         label1,
         label2,
         lineHeight,
-        skipOverlapLabels,
+        // skipOverlapLabels,
       } = this.props;
       const { coord } = chart;
       const { center, radius } = coord;
