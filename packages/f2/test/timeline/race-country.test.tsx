@@ -61,10 +61,10 @@ describe('Chart', () => {
                 <Axis field="income" />
                 <Interval x="country" y="income" color="country" animation={{
                   appear: {
-                    duration: 500,
+                    duration: 100,
                   },
                   update: {
-                    duration: 500,
+                    duration: 1000,
                   }
                 }} />
                 {data[year].map((record) => {
@@ -78,6 +78,14 @@ describe('Chart', () => {
                         fill: '#666',
                         fontSize: '40px',
                         textBaseline: 'middle',
+                      }}
+                      animation={{
+                        appear: {
+                          duration: 100,
+                        },
+                        update: {
+                          duration: 1000,
+                        }
                       }}
                     />
                   );

@@ -253,6 +253,7 @@ class Chart extends Component implements IChart, InteractionMixin {
         coord,
         layout,
         zoomRange: state.zoomRange,
+        animation: child.props.animation,
       });
     });
   }

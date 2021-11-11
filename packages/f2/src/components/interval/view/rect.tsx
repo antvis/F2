@@ -1,4 +1,4 @@
-import { mix } from '@antv/util';
+import { deepMix } from '@antv/util';
 import { jsx } from '../../../jsx';
 
 export default props => {
@@ -21,7 +21,7 @@ export default props => {
                     height: yMax - yMin,
                     fill: color,
                   }}
-                  animation={mix({
+                  animation={deepMix({
                     appear: {
                       easing: 'linear',
                       duration: 450,
