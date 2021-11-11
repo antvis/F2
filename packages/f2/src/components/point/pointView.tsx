@@ -9,7 +9,7 @@ export default (props: any) => {
         return (
           <group key={key}>
             {children.map(item => {
-              const { x, y, size, color } = item;
+              const { x, y, size, color, shape } = item;
               return (
                 <circle
                   attrs={{
@@ -17,6 +17,7 @@ export default (props: any) => {
                     y,
                     r: (size ?? 4) / 2,
                     fill: color,
+                    ...shape
                   }}
                   animation={{
                     appear: {
