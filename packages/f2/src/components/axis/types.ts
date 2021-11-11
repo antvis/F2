@@ -131,7 +131,7 @@ export interface AxisProps {
   /**
    * 坐标轴样式定制
    */
-  style?: Style;
+  style?: StyleProps;
   /**
    * note: 作为 `<Chart />` 子元素时将自动注入
    */
