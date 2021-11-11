@@ -59,7 +59,14 @@ describe('Chart', () => {
                 <Year year={year} />
                 <Axis field="country" />
                 <Axis field="income" />
-                <Interval x="country" y="income" color="country" />
+                <Interval x="country" y="income" color="country" animation={{
+                  appear: {
+                    duration: 500,
+                  },
+                  update: {
+                    duration: 500,
+                  }
+                }} />
                 {data[year].map((record) => {
                   return (
                     <TextGuide

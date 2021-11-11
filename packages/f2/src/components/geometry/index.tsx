@@ -18,6 +18,7 @@ import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
+import { AnimationCycle } from '../../canvas/animation/interface';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -43,6 +44,9 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   connectNulls: boolean = false;
 
   attrController: AttrController;
+
+  // 动画配置
+  animation: AnimationCycle;
 
   getDefaultCfg() {
     return {};

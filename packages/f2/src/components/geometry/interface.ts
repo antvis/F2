@@ -1,5 +1,6 @@
 import Chart from '../../chart';
 import Coord from '../../coord';
+import { AnimationCycle } from '../../canvas/animation/interface';
 
 export interface AttrRange {
   shape?: any[];
@@ -34,5 +35,6 @@ export interface GeometryProps {
   coord?: Coord;
   startOnZero?: boolean;
   style?: Style;
+  animation?: AnimationCycle;
   [k: string]: any;  // TODO
 }

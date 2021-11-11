@@ -77,13 +77,13 @@ export default Views => {
 
     render() {
       const { props } = this;
-      const { coord, shape = 'rect', style } = props;
+      const { coord, shape = 'rect', style, animation } = props;
       const View = Views[shape];
 
       if (!View) return null;
 
       const records = this.mapping();
-      return <View coord={coord} records={records} shape={shape} style={style} />;
+      return <View coord={coord} records={records} shape={shape} style={style} animation={animation} />;
     }
   };
 };
