@@ -190,7 +190,7 @@ module.exports = {
     playground: {
       playgroundDidMount: 'window.initPlayground()',
       devDependencies: {
-        typescript: 'latest'
+        typescript: 'latest',
       },
       container: `
         <div class="mobile-container">

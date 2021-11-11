@@ -1,1 +1,1 @@
-import '../../typings';
+declare module '@antv/f2';
