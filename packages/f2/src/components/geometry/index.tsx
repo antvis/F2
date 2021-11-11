@@ -10,11 +10,7 @@ import {
   isObject,
 } from '@antv/util';
 import Component from '../../base/component';
-import {
-  group as arrayGroup,
-  merge as arrayMerge,
-  values,
-} from '../../util/array';
+import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array';
 import Chart from '../../chart';
 import * as Adjust from '../../adjust';
 import { Linear, Category } from '../../attr';
@@ -113,7 +109,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const options = {};
     const ranges = this._getAttrRanges();
     const { attrController } = this;
-    ATTRS.forEach(attrName => {
+    ATTRS.forEach((attrName) => {
       if (!props[attrName]) return;
       const option = attrController.parseOption(props[attrName]);
       if (!option.range) {
@@ -167,7 +163,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   _getGroupScales() {
     const { attrs } = this;
     const scales = [];
-    each(GROUP_ATTRS, attrName => {
+    each(GROUP_ATTRS, (attrName) => {
       const attr = attrs[attrName];
       if (!attr) {
         return;
@@ -187,7 +183,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }
 
     const names = [];
-    groupScales.forEach(scale => {
+    groupScales.forEach((scale) => {
       const field = scale.field;
       names.push(field);
     });
@@ -304,7 +300,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     // 根据分类度量进行数据分组
     const records = this._groupData(data);
     // groupedArray 是二维数组
-    const groupedArray = records.map(record => record.children);
+    const groupedArray = records.map((record) => record.children);
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
 
@@ -318,21 +314,16 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   _initEvent() {
     const { container, props } = this;
     const canvas = container.get('canvas');
-    [
-      'onPressStart',
-      'onPress',
-      'onPressEnd',
-      'onPan',
-      'onPanStart',
-      'onPanEnd',
-    ].forEach(eventName => {
-      if (props[eventName]) {
-        canvas.on(eventName.substr(2).toLowerCase(), ev => {
-          ev.geometry = this;
-          props[eventName](ev);
-        });
+    ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
+      (eventName) => {
+        if (props[eventName]) {
+          canvas.on(eventName.substr(2).toLowerCase(), (ev) => {
+            ev.geometry = this;
+            props[eventName](ev);
+          });
+        }
       }
-    });
+    );
   }
 
   getY0Value() {
@@ -378,7 +369,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const attrNames = Object.keys(attrs);
     const linearAttrs = [];
     const nolinearAttrs = [];
-    attrNames.forEach(attrName => {
+    attrNames.forEach((attrName) => {
       if (attrs[attrName].constructor === Linear) {
         linearAttrs.push(attrName);
       } else {
@@ -484,8 +475,16 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return null;
   }
 
+  // 把 records 拍平
+  flatRecords() {
+    const { records } = this;
+    return records.reduce((prevRecords, record) => {
+      return prevRecords.concat(record.children);
+    }, []);
+  }
+
   getSnapRecords(point) {
-    const { props, mappedArray } = this;
+    const { props } = this;
     const { coord } = props;
     const invertPoint = coord.invertPoint(point);
     const xScale = this.getXScale();
@@ -503,20 +502,18 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }
     const { field: xField } = xScale;
     const { field: yField } = yScale;
-    for (let i = 0; i < mappedArray.length; i++) {
-      const data = mappedArray[i];
-      for (let j = 0, len = data.length; j < len; j++) {
-        const record = {
-          ...data[j],
-          xField,
-          yField,
-        };
-        const originValue = record[FIELD_ORIGIN][xField];
-        if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
-          rst.push(record);
-        } else if (originValue === value) {
-          rst.push(record);
-        }
+    const records = this.flatRecords();
+    for (let i = 0, len = records.length; i < len; i++) {
+      const record = {
+        ...records[i],
+        xField,
+        yField,
+      };
+      const originValue = record[FIELD_ORIGIN][xField];
+      if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
+        rst.push(record);
+      } else if (originValue === value) {
+        rst.push(record);
       }
     }
     return rst;
@@ -529,7 +526,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const { scale } = colorAttr;
     if (!scale.isCategory) return null;
     const ticks = scale.getTicks();
-    const items = ticks.map(tick => {
+    const items = ticks.map((tick) => {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue);
       return {

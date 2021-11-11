@@ -3,7 +3,7 @@ import { isArray } from '@antv/util';
 import Geometry from '../geometry';
 import { LineProps } from './types';
 
-export default View => {
+export default (View) => {
   return class Line extends Geometry<LineProps> {
     getDefaultCfg() {
       return {
@@ -17,8 +17,8 @@ export default View => {
       for (let i = 0, len = points.length; i < len; i++) {
         const point = points[i];
         const { x, y } = point;
-        topPoints.push({ x, y: y[1] });
-        bottomPoints.push({ x, y: y[0] });
+        topPoints.push({ ...point, x, y: y[1] });
+        bottomPoints.push({ ...point, x, y: y[0] });
       }
       return [topPoints, bottomPoints];
     }
@@ -77,6 +77,19 @@ export default View => {
       return result;
     }
 
+    // 把 records 拍平
+    flatRecords() {
+      const { records } = this;
+      return records.reduce((prevRecords, record) => {
+        const { children } = record;
+        return prevRecords.concat(
+          children.reduce((prevPoints, child) => {
+            return prevPoints.concat(child.points);
+          }, [])
+        );
+      }, []);
+    }
+
     mapping() {
       const records = super.mapping();
       const { props, connectNulls: defaultConnectNulls } = this;
@@ -92,17 +105,16 @@ export default View => {
         const splitPoints = this.splitNulls(points, connectNulls);
 
         record.children = splitPoints.map((points) => {
-          if (isArray(y)) {
-            const [topPoints, bottomPoints] = this.splitPoints(points);
-            return {
-              size,
-              color,
-              shape,
-              points: topPoints,
-              bottomPoints,
-            };
-          }
-          return { size, color, shape, points };
+          const [topPoints, bottomPoints] = isArray(y)
+            ? this.splitPoints(points)
+            : [points, undefined];
+          return {
+            size,
+            color,
+            shape,
+            points: topPoints,
+            bottomPoints,
+          };
         });
       }
 
