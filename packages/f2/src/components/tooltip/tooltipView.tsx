@@ -95,7 +95,7 @@ export default class TooltipView extends Component {
       top: coordTop,
       right: coordRight,
       bottom: coordBottom,
-      width: coordWidth,
+      // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
     const { x, y, xField, yField, origin: firstOrigin } = firstRecord;

@@ -66,7 +66,7 @@ interface _ATTRS<T extends ElementAttrs = ElementAttrs> {
   [k: string]: any;
 }
 
-class Element<T extends ElementAttrs> {
+class Element<T extends ElementAttrs = ElementAttrs> {
   _attrs: _ATTRS<T>;
 
   _initProperties() {

@@ -1,14 +1,6 @@
 import Shape from './shape';
 import { RectAttrs } from '../../types';
-
-function is(type: string) {
-  return (value: any) => {
-    return Object.prototype.toString.call(value) === `[object ${type}]`;
-  }
-}
-
-const isNumber = is('Number');
-const isString = is('String');
+import { isNumber, isString } from '@antv/util';
 
 function parsePadding(padding: any) {
   if (isNumber(padding) || isString(padding)) {
@@ -20,8 +12,6 @@ function parsePadding(padding: any) {
   const left = padding[3] ? padding[3] : right;
   return [ top, right, bottom, left ];
 }
-
-
 
 // 为了处理radius 大于 width 或 height 的场景
 function parseRadius(radius, width, height) {

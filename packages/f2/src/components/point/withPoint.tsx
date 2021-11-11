@@ -1,6 +1,5 @@
 import { jsx } from '../../jsx';
 import Geometry from '../geometry';
-import { GeomType } from '../geometry/interface';
 
 export default View => {
   return class Line extends Geometry {

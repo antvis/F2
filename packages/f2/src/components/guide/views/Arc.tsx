@@ -1,5 +1,5 @@
 import { jsx } from "../../../jsx";
-import { isArray, deepMix } from "@antv/util";
+import { deepMix } from "@antv/util";
 
 type ArcGuideProps = {
   points?: { x: number; y: number }[] | null;
@@ -9,7 +9,7 @@ type ArcGuideProps = {
 
 export default (props: ArcGuideProps) => {
   const { theme = {} } = props;
-  const { coord, points, style, offsetX, offsetY } = deepMix(
+  const { coord, points, style } = deepMix(
     { ...theme.line },
     props
   );
