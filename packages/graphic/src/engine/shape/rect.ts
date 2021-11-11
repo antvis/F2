@@ -1,4 +1,5 @@
 import Shape from './shape';
+import { RectAttrs } from '../../types';
 
 function is(type: string) {
   return (value: any) => {
@@ -38,7 +39,7 @@ function parseRadius(radius, width, height) {
   return radius;
 }
 
-class Rect extends Shape {
+class Rect<T extends RectAttrs = RectAttrs> extends Shape<T> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

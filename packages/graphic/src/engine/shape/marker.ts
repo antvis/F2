@@ -3,6 +3,7 @@
  */
 import { isFunction } from '@antv/util';
 import Shape from './shape';
+import { MarkerAttrs } from '../../types'
 
 const SYMBOLS = {
   circle(x, y, r, ctx) {
@@ -17,7 +18,7 @@ const SYMBOLS = {
   }
 };
 
-class Marker extends Shape {
+class Marker extends Shape<MarkerAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
