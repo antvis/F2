@@ -27,13 +27,14 @@ class AttrController {
   parseOption(option: AttrOption) {
     if (!option) {
       return {
-        type: Identity,
+        type: 'identity',
       };
     }
 
     if (isString(option)) {
       return {
         field: option,
+        type: 'category'
       };
     }
 
@@ -59,21 +60,38 @@ class AttrController {
       return new Identity(option);
     }
 
-    // linear & category
-    let AttrConstructor = Category;
-
-    if (isString(type)) {
-      AttrConstructor = Attrs[upperFirst(type)] || Category;
+    const attrOption = {
+      ...option,
+      data: this.scaleController.getData(),
+      scale, // 默认使用数据字段的scale
     }
 
+    let AttrConstructor = Category;
+
+    // custom Attr Constructor
     if (isFunction(type)) {
       AttrConstructor = type;
     }
 
-    return new AttrConstructor({
-      ...option,
-      scale,
-    });
+    // Linear & Category
+    if (isString(type)) {
+      // Category 分类属性创建自己的scale，不使用数据字段的
+      if (type === 'category' || !Attrs[upperFirst(type)]) {
+        AttrConstructor = Category;
+        delete attrOption.scale;
+      } else {
+        // Linear
+        AttrConstructor = Attrs[upperFirst(type)];
+      }
+    }
+
+    // Unknown Attr type
+    if (isNil(type)) {
+      AttrConstructor = Category;
+      delete attrOption.scale;
+    }
+
+    return new AttrConstructor(attrOption);
   }
 
   create(options) {
@@ -98,7 +116,7 @@ class AttrController {
   }
 
   getAttr(attrName: string) {
-    const { attrs, options, scaleController } = this;
+    const { attrs, options } = this;
 
     const attr = attrs[attrName];
     if (attr) {

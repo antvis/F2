@@ -1,4 +1,12 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject } from '@antv/util';
+import {
+  isFunction,
+  each,
+  upperFirst,
+  mix,
+  groupToMap,
+  isObject,
+  includes
+} from '@antv/util';
 import Component from '../../base/component';
 import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array';
 import * as Adjust from '../../adjust';
@@ -132,10 +140,11 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   getDefaultAttrValues() {
     const attrRanges = this._getAttrRanges();
-    const { color, shape } = attrRanges;
+    const { color, shape, size } = attrRanges;
     return {
       color: color[0],
       shape: shape && shape[0],
+      size: size[0]
     };
   }
 
@@ -390,7 +399,12 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
         for (let k = 0; k < linearAttrsLength; k++) {
           const attrName = linearAttrs[k];
           const attr = attrs[attrName];
-          normalized[attrName] = attr.normalize(child[attr.field]);
+          // 分类属性的线性映射
+          if(includes(GROUP_ATTRS, attrName)) {
+            attrValues[attrName] = attr.mapping(child[attr.field]);
+          } else {
+            normalized[attrName] = attr.normalize(child[attr.field]);
+          }
         }
         const { x, y } = coord.convertPoint({
           x: normalized.x,

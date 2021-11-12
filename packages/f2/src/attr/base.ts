@@ -15,7 +15,7 @@ class Base {
     const { scale, field, data } = this;
     if (!scale && data) {
       const values = arrayValues(data, field);
-      this.scale = this.createScale({ values });
+      this.scale = this.createScale({ values, field });
     }
   }
 

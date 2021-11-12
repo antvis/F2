@@ -128,6 +128,10 @@ class ScaleController {
     this.scales = {};
   }
 
+  getData() {
+    return this.data;
+  }
+
   getScale(field: string): Scale {
     const { scales, options, data } = this;
 

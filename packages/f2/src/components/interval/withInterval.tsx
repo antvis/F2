@@ -67,8 +67,8 @@ export default (Views) => {
         for (let j = 0, len = children.length; j < len; j++) {
           const child = children[j];
           const { normalized } = child;
-          const { x, y, size = defaultSize } = normalized;
-          const rect = convertRect({ x, y, size, y0 });
+          const { x, y } = normalized;
+          const rect = convertRect({ x, y, y0, size: defaultSize, });
           mix(child, coord.convertRect(rect));
         }
       }
