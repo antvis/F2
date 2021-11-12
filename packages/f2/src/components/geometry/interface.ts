@@ -10,10 +10,7 @@ export interface AttrRange {
 export type GeomType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
 
 interface Style {
-  field: string;
-  smooth?: boolean;
-  stroke?: string | ((t) => string);
-  lineWidth?: number | ((t) => number);
+  [k: string]: any; // TODO
 }
 
 /**

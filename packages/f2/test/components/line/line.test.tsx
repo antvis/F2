@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* @jsx React.createElement */
 import { Rect } from '../../../src/coord';
 import React from 'react';
@@ -263,7 +262,8 @@ describe('折线图', () => {
           </Chart>
         </Canvas>
       );
-
+      
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -311,6 +311,7 @@ describe('折线图', () => {
         </Canvas>
       );
 
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -381,7 +382,8 @@ describe('折线图', () => {
           </Chart>
         </Canvas>
       );
-
+      
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -473,7 +475,8 @@ describe('折线图', () => {
           </Chart>
         </Canvas>
       );
-
+      
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -530,7 +533,7 @@ describe('折线图', () => {
               </Chart>
             </Canvas>
           );
-
+          // @ts-ignore
           const canvas = new type(props);
           canvas.render();
         });
@@ -606,7 +609,7 @@ describe('折线图', () => {
               </Chart>
             </Canvas>
           );
-
+          // @ts-ignore
           const canvas = new type(props);
           canvas.render();
         });
@@ -768,7 +771,8 @@ describe('折线图', () => {
           </Chart>
         </Canvas>
       );
-
+      
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -979,6 +983,7 @@ describe('折线图', () => {
         </Canvas>
       );
 
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });
@@ -996,7 +1001,7 @@ describe('折线图', () => {
     }
 
     // 添加数据，模拟数据，可以指定当前时间的偏移的秒
-    function getRecord(offset) {
+    function getRecord(offset?) {
       offset = offset || 0;
       return {
         time: new Date().getTime() + offset * 1000,
@@ -1100,9 +1105,12 @@ describe('折线图', () => {
                 <Axis
                   field="year"
                   style={{
-                    textAlign: 'start',
-                    textBaseline: 'middle',
-                    rotate: Math.PI / 2,
+                    label: {
+                      align: 'center',
+                      textAlign: 'start',
+                      textBaseline: 'middle',
+                      rotate: Math.PI / 2,
+                    }
                   }}
                 />
                 <Axis field="count" />
@@ -1127,7 +1135,7 @@ describe('折线图', () => {
               </Chart>
             </Canvas>
           );
-
+          // @ts-ignore
           const canvas = new type(props);
           canvas.render();
         });
@@ -1184,6 +1192,7 @@ describe('折线图', () => {
         </Canvas>
       );
 
+      // @ts-ignore
       const canvas = new type(props);
       canvas.render();
     });

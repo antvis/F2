@@ -1,6 +1,7 @@
 import Shape from './shape';
+import { CircleAttrs } from '../../types'
 
-class Circle extends Shape {
+class Circle extends Shape<CircleAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

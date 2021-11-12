@@ -1,10 +1,7 @@
-import { mix, each, isNil } from '@antv/util';
 import { Scale } from '@antv/scale';
 import Component from '../base/component';
 import equal from '../base/equal';
 import { applyMixins } from '../mixins';
-import CoordMixin from '../mixins/coord';
-import ScaleMixin from '../mixins/scale';
 import InteractionMixin from '../mixins/interaction';
 import Layout from '../base/layout';
 import Coord from '../coord';

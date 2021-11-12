@@ -2,6 +2,7 @@
 import Shape from './shape';
 import { getBBoxFromPoints, getBBoxFromBezierGroup } from '../../util/bbox';
 import * as Smooth from '../../util/smooth';
+import { PolylineAttrs } from '../../types';
 
 // filter the point which x or y is NaN
 function _filterPoints(points) {
@@ -16,7 +17,7 @@ function _filterPoints(points) {
   return filteredPoints;
 }
 
-class Polyline extends Shape {
+class Polyline extends Shape<PolylineAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

@@ -16,8 +16,15 @@ class Group extends Rect {
       isGroup: true,
       canFill: true,
       canStroke: true,
-      attrs: {},
-      children: []
+      children: [],
+      attrs: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        radius: 0,
+        lineWidth: 0
+      },
     };
   }
 

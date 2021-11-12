@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from '@antv/util';
+import { isDate, isPlainObject, isNumber, isString, isArray, isObject, isFunction } from '@antv/util';
 import * as ArrayUtil from './array';
 // 默认设置50
 let ONE_REM: number;
@@ -21,23 +21,6 @@ function px2hd(px: number): number {
   }
   return Number((px * SCALE).toFixed(1));
 }
-
-function is(t: 'Number'): (args: any) => args is number;
-function is(t: 'String'): (args: any) => args is string;
-function is(t: 'Array'): (args: any) => args is any[];
-function is(t: 'Object'): (args: any) => args is Object;
-function is(t: 'Function'): (args: any) => args is (a?:any) => any;
-function is(type: 'Number' | 'String' | 'Array' | 'Object' | 'Function')  {
-  return (value: any) => {
-    return Object.prototype.toString.call(value) === `[object ${type}]`;
-  };
-}
-
-const isNumber = is('Number');
-const isString = is('String');
-const isArray = is('Array');
-const isObject = is('Object');
-const isFunction = is('Function');
 
 function parsePadding(padding: any) {
   if (isNumber(padding)) {
@@ -182,6 +165,7 @@ function getElementsByClassName(element, className) {
 }
 
 export {
+  isNumber,
   isString,
   isArray,
   isObject,

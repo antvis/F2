@@ -1,7 +1,8 @@
 import Shape from './shape';
 import { getBBoxFromArc } from '../../util/bbox';
+import { ArcAttrs } from '../../types';
 
-class Arc extends Shape {
+class Arc extends Shape<ArcAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canStroke = true;

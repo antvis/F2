@@ -1,4 +1,3 @@
-import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 import withLine from '../line/withLine';
 

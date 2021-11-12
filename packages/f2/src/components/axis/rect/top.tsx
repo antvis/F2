@@ -59,7 +59,7 @@ export default (props: RectProps) => {
       }
       {
         label ?
-          ticks.map((tick, index) => {
+          ticks.map((tick, _index) => {
             const { points, text } = tick;
             const end = points[points.length - 1];
             return (
