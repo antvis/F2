@@ -14,7 +14,7 @@ describe.skip('Point Chart', () => {
 
     const context = createContext('基础点图');
     const chartRef = { current: null };
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
         <Chart
           ref={chartRef}
@@ -29,8 +29,7 @@ describe.skip('Point Chart', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
