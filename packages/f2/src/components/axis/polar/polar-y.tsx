@@ -11,7 +11,7 @@ export default (props: PolarProps) => {
       {
         grid ?
           ticks.map(tick => {
-            const { points } = tick;
+            const { points, gridStyle } = tick;
             const end = points[points.length - 1];
             return (
               <arc attrs={{
@@ -19,6 +19,7 @@ export default (props: PolarProps) => {
                 y: center.y,
                 r: Vector2.length([end.x - center.x, end.y - center.y]),
                 ...grid,
+                ...gridStyle
               }} />
             );
           })
@@ -58,7 +59,7 @@ export default (props: PolarProps) => {
       {
         label ?
           ticks.map(tick => {
-            const { points, text } = tick;
+            const { points, text, labelStyle } = tick;
             const end = points[points.length - 1];
             return (
               <text attrs={{
@@ -68,6 +69,7 @@ export default (props: PolarProps) => {
                 textAlign: 'right',
                 textBaseline: 'middle',
                 ...label,
+                ...labelStyle
               }} />
             );
           })
