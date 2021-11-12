@@ -7,12 +7,17 @@ interface Props {
   [propName: string]: any;
 }
 
+export type ElementType =
+  | string
+  | ((props: Props, context?: any) => any)
+  | (new (props: Props, context?: any) => any);
+
 declare global {
   namespace JSX {
     interface Element {
       key: string;
       ref?: Ref;
-      type: string | Function;
+      type: ElementType;
       props: Props;
       // children: Element;
       _cache: any;

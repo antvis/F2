@@ -16,13 +16,13 @@ interface Style {
 /**
  * 几何标记对象的数据调整类型。
  */
- export type GeometryAdjustKind =
- // 堆叠
- | 'stack'
- // 分组
- | 'dodge'
- // 对称
- | 'symmetric';
+export type GeometryAdjustKind =
+  // 堆叠
+  | 'stack'
+  // 分组
+  | 'dodge'
+  // 对称
+  | 'symmetric';
 
 export interface GeometryProps {
   data?: any;
@@ -31,5 +31,5 @@ export interface GeometryProps {
   coord?: Coord;
   startOnZero?: boolean;
   style?: Style;
-  [k: string]: any;  // TODO
+  [k: string]: any; // TODO
 }
