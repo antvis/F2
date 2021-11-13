@@ -166,6 +166,11 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
     this.draw();
     return null;
   }
+
+  destroy() {
+    const { canvas } = this;
+    canvas.destroy();
+  }
 }
 
 export default Canvas;
