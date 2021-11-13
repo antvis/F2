@@ -1,15 +1,15 @@
 import { jsx } from '../../../jsx';
 
-export default props => {
+export default (props) => {
   const { coord, records } = props;
   const { center } = coord;
   return (
     <group>
-      {records.map(record => {
+      {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
-            {children.map(item => {
+            {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color } = item;
               return (
                 <sector
@@ -23,24 +23,22 @@ export default props => {
                     r0: yMin,
                     r: yMax,
                   }}
-                  animation={
-                    {
-                      // appear: {
-                      //   easing: 'linear',
-                      //   duration: 450,
-                      //   property: ['y', 'height'],
-                      //   start: {
-                      //     y: yMax,
-                      //     height: 0,
-                      //   },
-                      // },
-                      // update: {
-                      //   easing: 'linear',
-                      //   duration: 450,
-                      //   property: ['x', 'y', 'width', 'height'],
-                      // },
-                    }
-                  }
+                  animation={{
+                    // appear: {
+                    //   easing: 'linear',
+                    //   duration: 450,
+                    //   property: ['y', 'height'],
+                    //   start: {
+                    //     y: yMax,
+                    //     height: 0,
+                    //   },
+                    // },
+                    update: {
+                      easing: 'linear',
+                      duration: 450,
+                      property: ['x', 'y', 'startAngle', 'endAngle', 'r0', 'r'],
+                    },
+                  }}
                 />
               );
             })}

@@ -3,12 +3,46 @@ title: 快速上手
 order: 0
 ---
 
+## 声明式
+
+F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代码更直观和简介，避免了复杂的 API 调用，而且我们也采用了 JSX 的书写方式，不仅方便使用，还可以很方便地和 React、Vue 这些框架结合
+
+## 组件化
+
+为了构建复杂的可视化图表，组件是一种不可或缺的能力，在 F2 里，我们也参考 React 的设计模式，内置了一套完善的组件能力，能简单方便地分装自己的组件
+
+## 快速开始
+
+> 下面示例是以非 React 为演示的，如果项目已经是 React， 可以参考 [如何在 React 中使用](./react)
+
+### 配置 jsx transform
+
+因为 F2 也使用了 jsx 语法来构建图表，所以需要使用 [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx) 来编译 jsx
+
+```bash
+npm install --save-dev @babel/plugin-transform-react-jsx
+```
+
+```json
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "runtime": "automatic"
+      }
+    ]
+  ]
+}
+```
+
+runtime 也支持 `automatic` 模式, 如果配置 `automatic`, 需要设置 `importSource: 'jsx'`, 当然也可以通过 `@jsxImportSource` 注解方式定义，更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+
 ## 安装
 
 ### 通过 npm 安装
 
-[![](https://img.shields.io/npm/v/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
-[![](https://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
+[![](https://img.shields.io/npm/v/@antv/f2.svg)](https://npmjs.com/package/@antv/f2) [![](https://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
 
 ```bash
 npm install @antv/f2 --save
@@ -16,13 +50,9 @@ npm install @antv/f2 --save
 
 ## 一分钟上手
 
-在 F2 引入页面后，我们就已经做好了创建第一个图表的准备了。
-
-下面是以一个基础的柱状图为例开始我们的第一个图表创建。
-
 ### 1. 创建 canvas 标签
 
-在页面上创建一个 `<canvas>` 并指定 `id`：
+在页面上创建一个 `<canvas>`
 
 ```html
 <canvas id="myChart" width="400" height="260"></canvas>
@@ -30,17 +60,7 @@ npm install @antv/f2 --save
 
 ### 2. 编写代码
 
-创建 `<canvas>` 标签后，我们就可以进行简单的图表绘制:
-
-1. 创建 Chart 图表对象，指定图表 ID、指定图表的宽高、边距等信息；
-
-2. 载入图表数据源；
-
-3. 使用图形语法进行图表的绘制；
-
-4. 渲染图表。
-
-```javascript
+```jsx
 // F2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
 const data = [
   { genre: 'Sports', sold: 275 },
@@ -50,43 +70,24 @@ const data = [
   { genre: 'Other', sold: 150 },
 ];
 
-// Step 1: 创建 Chart 对象
-const chart = new F2.Chart({
-  id: 'myChart',
-  pixelRatio: window.devicePixelRatio, // 指定分辨率
-});
+// 获取 canvas context
+const context = document.getElementById('myChart').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Axis field="genre" />
+      <Axis field="sold" />
+      <Interval x="genre" y="sold" color="genre" />
+      <Tooltip />
+    </Chart>
+  </Canvas>
+);
 
-// Step 2: 载入数据源
-chart.source(data);
-
-// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-chart.interval().position('genre*sold').color('genre');
-
-// Step 4: 渲染图表
-chart.render();
+const canvas = new Canvas(props);
+canvas.render();
 ```
 
 完成上述两步之后，保存文件并用浏览器打开，一张柱状图就绘制成功了：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/54ad3af8-c30d-43ca-b0e8-e21c4ea3d438.png)
-
-```javascript
-const data = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 },
-];
-
-const chart = new F2.Chart({
-  id: 'myChart',
-  pixelRatio: window.devicePixelRatio, // 指定分辨率
-});
-// load the data
-chart.source(data);
-// draw a column chart
-chart.interval().position('genre*sold').color('genre');
-chart.render();
-```
 
 ## 更多示例
 
