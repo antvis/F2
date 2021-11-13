@@ -1,14 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "target": "esnext",
-    "declaration": true,
     "jsx": "react",
     "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
-    "moduleResolution": "node",
-    "useDefineForClassFields": false,
-    "resolveJsonModule": true
+    "jsxFragmentFactory": "React.Fragment"
   }
 }
