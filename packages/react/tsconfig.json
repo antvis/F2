@@ -1,20 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
-    "declaration": true,
     "jsx": "react",
     "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "baseUrl": ".", 
-    "types": [],
-    "paths": {
-      "@*": ["../f2-next/src/*"],
-      "react": [
-        "typings.d.ts"
-      ],
-    }
+    "jsxFragmentFactory": "React.Fragment"
   }
 }
