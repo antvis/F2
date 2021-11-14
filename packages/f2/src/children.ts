@@ -52,11 +52,7 @@ function compareArray(
 }
 
 // 比较2棵树
-function compare(
-  nextElement: JSX.Element,
-  lastElement: JSX.Element,
-  callback: Function
-) {
+function compare(nextElement: JSX.Element, lastElement: JSX.Element, callback: Function) {
   // 有一个为空
   if (!nextElement || !lastElement) {
     callback(nextElement, lastElement);

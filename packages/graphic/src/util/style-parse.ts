@@ -1,11 +1,10 @@
-
 import { each } from '@antv/util';
 function _mod(n, m) {
   return ((n % m) + m) % m;
 }
 
 function _addStop(steps, gradient) {
-  each(steps, item => {
+  each(steps, (item) => {
     item = item.split(':');
     gradient.addColorStop(Number(item[0]), item[1]);
   });
@@ -25,46 +24,47 @@ function _parseLineGradient(color, shape, context) {
   if (angle >= 0 && angle < 0.5 * Math.PI) {
     start = {
       x: minX,
-      y: minY
+      y: minY,
     };
     end = {
       x: maxX,
-      y: maxY
+      y: maxY,
     };
   } else if (0.5 * Math.PI <= angle && angle < Math.PI) {
     start = {
       x: maxX,
-      y: minY
+      y: minY,
     };
     end = {
       x: minX,
-      y: maxY
+      y: maxY,
     };
   } else if (Math.PI <= angle && angle < 1.5 * Math.PI) {
     start = {
       x: maxX,
-      y: maxY
+      y: maxY,
     };
     end = {
       x: minX,
-      y: minY
+      y: minY,
     };
   } else {
     start = {
       x: minX,
-      y: maxY
+      y: maxY,
     };
     end = {
       x: maxX,
-      y: minY
+      y: minY,
     };
   }
 
   const tanTheta = Math.tan(angle);
   const tanTheta2 = tanTheta * tanTheta;
 
-  const x = ((end.x - start.x) + tanTheta * (end.y - start.y)) / (tanTheta2 + 1) + start.x;
-  const y = tanTheta * ((end.x - start.x) + tanTheta * (end.y - start.y)) / (tanTheta2 + 1) + start.y;
+  const x = (end.x - start.x + tanTheta * (end.y - start.y)) / (tanTheta2 + 1) + start.x;
+  const y =
+    (tanTheta * (end.x - start.x + tanTheta * (end.y - start.y))) / (tanTheta2 + 1) + start.y;
   const gradient = context.createLinearGradient(start.x, start.y, x, y);
   _addStop(steps, gradient);
   return gradient;
@@ -86,7 +86,14 @@ function _parseRadialGradient(color, shape, context) {
   }
   const { width, height, minX, minY } = shape.getBBox();
   const r = Math.sqrt(width * width + height * height) / 2;
-  const gradient = context.createRadialGradient(minX + width * fx, minY + height * fy, fr * r, minX + width / 2, minY + height / 2, r);
+  const gradient = context.createRadialGradient(
+    minX + width * fx,
+    minY + height * fy,
+    fr * r,
+    minX + width / 2,
+    minY + height / 2,
+    r
+  );
   _addStop(steps, gradient);
   return gradient;
 }
@@ -101,7 +108,9 @@ function parseStyle(color, shape, context) {
         return _parseRadialGradient(color, shape, context);
       }
     } catch (ev) {
-      console.error('error in parsing gradient string, please check if there are any extra whitespaces.');
+      console.error(
+        'error in parsing gradient string, please check if there are any extra whitespaces.'
+      );
       console.error(ev);
     }
   }
@@ -110,5 +119,5 @@ function parseStyle(color, shape, context) {
 
 export { parseStyle };
 export default {
-  parseStyle
+  parseStyle,
 };

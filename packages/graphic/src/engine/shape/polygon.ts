@@ -13,7 +13,7 @@ class Polygon extends Shape<PolygonAttrs> {
   getDefaultAttrs() {
     return {
       points: null,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 

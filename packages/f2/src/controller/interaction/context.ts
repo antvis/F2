@@ -1,8 +1,8 @@
 import { getTickMethod } from '@antv/scale';
 import { getRange } from '@antv/util';
 import { toTimeStamp } from '../../util';
-import { renderComponent } from '../../base/diff'
-import Children from '../../children'
+import { renderComponent } from '../../base/diff';
+import Children from '../../children';
 
 // 判断新老values是否相等，这里只要判断前后是否相等即可
 function isValuesEqual(values, newValues) {
@@ -10,9 +10,7 @@ function isValuesEqual(values, newValues) {
     return false;
   }
   const lastIndex = values.length - 1;
-  return (
-    values[0] === newValues[0] && values[lastIndex] === newValues[lastIndex]
-  );
+  return values[0] === newValues[0] && values[lastIndex] === newValues[lastIndex];
 }
 
 // 不同交互之间共享的上下文
@@ -37,9 +35,8 @@ class Context {
     this.canvas = chart.context.canvas;
   }
 
-
   // TODO:数据或者scale发生变化后做一些处理
-  update() { }
+  update() {}
 
   // 缩放的主轴scale
   getPinchScale() {
@@ -133,11 +130,11 @@ class Context {
     const values = [];
     // 转成map，让查找性能更高
     const pinchValueMap = {};
-    pinchValues.forEach(item => {
+    pinchValues.forEach((item) => {
       pinchValueMap[item] = true;
     });
     const { data } = chart;
-    data.forEach(item => {
+    data.forEach((item) => {
       if (pinchScaleType === 'timeCat') {
         const value = toTimeStamp(item[pinchField]);
         if (pinchValueMap[value]) {
@@ -155,11 +152,13 @@ class Context {
     }
     const { field } = scale;
     const { chart } = this;
-    chart.setScale(field, cfg)
+    chart.setScale(field, cfg);
   }
 
   getDefaultValues() {
-    if (this.values) { return this.values }
+    if (this.values) {
+      return this.values;
+    }
     const { values } = this.getPinchScale();
     this.values = [].concat(values);
     return this.values;
@@ -184,9 +183,7 @@ class Context {
 
     const { tickCount } = scale;
     // 根据当前数据的比例，和定义的tickCount计算应该需要多少个ticks
-    const newTickCount = Math.round(
-      (tickCount * values.length) / newValues.length
-    );
+    const newTickCount = Math.round((tickCount * values.length) / newValues.length);
 
     const catTicks = getTickMethod('cat');
     const ticks = catTicks({
@@ -216,10 +213,7 @@ class Context {
     const newTicks = this.getZoomedTicks(newValues);
 
     // 如果新数组和当前显示的数组相同，则不更新
-    if (
-      isValuesEqual(currentValues, newValues) &&
-      isValuesEqual(currentTicks, newTicks)
-    ) {
+    if (isValuesEqual(currentValues, newValues) && isValuesEqual(currentTicks, newTicks)) {
       return;
     }
 
@@ -236,14 +230,17 @@ class Context {
     const { chart } = this;
     const { animate } = chart;
     chart.setAnimate(false);
-    chart.setState({
-      zoomRange: this.range,
-    }, () => {
-      chart.setAnimate(animate);
-    });
+    chart.setState(
+      {
+        zoomRange: this.range,
+      },
+      () => {
+        chart.setAnimate(animate);
+      }
+    );
   }
 
-  destroy() { }
+  destroy() {}
 }
 
 export default Context;

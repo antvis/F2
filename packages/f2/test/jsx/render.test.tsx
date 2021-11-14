@@ -1,11 +1,5 @@
 // import * as F2 from '@antv/f2';
-import {
-  render,
-  renderJSXElement,
-  jsx,
-  Fragment,
-  compareRenderTree
-} from '../../src/jsx';
+import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../src/jsx';
 import { ELEMENT_DELETE } from '../../src/jsx/elementStatus';
 import { Canvas } from '@antv/f2-graphic';
 
@@ -16,7 +10,7 @@ document.body.appendChild(canvasEl);
 const context = canvasEl.getContext('2d');
 
 const canvas = new Canvas({
-  context
+  context,
 });
 
 describe('render', () => {
@@ -30,7 +24,7 @@ describe('render', () => {
             y: 0,
             width: 10,
             height: 10,
-            fill: 'red'
+            fill: 'red',
           }}
         />
       </group>,
@@ -50,7 +44,7 @@ describe('render', () => {
       <group
         style={{ width: 100, height: 100 }}
         attrs={{
-          fill: 'gray'
+          fill: 'gray',
         }}
       >
         <rect
@@ -59,7 +53,7 @@ describe('render', () => {
             y: 0,
             width: 10,
             height: 10,
-            fill: 'red'
+            fill: 'red',
           }}
         />
       </group>,
@@ -94,7 +88,7 @@ describe('render', () => {
           y: 0,
           width: 10,
           height: 10,
-          fill: 'red'
+          fill: 'red',
         }}
       />,
       container
@@ -115,7 +109,7 @@ describe('render', () => {
           y: 0,
           width: 10,
           height: 10,
-          fill: 'red'
+          fill: 'red',
         }}
         ref={ref}
       />,
@@ -140,7 +134,7 @@ describe('render', () => {
             y: 0,
             width: 10,
             height: 10,
-            fill: 'red'
+            fill: 'red',
           }}
         />
       </group>,
@@ -174,7 +168,7 @@ describe('render style alias', () => {
             top: 0,
             width: 10,
             height: 10,
-            backgroundColor: 'red'
+            backgroundColor: 'red',
           }}
         />
       </group>,
@@ -195,23 +189,23 @@ describe('layout', () => {
       <group
         style={{
           width: '200px',
-          height: '200px'
+          height: '200px',
         }}
       >
         <rect
           style={{
-            flex: 1
+            flex: 1,
           }}
           attrs={{
-            fill: 'gray'
+            fill: 'gray',
           }}
         />
         <rect
           style={{
-            flex: 1
+            flex: 1,
           }}
           attrs={{
-            fill: 'red'
+            fill: 'red',
           }}
         />
       </group>,
@@ -242,34 +236,34 @@ describe('layout', () => {
           flexDirection: 'row',
           padding: ['20px', '40px'],
           width: '380px',
-          height: '200px'
+          height: '200px',
         }}
       >
         <rect
           style={{
-            flex: 1
+            flex: 1,
           }}
           attrs={{
-            fill: 'gray'
+            fill: 'gray',
           }}
         />
         <rect
           style={{
-            flex: 1
+            flex: 1,
           }}
           attrs={{
-            fill: 'red'
+            fill: 'red',
           }}
         />
         <group
           style={{
-            flex: 1
+            flex: 1,
           }}
         >
           <text
             attrs={{
               fill: '#000',
-              text: '123'
+              text: '123',
             }}
           />
         </group>
@@ -305,7 +299,7 @@ describe('layout', () => {
           flexDirection: 'row',
           width: '20px',
           height: '200px',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
         }}
       >
         <text
@@ -316,7 +310,7 @@ describe('layout', () => {
           }
           attrs={{
             fill: '#000',
-            text: '111'
+            text: '111',
           }}
         />
         <text
@@ -327,7 +321,7 @@ describe('layout', () => {
           }
           attrs={{
             fill: '#000',
-            text: '222'
+            text: '222',
           }}
         />
       </group>,
@@ -353,7 +347,7 @@ describe('layout', () => {
       <group
         style={{
           // padding: '20px',
-          marginLeft: '-50%'
+          marginLeft: '-50%',
           // marginTop: '-50%',
         }}
       >
@@ -365,7 +359,7 @@ describe('layout', () => {
           }
           attrs={{
             fill: '#000',
-            text: '111'
+            text: '111',
           }}
         />
       </group>,
@@ -398,45 +392,45 @@ describe('layout', () => {
             flexDirection: 'row',
             width: 200,
             height: 200,
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
         >
           <rect
             style={{
-              flex: 1
+              flex: 1,
             }}
             attrs={{
-              fill: '#f00'
+              fill: '#f00',
             }}
           />
           <rect
             style={{
-              flex: 1
+              flex: 1,
             }}
             attrs={{
-              fill: '#0f0'
+              fill: '#0f0',
             }}
           />
           <group
             style={{
               flex: 1,
-              flexDirection: 'row'
+              flexDirection: 'row',
             }}
           >
             <rect
               style={{
-                flex: 1
+                flex: 1,
               }}
               attrs={{
-                fill: '#00f'
+                fill: '#00f',
               }}
             />
             <rect
               style={{
-                flex: 1
+                flex: 1,
               }}
               attrs={{
-                fill: '#0f0'
+                fill: '#0f0',
               }}
             />
           </group>
@@ -444,13 +438,13 @@ describe('layout', () => {
       );
       // 新增和变化的元素不保留上次的attrs
       groupJSXElement.props.children[0]._cache = {
-        attrs: { x: 100, y: 200, width: 10, height: 10 }
+        attrs: { x: 100, y: 200, width: 10, height: 10 },
       };
       // 把中间的元素标记为删除
       groupJSXElement.props.children[1].status = ELEMENT_DELETE;
       // 删除的元素保留attrs
       groupJSXElement.props.children[1]._cache = {
-        attrs: { x: 0, y: 200, width: 10, height: 10 }
+        attrs: { x: 0, y: 200, width: 10, height: 10 },
       };
       groupJSXElement.props.children[2].props.children[1].status = ELEMENT_DELETE;
       const group = render(groupJSXElement, container);
@@ -492,23 +486,23 @@ describe('layout', () => {
             flexDirection: 'row',
             width: 200,
             height: 200,
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
         >
           <rect
             style={{
-              flex: 1
+              flex: 1,
             }}
             attrs={{
-              fill: '#f00'
+              fill: '#f00',
             }}
           />
           <rect
             style={{
-              flex: 1
+              flex: 1,
             }}
             attrs={{
-              fill: '#0f0'
+              fill: '#0f0',
             }}
           />
         </group>

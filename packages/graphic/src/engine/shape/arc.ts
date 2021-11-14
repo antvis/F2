@@ -18,7 +18,7 @@ class Arc extends Shape<ArcAttrs> {
       startAngle: 0,
       endAngle: Math.PI * 2,
       anticlockwise: false,
-      lineWidth: 1
+      lineWidth: 1,
     };
   }
 

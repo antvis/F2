@@ -1,7 +1,6 @@
 import InteractionController from '../controller/interaction';
 
 class InteractionMixin {
-
   interaction: InteractionController;
 
   createInteractionController({ chart }) {
@@ -9,10 +8,8 @@ class InteractionMixin {
   }
 
   setInteraction(type, cfg) {
-    this.interaction.createInteraction(type, cfg)
+    this.interaction.createInteraction(type, cfg);
   }
-
 }
-
 
 export default InteractionMixin;

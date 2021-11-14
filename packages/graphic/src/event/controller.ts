@@ -1,4 +1,4 @@
-import * as DOMUtil from '../util/dom'
+import * as DOMUtil from '../util/dom';
 const { convertPoints } = DOMUtil;
 
 // 计算滑动的方向
@@ -20,8 +20,8 @@ const calcDistance = (point1, point2) => {
 };
 
 const getCenter = (point1, point2) => {
-  const x = point1.x + ((point2.x - point1.x) / 2);
-  const y = point1.y + ((point2.y - point1.y) / 2);
+  const x = point1.x + (point2.x - point1.x) / 2;
+  const y = point1.y + (point2.y - point1.y) / 2;
   return { x, y };
 };
 
@@ -64,12 +64,12 @@ class EventController {
     const canvas = this.canvas;
     canvas.emit(type, ev);
   }
-  _click = ev => {
+  _click = (ev) => {
     const points = convertPoints(ev, this.canvas);
     ev.points = points;
     this.emitEvent('click', ev);
-  }
-  _start = ev => {
+  };
+  _start = (ev) => {
     const points = convertPoints(ev, this.canvas);
     if (!points) {
       return;
@@ -98,8 +98,8 @@ class EventController {
         this.direction = direction;
       }, PRESS_DELAY);
     }
-  }
-  _move = ev => {
+  };
+  _move = (ev) => {
     const points = convertPoints(ev, this.canvas);
     if (!points) return;
     this.clearPressTimeout();
@@ -145,8 +145,8 @@ class EventController {
         this.lastMovePoints = points;
       }
     }
-  }
-  _end = ev => {
+  };
+  _end = (ev) => {
     const points = convertPoints(ev, this.canvas);
     ev.points = points;
     this.emitEnd(ev);
@@ -182,11 +182,11 @@ class EventController {
     if (touches && touches.length > 0) {
       this._start(ev);
     }
-  }
-  _cancel = ev => {
+  };
+  _cancel = (ev) => {
     this.emitEvent('touchcancel', ev);
     this.reset();
-  }
+  };
   getEventType(points) {
     const { eventType, canvas, startTime, startPoints } = this;
     if (eventType) {
@@ -227,7 +227,7 @@ class EventController {
   // 触发end事件
   emitEnd(ev) {
     const processEvent = this.processEvent;
-    Object.keys(processEvent).forEach(type => {
+    Object.keys(processEvent).forEach((type) => {
       this.emitEvent(`${type}end`, ev);
       delete processEvent[type];
     });

@@ -39,7 +39,7 @@ describe('Guide', () => {
             color="genre"
             // adjust="stack"
           />
-          {data.map(item => {
+          {data.map((item) => {
             const { sold } = item;
             return (
               <TextGuide
@@ -63,9 +63,7 @@ describe('Guide', () => {
 
   it('LineGuide', async () => {
     const context = createContext('LineGuide');
-    const res = await fetch(
-      'https://gw.alipayobjects.com/os/antfincdn/m6tXpvS56l/guide-line.json'
-    );
+    const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/m6tXpvS56l/guide-line.json');
     const data = await res.json();
 
     const { type, props } = (
@@ -74,7 +72,7 @@ describe('Guide', () => {
           <Axis field="month" tickCount={2} />
           <Axis field="PM" />
           <Line x="month" y="PM" />
-          {data.map(item => {
+          {data.map((item) => {
             return (
               <LineGuide
                 records={[
@@ -109,7 +107,7 @@ describe('Guide', () => {
             color="genre"
             // adjust="stack"
           />
-          {data.map(item => {
+          {data.map((item) => {
             const { sold } = item;
             return (
               <PointGuide

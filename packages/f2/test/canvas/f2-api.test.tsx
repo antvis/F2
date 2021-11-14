@@ -13,7 +13,7 @@ class Test extends Component {
           y: 0,
           fill: 'red',
           width,
-          height: 10
+          height: 10,
         }}
         animation={{
           appear: {
@@ -21,15 +21,15 @@ class Test extends Component {
             duration: 300,
             property: ['width'],
             start: {
-              width: 0
+              width: 0,
             },
-            end: {}
+            end: {},
           },
           update: {
             easing: 'linear',
             duration: 300,
-            property: ['width']
-          }
+            property: ['width'],
+          },
         }}
       />
     );
@@ -42,9 +42,7 @@ describe.skip('Canvas', () => {
     //   context,
     //   pixelRatio: window.devicePixelRatio
     // });
-
     // // const test = canvas.createComponent(Test, {});
-
     // canvas.render();
   });
 });

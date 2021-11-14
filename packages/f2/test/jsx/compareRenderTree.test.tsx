@@ -199,14 +199,14 @@ describe.skip('compareRenderTree', () => {
     it('不存在key map', () => {
       const nextElement = (
         <group>
-          {[1, 2].map(i => {
+          {[1, 2].map((i) => {
             return <text />;
           })}
         </group>
       );
       const lastElement = (
         <group>
-          {[1, 3].map(i => {
+          {[1, 3].map((i) => {
             return <text />;
           })}
         </group>
@@ -248,14 +248,14 @@ describe.skip('compareRenderTree', () => {
     it('存在key map', () => {
       const nextElement = (
         <group>
-          {[1, 2].map(i => {
+          {[1, 2].map((i) => {
             return <text key={i} />;
           })}
         </group>
       );
       const lastElement = (
         <group>
-          {[1, 3].map(i => {
+          {[1, 3].map((i) => {
             return <text key={i} />;
           })}
         </group>

@@ -11,20 +11,17 @@ const IndexPage = () => {
   const { t, i18n } = useTranslation();
   const features = [
     {
-      icon:
-        'https://gw.alipayobjects.com/zos/basement_prod/5dbaf094-c064-4a0d-9968-76020b9f1510.svg',
+      icon: 'https://gw.alipayobjects.com/zos/basement_prod/5dbaf094-c064-4a0d-9968-76020b9f1510.svg',
       title: t('专注移动，体验优雅'),
       description: t('围绕设计、性能以及异构环境，为用户提供移动端图表的最佳实践'),
     },
     {
-      icon:
-        'https://gw.alipayobjects.com/zos/basement_prod/0a0371ab-6bed-41ad-a99b-87a5044ba11b.svg',
+      icon: 'https://gw.alipayobjects.com/zos/basement_prod/0a0371ab-6bed-41ad-a99b-87a5044ba11b.svg',
       title: t('图表丰富，组件完备'),
       description: t('基于图形语法，可灵活构建各类图表（50+），组件完备，覆盖各类场景'),
     },
     {
-      icon:
-        'https://gw.alipayobjects.com/zos/basement_prod/716d0bc0-e311-4b28-b79f-afdd16e8148e.svg',
+      icon: 'https://gw.alipayobjects.com/zos/basement_prod/716d0bc0-e311-4b28-b79f-afdd16e8148e.svg',
       title: t('扩展灵活，创意无限'),
       description: t('插件机制，图形、动画、交互均可灵活扩展，使用更自由'),
     },
@@ -32,43 +29,35 @@ const IndexPage = () => {
   const companies = [
     {
       name: '蚂蚁财富',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/89790c1c-cc08-4270-8489-99893a57b20c.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/89790c1c-cc08-4270-8489-99893a57b20c.png',
     },
     {
       name: '淘票票',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/4664f031-d79c-4030-a14a-3bbf3709b51c.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/4664f031-d79c-4030-a14a-3bbf3709b51c.png',
     },
     {
       name: '钉钉',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ce76cb7b-f916-4784-9475-6c16ad62df42.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ce76cb7b-f916-4784-9475-6c16ad62df42.png',
     },
     {
       name: '掌上运维',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/2f9d94fc-0fae-4618-9563-3be0cc9be5eb.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/2f9d94fc-0fae-4618-9563-3be0cc9be5eb.png',
     },
     {
       name: '支付宝',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/0014f3ad-ec8c-4023-97b4-740090cd78a2.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/0014f3ad-ec8c-4023-97b4-740090cd78a2.png',
     },
     {
       name: '小红书',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/8a401562-c488-49a5-9f7e-bc1d2c6873bf.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/8a401562-c488-49a5-9f7e-bc1d2c6873bf.png',
     },
     {
       name: '盒马',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ed57edff-e5d5-4e50-bccd-7002e0a4048e.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ed57edff-e5d5-4e50-bccd-7002e0a4048e.png',
     },
     {
       name: '口碑',
-      img:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/9fb6be41-76d6-4ca0-be56-71a247cac5a4.png',
+      img: 'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/9fb6be41-76d6-4ca0-be56-71a247cac5a4.png',
     },
   ];
   const bannerButtons = [

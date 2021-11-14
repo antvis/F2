@@ -15,7 +15,6 @@ function eachElement(element, fn) {
 }
 
 class Animation {
-
   timeline: Timeline;
   canvas: any;
 
@@ -79,24 +78,27 @@ class Animation {
     }
 
     // 开始播放动画
-    this.timeline.play(maxDuration, time => {
-      for (let i = 0, len = animators.length; i < len; i++) {
-        const animator = animators[i];
-        animator.to(time);
-      }
-      // 最后一帧放在end里统一draw， 避免重复draw
-      if (time < maxDuration) {
+    this.timeline.play(
+      maxDuration,
+      (time) => {
+        for (let i = 0, len = animators.length; i < len; i++) {
+          const animator = animators[i];
+          animator.to(time);
+        }
+        // 最后一帧放在end里统一draw， 避免重复draw
+        if (time < maxDuration) {
+          canvas.draw();
+        }
+      },
+      () => {
+        for (let i = 0, len = deleteElements.length; i < len; i++) {
+          const element = deleteElements[i];
+          element.remove(true);
+        }
         canvas.draw();
+        onAnimationEnd && onAnimationEnd();
       }
-    }, () => {
-
-      for (let i = 0, len = deleteElements.length; i < len; i++) {
-        const element = deleteElements[i];
-        element.remove(true);
-      }
-      canvas.draw();
-      onAnimationEnd && onAnimationEnd();
-    })
+    );
   }
 
   // 直接跳到动画最终态

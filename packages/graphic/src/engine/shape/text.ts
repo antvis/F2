@@ -1,5 +1,5 @@
 import { isNil, isString } from '@antv/util';
-import * as DOMUtil from '../../util/dom'
+import * as DOMUtil from '../../util/dom';
 import Shape from './shape';
 import RectUtil from '../../util/rect';
 import { TextAttrs } from '../../types';
@@ -30,7 +30,7 @@ class Text extends Shape<TextAttrs> {
       textAlign: 'start',
       textBaseline: 'bottom',
       lineHeight: null,
-      textArr: null
+      textArr: null,
     };
   }
 
@@ -48,7 +48,7 @@ class Text extends Shape<TextAttrs> {
       const text = attrs.text;
       let textArr = null;
       let lineCount = 1;
-      if (isString(text) && (text.indexOf('\n') !== -1)) {
+      if (isString(text) && text.indexOf('\n') !== -1) {
         textArr = text.split('\n');
         lineCount = textArr.length;
       }
@@ -76,7 +76,7 @@ class Text extends Shape<TextAttrs> {
     const attrs = this._attrs.attrs;
     const lineHeight = attrs.lineHeight;
     const fontSize = attrs.fontSize * 1;
-    return lineHeight ? (lineHeight - fontSize) : fontSize * 0.14;
+    return lineHeight ? lineHeight - fontSize : fontSize * 0.14;
   }
 
   drawInner(context) {
@@ -84,14 +84,16 @@ class Text extends Shape<TextAttrs> {
     const text = attrs.text;
     let x = attrs.x;
     let y = attrs.y;
-    if (isNil(text) || isNaN(x) || isNaN(y)) { // text will be 0
+    if (isNil(text) || isNaN(x) || isNaN(y)) {
+      // text will be 0
       return;
     }
     const textArr = attrs.textArr;
     const fontSize = attrs.fontSize * 1;
     const spaceingY = this._getSpaceingY();
 
-    if (attrs.rotate) { // do rotation
+    if (attrs.rotate) {
+      // do rotation
       context.translate(x, y);
       context.rotate(attrs.rotate);
       x = 0;
@@ -160,7 +162,7 @@ class Text extends Shape<TextAttrs> {
         minX: x,
         minY: y,
         maxX: x,
-        maxY: y
+        maxY: y,
       };
     }
     let height = this._getTextHeight(); // attrs.height
@@ -169,14 +171,14 @@ class Text extends Shape<TextAttrs> {
       const rotatedBox = RectUtil.calcRotatedBox({
         width,
         height,
-        rotate: attrs.rotate
+        rotate: attrs.rotate,
       });
       width = rotatedBox.width;
       height = rotatedBox.height;
     }
     const point = {
       x,
-      y: y - height
+      y: y - height,
     }; // default textAlign: start, textBaseline: bottom
 
     if (textAlign) {
@@ -199,7 +201,7 @@ class Text extends Shape<TextAttrs> {
       minX: point.x,
       minY: point.y,
       maxX: point.x + width,
-      maxY: point.y + height
+      maxY: point.y + height,
     };
   }
 

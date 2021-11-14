@@ -16,9 +16,9 @@ class GeometryTest extends Geometry {
     const records = this.mapping();
     return (
       <group>
-        {records.map(record => {
+        {records.map((record) => {
           const { children } = record;
-          return children.map(item => {
+          return children.map((item) => {
             const { x, y } = item;
             return (
               <circle
@@ -74,10 +74,7 @@ describe('geometry', () => {
       children: newChart,
     });
 
-    expect(chartRef.current.scale.scales.genre.values).toEqual([
-      'Sports',
-      'Strategy',
-    ]);
+    expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports', 'Strategy']);
 
     const container = componentRef.current.container;
     const group = container.get('children')[0];

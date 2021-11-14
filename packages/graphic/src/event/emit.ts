@@ -1,7 +1,6 @@
 // 实现简单的事件机制
 import { isObject } from '@antv/util';
 
-
 class EventEmit {
   __events: any;
   constructor() {
@@ -28,7 +27,7 @@ class EventEmit {
     if (!events || !events.length) {
       return;
     }
-    events.forEach(listener => {
+    events.forEach((listener) => {
       listener.call(this, e);
     });
   }

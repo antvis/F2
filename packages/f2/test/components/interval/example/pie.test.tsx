@@ -2,7 +2,7 @@
 import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
-import { Interval, Legend,  } from '../../../../src/components';
+import { Interval, Legend } from '../../../../src/components';
 import { createContext } from '../../../util';
 
 const data = [
@@ -59,14 +59,7 @@ describe('饼图', () => {
             adjust="stack"
             color={{
               field: 'name',
-              range: [
-                '#1890FF',
-                '#13C2C2',
-                '#2FC25B',
-                '#FACC14',
-                '#F04864',
-                '#8543E0',
-              ],
+              range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
             }}
           />
           <Legend position="right" />
@@ -78,5 +71,4 @@ describe('饼图', () => {
     const canvas = new type(props);
     canvas.render();
   });
-
 });

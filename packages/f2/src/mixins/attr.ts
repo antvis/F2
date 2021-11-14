@@ -3,9 +3,9 @@ import { Linear, Category, Identity } from '../attr';
 import { isFunction } from '@antv/util';
 
 type AttrOption = {
-  field: string | Record<any, any>
-  range?: any[]
-}
+  field: string | Record<any, any>;
+  range?: any[];
+};
 class Attr {
   attrOptions: any;
   attrs: any;
@@ -16,12 +16,12 @@ class Attr {
     if (isString(option)) {
       return {
         field: option,
-      }
+      };
     }
 
     if (isObject(option)) {
       if (!option.field) {
-        option.field = option
+        option.field = option;
       }
     }
 
@@ -71,7 +71,7 @@ class Attr {
     const { field, callback, scale } = attr;
 
     if (scale.type === 'identity') {
-      return attr.mapping(field)
+      return attr.mapping(field);
     }
 
     if (isFunction(callback)) {

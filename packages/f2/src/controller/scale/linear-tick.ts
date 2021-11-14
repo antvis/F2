@@ -1,8 +1,8 @@
 // 认为是nice的刻度
-const SNAP_COUNT_ARRAY = [ 1, 1.2, 1.5, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10 ];
+const SNAP_COUNT_ARRAY = [1, 1.2, 1.5, 2, 2.2, 2.4, 2.5, 3, 4, 5, 6, 7.5, 8, 10];
 const DEFAULT_COUNT = 5; // 默认刻度值
 
-export default cfg => {
+export default (cfg) => {
   const { tickCount, tickInterval } = cfg || {};
   let { min, max } = cfg || {};
   min = isNaN(min) ? 0 : min;
@@ -124,14 +124,14 @@ function intervalIsVerify({ interval, tickCount, max, min }) {
   return false;
 }
 
-
 // 计算小数点应该保留的位数
 function getFixedLength(num) {
   const str = num.toString();
   const index = str.indexOf('.');
   const indexOfExp = str.indexOf('e-');
 
-  let length = indexOfExp >= 0 ? parseInt(str.substr(indexOfExp + 2), 10) : str.substr(index + 1).length;
+  let length =
+    indexOfExp >= 0 ? parseInt(str.substr(indexOfExp + 2), 10) : str.substr(index + 1).length;
   if (length > 20) {
     // 最多保留20位小数
     length = 20;

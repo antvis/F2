@@ -44,11 +44,7 @@ export default (View) => {
       }
 
       // 传入的是 xx%
-      if (
-        isString(value) &&
-        value.indexOf('%') != -1 &&
-        !isNaN(Number(value.slice(0, -1)))
-      ) {
+      if (isString(value) && value.indexOf('%') != -1 && !isNaN(Number(value.slice(0, -1)))) {
         const rateValue = Number(value.slice(0, -1));
         const percent = (rateValue / 100) * absRange;
         if (percent <= min) {
@@ -97,15 +93,7 @@ export default (View) => {
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
-      return (
-        <View
-          ref={this.triggerRef}
-          points={points}
-          theme={theme}
-          coord={coord}
-          {...props}
-        />
-      );
+      return <View ref={this.triggerRef} points={points} theme={theme} coord={coord} {...props} />;
     }
   };
 };

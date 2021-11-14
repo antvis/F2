@@ -8,7 +8,7 @@ import { ElementAttrs } from '../types';
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',
   fill: 'fillStyle',
-  opacity: 'globalAlpha'
+  opacity: 'globalAlpha',
 };
 
 const SHAPE_ATTRS = [
@@ -27,10 +27,10 @@ const SHAPE_ATTRS = [
   'textAlign',
   'textBaseline',
   'lineDash',
-  'shadow' // 兼容支付宝小程序
+  'shadow', // 兼容支付宝小程序
 ];
 
-const CLIP_SHAPES = [ 'circle', 'sector', 'polygon', 'rect', 'polyline' ];
+const CLIP_SHAPES = ['circle', 'sector', 'polygon', 'rect', 'polyline'];
 
 // 内部属性存储结构
 interface _ATTRS<T extends ElementAttrs = ElementAttrs> {
@@ -133,7 +133,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
   _afterAttrsSet() {}
 
   _setAttrClip(clip) {
-    if (clip && (CLIP_SHAPES.indexOf(clip._attrs.type) > -1)) {
+    if (clip && CLIP_SHAPES.indexOf(clip._attrs.type) > -1) {
       if (clip.get('canvas') === null) {
         clip = { ...clip };
       }
@@ -228,9 +228,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
     return this.get('canStroke') && this._attrs.attrs.strokeStyle;
   }
 
-  drawInner(_context) {
-
-  }
+  drawInner(_context) {}
 
   show() {
     this.set('visible', true);
@@ -296,7 +294,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
       minY: 0,
       maxY: 0,
       width: 0,
-      height: 0
+      height: 0,
     };
   }
 
@@ -306,7 +304,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
       attrs = {} as T;
     }
     if (!attrs.matrix) {
-      attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
+      attrs.matrix = [1, 0, 0, 1, 0, 0];
     }
     this._attrs.attrs = attrs;
   }
@@ -316,7 +314,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
   }
 
   setMatrix(m) {
-    this._attrs.attrs.matrix = [ m[0], m[1], m[2], m[3], m[4], m[5] ];
+    this._attrs.attrs.matrix = [m[0], m[1], m[2], m[3], m[4], m[5]];
   }
 
   transform(actions) {
@@ -326,13 +324,13 @@ class Element<T extends ElementAttrs = ElementAttrs> {
   }
 
   setTransform(actions) {
-    this._attrs.attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
+    this._attrs.attrs.matrix = [1, 0, 0, 1, 0, 0];
     return this.transform(actions);
   }
 
   translate(x, y) {
     const matrix = this._attrs.attrs.matrix;
-    MatrixUtil.translate(matrix, matrix, [ x, y ]);
+    MatrixUtil.translate(matrix, matrix, [x, y]);
   }
 
   rotate(rad) {
@@ -342,7 +340,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
 
   scale(sx, sy) {
     const matrix = this._attrs.attrs.matrix;
-    MatrixUtil.scale(matrix, matrix, [ sx, sy ]);
+    MatrixUtil.scale(matrix, matrix, [sx, sy]);
   }
 
   moveTo(x, y) {

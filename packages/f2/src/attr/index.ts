@@ -3,9 +3,4 @@ import Linear from './linear';
 import Category from './category';
 import Identity from './identity';
 
-export {
-  Attr,
-  Linear,
-  Category,
-  Identity,
-};
+export { Attr, Linear, Category, Identity };

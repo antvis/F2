@@ -123,8 +123,8 @@ describe.skip('Line', () => {
             color={{
               field: 'type',
               callback: () => {
-                colorCallback()
-                return 'red'
+                colorCallback();
+                return 'red';
               },
             }}
             smooth={true}
@@ -155,12 +155,7 @@ describe.skip('Line', () => {
             type: Rect,
           }}
         >
-          <Line
-            x="type"
-            y="sold"
-            order={['genre', ['Sports', 'Action']]}
-            color={'genre'}
-          />
+          <Line x="type" y="sold" order={['genre', ['Sports', 'Action']]} color={'genre'} />
           <Axis field="type" />
           <Axis field="sold" />
         </Chart>
@@ -172,9 +167,8 @@ describe.skip('Line', () => {
     console.log('chart: ', chart);
     chart.render();
     expect(
-      chart.children.component.children[0].component.container._attrs
-        .children[0]._attrs.children[0]._attrs.children[0]._attrs.attrs
-        .strokeStyle
+      chart.children.component.children[0].component.container._attrs.children[0]._attrs.children[0]
+        ._attrs.children[0]._attrs.attrs.strokeStyle
     ).toBe('#1890FF');
   });
 

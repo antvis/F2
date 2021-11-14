@@ -12,11 +12,7 @@ function pickElement(element) {
   });
 }
 
-function renderShape(
-  component: Component,
-  children: JSX.Element,
-  animate?: boolean
-) {
+function renderShape(component: Component, children: JSX.Element, animate?: boolean) {
   const {
     container,
     context,
@@ -31,17 +27,14 @@ function renderShape(
   container.clear();
 
   animate = isBoolean(animate) ? animate : componentAnimate;
-  const lastElement =
-    __lastElement || (transformFrom && transformFrom.__lastElement);
+  const lastElement = __lastElement || (transformFrom && transformFrom.__lastElement);
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
   const shapeElement = renderJSXElement(children, context, updater);
   // @ts-ignore
   component.__lastElement = shapeElement;
   const renderElement =
-    animate !== false
-      ? compareRenderTree(shapeElement, lastElement)
-      : shapeElement;
+    animate !== false ? compareRenderTree(shapeElement, lastElement) : shapeElement;
   if (!renderElement) return null;
   // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
   if (isArray(renderElement)) {
@@ -209,11 +202,7 @@ function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
 
   // diff
   const { type: nextType, props: nextProps } = nextElement;
-  const {
-    type: lastType,
-    props: lastProps,
-    component: lastComponent,
-  } = lastElement;
+  const { type: lastType, props: lastProps, component: lastComponent } = lastElement;
 
   if (nextType !== lastType) {
     destroyElement(lastElement);
@@ -242,9 +231,7 @@ function diff(parent: Component, nextChildren, lastChildren) {
     const element = diffElement(next, last);
 
     if (element) {
-      childrenArray = childrenArray.concat(
-        Children.toArray(element).filter(Boolean)
-      );
+      childrenArray = childrenArray.concat(Children.toArray(element).filter(Boolean));
     }
   });
   // 2. 处理 shouldCreate 和 shouldUpdate
@@ -259,24 +246,22 @@ function diff(parent: Component, nextChildren, lastChildren) {
     return true;
   });
   // 3. 处理 create 和 Receive props
-  const shouldRenderComponent = shouldProcessChildren.map(
-    (element: JSX.Element) => {
-      let { component } = element;
-      if (!component) {
-        component = createComponent(parent, element);
-      } else {
-        const { props } = element;
-        if (component.willReceiveProps) {
-          component.willReceiveProps(props);
-        }
-        component.props = props;
+  const shouldRenderComponent = shouldProcessChildren.map((element: JSX.Element) => {
+    let { component } = element;
+    if (!component) {
+      component = createComponent(parent, element);
+    } else {
+      const { props } = element;
+      if (component.willReceiveProps) {
+        component.willReceiveProps(props);
       }
-
-      element.component = component;
-      setComponentAnimate(component, parent);
-      return component;
+      component.props = props;
     }
-  );
+
+    element.component = component;
+    setComponentAnimate(component, parent);
+    return component;
+  });
 
   // 4. 处理 render
   renderComponent(shouldRenderComponent);

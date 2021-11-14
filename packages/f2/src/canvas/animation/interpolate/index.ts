@@ -1,8 +1,4 @@
-import {
-  interpolateNumber,
-  interpolateNumberArray,
-  interpolateRgb,
-} from 'd3-interpolate';
+import { interpolateNumber, interpolateNumberArray, interpolateRgb } from 'd3-interpolate';
 
 import interpolateObjectArray from './interpolateObjectArray';
 

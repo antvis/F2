@@ -120,9 +120,7 @@ describe('Chart', () => {
             .map((year) => {
               return (
                 <Chart
-                  data={data[year].filter(
-                    (item) => countrys.indexOf(item.country) > -1
-                  )}
+                  data={data[year].filter((item) => countrys.indexOf(item.country) > -1)}
                   scale={{
                     population: {
                       type: 'pow',

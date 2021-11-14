@@ -1,10 +1,10 @@
-import withGuide from "./withGuide";
-import TextGuideView from "./views/Text";
-import PointGuideView from "./views/Point";
-import LineGuideView from "./views/Line";
-import ArcGuideView from "./views/Arc";
-import RectGuideView from "./views/Rect";
-import  ImageGuideView  from "./views/Image";
+import withGuide from './withGuide';
+import TextGuideView from './views/Text';
+import PointGuideView from './views/Point';
+import LineGuideView from './views/Line';
+import ArcGuideView from './views/Arc';
+import RectGuideView from './views/Rect';
+import ImageGuideView from './views/Image';
 
 const DefaultGuideView = () => null;
 const TextGuide = withGuide(TextGuideView);

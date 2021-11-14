@@ -39,9 +39,7 @@ describe('Interaction 交互', () => {
       height: '300px',
     });
     const chartRef = { current: null };
-    const res = await fetch(
-      'https://gw.alipayobjects.com/os/antfincdn/KbnoL5QgL0/index.json'
-    );
+    const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/KbnoL5QgL0/index.json');
     const data = await res.json();
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>

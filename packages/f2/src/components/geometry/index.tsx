@@ -1,11 +1,4 @@
-import {
-  isFunction,
-  each,
-  upperFirst,
-  mix,
-  groupToMap,
-  isObject,
-} from '@antv/util';
+import { isFunction, each, upperFirst, mix, groupToMap, isObject } from '@antv/util';
 import Component from '../../base/component';
 import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array';
 import * as Adjust from '../../adjust';

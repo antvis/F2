@@ -52,7 +52,7 @@ export interface LegendProps {
   marker?: 'circle' | 'square';
 }
 
-export default View => {
+export default (View) => {
   return class Legend extends Component<LegendProps> {
     maxItemWidth: number;
 
@@ -64,7 +64,7 @@ export default View => {
 
     getMaxItemWidth(legendShape) {
       let maxItemWidth = 0;
-      (legendShape.get('children') || []).forEach(child => {
+      (legendShape.get('children') || []).forEach((child) => {
         const childWidth = child.getBBox().width;
         if (childWidth > maxItemWidth) {
           maxItemWidth = childWidth;
@@ -95,9 +95,7 @@ export default View => {
       const { width } = context;
       const items = props.items || this.getItems();
 
-      return (
-        <View {...props} items={items} maxItemWidth={maxItemWidth || width} />
-      );
+      return <View {...props} items={items} maxItemWidth={maxItemWidth || width} />;
     }
   };
 };

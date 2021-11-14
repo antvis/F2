@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { jsx } from '../../src/jsx';
-import{
+import {
   Axis,
   Line,
   withGuide,
   ImageGuide,
   PointGuide,
   TextGuide,
-  LineGuide
+  LineGuide,
 } from '../../src/components';
 import { Canvas, Chart } from '../../src';
 import { createContext } from '../util';
@@ -18,10 +18,10 @@ const data = [
   { genre: 'Strategy', sold: 115, type: 'a' },
   { genre: 'Action', sold: 120, type: 'a' },
   { genre: 'Shooter', sold: 350, type: 'a' },
-  { genre: 'Other', sold: 150, type: 'a' }
+  { genre: 'Other', sold: 150, type: 'a' },
 ];
 
-const renderChart = Component => {
+const renderChart = (Component) => {
   const context = createContext();
   const { type, props } = (
     <Canvas height={300} width={300} context={context} animate={false}>
@@ -44,18 +44,18 @@ describe.skip('Guide ', () => {
         <Line x="genre" y="sold" color="type" />
 
         {/* 文字Guide */}
-        {data.map(item => {
+        {data.map((item) => {
           const { sold } = item;
           return (
             <TextGuide
               records={[item]}
-              onClick={ev => {
+              onClick={(ev) => {
                 console.log('ev: ', ev.points);
               }}
               content={sold + '个'}
               attrs={{
                 fill: '#000',
-                fontSize: '24px'
+                fontSize: '24px',
               }}
               offsetY={-20}
               offsetX={-15}
@@ -68,13 +68,13 @@ describe.skip('Guide ', () => {
           return (
             <ImageGuide
               records={[item]}
-              onClick={ev => {
+              onClick={(ev) => {
                 console.log('ev: ', ev.points);
               }}
               src="https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png"
               attrs={{
                 height: 24,
-                width: 24
+                width: 24,
               }}
               offsetY={-4}
             />
@@ -92,7 +92,7 @@ describe.skip('Guide ', () => {
       <Chart data={data}>
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
-        {data.map(item => {
+        {data.map((item) => {
           return <PointGuide records={[item]} />;
         })}
       </Chart>
@@ -104,12 +104,12 @@ describe.skip('Guide ', () => {
       <Chart data={data}>
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
-        {data.map(item => {
+        {data.map((item) => {
           return (
             <LineGuide
               records={[
                 { genre: item.genre, sold: 'min' },
-                { genre: item.genre, sold: item.sold }
+                { genre: item.genre, sold: item.sold },
               ]}
               offsetY={[60, 0]}
             />
@@ -126,44 +126,29 @@ describe.skip('Guide ', () => {
       <Chart data={data}>
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
-        {data.map(item => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'min' }]}
-              color="#262626"
-            />
-          );
+        {data.map((item) => {
+          return <PointGuide records={[{ genre: item.genre, sold: 'min' }]} color="#262626" />;
         })}
-        {data.map(item => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'median' }]}
-              color="#FF6797"
-            />
-          );
+        {data.map((item) => {
+          return <PointGuide records={[{ genre: item.genre, sold: 'median' }]} color="#FF6797" />;
         })}
-        {data.map(item => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'max' }]}
-              color="#82DC95"
-            />
-          );
+        {data.map((item) => {
+          return <PointGuide records={[{ genre: item.genre, sold: 'max' }]} color="#82DC95" />;
         })}
       </Chart>
     );
 
     const GuideY1 =
-      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY1).toBe(285);
     const GuideY2 =
-      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY2).toBe(150);
     const GuideY3 =
-      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY3).toBe(15);
   });
 
@@ -173,43 +158,28 @@ describe.skip('Guide ', () => {
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
         {data.map((item, index) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: '100%' }]}
-              color="green"
-            />
-          );
+          return <PointGuide records={[{ genre: item.genre, sold: '100%' }]} color="green" />;
         })}
         {data.map((item, index) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: '50%' }]}
-              color="red"
-            />
-          );
+          return <PointGuide records={[{ genre: item.genre, sold: '50%' }]} color="red" />;
         })}
         {data.map((item, index) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: '0%' }]}
-              color="blue"
-            />
-          );
+          return <PointGuide records={[{ genre: item.genre, sold: '0%' }]} color="blue" />;
         })}
       </Chart>
     );
 
     const GuideY1 =
-      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY1).toBe(15);
     const GuideY2 =
-      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY2).toBe(150);
     const GuideY3 =
-      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
+      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
+        .attrs.y;
     expect(GuideY3).toBe(285);
   });
 });

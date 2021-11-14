@@ -97,11 +97,11 @@ describe('PieLabel', () => {
                 fill: '#000000',
                 text: '$' + data.amount.toFixed(2),
                 fontWeight: 500,
-                fontSize: 10
+                fontSize: 10,
               };
             }}
-            onClick={data => {
-              console.log(data)
+            onClick={(data) => {
+              console.log(data);
             }}
           />
         </Chart>
