@@ -1,13 +1,13 @@
 import { jsx } from '../../jsx';
 
-export default props => {
+export default (props) => {
   const { node } = props;
   const { children } = node;
 
-  const renderNodes = nodes => {
+  const renderNodes = (nodes) => {
     return (
       <group>
-        {nodes.map(node => {
+        {nodes.map((node) => {
           const { xMin, xMax, yMin, yMax, color, children } = node;
           return (
             <group>
@@ -19,7 +19,7 @@ export default props => {
                   height: yMax - yMin,
                   lineWidth: '1px',
                   stroke: '#fff',
-                  fill: color
+                  fill: color,
                 }}
               />
               {children && children.length ? renderNodes(children) : null}

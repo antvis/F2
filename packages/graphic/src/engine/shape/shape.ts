@@ -3,7 +3,6 @@ import Element from '../element';
 import { ShapeAttrs } from '../../types';
 
 class Shape<T extends ShapeAttrs = ShapeAttrs> extends Element<T> {
-
   // // Shapes
   static Rect: any;
   static Image: any;

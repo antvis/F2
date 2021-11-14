@@ -15,7 +15,7 @@ const data = [
   { genre: 'Strategy', sold: 105, type: 'b' },
   { genre: 'Action', sold: 120, type: 'b' },
   { genre: 'Shooter', sold: 350, type: 'b' },
-  { genre: 'Other', sold: -190, type: 'b' }
+  { genre: 'Other', sold: -190, type: 'b' },
 ];
 
 class GeometryTest extends Geometry {
@@ -23,8 +23,8 @@ class GeometryTest extends Geometry {
     const mappedArray = this.mapping();
     return (
       <group>
-        {mappedArray.map(dataArray => {
-          return dataArray.map(item => {
+        {mappedArray.map((dataArray) => {
+          return dataArray.map((item) => {
             const { x, y } = item;
             return (
               <circle
@@ -32,7 +32,7 @@ class GeometryTest extends Geometry {
                   x,
                   y,
                   r: '20px',
-                  fill: '#000'
+                  fill: '#000',
                 }}
               />
             );
@@ -48,7 +48,7 @@ describe.skip('adjust', () => {
   const chartRef = { current: null };
   const componentRef = { current: null };
 
-  it('geometry render', done => {
+  it('geometry render', (done) => {
     const { type, props } = (
       <Canvas context={context} height={197}>
         <Chart ref={chartRef} data={data}>
@@ -77,16 +77,12 @@ describe.skip('adjust', () => {
       expect(group.get('children')[0].get('attrs').x).toBeCloseTo(52.01);
       expect(group.get('children')[0].get('attrs').y).toBeCloseTo(140.25);
       expect(group.get('children')[0].get('attrs').width).toBeCloseTo(16.45);
-      expect(group.get('children')[0].get('attrs').height).toBeCloseTo(
-        -57.40625
-      );
+      expect(group.get('children')[0].get('attrs').height).toBeCloseTo(-57.40625);
 
       expect(group.get('children')[5].get('attrs').x).toBeCloseTo(27.34);
       expect(group.get('children')[5].get('attrs').y).toBeCloseTo(140.25);
       expect(group.get('children')[5].get('attrs').width).toBeCloseTo(16.45);
-      expect(group.get('children')[5].get('attrs').height).toBeCloseTo(
-        -57.40625
-      );
+      expect(group.get('children')[5].get('attrs').height).toBeCloseTo(-57.40625);
       done();
     }, 600);
   });

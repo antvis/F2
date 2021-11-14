@@ -17,11 +17,7 @@ export default (View) => {
     _initEvent() {
       const { context, props } = this;
       const { canvas } = context;
-      const {
-        triggerOn = 'press',
-        triggerOff = 'pressend',
-        alwaysShow = false,
-      } = props;
+      const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
 
       canvas.on(triggerOn, (ev) => {
         const { points } = ev;

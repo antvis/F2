@@ -1,5 +1,3 @@
-
-
 class Size {
   // getDefaultSize() {
   //   const { attrs } = this;
@@ -14,10 +12,8 @@ class Size {
   //   // const { scale } = x;
   //   // const { values } = scale;
   //   // return 1 / values.length;
-
   //   const sizeAttr = this.getAttr('size');
   //   if (sizeAttr) {
-      
   //   }
   // }
 }

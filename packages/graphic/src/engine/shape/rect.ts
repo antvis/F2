@@ -10,7 +10,7 @@ function parsePadding(padding: any) {
   const right = padding[1] ? padding[1] : padding[0];
   const bottom = padding[2] ? padding[2] : top;
   const left = padding[3] ? padding[3] : right;
-  return [ top, right, bottom, left ];
+  return [top, right, bottom, left];
 }
 
 // 为了处理radius 大于 width 或 height 的场景
@@ -24,7 +24,7 @@ function parseRadius(radius, width, height) {
   const minHeight = Math.max(radius[0] + radius[3], radius[1] + radius[2]);
   const scale = Math.min(width / minWidth, height / minHeight);
   if (scale < 1) {
-    return radius.map(r => r * scale);
+    return radius.map((r) => r * scale);
   }
   return radius;
 }
@@ -44,7 +44,7 @@ class Rect<T extends RectAttrs = RectAttrs> extends Shape<T> {
       width: 0,
       height: 0,
       radius: 0,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 
@@ -58,7 +58,7 @@ class Rect<T extends RectAttrs = RectAttrs> extends Shape<T> {
     context.lineTo(x + radius[3], y + height);
     context.arc(x + radius[3], y + height - radius[3], radius[3], Math.PI / 2, Math.PI, false);
     context.lineTo(x, y + radius[0]);
-    context.arc(x + radius[0], y + radius[0], radius[0], Math.PI, Math.PI * 3 / 2, false);
+    context.arc(x + radius[0], y + radius[0], radius[0], Math.PI, (Math.PI * 3) / 2, false);
     context.closePath();
   }
 
@@ -81,7 +81,7 @@ class Rect<T extends RectAttrs = RectAttrs> extends Shape<T> {
       minX: x,
       minY: y,
       maxX: x + width,
-      maxY: y + height
+      maxY: y + height,
     };
   }
 }

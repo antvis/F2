@@ -7,14 +7,13 @@ interface PolarOption extends Option {
 }
 
 class Polar extends Base {
-
   type = 'polar';
   isPolar = true;
   startAngle: number;
   endAngle: number;
   radius: number; // 半径
   innnerRadius: number; // 内半径
-  
+
   option: PolarOption;
 
   update(option: PolarOption) {
@@ -26,7 +25,7 @@ class Polar extends Base {
 
     const { radius: radiusRatio = 1, innerRadius: innerRadiusRatio = 0 } = this.option;
 
-    const { width, height, startAngle = -Math.PI / 2, endAngle = Math.PI * 3 / 2 } = this;
+    const { width, height, startAngle = -Math.PI / 2, endAngle = (Math.PI * 3) / 2 } = this;
     // 半径取宽高的最小值
     const radius = radiusRatio * (Math.min(width, height) / 2);
     // 极坐标下 x 表示弧度， y 代表 半径
@@ -42,7 +41,7 @@ class Polar extends Base {
 
   isCyclic() {
     const { startAngle, endAngle } = this;
-    if ((endAngle - startAngle) < Math.PI * 2) {
+    if (endAngle - startAngle < Math.PI * 2) {
       return false;
     }
     return true;
@@ -62,7 +61,7 @@ class Polar extends Base {
 
     return {
       x: center.x + Math.cos(angle) * radius,
-      y: center.y + Math.sin(angle) * radius
+      y: center.y + Math.sin(angle) * radius,
     };
   }
 }

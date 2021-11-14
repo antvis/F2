@@ -6,7 +6,7 @@
 // import jsxTree from './createComponentTree/jsx';
 // import reactTree from './createComponentTree/react';
 
-it('', () => {})
+it('', () => {});
 // describe.skip('createComponentTree', () => {
 //   it('react 生成的jsx树', () => {
 //     // @ts-ignore

@@ -64,7 +64,8 @@
     "site:start": "cd ./packages/site && npm run site:start",
     "site:develop": "cd ./packages/site && npm run site:develop",
     "site:build": "cd ./packages/site && npm run site:build",
-    "site:deploy": "cd ./packages/site && npm run site:deploy"
+    "site:deploy": "cd ./packages/site && npm run site:deploy",
+    "prettier": "prettier --write './packages/**/*.{ts,tsx}'"
   },
   "pre-commit": {
     "run": [

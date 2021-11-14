@@ -13,7 +13,6 @@ import { mix } from '@antv/util';
 // };
 
 class ThemeAvailable {
-
   theme = {};
 
   setTheme(theme) {

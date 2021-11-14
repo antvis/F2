@@ -15,7 +15,7 @@ class Line extends Shape<LineAttrs> {
       y1: 0,
       x2: 0,
       y2: 0,
-      lineWidth: 1
+      lineWidth: 1,
     };
   }
 

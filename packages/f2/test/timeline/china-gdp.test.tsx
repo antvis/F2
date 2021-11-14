@@ -1,12 +1,4 @@
-import {
-  jsx,
-  Canvas,
-  Chart,
-  Timeline,
-  Axis,
-  Interval,
-  TextGuide,
-} from '../../src';
+import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide } from '../../src';
 import { createContext } from '../util';
 import data from './data/china-gdp.json';
 

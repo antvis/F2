@@ -9,7 +9,7 @@ export default class Pan extends Base {
       type: 'pan',
       startEvent: 'panstart',
       processEvent: 'pan',
-      endEvent: 'panend'
+      endEvent: 'panend',
     };
   }
 

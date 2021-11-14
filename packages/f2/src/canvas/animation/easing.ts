@@ -51,23 +51,23 @@ function quarticInOut(k) {
 }
 
 function quinticIn(k) {
-  return k * k * k * k * k
+  return k * k * k * k * k;
 }
 
 function quinticOut(k) {
-  return --k * k * k * k * k + 1
+  return --k * k * k * k * k + 1;
 }
 
 function quinticInOut(k) {
   if ((k *= 2) < 1) {
-    return 0.5 * k * k * k * k * k
+    return 0.5 * k * k * k * k * k;
   }
 
-  return 0.5 * ((k -= 2) * k * k * k * k + 2)
+  return 0.5 * ((k -= 2) * k * k * k * k + 2);
 }
 
 function exponentialIn(k) {
-  return k === 0 ? 0 : Math.pow(1024, k - 1)
+  return k === 0 ? 0 : Math.pow(1024, k - 1);
 }
 
 function exponentialOut(k) {
@@ -87,9 +87,9 @@ function elasticIn(k) {
     a = 1;
     s = p / 4;
   } else {
-    s = p / (2 * Math.PI) * Math.asin(1 / a);
+    s = (p / (2 * Math.PI)) * Math.asin(1 / a);
   }
-  return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p));
+  return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p));
 }
 
 function elasticOut(k) {
@@ -105,9 +105,9 @@ function elasticOut(k) {
     a = 1;
     s = p / 4;
   } else {
-    s = p / (2 * Math.PI) * Math.asin(1 / a);
+    s = (p / (2 * Math.PI)) * Math.asin(1 / a);
   }
-  return (a * Math.pow(2, -10 * k) * Math.sin((k - s) * (2 * Math.PI) / p) + 1);
+  return a * Math.pow(2, -10 * k) * Math.sin(((k - s) * (2 * Math.PI)) / p) + 1;
 }
 
 function elasticInOut(k) {
@@ -123,12 +123,12 @@ function elasticInOut(k) {
     a = 1;
     s = p / 4;
   } else {
-    s = p / (2 * Math.PI) * Math.asin(1 / a);
+    s = (p / (2 * Math.PI)) * Math.asin(1 / a);
   }
   if ((k *= 2) < 1) {
-    return -0.5 * (a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p));
+    return -0.5 * (a * Math.pow(2, 10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p));
   }
-  return a * Math.pow(2, -10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p) * 0.5 + 1;
+  return a * Math.pow(2, -10 * (k -= 1)) * Math.sin(((k - s) * (2 * Math.PI)) / p) * 0.5 + 1;
 }
 
 function backIn(k) {
@@ -154,15 +154,15 @@ function bounceIn(k) {
 }
 
 function bounceOut(k) {
-  if ((k /= 1) < (1 / 2.75)) {
+  if ((k /= 1) < 1 / 2.75) {
     return 7.5625 * k * k;
-  } else if (k < (2 / 2.75)) {
-    return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75;
-  } else if (k < (2.5 / 2.75)) {
-    return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375;
+  } else if (k < 2 / 2.75) {
+    return 7.5625 * (k -= 1.5 / 2.75) * k + 0.75;
+  } else if (k < 2.5 / 2.75) {
+    return 7.5625 * (k -= 2.25 / 2.75) * k + 0.9375;
   }
 
-  return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;
+  return 7.5625 * (k -= 2.625 / 2.75) * k + 0.984375;
 }
 
 function bounceInOut(k) {
@@ -196,5 +196,5 @@ export {
   exponentialOut,
   quinticIn,
   quinticOut,
-  quinticInOut
+  quinticInOut,
 };

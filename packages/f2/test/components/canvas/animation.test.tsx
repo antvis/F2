@@ -15,7 +15,7 @@ class Test extends Component {
           y: 10,
           width: 0,
           height: 10,
-          fill: 'red'
+          fill: 'red',
         }}
         animation={{
           appear: {
@@ -23,14 +23,14 @@ class Test extends Component {
             duration: 10,
             property: ['width'],
             start: {
-              width: 10
+              width: 10,
             },
             end: {
-              width: 100
+              width: 100,
             },
             onFrame,
-            onEnd
-          }
+            onEnd,
+          },
         }}
       />
     );
@@ -38,7 +38,7 @@ class Test extends Component {
 }
 
 describe('Canvas', () => {
-  it('测试动画', done => {
+  it('测试动画', (done) => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={1}>
         <Test />
@@ -52,7 +52,7 @@ describe('Canvas', () => {
     canvas.render();
     // @ts-ignore
     const rect = canvas.children.component.container._attrs.children[0];
-    
+
     expect(rect._attrs.attrs.width).toBe(10);
 
     // 动画结束后

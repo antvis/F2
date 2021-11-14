@@ -168,7 +168,7 @@ describe('Axis 轴', () => {
             color={{
               // TODO: 这里颜色映射还有点问题
               field: 'NumberNewMicroBrewery',
-              callback: function(val) {
+              callback: function (val) {
                 if (val === 20) {
                   return '#1890ff';
                 }

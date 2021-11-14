@@ -1,7 +1,7 @@
 import { jsx } from '../../jsx';
 import withLine from '../line/withLine';
 
-export default View => {
+export default (View) => {
   return class Area extends withLine(View) {
     getDefaultCfg() {
       return {

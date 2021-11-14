@@ -1,4 +1,4 @@
-import { px2hd } from '../util'
+import { px2hd } from '../util';
 
 export interface ComponentContext {
   px2hd: typeof px2hd;

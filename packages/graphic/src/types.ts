@@ -1,4 +1,3 @@
-
 // Element 的 attrs 属性类型（_attrs.attrs)
 export interface ElementAttrs {
   /**
@@ -115,7 +114,6 @@ export interface SectorAttrs extends ShapeAttrs {
   anticlockwise: boolean;
 }
 
-
 export interface ImageAttrs extends RectAttrs {
   src: string;
   sx: number;
@@ -143,18 +141,18 @@ export interface TextAttrs extends ShapeAttrs {
   fontFamily?: string;
   fontStyle?: 'normal' | 'italic' | 'oblique';
   fontWeight?:
-  | 'normal'
-  | 'bold'
-  | 'bolder'
-  | 'lighter'
-  | 100
-  | 200
-  | 300
-  | 400
-  | 500
-  | 600
-  | 700
-  | 800
-  | 900;
+    | 'normal'
+    | 'bold'
+    | 'bolder'
+    | 'lighter'
+    | 100
+    | 200
+    | 300
+    | 400
+    | 500
+    | 600
+    | 700
+    | 800
+    | 900;
   fontVariant?: 'normal' | 'small-caps';
 }

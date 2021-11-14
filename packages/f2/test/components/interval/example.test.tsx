@@ -187,8 +187,7 @@ describe('柱图示例', () => {
 
     // @ts-ignore
     const img = new Image();
-    img.src =
-      'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
+    img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
 
     img.onload = function () {
       const pattern = context.createPattern(img, 'repeat');

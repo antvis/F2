@@ -4,7 +4,7 @@ import Geometry from '../geometry';
 import { convertRect } from './util';
 import { GeomType } from '../geometry/interface';
 
-export default Views => {
+export default (Views) => {
   return class Interval extends Geometry {
     getDefaultCfg() {
       return {

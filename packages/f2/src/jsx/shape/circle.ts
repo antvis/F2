@@ -5,5 +5,5 @@ export default (layout) => {
     x: left + r,
     y: top + r,
     r,
-  }
-}
+  };
+};

@@ -10,7 +10,7 @@ export default class Pinch extends Base {
       type: 'pinch',
       startEvent: 'pinchstart',
       processEvent: 'pinch',
-      endEvent: 'pinchend'
+      endEvent: 'pinchend',
     };
   }
 

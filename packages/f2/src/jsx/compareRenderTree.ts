@@ -2,11 +2,7 @@
 import JSX from './interface';
 import Children from '../children';
 import { isArray, isNil, mix, deepMix } from '@antv/util';
-import {
-  ELEMENT_APPEAR,
-  ELEMENT_DELETE,
-  ELEMENT_UPDATE,
-} from './elementStatus';
+import { ELEMENT_APPEAR, ELEMENT_DELETE, ELEMENT_UPDATE } from './elementStatus';
 
 // 处理删除的元素
 function deleteElement(element) {
@@ -72,11 +68,7 @@ function updateElement(nextElement, lastElement) {
   const { ref, key, type, _cache: _nextCache, props: nextProps } = nextElement;
   const { _cache: _lastCache, props: lastProps } = lastElement;
 
-  const {
-    children: nextChildren,
-    animation: nextAnimation,
-    ...nextReceiveProps
-  } = nextProps;
+  const { children: nextChildren, animation: nextAnimation, ...nextReceiveProps } = nextProps;
 
   const { children: lastChildren } = lastProps;
   // 继续比较子元素
@@ -107,13 +99,7 @@ function morphElement(nextElement, lastElement) {
 }
 
 function changeTypeToGroup(nextGroupElement, lastShapeElement) {
-  const {
-    key,
-    type,
-    ref,
-    props: groupProps,
-    _cache: _groupCache,
-  } = nextGroupElement;
+  const { key, type, ref, props: groupProps, _cache: _groupCache } = nextGroupElement;
   const { type: lastType, _cache: _lastCache } = lastShapeElement;
 
   const { children: groupChildren } = groupProps;
@@ -121,13 +107,7 @@ function changeTypeToGroup(nextGroupElement, lastShapeElement) {
   // let existTransform = false;
   const children = Children.map(groupChildren, (nextElement) => {
     if (!nextElement) return nextElement;
-    const {
-      key,
-      ref,
-      type: nextType,
-      props: nextProps,
-      _cache: _nextCache,
-    } = nextElement;
+    const { key, ref, type: nextType, props: nextProps, _cache: _nextCache } = nextElement;
     // if (nextType === 'group') {
     //   return changeTypeToGroup(nextElement, lastShapeElement);
     // }

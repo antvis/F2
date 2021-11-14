@@ -33,7 +33,7 @@ export default (View): any => {
       this.color = new Category({
         range: theme.colors,
         ...color,
-        data
+        data,
       });
     }
 
@@ -44,9 +44,9 @@ export default (View): any => {
 
       this.triggerRef = [];
 
-      canvas.on('click', ev => {
+      canvas.on('click', (ev) => {
         const { points } = ev;
-        const shape = this.triggerRef.find(ref => {
+        const shape = this.triggerRef.find((ref) => {
           return isInBBox(ref.current.getBBox(), points[0]);
         });
         if (shape) {
@@ -68,7 +68,7 @@ export default (View): any => {
           xMin: node.x0,
           xMax: node.x1,
           yMin: node.y0,
-          yMax: node.y1
+          yMax: node.y1,
         });
         mix(node, rect);
         // 递归处理
@@ -82,7 +82,7 @@ export default (View): any => {
       const { props } = this;
       const { data, value, sort = true } = props;
 
-      const root = hierarchy({ children: data }).sum(function(d) {
+      const root = hierarchy({ children: data }).sum(function (d) {
         return d[value];
       });
 
@@ -101,14 +101,7 @@ export default (View): any => {
     render() {
       const node = this.sunburst();
       const { coord, props } = this;
-      return (
-        <View
-          {...props}
-          coord={coord}
-          node={node}
-          triggerRef={this.triggerRef}
-        />
-      );
+      return <View {...props} coord={coord} node={node} triggerRef={this.triggerRef} />;
     }
   }
 
