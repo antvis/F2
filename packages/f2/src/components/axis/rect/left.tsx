@@ -11,7 +11,7 @@ export default (props: RectProps) => {
       {
         grid ?
           ticks.map(tick => {
-            const { points, tickValue } = tick;
+            const { points, tickValue, gridStyle } = tick;
             const start = points[0];
             const end = points[points.length - 1];
             return (
@@ -21,6 +21,7 @@ export default (props: RectProps) => {
                 x2: end.x,
                 y2: end.y,
                 ...grid,
+                ...gridStyle
               }} />
             );
           })
@@ -59,8 +60,8 @@ export default (props: RectProps) => {
       }
       {
         label ?
-          ticks.map((tick, index) => {
-            const { tickValue, points, text } = tick;
+          ticks.map((tick, _index) => {
+            const { tickValue, points, text, labelStyle } = tick;
             const start = points[0];
             return (
               <text
@@ -72,6 +73,7 @@ export default (props: RectProps) => {
                   textBaseline: 'middle',
                   text,
                   ...label,
+                  ...labelStyle
                 }}
                 animation={ animation || {
                   appear: {

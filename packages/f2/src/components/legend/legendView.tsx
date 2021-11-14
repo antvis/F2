@@ -1,4 +1,4 @@
-import { isFunction, mix } from '@antv/util';
+import { isFunction } from '@antv/util';
 import { jsx } from '../../jsx';
 
 const Marker = ({ type, color }) => {
@@ -40,12 +40,11 @@ export default (props) => {
     layout,
     position,
     maxItemWidth,
-    coord,
     itemFormatter,
     style,
     marker = 'circle', // 图例标记默认为 circle
   } = props;
-  const { left, top, right, bottom, width, height } = layout;
+  const { left, top, right, bottom, width } = layout;
 
   const legendStyle = {
     // default style

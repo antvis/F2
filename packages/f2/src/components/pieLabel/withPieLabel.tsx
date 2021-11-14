@@ -37,16 +37,16 @@ function getMiddleAngle(startAngle, endAngle) {
 }
 
 // 判断两个矩形是否相交
-function isOverlap(label1, label2) {
-  const label1BBox = label1.getBBox();
-  const label2BBox = label2.getBBox();
-  return (
-    Math.max(label1BBox.minX, label2BBox.minX) <=
-      Math.min(label1BBox.maxX, label2BBox.maxX) &&
-    Math.max(label1BBox.minY, label2BBox.minY) <=
-      Math.min(label1BBox.maxY, label2BBox.maxY)
-  );
-}
+// function isOverlap(label1, label2) {
+//   const label1BBox = label1.getBBox();
+//   const label2BBox = label2.getBBox();
+//   return (
+//     Math.max(label1BBox.minX, label2BBox.minX) <=
+//       Math.min(label1BBox.maxX, label2BBox.maxX) &&
+//     Math.max(label1BBox.minY, label2BBox.minY) <=
+//       Math.min(label1BBox.maxY, label2BBox.maxY)
+//   );
+// }
 
 function findShapesByClass(shape, targetClassName) {
   const { _attrs = {} } = shape || {};

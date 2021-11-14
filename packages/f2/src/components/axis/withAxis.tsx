@@ -1,13 +1,13 @@
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction, mix, each, clone } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
-import { Style, AxisProps } from './types';
+import { Style, Tick, AxisProps } from './types';
 
 export default (View) => {
   return class Axis extends Component<AxisProps> {
-    style: Style;
-  
+    style: Style = {};
+
     constructor(props: AxisProps) {
       super(props);
       const { chart, field } = this.props;
@@ -60,14 +60,16 @@ export default (View) => {
       return scales.length > 0 ? 'x' : 'y';
     }
     // 获取ticks最大的宽高
-    getMaxBBox(ticks, style) {
+    getMaxBBox(ticks, style: Style) {
       const { context } = this;
       const { measureText } = context;
-      const { label, labelOffset } = style;
+      const { labelOffset } = style;
+
       let width = 0;
       let height = 0;
-      ticks.forEach((tick) => {
-        const bbox = measureText(tick.text, label);
+      ticks.forEach((tick: Tick) => {
+        const { labelStyle, text } = tick;
+        const bbox = measureText(text, { ...style.label, ...labelStyle });
         width = Math.max(width, bbox.width);
         height = Math.max(height, bbox.height);
       });
@@ -94,8 +96,43 @@ export default (View) => {
       const { props } = this;
       const { field, chart } = props;
       const scale = chart.getScale(field);
-      const ticks = scale.getTicks();
+      let ticks = scale.getTicks();
+
+      // 设置tick的样式
+      ticks = this._setTicksStyle(ticks);
       return ticks;
+    }
+
+    _setTicksStyle(ticks) {
+      const { props, context } = this;
+      const { theme, px2hd } = context;
+      const { style = {} } = props;
+      const { axis: themeAxis } = theme;
+
+      each(themeAxis, (value, key) => {
+        // 关闭tick的样式
+        if (style[key] === null) {
+          return;
+        }
+
+        this.style[key] = px2hd(
+          deepMix(clone(value), isFunction(style[key]) ? undefined : style[key])
+        );
+      });
+
+      return ticks.map((tick: Tick, index) => {
+        const { label, grid } = style;
+        const { label: defaultLabelStyle, grid: defaultGridStyle } = themeAxis;
+        if (isFunction(label)) {
+          tick.labelStyle = px2hd(
+            mix({}, defaultLabelStyle, label(tick.text, index, ticks.length))
+          );
+        }
+        if (isFunction(grid)) {
+          tick.gridStyle = px2hd(mix({}, defaultGridStyle, grid(tick.text, index, ticks.length)));
+        }
+        return tick;
+      });
     }
 
     convertTicks(ticks) {
@@ -128,17 +165,9 @@ export default (View) => {
         return;
       }
 
-      const { theme, px2hd } = context;
-      this.style = px2hd(deepMix({}, theme.axis, style));
       const ticks = this.getTicks();
       const bbox = this.getMaxBBox(ticks, this.style);
-      const {
-        isPolar,
-        left,
-        top,
-        width: coordWidth,
-        height: coordHeight,
-      } = coord;
+      const { isPolar, left, top, width: coordWidth, height: coordHeight } = coord;
       const dimType = this._getDimType();
       const { width, height } = bbox;
 

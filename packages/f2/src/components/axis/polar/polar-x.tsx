@@ -65,7 +65,7 @@ export default (props: PolarProps) => {
       {
         grid ?
           ticks.map(tick => {
-            const { points } = tick;
+            const { points, gridStyle } = tick;
             const end = points[points.length - 1];
             return (
               <line attrs={{
@@ -74,6 +74,7 @@ export default (props: PolarProps) => {
                 x2: end.x,
                 y2: end.y,
                 ...grid,
+                ...gridStyle
               }} />
             );
           })
@@ -114,7 +115,7 @@ export default (props: PolarProps) => {
       {
         label ?
           ticks.map(tick => {
-            const { points, text } = tick;
+            const { points, text, labelStyle } = tick;
             const end = points[points.length - 1];
             const offsetPoint = getOffsetPoint(center, end, labelOffset)
             return (
@@ -124,6 +125,7 @@ export default (props: PolarProps) => {
                 text,
                 ...getTextAlignInfo(center, end),
                 ...label,
+                ...labelStyle
               }} />
             );
           })

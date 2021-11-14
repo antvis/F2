@@ -10,20 +10,18 @@ import { createUpdater } from './updater';
 import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
 
-interface ChartUpdateProps {
+interface ChartProps {
+  context?: CanvasRenderingContext2D;
   pixelRatio?: number;
   width?: number | string;
   height?: number | string;
-  padding?: (number | string)[];
+  padding?: number | string | (number | string)[];
   animate?: boolean;
   children?: any;
-  px2hd: any;
-  theme: any;
-  style: any;
-}
-
-interface ChartProps extends ChartUpdateProps {
-  context: any;
+  px2hd?: any;
+  theme?: any;
+  style?: any;
+  onAnimationEnd?: () => void;
 }
 
 interface IF2Canvas {
@@ -55,7 +53,7 @@ function measureText(canvas, px2hd) {
 }
 
 // 顶层Canvas标签
-class Canvas extends Component implements IF2Canvas {
+class Canvas extends Component<ChartProps> implements IF2Canvas {
   canvas: any;
   animation?: Animation;
   layout: Layout;
@@ -134,7 +132,7 @@ class Canvas extends Component implements IF2Canvas {
     this.draw();
   }
 
-  update(nextProps) {
+  update(nextProps: ChartProps) {
     const { props } = this;
     if (equal(nextProps, props)) {
       return;
@@ -167,6 +165,11 @@ class Canvas extends Component implements IF2Canvas {
     renderChildren(this, nextChildren, lastChildren);
     this.draw();
     return null;
+  }
+
+  destroy() {
+    const { canvas } = this;
+    canvas.destroy();
   }
 }
 

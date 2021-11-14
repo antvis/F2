@@ -1,9 +1,8 @@
 import { jsx } from '../../jsx';
 import Geometry from '../geometry';
-import { GeomType } from '../geometry/interface';
 
-export default View => {
-  return class Line extends Geometry {
+export default (View) => {
+  return class Point extends Geometry {
     getDefaultCfg() {
       return {
         geomType: 'point',

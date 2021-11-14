@@ -1,8 +1,6 @@
 import {
   each,
-  isObject,
   isString,
-  mix,
   isNil,
   isFunction,
   upperFirst,

@@ -1,18 +1,18 @@
 import { jsx } from '../../../';
 import { RectProps } from '../types';
 
+
 export default (props: RectProps<'bottom'>) => {
   const { ticks, coord, style, animation } = props;
   const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
-  const { align = 'center' } = label || {};
 
   return (
     <group>
       {
         grid ?
           ticks.map(tick => {
-            const { points, tickValue } = tick;
+            const { points, tickValue, gridStyle } = tick;
             const start = points[0];
             const end = points[points.length - 1];
             return (
@@ -22,6 +22,7 @@ export default (props: RectProps<'bottom'>) => {
                 x2: end.x,
                 y2: end.y,
                 ...grid,
+                ...gridStyle
               }} />
             );
           })
@@ -61,9 +62,9 @@ export default (props: RectProps<'bottom'>) => {
       {
         label ?
           ticks.map((tick, index) => {
-            const { points, text, tickValue } = tick;
+            const { points, text, tickValue, labelStyle } = tick;
             const start = points[0];
-
+            const { align = 'center' } = label || {};
             const textAttrs = {
               x: start.x,
               y: start.y + labelOffset,
@@ -71,6 +72,7 @@ export default (props: RectProps<'bottom'>) => {
               textBaseline: 'top',
               text,
               ...label,
+              ...labelStyle
             }
 
             if (align === "between") {

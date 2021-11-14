@@ -1,11 +1,7 @@
-import JSX from './interface';
+import JSX, { ElementType } from './interface';
 
 // 实现jsx-classic 入口
-export default function (
-  type: string | Function,
-  config: any,
-  ...children: any[]
-): JSX.Element {
+export default function(type: ElementType, config: any, ...children: any[]): JSX.Element {
   const { key, ref, ...props } = config || {};
 
   // 保持和automatic模式一致

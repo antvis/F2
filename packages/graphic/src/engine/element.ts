@@ -3,6 +3,7 @@ import MatrixUtil from '../util/matrix';
 import Vector2 from '../util/vector2';
 import { parseStyle } from '../util/style-parse';
 import * as Array from '../util/array';
+import { ElementAttrs } from '../types';
 
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',
@@ -31,13 +32,48 @@ const SHAPE_ATTRS = [
 
 const CLIP_SHAPES = [ 'circle', 'sector', 'polygon', 'rect', 'polyline' ];
 
-class Element {
-  _attrs: any;
+// 内部属性存储结构
+interface _ATTRS<T extends ElementAttrs = ElementAttrs> {
+  type?: string;
+  attrs?: T;
+  zIndex?: number;
+  visible?: boolean;
+  destroyed?: boolean;
+  bbox?: {
+    x: number;
+    y: number;
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+    width: number;
+    height: number;
+  };
+
+  isGroup?: boolean;
+  isShape?: boolean;
+  parent?: Element;
+  children?: Element[];
+  context?: any;
+
+  canFill?: boolean;
+  canStroke?: boolean;
+
+  aria?: boolean;
+  ariaLabel?: string;
+  x?: number;
+  y?: number;
+  [k: string]: any;
+}
+
+class Element<T extends ElementAttrs = ElementAttrs> {
+  _attrs: _ATTRS<T>;
+
   _initProperties() {
     this._attrs = {
       zIndex: 0,
       visible: true,
-      destroyed: false
+      destroyed: false,
     };
   }
 
@@ -53,7 +89,7 @@ class Element {
     this.initTransform();
   }
 
-  get(name) {
+  get<K extends keyof _ATTRS<T>>(name: K): _ATTRS<T>[K] {
     return this._attrs[name];
   }
 
@@ -90,8 +126,8 @@ class Element {
     attrs[name] = value;
   }
 
-  _getAttr(name) {
-    return this._attrs.attrs[name];
+  _getAttr<U extends keyof T>(name: U): T[U] {
+    return this._attrs?.attrs?.[name];
   }
 
   _afterAttrsSet() {}
@@ -99,7 +135,7 @@ class Element {
   _setAttrClip(clip) {
     if (clip && (CLIP_SHAPES.indexOf(clip._attrs.type) > -1)) {
       if (clip.get('canvas') === null) {
-        clip = Object.assign({}, clip);
+        clip = { ...clip };
       }
       clip.set('parent', this.get('parent'));
       clip.set('context', this.get('context'));
@@ -192,7 +228,7 @@ class Element {
     return this.get('canStroke') && this._attrs.attrs.strokeStyle;
   }
 
-  drawInner(context) {
+  drawInner(_context) {
 
   }
 
@@ -265,7 +301,10 @@ class Element {
   }
 
   initTransform() {
-    const attrs = this._attrs.attrs || {};
+    let attrs = this._attrs.attrs;
+    if (!attrs) {
+      attrs = {} as T;
+    }
     if (!attrs.matrix) {
       attrs.matrix = [ 1, 0, 0, 1, 0, 0 ];
     }

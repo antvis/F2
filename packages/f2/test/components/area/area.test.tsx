@@ -1,14 +1,6 @@
 import { jsx } from '../../../src/jsx';
 import { Rect } from '../../../src/coord';
-import {
-  Canvas,
-  Chart,
-  Area,
-  Line,
-  Axis,
-  Interval,
-  Legend,
-} from '../../../src';
+import { Canvas, Chart, Area, Line, Axis, Interval, Legend } from '../../../src';
 import { createContext } from '../../util';
 
 const { offsetWidth } = document.body;
@@ -65,13 +57,7 @@ describe('面积图', () => {
     it('基础面积图', () => {
       const context = createContext('基础面积图');
       const { type, props } = (
-        <Canvas
-          context={context}
-          coord={{
-            type: Rect,
-          }}
-          {...defaultCanvasCfg}
-        >
+        <Canvas context={context} {...defaultCanvasCfg}>
           <Chart
             data={data}
             scale={{
@@ -137,9 +123,6 @@ describe('面积图', () => {
           context={context}
           width={offsetWidth}
           height={height}
-          coord={{
-            type: Rect,
-          }}
           pixelRatio={window.devicePixelRatio}
         >
           <Chart
@@ -209,9 +192,6 @@ describe('面积图', () => {
           context={context}
           width={offsetWidth}
           height={height}
-          coord={{
-            type: Rect,
-          }}
           pixelRatio={window.devicePixelRatio}
         >
           <Chart
@@ -282,9 +262,6 @@ describe('面积图', () => {
           context={context}
           width={offsetWidth}
           height={height}
-          coord={{
-            type: Rect,
-          }}
           pixelRatio={window.devicePixelRatio}
         >
           <Chart
@@ -833,13 +810,7 @@ describe('面积图', () => {
           >
             <Axis field="value" />
             <Axis field="date" />
-            <Area
-              x="date"
-              y="value"
-              color="city"
-              adjust="stack"
-              ref={areaRef}
-            />
+            <Area x="date" y="value" color="city" adjust="stack" ref={areaRef} />
             <Line x="date" y="value" color="city" adjust="stack" />
             <Legend />
           </Chart>
@@ -851,11 +822,9 @@ describe('面积图', () => {
     });
 
     it('区域图(存在空值)', () => {
-      fetch(
-        'https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json'
-      )
-        .then(res => res.json())
-        .then(data => {
+      fetch('https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json')
+        .then((res) => res.json())
+        .then((data) => {
           const context = createContext('区域图(存在空值)');
           const { type, props } = (
             <Canvas context={context} {...defaultCanvasCfg}>
@@ -1020,7 +989,7 @@ describe('面积图', () => {
                 range: [0, 1],
               },
               percent: {
-                formatter: val => formatterPercent(val),
+                formatter: (val) => formatterPercent(val),
                 alias: 'percent(%)',
               },
             }}
