@@ -50,7 +50,7 @@ export default (View) => {
       const { props, state } = this;
       const { coord } = props;
       const records = this.mapping();
-      return <View {...props} {...state} coord={coord} records={records} />;
+      return <View {...props} coord={coord} records={records} selected={state.selected} />;
     }
   };
 };
