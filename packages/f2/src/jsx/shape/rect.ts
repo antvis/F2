@@ -5,5 +5,5 @@ export default (layout) => {
     y: top,
     width,
     height,
-  }
-}
+  };
+};

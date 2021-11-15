@@ -24,12 +24,12 @@ const ALIAS_ATTRS_MAP = {
   borderDash: 'lineDash',
   borderOpacity: 'strokeOpacity',
   radius: 'radius',
-}
+};
 
 function pickAttrs(style) {
   if (!style) return null;
   const attrs = {};
-  Object.keys(style).forEach(key => {
+  Object.keys(style).forEach((key) => {
     const attrKey = ALIAS_ATTRS_MAP[key];
     if (!attrKey) {
       return;
@@ -39,6 +39,4 @@ function pickAttrs(style) {
   return attrs;
 }
 
-export { 
-  pickAttrs
-}
+export { pickAttrs };

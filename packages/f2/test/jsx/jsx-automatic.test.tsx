@@ -1,13 +1,7 @@
 /** @jsxRuntime automatic */
 /** @jsxImportSource ../../src/jsx */
 
-import {
-  render,
-  renderJSXElement,
-  jsx,
-  Fragment,
-  compareRenderTree
-} from '../../src/jsx';
+import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../src/jsx';
 
 describe('jsx automatic 模式', () => {
   it('tagName one children', () => {
@@ -27,7 +21,7 @@ describe('jsx automatic 模式', () => {
   it('one children map', () => {
     const group = (
       <group>
-        {[1, 2].map(item => {
+        {[1, 2].map((item) => {
           return <text />;
         })}
       </group>
@@ -44,7 +38,7 @@ describe('jsx automatic 模式', () => {
         <text />
         <text />
         {true ? null : <text />}
-        {[1, 2].map(item => {
+        {[1, 2].map((item) => {
           return <text />;
         })}
       </group>

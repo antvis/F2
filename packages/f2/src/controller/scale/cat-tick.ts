@@ -1,6 +1,5 @@
 // cat平均算法，保头保尾
-export default cfg => {
-
+export default (cfg) => {
   const { values, tickCount } = cfg;
   if (!tickCount) {
     return values;

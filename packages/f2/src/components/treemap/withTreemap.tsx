@@ -28,7 +28,7 @@ export default (View): any => {
     }
     treemapLayout() {
       const { props, coord, color: colorAttr } = this;
-      const { data, value, /* space = 0 */ } = props;
+      const { data, value /* space = 0 */ } = props;
 
       const root = hierarchy({ children: data })
         .sum(function (d) {

@@ -1,5 +1,5 @@
-import { jsx } from "../../../jsx";
-import { isArray, deepMix } from "@antv/util";
+import { jsx } from '../../../jsx';
+import { isArray, deepMix } from '@antv/util';
 
 type RectGuideProps = {
   points?: { x: number; y: number }[] | null;

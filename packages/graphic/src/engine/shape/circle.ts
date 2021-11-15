@@ -1,5 +1,5 @@
 import Shape from './shape';
-import { CircleAttrs } from '../../types'
+import { CircleAttrs } from '../../types';
 
 class Circle extends Shape<CircleAttrs> {
   _initProperties() {
@@ -14,7 +14,7 @@ class Circle extends Shape<CircleAttrs> {
       x: 0,
       y: 0,
       r: 0,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 
@@ -34,7 +34,7 @@ class Circle extends Shape<CircleAttrs> {
       minX: x - r,
       maxX: x + r,
       minY: y - r,
-      maxY: y + r
+      maxY: y + r,
     };
   }
 }

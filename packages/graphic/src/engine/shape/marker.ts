@@ -3,7 +3,7 @@
  */
 import { isFunction } from '@antv/util';
 import Shape from './shape';
-import { MarkerAttrs } from '../../types'
+import { MarkerAttrs } from '../../types';
 
 const SYMBOLS = {
   circle(x, y, r, ctx) {
@@ -15,7 +15,7 @@ const SYMBOLS = {
     ctx.lineTo(x + r, y + r);
     ctx.lineTo(x - r, y + r);
     ctx.closePath();
-  }
+  },
 };
 
 class Marker extends Shape<MarkerAttrs> {
@@ -30,7 +30,7 @@ class Marker extends Shape<MarkerAttrs> {
     return {
       x: 0,
       y: 0,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 
@@ -55,7 +55,7 @@ class Marker extends Shape<MarkerAttrs> {
       minX: x - radius,
       minY: y - radius,
       maxX: x + radius,
-      maxY: y + radius
+      maxY: y + radius,
     };
   }
 }

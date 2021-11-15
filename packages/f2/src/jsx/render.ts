@@ -63,12 +63,7 @@ function mergeLayout(parent: any, layout: any) {
   };
 }
 
-function createElement(
-  node: any,
-  container: any,
-  parentLayout: any,
-  animate: boolean
-) {
+function createElement(node: any, container: any, parentLayout: any, animate: boolean) {
   const {
     _cache = {},
     ref,
@@ -119,10 +114,7 @@ function createElement(
     });
   }
   if (animate !== false) {
-    element.set(
-      'animation',
-      getAnimation(element, animation, elementAttrs, lastAttrs)
-    );
+    element.set('animation', getAnimation(element, animation, elementAttrs, lastAttrs));
   }
   if (ref) {
     ref.current = element;

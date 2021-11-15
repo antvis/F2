@@ -8,7 +8,7 @@ const data = [
   { genre: 'Strategy', sold: 115, type: 'a' },
   { genre: 'Action', sold: 120, type: 'a' },
   { genre: 'Shooter', sold: 350, type: 'a' },
-  { genre: 'Other', sold: 150, type: 'a' }
+  { genre: 'Other', sold: 150, type: 'a' },
 ];
 
 describe.skip('Point', () => {

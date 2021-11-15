@@ -23,7 +23,7 @@ class Group extends Rect {
         width: 0,
         height: 0,
         radius: 0,
-        lineWidth: 0
+        lineWidth: 0,
       },
     };
   }
@@ -42,10 +42,10 @@ class Group extends Rect {
           continue;
         }
 
-        const leftTop = [ box.minX, box.minY ];
-        const leftBottom = [ box.minX, box.maxY ];
-        const rightTop = [ box.maxX, box.minY ];
-        const rightBottom = [ box.maxX, box.maxY ];
+        const leftTop = [box.minX, box.minY];
+        const leftBottom = [box.minX, box.maxY];
+        const rightTop = [box.maxX, box.minY];
+        const rightBottom = [box.maxX, box.maxY];
         const matrix = child.attr('matrix');
 
         Vector2.transformMat2d(leftTop, leftTop, matrix);
@@ -68,7 +68,7 @@ class Group extends Rect {
       x: minX,
       y: minY,
       width: maxX - minX,
-      height: maxY - minY
+      height: maxY - minY,
     };
   }
 
@@ -99,7 +99,7 @@ class Group extends Rect {
 mix(Group.prototype, Container, {
   getGroupClass() {
     return Group;
-  }
+  },
 });
 
 export default Group;

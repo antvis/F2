@@ -21,13 +21,4 @@ function createCanvas(cfg) {
   return new G.Canvas(cfg);
 }
 
-export {
-  registerEngine,
-  getEngine,
-  createCanvas,
-  Canvas,
-  Group,
-  Shape,
-  Matrix,
-  Vector2
-};
+export { registerEngine, getEngine, createCanvas, Canvas, Group, Shape, Matrix, Vector2 };

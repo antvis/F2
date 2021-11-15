@@ -16,21 +16,21 @@ export default (props: PolarAxisProps | RectAxisProps) => {
   if (isPolar(props)) {
     const { dimType } = props;
     if (dimType === 'x') {
-      return <PolarX { ...props } />;
+      return <PolarX {...props} />;
     }
-    return <PolarY { ...props } />;
+    return <PolarY {...props} />;
   }
 
   const { position } = props;
   // 直角坐标
   if (position === 'right') {
-    return <Right { ...props } />
+    return <Right {...props} />;
   }
   if (position === 'left') {
-    return <Left { ...props } />
+    return <Left {...props} />;
   }
   if (position === 'top') {
-    return <Top { ...props } />;
+    return <Top {...props} />;
   }
-  return <Bottom { ...props } />
-}
+  return <Bottom {...props} />;
+};

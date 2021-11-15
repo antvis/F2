@@ -9,7 +9,7 @@ export default {
    * @return {vector2} a new 2D vector
    */
   create() {
-    return [ 0, 0 ];
+    return [0, 0];
   },
   /**
    * Calculates the length of a vector2
@@ -163,7 +163,7 @@ export default {
    * @return {Array} a new 2D vector
    */
   clone(v) {
-    return [ v[0], v[1] ];
+    return [v[0], v[1]];
   },
   /**
    * Return the minimum of two vector2's
@@ -205,5 +205,5 @@ export default {
     out[0] = m[0] * x + m[2] * y + m[4];
     out[1] = m[1] * x + m[3] * y + m[5];
     return out;
-  }
+  },
 };

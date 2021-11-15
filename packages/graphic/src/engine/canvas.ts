@@ -1,14 +1,14 @@
 import EventEmit from '../event/emit';
 import EventController from '../event/controller';
 import CanvasElement from './canvas-element';
-import { mix, isString,  substitute } from '@antv/util';
-import * as DOMUtil from '../util/dom'
+import { mix, isString, substitute } from '@antv/util';
+import * as DOMUtil from '../util/dom';
 import Container from './container';
 import Group from './group';
 import { requestAnimationFrame } from '../util/requestAnimationFrame';
 import lang from './lang';
 
-const {getPixelRatio , getDomById, getWidth, getHeight, isCanvasElement} = DOMUtil
+const { getPixelRatio, getDomById, getWidth, getHeight, isCanvasElement } = DOMUtil;
 
 class Canvas extends EventEmit {
   _attrs: any;
@@ -17,13 +17,13 @@ class Canvas extends EventEmit {
   clear: any;
 
   // Container
-  getChildren: any
-  addShape: any
-  addGroup: any
-  contain: any
-  sort: any
-  add: any
-  _setEvn: any
+  getChildren: any;
+  addShape: any;
+  addGroup: any;
+  contain: any;
+  sort: any;
+  add: any;
+  _setEvn: any;
   offset: any;
 
   get(name) {
@@ -38,11 +38,14 @@ class Canvas extends EventEmit {
     super();
     const { title } = cfg;
     const ariaLabel = title ? substitute(lang.general.withTitle, { title }) : lang.general.title;
-    this._attrs = mix({
-      type: 'canvas',
-      children: [],
-      ariaLabel
-    }, cfg);
+    this._attrs = mix(
+      {
+        type: 'canvas',
+        children: [],
+        ariaLabel,
+      },
+      cfg
+    );
     this._initPixelRatio();
     this._initCanvas();
   }
@@ -76,7 +79,7 @@ class Canvas extends EventEmit {
     }
 
     if (context && canvas && !canvas.getContext) {
-      canvas.getContext = function() {
+      canvas.getContext = function () {
         return context;
       };
     }
@@ -98,7 +101,7 @@ class Canvas extends EventEmit {
     // 初始化事件控制器
     const eventController = new EventController({
       canvas: this,
-      el: canvas
+      el: canvas,
     });
     this.set('eventController', eventController);
   }
@@ -146,7 +149,7 @@ class Canvas extends EventEmit {
     const height = bbox.bottom - bbox.top;
     return {
       x: (clientX - bbox.left) * (el.width / width),
-      y: (clientY - bbox.top) * (el.height / height)
+      y: (clientY - bbox.top) * (el.height / height),
     };
   }
 
@@ -159,12 +162,15 @@ class Canvas extends EventEmit {
 
   draw() {
     const drawInner = () => {
-      this.set('animateHandler', requestAnimationFrame(() => {
-        this.set('animateHandler', undefined);
-        if (this.get('toDraw')) {
-          drawInner();
-        }
-      }));
+      this.set(
+        'animateHandler',
+        requestAnimationFrame(() => {
+          this.set('animateHandler', undefined);
+          if (this.get('toDraw')) {
+            drawInner();
+          }
+        })
+      );
       this.beforeDraw();
       try {
         const context = this._attrs.context;
@@ -181,7 +187,7 @@ class Canvas extends EventEmit {
         this._endDraw();
       }
       this._endDraw();
-    }
+    };
 
     if (this.get('destroyed')) {
       return;
@@ -226,7 +232,7 @@ class Canvas extends EventEmit {
 mix(Canvas.prototype, Container, {
   getGroupClass() {
     return Group;
-  }
+  },
 });
 
 export default Canvas;

@@ -5,20 +5,20 @@ import { isFunction, isNumber } from '@antv/util';
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
  * @private
  */
-const supportsEventListenerOptions = (function() {
+const supportsEventListenerOptions = (function () {
   let supports = false;
   try {
     const options = Object.defineProperty({}, 'passive', {
       get() {
         supports = true;
-      }
+      },
     });
     window.addEventListener('e', null, options);
   } catch (e) {
     // continue regardless of error
   }
   return supports;
-}());
+})();
 
 // Default passive to true as expected by Chrome for 'touchstart' and 'touchend' events.
 // https://github.com/chartjs/Chart.js/issues/4287
@@ -27,17 +27,18 @@ const eventListenerOptions = supportsEventListenerOptions ? { passive: true } : 
 /* global wx, my */
 // weixin miniprogram
 // @ts-ignore
-const isWx = (typeof wx === 'object') && (typeof wx.getSystemInfoSync === 'function');
+const isWx = typeof wx === 'object' && typeof wx.getSystemInfoSync === 'function';
 // ant miniprogram
 // @ts-ignore
-const isMy = (typeof my === 'object') && (typeof my.getSystemInfoSync === 'function');
+const isMy = typeof my === 'object' && typeof my.getSystemInfoSync === 'function';
 // in node
 // @ts-ignore
-const isNode = (typeof global) && (!typeof window);
+const isNode = typeof global && !typeof window;
 // in browser
-const isBrowser = (typeof window !== 'undefined')
-                && (typeof window.document !== 'undefined')
-                && (typeof window.sessionStorage !== 'undefined');
+const isBrowser =
+  typeof window !== 'undefined' &&
+  typeof window.document !== 'undefined' &&
+  typeof window.sessionStorage !== 'undefined';
 
 function isCanvasElement(el) {
   if (!el || typeof el !== 'object') return false;
@@ -50,13 +51,13 @@ function isCanvasElement(el) {
 }
 
 function getPixelRatio() {
-  return window && window.devicePixelRatio || 1;
+  return (window && window.devicePixelRatio) || 1;
 }
 
 function getStyle(el, property) {
-  return el.currentStyle ?
-    el.currentStyle[property] :
-    document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+  return el.currentStyle
+    ? el.currentStyle[property]
+    : document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
 }
 
 function getWidth(el) {
@@ -94,7 +95,7 @@ function getRelativePosition(point, canvas) {
   const mouseY = point.y - top - paddingTop;
   return {
     x: mouseX,
-    y: mouseY
+    y: mouseY,
   };
 }
 
@@ -126,7 +127,7 @@ function convertPoints(ev, canvas) {
   // 认为是mouse事件
   if (!touches) {
     const point = getRelativePosition({ x: ev.clientX, y: ev.clientY }, canvas);
-    return [ landscapePoint(point, canvas) ];
+    return [landscapePoint(point, canvas)];
   }
   // 单指 touchend 后，touchs 会变空，最后的触点要从changedTouches里拿
   if (!touches.length) {
@@ -161,7 +162,7 @@ function createEvent(event, chart) {
     chart,
     native: event,
     x: point.x,
-    y: point.y
+    y: point.y,
   };
 }
 
@@ -190,5 +191,5 @@ export {
   removeEventListener,
   createEvent,
   convertPoints,
-  measureText
+  measureText,
 };

@@ -33,15 +33,7 @@ class Animator {
     this.element = element;
     this.animation = animation;
 
-    const {
-      property = [],
-      easing,
-      duration,
-      delay = 0,
-      start,
-      end,
-      onFrame,
-    } = animation;
+    const { property = [], easing, duration, delay = 0, start, end, onFrame } = animation;
     const interpolates = property.map((name) => {
       if (isString(name)) {
         return interpolate(start[name], end[name]);
@@ -53,8 +45,7 @@ class Animator {
       }
     });
 
-    this.easing =
-      typeof easing === 'function' ? easing : Easing[easing] || Easing.linear;
+    this.easing = typeof easing === 'function' ? easing : Easing[easing] || Easing.linear;
     this.property = property;
     this.interpolates = interpolates;
     this.duration = duration;

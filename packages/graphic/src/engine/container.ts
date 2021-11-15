@@ -6,14 +6,13 @@ const SHAPE_MAP = {};
 const INDEX = '_INDEX';
 
 function getComparer(compare) {
-  return function(left, right) {
+  return function (left, right) {
     const result = compare(left, right);
     return result === 0 ? left[INDEX] - right[INDEX] : result;
   };
 }
 
 export default {
-
   getGroupClass() {},
 
   getChildren() {
@@ -50,9 +49,11 @@ export default {
       child[INDEX] = i;
     }
 
-    children.sort(getComparer(function(obj1, obj2) {
-      return obj1.get('zIndex') - obj2.get('zIndex');
-    }));
+    children.sort(
+      getComparer(function (obj1, obj2) {
+        return obj1.get('zIndex') - obj2.get('zIndex');
+      })
+    );
 
     return this;
   },
@@ -78,7 +79,7 @@ export default {
   add(items) {
     const children = this.get('children');
     if (!isArray(items)) {
-      items = [ items ];
+      items = [items];
     }
 
     for (let i = 0, len = items.length; i < len; i++) {
@@ -146,5 +147,5 @@ export default {
     }
     // 只有1个，或者都没有
     return ariaLabel || childAriaLabel;
-  }
+  },
 };

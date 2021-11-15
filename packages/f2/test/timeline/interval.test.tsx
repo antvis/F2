@@ -1,12 +1,4 @@
-import {
-  jsx,
-  Canvas,
-  Chart,
-  Timeline,
-  Axis,
-  Interval,
-  TextGuide,
-} from '../../src';
+import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide } from '../../src';
 import { createContext } from '../util';
 
 const context = createContext('动态排序', { width: '300px', height: '500px' });

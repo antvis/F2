@@ -16,10 +16,7 @@ function createUpdater(canvas) {
 
       // 如果stateChange是一个方法，也就是setState的第二种形式
       if (typeof state === 'function') {
-        Object.assign(
-          component.state,
-          state(component.prevState, component.props)
-        );
+        Object.assign(component.state, state(component.prevState, component.props));
       } else {
         // 如果stateChange是一个对象，则直接合并到setState中
         Object.assign(component.state, state);
@@ -27,10 +24,9 @@ function createUpdater(canvas) {
 
       component.prevState = component.state;
 
-      if(typeof callback === 'function') {
+      if (typeof callback === 'function') {
         callbackQueue.push({ callback, component });
       }
-
     }
     const renderComponents = [].concat(renderQueue);
     canvas.renderComponents(renderComponents);
@@ -57,12 +53,11 @@ function createUpdater(canvas) {
   }
 
   function commitRenderQueue() {
-    for (let i = 0; i < callbackQueue.length; i++) { 
+    for (let i = 0; i < callbackQueue.length; i++) {
       const { callback, component } = callbackQueue[i];
-      callback.call(component)
+      callback.call(component);
     }
   }
-
 
   const updater = {
     // isMounted: function(publicInstance) {

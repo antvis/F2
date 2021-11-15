@@ -1,4 +1,12 @@
-import { isDate, isPlainObject, isNumber, isString, isArray, isObject, isFunction } from '@antv/util';
+import {
+  isDate,
+  isPlainObject,
+  isNumber,
+  isString,
+  isArray,
+  isObject,
+  isFunction,
+} from '@antv/util';
 import * as ArrayUtil from './array';
 // 默认设置50
 let ONE_REM: number;
@@ -99,7 +107,7 @@ const map = (children: any, fn: any) => {
     return fn(children);
   }
   if (isArray(children)) {
-    return children.map(child => {
+    return children.map((child) => {
       return map(child, fn);
     });
   }

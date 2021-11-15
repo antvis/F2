@@ -8,7 +8,7 @@ class CanvasElement extends EventEmit {
   currentStyle: any;
   attrs: any;
   isCanvasElement: boolean;
-  
+
   constructor(ctx) {
     super();
     this.context = ctx;
@@ -34,7 +34,7 @@ class CanvasElement extends EventEmit {
       top: 0,
       right: width,
       bottom: height,
-      left: 0
+      left: 0,
     };
   }
 
@@ -77,7 +77,6 @@ function supportEventListener(canvas) {
   return support;
 }
 
-
 export default {
   create(ctx) {
     if (!ctx) {
@@ -87,5 +86,5 @@ export default {
       return ctx.canvas;
     }
     return new CanvasElement(ctx);
-  }
+  },
 };

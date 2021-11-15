@@ -1,13 +1,4 @@
-import {
-  jsx,
-  Canvas,
-  Chart,
-  Timeline,
-  Axis,
-  Interval,
-  TextGuide,
-  Treemap,
-} from '../../src';
+import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide, Treemap } from '../../src';
 import { createContext } from '../util';
 
 const data = [

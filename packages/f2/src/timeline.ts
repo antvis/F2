@@ -10,11 +10,7 @@ class Timeline extends Component {
     const elements = Children.toArray(children);
     for (let i = 0, len = elements.length; i < len; i++) {
       const element = elements[i];
-      if (
-        element &&
-        element.component &&
-        element.component.constructor === Timeline
-      ) {
+      if (element && element.component && element.component.constructor === Timeline) {
         return element.component;
       }
     }

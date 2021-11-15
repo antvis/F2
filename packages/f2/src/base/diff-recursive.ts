@@ -6,11 +6,7 @@ import equal from './equal';
 import createComponentTree from './createComponentTree';
 import Children from '../children';
 
-function renderShape(
-  component: Component,
-  children: JSX.Element,
-  animate: boolean
-) {
+function renderShape(component: Component, children: JSX.Element, animate: boolean) {
   // @ts-ignore
   const { container, __lastElement, context } = component;
   // 先清空绘制内容
@@ -21,9 +17,7 @@ function renderShape(
   // @ts-ignore
   component.__lastElement = shapeElement;
   const renderElement =
-    animate !== false
-      ? compareRenderTree(shapeElement, __lastElement)
-      : shapeElement;
+    animate !== false ? compareRenderTree(shapeElement, __lastElement) : shapeElement;
   if (!renderElement) return;
   // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
   if (isArray(renderElement)) {
@@ -99,7 +93,7 @@ function renderElement(parent: Component, element: JSX.Element) {
 }
 
 function destroyElement(elements: JSX.Element) {
-  Children.map(elements, element => {
+  Children.map(elements, (element) => {
     if (!element) return;
     const { component } = element;
     if (!component) {
@@ -117,17 +111,13 @@ function destroyElement(elements: JSX.Element) {
   });
 }
 
-function diffElement(
-  parent: Component,
-  nextElement: JSX.Element,
-  lastElement: JSX.Element
-) {
+function diffElement(parent: Component, nextElement: JSX.Element, lastElement: JSX.Element) {
   if (!nextElement && !lastElement) {
     return null;
   }
   // 新建
   if (nextElement && !lastElement) {
-    Children.map(nextElement, element => {
+    Children.map(nextElement, (element) => {
       renderElement(parent, element);
     });
     return;
@@ -167,13 +157,9 @@ function diffElement(
 
 function diff(parent: Component, nextChildren, lastChildren) {
   const newChildren = createComponentTree(nextChildren);
-  Children.compare(
-    newChildren,
-    lastChildren,
-    (next: JSX.Element, last: JSX.Element) => {
-      diffElement(parent, next, last);
-    }
-  );
+  Children.compare(newChildren, lastChildren, (next: JSX.Element, last: JSX.Element) => {
+    diffElement(parent, next, last);
+  });
   return newChildren;
 }
 

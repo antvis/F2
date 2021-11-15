@@ -15,7 +15,6 @@ class ScaleMixin {
   getScale(field: string) {
     return this.scale.getScale(field);
   }
-
 }
 
 export default ScaleMixin;

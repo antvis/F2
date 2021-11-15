@@ -11,11 +11,9 @@ describe('图例', () => {
     const context = createContext('自定义图例样式');
     const chartRef = { current: null };
     const lineRef = { current: null };
-    fetch(
-      'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
-    )
-      .then(res => res.json())
-      .then(data => {
+    fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
+      .then((res) => res.json())
+      .then((data) => {
         const { type, props } = (
           <Canvas
             context={context}
@@ -23,11 +21,7 @@ describe('图例', () => {
             width={offsetWidth}
             height={height}
           >
-            <Chart
-              ref={chartRef}
-              data={data}
-              scale={{}}
-            >
+            <Chart ref={chartRef} data={data} scale={{}}>
               <Axis
                 field="date"
                 tickCount={3}
@@ -36,21 +30,14 @@ describe('图例', () => {
                 }}
               />
               <Axis field="value" tickCount={5} />
-              <Line
-                ref={lineRef}
-                x="date"
-                y="value"
-                lineWidth="4px"
-                color="type"
-                shape="type"
-              />
+              <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
               <Tooltip />
               <Legend
                 position="top"
                 marker="square"
                 // 自定义图例样式
                 style={{
-                  justifyContent: 'space-around'
+                  justifyContent: 'space-around',
                 }}
               />
             </Chart>

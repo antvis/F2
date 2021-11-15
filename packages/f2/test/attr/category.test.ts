@@ -6,7 +6,7 @@ const domain = [
   { name: 'pig' },
   { name: 'dolpin' },
   { name: 'tiger' },
-  { name: 'panda' }
+  { name: 'panda' },
 ]; // 定义域
 const range = ['#1677FF', '#FF9F18', '#00B7F4', '#FF6430', '#F433C', '#7F12CC']; // 值域
 
@@ -15,7 +15,7 @@ describe('attr/category', () => {
     const color = new Category({
       field: 'name',
       range,
-      data: domain
+      data: domain,
     });
 
     const y1 = color.mapping(domain[0].name);

@@ -1,14 +1,14 @@
 import { jsx } from '../../../jsx';
 
-export default props => {
+export default (props) => {
   const { records } = props;
   return (
     <group>
-      {records.map(record => {
+      {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
-            {children.map(item => {
+            {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color } = item;
               return (
                 <rect
