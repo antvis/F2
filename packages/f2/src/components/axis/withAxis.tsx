@@ -50,7 +50,7 @@ export default (View) => {
       };
     }
 
-    _getDimType() {
+    _getDimType(): 'x' | 'y' {
       const { props } = this;
       const { field, chart } = props;
       const xScales = chart.getXScales();

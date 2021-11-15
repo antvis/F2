@@ -31,7 +31,7 @@ export default (View): any => {
       const { data, value /* space = 0 */ } = props;
 
       const root = hierarchy({ children: data })
-        .sum(function (d) {
+        .sum(function(d) {
           return d[value];
         })
         .sort((a, b) => b[value] - a[value]);
@@ -53,10 +53,10 @@ export default (View): any => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
         const rect = coord.convertRect({
-          xMin: x0,
-          xMax: x1,
-          yMin: y0,
-          yMax: y1,
+          x: x0,
+          y: y1,
+          y0: y0,
+          size: x1 - x0,
         });
         return {
           key: data.key,

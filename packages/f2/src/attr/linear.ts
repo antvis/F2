@@ -1,22 +1,30 @@
 import { Linear as LinearScale, ScaleConfig } from '@antv/scale';
 import { isArray } from '@antv/util';
+import { interpolate } from 'd3-interpolate'
 import Base from './base';
 
 class Linear extends Base {
+  interpolate: any;
+
+  constructor(options) {
+    super(options);
+    const [min, max] = this.range;
+    this.interpolate = interpolate(min, max)
+  }
   createScale(scaleConfig: ScaleConfig) {
     return new LinearScale(scaleConfig);
   }
 
   _mapping(value: any) {
-    const { scale, range } = this;
-    const [min, max] = range;
+    const { scale, interpolate } = this;
 
     if (isArray(value)) {
       return value.map((v) => {
-        return min + (max - min) * scale.scale(v);
+        return interpolate(scale.scale(v));
       });
     }
-    return min + (max - min) * scale.scale(value);
+
+    return interpolate(scale.scale(value));
   }
 
   normalize(value: any) {

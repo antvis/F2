@@ -106,8 +106,8 @@ export default (View) => {
 
         record.children = splitPoints.map((points) => {
           const [topPoints, bottomPoints] = isArray(y)
-            ? this.splitPoints(points)
-            : [points, undefined];
+          ? this.splitPoints(points)
+          : [points, undefined];
           return {
             size,
             color,

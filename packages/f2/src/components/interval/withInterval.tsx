@@ -1,7 +1,6 @@
 import { jsx } from '../../jsx';
-import { mix } from '@antv/util';
+import { mix, isNil } from '@antv/util';
 import Geometry from '../geometry';
-import { convertRect } from './util';
 import { GeomType } from '../geometry/interface';
 
 export default (Views) => {
@@ -59,6 +58,7 @@ export default (Views) => {
       const { props } = this;
       const { coord } = props;
       const y0 = this.getY0Value();
+      const coordY0 = coord.convertPoint({ x: 0, y: y0 }).y;
       const defaultSize = this.getDefaultSize();
 
       for (let i = 0, len = records.length; i < len; i++) {
@@ -66,10 +66,18 @@ export default (Views) => {
         const { children } = record;
         for (let j = 0, len = children.length; j < len; j++) {
           const child = children[j];
-          const { normalized } = child;
-          const { x, y } = normalized;
-          const rect = convertRect({ x, y, y0, size: defaultSize, });
-          mix(child, coord.convertRect(rect));
+          const { normalized, size: mappedSize } = child;
+
+          // 没有指定size，则根据数据来计算默认size
+          if (isNil(mappedSize)) {
+            const { x, y, size = defaultSize } = normalized;
+            mix(child, coord.convertRect({ x, y, y0, size }));
+          } else {
+            const { x, y } = child;
+            const rect = { size: mappedSize, x, y, y0: coordY0 };
+
+            mix(child, coord.transformToRect(rect));
+          }
         }
       }
       return records;
