@@ -8,11 +8,20 @@ class Linear extends Base {
 
   constructor(options) {
     super(options);
-    const [min, max] = this.range;
-    this.interpolate = interpolate(min, max)
+    this._updateInterpolate();
   }
   createScale(scaleConfig: ScaleConfig) {
     return new LinearScale(scaleConfig);
+  }
+
+  _updateInterpolate () {
+    const [min, max] = this.range;
+    this.interpolate = interpolate(min, max)
+  }
+
+  update(options) {
+    super.update(options);
+    this._updateInterpolate();
   }
 
   _mapping(value: any) {

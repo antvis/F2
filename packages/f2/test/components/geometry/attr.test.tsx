@@ -1,6 +1,6 @@
 import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart } from '../../../src';
+import { Canvas, Chart, Component } from '../../../src';
 import { Interval, Axis, Point, Line, Area } from '../../../src/components';
 import { createContext } from '../../util';
 
@@ -181,7 +181,6 @@ describe('Geometry - Attr', () => {
             y="sales"
             size={12}
             color={{
-              type: 'linear',
               field: 'sales',
               range: ['blue', 'red'],
             }}
@@ -191,7 +190,50 @@ describe('Geometry - Attr', () => {
     );
     // @ts-ignore
     const canvas = new type(props);
+
     canvas.render();
+  });
+  
+  it('数据更新后也更新值域', () => {
+    class InjectTestComponent extends Component {
+      didMount() {    
+        setTimeout(() => {
+          // expect: 这里播放动画
+          this.props.chart.setState({
+            zoomRange: [0, 0.99],
+          });
+        }, 1000);
+      }
+    }
+    const context = createContext('数据更新后也更新值域', { width: '380px' });
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point
+            x="year"
+            y="sales"
+            size={12}
+            color={{
+              type: 'linear',
+              field: 'sales',
+              range: ['blue', 'red'],
+            }}
+          />
+          <InjectTestComponent />
+        </Chart>
+      </Canvas>
+    );
+    // @ts-ignore
+    const canvas = new type(props);
+    canvas.render();
+    setTimeout(() => {
+      props.children.props.children[2].props.color.range = ['red', 'blue'];
+      props.children.props.children[2].props.size = 24
+      canvas.update(props);
+    }, 300)
   });
   it('color = {{ type, field, callback }}', () => {
     const context = createContext('color = {{ type, field, callback }} 回调函数设置值域', {

@@ -44,7 +44,7 @@ class AttrController {
     this.options = {};
     this.attrs = {};
   }
-  
+
   parseOption(option: AttrOption, attrName: Attr) {
     if (!option) {
       return {
@@ -59,8 +59,8 @@ class AttrController {
       };
     }
 
-    if(isNumber(option)) {
-      if(attrName === 'size') {
+    if (isNumber(option)) {
+      if (attrName === 'size') {
         return {
           type: 'identity',
           field: option,
@@ -143,29 +143,22 @@ class AttrController {
       scale, // 默认使用数据字段的scale
     }
 
-    let AttrConstructor = Category;
+    // Attr的默认类型和scale类型保持一致
+    let AttrConstructor = scale.isLinear ? Linear : Category;
 
     // custom Attr Constructor
     if (isFunction(type)) {
       AttrConstructor = type;
     }
 
-    // Linear & Category
     if (isString(type)) {
       // Category 分类属性创建自己的scale，不使用数据字段的
       if (type === 'category' || !Attrs[upperFirst(type)]) {
         AttrConstructor = Category;
         delete attrOption.scale;
       } else {
-        // Linear
         AttrConstructor = Attrs[upperFirst(type)];
       }
-    }
-
-    // Unknown Attr type
-    if (isNil(type)) {
-      AttrConstructor = Category;
-      delete attrOption.scale;
     }
 
     return new AttrConstructor(attrOption);

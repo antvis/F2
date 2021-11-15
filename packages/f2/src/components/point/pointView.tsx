@@ -27,7 +27,7 @@ export default (props: any) => {
                     update: {
                       easing: 'linear',
                       duration: 450,
-                      property: ['x', 'y', 'r'],
+                      property: ['x', 'y', 'r', 'fill'],
                     },
                   }}
                 />
