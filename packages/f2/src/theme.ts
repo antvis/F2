@@ -111,7 +111,7 @@ const Theme = {
     },
     point: {
       default: {
-        lineWidth: 0,
+        lineWidth: '2px',
         size: '6px',
       },
     },
