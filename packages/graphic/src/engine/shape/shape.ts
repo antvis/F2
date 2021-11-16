@@ -22,12 +22,13 @@ class Shape<T extends ShapeProp = ShapeProp> extends Element<T> {
 
   _initProperties() {
     this._attrs = {
+      ...this._attrs,
       zIndex: 0,
       visible: true,
       destroyed: false,
       isShape: true,
       attrs: {},
-    } as T;
+    };
   }
 
   getType() {

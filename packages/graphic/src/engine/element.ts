@@ -70,10 +70,11 @@ class Element<T extends ElementProp = ElementProp> {
 
   _initProperties() {
     this._attrs = {
+      ...this._attrs,
       zIndex: 0,
       visible: true,
       destroyed: false,
-    } as T;
+    };
   }
 
   constructor(cfg) {
