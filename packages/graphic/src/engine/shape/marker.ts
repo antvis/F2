@@ -2,8 +2,12 @@
  * marker shapes，used for tooltip and legend
  */
 import { isFunction } from '@antv/util';
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import { MarkerAttrs } from '../../types';
+
+export interface MarkerProp extends ShapeProp {
+  attrs?: MarkerAttrs;
+}
 
 const SYMBOLS = {
   circle(x, y, r, ctx) {
@@ -18,7 +22,7 @@ const SYMBOLS = {
   },
 };
 
-class Marker extends Shape<MarkerAttrs> {
+class Marker extends Shape<MarkerProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
