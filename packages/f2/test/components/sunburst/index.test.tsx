@@ -15,7 +15,7 @@ const colors = [
   'rgb(82, 246, 103)',
   'rgb(29, 223, 163)',
   'rgb(35, 171, 216)',
-  'rgb(76, 110, 219)'
+  'rgb(76, 110, 219)',
 ];
 
 describe('Sunburst', () => {
@@ -35,7 +35,7 @@ describe('Sunburst', () => {
             }
           }
           color={{
-            field: 'name'
+            field: 'name',
             // range: colors
           }}
           value="value"

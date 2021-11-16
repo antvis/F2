@@ -40,7 +40,7 @@ export default class Base {
 
   _bindEvents(_chart) {
     const { startEvent, processEvent, endEvent, resetEvent } = this;
-    const canvas = this.context.canvas
+    const canvas = this.context.canvas;
     // 统一绑定事件
     canvas.on(startEvent, this._start);
     canvas.on(processEvent, this._process);
@@ -50,7 +50,7 @@ export default class Base {
 
   _clearEvents() {
     const { startEvent, processEvent, endEvent, resetEvent } = this;
-    const canvas = this.context.canvas
+    const canvas = this.context.canvas;
 
     // 统一解绑事件
     canvas.off(startEvent, this._start);
@@ -59,35 +59,35 @@ export default class Base {
     canvas.off(resetEvent, this._start);
   }
 
-  _start = ev => {
+  _start = (ev) => {
     this.preStart && this.preStart(ev);
     this.start(ev);
     this.onStart && this.onStart(ev);
-  }
-  _process = ev => {
+  };
+  _process = (ev) => {
     this.preProcess && this.preProcess(ev);
     this.process(ev);
     this.onProcess && this.onProcess(ev);
-  }
-  _end = ev => {
+  };
+  _end = (ev) => {
     this.preEnd && this.preEnd(ev);
     this.end(ev);
     this.onEnd && this.onEnd(ev);
-  }
-  _reset = ev => {
+  };
+  _reset = (ev) => {
     this.preReset && this.preReset(ev);
     this.reset(ev);
     this.onReset && this.onReset(ev);
-  }
+  };
 
   // override
-  start(_ev) { }
+  start(_ev) {}
   // override
-  process(_ev) { }
+  process(_ev) {}
   // override
-  end(_ev) { }
+  end(_ev) {}
   // override
-  reset(_pev) { }
+  reset(_pev) {}
 
   destroy() {
     this.context.destroy();

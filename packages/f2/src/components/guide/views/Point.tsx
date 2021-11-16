@@ -1,14 +1,13 @@
 import { jsx } from '../../../jsx';
-import { deepMix } from "@antv/util";
+import { deepMix } from '@antv/util';
 
 type PointGuideProps = {
   style?: any;
   offsetX?: number;
   offsetY?: number;
   points?: { x: number; y: number }[] | null;
-  theme?: any
+  theme?: any;
 };
-
 
 export default (props: PointGuideProps) => {
   const { theme } = props;
@@ -19,12 +18,12 @@ export default (props: PointGuideProps) => {
   const posY = y + (offsetY || 0);
 
   return (
-    <group >
+    <group>
       <circle
         attrs={{
           x: posX,
           y: posY,
-          ...style
+          ...style,
         }}
       />
     </group>

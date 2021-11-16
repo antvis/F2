@@ -1,13 +1,6 @@
 import Linear from '../../src/attr/linear';
 
-const domain = [
-  { value: 1 },
-  { value: 2 },
-  { value: 3 },
-  { value: 4 },
-  { value: 5 },
-  { value: 6 }
-]; // 定义域
+const domain = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }]; // 定义域
 const range = [0, 100]; // 值域
 
 describe('attr/category', () => {
@@ -15,7 +8,7 @@ describe('attr/category', () => {
     const linear = new Linear({
       field: 'value',
       data: domain,
-      range
+      range,
     });
 
     // 批量映射

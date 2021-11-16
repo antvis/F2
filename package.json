@@ -1,5 +1,9 @@
 {
   "name": "f2",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -36,7 +40,7 @@
     "jest": "^26.6.3",
     "jest-electron": "^0.1.12",
     "jest-less-loader": "^0.1.1",
-    "lerna": "^2.11.0",
+    "lerna": "^3.22.1",
     "pre-commit": "^1.2.2",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
@@ -60,7 +64,8 @@
     "site:start": "cd ./packages/site && npm run site:start",
     "site:develop": "cd ./packages/site && npm run site:develop",
     "site:build": "cd ./packages/site && npm run site:build",
-    "site:deploy": "cd ./packages/site && npm run site:deploy"
+    "site:deploy": "cd ./packages/site && npm run site:deploy",
+    "prettier": "prettier --write './packages/**/*.{ts,tsx}'"
   },
   "pre-commit": {
     "run": [
@@ -70,6 +75,9 @@
     "silent": false
   },
   "resolutions": {
-    "signal-exit": "3.0.3"
+    "signal-exit": "3.0.3",
+    "react-monaco-editor": "0.34.0",
+    "monaco-editor": "0.20.0",
+    "monaco-editor-webpack-plugin": "1.9.1"
   }
 }

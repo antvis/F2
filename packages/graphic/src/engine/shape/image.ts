@@ -1,9 +1,10 @@
 import { isNil } from '@antv/util';
 import Rect from './rect';
+import { ImageAttrs } from '../../types';
 
 const imageCaches = {};
 
-class ImageShape extends Rect {
+class ImageShape extends Rect<ImageAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = false;

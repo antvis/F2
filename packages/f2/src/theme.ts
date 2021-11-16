@@ -87,16 +87,7 @@ const Theme = {
   pixelRatio: 1,
   padding: [0, 0, 0, 0],
   chart,
-  colors: [
-    '#1890FF',
-    '#2FC25B',
-    '#FACC14',
-    '#223273',
-    '#8543E0',
-    '#13C2C2',
-    '#3436C7',
-    '#F04864',
-  ],
+  colors: ['#1890FF', '#2FC25B', '#FACC14', '#223273', '#8543E0', '#13C2C2', '#3436C7', '#F04864'],
   shapes: {
     line: ['line', 'dash', 'smooth'],
     point: ['circle', 'hollowCircle'],

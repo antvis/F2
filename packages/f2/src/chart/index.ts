@@ -1,10 +1,7 @@
-import { mix, each, isNil } from '@antv/util';
 import { Scale } from '@antv/scale';
 import Component from '../base/component';
 import equal from '../base/equal';
 import { applyMixins } from '../mixins';
-import CoordMixin from '../mixins/coord';
-import ScaleMixin from '../mixins/scale';
 import InteractionMixin from '../mixins/interaction';
 import Layout from '../base/layout';
 import Coord from '../coord';
@@ -78,14 +75,12 @@ class Chart extends Component implements IChart, InteractionMixin {
     scaleController.create(scale);
 
     // 创建交互事件控制器
-    const interactionController: InteractionController = this.createInteractionController(
-      {
-        chart: this,
-      }
-    );
+    const interactionController: InteractionController = this.createInteractionController({
+      chart: this,
+    });
 
     // 定义事件
-    interactions.forEach(interaction => {
+    interactions.forEach((interaction) => {
       const { type, ...cfg } = interaction;
       interactionController.createInteraction(type, cfg);
     });
@@ -101,12 +96,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   // props 更新
   willReceiveProps(nextProps) {
-    const {
-      layoutController,
-      coordController,
-      scaleController,
-      props: lastProps,
-    } = this;
+    const { layoutController, coordController, scaleController, props: lastProps } = this;
     const {
       style: nextStyle,
       data: nextData,
@@ -117,7 +107,6 @@ class Chart extends Component implements IChart, InteractionMixin {
     const {
       style: lastStyle,
       data: lastData,
-      coord: lastCoord,
       scale: lastScale,
       interactions: lastInteractions,
     } = lastProps;
@@ -129,10 +118,10 @@ class Chart extends Component implements IChart, InteractionMixin {
       coordController.updateLayout(this.layout);
     }
 
-    // 坐标系
-    if (!equal(nextCoord, lastCoord)) {
-      this.coord = coordController.create(nextCoord, this.layout);
-    }
+    // willReceiveProps 一定会触发render，
+    // render 时要重置 coord 范围，重置后需要让所有子组件都重新render
+    // 所以这里不比较是否有差异，每次都新建，让所有子组件重新render
+    this.coord = coordController.create(nextCoord, this.layout);
 
     if (nextData !== lastData) {
       scaleController.changeData(nextData);
@@ -155,12 +144,6 @@ class Chart extends Component implements IChart, InteractionMixin {
       ...theme.chart,
       ...style,
     });
-  }
-
-  // 重置绘制大小
-  resetCoord() {
-    const { coord, layout } = this;
-    coord.update(layout);
   }
 
   layoutCoord(position, box) {
@@ -189,7 +172,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   getGeometrys() {
     const { children } = this;
     const geometrys: Component[] = [];
-    Children.toArray(children).forEach(element => {
+    Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
       if (component && component.isGeometry) {
@@ -227,7 +210,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   getXScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getXScale();
     });
@@ -235,18 +218,17 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   getYScales() {
     const geometrys = this.getGeometrys();
-    return geometrys.map(component => {
+    return geometrys.map((component) => {
       // @ts-ignore
       return component.getYScale();
     });
   }
 
   render(): JSX.Element {
-    this.resetCoord();
     const { props, state, layout, coord } = this;
     const { children, data } = props;
 
-    return Children.map(children, child => {
+    return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         chart: this,
         data,

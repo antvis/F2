@@ -11,22 +11,19 @@ export interface AttrRange {
 export type GeomType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
 
 interface Style {
-  field: string;
-  smooth?: boolean;
-  stroke?: string | ((t) => string);
-  lineWidth?: number | ((t) => number);
+  [k: string]: any; // TODO
 }
 
 /**
  * 几何标记对象的数据调整类型。
  */
- export type GeometryAdjustKind =
- // 堆叠
- | 'stack'
- // 分组
- | 'dodge'
- // 对称
- | 'symmetric';
+export type GeometryAdjustKind =
+  // 堆叠
+  | 'stack'
+  // 分组
+  | 'dodge'
+  // 对称
+  | 'symmetric';
 
 export interface GeometryProps {
   data?: any;

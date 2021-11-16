@@ -8,8 +8,12 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 12,
     sourceType: 'module',
+    ecmaVersion: 12,
+    ecmaFeatures: {
+      jsx: true,
+    },
+    jsxPragma: 'jsx',
   },
   plugins: ['@typescript-eslint'],
   rules: {
@@ -21,9 +25,7 @@ module.exports = {
     'no-prototype-builtins': 0,
     'no-case-declarations': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
-    '@typescript-eslint/no-unused-vars': [
-      'warn', { argsIgnorePattern: "^_" }
-    ],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
   },
   settings: {
     'import/parsers': {

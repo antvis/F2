@@ -1,7 +1,8 @@
 import Shape from './shape';
 import { getBBoxFromPoints } from '../../util/bbox';
+import { PolygonAttrs } from '../../types';
 
-class Polygon extends Shape {
+class Polygon extends Shape<PolygonAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
@@ -12,7 +13,7 @@ class Polygon extends Shape {
   getDefaultAttrs() {
     return {
       points: null,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 

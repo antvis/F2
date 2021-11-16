@@ -1,13 +1,4 @@
-import {
-  jsx,
-  Canvas,
-  Chart,
-  Timeline,
-  Axis,
-  Interval,
-  TextGuide,
-  ImageGuide,
-} from '../../src';
+import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide, ImageGuide } from '../../src';
 import { createContext } from '../util';
 import data from './data/race-country.json';
 

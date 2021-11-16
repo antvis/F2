@@ -1,6 +1,6 @@
 import { upperFirst } from '@antv/util';
-import Context from "./interaction/context";
-import * as defaultInteractions from './interaction/index'
+import Context from './interaction/context';
+import * as defaultInteractions from './interaction/index';
 
 export default class interactionController {
   // 交互事件作用的chart实例
@@ -17,10 +17,9 @@ export default class interactionController {
     this.interactions = [];
   }
 
-
   createInteraction(type, cfg) {
     if (!type) {
-      return null
+      return null;
     }
     if (!this.context) {
       this.context = new Context(this.chart);
@@ -36,12 +35,10 @@ export default class interactionController {
     this.interactions.push(interaction);
   }
 
-
   getInteractionContext() {
     if (!this.context) {
       this.context = new Context(this.chart);
     }
     return this.context;
   }
-
 }

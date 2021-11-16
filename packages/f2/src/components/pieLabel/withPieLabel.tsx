@@ -37,16 +37,16 @@ function getMiddleAngle(startAngle, endAngle) {
 }
 
 // 判断两个矩形是否相交
-function isOverlap(label1, label2) {
-  const label1BBox = label1.getBBox();
-  const label2BBox = label2.getBBox();
-  return (
-    Math.max(label1BBox.minX, label2BBox.minX) <=
-      Math.min(label1BBox.maxX, label2BBox.maxX) &&
-    Math.max(label1BBox.minY, label2BBox.minY) <=
-      Math.min(label1BBox.maxY, label2BBox.maxY)
-  );
-}
+// function isOverlap(label1, label2) {
+//   const label1BBox = label1.getBBox();
+//   const label2BBox = label2.getBBox();
+//   return (
+//     Math.max(label1BBox.minX, label2BBox.minX) <=
+//       Math.min(label1BBox.maxX, label2BBox.maxX) &&
+//     Math.max(label1BBox.minY, label2BBox.minY) <=
+//       Math.min(label1BBox.maxY, label2BBox.maxY)
+//   );
+// }
 
 function findShapesByClass(shape, targetClassName) {
   const { _attrs = {} } = shape || {};
@@ -58,7 +58,7 @@ function findShapesByClass(shape, targetClassName) {
 
   if (children && children.length) {
     for (let i = 0, len = children.length; i < len; i++) {
-      result.push(...findShapesByClass(children[i], targetClassName))
+      result.push(...findShapesByClass(children[i], targetClassName));
     }
   }
   return result;
@@ -74,7 +74,7 @@ function findShapeByClassName(shape, point, className) {
   }
 }
 
-export default View => {
+export default (View) => {
   return class PieLabel extends Component {
     triggerRef: any;
     labels: [];
@@ -116,23 +116,15 @@ export default View => {
       const geometry = chart.getGeometrys()[0];
       const { records } = geometry;
 
-      records.forEach(record => {
+      records.forEach((record) => {
         const { children } = record;
         const child = children[0];
         const { xMin, xMax, color, origin } = child;
 
         // 算出锚点的基准位置
         const anchorAngle = getMiddleAngle(xMin, xMax);
-        const anchorPoint = getEndPoint(
-          center,
-          anchorAngle,
-          radius + anchorOffset
-        );
-        const inflectionPoint = getEndPoint(
-          center,
-          anchorAngle,
-          radius + inflectionOffset
-        );
+        const anchorPoint = getEndPoint(center, anchorAngle, radius + anchorOffset);
+        const inflectionPoint = getEndPoint(center, anchorAngle, radius + inflectionOffset);
 
         const label: any = {
           origin,
@@ -166,7 +158,7 @@ export default View => {
       // @ts-ignore
       const maxCountForOneSide = toInteger(height / lineHeight, 10);
 
-      halves.forEach(half => {
+      halves.forEach((half) => {
         if (half.length > maxCountForOneSide) {
           half.splice(maxCountForOneSide, half.length - maxCountForOneSide);
         }
@@ -181,7 +173,7 @@ export default View => {
       return labels;
     }
 
-    _handleEvent = ev => {
+    _handleEvent = (ev) => {
       const { chart, onClick } = this.props;
       const ele = this.triggerRef.current;
       const point = ev.points[0];
@@ -211,9 +203,7 @@ export default View => {
 
     render() {
       const labels = this.getLabels();
-      return (
-        <View labels={labels} {...this.props} triggerRef={this.triggerRef} />
-      );
+      return <View labels={labels} {...this.props} triggerRef={this.triggerRef} />;
     }
   };
 };

@@ -1,4 +1,4 @@
-import { each, isObject, mix, isNil, isFunction, isNumber } from '@antv/util';
+import { each, mix, isNil, isFunction, isNumber } from '@antv/util';
 import { values as arrayValues, getRange } from '../util/array';
 import { registerTickMethod, Scale, getScale } from '@antv/scale';
 import CatTick from './scale/cat-tick';

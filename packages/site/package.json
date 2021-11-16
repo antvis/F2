@@ -26,6 +26,8 @@
     "site:deploy": "npm run site:build && gh-pages -d public"
   },
   "resolutions": {
-    "react-monaco-editor": "0.21.0"
+    "react-monaco-editor": "0.34.0",
+    "monaco-editor": "0.20.0",
+    "monaco-editor-webpack-plugin": "1.9.1"
   }
 }

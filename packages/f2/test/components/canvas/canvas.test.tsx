@@ -12,7 +12,7 @@ class Test extends Component {
           y: 10,
           width: 10,
           height: 10,
-          fill: 'red'
+          fill: 'red',
         }}
       />
     );

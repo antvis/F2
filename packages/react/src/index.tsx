@@ -1,11 +1,7 @@
-// @ts-nocheck
-import React, { RefObject, forwardRef } from "react";
-import { Canvas } from "@antv/f2";
+import React, { RefObject, forwardRef } from 'react';
+import { Canvas } from '@antv/f2';
 
-class ErrorBoundary extends React.Component<
-  { fallback: React.Component },
-  { hasError: boolean }
-> {
+class ErrorBoundary extends React.Component<{ fallback: React.Component }, { hasError: boolean }> {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -16,7 +12,7 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error, _errorInfo) {
-    console.error("图表渲染失败: ", error);
+    console.error('图表渲染失败: ', error);
   }
 
   render() {
@@ -25,7 +21,7 @@ class ErrorBoundary extends React.Component<
       return fallback || null;
     }
 
-    return this.props.children;
+    return this.props.children || null;
   }
 }
 
@@ -55,7 +51,7 @@ class ReactCanvas extends React.Component<CanvasProps> {
   componentDidMount() {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
-    const context = canvasEl.getContext("2d");
+    const context = canvasEl.getContext('2d');
     const canvas = new Canvas({
       // 已经有高清方案，这里默认用1
       pixelRatio: 1,
@@ -74,14 +70,14 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   render() {
     const { props } = this;
-    const { className = "" } = props;
-    return React.createElement("canvas", {
+    const { className = '' } = props;
+    return React.createElement('canvas', {
       className: `f2-chart ${className}`,
       ref: this.canvasRef,
       style: {
-        width: "100%",
-        height: "100%",
-        display: "block",
+        width: '100%',
+        height: '100%',
+        display: 'block',
         padding: 0,
         margin: 0,
       },
@@ -94,11 +90,7 @@ class ReactCanvas extends React.Component<CanvasProps> {
   }
 }
 
-
-export default forwardRef((
-  props: CanvasProps,
-  ref: RefObject<HTMLCanvasElement>
-) => {
+export default forwardRef((props: CanvasProps, ref: RefObject<HTMLCanvasElement>) => {
   const { fallback } = props;
   return React.createElement(ErrorBoundary, {
     fallback: fallback,

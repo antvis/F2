@@ -1,9 +1,9 @@
 import { isNil } from '@antv/util';
 import Element from '../element';
+import { ShapeAttrs } from '../../types';
 
-class Shape extends Element {
-
-  // Shapes
+class Shape<T extends ShapeAttrs = ShapeAttrs> extends Element<T> {
+  // // Shapes
   static Rect: any;
   static Image: any;
   static Circle: any;
@@ -16,17 +16,14 @@ class Shape extends Element {
   static Custom: any;
   static Marker: any;
 
-  _attrs: any;
-
-
-
   _initProperties() {
     this._attrs = {
       zIndex: 0,
       visible: true,
       destroyed: false,
       isShape: true,
-      attrs: {}
+      // @ts-ignore
+      attrs: {},
     };
   }
 
@@ -79,7 +76,7 @@ class Shape extends Element {
     return null;
   }
 
-  protected createPath(context) {}
+  protected createPath(_context) {}
 }
 
 export default Shape;

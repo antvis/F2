@@ -19,7 +19,7 @@ class Base {
     }
   }
 
-  createScale(scaleConfig: ScaleConfig): Scale {
+  createScale(_scaleConfig: ScaleConfig): Scale {
     return null;
   }
 
@@ -41,7 +41,7 @@ class Base {
     const { scale } = this;
 
     if (isArray(value)) {
-      return value.map(v => {
+      return value.map((v) => {
         return scale.scale(v);
       });
     }

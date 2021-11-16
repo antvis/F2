@@ -1,6 +1,6 @@
 import { isArray } from '@antv/util';
 import { jsx } from '../../jsx';
-import { LineViewProps } from './types'
+import { LineViewProps } from './types';
 
 function concatPoints(children) {
   let result = [];
@@ -52,7 +52,7 @@ function AnimationEndView(props) {
         appear: {
           easing: appear.easing,
           duration: appear.duration,
-          onFrame: function(t) {
+          onFrame: function (t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
             const children = element.get('children');

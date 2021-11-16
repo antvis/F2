@@ -1,7 +1,4 @@
-const createContext = (
-  title = '',
-  { height = '225px', width = '300px' }: any = {}
-) => {
+const createContext = (title = '', { height = '225px', width = '300px' }: any = {}) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');
   titleEl.innerText = title + ':';

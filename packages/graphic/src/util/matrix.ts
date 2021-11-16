@@ -1,6 +1,6 @@
 const Matrix = {
   generateDefault() {
-    return [ 1, 0, 0, 1, 0, 0 ];
+    return [1, 0, 0, 1, 0, 0];
   },
   isChanged(m) {
     return m[0] !== 1 || m[1] !== 0 || m[2] !== 0 || m[3] !== 1 || m[4] !== 0 || m[5] !== 0;
@@ -15,7 +15,7 @@ const Matrix = {
     const dx = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
     const dy = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
 
-    return [ m11, m12, m21, m22, dx, dy ];
+    return [m11, m12, m21, m22, dx, dy];
   },
   scale(out, m, v) {
     out[0] = m[0] * v[0];
@@ -58,10 +58,10 @@ const Matrix = {
       const action = actions[i];
       switch (action[0]) {
         case 't':
-          Matrix.translate(out, out, [ action[1], action[2] ]);
+          Matrix.translate(out, out, [action[1], action[2]]);
           break;
         case 's':
-          Matrix.scale(out, out, [ action[1], action[2] ]);
+          Matrix.scale(out, out, [action[1], action[2]]);
           break;
         case 'r':
           Matrix.rotate(out, out, action[1]);
@@ -72,7 +72,7 @@ const Matrix = {
     }
 
     return out;
-  }
+  },
 };
 
 export default Matrix;

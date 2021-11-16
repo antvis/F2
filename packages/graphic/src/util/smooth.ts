@@ -5,7 +5,7 @@
 import Vector2 from './vector2';
 
 function getPoint(v) {
-  return [ v.x, v.y ];
+  return [v.x, v.y];
 }
 
 function smoothBezier(points, smooth, isLoop, constraint) {
@@ -21,8 +21,8 @@ function smoothBezier(points, smooth, isLoop, constraint) {
   let l;
   let i;
   if (hasConstraint) {
-    min = [ Infinity, Infinity ];
-    max = [ -Infinity, -Infinity ];
+    min = [Infinity, Infinity];
+    max = [-Infinity, -Infinity];
 
     for (i = 0, l = points.length; i < l; i++) {
       point = getPoint(points[i]);
@@ -40,7 +40,7 @@ function smoothBezier(points, smooth, isLoop, constraint) {
       nextPoint = getPoint(points[(i + 1) % len]);
     } else {
       if (i === 0 || i === len - 1) {
-        cps.push([ point[0], point[1] ]);
+        cps.push([point[0], point[1]]);
         continue;
       } else {
         prevPoint = getPoint(points[i - 1]);
@@ -72,8 +72,8 @@ function smoothBezier(points, smooth, isLoop, constraint) {
       Vector2.min(cp1, cp1, max);
     }
 
-    cps.push([ cp0[0], cp0[1] ]);
-    cps.push([ cp1[0], cp1[1] ]);
+    cps.push([cp0[0], cp0[1]]);
+    cps.push([cp1[0], cp1[1]]);
   }
 
   if (isLoop) {
@@ -97,14 +97,7 @@ function catmullRom2bezier(pointList, z, constraint) {
     cp1 = controlPointList[i * 2];
     cp2 = controlPointList[i * 2 + 1];
     p = pointList[i + 1];
-    d1.push([ 'C',
-      cp1[0],
-      cp1[1],
-      cp2[0],
-      cp2[1],
-      p.x,
-      p.y
-    ]);
+    d1.push(['C', cp1[0], cp1[1], cp2[0], cp2[1], p.x, p.y]);
   }
 
   if (isLoop) {
@@ -112,18 +105,9 @@ function catmullRom2bezier(pointList, z, constraint) {
     cp2 = controlPointList[len + 1];
     p = pointList[0];
 
-    d1.push([ 'C',
-      cp1[0],
-      cp1[1],
-      cp2[0],
-      cp2[1],
-      p.x,
-      p.y
-    ]);
+    d1.push(['C', cp1[0], cp1[1], cp2[0], cp2[1], p.x, p.y]);
   }
   return d1;
 }
 
-export {
-  catmullRom2bezier as smooth
-};
+export { catmullRom2bezier as smooth };

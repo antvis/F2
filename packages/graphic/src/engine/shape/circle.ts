@@ -1,6 +1,7 @@
 import Shape from './shape';
+import { CircleAttrs } from '../../types';
 
-class Circle extends Shape {
+class Circle extends Shape<CircleAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
@@ -13,7 +14,7 @@ class Circle extends Shape {
       x: 0,
       y: 0,
       r: 0,
-      lineWidth: 0
+      lineWidth: 0,
     };
   }
 
@@ -33,7 +34,7 @@ class Circle extends Shape {
       minX: x - r,
       maxX: x + r,
       minY: y - r,
-      maxY: y + r
+      maxY: y + r,
     };
   }
 }

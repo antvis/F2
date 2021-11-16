@@ -79,10 +79,7 @@ export default class TooltipView extends Component {
     const { left: coordLeft, width: coordWidth } = coord;
     const { width } = group.get('attrs');
     const halfWidth = width / 2;
-    const moveX = Math.min(
-      Math.max(x - coordLeft - halfWidth, 0),
-      coordWidth - halfWidth
-    );
+    const moveX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - halfWidth);
     itemsRef.current.moveTo(moveX, 0);
   }
   render() {
@@ -95,7 +92,7 @@ export default class TooltipView extends Component {
       top: coordTop,
       right: coordRight,
       bottom: coordBottom,
-      width: coordWidth,
+      // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
     const { x, y, xField, yField, origin: firstOrigin } = firstRecord;
@@ -185,9 +182,7 @@ export default class TooltipView extends Component {
                     attrs={{
                       ...defaultStyle.nameStyle,
                       ...nameStyle,
-                      text: value
-                        ? `${record[xField]}${joinString}`
-                        : record[xField],
+                      text: value ? `${record[xField]}${joinString}` : record[xField],
                     }}
                   />
                   <text

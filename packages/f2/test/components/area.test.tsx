@@ -47,9 +47,6 @@ describe('Area', () => {
         context={context}
         width={offsetWidth}
         height={height}
-        coord={{
-          type: Rect,
-        }}
         pixelRatio={window.devicePixelRatio}
       >
         <Chart

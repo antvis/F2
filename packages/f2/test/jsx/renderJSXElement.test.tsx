@@ -1,10 +1,4 @@
-import {
-  render,
-  renderJSXElement,
-  jsx,
-  Fragment,
-  compareRenderTree,
-} from '../../src/jsx';
+import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../src/jsx';
 import { createUpdater } from '../../src/canvas/updater';
 
 const ViewA = () => {

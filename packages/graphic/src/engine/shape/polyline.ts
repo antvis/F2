@@ -1,7 +1,7 @@
-
 import Shape from './shape';
 import { getBBoxFromPoints, getBBoxFromBezierGroup } from '../../util/bbox';
 import * as Smooth from '../../util/smooth';
+import { PolylineAttrs } from '../../types';
 
 // filter the point which x or y is NaN
 function _filterPoints(points) {
@@ -16,7 +16,7 @@ function _filterPoints(points) {
   return filteredPoints;
 }
 
-class Polyline extends Shape {
+class Polyline extends Shape<PolylineAttrs> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
@@ -28,7 +28,7 @@ class Polyline extends Shape {
     return {
       points: null,
       lineWidth: 1,
-      smooth: false
+      smooth: false,
     };
   }
 
@@ -43,8 +43,8 @@ class Polyline extends Shape {
       context.moveTo(filteredPoints[0].x, filteredPoints[0].y);
       if (smooth) {
         const constaint = [
-          [ 0, 0 ],
-          [ 1, 1 ]
+          [0, 0],
+          [1, 1],
         ];
         const sps = Smooth.smooth(filteredPoints, false, constaint);
         for (let i = 0, n = sps.length; i < n; i++) {
@@ -70,17 +70,26 @@ class Polyline extends Shape {
     if (smooth) {
       const newPoints = [];
       const constaint = [
-        [ 0, 0 ],
-        [ 1, 1 ]
+        [0, 0],
+        [1, 1],
       ];
       const sps = Smooth.smooth(filteredPoints, false, constaint);
       for (let i = 0, n = sps.length; i < n; i++) {
         const sp = sps[i];
         if (i === 0) {
-          newPoints.push([ filteredPoints[0].x, filteredPoints[0].y, sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
+          newPoints.push([
+            filteredPoints[0].x,
+            filteredPoints[0].y,
+            sp[1],
+            sp[2],
+            sp[3],
+            sp[4],
+            sp[5],
+            sp[6],
+          ]);
         } else {
-          const lastPoint = sps[ i - 1 ];
-          newPoints.push([ lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6] ]);
+          const lastPoint = sps[i - 1];
+          newPoints.push([lastPoint[5], lastPoint[6], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]]);
         }
       }
       return getBBoxFromBezierGroup(newPoints, lineWidth);

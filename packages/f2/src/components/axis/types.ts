@@ -4,7 +4,7 @@ import Chart from '../../chart';
 interface Line {
   lineWidth?: number;
   strokeOpacity?: number;
-  stroke: string;
+  stroke?: string;
   strokeStyle?: string;
   lineCap?: 'butt' | 'round' | 'square';
   lineJoin?: 'round' | 'bevel' | 'miter';
@@ -22,52 +22,66 @@ interface Text {
   fontSize?: number;
   fontFamily?: string;
   fontWeight?:
-  | 'normal'
-  | 'bold'
-  | 'bolder'
-  | 'lighter'
-  | 100
-  | 200
-  | 300
-  | 400
-  | 500
-  | 600
-  | 700
-  | 800
-  | 900;
+    | 'normal'
+    | 'bold'
+    | 'bolder'
+    | 'lighter'
+    | 100
+    | 200
+    | 300
+    | 400
+    | 500
+    | 600
+    | 700
+    | 800
+    | 900;
   fontVariant?: 'normal' | 'small-caps';
   textAlign?: 'left' | 'right' | 'start' | 'center' | 'end';
-  align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between';  
+  align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between';
   textBaseline?: 'top' | 'middle' | 'bottom';
   fill?: string;
-  fillStyle?: string;  // 普通文本(fillText)的颜色
+  fillStyle?: string; // 普通文本(fillText)的颜色
   stroke?: string;
   strokeStyle?: string; // 描边文本(strokeText)的颜色
   lineHeight?: number;
-  lineWidth?: number;  // 用于描边文本
+  lineWidth?: number; // 用于描边文本
+  rotate?: number; // 用于旋转文本
   [key: string]: any;
 }
 
 // 仅在 bottom 下新增了 align 支持 `between`
 type StyleText<T = any> = T extends 'bottom' ? Text : Omit<Text, 'align'>;
 
+type LabelCallback<Type = void> = (
+  text: Tick['text'],
+  index: number,
+  total: number
+) => StyleText<Type>;
+type GridCallBack = (text: Tick['text'], index: number, total: number) => Line;
+
 export interface Style<Type = void> {
   grid?: Line;
   tickLine?: TickLine;
   line?: Line;
   labelOffset?: number;
-  label: StyleText<Type>;
+  label?: StyleText<Type>;
 }
 
+export interface StyleProps<Type = void> extends Style {
+  label?: StyleText<Type> | LabelCallback;
+  grid?: Line | GridCallBack;
+}
 interface Point {
   x: number;
   y: number;
 }
 
-interface Tick {
+export interface Tick {
   points: Point[];
   text: string;
   tickValue: string | number;
+  labelStyle?: Text;
+  gridStyle?: Line;
 }
 
 type PolarCord = Pick<Coord, 'center'>;
@@ -88,7 +102,7 @@ export interface PolarProps {
 }
 
 class RectOrPolarCoord<T extends boolean> extends Coord {
-  isPolar: T
+  isPolar: T;
 }
 
 export interface RectAxisProps {
@@ -120,7 +134,7 @@ export interface AxisProps {
   /**
    * 坐标轴样式定制
    */
-  style?: Style;
+  style?: StyleProps;
   /**
    * note: 作为 `<Chart />` 子元素时将自动注入
    */
@@ -129,5 +143,5 @@ export interface AxisProps {
    * note: 作为 `<Chart />` 子元素时将自动注入
    */
   coord?: Coord;
-  [key: string]: any;  // TODO
+  [key: string]: any; // TODO
 }

@@ -10,8 +10,4 @@ interface Option extends LayoutProps {
   transposed?: boolean;
 }
 
-export {
-  Point,
-  Range,
-  Option,
-}
+export { Point, Range, Option };

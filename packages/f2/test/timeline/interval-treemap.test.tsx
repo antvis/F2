@@ -1,13 +1,4 @@
-import {
-  jsx,
-  Canvas,
-  Chart,
-  Timeline,
-  Axis,
-  Interval,
-  TextGuide,
-  Treemap,
-} from '../../src';
+import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide, Treemap } from '../../src';
 import { createContext } from '../util';
 
 const data = [
@@ -21,7 +12,7 @@ const data = [
 describe('Chart', () => {
   it('图形变化', () => {
     const context = createContext('柱图-treemap 转换');
-    const intervalRef = {};
+    const intervalRef = { current: null };
     const treemapRef = {};
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
@@ -58,7 +49,7 @@ describe('Chart', () => {
 
   it('图形变化', () => {
     const context = createContext('柱图-treemap 转换');
-    const intervalRef = {};
+    const intervalRef = { current: null };
     const treemapRef = {};
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
@@ -95,7 +86,7 @@ describe('Chart', () => {
 
   it('图形变化', () => {
     const context = createContext('柱图-treemap 转换');
-    const intervalRef = {};
+    const intervalRef = { current: null };
     const treemapRef = {};
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>

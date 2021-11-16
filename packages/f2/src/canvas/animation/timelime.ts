@@ -1,11 +1,16 @@
+const requestAnimationFrame =
+  typeof window === 'object' && window.requestAnimationFrame
+    ? window.requestAnimationFrame
+    : function (fn) {
+        return setTimeout(fn, 16);
+      };
 
-const requestAnimationFrame = typeof window === 'object' && window.requestAnimationFrame ? window.requestAnimationFrame : function(fn) {
-  return setTimeout(fn, 16);
-};
-
-const cancelAnimationFrame = typeof window === 'object' && window.cancelAnimationFrame ? window.cancelAnimationFrame : function(number) {
-  return clearTimeout(number);
-}; 
+const cancelAnimationFrame =
+  typeof window === 'object' && window.cancelAnimationFrame
+    ? window.cancelAnimationFrame
+    : function (number) {
+        return clearTimeout(number);
+      };
 
 const clock = typeof performance === 'object' && performance.now ? performance : Date;
 
@@ -38,10 +43,7 @@ class Timeline {
     this.duration = duration;
     this.onUpdate = onUpdate;
     this.onEnd = onEnd;
-    const {
-      paused,
-      pausedTime
-    } = this;
+    const { paused, pausedTime } = this;
     this.playing = true;
     let startTime = clock.now();
 
@@ -94,7 +96,7 @@ class Timeline {
   }
 
   abort() {
-    if(!this.animationFrameNumber) {
+    if (!this.animationFrameNumber) {
       return;
     }
     cancelAnimationFrame(this.animationFrameNumber);

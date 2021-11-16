@@ -1,4 +1,3 @@
-
 /**
  * 计算两个坐标的中点坐标
  * @param start 起始点{x:number, y:number}
@@ -11,5 +10,4 @@ function getMiddlePoint(start, end) {
   return { x, y };
 }
 
-
-export { getMiddlePoint }
+export { getMiddlePoint };

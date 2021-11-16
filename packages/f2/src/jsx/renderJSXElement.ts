@@ -23,6 +23,7 @@ function renderJSXElement(element: JSX.Element, context, updater): JSX.Element {
   };
 
   if (typeof type === 'function') {
+    // @ts-ignore
     const newElement = type(element.props, context, updater);
     if (!newElement) return newElement;
     // recursive render until type is string

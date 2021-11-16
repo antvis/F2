@@ -8,5 +8,3 @@ registerTickMethod('cat', CatTick);
 registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
-
-

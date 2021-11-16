@@ -1,12 +1,4 @@
-import {
-  each,
-  isObject,
-  isString,
-  mix,
-  isNil,
-  isFunction,
-  upperFirst,
-} from '@antv/util';
+import { each, isString, isNil, isFunction, upperFirst } from '@antv/util';
 import * as Attrs from '../attr';
 import equal from '../base/equal';
 import { isArray } from '../util';
