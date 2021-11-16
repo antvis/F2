@@ -60,7 +60,9 @@ describe('Chart', () => {
             y="income"
             color="country"
             animation={{
-              duration: 5000,
+              appear: {
+                duration: 5000,
+              }
             }}
             endView={EndView}
           />
