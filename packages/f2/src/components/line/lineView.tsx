@@ -1,4 +1,4 @@
-import { isArray } from '@antv/util';
+import { deepMix, isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
 
@@ -89,7 +89,6 @@ export default (props: LineViewProps) => {
         width: width,
       },
     },
-    ...animation,
   };
   return (
     <group>
@@ -109,14 +108,14 @@ export default (props: LineViewProps) => {
                     lineWidth: size,
                     ...shape,
                   }}
-                  animation={{
+                  animation={deepMix({
                     update: {
                       easing: 'linear',
                       duration: 450,
                       property: ['points'],
                     },
                     appear,
-                  }}
+                  }, animation)}
                 />
               );
             })}
