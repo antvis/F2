@@ -1,8 +1,12 @@
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import { getBBoxFromPoints } from '../../util/bbox';
 import { PolygonAttrs } from '../../types';
 
-class Polygon extends Shape<PolygonAttrs> {
+export interface PolygonProp extends ShapeProp {
+  attrs?: PolygonAttrs;
+}
+
+class Polygon extends Shape<PolygonProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

@@ -1,8 +1,12 @@
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import { getBBoxFromArc } from '../../util/bbox';
 import { SectorAttrs } from '../../types';
 
-class Sector extends Shape<SectorAttrs> {
+export interface SectorProp extends ShapeProp {
+  attrs?: SectorAttrs;
+}
+
+class Sector extends Shape<SectorProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;
