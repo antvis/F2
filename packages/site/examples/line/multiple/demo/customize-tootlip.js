@@ -139,11 +139,11 @@ const { props } = (
         y="value"
         size={{
           field: 'tag',
-          map: (val) => (val ? 4 : 0),
+          callback: (val) => (val ? 4 : 0),
         }}
         color={{
           field: 'tag',
-          map: (val) => (val === 2 ? '#518DFE' : '#F35833'),
+          callback: (val) => (val === 2 ? '#518DFE' : '#F35833'),
         }}
       />
       <Legend
