@@ -1,4 +1,3 @@
-import { jsx } from '../../jsx';
 import withLine from '../line/withLine';
 
 export default (View) => {
@@ -6,8 +5,6 @@ export default (View) => {
     getDefaultCfg() {
       return {
         geomType: 'area',
-        // 面积图默认设为从0开始
-        startOnZero: true,
       };
     }
 

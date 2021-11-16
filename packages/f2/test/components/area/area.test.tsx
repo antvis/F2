@@ -141,7 +141,7 @@ describe('面积图', () => {
           >
             <Axis field="month" />
             <Axis field="value" />
-            <Area x="month" y="value" />
+            <Area x="month" y="value" startOnZero={true} />
             <Line x="month" y="value" />
           </Chart>
         </Canvas>
