@@ -65,11 +65,10 @@ export default (View): any => {
         const root = rootParent(node);
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
+        const { x0, x1, y0, y1 } = node;
         const rect = coord.convertRect({
-          x: node.x0,
-          y: node.y1,
-          y0: node.y0,
-          size: node.x1 - node.x0,
+          x: [x0, x1],
+          y: [y0, y1]
         });
         mix(node, rect);
         // 递归处理
