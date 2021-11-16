@@ -1,3 +1,56 @@
+import type { CircleAttrs, RectAttrs, Point } from '@antv/f2-graphic';
+import type * as CSS from 'csstype';
+
+type PX_FIELD_NAME = 
+  'lineWidth'
+| 'lineDash'
+| 'x'
+| 'y' 
+| 'r'
+| 'r0'
+| 'x1' 
+| 'y1' 
+| 'x2' 
+| 'y2' 
+| 'radius' 
+| 'width' 
+| 'height'
+| 'fontSize'
+| 'sx'
+| 'sy'
+| 'swidth'
+| 'sheight'
+| 'points';
+
+type pxstr = `${number}px`;
+
+interface PxPoint {
+  x: number | pxstr;
+  y: number | pxstr;
+}
+
+type SupportPx<T> = {
+  [k in keyof T]:
+    k extends PX_FIELD_NAME ?
+      T[k] extends number ? number | pxstr : 
+      T[k] extends number[] ? number[] | pxstr[] :
+      T[k] extends Point[] ? PxPoint[] : T[k]
+    :T[k];
+}
+
+interface IntrinsicElementsProps {
+  style?: CSS.Properties;
+  [k: string]: any;
+}
+
+interface CircleProps extends IntrinsicElementsProps {
+  attrs: SupportPx<CircleAttrs>; 
+}
+
+interface RectProps extends IntrinsicElementsProps {
+  attrs: SupportPx<RectAttrs>;
+}
+
 interface Ref {
   current?: any;
 }
@@ -28,8 +81,8 @@ declare global {
     }
     interface IntrinsicElements {
       group: any;
-      rect: any;
-      circle: any;
+      rect: RectProps;
+      circle: CircleProps;
       line: any;
       polygon: any;
       polyline: any;

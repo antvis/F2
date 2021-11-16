@@ -63,8 +63,8 @@ export interface ArcAttrs extends ShapeAttrs {
 }
 
 export interface CircleAttrs extends ShapeAttrs {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   r: number;
 }
 
@@ -83,14 +83,14 @@ export interface MarkerAttrs extends ShapeAttrs {
 }
 
 export interface RectAttrs extends ShapeAttrs {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   width: number;
   height: number;
-  radius: number;
+  radius?: number;
 }
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
