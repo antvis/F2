@@ -1,4 +1,4 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject } from '@antv/util';
+import { isFunction, each, upperFirst, mix, groupToMap, isObject, includes } from '@antv/util';
 import Component from '../../base/component';
 import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array';
 import * as Adjust from '../../adjust';
@@ -10,10 +10,6 @@ import equal from '../../base/equal';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
-// 需要映射的属性名
-const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
-// 分组处理的属性
-const GROUP_ATTRS = ['color', 'size', 'shape'];
 
 class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   isGeometry = true;
@@ -43,10 +39,11 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
     const { chart } = props;
 
-    this.attrController = new AttrController(chart.scale);
+    const attrsRange = this._getThemeAttrsRange();
+    this.attrController = new AttrController(chart.scale, attrsRange);
     const { attrController } = this;
 
-    const attrOptions = this._getAttrOptions(props);
+    const attrOptions = attrController.getAttrOptions(props);
     attrController.create(attrOptions);
   }
 
@@ -55,8 +52,8 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const { data: nextData, adjust: nextAdjust } = nextProps;
     const { data: lastData, adjust: lastAdjust } = lastProps;
 
-    const nextAttrOptions = this._getAttrOptions(nextProps);
-    const lastAttrOptions = this._getAttrOptions(lastProps);
+    const nextAttrOptions = attrController.getAttrOptions(nextProps);
+    const lastAttrOptions = attrController.getAttrOptions(lastProps);
     if (!equal(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
       this.records = null;
@@ -85,37 +82,12 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   }
 
   _createAttrs() {
-    const { attrController, props } = this;
-    const { chart } = props;
+    const { attrController } = this;
     attrController.attrs = {};
     this.attrs = attrController.getAttrs();
   }
 
-  _getAttrOptions(props) {
-    if (!props.x || !props.y) {
-      throw new Error('x, y are required !');
-    }
-    const options = {};
-    const ranges = this._getAttrRanges();
-    const { attrController } = this;
-    ATTRS.forEach((attrName) => {
-      if (!props[attrName]) return;
-      const option = attrController.parseOption(props[attrName]);
-      if (!option.range) {
-        option.range = ranges[attrName];
-      }
-      options[attrName] = option;
-    });
-    // @ts-ignore
-    const { x, y } = options;
-
-    // x, y 都是固定Linear 映射
-    x.type = Linear;
-    y.type = Linear;
-    return options;
-  }
-
-  _getAttrRanges() {
+  _getThemeAttrsRange() {
     const { context, props, geomType } = this;
     const { coord } = props;
     const { theme } = context;
@@ -130,15 +102,6 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     };
   }
 
-  getDefaultAttrValues() {
-    const attrRanges = this._getAttrRanges();
-    const { color, shape } = attrRanges;
-    return {
-      color: color[0],
-      shape: shape && shape[0],
-    };
-  }
-
   _adjustScales() {
     const { attrs, props, startOnZero: defaultStartOnZero } = this;
     const { chart, startOnZero = defaultStartOnZero } = props;
@@ -149,24 +112,9 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }
   }
 
-  _getGroupScales() {
-    const { attrs } = this;
-    const scales = [];
-    each(GROUP_ATTRS, (attrName) => {
-      const attr = attrs[attrName];
-      if (!attr) {
-        return;
-      }
-      const { scale } = attr;
-      if (scale && scale.isCategory && scales.indexOf(scale) === -1) {
-        scales.push(scale);
-      }
-    });
-    return scales;
-  }
-
   _groupData(data) {
-    const groupScales = this._getGroupScales();
+    const { attrController } = this;
+    const groupScales = attrController.getGroupScales();
     if (!groupScales.length) {
       return [{ children: data }];
     }
@@ -352,52 +300,59 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return shapeStyle;
   }
 
+  /**
+   * 数据映射到视图属性核心逻辑
+   * x、y 每个元素走 normalize 然后 convertPoint
+   * color、size、shape
+   *  如果是Linear，则每个元素 走 mapping
+   *  如果是Category/Identity 则第一个元素走 mapping
+   */
   _mapping(records) {
-    const { attrs, props } = this;
+    const { attrs, props, attrController } = this;
     const { coord } = props;
-    const attrNames = Object.keys(attrs);
-    const linearAttrs = [];
-    const nolinearAttrs = [];
-    attrNames.forEach((attrName) => {
-      if (attrs[attrName].constructor === Linear) {
-        linearAttrs.push(attrName);
-      } else {
-        nolinearAttrs.push(attrName);
-      }
-    });
 
-    const defaultAttrValues = this.getDefaultAttrValues();
+    const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
+    const defaultAttrValues = attrController.getDefaultAttrValues();
 
     for (let i = 0, len = records.length; i < len; i++) {
       const record = records[i];
       const { children } = record;
-      // 非线性映射只用映射第一项就可以了
       const attrValues = {
         ...defaultAttrValues,
       };
       const firstChild = children[0];
-      for (let k = 0, len = nolinearAttrs.length; k < len; k++) {
-        const attrName = nolinearAttrs[k];
+
+      // 非线性映射
+      for (let k = 0, len = nonlinearAttrs.length; k < len; k++) {
+        const attrName = nonlinearAttrs[k];
         const attr = attrs[attrName];
+        // 非线性映射只用映射第一项就可以了
         attrValues[attrName] = attr.mapping(firstChild[attr.field]);
       }
 
-      // 线性映射
-      const linearAttrsLength = linearAttrs.length;
+      // 线性属性映射
       for (let j = 0, childrenLen = children.length; j < childrenLen; j++) {
         const child = children[j];
         const normalized: any = {};
-        for (let k = 0; k < linearAttrsLength; k++) {
+        for (let k = 0; k < linearAttrs.length; k++) {
           const attrName = linearAttrs[k];
           const attr = attrs[attrName];
-          normalized[attrName] = attr.normalize(child[attr.field]);
+          // 分类属性的线性映射
+          if (attrController.isGroupAttr(attrName)) {
+            attrValues[attrName] = attr.mapping(child[attr.field]);
+          } else {
+            normalized[attrName] = attr.normalize(child[attr.field]);
+          }
         }
+
         const { x, y } = coord.convertPoint({
           x: normalized.x,
           y: normalized.y,
         });
+
         // 获取shape的style
         const shape = this._getShapeStyle(attrValues.shape, child.origin);
+
         mix(child, attrValues, {
           normalized,
           x,

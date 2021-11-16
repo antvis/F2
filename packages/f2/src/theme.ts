@@ -90,7 +90,7 @@ const Theme = {
   colors: ['#1890FF', '#2FC25B', '#FACC14', '#223273', '#8543E0', '#13C2C2', '#3436C7', '#F04864'],
   shapes: {
     line: ['line', 'dash', 'smooth'],
-    point: ['circle', 'hollowCircle'],
+    point: ['circle', 'hollowCircle', 'rect'],
     area: ['area', 'smooth'],
     interval: ['rect', 'pyramid', 'funnel'],
   },

@@ -1,10 +1,51 @@
 import Layout from '../base/layout';
 import { Range, Point, Option } from './types';
+import { isArray } from '@antv/util'
 
 function transposedRect({ xMin, xMax, yMin, yMax }) {
   return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
 }
 
+function convertRect({ x, y, size, y0 }) {
+  let xMin: number;
+  let xMax: number;
+  if (isArray(x)) {
+    xMin = x[0];
+    xMax = x[1];
+  } else {
+    xMin = x - size / 2;
+    xMax = x + size / 2;
+  }
+
+  let yMin: number;
+  let yMax: number;
+  if (isArray(y)) {
+    yMin = y[0];
+    yMax = y[1];
+  } else {
+    yMin = Math.min(y0, y);
+    yMax = Math.max(y0, y);
+  }
+
+  return {
+    xMin,
+    xMax,
+    yMin,
+    yMax,
+  };
+}
+
+// 绘制矩形的关键点
+interface RectPoint extends Point {
+  y0: number;
+  size: number;
+}
+
+/**
+ * 直角坐标系
+ * convert相关的方法，涉及将标准坐标系映射到实际坐标系内
+ * transform相关的方法，是仅将某一种关键点转换成另一种关键点 (比如将x/y/size/y0转换成yMin/yMax/..)
+ */
 class Base extends Layout {
   type: string;
   // 用来特殊标识是否是极坐标
@@ -41,16 +82,16 @@ class Base extends Layout {
   }
 
   // 把归一后的值映射到对应的定义域
-  convertPoint(point) {
+  convertPoint(point: any) {
     return point;
   }
 
-  convertRect(rect) {
-    const { x: xRange, y: yRange, transposed } = this;
+  convertRect(rectPoint: RectPoint) {
+    const { x: xRange, y: yRange } = this;
     const [xStart, xEnd] = xRange;
     const [yStart, yEnd] = yRange;
 
-    const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
+    const { xMin, xMax, yMin, yMax } = this.transformToRect(rectPoint)
 
     const x0 = xStart + (xEnd - xStart) * xMin;
     const x1 = xStart + (xEnd - xStart) * xMax;
@@ -63,6 +104,14 @@ class Base extends Layout {
       yMin: Math.min(y0, y1),
       yMax: Math.max(y0, y1),
     };
+  }
+
+  transformToRect(rectPoint: RectPoint) {
+    const { transposed } = this;
+    const rect = convertRect(rectPoint)
+    const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
+
+    return { xMin, xMax, yMin, yMax }
   }
 
   // 把canvas坐标的点位映射回归一后的值

@@ -166,7 +166,6 @@ describe('Axis 轴', () => {
             x="Year"
             y="NumberNewMicroBrewery"
             color={{
-              // TODO: 这里颜色映射还有点问题
               field: 'NumberNewMicroBrewery',
               callback: function (val) {
                 if (val === 20) {
@@ -239,9 +238,6 @@ describe('Axis 轴', () => {
                 return numberToMoney(val);
               },
             },
-            Einwohner: {
-              type: 'category',
-            },
           }}
         >
           <Axis
@@ -267,9 +263,9 @@ describe('Axis 轴', () => {
             y="Anzahl Flüchtlinge"
             color="#F04864"
             size={{
+              type: 'linear',
               field: 'Einwohner',
-              // TODO:这里size好像映射反了
-              range: [1, 5, 10, 15],
+              range: [5, 20],
             }}
             style={{
               fillOpacity: 0.7,
@@ -524,7 +520,7 @@ describe('Axis 轴', () => {
         >
           <Axis field="percent" visible={false} />
           <Axis
-            field="value"
+            field="name"
             style={{
               grid: {
                 lineDash: null,
@@ -539,7 +535,7 @@ describe('Axis 轴', () => {
               },
             }}
           />
-          <Interval x="name" y="percent" color="#E5875B" />
+          <Interval x="name" y="percent" color={['percent', ['#E5875B', '#C2832B']]} />
         </Chart>
       </Canvas>
     );
