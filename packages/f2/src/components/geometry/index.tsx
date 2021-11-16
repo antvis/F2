@@ -114,11 +114,17 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   _adjustScales() {
     const { attrs, props, startOnZero: defaultStartOnZero } = this;
-    const { chart, startOnZero = defaultStartOnZero } = props;
+    const { chart, startOnZero = defaultStartOnZero, coord, adjust } = props;
+    const { isPolar, transposed } = coord;
     // 如果从 0 开始，只调整 y 轴 scale
     if (startOnZero) {
       const { y } = attrs;
       chart.scale.adjustStartZero(y.scale);
+    }
+    // 饼图的scale调整，关闭nice
+    if(isPolar && transposed && adjust === 'stack') {
+      const { y } = attrs;
+      chart.scale.adjustPieScale(y.scale);
     }
   }
 
@@ -251,7 +257,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
 
-    // 主要是调整 y 轴是否从 0 开始
+    // scale适配调整，主要是调整 y 轴是否从 0 开始 以及 饼图
     this._adjustScales();
 
     this.dataArray = dataArray;

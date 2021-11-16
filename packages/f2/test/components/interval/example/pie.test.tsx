@@ -8,32 +8,32 @@ import { createContext } from '../../../util';
 const data = [
   {
     name: '长津湖',
-    percent: 0.4,
+    percent: 10,
     a: '1',
   },
   {
     name: '我和我的父辈',
-    percent: 0.2,
+    percent: 20,
     a: '1',
   },
   {
     name: '失控玩家',
-    percent: 0.18,
+    percent: 30,
     a: '1',
   },
   {
     name: '宝可梦',
-    percent: 0.15,
+    percent: 40,
     a: '1',
   },
   {
     name: '峰爆',
-    percent: 0.05,
+    percent: 50,
     a: '1',
   },
   {
     name: '其他',
-    percent: 0.02,
+    percent: 60,
     a: '1',
   },
 ];
@@ -51,7 +51,6 @@ describe('饼图', () => {
             type: Polar,
             transposed: true,
           }}
-          scale={{}}
         >
           <Interval
             x="a"

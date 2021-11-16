@@ -52,10 +52,8 @@ export default (View): any => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
         const rect = coord.convertRect({
-          x: x0,
-          y: y1,
-          y0: y0,
-          size: x1 - x0,
+          x: [x0, x1],
+          y: [y0, y1]
         });
         return {
           key: data.key,
