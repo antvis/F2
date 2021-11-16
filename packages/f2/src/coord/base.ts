@@ -6,7 +6,7 @@ function transposedRect({ xMin, xMax, yMin, yMax }) {
   return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
 }
 
-function convertRect({ x, y, size, y0 }) {
+function convertRect({ x, y, size, y0 }: RectPoint) {
   let xMin: number;
   let xMax: number;
   if (isArray(x)) {
@@ -36,9 +36,11 @@ function convertRect({ x, y, size, y0 }) {
 }
 
 // 绘制矩形的关键点
-interface RectPoint extends Point {
-  y0: number;
-  size: number;
+interface RectPoint {
+  x: number | [number, number];
+  y: number | [number, number];
+  y0?: number;
+  size?: number;
 }
 
 /**
