@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Legend } from '@antv/f2';
 
 const data = [{
   year: '2001',
@@ -16,22 +16,26 @@ const data = [{
   year: '2005',
   population: 28
 }];
+const context = document.getElementById('container').getContext('2d');
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data);
-chart.coord('polar');
-chart.legend({
-  position: 'right'
-});
-chart.axis(false);
-chart.interval()
-  .position('year*population')
-  .color('year')
-  .style({
-    lineWidth: 1,
-    stroke: '#fff'
-  });
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        type: 'polar',
+      }}
+      scale={{
+        population: {
+          min: 0,
+        },
+      }}
+    >
+      <Interval x="year" y="population" color="year" />
+      <Legend position="right" />
+    </Chart>
+  </Canvas>
+);
+
+const chart = new Canvas(props);
 chart.render();

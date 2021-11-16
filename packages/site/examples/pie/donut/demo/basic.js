@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, Legend } from '@antv/f2';
 
 const data = [{
   name: '股票类',
@@ -14,46 +14,39 @@ const data = [{
   a: '1'
 }];
 
-const map = {};
-data.forEach(function(obj) {
-  map[obj.name] = obj.percent + '%';
-});
+const context = document.getElementById('container').getContext('2d');
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio,
-  padding: [ 20, 'auto' ]
-});
-chart.source(data, {
-  percent: {
-    formatter: function formatter(val) {
-      return val + '%';
-    }
-  }
-});
-chart.tooltip(false);
-chart.legend({
-  position: 'right',
-  itemFormatter: function itemFormatter(val) {
-    return val + '    ' + map[val];
-  }
-});
-chart.coord('polar', {
-  transposed: true,
-  innerRadius: 0.7,
-  radius: 0.85
-});
-chart.axis(false);
-chart.interval()
-  .position('a*percent')
-  .color('name', [ '#FE5D4D', '#3BA4FF', '#737DDE' ])
-  .adjust('stack');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio} theme={{ padding: [20, 'auto'] }}>
+    <Chart
+      scale={{
+        percent: {
+          formatter: function formatter(val) {
+            return val + '%';
+          }
+        }
+      }}
+      data={data}
+      coord={{
+        type: 'polar',
+        transposed: true,
+        innerRadius: 0.7,
+        radius: 0.85,
+      }}
+    >
+      <Interval
+        x="a"
+        y="percent"
+        adjust="stack"
+        color={{
+          field: 'name',
+          range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+        }}
+      />
+      <Legend position="right" itemFormatter={(val) => { return val + '    ' + map[val] }} />
+    </Chart>
+  </Canvas>
+);
 
-chart.guide().html({
-  position: [ '50%', '45%' ],
-  html: `<div style="width: 250px;height: 40px;text-align: center;">
-      <div style="font-size: 16px">总资产</div>
-      <div style="font-size: 24px">133.08 亿</div>
-    </div>`
-});
+const chart = new Canvas(props);
 chart.render();
