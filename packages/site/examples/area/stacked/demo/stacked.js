@@ -409,6 +409,7 @@ const { props } = (
           range: [0, 1],
           type: 'timeCat',
           mask: 'MM-DD',
+          tickCount: 5,
         },
         value: {
           max: 300,
@@ -417,7 +418,12 @@ const { props } = (
       }}
     >
       <Axis field="value" />
-      <Axis field="date" />
+      <Axis
+        field="date"
+        style={{
+          label: { align: 'between' }
+        }}
+      />
       <Area
         x="date"
         y="value"
@@ -425,7 +431,7 @@ const { props } = (
         adjust="stack"
       />
       <Line x="date" y="value" color="city" adjust="stack" />
-      <Legend />
+      <Legend style={{ justifyContent: 'space-around' }} />
     </Chart>
   </Canvas>
 );
