@@ -28,7 +28,7 @@ class Shape<T extends ShapeProp = ShapeProp> extends Element<T> {
       destroyed: false,
       isShape: true,
       attrs: {},
-    } as T;
+    };
   }
 
   getType() {
