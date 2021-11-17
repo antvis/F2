@@ -13,7 +13,10 @@ export default function LabelView(props) {
 
   let labelAttrs, guideAttrs;
   if (isFunction(label)) {
-    const point = getMiddlePoint(points[1], points[2]);
+    const point =
+      points.length === 4 // 如果是金字塔图，顶部只有 3 个点
+        ? getMiddlePoint(points[1], points[2])
+        : getMiddlePoint(points[0], points[1]);
     labelAttrs = mix(
       {
         x: point.x + offsetX,
@@ -26,8 +29,8 @@ export default function LabelView(props) {
 
   if (isFunction(guide)) {
     const point = getMiddlePoint(
-      getMiddlePoint(points[0], points[1]),
-      getMiddlePoint(points[2], points[3] ?? points[2])
+      points.length === 4 ? getMiddlePoint(points[0], points[1]) : points[0],
+      getMiddlePoint(points[2], points[3] ?? points[1])
     );
     guideAttrs = mix(
       {
