@@ -5,15 +5,15 @@ type PX_FIELD_NAME =
   'lineWidth'
 | 'lineDash'
 | 'x'
-| 'y' 
+| 'y'
 | 'r'
 | 'r0'
-| 'x1' 
-| 'y1' 
-| 'x2' 
-| 'y2' 
-| 'radius' 
-| 'width' 
+| 'x1'
+| 'y1'
+| 'x2'
+| 'y2'
+| 'radius'
+| 'width'
 | 'height'
 | 'fontSize'
 | 'sx'
@@ -39,7 +39,7 @@ type SupportPx<T> = {
 }
 
 interface IntrinsicElementsProps {
-  style?: CSS.Properties;
+  style?: any;
   [k: string]: any;
 }
 
