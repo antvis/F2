@@ -74,6 +74,14 @@ const { props } = (
     <Chart
       data={data}
 			coord='polar'
+      scale={{
+        score: {
+          min: 0,
+          max: 120,
+          nice: false,
+          tickCount: 4
+        }
+      }}
     >
       <Axis field="item" />
       <Axis field="score" />

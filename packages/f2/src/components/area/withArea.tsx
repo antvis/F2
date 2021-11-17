@@ -1,4 +1,3 @@
-import { jsx } from '../../jsx';
 import withLine from '../line/withLine';
 
 export default (View) => {

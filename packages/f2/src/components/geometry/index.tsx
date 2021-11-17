@@ -76,9 +76,15 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   willMount() {
     this._createAttrs();
+    if (!this.records) {
+      this._processData();
+    }
   }
   willUpdate() {
     this._createAttrs();
+    if (!this.records) {
+      this._processData();
+    }
   }
 
   didMount() {
@@ -376,9 +382,6 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   // 数据映射
   mapping() {
-    if (!this.records) {
-      this._processData();
-    }
     const { records } = this;
     // 数据映射
     this._mapping(records);
