@@ -29,14 +29,40 @@ npm install --save-dev @babel/plugin-transform-react-jsx
     [
       "@babel/plugin-transform-react-jsx",
       {
-        "runtime": "automatic"
+        "runtime": "automatic",
+        "importSource": "@antv/f2"
+      }
+    ]
+  ]
+}
+// 或者
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "jsx",
+        "pragmaFrag": "Fragment"
       }
     ]
   ]
 }
 ```
 
-runtime 也支持 `automatic` 模式, 如果配置 `automatic`, 需要设置 `importSource: 'jsx'`, 当然也可以通过 `@jsxImportSource` 注解方式定义，更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+
+### TypeScript
+
+如果你是使用 TypeScript, 那么只需在 `tsconfig.json` 中加入如下配置即可
+
+```json
+{
+  "compilerOptions": {
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment"
+  }
+}
+```
 
 ## 安装
 
