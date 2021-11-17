@@ -6,7 +6,7 @@
  */
 function getMiddlePoint(start, end) {
   const x = (end.x - start.x) / 2 + start.x;
-  const y = (end.y - end.y) / 2 + end.y;
+  const y = (end.y - start.y) / 2 + start.y;
   return { x, y };
 }
 

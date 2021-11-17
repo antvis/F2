@@ -1,7 +1,7 @@
 import { jsx } from '../../jsx';
-import { mix, isNil } from '@antv/util';
+import { mix, isNil, deepMix } from '@antv/util';
 import Geometry from '../geometry';
-import { GeomType } from '../geometry/interface';
+import * as LabelViews from './label';
 
 export default (Views) => {
   return class Interval extends Geometry {
@@ -85,13 +85,30 @@ export default (Views) => {
 
     render() {
       const { props } = this;
-      const { coord, shape = 'rect', style, animation } = props;
+      const { coord, shape = 'rect', style, animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
+      const LabelView = LabelViews[shape];
+      const labelCfg = deepMix({
+        label: null,
+        offsetX: 0,
+        offsetY: 0,
+      }, customLabelCfg);
 
       if (!View) return null;
 
       const records = this.mapping();
-      return <View coord={coord} records={records} shape={shape} style={style} animation={animation} />;
+      return (
+        <View
+          coord={coord}
+          records={records}
+          shape={shape}
+          style={style}
+          animation={animation}
+          showLabel={showLabel}
+          labelCfg={labelCfg}
+          LabelView={LabelView}
+        />
+      );
     }
   };
 };
