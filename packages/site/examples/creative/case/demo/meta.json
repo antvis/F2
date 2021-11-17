@@ -5,6 +5,21 @@
   },
   "demos": [
     {
+      "filename": "interval-timeline.jsx",
+      "title": "柱状图系列变化",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ENYbfYFMCT/interval-line.gif"
+    },
+    {
+      "filename": "pie-timeline.jsx",
+      "title": "饼图系列变化",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MsQ1ol%24j46/pie-timeline.gif"
+    },
+    {
+      "filename": "race-country.js",
+      "title": "柱状图动态排序",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/snvhHk%26P3V/race-country.gif"
+    },
+    {
       "filename": "apple-watch.js",
       "title": "Apple Watch 健身记录",
       "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/neWvhxDYSxbNVSoZIgMN.gif"
@@ -28,21 +43,6 @@
       "filename": "landscape.js",
       "title": "横屏图",
       "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/18e3331d-b7bd-476e-93eb-f7a90fc55e00.png"
-    },
-    {
-      "filename": "interval-timeline.jsx",
-      "title": "柱状图系列变化",
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ENYbfYFMCT/interval-line.gif"
-    },
-    {
-      "filename": "pie-timeline.jsx",
-      "title": "饼图系列变化",
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MsQ1ol%24j46/pie-timeline.gif"
-    },
-    {
-      "filename": "race-country",
-      "title": "柱状图动态排序",
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/snvhHk%26P3V/race-country.gif"
     }
   ]
 }

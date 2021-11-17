@@ -1,7 +1,8 @@
+import { deepMix } from '@antv/util';
 import { jsx } from '../../../jsx';
 
-export default (props) => {
-  const { records } = props;
+export default props => {
+  const { records, animation } = props;
   return (
     <group>
       {records.map((record) => {
@@ -20,7 +21,7 @@ export default (props) => {
                     height: yMax - yMin,
                     fill: color,
                   }}
-                  animation={{
+                  animation={deepMix({
                     appear: {
                       easing: 'linear',
                       duration: 450,
@@ -35,7 +36,7 @@ export default (props) => {
                       duration: 450,
                       property: ['x', 'y', 'width', 'height'],
                     },
-                  }}
+                  }, animation)}
                 />
               );
             })}

@@ -1,8 +1,12 @@
 import { isNil, isString } from '@antv/util';
 import * as DOMUtil from '../../util/dom';
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import RectUtil from '../../util/rect';
 import { TextAttrs } from '../../types';
+
+export interface TextProp extends ShapeProp {
+  attrs?: TextAttrs;
+}
 
 const { measureText } = DOMUtil;
 
@@ -10,7 +14,7 @@ let textWidthCacheCounter = 0;
 let textWidthCache = {};
 const TEXT_CACHE_MAX = 5000;
 
-class Text extends Shape<TextAttrs> {
+class Text extends Shape<TextProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

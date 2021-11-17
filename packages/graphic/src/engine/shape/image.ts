@@ -1,10 +1,17 @@
 import { isNil } from '@antv/util';
-import Rect from './rect';
+import Rect, { RectProp } from './rect';
 import { ImageAttrs } from '../../types';
+
+export interface ImageProp extends RectProp {
+  loading: boolean;
+  image: string;
+  cacheImage: string;
+  attrs?: ImageAttrs;
+}
 
 const imageCaches = {};
 
-class ImageShape extends Rect<ImageAttrs> {
+class ImageShape extends Rect<ImageProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = false;

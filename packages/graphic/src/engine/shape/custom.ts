@@ -1,6 +1,11 @@
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 
-class Custom extends Shape {
+export interface CustomProp extends ShapeProp {
+  createPath?: Function;
+  calculateBox?: Function;
+}
+
+class Custom extends Shape<CustomProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

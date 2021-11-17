@@ -12,7 +12,7 @@ type TextGuideProps = {
 
 export default (props: TextGuideProps) => {
   const { theme = {} } = props;
-  const { points, style, offsetX, offsetY, content } = deepMix({ ...theme.text }, props);
+  const { points, style, offsetX, offsetY, content, animation } = deepMix({ ...theme.text }, props);
   const { x, y } = points[0] || {};
   const posX = x + (offsetX || 0);
   const posY = y + (offsetY || 0);
@@ -25,13 +25,13 @@ export default (props: TextGuideProps) => {
         y: posY,
         ...style,
       }}
-      animation={{
+      animation={deepMix({
         update: {
           easing: 'linear',
           duration: 450,
           property: ['x', 'y'],
         },
-      }}
+      }, animation)}
     />
   );
 };

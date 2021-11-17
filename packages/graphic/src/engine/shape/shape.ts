@@ -1,8 +1,12 @@
 import { isNil } from '@antv/util';
-import Element from '../element';
+import Element, { ElementProp } from '../element';
 import { ShapeAttrs } from '../../types';
 
-class Shape<T extends ShapeAttrs = ShapeAttrs> extends Element<T> {
+export interface ShapeProp extends ElementProp {
+  attrs?: ShapeAttrs;
+}
+
+class Shape<T extends ShapeProp = ShapeProp> extends Element<T> {
   // // Shapes
   static Rect: any;
   static Image: any;
@@ -18,11 +22,11 @@ class Shape<T extends ShapeAttrs = ShapeAttrs> extends Element<T> {
 
   _initProperties() {
     this._attrs = {
+      ...this._attrs,
       zIndex: 0,
       visible: true,
       destroyed: false,
       isShape: true,
-      // @ts-ignore
       attrs: {},
     };
   }

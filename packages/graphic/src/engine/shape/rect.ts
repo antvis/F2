@@ -1,8 +1,12 @@
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import { RectAttrs } from '../../types';
 import { isNumber, isString } from '@antv/util';
 
-function parsePadding(padding: any) {
+export interface RectProp extends ShapeProp {
+  attrs?: RectAttrs;
+}
+
+function parsePadding(padding: number | string | number[] | string[]) {
   if (isNumber(padding) || isString(padding)) {
     return [padding, padding, padding, padding];
   }
@@ -29,7 +33,7 @@ function parseRadius(radius, width, height) {
   return radius;
 }
 
-class Rect<T extends RectAttrs = RectAttrs> extends Shape<T> {
+class Rect<T extends RectProp = RectProp> extends Shape<T> {
   _initProperties() {
     super._initProperties();
     this._attrs.canFill = true;

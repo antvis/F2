@@ -128,6 +128,10 @@ class ScaleController {
     this.scales = {};
   }
 
+  getData() {
+    return this.data;
+  }
+
   getScale(field: string): Scale {
     const { scales, options, data } = this;
 
@@ -175,6 +179,20 @@ class ScaleController {
         max: 0,
       });
     }
+  }
+
+  // 饼图下的scale调整
+  adjustPieScale(scale: Scale) {
+    const { options } = this;
+    const { field } = scale;
+    const option = options[field];
+
+    if (option && !isNil(option.nice)) {
+      return null;
+    }
+    scale.change({
+      nice: false
+    });
   }
 
   // 获取scale 在 0点对位置的值

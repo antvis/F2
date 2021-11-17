@@ -1,4 +1,4 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Interval, PieLabel } from '@antv/f2';
 
 const data = [{
   name: '其他消费',
@@ -22,40 +22,46 @@ const data = [{
   const: 'const'
 }];
 
-const chart = new F2.Chart({
-  id: 'container',
-  pixelRatio: window.devicePixelRatio
-});
+const context = document.getElementById('container').getContext('2d');
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      coord={{
+        transposed: true,
+        type: 'polar',
+        radius: 0.75
+      }}
+    >
+      <Interval
+        x="const"
+        y="y"
+        adjust="stack"
+        color={{
+          field: 'name',
+          range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864'],
+        }}
+      />
+      <PieLabel
+        sidePadding={40}
+        label1={(data, color) => {
+          return {
+            text: data.name,
+            fill: color,
+          };
+        }}
+        label2={(data) => {
+          return {
+            fill: '#000000',
+            text: '￥' + String(Math.floor(data.y * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+            fontWeight: 500,
+            fontSize: 10,
+          };
+        }}
+      />
+    </Chart>
+  </Canvas>
+);
 
-chart.source(data);
-chart.coord('polar', {
-  transposed: true,
-  radius: 0.75
-});
-chart.legend(false);
-chart.axis(false);
-chart.tooltip(false);
-
-// 添加饼图文本
-chart.pieLabel({
-  sidePadding: 40,
-  label1: function label1(data, color) {
-    return {
-      text: data.name,
-      fill: color
-    };
-  },
-  label2: function label2(data) {
-    return {
-      text: '￥' + String(Math.floor(data.y * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-      fill: '#808080',
-      fontWeight: 'bold'
-    };
-  }
-});
-
-chart.interval()
-  .position('const*y')
-  .color('name', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864' ])
-  .adjust('stack');
+const chart = new Canvas(props);
 chart.render();

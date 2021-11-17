@@ -133,7 +133,7 @@ const { props } = (
       <Axis field="year" />
       <Area x="year" y="percent" color="country" adjust="stack" />
       <Line x="year" y="percent" color="country" adjust="stack" />
-      <Legend />
+      <Legend style={{ justifyContent: 'space-around' }} />
     </Chart>
   </Canvas>
 );

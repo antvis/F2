@@ -1,8 +1,12 @@
-import Shape from './shape';
+import Shape, { ShapeProp } from './shape';
 import { getBBoxFromLine } from '../../util/bbox';
 import { LineAttrs } from '../../types';
 
-class Line extends Shape<LineAttrs> {
+export interface LineProp extends ShapeProp {
+  attrs?: LineAttrs;
+}
+
+class Line extends Shape<LineProp> {
   _initProperties() {
     super._initProperties();
     this._attrs.canStroke = true;

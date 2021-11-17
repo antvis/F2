@@ -33,9 +33,9 @@ const SHAPE_ATTRS = [
 const CLIP_SHAPES = ['circle', 'sector', 'polygon', 'rect', 'polyline'];
 
 // 内部属性存储结构
-interface _ATTRS<T extends ElementAttrs = ElementAttrs> {
+export interface ElementProp {
   type?: string;
-  attrs?: T;
+  attrs?: ElementAttrs;
   zIndex?: number;
   visible?: boolean;
   destroyed?: boolean;
@@ -63,14 +63,14 @@ interface _ATTRS<T extends ElementAttrs = ElementAttrs> {
   ariaLabel?: string;
   x?: number;
   y?: number;
-  [k: string]: any;
 }
 
-class Element<T extends ElementAttrs = ElementAttrs> {
-  _attrs: _ATTRS<T>;
+class Element<T extends ElementProp = ElementProp> {
+  _attrs: T;
 
   _initProperties() {
     this._attrs = {
+      ...this._attrs,
       zIndex: 0,
       visible: true,
       destroyed: false,
@@ -89,11 +89,11 @@ class Element<T extends ElementAttrs = ElementAttrs> {
     this.initTransform();
   }
 
-  get<K extends keyof _ATTRS<T>>(name: K): _ATTRS<T>[K] {
+  get<K extends keyof T>(name: K): T[K] {
     return this._attrs[name];
   }
 
-  set(name, value) {
+  set(name: keyof T, value) {
     this._attrs[name] = value;
   }
 
@@ -126,7 +126,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
     attrs[name] = value;
   }
 
-  _getAttr<U extends keyof T>(name: U): T[U] {
+  _getAttr(name) {
     return this._attrs?.attrs?.[name];
   }
 
@@ -283,7 +283,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
 
     this._removeFromParent();
 
-    this._attrs = {};
+    this._attrs = {} as any;
     this.set('destroyed', true);
   }
 
@@ -301,7 +301,7 @@ class Element<T extends ElementAttrs = ElementAttrs> {
   initTransform() {
     let attrs = this._attrs.attrs;
     if (!attrs) {
-      attrs = {} as T;
+      attrs = {};
     }
     if (!attrs.matrix) {
       attrs.matrix = [1, 0, 0, 1, 0, 0];

@@ -3,8 +3,7 @@ import Component from '../../base/component';
 import { partition, hierarchy } from 'd3-hierarchy';
 import { Category } from '../../attr';
 import { isInBBox, isFunction } from '../../util';
-import { applyMixins } from '../../mixins';
-import CoordMixin from '../../mixins/coord';
+import CoordController from '../../controller/coord';
 import { mix } from '@antv/util';
 import Coord from '../../coord';
 
@@ -17,19 +16,21 @@ function rootParent(data) {
 }
 
 export default (View): any => {
-  class Sunburst extends Component implements CoordMixin {
+  class Sunburst extends Component {
+    coordController: CoordController;
     coord: Coord;
     color: Category;
     triggerRef: any[];
-
-    createCoord: (coord, option) => Coord;
-    updateCoord: (coord, option) => Coord;
 
     constructor(props, context) {
       super(props, context);
       const { coord, color, data } = props;
       const { width, height, theme } = context;
-      this.coord = this.createCoord(coord, { width, height });
+
+      this.coordController = new CoordController();
+
+      const { coordController } = this;
+      this.coord = coordController.create(coord, { width, height });
       this.color = new Category({
         range: theme.colors,
         ...color,
@@ -64,11 +65,10 @@ export default (View): any => {
         const root = rootParent(node);
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
+        const { x0, x1, y0, y1 } = node;
         const rect = coord.convertRect({
-          xMin: node.x0,
-          xMax: node.x1,
-          yMin: node.y0,
-          yMax: node.y1,
+          x: [x0, x1],
+          y: [y0, y1]
         });
         mix(node, rect);
         // 递归处理
@@ -82,7 +82,7 @@ export default (View): any => {
       const { props } = this;
       const { data, value, sort = true } = props;
 
-      const root = hierarchy({ children: data }).sum(function (d) {
+      const root = hierarchy({ children: data }).sum(function(d) {
         return d[value];
       });
 
@@ -104,8 +104,6 @@ export default (View): any => {
       return <View {...props} coord={coord} node={node} triggerRef={this.triggerRef} />;
     }
   }
-
-  applyMixins(Sunburst, [CoordMixin]);
 
   return Sunburst;
 };
