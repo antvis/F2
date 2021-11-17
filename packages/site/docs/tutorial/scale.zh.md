@@ -15,35 +15,30 @@ order: 4
 
 - **timeCat**，时间类型；
 
+在 F2 的使用中，我们可以通过列定义来直接定义度量
 
-在 F2 的使用中，我们主要通过列定义操作来接触度量：
-
-```javascript
+```jsx
 const data = [
   { a: 'a', b: 20 },
   { a: 'b', b: 12 },
   { a: 'c', b: 8 },
 ];
-const defs = {
-  a: {
-    type: 'cat' // 声明 a 字段的类型
-  },
-  b: {
-    min: 0, // 手动指定最小值
-    max: 100 // 手动指定最大值
-  }
-};
-
-chart.source(data, defs);
+<Canvas>
+  <Chart
+    scale={{
+      a: {
+        type: 'cat', // 声明 a 字段的类型
+      },
+      b: {
+        min: 0, // 手动指定最小值
+        max: 100, // 手动指定最大值
+      },
+    }}
+  ></Chart>
+</Canvas>;
 ```
 
 ## 通用属性
-
-```javascript
-chart.scale('fieldName', {
-  // 各个属性配置
-});
-```
 
 下面列出的是通用的属性：
 
@@ -56,20 +51,10 @@ chart.scale('fieldName', {
 | `tickCount` | Number | 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值。 |
 | `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
 
-
-代码示例:
-
-```javascript
-chart.scale('aqi',  {
-  min: 0,
-  ticks: [ 0, 50, 100, 150, 200, 300, 500 ],
-  alias: 'AQI(空气质量指数)',
-});
-```
-
-## Scale对应的属性
+## Scale 对应的属性
 
 ### linear
+
 | **属性名** | **类型** | **说明** |
 | --- | --- | --- |
 | `alias` | String | 别名。 |
@@ -82,8 +67,8 @@ chart.scale('aqi',  {
 | `tickCount` | Number | 定义坐标轴刻度线的条数，默认为 5。 |
 | `tickInterval` | Number | 用于指定坐标轴各个标度点的间距，是原始数据之间的间距差值，**tickCount 和 tickInterval 不可以同时声明。** |
 
-
 ### cat
+
 | **属性名** | **类型** | **说明** |
 | --- | --- | --- |
 | `alias` | String | 别名。 |
@@ -94,23 +79,20 @@ chart.scale('aqi',  {
 | `values` | Array | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。 |
 | `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
 
-
 `values` 属性常用于 2 个场景：
 
-1. 需要制定分类的顺序时，例如：c 字段有'最大','最小'和'适中'3种类型，我们想指定这些数值在坐标轴或者图例上的显示顺序时：
-
+1. 需要制定分类的顺序时，例如：c 字段有'最大','最小'和'适中'3 种类型，我们想指定这些数值在坐标轴或者图例上的显示顺序时：
 
 ```javascript
-const defs = {
+const scale = {
   c: {
     type: 'cat',
-    values: [ '最小','适中','最大' ]
-  }
+    values: ['最小', '适中', '最大'],
+  },
 };
 ```
 
 2. 数据字段中的数据是数值类型，但是需要转换成分类类型，**这个时候需要注意原始数据必须是索引值**。
-
 
 ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e847832c-3000-4745-b7d5-d3552feee17b.png)
 
@@ -122,28 +104,14 @@ const data = [
   { month: 3, tem: 14.5, city: 'Tokyo' },
   { month: 4, tem: 18.2, city: 'Tokyo' },
   { month: 5, tem: 21.5, city: 'Tokyo' },
-  { month: 6, tem: 25.2, city: 'Tokyo' }
+  { month: 6, tem: 25.2, city: 'Tokyo' },
 ];
-const defs = {
+const scale = {
   month: {
     type: 'cat',
-    values: [ '一月', '二月', '三月', '四月', '五月', '六月', '七月' ] // 这时候 month 的原始值是索引值
-  }
+    values: ['一月', '二月', '三月', '四月', '五月', '六月', '七月'], // 这时候 month 的原始值是索引值
+  },
 };
-
-const chart = new F2.Chart({
-  id: 'c1',
-  width: 400,
-  height: 250,
-  pixelRatio: window.devicePixelRatio
-});
-chart.source(data, defs);
-chart.legend({
-  align: 'center',
-  itemWidth: null
-});
-chart.interval().position('month*tem');
-chart.render();
 ```
 
 ### timeCat
@@ -162,7 +130,6 @@ chart.render();
 | `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
 | `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
 
-
 **注意：`mask` 和 `formatter` 这两个属性不可共用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**
 
 **性能小提示：**
@@ -170,8 +137,10 @@ chart.render();
 当图表的数据源已经过排序，可以通过在列定义中设置 `sortable: false` 来提升性能，默认情况下，会对 timeCat 类型的度量进行数据排序操作。
 
 ```javascript
-chart.scale('fieldName', {
-  type: 'timeCat',
-  sortable: false
-})
+const scale = {
+  [fieldName]: {
+    type: 'timeCat',
+    sortable: false,
+  },
+};
 ```
