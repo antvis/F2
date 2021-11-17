@@ -44,11 +44,11 @@ interface IntrinsicElementsProps {
 }
 
 interface CircleProps extends IntrinsicElementsProps {
-  attrs: Partial<SupportPx<CircleAttrs>>;
+  attrs?: Partial<SupportPx<CircleAttrs>>;
 }
 
 interface RectProps extends IntrinsicElementsProps {
-  attrs: Partial<SupportPx<RectAttrs>>;
+  attrs?: Partial<SupportPx<RectAttrs>>;
 }
 
 interface Ref {
