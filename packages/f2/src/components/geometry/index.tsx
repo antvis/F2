@@ -72,6 +72,11 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     if (nextAdjust !== lastAdjust) {
       this.records = null;
     }
+
+    // props发生变化,records也需要重新计算
+    if(!equal(nextProps, lastProps)) {
+      this.records = null;
+    }
   }
 
   willMount() {

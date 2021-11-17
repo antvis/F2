@@ -143,5 +143,9 @@ export interface AxisProps {
    * note: 作为 `<Chart />` 子元素时将自动注入
    */
   coord?: Coord;
+  /**
+   * note: 作为 `<Chart />` 子元素时将自动注入
+   */
+  zoomRange?: [number, number];
   [key: string]: any; // TODO
 }
