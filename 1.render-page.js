@@ -1,10 +1,10 @@
 exports.ids = [1];
 exports.modules = {
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js":
-/*!*****************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js ***!
-  \*****************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js":
+/*!*******************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js ***!
+  \*******************************************************************************************************************/
 /*! exports provided: removeProperty, setProperty, applyEdit, isWS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14,8 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setProperty", function() { return setProperty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyEdit", function() { return applyEdit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWS", function() { return isWS; });
-/* harmony import */ var _format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./format.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
-/* harmony import */ var _parser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
+/* harmony import */ var _format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./format.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
+/* harmony import */ var _parser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -188,10 +188,10 @@ function isWS(text, offset) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js ***!
-  \*******************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js":
+/*!*********************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js ***!
+  \*********************************************************************************************************************/
 /*! exports provided: format, isEOL */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -199,7 +199,7 @@ function isWS(text, offset) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "format", function() { return format; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEOL", function() { return isEOL; });
-/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -398,10 +398,10 @@ function isEOL(text, offset) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js ***!
-  \*******************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js":
+/*!*********************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js ***!
+  \*********************************************************************************************************************/
 /*! exports provided: getLocation, parse, parseTree, findNodeAtLocation, getNodePath, getNodeValue, contains, findNodeAtOffset, visit, stripComments, getNodeType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -418,7 +418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "visit", function() { return visit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stripComments", function() { return stripComments; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNodeType", function() { return getNodeType; });
-/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1048,10 +1048,10 @@ function getNodeType(value) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js":
-/*!********************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js ***!
-  \********************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js":
+/*!**********************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js ***!
+  \**********************************************************************************************************************/
 /*! exports provided: createScanner */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1425,10 +1425,10 @@ function isDigit(ch) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js ***!
-  \************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js":
+/*!**************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js ***!
+  \**************************************************************************************************************/
 /*! exports provided: createScanner, getLocation, parse, parseTree, findNodeAtLocation, findNodeAtOffset, getNodePath, getNodeValue, visit, stripComments, printParseErrorCode, format, modify, applyEdits */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1448,10 +1448,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "format", function() { return format; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "modify", function() { return modify; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyEdits", function() { return applyEdits; });
-/* harmony import */ var _impl_format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./impl/format.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
-/* harmony import */ var _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./impl/edit.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js");
-/* harmony import */ var _impl_scanner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./impl/scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
-/* harmony import */ var _impl_parser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./impl/parser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
+/* harmony import */ var _impl_format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./impl/format.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
+/* harmony import */ var _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./impl/edit.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js");
+/* harmony import */ var _impl_scanner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./impl/scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _impl_parser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./impl/parser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1572,27 +1572,27 @@ function applyEdits(text, edits) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js":
-/*!******************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js ***!
-  \******************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js":
+/*!********************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js ***!
+  \********************************************************************************************************************************************/
 /*! exports provided: TextDocument, Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, ErrorCode, ClientCapabilities, getLanguageService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLanguageService", function() { return getLanguageService; });
-/* harmony import */ var _services_jsonCompletion_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/jsonCompletion.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js");
-/* harmony import */ var _services_jsonHover_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/jsonHover.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js");
-/* harmony import */ var _services_jsonValidation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/jsonValidation.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js");
-/* harmony import */ var _services_jsonDocumentSymbols_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/jsonDocumentSymbols.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js");
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _services_configuration_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/configuration.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js");
-/* harmony import */ var _services_jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/jsonSchemaService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
-/* harmony import */ var _services_jsonFolding_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/jsonFolding.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js");
-/* harmony import */ var _services_jsonSelectionRanges_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/jsonSelectionRanges.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _services_jsonCompletion_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/jsonCompletion.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js");
+/* harmony import */ var _services_jsonHover_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/jsonHover.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js");
+/* harmony import */ var _services_jsonValidation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/jsonValidation.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js");
+/* harmony import */ var _services_jsonDocumentSymbols_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/jsonDocumentSymbols.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _services_configuration_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/configuration.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js");
+/* harmony import */ var _services_jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/jsonSchemaService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
+/* harmony import */ var _services_jsonFolding_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/jsonFolding.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js");
+/* harmony import */ var _services_jsonSelectionRanges_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/jsonSelectionRanges.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocument", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextDocument"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Position"]; });
@@ -1763,10 +1763,10 @@ function getLanguageService(params) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js":
-/*!****************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js ***!
-  \****************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js":
+/*!******************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js ***!
+  \******************************************************************************************************************************************/
 /*! exports provided: TextDocument, Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, ErrorCode, ClientCapabilities */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1774,8 +1774,8 @@ function getLanguageService(params) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorCode", function() { return ErrorCode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientCapabilities", function() { return ClientCapabilities; });
-/* harmony import */ var _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../vscode-languageserver-types/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js");
-/* harmony import */ var _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../vscode-languageserver-textdocument/lib/esm/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js");
+/* harmony import */ var _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../vscode-languageserver-types/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js");
+/* harmony import */ var _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../vscode-languageserver-textdocument/lib/esm/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocument", function() { return _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__["TextDocument"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Position"]; });
@@ -1920,10 +1920,10 @@ var ClientCapabilities;
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js":
-/*!****************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js ***!
-  \****************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js":
+/*!******************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js ***!
+  \******************************************************************************************************************************************/
 /*! exports provided: ASTNodeImpl, NullASTNodeImpl, BooleanASTNodeImpl, ArrayASTNodeImpl, NumberASTNodeImpl, StringASTNodeImpl, PropertyASTNodeImpl, ObjectASTNodeImpl, asSchema, EnumMatch, ValidationResult, newJSONDocument, getNodeValue, getNodePath, contains, JSONDocument, parse */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1946,10 +1946,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "contains", function() { return contains; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONDocument", function() { return JSONDocument; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -3160,17 +3160,17 @@ function parse(textDocument, config) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js":
-/*!*********************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js ***!
-  \*********************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js":
+/*!***********************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js ***!
+  \***********************************************************************************************************************************************/
 /*! exports provided: schemaContributions */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "schemaContributions", function() { return schemaContributions; });
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -3701,23 +3701,23 @@ for (var schemaName in schemaContributions.schemas) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js":
-/*!**********************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js ***!
-  \**********************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js":
+/*!************************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js ***!
+  \************************************************************************************************************************************************/
 /*! exports provided: JSONCompletion */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONCompletion", function() { return JSONCompletion; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _utils_json_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/json.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _utils_json_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/json.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -4587,20 +4587,20 @@ var JSONCompletion = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js":
-/*!***************************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js ***!
-  \***************************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js":
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: JSONDocumentSymbols */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONDocumentSymbols", function() { return JSONDocumentSymbols; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/colors.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/colors.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -4865,18 +4865,18 @@ function getRange(document, node) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js":
-/*!*******************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js ***!
-  \*******************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js":
+/*!*********************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js ***!
+  \*********************************************************************************************************************************************/
 /*! exports provided: getFoldingRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFoldingRanges", function() { return getFoldingRanges; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5002,18 +5002,18 @@ function getFoldingRanges(document, context) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js":
-/*!*****************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js ***!
-  \*****************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js":
+/*!*******************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js ***!
+  \*******************************************************************************************************************************************/
 /*! exports provided: JSONHover */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONHover", function() { return JSONHover; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5130,10 +5130,10 @@ function toMarkdownCodeBlock(content) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js":
-/*!*************************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js ***!
-  \*************************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js":
+/*!***************************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js ***!
+  \***************************************************************************************************************************************************/
 /*! exports provided: UnresolvedSchema, ResolvedSchema, JSONSchemaService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5142,11 +5142,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnresolvedSchema", function() { return UnresolvedSchema; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResolvedSchema", function() { return ResolvedSchema; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONSchemaService", function() { return JSONSchemaService; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../vscode-uri/index.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../vscode-uri/index.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5639,18 +5639,18 @@ function toDisplayString(url) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js":
-/*!***************************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js ***!
-  \***************************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js":
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: getSelectionRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSelectionRanges", function() { return getSelectionRanges; });
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5716,20 +5716,20 @@ function getSelectionRanges(document, positions, doc) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js":
-/*!**********************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js ***!
-  \**********************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js":
+/*!************************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js ***!
+  \************************************************************************************************************************************************/
 /*! exports provided: JSONValidation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONValidation", function() { return JSONValidation; });
-/* harmony import */ var _jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jsonSchemaService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jsonSchemaService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5877,10 +5877,10 @@ function toDiagnosticSeverity(severityLevel) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js":
-/*!***********************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js ***!
-  \***********************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js":
+/*!*************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js ***!
+  \*************************************************************************************************************************************/
 /*! exports provided: hexDigit, colorFromHex, colorFrom256RGB */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5962,10 +5962,10 @@ function colorFrom256RGB(red, green, blue, alpha) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js":
-/*!*********************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js ***!
-  \*********************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js":
+/*!***********************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js ***!
+  \***********************************************************************************************************************************/
 /*! exports provided: stringifyObject */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6018,10 +6018,10 @@ function stringifyObject(obj, indent, stringifyLiteral) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js":
-/*!************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js ***!
-  \************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js":
+/*!**************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js ***!
+  \**************************************************************************************************************************************/
 /*! exports provided: equals, isNumber, isDefined, isBoolean, isString */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6101,10 +6101,10 @@ function isString(val) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js":
-/*!************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js ***!
-  \************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js":
+/*!**************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js ***!
+  \**************************************************************************************************************************************/
 /*! exports provided: startsWith, endsWith, convertSimple2RegExpPattern, repeat */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6162,10 +6162,10 @@ function repeat(value, count) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js":
-/*!******************************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
-  \******************************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js":
+/*!********************************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
+  \********************************************************************************************************************************************/
 /*! exports provided: TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6441,10 +6441,10 @@ function getWellformedEdit(textEdit) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js":
-/*!***************************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js ***!
-  \***************************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js":
+/*!*****************************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js ***!
+  \*****************************************************************************************************************************/
 /*! exports provided: Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8031,10 +8031,10 @@ var Is;
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js ***!
-  \***********************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js":
+/*!*************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js ***!
+  \*************************************************************************************************************/
 /*! exports provided: URI */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8641,10 +8641,10 @@ function _asFormatted(uri, skipEncoding) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js ***!
-  \*******************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js":
+/*!*********************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js ***!
+  \*********************************************************************************************************/
 /*! exports provided: loadMessageBundle, config */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8686,19 +8686,19 @@ function config(opt) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/jsonMode.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/jsonMode.js ***!
-  \*********************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/jsonMode.js":
+/*!***********************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/jsonMode.js ***!
+  \***********************************************************************************************/
 /*! exports provided: setupMode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupMode", function() { return setupMode; });
-/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "./node_modules/monaco-editor/esm/vs/language/json/workerManager.js");
-/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js");
-/* harmony import */ var _tokenization_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tokenization.js */ "./node_modules/monaco-editor/esm/vs/language/json/tokenization.js");
+/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "../../node_modules/monaco-editor/esm/vs/language/json/workerManager.js");
+/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "../../node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js");
+/* harmony import */ var _tokenization_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tokenization.js */ "../../node_modules/monaco-editor/esm/vs/language/json/tokenization.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8793,10 +8793,10 @@ var richEditConfiguration = {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js ***!
-  \*****************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js":
+/*!*******************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js ***!
+  \*******************************************************************************************************/
 /*! exports provided: DiagnosticsAdapter, CompletionAdapter, HoverAdapter, DocumentSymbolAdapter, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, DocumentColorAdapter, FoldingRangeAdapter, SelectionRangeAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8811,7 +8811,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DocumentColorAdapter", function() { return DocumentColorAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeAdapter", function() { return FoldingRangeAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionRangeAdapter", function() { return SelectionRangeAdapter; });
-/* harmony import */ var _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/vscode-json-languageservice/jsonLanguageService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js");
+/* harmony import */ var _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/vscode-json-languageservice/jsonLanguageService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9303,10 +9303,10 @@ var SelectionRangeAdapter = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/tokenization.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/tokenization.js ***!
-  \*************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/tokenization.js":
+/*!***************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/tokenization.js ***!
+  \***************************************************************************************************/
 /*! exports provided: createTokenizationSupport, TOKEN_DELIM_OBJECT, TOKEN_DELIM_ARRAY, TOKEN_DELIM_COLON, TOKEN_DELIM_COMMA, TOKEN_VALUE_BOOLEAN, TOKEN_VALUE_NULL, TOKEN_VALUE_STRING, TOKEN_VALUE_NUMBER, TOKEN_PROPERTY_NAME, TOKEN_COMMENT_BLOCK, TOKEN_COMMENT_LINE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9324,7 +9324,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_PROPERTY_NAME", function() { return TOKEN_PROPERTY_NAME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_COMMENT_BLOCK", function() { return TOKEN_COMMENT_BLOCK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_COMMENT_LINE", function() { return TOKEN_COMMENT_LINE; });
-/* harmony import */ var _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9477,10 +9477,10 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/json/workerManager.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/json/workerManager.js ***!
-  \**************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/json/workerManager.js":
+/*!****************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/json/workerManager.js ***!
+  \****************************************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

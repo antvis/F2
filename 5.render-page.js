@@ -1,10 +1,10 @@
 exports.ids = [5];
 exports.modules = {
 
-/***/ "./node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js ***!
-  \************************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js":
+/*!**************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js ***!
+  \**************************************************************************************************************/
 /*! exports provided: conf, language */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

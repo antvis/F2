@@ -1,10 +1,10 @@
 exports.ids = [2];
 exports.modules = {
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
-  \***********************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js":
+/*!*************************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
+  \*************************************************************************************************************/
 /*! exports provided: flattenDiagnosticMessageText, Adapter, DiagnosticsAdapter, SuggestAdapter, SignatureHelpAdapter, QuickInfoAdapter, OccurrencesAdapter, DefinitionAdapter, ReferenceAdapter, OutlineAdapter, Kind, FormatHelper, FormatAdapter, FormatOnTypeAdapter, CodeActionAdaptor, RenameAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -996,10 +996,10 @@ var RenameAdapter = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
-  \*************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js":
+/*!***************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
+  \***************************************************************************************************/
 /*! exports provided: setupTypeScript, setupJavaScript, getJavaScriptWorker, getTypeScriptWorker */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1009,8 +1009,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupJavaScript", function() { return setupJavaScript; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getJavaScriptWorker", function() { return getJavaScriptWorker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTypeScriptWorker", function() { return getTypeScriptWorker; });
-/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js");
-/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js");
+/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "../../node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js");
+/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "../../node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1069,10 +1069,10 @@ function setupMode(defaults, modeId) {
 
 /***/ }),
 
-/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
-  \********************************************************************************/
+/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js":
+/*!**********************************************************************************************************!*\
+  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
+  \**********************************************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
