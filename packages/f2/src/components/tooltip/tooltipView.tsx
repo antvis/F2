@@ -109,6 +109,7 @@ export default class TooltipView extends Component {
       showCrosshairs = defaultStyle.showCrosshairs,
       crosshairsStyle,
       crosshairsType = defaultStyle.crosshairsType,
+      snap = defaultStyle.snap,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
@@ -116,121 +117,139 @@ export default class TooltipView extends Component {
     };
 
     return (
-      <group
-        ref={this.rootRef}
-        style={{
-          left: coordLeft,
-          top: layoutTop,
-        }}
-      >
-        <group
-          ref={this.itemsRef}
-          style={{
-            ...defaultStyle.background,
-            ...background,
-          }}
-          attrs={{
-            ...defaultStyle.background,
-            ...background,
-          }}
-        >
-          {showTitle ? (
-            <text
-              style={{
-                marginBottom: '6px',
-              }}
+      <group>
+        {snap ? records.map(item => {
+          const { x, y, color, shape } = item;
+          return (
+            <circle
               attrs={{
-                text: firstOrigin[xField],
-                fontSize: '24px',
+                x,
+                y,
+                r: 3,
                 fill: '#fff',
-                textAlign: 'start',
-                ...titleStyle,
+                lineWidth: '3px',
+                stroke: color,
+                ...shape,
               }}
             />
-          ) : null}
+          );
+        }) : null}
+        <group
+          ref={this.rootRef}
+          style={{
+            left: coordLeft,
+            top: layoutTop,
+          }}
+        >
           <group
+            ref={this.itemsRef}
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+              ...defaultStyle.background,
+              ...background,
+            }}
+            attrs={{
+              ...defaultStyle.background,
+              ...background,
             }}
           >
-            {records.map((record) => {
-              const value = yScale.getText(record[yField]);
-              return (
-                <group
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: [0, '10px', 0, 0],
-                  }}
-                >
-                  {showItemMarker ? (
-                    <marker
-                      style={{
-                        width: itemMarkerStyle.width,
-                        marginRight: '6px',
-                      }}
+            {showTitle ? (
+              <text
+                style={{
+                  marginBottom: '6px',
+                }}
+                attrs={{
+                  text: firstOrigin[xField],
+                  fontSize: '24px',
+                  fill: '#fff',
+                  textAlign: 'start',
+                  ...titleStyle,
+                }}
+              />
+            ) : null}
+            <group
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+            >
+              {records.map((record) => {
+                const value = yScale.getText(record[yField]);
+                return (
+                  <group
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      padding: [0, '10px', 0, 0],
+                    }}
+                  >
+                    {showItemMarker ? (
+                      <marker
+                        style={{
+                          width: itemMarkerStyle.width,
+                          marginRight: '6px',
+                        }}
+                        attrs={{
+                          ...itemMarkerStyle,
+                          fill: record.color,
+                        }}
+                      />
+                    ) : null}
+                    <text
                       attrs={{
-                        ...itemMarkerStyle,
-                        fill: record.color,
+                        ...defaultStyle.nameStyle,
+                        ...nameStyle,
+                        text: value ? `${record[xField]}${joinString}` : record[xField],
                       }}
                     />
-                  ) : null}
-                  <text
-                    attrs={{
-                      ...defaultStyle.nameStyle,
-                      ...nameStyle,
-                      text: value ? `${record[xField]}${joinString}` : record[xField],
-                    }}
-                  />
-                  <text
-                    attrs={{
-                      ...defaultStyle.valueStyle,
-                      ...valueStyle,
-                      text: value,
-                    }}
-                  />
-                </group>
-              );
-            })}
+                    <text
+                      attrs={{
+                        ...defaultStyle.valueStyle,
+                        ...valueStyle,
+                        text: value,
+                      }}
+                    />
+                  </group>
+                );
+              })}
+            </group>
           </group>
+          {showCrosshairs ? (
+            <group>
+              {directionEnabled(crosshairsType, 'x') ? (
+                <line
+                  attrs={{
+                    x1: coordLeft,
+                    y1: y,
+                    x2: coordRight,
+                    y2: y,
+                    ...defaultStyle.crosshairsStyle,
+                    crosshairsStyle,
+                  }}
+                />
+              ) : null}
+              {directionEnabled(crosshairsType, 'y') ? (
+                <line
+                  attrs={{
+                    x1: x,
+                    y1: coordTop,
+                    x2: x,
+                    y2: coordBottom,
+                    ...defaultStyle.crosshairsStyle,
+                    crosshairsStyle,
+                  }}
+                />
+              ) : null}
+            </group>
+          ) : null}
+          {/* <polygon
+            attrs={{
+              ...background,
+              // points
+            }}
+          /> */}
         </group>
-        {showCrosshairs ? (
-          <group>
-            {directionEnabled(crosshairsType, 'x') ? (
-              <line
-                attrs={{
-                  x1: coordLeft,
-                  y1: y,
-                  x2: coordRight,
-                  y2: y,
-                  ...defaultStyle.crosshairsStyle,
-                  crosshairsStyle,
-                }}
-              />
-            ) : null}
-            {directionEnabled(crosshairsType, 'y') ? (
-              <line
-                attrs={{
-                  x1: x,
-                  y1: coordTop,
-                  x2: x,
-                  y2: coordBottom,
-                  ...defaultStyle.crosshairsStyle,
-                  crosshairsStyle,
-                }}
-              />
-            ) : null}
-          </group>
-        ) : null}
-        {/* <polygon
-          attrs={{
-            ...background,
-            // points
-          }}
-        /> */}
       </group>
     );
   }
