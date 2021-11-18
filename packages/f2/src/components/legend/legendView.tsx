@@ -83,7 +83,7 @@ export default (props) => {
   }
 
   if (position === 'bottom') {
-    legendStyle.top = height;
+    legendStyle.top = height + top;
     legendStyle.left = left;
   }
 
