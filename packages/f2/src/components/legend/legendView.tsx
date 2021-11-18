@@ -44,7 +44,7 @@ export default (props) => {
     style,
     marker = 'circle', // 图例标记默认为 circle
   } = props;
-  const { left, top, right, bottom, width } = layout;
+  const { left, top, right, bottom, width, height } = layout;
 
   const legendStyle = {
     // default style
@@ -83,7 +83,7 @@ export default (props) => {
   }
 
   if (position === 'bottom') {
-    legendStyle.top = bottom - maxItemWidth;
+    legendStyle.top = height;
     legendStyle.left = left;
   }
 

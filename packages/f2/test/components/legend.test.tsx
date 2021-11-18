@@ -33,7 +33,7 @@ describe('图例', () => {
               <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
               <Tooltip />
               <Legend
-                position="top"
+                position="bottom"
                 marker="square"
                 // 自定义图例样式
                 style={{
