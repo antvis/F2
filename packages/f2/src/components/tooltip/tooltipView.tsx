@@ -118,22 +118,24 @@ export default class TooltipView extends Component {
 
     return (
       <group>
-        {snap ? records.map(item => {
-          const { x, y, color, shape } = item;
-          return (
-            <circle
-              attrs={{
-                x,
-                y,
-                r: 3,
-                fill: '#fff',
-                lineWidth: '3px',
-                stroke: color,
-                ...shape,
-              }}
-            />
-          );
-        }) : null}
+        {snap
+          ? records.map((item) => {
+              const { x, y, color, shape } = item;
+              return (
+                <circle
+                  attrs={{
+                    x,
+                    y,
+                    r: 3,
+                    fill: '#fff',
+                    lineWidth: '3px',
+                    stroke: color,
+                    ...shape,
+                  }}
+                />
+              );
+            })
+          : null}
         <group
           ref={this.rootRef}
           style={{
@@ -225,7 +227,7 @@ export default class TooltipView extends Component {
                     x2: coordRight,
                     y2: y,
                     ...defaultStyle.crosshairsStyle,
-                    crosshairsStyle,
+                    ...crosshairsStyle,
                   }}
                 />
               ) : null}
@@ -237,7 +239,7 @@ export default class TooltipView extends Component {
                     x2: x,
                     y2: coordBottom,
                     ...defaultStyle.crosshairsStyle,
-                    crosshairsStyle,
+                    ...crosshairsStyle,
                   }}
                 />
               ) : null}

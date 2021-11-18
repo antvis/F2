@@ -1,3 +1,4 @@
+export * from './types';
 // import * as attr from './attr';
 // import * as util from './util';
 import Children from './children';

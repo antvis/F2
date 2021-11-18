@@ -1,7 +1,6 @@
 // 比较2颗shape树，并返回新的渲染树
-import JSX from './interface';
 import Children from '../children';
-import { isArray, isNil, mix, deepMix } from '@antv/util';
+import { isArray, isNil, mix } from '@antv/util';
 import { ELEMENT_APPEAR, ELEMENT_DELETE, ELEMENT_UPDATE } from './elementStatus';
 
 // 处理删除的元素

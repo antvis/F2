@@ -167,7 +167,7 @@ describe('Axis 轴', () => {
             y="NumberNewMicroBrewery"
             color={{
               field: 'NumberNewMicroBrewery',
-              callback: function (val) {
+              callback: function(val) {
                 if (val === 20) {
                   return '#1890ff';
                 }
@@ -525,7 +525,7 @@ describe('Axis 轴', () => {
               grid: {
                 lineDash: null,
                 // TODO:暂时有点问题
-                type: 'arc',
+                // type: 'arc',
               },
               line: null,
               label: {

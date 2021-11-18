@@ -68,7 +68,7 @@ export default (props: RectProps) => {
                   textBaseline: 'bottom',
                   text,
                   ...label,
-                  labelStyle,
+                  ...labelStyle,
                 }}
               />
             );
