@@ -1,5 +1,7 @@
 import Matrix from './util/matrix';
 import Vector2 from './util/vector2';
+import * as Smooth from './util/smooth';
+import * as BBox from './util/bbox';
 
 import { Canvas, Group, Shape } from './engine';
 
@@ -21,5 +23,5 @@ function createCanvas(cfg) {
   return new G.Canvas(cfg);
 }
 
-export { registerEngine, getEngine, createCanvas, Canvas, Group, Shape, Matrix, Vector2 };
+export { registerEngine, getEngine, createCanvas, Canvas, Group, Shape, Matrix, Vector2, Smooth, BBox };
 export * from './types';

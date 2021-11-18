@@ -1,6 +1,5 @@
 import { jsx } from '../../jsx';
-import { smooth } from '@antv/f2-graphic/src/util/smooth';
-import { getBBoxFromPoints } from '@antv/f2-graphic/src/util/bbox';
+import { Smooth, BBox } from '@antv/f2-graphic';
 
 export default (props: any) => {
   const { records, shape } = props;
@@ -29,7 +28,7 @@ export default (props: any) => {
                       ];
                       const bottomPointsLen = bottomPoints?.length || 0;
                       const topPoints = points.slice(0, points.length - bottomPointsLen);
-                      const topSps = smooth(topPoints, false, constaint);
+                      const topSps = Smooth.smooth(topPoints, false, constaint);
                       context.beginPath();
                       context.moveTo(topPoints[0].x, topPoints[0].y);
                       for (let i = 0, n = topSps.length; i < n; i++) {
@@ -38,7 +37,7 @@ export default (props: any) => {
                       }
 
                       if (bottomPointsLen) {
-                        const bottomSps = smooth(bottomPoints, false, constaint);
+                        const bottomSps = Smooth.smooth(bottomPoints, false, constaint);
                         context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
                         for (let i = 0, n = bottomSps.length; i < n; i++) {
                           const sp = bottomSps[i];
@@ -47,7 +46,7 @@ export default (props: any) => {
                       }
                       context.closePath();
                     }}
-                    calculateBox={() => getBBoxFromPoints(points)}
+                    calculateBox={() => BBox.getBBoxFromPoints(points)}
                   />
                 );
               }
