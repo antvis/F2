@@ -372,6 +372,7 @@ describe('折线图', () => {
             <Axis field="value" tickCount={5} />
             <Line x="day" y="value" ref={lineRef} />
             <Point x="day" y="value" ref={pointRef} />
+            <Tooltip snap />
           </Chart>
         </Canvas>
       );
@@ -951,6 +952,7 @@ describe('折线图', () => {
                 },
               ]}
             />
+            <Tooltip snap />
           </Chart>
         </Canvas>
       );

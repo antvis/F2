@@ -5,7 +5,7 @@ order: 0
 
 ## 声明式
 
-F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代码更直观和简介，避免了复杂的 API 调用，而且我们也采用了 JSX 的书写方式，不仅方便使用，还可以很方便地和 React、Vue 这些框架结合
+F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代码更直观和简介，避免了复杂的 API 调用，而且我们也采用了 JSX 语法，不仅方便使用，还可以很方便地和 React、Vue 这些框架结合
 
 ## 组件化
 
@@ -29,14 +29,40 @@ npm install --save-dev @babel/plugin-transform-react-jsx
     [
       "@babel/plugin-transform-react-jsx",
       {
-        "runtime": "automatic"
+        "runtime": "automatic",
+        "importSource": "@antv/f2"
+      }
+    ]
+  ]
+}
+// 或者
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "jsx",
+        "pragmaFrag": "Fragment"
       }
     ]
   ]
 }
 ```
 
-runtime 也支持 `automatic` 模式, 如果配置 `automatic`, 需要设置 `importSource: 'jsx'`, 当然也可以通过 `@jsxImportSource` 注解方式定义，更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+
+### TypeScript
+
+如果你是使用 TypeScript, 那么只需在 `tsconfig.json` 中加入如下配置即可
+
+```json
+{
+  "compilerOptions": {
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment"
+  }
+}
+```
 
 ## 安装
 

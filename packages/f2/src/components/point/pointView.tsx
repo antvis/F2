@@ -17,6 +17,7 @@ export default (props: any) => {
                     y,
                     r: (size ?? 4) / 2,
                     fill: color,
+                    stroke: '#fff',
                     ...shape,
                   }}
                   animation={{
