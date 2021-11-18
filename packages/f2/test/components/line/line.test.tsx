@@ -432,12 +432,6 @@ describe('折线图', () => {
           pixelRatio={window.devicePixelRatio}
           width={offsetWidth}
           height={height}
-          // 方式一：通过 theme 设置全局 line style
-          // theme={{
-          //   shapes: {
-          //     line: ['smooth'],
-          //   },
-          // }}
         >
           <Chart
             ref={chartRef}
@@ -462,8 +456,7 @@ describe('折线图', () => {
               }}
             />
             <Axis field="tem" />
-            {/* 方式二：通过 props style 传入 */}
-            <Line x="time" y="tem" ref={lineRef} style={{ smooth: true }} />
+            <Line x="time" y="tem" ref={lineRef} shape="smooth" />
             <Tooltip />
           </Chart>
         </Canvas>

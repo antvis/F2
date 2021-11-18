@@ -48,12 +48,6 @@ const LineChart = (
     <Chart
       data={data}
       scale={scale}
-      // 方式一：通过 theme 设置全局 line style
-      // theme={{
-      //   shapes: {
-      //     line: ['smooth'],
-      //   },
-      // }}
     >
       <Axis
         field="time"
@@ -62,8 +56,7 @@ const LineChart = (
         }}
       />
       <Axis field="tem" />
-      {/* 方式二：通过 props style 传入 */}
-      <Line x="time" y="tem" style={{ smooth: true }} />
+      <Line x="time" y="tem" shape="smooth" />
       <Tooltip />
     </Chart>
   </Canvas>
