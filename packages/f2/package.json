@@ -25,7 +25,8 @@
     "d3-color": "~2.0.0",
     "d3-hierarchy": "~2.0.0",
     "d3-interpolate": "~2.0.1",
-    "fecha": "^2.3.3"
+    "fecha": "^2.3.3",
+    "csstype": "^3.0.0"
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^4.1.0",

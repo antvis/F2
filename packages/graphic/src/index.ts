@@ -22,3 +22,4 @@ function createCanvas(cfg) {
 }
 
 export { registerEngine, getEngine, createCanvas, Canvas, Group, Shape, Matrix, Vector2 };
+export * from './types';
