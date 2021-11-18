@@ -34,12 +34,6 @@
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
-  "files": [
-    "src",
-    "dist",
-    "lib",
-    "es"
-  ],
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {

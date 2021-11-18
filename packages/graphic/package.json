@@ -5,12 +5,6 @@
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "sideEffects": false,
-  "files": [
-    "src",
-    "dist",
-    "lib",
-    "es"
-  ],
   "dependencies": {
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5"
