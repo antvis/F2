@@ -35,6 +35,22 @@ const { props } = (
           field: 'action',
           range: ['#0050B3', '#1890FF', '#40A9FF', '#69C0FF', '#BAE7FF'],
         }}
+        showLabel
+        labelCfg={{
+          offsetX: 10,
+          label: (data, color) => {
+            return {
+              text: data.action,
+              fill: color
+            };
+          },
+          guide: data => {
+            return {
+              text: (data.percent * 100).toFixed(0) + '%',
+              fill: '#fff'
+            };
+          }
+        }}
       />
       <Legend />
     </Chart>

@@ -39,6 +39,22 @@ const { props } = (
           stroke: '#fff',
           lineWidth: 2,
         }}
+        showLabel
+        labelCfg={{
+          offsetX: 10,
+          label: (data, color) => {
+            return {
+              text: data.action,
+              fill: color
+            };
+          },
+          guide: data => {
+            return {
+              text: (data.percent * 100).toFixed(0) + '%',
+              fill: '#fff'
+            };
+          }
+        }}
       />
       <Legend />
     </Chart>
