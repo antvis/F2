@@ -2,9 +2,9 @@ exports.ids = [0];
 exports.modules = {
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/_deps/vscode-languageserver-types/main.js":
-/*!***************************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/_deps/vscode-languageserver-types/main.js ***!
-  \***************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/_deps/vscode-languageserver-types/main.js ***!
+  \************************************************************************************************************************************************************************/
 /*! exports provided: Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1592,9 +1592,9 @@ var Is;
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-css.js":
-/*!**********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-css.js ***!
-  \**********************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-css.js ***!
+  \*******************************************************************************************************************************************************/
 /*! exports provided: css_beautify */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3246,9 +3246,9 @@ var css_beautify = legacy_beautify_css;
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-html.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-html.js ***!
-  \***********************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify-html.js ***!
+  \********************************************************************************************************************************************************/
 /*! exports provided: html_beautify */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6369,9 +6369,9 @@ function html_beautify(html_source, options) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify.js ***!
-  \******************************************************************************************************************************************/
+/*!***************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/beautify/beautify.js ***!
+  \***************************************************************************************************************************************************/
 /*! exports provided: js_beautify */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6394,9 +6394,9 @@ function js_beautify(js_source_text, options) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageService.js":
-/*!********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageService.js ***!
-  \********************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageService.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: TokenType, ScannerState, ClientCapabilities, TextDocument, Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, getLanguageService, newHTMLDataProvider */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6579,9 +6579,9 @@ function newHTMLDataProvider(id, customData) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageTypes.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageTypes.js ***!
-  \******************************************************************************************************************************************/
+/*!***************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/htmlLanguageTypes.js ***!
+  \***************************************************************************************************************************************************/
 /*! exports provided: TokenType, ScannerState, ClientCapabilities */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6655,9 +6655,9 @@ var ClientCapabilities;
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/builtinDataProviders.js":
-/*!***********************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/builtinDataProviders.js ***!
-  \***********************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/builtinDataProviders.js ***!
+  \********************************************************************************************************************************************************************/
 /*! exports provided: builtinDataProviders, getAllDataProviders, handleCustomDataProviders */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6691,9 +6691,9 @@ function handleCustomDataProviders(providers) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/data/webCustomData.js":
-/*!*********************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/data/webCustomData.js ***!
-  \*********************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/data/webCustomData.js ***!
+  \******************************************************************************************************************************************************************/
 /*! exports provided: htmlData */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12619,9 +12619,9 @@ var htmlData = {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/dataProvider.js":
-/*!***************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/dataProvider.js ***!
-  \***************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/dataProvider.js ***!
+  \************************************************************************************************************************************************************/
 /*! exports provided: HTMLDataProvider, generateDocumentation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12757,9 +12757,9 @@ function generateDocumentation(item, doesSupportMarkdown) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/fact.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/fact.js ***!
-  \*******************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/languageFacts/fact.js ***!
+  \****************************************************************************************************************************************************/
 /*! exports provided: VOID_ELEMENTS, isVoidElement */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12783,9 +12783,9 @@ function isVoidElement(e) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlEntities.js":
-/*!********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlEntities.js ***!
-  \********************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlEntities.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: entities */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -15038,9 +15038,9 @@ var entities = {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlParser.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlParser.js ***!
-  \******************************************************************************************************************************************/
+/*!***************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlParser.js ***!
+  \***************************************************************************************************************************************************/
 /*! exports provided: Node, parse */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -15214,9 +15214,9 @@ function parse(text) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlScanner.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlScanner.js ***!
-  \*******************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/parser/htmlScanner.js ***!
+  \****************************************************************************************************************************************************/
 /*! exports provided: createScanner */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -15626,9 +15626,9 @@ function createScanner(input, initialOffset, initialState) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlCompletion.js":
-/*!************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlCompletion.js ***!
-  \************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlCompletion.js ***!
+  \*********************************************************************************************************************************************************/
 /*! exports provided: HTMLCompletion */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16152,9 +16152,9 @@ function getWordEnd(s, offset, limit) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFolding.js":
-/*!*********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFolding.js ***!
-  \*********************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFolding.js ***!
+  \******************************************************************************************************************************************************/
 /*! exports provided: getFoldingRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16336,9 +16336,9 @@ function getFoldingRanges(document, context) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFormatter.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFormatter.js ***!
-  \***********************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlFormatter.js ***!
+  \********************************************************************************************************************************************************/
 /*! exports provided: format */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16501,9 +16501,9 @@ function isWhitespace(text, offset) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHighlighting.js":
-/*!**************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHighlighting.js ***!
-  \**************************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHighlighting.js ***!
+  \***********************************************************************************************************************************************************/
 /*! exports provided: findDocumentHighlights */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16561,9 +16561,9 @@ function getTagNameRange(tokenType, document, startOffset) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHover.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHover.js ***!
-  \*******************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlHover.js ***!
+  \****************************************************************************************************************************************************/
 /*! exports provided: HTMLHover */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16775,9 +16775,9 @@ function trimQuotes(s) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlLinks.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlLinks.js ***!
-  \*******************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlLinks.js ***!
+  \****************************************************************************************************************************************************/
 /*! exports provided: findDocumentLinks */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16929,9 +16929,9 @@ function findDocumentLinks(document, documentContext) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlMatchingTagPosition.js":
-/*!*********************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlMatchingTagPosition.js ***!
-  \*********************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlMatchingTagPosition.js ***!
+  \******************************************************************************************************************************************************************/
 /*! exports provided: findMatchingTagPosition */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16968,9 +16968,9 @@ function findMatchingTagPosition(document, position, htmlDocument) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlRename.js":
-/*!********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlRename.js ***!
-  \********************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlRename.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: doRename */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17034,9 +17034,9 @@ function isWithinTagRange(node, offset, nodeTag) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSelectionRange.js":
-/*!****************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSelectionRange.js ***!
-  \****************************************************************************************************************************************************/
+/*!*************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSelectionRange.js ***!
+  \*************************************************************************************************************************************************************/
 /*! exports provided: getSelectionRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17222,9 +17222,9 @@ function getAttributeLevelRanges(document, currNode, currOffset) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSymbolsProvider.js":
-/*!*****************************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSymbolsProvider.js ***!
-  \*****************************************************************************************************************************************************/
+/*!**************************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/services/htmlSymbolsProvider.js ***!
+  \**************************************************************************************************************************************************************/
 /*! exports provided: findDocumentSymbols */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17277,9 +17277,9 @@ function nodeToName(node) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/arrays.js":
-/*!*************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/arrays.js ***!
-  \*************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/arrays.js ***!
+  \**********************************************************************************************************************************************/
 /*! exports provided: findFirst, binarySearch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17334,9 +17334,9 @@ function binarySearch(array, key, comparator) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/markup.js":
-/*!*************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/markup.js ***!
-  \*************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/markup.js ***!
+  \**********************************************************************************************************************************************/
 /*! exports provided: normalizeMarkupContent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17367,9 +17367,9 @@ function normalizeMarkupContent(input) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/object.js":
-/*!*************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/object.js ***!
-  \*************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/object.js ***!
+  \**********************************************************************************************************************************************/
 /*! exports provided: isDefined */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17389,9 +17389,9 @@ function isDefined(obj) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/strings.js":
-/*!**************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/strings.js ***!
-  \**************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-html-languageservice/utils/strings.js ***!
+  \***********************************************************************************************************************************************/
 /*! exports provided: startsWith, endsWith, commonPrefixLength, repeat, isLetterOrDigit */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17471,9 +17471,9 @@ function isLetterOrDigit(text, index) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-languageserver-textdocument/lib/esm/main.js":
-/*!********************************************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
-  \********************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
+  \*****************************************************************************************************************************************************/
 /*! exports provided: TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17750,9 +17750,9 @@ function getWellformedEdit(textEdit) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-uri/index.js":
-/*!*************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-uri/index.js ***!
-  \*************************************************************************************************************/
+/*!**********************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/_deps/vscode-uri/index.js ***!
+  \**********************************************************************************************************************/
 /*! exports provided: URI */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18360,9 +18360,9 @@ function _asFormatted(uri, skipEncoding) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/fillers/vscode-nls.js":
-/*!*********************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/fillers/vscode-nls.js ***!
-  \*********************************************************************************************************/
+/*!******************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/fillers/vscode-nls.js ***!
+  \******************************************************************************************************************/
 /*! exports provided: loadMessageBundle, config */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18405,9 +18405,9 @@ function config(opt) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/htmlMode.js":
-/*!***********************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/htmlMode.js ***!
-  \***********************************************************************************************/
+/*!********************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/htmlMode.js ***!
+  \********************************************************************************************************/
 /*! exports provided: setupMode1, setupMode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18516,9 +18516,9 @@ function disposeAll(disposables) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/languageFeatures.js":
-/*!*******************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/languageFeatures.js ***!
-  \*******************************************************************************************************/
+/*!****************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/languageFeatures.js ***!
+  \****************************************************************************************************************/
 /*! exports provided: DiagnosticsAdapter, CompletionAdapter, HoverAdapter, DocumentHighlightAdapter, DocumentSymbolAdapter, DocumentLinkAdapter, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, RenameAdapter, FoldingRangeAdapter, SelectionRangeAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19057,9 +19057,9 @@ var SelectionRangeAdapter = /** @class */ (function () {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/html/workerManager.js":
-/*!****************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/html/workerManager.js ***!
-  \****************************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/html/workerManager.js ***!
+  \*************************************************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

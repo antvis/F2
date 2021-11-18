@@ -2,9 +2,9 @@ exports.ids = [2];
 exports.modules = {
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js":
-/*!*************************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
-  \*************************************************************************************************************/
+/*!**********************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
+  \**********************************************************************************************************************/
 /*! exports provided: flattenDiagnosticMessageText, Adapter, DiagnosticsAdapter, SuggestAdapter, SignatureHelpAdapter, QuickInfoAdapter, OccurrencesAdapter, DefinitionAdapter, ReferenceAdapter, OutlineAdapter, Kind, FormatHelper, FormatAdapter, FormatOnTypeAdapter, CodeActionAdaptor, RenameAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -997,9 +997,9 @@ var RenameAdapter = /** @class */ (function (_super) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js":
-/*!***************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
-  \***************************************************************************************************/
+/*!************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
+  \************************************************************************************************************/
 /*! exports provided: setupTypeScript, setupJavaScript, getJavaScriptWorker, getTypeScriptWorker */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1070,9 +1070,9 @@ function setupMode(defaults, modeId) {
 /***/ }),
 
 /***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js":
-/*!**********************************************************************************************************!*\
-  !*** /Users/yue/gitlab/antvis/f2/node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
-  \**********************************************************************************************************/
+/*!*******************************************************************************************************************!*\
+  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
+  \*******************************************************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
