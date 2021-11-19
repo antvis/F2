@@ -53,8 +53,8 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   willReceiveProps(nextProps) {
     const { props: lastProps, attrController } = this;
-    const { data: nextData, adjust: nextAdjust } = nextProps;
-    const { data: lastData, adjust: lastAdjust } = lastProps;
+    const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange } = nextProps;
+    const { data: lastData, adjust: lastAdjust, zoomRange: lastZoomRange } = lastProps;
 
     const nextAttrOptions = attrController.getAttrOptions(nextProps);
     const lastAttrOptions = attrController.getAttrOptions(lastProps);
@@ -73,8 +73,8 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
       this.records = null;
     }
 
-    // props发生变化,records也需要重新计算
-    if(!equal(nextProps, lastProps)) {
+    // zoomRange发生变化,records也需要重新计算
+    if(!equal(nextZoomRange, lastZoomRange)) {
       this.records = null;
     }
   }
