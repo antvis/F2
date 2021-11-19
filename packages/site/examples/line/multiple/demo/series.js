@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Line, Axis, Legend, Tooltip } from '@antv/f2';
+import { jsx, Canvas, Chart, Line, Axis, Legend } from '@antv/f2';
 import _ from 'lodash';
 
 fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
@@ -17,7 +17,6 @@ fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
           />
           <Axis field="value" tickCount={5} />
           <Line x="date" y="value" lineWidth="4px" color="type" />
-          <Tooltip showCrosshairs snap />
           <Legend
             position="top"
             style={{
