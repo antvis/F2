@@ -5,7 +5,7 @@ import Chart from '../../chart';
 import { isFunction } from '@antv/util';
 
 type TriggerMap = {
-  [triggerType: string]: (items: any[], records: any[], legend) => any;
+  [triggerType: string]: (items: any[], records: any[], legend) => void;
 };
 interface LegendItem {
   /**
@@ -67,7 +67,6 @@ export default (View) => {
     constructor(props) {
       super(props);
       this.state = {
-        records: null,
         items: [],
       };
     }
@@ -77,10 +76,9 @@ export default (View) => {
     }
 
     _initItems() {
-      const { props } = this;
-      const { items, chart } = props;
+      const { items } = this.props;
       this.setState({
-        items: items || chart.getLegendItems(),
+        items: items?.length ? items : this.getOriginItems(),
       });
     }
 
@@ -94,7 +92,7 @@ export default (View) => {
       Object.keys(triggerMap).forEach((type) => {
         canvas.on(type.toLowerCase(), (event) => {
           const { points } = event;
-          const items = this.getItems();
+          const items = this.getOriginItems();
           const records = chart.getSnapRecords(points[0]);
           const cb = triggerMap[type];
           if (isFunction(cb)) {
@@ -112,6 +110,11 @@ export default (View) => {
       this.setState({
         items,
       });
+    }
+
+    getOriginItems() {
+      const { chart } = this.props;
+      return chart.getLegendItems();
     }
 
     getMaxItemWidth(legendShape) {
