@@ -1,6 +1,6 @@
 import React from 'react';
 import { clone, values } from '@antv/util';
-import { jsx, Component, Canvas, Chart } from '../../src';
+import { jsx, Component, Canvas, Chart, Tooltip } from '../../src';
 import { Line, Axis, Legend } from '../../src/components';
 import { createContext } from '../util';
 
@@ -30,12 +30,14 @@ describe('图例', () => {
               />
               <Axis field="value" tickCount={5} />
               <Line x="date" y="value" lineWidth="4px" color="type" shape="type" />
+              <Tooltip showCrosshairs snap />
               <Legend
                 position="bottom"
                 marker="square"
                 // 自定义图例样式
                 style={{
                   justifyContent: 'space-around',
+                  alignItems: 'stretch',
                 }}
                 triggerMap={{
                   press: (items, records, legend) => {
@@ -46,6 +48,9 @@ describe('图例', () => {
                     });
                     legend.setItems(values(map));
                   },
+                  pressend: (items, records, legend) => {
+                    legend.setItems(items);
+                  }
                 }}
               />
             </Chart>

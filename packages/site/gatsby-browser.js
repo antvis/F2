@@ -7,7 +7,7 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 // window.f2 = require('./src/index-all.js');
 // window.DataSet = require('@antv/data-set');
-// window.lodash = require('lodash');
+window.lodash = require('lodash');
 // window.$ = require('jquery');
 
 /* eslint-disable */
