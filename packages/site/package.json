@@ -16,7 +16,9 @@
     "@antv/f2-react": "^0.0.2-0",
     "@antv/gatsby-theme-antv": "1.1.13",
     "gatsby": "^2.17.7",
-    "gh-pages": "^2.1.1",
+    "gh-pages": "^2.1.1"
+  },
+  "devDependencies": {
     "lodash": "^4.17.21"
   },
   "scripts": {
