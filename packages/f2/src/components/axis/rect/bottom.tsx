@@ -1,5 +1,6 @@
 import { jsx } from '../../../';
 import { RectProps } from '../types';
+import { TextAttrs } from '../../../types';
 
 export default (props: RectProps<'bottom'>) => {
   const { ticks, coord, style, animation } = props;
@@ -62,10 +63,9 @@ export default (props: RectProps<'bottom'>) => {
             const { points, text, tickValue, labelStyle } = tick;
             const start = points[0];
             const { align = 'center' } = label || {};
-            const textAttrs = {
+            const textAttrs: TextAttrs = {
               x: start.x,
               y: start.y + labelOffset,
-              textAlign: align,
               textBaseline: 'top',
               text,
               ...label,
@@ -80,6 +80,8 @@ export default (props: RectProps<'bottom'>) => {
               } else {
                 textAttrs.textAlign = 'center';
               }
+            } else {
+              textAttrs.textAlign = align;
             }
 
             return (

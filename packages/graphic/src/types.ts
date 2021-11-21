@@ -1,3 +1,22 @@
+export interface Point {
+  x: number;
+  y: number;
+}
+
+interface Box {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}
+
+export interface BBox extends Box {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 // Element 的 attrs 属性类型（_attrs.attrs)
 export interface ElementAttrs {
   /**
@@ -54,12 +73,12 @@ export interface ShapeAttrs extends ElementAttrs {
 }
 
 export interface ArcAttrs extends ShapeAttrs {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   r: number;
   startAngle: number;
   endAngle: number;
-  anticlockwise: boolean;
+  anticlockwise?: boolean;
 }
 
 export interface CircleAttrs extends ShapeAttrs {
@@ -89,37 +108,31 @@ export interface RectAttrs extends ShapeAttrs {
   height: number;
   radius?: number;
 }
-
-export interface Point {
-  x: number;
-  y: number;
-}
-
 export interface PolygonAttrs extends ShapeAttrs {
   points: Point[];
 }
 
 export interface PolylineAttrs extends ShapeAttrs {
   points: Point[];
-  smooth: boolean;
+  smooth?: boolean;
 }
 
 export interface SectorAttrs extends ShapeAttrs {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
   startAngle: number;
   endAngle: number;
   r: number;
   r0: number;
-  anticlockwise: boolean;
+  anticlockwise?: boolean;
 }
 
 export interface ImageAttrs extends RectAttrs {
   src: string;
-  sx: number;
-  sy: number;
-  swidth: number;
-  sheight: number;
+  sx?: number;
+  sy?: number;
+  swidth?: number;
+  sheight?: number;
 }
 
 export interface TextAttrs extends ShapeAttrs {
@@ -134,7 +147,7 @@ export interface TextAttrs extends ShapeAttrs {
   /**
    * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate
    */
-  rotate: number;
+  rotate?: number;
 
   /* 以下属性组合后形成 font 属性 */
   fontSize?: number;
@@ -155,4 +168,9 @@ export interface TextAttrs extends ShapeAttrs {
     | 800
     | 900;
   fontVariant?: 'normal' | 'small-caps';
+}
+
+export interface CustomAttrs extends ShapeAttrs {
+  createPath: (context: CanvasRenderingContext2D) => void;
+  calculateBox: () => Box;
 }
