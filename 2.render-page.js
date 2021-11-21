@@ -1,17 +1,18 @@
 exports.ids = [2];
 exports.modules = {
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js":
-/*!**********************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
-  \**********************************************************************************************************************/
-/*! exports provided: flattenDiagnosticMessageText, Adapter, DiagnosticsAdapter, SuggestAdapter, SignatureHelpAdapter, QuickInfoAdapter, OccurrencesAdapter, DefinitionAdapter, ReferenceAdapter, OutlineAdapter, Kind, FormatHelper, FormatAdapter, FormatOnTypeAdapter, CodeActionAdaptor, RenameAdapter */
+/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js ***!
+  \***********************************************************************************/
+/*! exports provided: flattenDiagnosticMessageText, Adapter, LibFiles, DiagnosticsAdapter, SuggestAdapter, SignatureHelpAdapter, QuickInfoAdapter, OccurrencesAdapter, DefinitionAdapter, ReferenceAdapter, OutlineAdapter, Kind, FormatHelper, FormatAdapter, FormatOnTypeAdapter, CodeActionAdaptor, RenameAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "flattenDiagnosticMessageText", function() { return flattenDiagnosticMessageText; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Adapter", function() { return Adapter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LibFiles", function() { return LibFiles; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DiagnosticsAdapter", function() { return DiagnosticsAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SuggestAdapter", function() { return SuggestAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SignatureHelpAdapter", function() { return SignatureHelpAdapter; });
@@ -26,6 +27,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormatOnTypeAdapter", function() { return FormatOnTypeAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeActionAdaptor", function() { return CodeActionAdaptor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RenameAdapter", function() { return RenameAdapter; });
+/* harmony import */ var _lib_lib_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib.index.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/lib/lib.index.js");
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -35,7 +38,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -80,8 +83,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var Uri = monaco.Uri;
-var Range = monaco.Range;
+
+
 //#region utils copied from typescript to prevent loading the entire typescriptServices ---
 var IndentStyle;
 (function (IndentStyle) {
@@ -91,17 +94,17 @@ var IndentStyle;
 })(IndentStyle || (IndentStyle = {}));
 function flattenDiagnosticMessageText(diag, newLine, indent) {
     if (indent === void 0) { indent = 0; }
-    if (typeof diag === "string") {
+    if (typeof diag === 'string') {
         return diag;
     }
     else if (diag === undefined) {
-        return "";
+        return '';
     }
-    var result = "";
+    var result = '';
     if (indent) {
         result += newLine;
         for (var i = 0; i < indent; i++) {
-            result += "  ";
+            result += '  ';
         }
     }
     result += diag.messageText;
@@ -116,19 +119,19 @@ function flattenDiagnosticMessageText(diag, newLine, indent) {
 }
 function displayPartsToString(displayParts) {
     if (displayParts) {
-        return displayParts.map(function (displayPart) { return displayPart.text; }).join("");
+        return displayParts.map(function (displayPart) { return displayPart.text; }).join('');
     }
-    return "";
+    return '';
 }
 //#endregion
 var Adapter = /** @class */ (function () {
     function Adapter(_worker) {
         this._worker = _worker;
     }
-    // protected _positionToOffset(model: monaco.editor.ITextModel, position: monaco.IPosition): number {
+    // protected _positionToOffset(model: editor.ITextModel, position: monaco.IPosition): number {
     // 	return model.getOffsetAt(position);
     // }
-    // protected _offsetToPosition(model: monaco.editor.ITextModel, offset: number): monaco.IPosition {
+    // protected _offsetToPosition(model: editor.ITextModel, offset: number): monaco.IPosition {
     // 	return model.getPositionAt(offset);
     // }
     Adapter.prototype._textSpanToRange = function (model, span) {
@@ -141,6 +144,74 @@ var Adapter = /** @class */ (function () {
     return Adapter;
 }());
 
+// --- lib files
+var LibFiles = /** @class */ (function () {
+    function LibFiles(_worker) {
+        this._worker = _worker;
+        this._libFiles = {};
+        this._hasFetchedLibFiles = false;
+        this._fetchLibFilesPromise = null;
+    }
+    LibFiles.prototype.isLibFile = function (uri) {
+        if (!uri) {
+            return false;
+        }
+        if (uri.path.indexOf('/lib.') === 0) {
+            return !!_lib_lib_index_js__WEBPACK_IMPORTED_MODULE_0__["libFileSet"][uri.path.slice(1)];
+        }
+        return false;
+    };
+    LibFiles.prototype.getOrCreateModel = function (uri) {
+        var model = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].getModel(uri);
+        if (model) {
+            return model;
+        }
+        if (this.isLibFile(uri) && this._hasFetchedLibFiles) {
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].createModel(this._libFiles[uri.path.slice(1)], 'javascript', uri);
+        }
+        return null;
+    };
+    LibFiles.prototype._containsLibFile = function (uris) {
+        for (var _i = 0, uris_1 = uris; _i < uris_1.length; _i++) {
+            var uri = uris_1[_i];
+            if (this.isLibFile(uri)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    LibFiles.prototype.fetchLibFilesIfNecessary = function (uris) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this._containsLibFile(uris)) {
+                            // no lib files necessary
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, this._fetchLibFiles()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LibFiles.prototype._fetchLibFiles = function () {
+        var _this = this;
+        if (!this._fetchLibFilesPromise) {
+            this._fetchLibFilesPromise = this._worker()
+                .then(function (w) { return w.getLibFiles(); })
+                .then(function (libFiles) {
+                _this._hasFetchedLibFiles = true;
+                _this._libFiles = libFiles;
+            });
+        }
+        return this._fetchLibFilesPromise;
+    };
+    return LibFiles;
+}());
+
 // --- diagnostics --- ---
 var DiagnosticCategory;
 (function (DiagnosticCategory) {
@@ -151,8 +222,9 @@ var DiagnosticCategory;
 })(DiagnosticCategory || (DiagnosticCategory = {}));
 var DiagnosticsAdapter = /** @class */ (function (_super) {
     __extends(DiagnosticsAdapter, _super);
-    function DiagnosticsAdapter(_defaults, _selector, worker) {
+    function DiagnosticsAdapter(_libFiles, _defaults, _selector, worker) {
         var _this = _super.call(this, worker) || this;
+        _this._libFiles = _libFiles;
         _this._defaults = _defaults;
         _this._selector = _selector;
         _this._disposables = [];
@@ -175,22 +247,22 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
             _this._doValidate(model);
         };
         var onModelRemoved = function (model) {
-            monaco.editor.setModelMarkers(model, _this._selector, []);
+            _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].setModelMarkers(model, _this._selector, []);
             var key = model.uri.toString();
             if (_this._listener[key]) {
                 _this._listener[key].dispose();
                 delete _this._listener[key];
             }
         };
-        _this._disposables.push(monaco.editor.onDidCreateModel(onModelAdd));
-        _this._disposables.push(monaco.editor.onWillDisposeModel(onModelRemoved));
-        _this._disposables.push(monaco.editor.onDidChangeModelLanguage(function (event) {
+        _this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].onDidCreateModel(onModelAdd));
+        _this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].onWillDisposeModel(onModelRemoved));
+        _this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].onDidChangeModelLanguage(function (event) {
             onModelRemoved(event.model);
             onModelAdd(event.model);
         }));
         _this._disposables.push({
             dispose: function () {
-                for (var _i = 0, _a = monaco.editor.getModels(); _i < _a.length; _i++) {
+                for (var _i = 0, _a = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].getModels(); _i < _a.length; _i++) {
                     var model = _a[_i];
                     onModelRemoved(model);
                 }
@@ -198,7 +270,7 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
         });
         var recomputeDiagostics = function () {
             // redo diagnostics when options change
-            for (var _i = 0, _a = monaco.editor.getModels(); _i < _a.length; _i++) {
+            for (var _i = 0, _a = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].getModels(); _i < _a.length; _i++) {
                 var model = _a[_i];
                 onModelRemoved(model);
                 onModelAdd(model);
@@ -206,7 +278,7 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
         };
         _this._disposables.push(_this._defaults.onDidChange(recomputeDiagostics));
         _this._disposables.push(_this._defaults.onDidExtraLibsChange(recomputeDiagostics));
-        monaco.editor.getModels().forEach(onModelAdd);
+        _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].getModels().forEach(onModelAdd);
         return _this;
     }
     DiagnosticsAdapter.prototype.dispose = function () {
@@ -215,7 +287,7 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
     };
     DiagnosticsAdapter.prototype._doValidate = function (model) {
         return __awaiter(this, void 0, void 0, function () {
-            var worker, promises, _a, noSyntaxValidation, noSemanticValidation, noSuggestionDiagnostics, diagnostics, markers;
+            var worker, promises, _a, noSyntaxValidation, noSemanticValidation, noSuggestionDiagnostics, allDiagnostics, diagnostics, relatedUris;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -239,16 +311,31 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, Promise.all(promises)];
                     case 2:
-                        diagnostics = _b.sent();
-                        if (!diagnostics || model.isDisposed()) {
+                        allDiagnostics = _b.sent();
+                        if (!allDiagnostics || model.isDisposed()) {
                             // model was disposed in the meantime
                             return [2 /*return*/];
                         }
-                        markers = diagnostics
+                        diagnostics = allDiagnostics
                             .reduce(function (p, c) { return c.concat(p); }, [])
-                            .filter(function (d) { return (_this._defaults.getDiagnosticsOptions().diagnosticCodesToIgnore || []).indexOf(d.code) === -1; })
-                            .map(function (d) { return _this._convertDiagnostics(model, d); });
-                        monaco.editor.setModelMarkers(model, this._selector, markers);
+                            .filter(function (d) {
+                            return (_this._defaults.getDiagnosticsOptions().diagnosticCodesToIgnore || []).indexOf(d.code) ===
+                                -1;
+                        });
+                        relatedUris = diagnostics
+                            .map(function (d) { return d.relatedInformation || []; })
+                            .reduce(function (p, c) { return c.concat(p); }, [])
+                            .map(function (relatedInformation) {
+                            return relatedInformation.file ? _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(relatedInformation.file.fileName) : null;
+                        });
+                        return [4 /*yield*/, this._libFiles.fetchLibFilesIfNecessary(relatedUris)];
+                    case 3:
+                        _b.sent();
+                        if (model.isDisposed()) {
+                            // model was disposed in the meantime
+                            return [2 /*return*/];
+                        }
+                        _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["editor"].setModelMarkers(model, this._selector, diagnostics.map(function (d) { return _this._convertDiagnostics(model, d); }));
                         return [2 /*return*/];
                 }
             });
@@ -259,6 +346,13 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
         var diagLength = diag.length || 1;
         var _a = model.getPositionAt(diagStart), startLineNumber = _a.lineNumber, startColumn = _a.column;
         var _b = model.getPositionAt(diagStart + diagLength), endLineNumber = _b.lineNumber, endColumn = _b.column;
+        var tags = [];
+        if (diag.reportsUnnecessary) {
+            tags.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerTag"].Unnecessary);
+        }
+        if (diag.reportsDeprecated) {
+            tags.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerTag"].Deprecated);
+        }
         return {
             severity: this._tsDiagnosticCategoryToMarkerSeverity(diag.category),
             startLineNumber: startLineNumber,
@@ -267,11 +361,12 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
             endColumn: endColumn,
             message: flattenDiagnosticMessageText(diag.messageText, '\n'),
             code: diag.code.toString(),
-            tags: diag.reportsUnnecessary ? [monaco.MarkerTag.Unnecessary] : [],
-            relatedInformation: this._convertRelatedInformation(model, diag.relatedInformation),
+            tags: tags,
+            relatedInformation: this._convertRelatedInformation(model, diag.relatedInformation)
         };
     };
     DiagnosticsAdapter.prototype._convertRelatedInformation = function (model, relatedInformation) {
+        var _this = this;
         if (!relatedInformation) {
             return;
         }
@@ -279,8 +374,8 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
         relatedInformation.forEach(function (info) {
             var relatedResource = model;
             if (info.file) {
-                var relatedResourceUri = monaco.Uri.parse(info.file.fileName);
-                relatedResource = monaco.editor.getModel(relatedResourceUri);
+                var relatedResourceUri = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(info.file.fileName);
+                relatedResource = _this._libFiles.getOrCreateModel(relatedResourceUri);
             }
             if (!relatedResource) {
                 return;
@@ -302,12 +397,16 @@ var DiagnosticsAdapter = /** @class */ (function (_super) {
     };
     DiagnosticsAdapter.prototype._tsDiagnosticCategoryToMarkerSeverity = function (category) {
         switch (category) {
-            case DiagnosticCategory.Error: return monaco.MarkerSeverity.Error;
-            case DiagnosticCategory.Message: return monaco.MarkerSeverity.Info;
-            case DiagnosticCategory.Warning: return monaco.MarkerSeverity.Warning;
-            case DiagnosticCategory.Suggestion: return monaco.MarkerSeverity.Hint;
+            case DiagnosticCategory.Error:
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerSeverity"].Error;
+            case DiagnosticCategory.Message:
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerSeverity"].Info;
+            case DiagnosticCategory.Warning:
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerSeverity"].Warning;
+            case DiagnosticCategory.Suggestion:
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerSeverity"].Hint;
         }
-        return monaco.MarkerSeverity.Info;
+        return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["MarkerSeverity"].Info;
     };
     return DiagnosticsAdapter;
 }(Adapter));
@@ -321,7 +420,7 @@ var SuggestAdapter = /** @class */ (function (_super) {
         get: function () {
             return ['.'];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SuggestAdapter.prototype.provideCompletionItems = function (model, position, _context, token) {
@@ -331,7 +430,7 @@ var SuggestAdapter = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         wordInfo = model.getWordUntilPosition(position);
-                        wordRange = new Range(position.lineNumber, wordInfo.startColumn, position.lineNumber, wordInfo.endColumn);
+                        wordRange = new _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Range"](position.lineNumber, wordInfo.startColumn, position.lineNumber, wordInfo.endColumn);
                         resource = model.uri;
                         offset = model.getOffsetAt(position);
                         return [4 /*yield*/, this._worker(resource)];
@@ -344,20 +443,27 @@ var SuggestAdapter = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         suggestions = info.entries.map(function (entry) {
+                            var _a;
                             var range = wordRange;
                             if (entry.replacementSpan) {
                                 var p1 = model.getPositionAt(entry.replacementSpan.start);
                                 var p2 = model.getPositionAt(entry.replacementSpan.start + entry.replacementSpan.length);
-                                range = new Range(p1.lineNumber, p1.column, p2.lineNumber, p2.column);
+                                range = new _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Range"](p1.lineNumber, p1.column, p2.lineNumber, p2.column);
+                            }
+                            var tags = [];
+                            if (((_a = entry.kindModifiers) === null || _a === void 0 ? void 0 : _a.indexOf('deprecated')) !== -1) {
+                                tags.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemTag.Deprecated);
                             }
                             return {
                                 uri: resource,
                                 position: position,
+                                offset: offset,
                                 range: range,
                                 label: entry.name,
                                 insertText: entry.name,
                                 sortText: entry.sortText,
-                                kind: SuggestAdapter.convertKind(entry.kind)
+                                kind: SuggestAdapter.convertKind(entry.kind),
+                                tags: tags
                             };
                         });
                         return [2 /*return*/, {
@@ -367,7 +473,7 @@ var SuggestAdapter = /** @class */ (function (_super) {
             });
         });
     };
-    SuggestAdapter.prototype.resolveCompletionItem = function (model, _position, item, token) {
+    SuggestAdapter.prototype.resolveCompletionItem = function (item, token) {
         return __awaiter(this, void 0, void 0, function () {
             var myItem, resource, position, offset, worker, details;
             return __generator(this, function (_a) {
@@ -376,14 +482,14 @@ var SuggestAdapter = /** @class */ (function (_super) {
                         myItem = item;
                         resource = myItem.uri;
                         position = myItem.position;
-                        offset = model.getOffsetAt(position);
+                        offset = myItem.offset;
                         return [4 /*yield*/, this._worker(resource)];
                     case 1:
                         worker = _a.sent();
                         return [4 /*yield*/, worker.getCompletionEntryDetails(resource.toString(), offset, myItem.label)];
                     case 2:
                         details = _a.sent();
-                        if (!details || model.isDisposed()) {
+                        if (!details) {
                             return [2 /*return*/, myItem];
                         }
                         return [2 /*return*/, {
@@ -393,7 +499,7 @@ var SuggestAdapter = /** @class */ (function (_super) {
                                 kind: SuggestAdapter.convertKind(details.kind),
                                 detail: displayPartsToString(details.displayParts),
                                 documentation: {
-                                    value: displayPartsToString(details.documentation)
+                                    value: SuggestAdapter.createDocumentationString(details)
                                 }
                             }];
                 }
@@ -404,36 +510,59 @@ var SuggestAdapter = /** @class */ (function (_super) {
         switch (kind) {
             case Kind.primitiveType:
             case Kind.keyword:
-                return monaco.languages.CompletionItemKind.Keyword;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Keyword;
             case Kind.variable:
             case Kind.localVariable:
-                return monaco.languages.CompletionItemKind.Variable;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Variable;
             case Kind.memberVariable:
             case Kind.memberGetAccessor:
             case Kind.memberSetAccessor:
-                return monaco.languages.CompletionItemKind.Field;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Field;
             case Kind.function:
             case Kind.memberFunction:
             case Kind.constructSignature:
             case Kind.callSignature:
             case Kind.indexSignature:
-                return monaco.languages.CompletionItemKind.Function;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Function;
             case Kind.enum:
-                return monaco.languages.CompletionItemKind.Enum;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Enum;
             case Kind.module:
-                return monaco.languages.CompletionItemKind.Module;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Module;
             case Kind.class:
-                return monaco.languages.CompletionItemKind.Class;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Class;
             case Kind.interface:
-                return monaco.languages.CompletionItemKind.Interface;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Interface;
             case Kind.warning:
-                return monaco.languages.CompletionItemKind.File;
+                return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.File;
         }
-        return monaco.languages.CompletionItemKind.Property;
+        return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].CompletionItemKind.Property;
+    };
+    SuggestAdapter.createDocumentationString = function (details) {
+        var documentationString = displayPartsToString(details.documentation);
+        if (details.tags) {
+            for (var _i = 0, _a = details.tags; _i < _a.length; _i++) {
+                var tag = _a[_i];
+                documentationString += "\n\n" + tagToString(tag);
+            }
+        }
+        return documentationString;
     };
     return SuggestAdapter;
 }(Adapter));
 
+function tagToString(tag) {
+    var tagLabel = "*@" + tag.name + "*";
+    if (tag.name === 'param' && tag.text) {
+        var _a = tag.text.split(' '), paramName = _a[0], rest = _a.slice(1);
+        tagLabel += "`" + paramName + "`";
+        if (rest.length > 0)
+            tagLabel += " \u2014 " + rest.join(' ');
+    }
+    else if (tag.text) {
+        tagLabel += " \u2014 " + tag.text;
+    }
+    return tagLabel;
+}
 var SignatureHelpAdapter = /** @class */ (function (_super) {
     __extends(SignatureHelpAdapter, _super);
     function SignatureHelpAdapter() {
@@ -468,13 +597,17 @@ var SignatureHelpAdapter = /** @class */ (function (_super) {
                                 label: '',
                                 parameters: []
                             };
-                            signature.documentation = displayPartsToString(item.documentation);
+                            signature.documentation = {
+                                value: displayPartsToString(item.documentation)
+                            };
                             signature.label += displayPartsToString(item.prefixDisplayParts);
                             item.parameters.forEach(function (p, i, a) {
                                 var label = displayPartsToString(p.displayParts);
                                 var parameter = {
                                     label: label,
-                                    documentation: displayPartsToString(p.documentation)
+                                    documentation: {
+                                        value: displayPartsToString(p.documentation)
+                                    }
                                 };
                                 signature.label += label;
                                 signature.parameters.push(parameter);
@@ -520,21 +653,18 @@ var QuickInfoAdapter = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         documentation = displayPartsToString(info.documentation);
-                        tags = info.tags ? info.tags.map(function (tag) {
-                            var label = "*@" + tag.name + "*";
-                            if (!tag.text) {
-                                return label;
-                            }
-                            return label + (tag.text.match(/\r\n|\n/g) ? ' \n' + tag.text : " - " + tag.text);
-                        }).join('  \n\n') : '';
+                        tags = info.tags ? info.tags.map(function (tag) { return tagToString(tag); }).join('  \n\n') : '';
                         contents = displayPartsToString(info.displayParts);
                         return [2 /*return*/, {
                                 range: this._textSpanToRange(model, info.textSpan),
-                                contents: [{
-                                        value: '```js\n' + contents + '\n```\n'
-                                    }, {
+                                contents: [
+                                    {
+                                        value: '```typescript\n' + contents + '\n```\n'
+                                    },
+                                    {
                                         value: documentation + (tags ? '\n\n' + tags : '')
-                                    }]
+                                    }
+                                ]
                             }];
                 }
             });
@@ -570,7 +700,9 @@ var OccurrencesAdapter = /** @class */ (function (_super) {
                         return [2 /*return*/, entries.map(function (entry) {
                                 return {
                                     range: _this._textSpanToRange(model, entry.textSpan),
-                                    kind: entry.isWriteAccess ? monaco.languages.DocumentHighlightKind.Write : monaco.languages.DocumentHighlightKind.Text
+                                    kind: entry.isWriteAccess
+                                        ? _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].DocumentHighlightKind.Write
+                                        : _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].DocumentHighlightKind.Text
                                 };
                             })];
                 }
@@ -583,8 +715,10 @@ var OccurrencesAdapter = /** @class */ (function (_super) {
 // --- definition ------
 var DefinitionAdapter = /** @class */ (function (_super) {
     __extends(DefinitionAdapter, _super);
-    function DefinitionAdapter() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function DefinitionAdapter(_libFiles, worker) {
+        var _this = _super.call(this, worker) || this;
+        _this._libFiles = _libFiles;
+        return _this;
     }
     DefinitionAdapter.prototype.provideDefinition = function (model, position, token) {
         return __awaiter(this, void 0, void 0, function () {
@@ -603,11 +737,19 @@ var DefinitionAdapter = /** @class */ (function (_super) {
                         if (!entries || model.isDisposed()) {
                             return [2 /*return*/];
                         }
+                        // Fetch lib files if necessary
+                        return [4 /*yield*/, this._libFiles.fetchLibFilesIfNecessary(entries.map(function (entry) { return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(entry.fileName); }))];
+                    case 3:
+                        // Fetch lib files if necessary
+                        _a.sent();
+                        if (model.isDisposed()) {
+                            return [2 /*return*/];
+                        }
                         result = [];
                         for (_i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                             entry = entries_1[_i];
-                            uri = Uri.parse(entry.fileName);
-                            refModel = monaco.editor.getModel(uri);
+                            uri = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(entry.fileName);
+                            refModel = this._libFiles.getOrCreateModel(uri);
                             if (refModel) {
                                 result.push({
                                     uri: uri,
@@ -626,8 +768,10 @@ var DefinitionAdapter = /** @class */ (function (_super) {
 // --- references ------
 var ReferenceAdapter = /** @class */ (function (_super) {
     __extends(ReferenceAdapter, _super);
-    function ReferenceAdapter() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function ReferenceAdapter(_libFiles, worker) {
+        var _this = _super.call(this, worker) || this;
+        _this._libFiles = _libFiles;
+        return _this;
     }
     ReferenceAdapter.prototype.provideReferences = function (model, position, context, token) {
         return __awaiter(this, void 0, void 0, function () {
@@ -646,11 +790,19 @@ var ReferenceAdapter = /** @class */ (function (_super) {
                         if (!entries || model.isDisposed()) {
                             return [2 /*return*/];
                         }
+                        // Fetch lib files if necessary
+                        return [4 /*yield*/, this._libFiles.fetchLibFilesIfNecessary(entries.map(function (entry) { return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(entry.fileName); }))];
+                    case 3:
+                        // Fetch lib files if necessary
+                        _a.sent();
+                        if (model.isDisposed()) {
+                            return [2 /*return*/];
+                        }
                         result = [];
                         for (_i = 0, entries_2 = entries; _i < entries_2.length; _i++) {
                             entry = entries_2[_i];
-                            uri = Uri.parse(entry.fileName);
-                            refModel = monaco.editor.getModel(uri);
+                            uri = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(entry.fileName);
+                            refModel = this._libFiles.getOrCreateModel(uri);
                             if (refModel) {
                                 result.push({
                                     uri: uri,
@@ -693,7 +845,7 @@ var OutlineAdapter = /** @class */ (function (_super) {
                             var result = {
                                 name: item.text,
                                 detail: '',
-                                kind: (outlineTypeTable[item.kind] || monaco.languages.SymbolKind.Variable),
+                                kind: (outlineTypeTable[item.kind] || _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Variable),
                                 range: _this._textSpanToRange(model, item.spans[0]),
                                 selectionRange: _this._textSpanToRange(model, item.spans[0]),
                                 tags: [],
@@ -752,20 +904,20 @@ var Kind = /** @class */ (function () {
 }());
 
 var outlineTypeTable = Object.create(null);
-outlineTypeTable[Kind.module] = monaco.languages.SymbolKind.Module;
-outlineTypeTable[Kind.class] = monaco.languages.SymbolKind.Class;
-outlineTypeTable[Kind.enum] = monaco.languages.SymbolKind.Enum;
-outlineTypeTable[Kind.interface] = monaco.languages.SymbolKind.Interface;
-outlineTypeTable[Kind.memberFunction] = monaco.languages.SymbolKind.Method;
-outlineTypeTable[Kind.memberVariable] = monaco.languages.SymbolKind.Property;
-outlineTypeTable[Kind.memberGetAccessor] = monaco.languages.SymbolKind.Property;
-outlineTypeTable[Kind.memberSetAccessor] = monaco.languages.SymbolKind.Property;
-outlineTypeTable[Kind.variable] = monaco.languages.SymbolKind.Variable;
-outlineTypeTable[Kind.const] = monaco.languages.SymbolKind.Variable;
-outlineTypeTable[Kind.localVariable] = monaco.languages.SymbolKind.Variable;
-outlineTypeTable[Kind.variable] = monaco.languages.SymbolKind.Variable;
-outlineTypeTable[Kind.function] = monaco.languages.SymbolKind.Function;
-outlineTypeTable[Kind.localFunction] = monaco.languages.SymbolKind.Function;
+outlineTypeTable[Kind.module] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Module;
+outlineTypeTable[Kind.class] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Class;
+outlineTypeTable[Kind.enum] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Enum;
+outlineTypeTable[Kind.interface] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Interface;
+outlineTypeTable[Kind.memberFunction] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Method;
+outlineTypeTable[Kind.memberVariable] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Property;
+outlineTypeTable[Kind.memberGetAccessor] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Property;
+outlineTypeTable[Kind.memberSetAccessor] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Property;
+outlineTypeTable[Kind.variable] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Variable;
+outlineTypeTable[Kind.const] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Variable;
+outlineTypeTable[Kind.localVariable] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Variable;
+outlineTypeTable[Kind.variable] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Variable;
+outlineTypeTable[Kind.function] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Function;
+outlineTypeTable[Kind.localFunction] = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["languages"].SymbolKind.Function;
 // --- formatting ----
 var FormatHelper = /** @class */ (function (_super) {
     __extends(FormatHelper, _super);
@@ -813,8 +965,14 @@ var FormatAdapter = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         resource = model.uri;
-                        startOffset = model.getOffsetAt({ lineNumber: range.startLineNumber, column: range.startColumn });
-                        endOffset = model.getOffsetAt({ lineNumber: range.endLineNumber, column: range.endColumn });
+                        startOffset = model.getOffsetAt({
+                            lineNumber: range.startLineNumber,
+                            column: range.startColumn
+                        });
+                        endOffset = model.getOffsetAt({
+                            lineNumber: range.endLineNumber,
+                            column: range.endColumn
+                        });
                         return [4 /*yield*/, this._worker(resource)];
                     case 1:
                         worker = _a.sent();
@@ -841,7 +999,7 @@ var FormatOnTypeAdapter = /** @class */ (function (_super) {
         get: function () {
             return [';', '}', '\n'];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     FormatOnTypeAdapter.prototype.provideOnTypeFormattingEdits = function (model, position, ch, options, token) {
@@ -884,10 +1042,19 @@ var CodeActionAdaptor = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         resource = model.uri;
-                        start = model.getOffsetAt({ lineNumber: range.startLineNumber, column: range.startColumn });
-                        end = model.getOffsetAt({ lineNumber: range.endLineNumber, column: range.endColumn });
+                        start = model.getOffsetAt({
+                            lineNumber: range.startLineNumber,
+                            column: range.startColumn
+                        });
+                        end = model.getOffsetAt({
+                            lineNumber: range.endLineNumber,
+                            column: range.endColumn
+                        });
                         formatOptions = FormatHelper._convertOptions(model.getOptions());
-                        errorCodes = context.markers.filter(function (m) { return m.code; }).map(function (m) { return m.code; }).map(Number);
+                        errorCodes = context.markers
+                            .filter(function (m) { return m.code; })
+                            .map(function (m) { return m.code; })
+                            .map(Number);
                         return [4 /*yield*/, this._worker(resource)];
                     case 1:
                         worker = _a.sent();
@@ -895,12 +1062,14 @@ var CodeActionAdaptor = /** @class */ (function (_super) {
                     case 2:
                         codeFixes = _a.sent();
                         if (!codeFixes || model.isDisposed()) {
-                            return [2 /*return*/];
+                            return [2 /*return*/, { actions: [], dispose: function () { } }];
                         }
-                        actions = codeFixes.filter(function (fix) {
+                        actions = codeFixes
+                            .filter(function (fix) {
                             // Removes any 'make a new file'-type code fix
                             return fix.changes.filter(function (change) { return change.isNewFile; }).length === 0;
-                        }).map(function (fix) {
+                        })
+                            .map(function (fix) {
                             return _this._tsCodeFixActionToMonacoCodeAction(model, context, fix);
                         });
                         return [2 /*return*/, {
@@ -930,7 +1099,7 @@ var CodeActionAdaptor = /** @class */ (function (_super) {
             title: codeFix.description,
             edit: { edits: edits },
             diagnostics: context.markers,
-            kind: "quickfix"
+            kind: 'quickfix'
         };
         return action;
     };
@@ -955,19 +1124,25 @@ var RenameAdapter = /** @class */ (function (_super) {
                         return [4 /*yield*/, this._worker(resource)];
                     case 1:
                         worker = _a.sent();
-                        return [4 /*yield*/, worker.getRenameInfo(fileName, offset, { allowRenameOfImportPath: false })];
+                        return [4 /*yield*/, worker.getRenameInfo(fileName, offset, {
+                                allowRenameOfImportPath: false
+                            })];
                     case 2:
                         renameInfo = _a.sent();
-                        if (renameInfo.canRename === false) { // use explicit comparison so that the discriminated union gets resolved properly
+                        if (renameInfo.canRename === false) {
+                            // use explicit comparison so that the discriminated union gets resolved properly
                             return [2 /*return*/, {
                                     edits: [],
                                     rejectReason: renameInfo.localizedErrorMessage
                                 }];
                         }
                         if (renameInfo.fileToRename !== undefined) {
-                            throw new Error("Renaming files is not supported.");
+                            throw new Error('Renaming files is not supported.');
                         }
-                        return [4 /*yield*/, worker.findRenameLocations(fileName, offset, /*strings*/ false, /*comments*/ false, /*prefixAndSuffix*/ false)];
+                        return [4 /*yield*/, worker.findRenameLocations(fileName, offset, 
+                            /*strings*/ false, 
+                            /*comments*/ false, 
+                            /*prefixAndSuffix*/ false)];
                     case 3:
                         renameLocations = _a.sent();
                         if (!renameLocations || model.isDisposed()) {
@@ -977,7 +1152,7 @@ var RenameAdapter = /** @class */ (function (_super) {
                         for (_i = 0, renameLocations_1 = renameLocations; _i < renameLocations_1.length; _i++) {
                             renameLocation = renameLocations_1[_i];
                             edits.push({
-                                resource: monaco.Uri.parse(renameLocation.fileName),
+                                resource: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_1__["Uri"].parse(renameLocation.fileName),
                                 edit: {
                                     range: this._textSpanToRange(model, renameLocation.textSpan),
                                     text: newName
@@ -996,10 +1171,86 @@ var RenameAdapter = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js":
-/*!************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
-  \************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/lib/lib.index.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/lib/lib.index.js ***!
+  \********************************************************************************/
+/*! exports provided: libFileSet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "libFileSet", function() { return libFileSet; });
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+//
+// **NOTE**: Do not edit directly! This file is generated using `npm run import-typescript`
+//
+/** Contains all the lib files */
+var libFileSet = {};
+libFileSet['lib.d.ts'] = true;
+libFileSet['lib.dom.d.ts'] = true;
+libFileSet['lib.dom.iterable.d.ts'] = true;
+libFileSet['lib.es2015.collection.d.ts'] = true;
+libFileSet['lib.es2015.core.d.ts'] = true;
+libFileSet['lib.es2015.d.ts'] = true;
+libFileSet['lib.es2015.generator.d.ts'] = true;
+libFileSet['lib.es2015.iterable.d.ts'] = true;
+libFileSet['lib.es2015.promise.d.ts'] = true;
+libFileSet['lib.es2015.proxy.d.ts'] = true;
+libFileSet['lib.es2015.reflect.d.ts'] = true;
+libFileSet['lib.es2015.symbol.d.ts'] = true;
+libFileSet['lib.es2015.symbol.wellknown.d.ts'] = true;
+libFileSet['lib.es2016.array.include.d.ts'] = true;
+libFileSet['lib.es2016.d.ts'] = true;
+libFileSet['lib.es2016.full.d.ts'] = true;
+libFileSet['lib.es2017.d.ts'] = true;
+libFileSet['lib.es2017.full.d.ts'] = true;
+libFileSet['lib.es2017.intl.d.ts'] = true;
+libFileSet['lib.es2017.object.d.ts'] = true;
+libFileSet['lib.es2017.sharedmemory.d.ts'] = true;
+libFileSet['lib.es2017.string.d.ts'] = true;
+libFileSet['lib.es2017.typedarrays.d.ts'] = true;
+libFileSet['lib.es2018.asyncgenerator.d.ts'] = true;
+libFileSet['lib.es2018.asynciterable.d.ts'] = true;
+libFileSet['lib.es2018.d.ts'] = true;
+libFileSet['lib.es2018.full.d.ts'] = true;
+libFileSet['lib.es2018.intl.d.ts'] = true;
+libFileSet['lib.es2018.promise.d.ts'] = true;
+libFileSet['lib.es2018.regexp.d.ts'] = true;
+libFileSet['lib.es2019.array.d.ts'] = true;
+libFileSet['lib.es2019.d.ts'] = true;
+libFileSet['lib.es2019.full.d.ts'] = true;
+libFileSet['lib.es2019.object.d.ts'] = true;
+libFileSet['lib.es2019.string.d.ts'] = true;
+libFileSet['lib.es2019.symbol.d.ts'] = true;
+libFileSet['lib.es2020.bigint.d.ts'] = true;
+libFileSet['lib.es2020.d.ts'] = true;
+libFileSet['lib.es2020.full.d.ts'] = true;
+libFileSet['lib.es2020.intl.d.ts'] = true;
+libFileSet['lib.es2020.promise.d.ts'] = true;
+libFileSet['lib.es2020.string.d.ts'] = true;
+libFileSet['lib.es2020.symbol.wellknown.d.ts'] = true;
+libFileSet['lib.es5.d.ts'] = true;
+libFileSet['lib.es6.d.ts'] = true;
+libFileSet['lib.esnext.d.ts'] = true;
+libFileSet['lib.esnext.full.d.ts'] = true;
+libFileSet['lib.esnext.intl.d.ts'] = true;
+libFileSet['lib.esnext.promise.d.ts'] = true;
+libFileSet['lib.esnext.string.d.ts'] = true;
+libFileSet['lib.scripthost.d.ts'] = true;
+libFileSet['lib.webworker.d.ts'] = true;
+libFileSet['lib.webworker.importscripts.d.ts'] = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/tsMode.js ***!
+  \*************************************************************************/
 /*! exports provided: setupTypeScript, setupJavaScript, getJavaScriptWorker, getTypeScriptWorker */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1009,12 +1260,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupJavaScript", function() { return setupJavaScript; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getJavaScriptWorker", function() { return getJavaScriptWorker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTypeScriptWorker", function() { return getTypeScriptWorker; });
-/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "../../node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js");
-/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "../../node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js");
+/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js");
+/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/languageFeatures.js");
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+
 
 
 
@@ -1029,7 +1282,7 @@ function setupJavaScript(defaults) {
 function getJavaScriptWorker() {
     return new Promise(function (resolve, reject) {
         if (!javaScriptWorker) {
-            return reject("JavaScript not registered!");
+            return reject('JavaScript not registered!');
         }
         resolve(javaScriptWorker);
     });
@@ -1037,7 +1290,7 @@ function getJavaScriptWorker() {
 function getTypeScriptWorker() {
     return new Promise(function (resolve, reject) {
         if (!typeScriptWorker) {
-            return reject("TypeScript not registered!");
+            return reject('TypeScript not registered!');
         }
         resolve(typeScriptWorker);
     });
@@ -1051,34 +1304,36 @@ function setupMode(defaults, modeId) {
         }
         return client.getLanguageServiceWorker.apply(client, uris);
     };
-    monaco.languages.registerCompletionItemProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SuggestAdapter"](worker));
-    monaco.languages.registerSignatureHelpProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SignatureHelpAdapter"](worker));
-    monaco.languages.registerHoverProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["QuickInfoAdapter"](worker));
-    monaco.languages.registerDocumentHighlightProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["OccurrencesAdapter"](worker));
-    monaco.languages.registerDefinitionProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DefinitionAdapter"](worker));
-    monaco.languages.registerReferenceProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["ReferenceAdapter"](worker));
-    monaco.languages.registerDocumentSymbolProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["OutlineAdapter"](worker));
-    monaco.languages.registerDocumentRangeFormattingEditProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FormatAdapter"](worker));
-    monaco.languages.registerOnTypeFormattingEditProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FormatOnTypeAdapter"](worker));
-    monaco.languages.registerCodeActionProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["CodeActionAdaptor"](worker));
-    monaco.languages.registerRenameProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["RenameAdapter"](worker));
-    new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticsAdapter"](defaults, modeId, worker);
+    var libFiles = new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["LibFiles"](worker);
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerCompletionItemProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SuggestAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerSignatureHelpProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SignatureHelpAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerHoverProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["QuickInfoAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerDocumentHighlightProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["OccurrencesAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerDefinitionProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DefinitionAdapter"](libFiles, worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerReferenceProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["ReferenceAdapter"](libFiles, worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerDocumentSymbolProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["OutlineAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerDocumentRangeFormattingEditProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FormatAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerOnTypeFormattingEditProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FormatOnTypeAdapter"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerCodeActionProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["CodeActionAdaptor"](worker));
+    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_2__["languages"].registerRenameProvider(modeId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["RenameAdapter"](worker));
+    new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticsAdapter"](libFiles, defaults, modeId, worker);
     return worker;
 }
 
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js":
-/*!*******************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
-  \*******************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/typescript/workerManager.js ***!
+  \********************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WorkerManager", function() { return WorkerManager; });
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/typescript/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1120,6 +1375,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
 var WorkerManager = /** @class */ (function () {
     function WorkerManager(modeId, defaults) {
         var _this = this;
@@ -1129,7 +1385,9 @@ var WorkerManager = /** @class */ (function () {
         this._client = null;
         this._configChangeListener = this._defaults.onDidChange(function () { return _this._stopWorker(); });
         this._updateExtraLibsToken = 0;
-        this._extraLibsChangeListener = this._defaults.onDidExtraLibsChange(function () { return _this._updateExtraLibs(); });
+        this._extraLibsChangeListener = this._defaults.onDidExtraLibsChange(function () {
+            return _this._updateExtraLibs();
+        });
     }
     WorkerManager.prototype._stopWorker = function () {
         if (this._worker) {
@@ -1169,7 +1427,7 @@ var WorkerManager = /** @class */ (function () {
     WorkerManager.prototype._getClient = function () {
         var _this = this;
         if (!this._client) {
-            this._worker = monaco.editor.createWebWorker({
+            this._worker = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].createWebWorker({
                 // module that exports the create() method and returns a `TypeScriptWorker` instance
                 moduleId: 'vs/language/typescript/tsWorker',
                 label: this._modeId,
@@ -1177,14 +1435,16 @@ var WorkerManager = /** @class */ (function () {
                 // passed in to the create() method
                 createData: {
                     compilerOptions: this._defaults.getCompilerOptions(),
-                    extraLibs: this._defaults.getExtraLibs()
+                    extraLibs: this._defaults.getExtraLibs(),
+                    customWorkerPath: this._defaults.workerOptions.customWorkerPath
                 }
             });
             var p = this._worker.getProxy();
             if (this._defaults.getEagerModelSync()) {
                 p = p.then(function (worker) {
                     if (_this._worker) {
-                        return _this._worker.withSyncedResources(monaco.editor.getModels()
+                        return _this._worker.withSyncedResources(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"]
+                            .getModels()
                             .filter(function (model) { return model.getModeId() === _this._modeId; })
                             .map(function (model) { return model.uri; }));
                     }
@@ -1202,13 +1462,16 @@ var WorkerManager = /** @class */ (function () {
             resources[_i] = arguments[_i];
         }
         var _client;
-        return this._getClient().then(function (client) {
+        return this._getClient()
+            .then(function (client) {
             _client = client;
-        }).then(function (_) {
+        })
+            .then(function (_) {
             if (_this._worker) {
                 return _this._worker.withSyncedResources(resources);
             }
-        }).then(function (_) { return _client; });
+        })
+            .then(function (_) { return _client; });
     };
     return WorkerManager;
 }());

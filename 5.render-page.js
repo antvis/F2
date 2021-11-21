@@ -1,10 +1,10 @@
 exports.ids = [5];
 exports.modules = {
 
-/***/ "../../node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js":
-/*!***********************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js ***!
-  \***********************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/basic-languages/typescript/typescript.js ***!
+  \************************************************************************************/
 /*! exports provided: conf, language */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12,13 +12,12 @@ exports.modules = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "conf", function() { return conf; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "language", function() { return language; });
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/basic-languages/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-// Allow for running under nodejs/requirejs in tests
-var _monaco = (typeof monaco === 'undefined' ? self.monaco : monaco);
 var conf = {
     wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
     comments: {
@@ -35,22 +34,34 @@ var conf = {
             // e.g. /** | */
             beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
             afterText: /^\s*\*\/$/,
-            action: { indentAction: _monaco.languages.IndentAction.IndentOutdent, appendText: ' * ' }
+            action: {
+                indentAction: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].IndentAction.IndentOutdent,
+                appendText: ' * '
+            }
         },
         {
             // e.g. /** ...|
             beforeText: /^\s*\/\*\*(?!\/)([^\*]|\*(?!\/))*$/,
-            action: { indentAction: _monaco.languages.IndentAction.None, appendText: ' * ' }
+            action: {
+                indentAction: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].IndentAction.None,
+                appendText: ' * '
+            }
         },
         {
             // e.g.  * ...|
             beforeText: /^(\t|(\ \ ))*\ \*(\ ([^\*]|\*(?!\/))*)?$/,
-            action: { indentAction: _monaco.languages.IndentAction.None, appendText: '* ' }
+            action: {
+                indentAction: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].IndentAction.None,
+                appendText: '* '
+            }
         },
         {
             // e.g.  */|
             beforeText: /^(\t|(\ \ ))*\ \*\/\s*$/,
-            action: { indentAction: _monaco.languages.IndentAction.None, removeText: 1 }
+            action: {
+                indentAction: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].IndentAction.None,
+                removeText: 1
+            }
         }
     ],
     autoClosingPairs: [
@@ -58,14 +69,14 @@ var conf = {
         { open: '[', close: ']' },
         { open: '(', close: ')' },
         { open: '"', close: '"', notIn: ['string'] },
-        { open: '\'', close: '\'', notIn: ['string', 'comment'] },
+        { open: "'", close: "'", notIn: ['string', 'comment'] },
         { open: '`', close: '`', notIn: ['string', 'comment'] },
-        { open: "/**", close: " */", notIn: ["string"] }
+        { open: '/**', close: ' */', notIn: ['string'] }
     ],
     folding: {
         markers: {
-            start: new RegExp("^\\s*//\\s*#?region\\b"),
-            end: new RegExp("^\\s*//\\s*#?endregion\\b")
+            start: new RegExp('^\\s*//\\s*#?region\\b'),
+            end: new RegExp('^\\s*//\\s*#?endregion\\b')
         }
     }
 };
@@ -74,25 +85,129 @@ var language = {
     defaultToken: 'invalid',
     tokenPostfix: '.ts',
     keywords: [
-        'abstract', 'as', 'break', 'case', 'catch', 'class', 'continue', 'const',
-        'constructor', 'debugger', 'declare', 'default', 'delete', 'do', 'else',
-        'enum', 'export', 'extends', 'false', 'finally', 'for', 'from', 'function',
-        'get', 'if', 'implements', 'import', 'in', 'infer', 'instanceof', 'interface',
-        'is', 'keyof', 'let', 'module', 'namespace', 'never', 'new', 'null', 'package',
-        'private', 'protected', 'public', 'readonly', 'require', 'global', 'return',
-        'set', 'static', 'super', 'switch', 'symbol', 'this', 'throw', 'true', 'try',
-        'type', 'typeof', 'unique', 'var', 'void', 'while', 'with', 'yield', 'async',
-        'await', 'of'
-    ],
-    typeKeywords: [
-        'any', 'boolean', 'number', 'object', 'string', 'undefined'
+        // Should match the keys of textToKeywordObj in
+        // https://github.com/microsoft/TypeScript/blob/master/src/compiler/scanner.ts
+        'abstract',
+        'any',
+        'as',
+        'asserts',
+        'bigint',
+        'boolean',
+        'break',
+        'case',
+        'catch',
+        'class',
+        'continue',
+        'const',
+        'constructor',
+        'debugger',
+        'declare',
+        'default',
+        'delete',
+        'do',
+        'else',
+        'enum',
+        'export',
+        'extends',
+        'false',
+        'finally',
+        'for',
+        'from',
+        'function',
+        'get',
+        'if',
+        'implements',
+        'import',
+        'in',
+        'infer',
+        'instanceof',
+        'interface',
+        'is',
+        'keyof',
+        'let',
+        'module',
+        'namespace',
+        'never',
+        'new',
+        'null',
+        'number',
+        'object',
+        'package',
+        'private',
+        'protected',
+        'public',
+        'readonly',
+        'require',
+        'global',
+        'return',
+        'set',
+        'static',
+        'string',
+        'super',
+        'switch',
+        'symbol',
+        'this',
+        'throw',
+        'true',
+        'try',
+        'type',
+        'typeof',
+        'undefined',
+        'unique',
+        'unknown',
+        'var',
+        'void',
+        'while',
+        'with',
+        'yield',
+        'async',
+        'await',
+        'of'
     ],
     operators: [
-        '<=', '>=', '==', '!=', '===', '!==', '=>', '+', '-', '**',
-        '*', '/', '%', '++', '--', '<<', '</', '>>', '>>>', '&',
-        '|', '^', '!', '~', '&&', '||', '??', '?', ':', '=', '+=', '-=',
-        '*=', '**=', '/=', '%=', '<<=', '>>=', '>>>=', '&=', '|=',
-        '^=', '@',
+        '<=',
+        '>=',
+        '==',
+        '!=',
+        '===',
+        '!==',
+        '=>',
+        '+',
+        '-',
+        '**',
+        '*',
+        '/',
+        '%',
+        '++',
+        '--',
+        '<<',
+        '</',
+        '>>',
+        '>>>',
+        '&',
+        '|',
+        '^',
+        '!',
+        '~',
+        '&&',
+        '||',
+        '??',
+        '?',
+        ':',
+        '=',
+        '+=',
+        '-=',
+        '*=',
+        '**=',
+        '/=',
+        '%=',
+        '<<=',
+        '>>=',
+        '>>>=',
+        '&=',
+        '|=',
+        '^=',
+        '@'
     ],
     // we include these common regular expressions
     symbols: /[=><!~?:&|+\-*\/\^%]+/,
@@ -105,35 +220,40 @@ var language = {
     regexpesc: /\\(?:[bBdDfnrstvwWn0\\\/]|@regexpctl|c[A-Z]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4})/,
     // The main tokenizer for our languages
     tokenizer: {
-        root: [
-            [/[{}]/, 'delimiter.bracket'],
-            { include: 'common' }
-        ],
+        root: [[/[{}]/, 'delimiter.bracket'], { include: 'common' }],
         common: [
             // identifiers and keywords
-            [/[a-z_$][\w$]*/, {
+            [
+                /[a-z_$][\w$]*/,
+                {
                     cases: {
-                        '@typeKeywords': 'keyword',
                         '@keywords': 'keyword',
                         '@default': 'identifier'
                     }
-                }],
+                }
+            ],
             [/[A-Z][\w\$]*/, 'type.identifier'],
             // [/[A-Z][\w\$]*/, 'identifier'],
             // whitespace
             { include: '@whitespace' },
             // regular expression: ensure it is terminated before beginning (otherwise it is an opeator)
-            [/\/(?=([^\\\/]|\\.)+\/([gimsuy]*)(\s*)(\.|;|,|\)|\]|\}|$))/, { token: 'regexp', bracket: '@open', next: '@regexp' }],
+            [
+                /\/(?=([^\\\/]|\\.)+\/([gimsuy]*)(\s*)(\.|;|,|\)|\]|\}|$))/,
+                { token: 'regexp', bracket: '@open', next: '@regexp' }
+            ],
             // delimiters and operators
             [/[()\[\]]/, '@brackets'],
             [/[<>](?!@symbols)/, '@brackets'],
             [/!(?=([^=]|$))/, 'delimiter'],
-            [/@symbols/, {
+            [
+                /@symbols/,
+                {
                     cases: {
                         '@operators': 'delimiter',
                         '@default': ''
                     }
-                }],
+                }
+            ],
             // numbers
             [/(@digits)[eE]([\-+]?(@digits))?/, 'number.float'],
             [/(@digits)\.(@digits)([eE][\-+]?(@digits))?/, 'number.float'],
@@ -148,13 +268,13 @@ var language = {
             [/'([^'\\]|\\.)*$/, 'string.invalid'],
             [/"/, 'string', '@string_double'],
             [/'/, 'string', '@string_single'],
-            [/`/, 'string', '@string_backtick'],
+            [/`/, 'string', '@string_backtick']
         ],
         whitespace: [
             [/[ \t\r\n]+/, ''],
             [/\/\*\*(?!\/)/, 'comment.doc', '@jsdoc'],
             [/\/\*/, 'comment', '@comment'],
-            [/\/\/.*$/, 'comment'],
+            [/\/\/.*$/, 'comment']
         ],
         comment: [
             [/[^\/*]+/, 'comment'],
@@ -168,22 +288,38 @@ var language = {
         ],
         // We match regular expression quite precisely
         regexp: [
-            [/(\{)(\d+(?:,\d*)?)(\})/, ['regexp.escape.control', 'regexp.escape.control', 'regexp.escape.control']],
-            [/(\[)(\^?)(?=(?:[^\]\\\/]|\\.)+)/, ['regexp.escape.control', { token: 'regexp.escape.control', next: '@regexrange' }]],
+            [
+                /(\{)(\d+(?:,\d*)?)(\})/,
+                ['regexp.escape.control', 'regexp.escape.control', 'regexp.escape.control']
+            ],
+            [
+                /(\[)(\^?)(?=(?:[^\]\\\/]|\\.)+)/,
+                ['regexp.escape.control', { token: 'regexp.escape.control', next: '@regexrange' }]
+            ],
             [/(\()(\?:|\?=|\?!)/, ['regexp.escape.control', 'regexp.escape.control']],
             [/[()]/, 'regexp.escape.control'],
             [/@regexpctl/, 'regexp.escape.control'],
             [/[^\\\/]/, 'regexp'],
             [/@regexpesc/, 'regexp.escape'],
             [/\\\./, 'regexp.invalid'],
-            [/(\/)([gimsuy]*)/, [{ token: 'regexp', bracket: '@close', next: '@pop' }, 'keyword.other']],
+            [
+                /(\/)([gimsuy]*)/,
+                [{ token: 'regexp', bracket: '@close', next: '@pop' }, 'keyword.other']
+            ]
         ],
         regexrange: [
             [/-/, 'regexp.escape.control'],
             [/\^/, 'regexp.invalid'],
             [/@regexpesc/, 'regexp.escape'],
             [/[^\]]/, 'regexp'],
-            [/\]/, { token: 'regexp.escape.control', next: '@pop', bracket: '@close' }]
+            [
+                /\]/,
+                {
+                    token: 'regexp.escape.control',
+                    next: '@pop',
+                    bracket: '@close'
+                }
+            ]
         ],
         string_double: [
             [/[^\\"]+/, 'string'],
@@ -208,8 +344,8 @@ var language = {
             [/\{/, 'delimiter.bracket', '@bracketCounting'],
             [/\}/, 'delimiter.bracket', '@pop'],
             { include: 'common' }
-        ],
-    },
+        ]
+    }
 };
 
 

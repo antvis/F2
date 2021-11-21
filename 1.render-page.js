@@ -1,10 +1,10 @@
 exports.ids = [1];
 exports.modules = {
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js":
-/*!****************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js ***!
-  \****************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js ***!
+  \*****************************************************************************************/
 /*! exports provided: removeProperty, setProperty, applyEdit, isWS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14,8 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setProperty", function() { return setProperty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyEdit", function() { return applyEdit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWS", function() { return isWS; });
-/* harmony import */ var _format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./format.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
-/* harmony import */ var _parser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
+/* harmony import */ var _format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./format.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
+/* harmony import */ var _parser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -23,10 +23,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function removeProperty(text, path, formattingOptions) {
-    return setProperty(text, path, void 0, formattingOptions);
+function removeProperty(text, path, options) {
+    return setProperty(text, path, void 0, options);
 }
-function setProperty(text, originalPath, value, formattingOptions, getInsertionIndex) {
+function setProperty(text, originalPath, value, options) {
     var _a;
     var path = originalPath.slice();
     var errors = [];
@@ -53,7 +53,7 @@ function setProperty(text, originalPath, value, formattingOptions, getInsertionI
         if (value === void 0) { // delete
             throw new Error('Can not delete in empty document');
         }
-        return withFormatting(text, { offset: root ? root.offset : 0, length: root ? root.length : 0, content: JSON.stringify(value) }, formattingOptions);
+        return withFormatting(text, { offset: root ? root.offset : 0, length: root ? root.length : 0, content: JSON.stringify(value) }, options);
     }
     else if (parent.type === 'object' && typeof lastSegment === 'string' && Array.isArray(parent.children)) {
         var existing = Object(_parser_js__WEBPACK_IMPORTED_MODULE_1__["findNodeAtLocation"])(parent, [lastSegment]);
@@ -78,11 +78,11 @@ function setProperty(text, originalPath, value, formattingOptions, getInsertionI
                         removeEnd = next.offset;
                     }
                 }
-                return withFormatting(text, { offset: removeBegin, length: removeEnd - removeBegin, content: '' }, formattingOptions);
+                return withFormatting(text, { offset: removeBegin, length: removeEnd - removeBegin, content: '' }, options);
             }
             else {
                 // set value of existing property
-                return withFormatting(text, { offset: existing.offset, length: existing.length, content: JSON.stringify(value) }, formattingOptions);
+                return withFormatting(text, { offset: existing.offset, length: existing.length, content: JSON.stringify(value) }, options);
             }
         }
         else {
@@ -90,7 +90,7 @@ function setProperty(text, originalPath, value, formattingOptions, getInsertionI
                 return []; // property does not exist, nothing to do
             }
             var newProperty = JSON.stringify(lastSegment) + ": " + JSON.stringify(value);
-            var index = getInsertionIndex ? getInsertionIndex(parent.children.map(function (p) { return p.children[0].value; })) : parent.children.length;
+            var index = options.getInsertionIndex ? options.getInsertionIndex(parent.children.map(function (p) { return p.children[0].value; })) : parent.children.length;
             var edit = void 0;
             if (index > 0) {
                 var previous = parent.children[index - 1];
@@ -102,7 +102,7 @@ function setProperty(text, originalPath, value, formattingOptions, getInsertionI
             else {
                 edit = { offset: parent.offset + 1, length: 0, content: newProperty + ',' };
             }
-            return withFormatting(text, edit, formattingOptions);
+            return withFormatting(text, edit, options);
         }
     }
     else if (parent.type === 'array' && typeof lastSegment === 'number' && Array.isArray(parent.children)) {
@@ -118,40 +118,58 @@ function setProperty(text, originalPath, value, formattingOptions, getInsertionI
                 var previous = parent.children[parent.children.length - 1];
                 edit = { offset: previous.offset + previous.length, length: 0, content: ',' + newProperty };
             }
-            return withFormatting(text, edit, formattingOptions);
+            return withFormatting(text, edit, options);
         }
-        else {
-            if (value === void 0 && parent.children.length >= 0) {
-                //Removal
-                var removalIndex = lastSegment;
-                var toRemove = parent.children[removalIndex];
-                var edit = void 0;
-                if (parent.children.length === 1) {
-                    // only item
-                    edit = { offset: parent.offset + 1, length: parent.length - 2, content: '' };
-                }
-                else if (parent.children.length - 1 === removalIndex) {
-                    // last item
-                    var previous = parent.children[removalIndex - 1];
-                    var offset = previous.offset + previous.length;
-                    var parentEndOffset = parent.offset + parent.length;
-                    edit = { offset: offset, length: parentEndOffset - 2 - offset, content: '' };
-                }
-                else {
-                    edit = { offset: toRemove.offset, length: parent.children[removalIndex + 1].offset - toRemove.offset, content: '' };
-                }
-                return withFormatting(text, edit, formattingOptions);
+        else if (value === void 0 && parent.children.length >= 0) {
+            // Removal
+            var removalIndex = lastSegment;
+            var toRemove = parent.children[removalIndex];
+            var edit = void 0;
+            if (parent.children.length === 1) {
+                // only item
+                edit = { offset: parent.offset + 1, length: parent.length - 2, content: '' };
+            }
+            else if (parent.children.length - 1 === removalIndex) {
+                // last item
+                var previous = parent.children[removalIndex - 1];
+                var offset = previous.offset + previous.length;
+                var parentEndOffset = parent.offset + parent.length;
+                edit = { offset: offset, length: parentEndOffset - 2 - offset, content: '' };
             }
             else {
-                throw new Error('Array modification not supported yet');
+                edit = { offset: toRemove.offset, length: parent.children[removalIndex + 1].offset - toRemove.offset, content: '' };
             }
+            return withFormatting(text, edit, options);
+        }
+        else if (value !== void 0) {
+            var edit = void 0;
+            var newProperty = "" + JSON.stringify(value);
+            if (!options.isArrayInsertion && parent.children.length > lastSegment) {
+                var toModify = parent.children[lastSegment];
+                edit = { offset: toModify.offset, length: toModify.length, content: newProperty };
+            }
+            else if (parent.children.length === 0 || lastSegment === 0) {
+                edit = { offset: parent.offset + 1, length: 0, content: parent.children.length === 0 ? newProperty : newProperty + ',' };
+            }
+            else {
+                var index = lastSegment > parent.children.length ? parent.children.length : lastSegment;
+                var previous = parent.children[index - 1];
+                edit = { offset: previous.offset + previous.length, length: 0, content: ',' + newProperty };
+            }
+            return withFormatting(text, edit, options);
+        }
+        else {
+            throw new Error("Can not " + (value === void 0 ? 'remove' : (options.isArrayInsertion ? 'insert' : 'modify')) + " Array index " + insertIndex + " as length is not sufficient");
         }
     }
     else {
         throw new Error("Can not add " + (typeof lastSegment !== 'number' ? 'index' : 'property') + " to parent of type " + parent.type);
     }
 }
-function withFormatting(text, edit, formattingOptions) {
+function withFormatting(text, edit, options) {
+    if (!options.formattingOptions) {
+        return [edit];
+    }
     // apply the edit
     var newText = applyEdit(text, edit);
     // format the new text
@@ -165,7 +183,7 @@ function withFormatting(text, edit, formattingOptions) {
             end++;
         }
     }
-    var edits = Object(_format_js__WEBPACK_IMPORTED_MODULE_0__["format"])(newText, { offset: begin, length: end - begin }, formattingOptions);
+    var edits = Object(_format_js__WEBPACK_IMPORTED_MODULE_0__["format"])(newText, { offset: begin, length: end - begin }, options.formattingOptions);
     // apply the formatting edits and track the begin and end offsets of the changes
     for (var i = edits.length - 1; i >= 0; i--) {
         var edit_1 = edits[i];
@@ -188,10 +206,10 @@ function isWS(text, offset) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js":
-/*!******************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js ***!
-  \******************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js ***!
+  \*******************************************************************************************/
 /*! exports provided: format, isEOL */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -199,7 +217,7 @@ function isWS(text, offset) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "format", function() { return format; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEOL", function() { return isEOL; });
-/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -398,10 +416,10 @@ function isEOL(text, offset) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js":
-/*!******************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js ***!
-  \******************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js ***!
+  \*******************************************************************************************/
 /*! exports provided: getLocation, parse, parseTree, findNodeAtLocation, getNodePath, getNodeValue, contains, findNodeAtOffset, visit, stripComments, getNodeType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -418,7 +436,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "visit", function() { return visit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stripComments", function() { return stripComments; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNodeType", function() { return getNodeType; });
-/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _scanner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -626,6 +644,7 @@ function parseTree(text, errors, options) {
             currentParent.children.push({ type: 'string', value: name, offset: offset, length: length, parent: currentParent });
         },
         onObjectEnd: function (offset, length) {
+            ensurePropertyComplete(offset + length); // in case of a missing value for a property: make sure property is complete
             currentParent.length = offset + length - currentParent.offset;
             currentParent = currentParent.parent;
             ensurePropertyComplete(offset + length);
@@ -1048,10 +1067,10 @@ function getNodeType(value) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js":
-/*!*******************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js ***!
-  \*******************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js ***!
+  \********************************************************************************************/
 /*! exports provided: createScanner */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1425,10 +1444,10 @@ function isDigit(ch) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js":
-/*!***********************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js ***!
-  \***********************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js ***!
+  \************************************************************************************/
 /*! exports provided: createScanner, getLocation, parse, parseTree, findNodeAtLocation, findNodeAtOffset, getNodePath, getNodeValue, visit, stripComments, printParseErrorCode, format, modify, applyEdits */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1448,10 +1467,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "format", function() { return format; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "modify", function() { return modify; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyEdits", function() { return applyEdits; });
-/* harmony import */ var _impl_format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./impl/format.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
-/* harmony import */ var _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./impl/edit.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js");
-/* harmony import */ var _impl_scanner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./impl/scanner.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
-/* harmony import */ var _impl_parser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./impl/parser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
+/* harmony import */ var _impl_format_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./impl/format.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/format.js");
+/* harmony import */ var _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./impl/edit.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/edit.js");
+/* harmony import */ var _impl_scanner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./impl/scanner.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/scanner.js");
+/* harmony import */ var _impl_parser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./impl/parser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/impl/parser.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1557,7 +1576,7 @@ function format(documentText, range, options) {
  * To apply edits to an input, you can use `applyEdits`.
  */
 function modify(text, path, value, options) {
-    return _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__["setProperty"](text, path, value, options.formattingOptions, options.getInsertionIndex);
+    return _impl_edit_js__WEBPACK_IMPORTED_MODULE_1__["setProperty"](text, path, value, options);
 }
 /**
  * Applies edits to a input string.
@@ -1572,36 +1591,33 @@ function applyEdits(text, edits) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js":
-/*!*****************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js ***!
-  \*****************************************************************************************************************************************************/
-/*! exports provided: TextDocument, Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, ErrorCode, ClientCapabilities, getLanguageService */
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js":
+/*!******************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: TextDocument, Range, TextEdit, Color, ColorInformation, ColorPresentation, FoldingRange, FoldingRangeKind, SelectionRange, Diagnostic, DiagnosticSeverity, CompletionItem, CompletionItemKind, CompletionList, Position, InsertTextFormat, MarkupContent, MarkupKind, SymbolInformation, SymbolKind, DocumentSymbol, Location, Hover, MarkedString, FormattingOptions, ErrorCode, ClientCapabilities, getLanguageService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLanguageService", function() { return getLanguageService; });
-/* harmony import */ var _services_jsonCompletion_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/jsonCompletion.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js");
-/* harmony import */ var _services_jsonHover_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/jsonHover.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js");
-/* harmony import */ var _services_jsonValidation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/jsonValidation.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js");
-/* harmony import */ var _services_jsonDocumentSymbols_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/jsonDocumentSymbols.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js");
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _services_configuration_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/configuration.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js");
-/* harmony import */ var _services_jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/jsonSchemaService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
-/* harmony import */ var _services_jsonFolding_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/jsonFolding.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js");
-/* harmony import */ var _services_jsonSelectionRanges_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/jsonSelectionRanges.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _services_jsonCompletion_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/jsonCompletion.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js");
+/* harmony import */ var _services_jsonHover_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/jsonHover.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js");
+/* harmony import */ var _services_jsonValidation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/jsonValidation.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js");
+/* harmony import */ var _services_jsonDocumentSymbols_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/jsonDocumentSymbols.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _services_configuration_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/configuration.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js");
+/* harmony import */ var _services_jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/jsonSchemaService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
+/* harmony import */ var _services_jsonFolding_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/jsonFolding.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js");
+/* harmony import */ var _services_jsonSelectionRanges_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/jsonSelectionRanges.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _services_jsonDefinition_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./services/jsonDefinition.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDefinition.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocument", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextDocument"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Position"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Range", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Range"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Location"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LocationLink", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["LocationLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextEdit", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextEdit"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Color"]; });
 
@@ -1609,89 +1625,43 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ColorPresentation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["ColorPresentation"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["FoldingRangeKind"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRange", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["FoldingRange"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticRelatedInformation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DiagnosticRelatedInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticSeverity", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DiagnosticSeverity"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticTag", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DiagnosticTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Diagnostic", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Diagnostic"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Command", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Command"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextEdit", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentEdit", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextDocumentEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreateFile", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CreateFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenameFile", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["RenameFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DeleteFile", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DeleteFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WorkspaceEdit", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["WorkspaceEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WorkspaceChange", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["WorkspaceChange"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentIdentifier", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextDocumentIdentifier"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VersionedTextDocumentIdentifier", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["VersionedTextDocumentIdentifier"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentItem", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["TextDocumentItem"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkupKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupContent", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkupContent"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionItemKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InsertTextFormat", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["InsertTextFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemTag", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionItemTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItem", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionItem"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionList", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionList"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkedString", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkedString"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Hover", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Hover"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ParameterInformation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["ParameterInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SignatureInformation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SignatureInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentHighlightKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DocumentHighlightKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentHighlight", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DocumentHighlight"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SymbolKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolTag", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SymbolTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolInformation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SymbolInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentSymbol", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DocumentSymbol"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeActionKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CodeActionKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeActionContext", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CodeActionContext"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeAction", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CodeAction"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeLens", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CodeLens"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FormattingOptions", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["FormattingOptions"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentLink", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DocumentLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["FoldingRangeKind"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SelectionRange", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SelectionRange"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EOL", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["EOL"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Diagnostic", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Diagnostic"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticSeverity", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DiagnosticSeverity"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItem", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionItemKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionList", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["CompletionList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Position"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InsertTextFormat", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["InsertTextFormat"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupContent", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkupContent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkupKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolInformation", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SymbolInformation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolKind", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["SymbolKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentSymbol", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["DocumentSymbol"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Location"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Hover", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["Hover"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkedString", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["MarkedString"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FormattingOptions", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["FormattingOptions"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ErrorCode", function() { return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_10__["ErrorCode"]; });
 
@@ -1701,6 +1671,7 @@ __webpack_require__.r(__webpack_exports__);
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+
 
 
 
@@ -1735,6 +1706,7 @@ function getLanguageService(params) {
         doValidation: jsonValidation.doValidation.bind(jsonValidation),
         parseJSONDocument: function (document) { return Object(_parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__["parse"])(document, { collectComments: true }); },
         newJSONDocument: function (root, diagnostics) { return Object(_parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_4__["newJSONDocument"])(root, diagnostics); },
+        getMatchingSchemas: jsonSchemaService.getMatchingSchemas.bind(jsonSchemaService),
         doResolve: jsonCompletion.doResolve.bind(jsonCompletion),
         doComplete: jsonCompletion.doComplete.bind(jsonCompletion),
         findDocumentSymbols: jsonDocumentSymbols.findDocumentSymbols.bind(jsonDocumentSymbols),
@@ -1745,8 +1717,9 @@ function getLanguageService(params) {
         doHover: jsonHover.doHover.bind(jsonHover),
         getFoldingRanges: _services_jsonFolding_js__WEBPACK_IMPORTED_MODULE_7__["getFoldingRanges"],
         getSelectionRanges: _services_jsonSelectionRanges_js__WEBPACK_IMPORTED_MODULE_8__["getSelectionRanges"],
+        findDefinition: _services_jsonDefinition_js__WEBPACK_IMPORTED_MODULE_11__["findDefinition"],
         format: function (d, r, o) {
-            var range = void 0;
+            var range = undefined;
             if (r) {
                 var offset = d.offsetAt(r.start);
                 var length = d.offsetAt(r.end) - offset;
@@ -1763,28 +1736,21 @@ function getLanguageService(params) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js":
-/*!***************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js ***!
-  \***************************************************************************************************************************************************/
-/*! exports provided: TextDocument, Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, ErrorCode, ClientCapabilities */
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: TextDocument, Range, TextEdit, Color, ColorInformation, ColorPresentation, FoldingRange, FoldingRangeKind, SelectionRange, Diagnostic, DiagnosticSeverity, CompletionItem, CompletionItemKind, CompletionList, Position, InsertTextFormat, MarkupContent, MarkupKind, SymbolInformation, SymbolKind, DocumentSymbol, Location, Hover, MarkedString, FormattingOptions, ErrorCode, ClientCapabilities */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorCode", function() { return ErrorCode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClientCapabilities", function() { return ClientCapabilities; });
-/* harmony import */ var _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../vscode-languageserver-types/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js");
-/* harmony import */ var _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../vscode-languageserver-textdocument/lib/esm/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocument", function() { return _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__["TextDocument"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Position"]; });
-
+/* harmony import */ var _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../vscode-languageserver-types/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Range", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Range"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Location"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LocationLink", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["LocationLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextEdit", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["TextEdit"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Color"]; });
 
@@ -1792,90 +1758,51 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ColorPresentation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["ColorPresentation"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRangeKind"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRange", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRange"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticRelatedInformation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticRelatedInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticSeverity", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticTag", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Diagnostic", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Diagnostic"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Command", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Command"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextEdit", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["TextEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentEdit", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["TextDocumentEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CreateFile", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CreateFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RenameFile", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["RenameFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DeleteFile", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DeleteFile"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WorkspaceEdit", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["WorkspaceEdit"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WorkspaceChange", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["WorkspaceChange"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentIdentifier", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["TextDocumentIdentifier"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VersionedTextDocumentIdentifier", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["VersionedTextDocumentIdentifier"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocumentItem", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["TextDocumentItem"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkupKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupContent", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkupContent"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InsertTextFormat", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["InsertTextFormat"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemTag", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItem", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItem"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionList", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionList"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkedString", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkedString"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Hover", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Hover"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ParameterInformation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["ParameterInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SignatureInformation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SignatureInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentHighlightKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DocumentHighlightKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentHighlight", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DocumentHighlight"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolTag", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SymbolTag"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolInformation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SymbolInformation"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentSymbol", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DocumentSymbol"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeActionKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CodeActionKind"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeActionContext", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CodeActionContext"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeAction", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CodeAction"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CodeLens", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CodeLens"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FormattingOptions", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["FormattingOptions"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentLink", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DocumentLink"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRangeKind"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SelectionRange", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SelectionRange"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EOL", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["EOL"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Diagnostic", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Diagnostic"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DiagnosticSeverity", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItem", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionItemKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CompletionList", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["CompletionList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Position"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InsertTextFormat", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["InsertTextFormat"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupContent", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkupContent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkupKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkupKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolInformation", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SymbolInformation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SymbolKind", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DocumentSymbol", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["DocumentSymbol"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Location"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Hover", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["Hover"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MarkedString", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["MarkedString"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FormattingOptions", function() { return _vscode_languageserver_types_main_js__WEBPACK_IMPORTED_MODULE_0__["FormattingOptions"]; });
+
+/* harmony import */ var _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../vscode-languageserver-textdocument/lib/esm/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextDocument", function() { return _vscode_languageserver_textdocument_lib_esm_main_js__WEBPACK_IMPORTED_MODULE_1__["TextDocument"]; });
+
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 
 
 
@@ -1920,10 +1847,10 @@ var ClientCapabilities;
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js":
-/*!***************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js ***!
-  \***************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js ***!
+  \****************************************************************************************************************/
 /*! exports provided: ASTNodeImpl, NullASTNodeImpl, BooleanASTNodeImpl, ArrayASTNodeImpl, NumberASTNodeImpl, StringASTNodeImpl, PropertyASTNodeImpl, ObjectASTNodeImpl, asSchema, EnumMatch, ValidationResult, newJSONDocument, getNodeValue, getNodePath, contains, JSONDocument, parse */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1946,10 +1873,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "contains", function() { return contains; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONDocument", function() { return JSONDocument; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -1981,6 +1908,7 @@ var formats = {
 };
 var ASTNodeImpl = /** @class */ (function () {
     function ASTNodeImpl(parent, offset, length) {
+        if (length === void 0) { length = 0; }
         this.offset = offset;
         this.length = length;
         this.parent = parent;
@@ -1989,7 +1917,7 @@ var ASTNodeImpl = /** @class */ (function () {
         get: function () {
             return [];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ASTNodeImpl.prototype.toString = function () {
@@ -2032,7 +1960,7 @@ var ArrayASTNodeImpl = /** @class */ (function (_super) {
         get: function () {
             return this.items;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ArrayASTNodeImpl;
@@ -2063,17 +1991,18 @@ var StringASTNodeImpl = /** @class */ (function (_super) {
 
 var PropertyASTNodeImpl = /** @class */ (function (_super) {
     __extends(PropertyASTNodeImpl, _super);
-    function PropertyASTNodeImpl(parent, offset) {
+    function PropertyASTNodeImpl(parent, offset, keyNode) {
         var _this = _super.call(this, parent, offset) || this;
         _this.type = 'property';
         _this.colonOffset = -1;
+        _this.keyNode = keyNode;
         return _this;
     }
     Object.defineProperty(PropertyASTNodeImpl.prototype, "children", {
         get: function () {
             return this.valueNode ? [this.keyNode, this.valueNode] : [this.keyNode];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return PropertyASTNodeImpl;
@@ -2091,7 +2020,7 @@ var ObjectASTNodeImpl = /** @class */ (function (_super) {
         get: function () {
             return this.properties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ObjectASTNodeImpl;
@@ -2111,7 +2040,6 @@ var EnumMatch;
 var SchemaCollector = /** @class */ (function () {
     function SchemaCollector(focusOffset, exclude) {
         if (focusOffset === void 0) { focusOffset = -1; }
-        if (exclude === void 0) { exclude = null; }
         this.focusOffset = focusOffset;
         this.exclude = exclude;
         this.schemas = [];
@@ -2120,8 +2048,7 @@ var SchemaCollector = /** @class */ (function () {
         this.schemas.push(schema);
     };
     SchemaCollector.prototype.merge = function (other) {
-        var _a;
-        (_a = this.schemas).push.apply(_a, other.schemas);
+        Array.prototype.push.apply(this.schemas, other.schemas);
     };
     SchemaCollector.prototype.include = function (node) {
         return (this.focusOffset === -1 || contains(node, this.focusOffset)) && (node !== this.exclude);
@@ -2136,7 +2063,7 @@ var NoOpSchemaCollector = /** @class */ (function () {
     }
     Object.defineProperty(NoOpSchemaCollector.prototype, "schemas", {
         get: function () { return []; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     NoOpSchemaCollector.prototype.add = function (schema) { };
@@ -2153,7 +2080,7 @@ var ValidationResult = /** @class */ (function () {
         this.propertiesValueMatches = 0;
         this.primaryValueMatches = 0;
         this.enumValueMatch = false;
-        this.enumValues = null;
+        this.enumValues = undefined;
     }
     ValidationResult.prototype.hasProblems = function () {
         return !!this.problems.length;
@@ -2234,7 +2161,7 @@ var JSONDocument = /** @class */ (function () {
         if (this.root) {
             return _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__["findNodeAtOffset"](this.root, offset, includeRightBound);
         }
-        return void 0;
+        return undefined;
     };
     JSONDocument.prototype.visit = function (visitor) {
         if (this.root) {
@@ -2260,11 +2187,10 @@ var JSONDocument = /** @class */ (function () {
                 return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["Diagnostic"].create(range, p.message, p.severity, p.code);
             });
         }
-        return null;
+        return undefined;
     };
     JSONDocument.prototype.getMatchingSchemas = function (schema, focusOffset, exclude) {
         if (focusOffset === void 0) { focusOffset = -1; }
-        if (exclude === void 0) { exclude = null; }
         var matchingSchemas = new SchemaCollector(focusOffset, exclude);
         if (this.root && schema) {
             validate(this.root, schema, new ValidationResult(), matchingSchemas);
@@ -2274,10 +2200,11 @@ var JSONDocument = /** @class */ (function () {
     return JSONDocument;
 }());
 
-function validate(node, schema, validationResult, matchingSchemas) {
-    if (!node || !matchingSchemas.include(node)) {
+function validate(n, schema, validationResult, matchingSchemas) {
+    if (!n || !matchingSchemas.include(n)) {
         return;
     }
+    var node = n;
     switch (node.type) {
         case 'object':
             _validateObjectNode(node, schema, validationResult, matchingSchemas);
@@ -2345,7 +2272,7 @@ function validate(node, schema, validationResult, matchingSchemas) {
         var testAlternatives = function (alternatives, maxOneMatch) {
             var matches = [];
             // remember the best match that is used for error messages
-            var bestMatch = null;
+            var bestMatch = undefined;
             for (var _i = 0, alternatives_1 = alternatives; _i < alternatives_1.length; _i++) {
                 var subSchemaRef = alternatives_1[_i];
                 var subSchema = asSchema(subSchemaRef);
@@ -2386,7 +2313,7 @@ function validate(node, schema, validationResult, matchingSchemas) {
                     message: localize('oneOfWarning', "Matches multiple schemas when only one must validate.")
                 });
             }
-            if (bestMatch !== null) {
+            if (bestMatch) {
                 validationResult.merge(bestMatch.validationResult);
                 validationResult.propertiesMatches += bestMatch.validationResult.propertiesMatches;
                 validationResult.propertiesValueMatches += bestMatch.validationResult.propertiesValueMatches;
@@ -2475,8 +2402,35 @@ function validate(node, schema, validationResult, matchingSchemas) {
     }
     function _validateNumberNode(node, schema, validationResult, matchingSchemas) {
         var val = node.value;
+        function normalizeFloats(float) {
+            var _a;
+            var parts = /^(-?\d+)(?:\.(\d+))?(?:e([-+]\d+))?$/.exec(float.toString());
+            return parts && {
+                value: Number(parts[1] + (parts[2] || '')),
+                multiplier: (((_a = parts[2]) === null || _a === void 0 ? void 0 : _a.length) || 0) - (parseInt(parts[3]) || 0)
+            };
+        }
+        ;
         if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_1__["isNumber"])(schema.multipleOf)) {
-            if (val % schema.multipleOf !== 0) {
+            var remainder = -1;
+            if (Number.isInteger(schema.multipleOf)) {
+                remainder = val % schema.multipleOf;
+            }
+            else {
+                var normMultipleOf = normalizeFloats(schema.multipleOf);
+                var normValue = normalizeFloats(val);
+                if (normMultipleOf && normValue) {
+                    var multiplier = Math.pow(10, Math.abs(normValue.multiplier - normMultipleOf.multiplier));
+                    if (normValue.multiplier < normMultipleOf.multiplier) {
+                        normValue.value *= multiplier;
+                    }
+                    else {
+                        normMultipleOf.value *= multiplier;
+                    }
+                    remainder = normValue.value % normMultipleOf.value;
+                }
+            }
+            if (remainder !== 0) {
                 validationResult.problems.push({
                     location: { offset: node.offset, length: node.length },
                     severity: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["DiagnosticSeverity"].Warning,
@@ -2491,13 +2445,13 @@ function validate(node, schema, validationResult, matchingSchemas) {
             if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_1__["isBoolean"])(exclusive) && exclusive) {
                 return limit;
             }
-            return void 0;
+            return undefined;
         }
         function getLimit(limit, exclusive) {
             if (!Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_1__["isBoolean"])(exclusive) || !exclusive) {
                 return limit;
             }
-            return void 0;
+            return undefined;
         }
         var exclusiveMinimum = getExclusiveLimit(schema.minimum, schema.exclusiveMinimum);
         if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_1__["isNumber"])(exclusiveMinimum) && val <= exclusiveMinimum) {
@@ -2876,7 +2830,7 @@ function parse(textDocument, config) {
     var lastProblemOffset = -1;
     var text = textDocument.getText();
     var scanner = _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__["createScanner"](text, false);
-    var commentRanges = config && config.collectComments ? [] : void 0;
+    var commentRanges = config && config.collectComments ? [] : undefined;
     function _scanNext() {
         while (true) {
             var token_1 = scanner.scan();
@@ -2912,7 +2866,7 @@ function parse(textDocument, config) {
         }
     }
     function _error(message, code, node, skipUntilAfter, skipUntil) {
-        if (node === void 0) { node = null; }
+        if (node === void 0) { node = undefined; }
         if (skipUntilAfter === void 0) { skipUntilAfter = []; }
         if (skipUntil === void 0) { skipUntil = []; }
         var start = scanner.getTokenOffset();
@@ -2975,7 +2929,7 @@ function parse(textDocument, config) {
     }
     function _parseArray(parent) {
         if (scanner.getToken() !== 3 /* OpenBracketToken */) {
-            return null;
+            return undefined;
         }
         var node = new ArrayASTNodeImpl(parent, scanner.getTokenOffset());
         _scanNext(); // consume OpenBracketToken
@@ -2998,9 +2952,9 @@ function parse(textDocument, config) {
             else if (needsComma) {
                 _error(localize('ExpectedComma', 'Expected comma'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].CommaExpected);
             }
-            var item = _parseValue(node, count++);
+            var item = _parseValue(node);
             if (!item) {
-                _error(localize('PropertyExpected', 'Value expected'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].ValueExpected, null, [], [4 /* CloseBracketToken */, 5 /* CommaToken */]);
+                _error(localize('PropertyExpected', 'Value expected'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].ValueExpected, undefined, [], [4 /* CloseBracketToken */, 5 /* CommaToken */]);
             }
             else {
                 node.items.push(item);
@@ -3012,8 +2966,9 @@ function parse(textDocument, config) {
         }
         return _finalize(node, true);
     }
+    var keyPlaceholder = new StringASTNodeImpl(undefined, 0, 0);
     function _parseProperty(parent, keysSeen) {
-        var node = new PropertyASTNodeImpl(parent, scanner.getTokenOffset());
+        var node = new PropertyASTNodeImpl(parent, scanner.getTokenOffset(), keyPlaceholder);
         var key = _parseString(node);
         if (!key) {
             if (scanner.getToken() === 16 /* Unknown */) {
@@ -3025,7 +2980,7 @@ function parse(textDocument, config) {
                 _scanNext(); // consume Unknown
             }
             else {
-                return null;
+                return undefined;
             }
         }
         node.keyNode = key;
@@ -3051,7 +3006,7 @@ function parse(textDocument, config) {
                 return node;
             }
         }
-        var value = _parseValue(node, key.value);
+        var value = _parseValue(node);
         if (!value) {
             return _error(localize('ValueExpected', 'Value expected'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].ValueExpected, node, [], [2 /* CloseBraceToken */, 5 /* CommaToken */]);
         }
@@ -3061,7 +3016,7 @@ function parse(textDocument, config) {
     }
     function _parseObject(parent) {
         if (scanner.getToken() !== 1 /* OpenBraceToken */) {
-            return null;
+            return undefined;
         }
         var node = new ObjectASTNodeImpl(parent, scanner.getTokenOffset());
         var keysSeen = Object.create(null);
@@ -3086,7 +3041,7 @@ function parse(textDocument, config) {
             }
             var property = _parseProperty(node, keysSeen);
             if (!property) {
-                _error(localize('PropertyExpected', 'Property expected'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].PropertyExpected, null, [], [2 /* CloseBraceToken */, 5 /* CommaToken */]);
+                _error(localize('PropertyExpected', 'Property expected'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].PropertyExpected, undefined, [], [2 /* CloseBraceToken */, 5 /* CommaToken */]);
             }
             else {
                 node.properties.push(property);
@@ -3100,7 +3055,7 @@ function parse(textDocument, config) {
     }
     function _parseString(parent) {
         if (scanner.getToken() !== 10 /* StringLiteral */) {
-            return null;
+            return undefined;
         }
         var node = new StringASTNodeImpl(parent, scanner.getTokenOffset());
         node.value = scanner.getTokenValue();
@@ -3108,7 +3063,7 @@ function parse(textDocument, config) {
     }
     function _parseNumber(parent) {
         if (scanner.getToken() !== 11 /* NumericLiteral */) {
-            return null;
+            return undefined;
         }
         var node = new NumberASTNodeImpl(parent, scanner.getTokenOffset());
         if (scanner.getTokenError() === 0 /* None */) {
@@ -3137,16 +3092,16 @@ function parse(textDocument, config) {
             case 9 /* FalseKeyword */:
                 return _finalize(new BooleanASTNodeImpl(parent, false, scanner.getTokenOffset()), true);
             default:
-                return null;
+                return undefined;
         }
     }
-    function _parseValue(parent, name) {
+    function _parseValue(parent) {
         return _parseArray(parent) || _parseObject(parent) || _parseString(parent) || _parseNumber(parent) || _parseLiteral(parent);
     }
-    var _root = null;
+    var _root = undefined;
     var token = _scanNext();
     if (token !== 17 /* EOF */) {
-        _root = _parseValue(null, null);
+        _root = _parseValue(_root);
         if (!_root) {
             _error(localize('Invalid symbol', 'Expected a JSON object, array or literal.'), _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_2__["ErrorCode"].Undefined);
         }
@@ -3160,17 +3115,17 @@ function parse(textDocument, config) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js":
-/*!********************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js ***!
-  \********************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js":
+/*!*********************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/configuration.js ***!
+  \*********************************************************************************************************************/
 /*! exports provided: schemaContributions */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "schemaContributions", function() { return schemaContributions; });
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -3178,8 +3133,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var localize = _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_0__["loadMessageBundle"]();
 var schemaContributions = {
-    schemaAssociations: {},
+    schemaAssociations: [],
     schemas: {
+        // refer to the latest schema
+        'http://json-schema.org/schema#': {
+            $ref: 'http://json-schema.org/draft-07/schema#'
+        },
         // bundle the schema-schema to include (localized) descriptions
         'http://json-schema.org/draft-04/schema#': {
             'title': localize('schema.json', 'Describes a JSON file using a schema. See json-schema.org for more info.'),
@@ -3685,7 +3644,7 @@ for (var schemaName in schemaContributions.schemas) {
     var schema = schemaContributions.schemas[schemaName];
     for (var property in schema.properties) {
         var propertyObject = schema.properties[property];
-        if (propertyObject === true) {
+        if (typeof propertyObject === 'boolean') {
             propertyObject = schema.properties[property] = {};
         }
         var description = descriptions[property];
@@ -3701,23 +3660,23 @@ for (var schemaName in schemaContributions.schemas) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js":
-/*!*********************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js ***!
-  \*********************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonCompletion.js ***!
+  \**********************************************************************************************************************/
 /*! exports provided: JSONCompletion */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONCompletion", function() { return JSONCompletion; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _utils_json_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/json.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _utils_json_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/json.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -3741,12 +3700,12 @@ var JSONCompletion = /** @class */ (function () {
         this.contributions = contributions;
         this.promiseConstructor = promiseConstructor;
         this.clientCapabilities = clientCapabilities;
-        this.templateVarIdCounter = 0;
     }
     JSONCompletion.prototype.doResolve = function (item) {
         for (var i = this.contributions.length - 1; i >= 0; i--) {
-            if (this.contributions[i].resolveCompletion) {
-                var resolver = this.contributions[i].resolveCompletion(item);
+            var resolveCompletion = this.contributions[i].resolveCompletion;
+            if (resolveCompletion) {
+                var resolver = resolveCompletion(item);
                 if (resolver) {
                     return resolver;
                 }
@@ -3774,7 +3733,7 @@ var JSONCompletion = /** @class */ (function () {
             }
         }
         var currentWord = this.getCurrentWord(document, offset);
-        var overwriteRange = null;
+        var overwriteRange;
         if (node && (node.type === 'string' || node.type === 'number' || node.type === 'boolean' || node.type === 'null')) {
             overwriteRange = _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["Range"].create(document.positionAt(node.offset), document.positionAt(node.offset + node.length));
         }
@@ -3799,7 +3758,7 @@ var JSONCompletion = /** @class */ (function () {
                             label = shortendedLabel;
                         }
                     }
-                    if (overwriteRange) {
+                    if (overwriteRange && suggestion.insertText !== undefined) {
                         suggestion.textEdit = _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["TextEdit"].replace(overwriteRange, suggestion.insertText);
                     }
                     if (supportsCommitCharacters) {
@@ -3830,7 +3789,7 @@ var JSONCompletion = /** @class */ (function () {
             var collectionPromises = [];
             var addValue = true;
             var currentKey = '';
-            var currentProperty = null;
+            var currentProperty = undefined;
             if (node) {
                 if (node.type === 'string') {
                     var parent = node.parent;
@@ -3880,7 +3839,7 @@ var JSONCompletion = /** @class */ (function () {
                     collector.add({
                         kind: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["CompletionItemKind"].Property,
                         label: _this.getLabelForValue(currentWord),
-                        insertText: _this.getInsertTextForProperty(currentWord, null, false, separatorAfter_1),
+                        insertText: _this.getInsertTextForProperty(currentWord, undefined, false, separatorAfter_1),
                         insertTextFormat: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["InsertTextFormat"].Snippet, documentation: '',
                     });
                     collector.setAsIncomplete();
@@ -3930,7 +3889,10 @@ var JSONCompletion = /** @class */ (function () {
                                 filterText: _this.getFilterTextForValue(key),
                                 documentation: _this.fromMarkup(propertySchema.markdownDescription) || propertySchema.description || '',
                             };
-                            if (Object(_utils_strings_js__WEBPACK_IMPORTED_MODULE_3__["endsWith"])(proposal.insertText, "$1" + separatorAfter)) {
+                            if (propertySchema.suggestSortText !== undefined) {
+                                proposal.sortText = propertySchema.suggestSortText;
+                            }
+                            if (proposal.insertText && Object(_utils_strings_js__WEBPACK_IMPORTED_MODULE_3__["endsWith"])(proposal.insertText, "$1" + separatorAfter)) {
                                 proposal.command = {
                                     title: 'Suggest',
                                     command: 'editor.action.triggerSuggest'
@@ -3939,6 +3901,45 @@ var JSONCompletion = /** @class */ (function () {
                             collector.add(proposal);
                         }
                     });
+                }
+                var schemaPropertyNames_1 = s.schema.propertyNames;
+                if (typeof schemaPropertyNames_1 === 'object' && !schemaPropertyNames_1.deprecationMessage && !schemaPropertyNames_1.doNotSuggest) {
+                    var propertyNameCompletionItem = function (name, enumDescription) {
+                        if (enumDescription === void 0) { enumDescription = undefined; }
+                        var proposal = {
+                            kind: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["CompletionItemKind"].Property,
+                            label: name,
+                            insertText: _this.getInsertTextForProperty(name, undefined, addValue, separatorAfter),
+                            insertTextFormat: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["InsertTextFormat"].Snippet,
+                            filterText: _this.getFilterTextForValue(name),
+                            documentation: enumDescription || _this.fromMarkup(schemaPropertyNames_1.markdownDescription) || schemaPropertyNames_1.description || '',
+                        };
+                        if (schemaPropertyNames_1.suggestSortText !== undefined) {
+                            proposal.sortText = schemaPropertyNames_1.suggestSortText;
+                        }
+                        if (proposal.insertText && Object(_utils_strings_js__WEBPACK_IMPORTED_MODULE_3__["endsWith"])(proposal.insertText, "$1" + separatorAfter)) {
+                            proposal.command = {
+                                title: 'Suggest',
+                                command: 'editor.action.triggerSuggest'
+                            };
+                        }
+                        collector.add(proposal);
+                    };
+                    if (schemaPropertyNames_1.enum) {
+                        for (var i = 0; i < schemaPropertyNames_1.enum.length; i++) {
+                            var enumDescription = undefined;
+                            if (schemaPropertyNames_1.markdownEnumDescriptions && i < schemaPropertyNames_1.markdownEnumDescriptions.length) {
+                                enumDescription = _this.fromMarkup(schemaPropertyNames_1.markdownEnumDescriptions[i]);
+                            }
+                            else if (schemaPropertyNames_1.enumDescriptions && i < schemaPropertyNames_1.enumDescriptions.length) {
+                                enumDescription = schemaPropertyNames_1.enumDescriptions[i];
+                            }
+                            propertyNameCompletionItem(schemaPropertyNames_1.enum[i], enumDescription);
+                        }
+                    }
+                    if (schemaPropertyNames_1.const) {
+                        propertyNameCompletionItem(schemaPropertyNames_1.const);
+                    }
                 }
             }
         });
@@ -3982,7 +3983,7 @@ var JSONCompletion = /** @class */ (function () {
             collector.add({
                 kind: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["CompletionItemKind"].Property,
                 label: '$schema',
-                insertText: this.getInsertTextForProperty('$schema', null, true, ''),
+                insertText: this.getInsertTextForProperty('$schema', undefined, true, ''),
                 insertTextFormat: _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["InsertTextFormat"].Snippet, documentation: '',
                 filterText: this.getFilterTextForValue("$schema")
             });
@@ -4014,7 +4015,7 @@ var JSONCompletion = /** @class */ (function () {
         }
         var separatorAfter = this.evaluateSeparatorAfter(document, offsetForSeparator);
         var collectSuggestionsForValues = function (value) {
-            if (!_parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__["contains"](value.parent, offset, true)) {
+            if (value.parent && !_parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__["contains"](value.parent, offset, true)) {
                 collector.add({
                     kind: _this.getSuggestionKind(value.type),
                     label: _this.getLabelTextForMatchingNode(value, document),
@@ -4027,7 +4028,7 @@ var JSONCompletion = /** @class */ (function () {
             }
         };
         if (node.type === 'property') {
-            if (offset > node.colonOffset) {
+            if (offset > (node.colonOffset || 0)) {
                 var valueNode = node.valueNode;
                 if (valueNode && (offset > (valueNode.offset + valueNode.length) || valueNode.type === 'object' || valueNode.type === 'array')) {
                     return;
@@ -4063,10 +4064,9 @@ var JSONCompletion = /** @class */ (function () {
         }
     };
     JSONCompletion.prototype.getValueCompletions = function (schema, doc, node, offset, document, collector, types) {
-        var _this = this;
         var offsetForSeparator = offset;
-        var parentKey = null;
-        var valueNode = null;
+        var parentKey = undefined;
+        var valueNode = undefined;
         if (node && (node.type === 'string' || node.type === 'number' || node.type === 'boolean' || node.type === 'null')) {
             offsetForSeparator = node.offset + node.length;
             valueNode = node;
@@ -4076,7 +4076,7 @@ var JSONCompletion = /** @class */ (function () {
             this.addSchemaValueCompletions(schema.schema, '', collector, types);
             return;
         }
-        if ((node.type === 'property') && offset > node.colonOffset) {
+        if ((node.type === 'property') && offset > (node.colonOffset || 0)) {
             var valueNode_1 = node.valueNode;
             if (valueNode_1 && offset > (valueNode_1.offset + valueNode_1.length)) {
                 return; // we are past the value node
@@ -4084,39 +4084,59 @@ var JSONCompletion = /** @class */ (function () {
             parentKey = node.keyNode.value;
             node = node.parent;
         }
-        if (node && (parentKey !== null || node.type === 'array')) {
-            var separatorAfter_2 = this.evaluateSeparatorAfter(document, offsetForSeparator);
+        if (node && (parentKey !== undefined || node.type === 'array')) {
+            var separatorAfter = this.evaluateSeparatorAfter(document, offsetForSeparator);
             var matchingSchemas = doc.getMatchingSchemas(schema.schema, node.offset, valueNode);
-            matchingSchemas.forEach(function (s) {
+            for (var _i = 0, matchingSchemas_1 = matchingSchemas; _i < matchingSchemas_1.length; _i++) {
+                var s = matchingSchemas_1[_i];
                 if (s.node === node && !s.inverted && s.schema) {
                     if (node.type === 'array' && s.schema.items) {
                         if (Array.isArray(s.schema.items)) {
-                            var index = _this.findItemAtOffset(node, document, offset);
+                            var index = this.findItemAtOffset(node, document, offset);
                             if (index < s.schema.items.length) {
-                                _this.addSchemaValueCompletions(s.schema.items[index], separatorAfter_2, collector, types);
+                                this.addSchemaValueCompletions(s.schema.items[index], separatorAfter, collector, types);
                             }
                         }
                         else {
-                            _this.addSchemaValueCompletions(s.schema.items, separatorAfter_2, collector, types);
+                            this.addSchemaValueCompletions(s.schema.items, separatorAfter, collector, types);
                         }
                     }
-                    if (s.schema.properties) {
-                        var propertySchema = s.schema.properties[parentKey];
-                        if (propertySchema) {
-                            _this.addSchemaValueCompletions(propertySchema, separatorAfter_2, collector, types);
+                    if (parentKey !== undefined) {
+                        var propertyMatched = false;
+                        if (s.schema.properties) {
+                            var propertySchema = s.schema.properties[parentKey];
+                            if (propertySchema) {
+                                propertyMatched = true;
+                                this.addSchemaValueCompletions(propertySchema, separatorAfter, collector, types);
+                            }
+                        }
+                        if (s.schema.patternProperties && !propertyMatched) {
+                            for (var _a = 0, _b = Object.keys(s.schema.patternProperties); _a < _b.length; _a++) {
+                                var pattern = _b[_a];
+                                var regex = new RegExp(pattern);
+                                if (regex.test(parentKey)) {
+                                    propertyMatched = true;
+                                    var propertySchema = s.schema.patternProperties[pattern];
+                                    this.addSchemaValueCompletions(propertySchema, separatorAfter, collector, types);
+                                }
+                            }
+                        }
+                        if (s.schema.additionalProperties && !propertyMatched) {
+                            var propertySchema = s.schema.additionalProperties;
+                            this.addSchemaValueCompletions(propertySchema, separatorAfter, collector, types);
                         }
                     }
                 }
-            });
+            }
             if (parentKey === '$schema' && !node.parent) {
-                this.addDollarSchemaCompletions(separatorAfter_2, collector);
+                this.addDollarSchemaCompletions(separatorAfter, collector);
             }
             if (types['boolean']) {
-                this.addBooleanValueCompletion(true, separatorAfter_2, collector);
-                this.addBooleanValueCompletion(false, separatorAfter_2, collector);
+                this.addBooleanValueCompletion(true, separatorAfter, collector);
+                this.addBooleanValueCompletion(false, separatorAfter, collector);
             }
             if (types['null']) {
-                this.addNullValueCompletion(separatorAfter_2, collector);
+                this.addNullValueCompletion(separatorAfter, collector);
             }
         }
     };
@@ -4133,10 +4153,10 @@ var JSONCompletion = /** @class */ (function () {
             if (node.type === 'string' || node.type === 'number' || node.type === 'boolean' || node.type === 'null') {
                 node = node.parent;
             }
-            if ((node.type === 'property') && offset > node.colonOffset) {
+            if (node && (node.type === 'property') && offset > (node.colonOffset || 0)) {
                 var parentKey_4 = node.keyNode.value;
                 var valueNode = node.valueNode;
-                if (!valueNode || offset <= (valueNode.offset + valueNode.length)) {
+                if ((!valueNode || offset <= (valueNode.offset + valueNode.length)) && node.parent) {
                     var location_2 = _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__["getNodePath"](node.parent);
                     this.contributions.forEach(function (contribution) {
                         var collectPromise = contribution.collectValueCompletions(document.uri, location_2, parentKey_4, collector);
@@ -4231,6 +4251,9 @@ var JSONCompletion = /** @class */ (function () {
                     label = label || insertText,
                         filterText = insertText.replace(/[\n]/g, ''); // remove new lines
                 }
+                else {
+                    return;
+                }
                 collector.add({
                     kind: _this.getSuggestionKind(type),
                     label: label,
@@ -4242,7 +4265,7 @@ var JSONCompletion = /** @class */ (function () {
                 hasProposals = true;
             });
         }
-        if (!hasProposals && typeof schema.items === 'object' && !Array.isArray(schema.items)) {
+        if (!hasProposals && typeof schema.items === 'object' && !Array.isArray(schema.items) && arrayDepth < 5 /* beware of recursion */) {
             this.addDefaultValueCompletions(schema.items, separatorAfter, collector, arrayDepth + 1);
         }
     };
@@ -4284,7 +4307,7 @@ var JSONCompletion = /** @class */ (function () {
         if (Array.isArray(type)) {
             type.forEach(function (t) { return types[t] = true; });
         }
-        else {
+        else if (type) {
             types[type] = true;
         }
     };
@@ -4397,7 +4420,7 @@ var JSONCompletion = /** @class */ (function () {
     JSONCompletion.prototype.getSuggestionKind = function (type) {
         if (Array.isArray(type)) {
             var array = type;
-            type = array.length > 0 ? array[0] : null;
+            type = array.length > 0 ? array[0] : undefined;
         }
         if (!type) {
             return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_5__["CompletionItemKind"].Value;
@@ -4587,20 +4610,118 @@ var JSONCompletion = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js":
-/*!**************************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js ***!
-  \**************************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDefinition.js":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDefinition.js ***!
+  \**********************************************************************************************************************/
+/*! exports provided: findDefinition */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findDefinition", function() { return findDefinition; });
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+function findDefinition(document, position, doc) {
+    var offset = document.offsetAt(position);
+    var node = doc.getNodeFromOffset(offset, true);
+    if (!node || !isRef(node)) {
+        return Promise.resolve([]);
+    }
+    var propertyNode = node.parent;
+    var valueNode = propertyNode.valueNode;
+    var path = valueNode.value;
+    var targetNode = findTargetNode(doc, path);
+    if (!targetNode) {
+        return Promise.resolve([]);
+    }
+    var definition = {
+        targetUri: document.uri,
+        originSelectionRange: createRange(document, valueNode),
+        targetRange: createRange(document, targetNode),
+        targetSelectionRange: createRange(document, targetNode)
+    };
+    return Promise.resolve([definition]);
+}
+function createRange(document, node) {
+    return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__["Range"].create(document.positionAt(node.offset), document.positionAt(node.offset + node.length));
+}
+function isRef(node) {
+    return node.type === 'string' &&
+        node.parent &&
+        node.parent.type === 'property' &&
+        node.parent.valueNode === node &&
+        node.parent.keyNode.value === "$ref" ||
+        false;
+}
+function findTargetNode(doc, path) {
+    var tokens = parseJSONPointer(path);
+    if (!tokens) {
+        return null;
+    }
+    return findNode(tokens, doc.root);
+}
+function findNode(pointer, node) {
+    if (!node) {
+        return null;
+    }
+    if (pointer.length === 0) {
+        return node;
+    }
+    var token = pointer.shift();
+    if (node && node.type === 'object') {
+        var propertyNode = node.properties.find(function (propertyNode) { return propertyNode.keyNode.value === token; });
+        if (!propertyNode) {
+            return null;
+        }
+        return findNode(pointer, propertyNode.valueNode);
+    }
+    else if (node && node.type === 'array') {
+        if (token.match(/^(0|[1-9][0-9]*)$/)) {
+            var index = Number.parseInt(token);
+            var arrayItem = node.items[index];
+            if (!arrayItem) {
+                return null;
+            }
+            return findNode(pointer, arrayItem);
+        }
+    }
+    return null;
+}
+function parseJSONPointer(path) {
+    if (path === "#") {
+        return [];
+    }
+    if (path[0] !== '#' || path[1] !== '/') {
+        return null;
+    }
+    return path.substring(2).split(/\//).map(unescape);
+}
+function unescape(str) {
+    return str.replace(/~1/g, '/').replace(/~0/g, '~');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js":
+/*!***************************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonDocumentSymbols.js ***!
+  \***************************************************************************************************************************/
 /*! exports provided: JSONDocumentSymbols */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONDocumentSymbols", function() { return JSONDocumentSymbols; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/colors.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/colors.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -4618,9 +4739,9 @@ var JSONDocumentSymbols = /** @class */ (function () {
         if (context === void 0) { context = { resultLimit: Number.MAX_VALUE }; }
         var root = doc.root;
         if (!root) {
-            return null;
+            return [];
         }
-        var limit = context.resultLimit;
+        var limit = context.resultLimit || Number.MAX_VALUE;
         // special handling for key bindings
         var resourceString = document.uri;
         if ((resourceString === 'vscode://defaultsettings/keybindings.json') || _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__["endsWith"](resourceString.toLowerCase(), '/user/keybindings.json')) {
@@ -4695,9 +4816,9 @@ var JSONDocumentSymbols = /** @class */ (function () {
         if (context === void 0) { context = { resultLimit: Number.MAX_VALUE }; }
         var root = doc.root;
         if (!root) {
-            return null;
+            return [];
         }
-        var limit = context.resultLimit;
+        var limit = context.resultLimit || Number.MAX_VALUE;
         // special handling for key bindings
         var resourceString = document.uri;
         if ((resourceString === 'vscode://defaultsettings/keybindings.json') || _utils_strings_js__WEBPACK_IMPORTED_MODULE_1__["endsWith"](resourceString.toLowerCase(), '/user/keybindings.json')) {
@@ -4865,18 +4986,18 @@ function getRange(document, node) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js":
-/*!******************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js ***!
-  \******************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js":
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonFolding.js ***!
+  \*******************************************************************************************************************/
 /*! exports provided: getFoldingRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFoldingRanges", function() { return getFoldingRanges; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5002,18 +5123,18 @@ function getFoldingRanges(document, context) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js":
-/*!****************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js ***!
-  \****************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js":
+/*!*****************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonHover.js ***!
+  \*****************************************************************************************************************/
 /*! exports provided: JSONHover */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONHover", function() { return JSONHover; });
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5061,11 +5182,11 @@ var JSONHover = /** @class */ (function () {
             }
         }
         return this.schemaService.getSchemaForResource(document.uri, doc).then(function (schema) {
-            if (schema) {
+            if (schema && node) {
                 var matchingSchemas = doc.getMatchingSchemas(schema.schema, node.offset);
-                var title_1 = null;
-                var markdownDescription_1 = null;
-                var markdownEnumValueDescription_1 = null, enumValue_1 = null;
+                var title_1 = undefined;
+                var markdownDescription_1 = undefined;
+                var markdownEnumValueDescription_1 = undefined, enumValue_1 = undefined;
                 matchingSchemas.every(function (s) {
                     if (s.node === node && !s.inverted && s.schema) {
                         title_1 = title_1 || s.schema.title;
@@ -5117,7 +5238,7 @@ function toMarkdown(plain) {
         var res = plain.replace(/([^\n\r])(\r?\n)([^\n\r])/gm, '$1\n\n$3'); // single new lines to \n\n (Markdown paragraph)
         return res.replace(/[\\`*_{}[\]()#+\-.!]/g, "\\$&"); // escape markdown syntax tokens: http://daringfireball.net/projects/markdown/syntax#backslash
     }
-    return void 0;
+    return undefined;
 }
 function toMarkdownCodeBlock(content) {
     // see https://daringfireball.net/projects/markdown/syntax#precode
@@ -5130,10 +5251,10 @@ function toMarkdownCodeBlock(content) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js":
-/*!************************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js ***!
-  \************************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js":
+/*!*************************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js ***!
+  \*************************************************************************************************************************/
 /*! exports provided: UnresolvedSchema, ResolvedSchema, JSONSchemaService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5142,11 +5263,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnresolvedSchema", function() { return UnresolvedSchema; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResolvedSchema", function() { return ResolvedSchema; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONSchemaService", function() { return JSONSchemaService; });
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
-/* harmony import */ var _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../vscode-uri/index.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js");
-/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/strings.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
-/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parser/jsonParser.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../vscode-uri/index.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js");
+/* harmony import */ var _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/strings.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js");
+/* harmony import */ var _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parser/jsonParser.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/parser/jsonParser.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5158,24 +5279,40 @@ __webpack_require__.r(__webpack_exports__);
 
 var localize = _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_4__["loadMessageBundle"]();
 var FilePatternAssociation = /** @class */ (function () {
-    function FilePatternAssociation(pattern) {
+    function FilePatternAssociation(pattern, uris) {
+        this.patternRegExps = [];
+        this.isInclude = [];
         try {
-            this.patternRegExp = new RegExp(_utils_strings_js__WEBPACK_IMPORTED_MODULE_2__["convertSimple2RegExpPattern"](pattern) + '$');
+            for (var _i = 0, pattern_1 = pattern; _i < pattern_1.length; _i++) {
+                var p = pattern_1[_i];
+                var include = p[0] !== '!';
+                if (!include) {
+                    p = p.substring(1);
+                }
+                this.patternRegExps.push(new RegExp(_utils_strings_js__WEBPACK_IMPORTED_MODULE_2__["convertSimple2RegExpPattern"](p) + '$'));
+                this.isInclude.push(include);
+            }
+            this.uris = uris;
         }
         catch (e) {
             // invalid pattern
-            this.patternRegExp = null;
+            this.patternRegExps.length = 0;
+            this.isInclude.length = 0;
+            this.uris = [];
         }
-        this.schemas = [];
     }
-    FilePatternAssociation.prototype.addSchema = function (id) {
-        this.schemas.push(id);
-    };
     FilePatternAssociation.prototype.matchesPattern = function (fileName) {
-        return this.patternRegExp && this.patternRegExp.test(fileName);
+        var match = false;
+        for (var i = 0; i < this.patternRegExps.length; i++) {
+            var regExp = this.patternRegExps[i];
+            if (regExp.test(fileName)) {
+                match = this.isInclude[i];
+            }
+        }
+        return match;
     };
-    FilePatternAssociation.prototype.getSchemas = function () {
-        return this.schemas;
+    FilePatternAssociation.prototype.getURIs = function () {
+        return this.uris;
     };
     return FilePatternAssociation;
 }());
@@ -5204,8 +5341,8 @@ var SchemaHandle = /** @class */ (function () {
         return this.resolvedSchema;
     };
     SchemaHandle.prototype.clearSchema = function () {
-        this.resolvedSchema = null;
-        this.unresolvedSchema = null;
+        this.resolvedSchema = undefined;
+        this.unresolvedSchema = undefined;
         this.dependencies = {};
     };
     return SchemaHandle;
@@ -5226,7 +5363,11 @@ var ResolvedSchema = /** @class */ (function () {
         this.errors = errors;
     }
     ResolvedSchema.prototype.getSection = function (path) {
-        return _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__["asSchema"](this.getSectionRecursive(path, this.schema));
+        var schemaRef = this.getSectionRecursive(path, this.schema);
+        if (schemaRef) {
+            return _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__["asSchema"](schemaRef);
+        }
+        return undefined;
     };
     ResolvedSchema.prototype.getSectionRecursive = function (path, schema) {
         if (!schema || typeof schema === 'boolean' || path.length === 0) {
@@ -5259,7 +5400,7 @@ var ResolvedSchema = /** @class */ (function () {
                 return this.getSectionRecursive(path, schema.items);
             }
         }
-        return null;
+        return undefined;
     };
     return ResolvedSchema;
 }());
@@ -5271,10 +5412,9 @@ var JSONSchemaService = /** @class */ (function () {
         this.promiseConstructor = promiseConstructor || Promise;
         this.callOnDispose = [];
         this.contributionSchemas = {};
-        this.contributionAssociations = {};
+        this.contributionAssociations = [];
         this.schemasById = {};
         this.filePatternAssociations = [];
-        this.filePatternAssociationById = {};
         this.registeredSchemasIds = {};
     }
     JSONSchemaService.prototype.getRegisteredSchemaIds = function (filter) {
@@ -5287,7 +5427,7 @@ var JSONSchemaService = /** @class */ (function () {
         get: function () {
             return this.promiseConstructor;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     JSONSchemaService.prototype.dispose = function () {
@@ -5298,7 +5438,7 @@ var JSONSchemaService = /** @class */ (function () {
     JSONSchemaService.prototype.onResourceChange = function (uri) {
         var _this = this;
         var hasChanges = false;
-        uri = this.normalizeId(uri);
+        uri = normalizeId(uri);
         var toWalk = [uri];
         var all = Object.keys(this.schemasById).map(function (key) { return _this.schemasById[key]; });
         while (toWalk.length) {
@@ -5317,34 +5457,21 @@ var JSONSchemaService = /** @class */ (function () {
         }
         return hasChanges;
     };
-    JSONSchemaService.prototype.normalizeId = function (id) {
-        // remove trailing '#', normalize drive capitalization
-        try {
-            return _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__["URI"].parse(id).toString();
-        }
-        catch (e) {
-            return id;
-        }
-    };
     JSONSchemaService.prototype.setSchemaContributions = function (schemaContributions) {
         if (schemaContributions.schemas) {
             var schemas = schemaContributions.schemas;
             for (var id in schemas) {
-                var normalizedId = this.normalizeId(id);
+                var normalizedId = normalizeId(id);
                 this.contributionSchemas[normalizedId] = this.addSchemaHandle(normalizedId, schemas[id]);
             }
         }
-        if (schemaContributions.schemaAssociations) {
+        if (Array.isArray(schemaContributions.schemaAssociations)) {
             var schemaAssociations = schemaContributions.schemaAssociations;
-            for (var pattern in schemaAssociations) {
-                var associations = schemaAssociations[pattern];
-                this.contributionAssociations[pattern] = associations;
-                var fpa = this.getOrAddFilePatternAssociation(pattern);
-                for (var _i = 0, associations_1 = associations; _i < associations_1.length; _i++) {
-                    var schemaId = associations_1[_i];
-                    var id = this.normalizeId(schemaId);
-                    fpa.addSchema(id);
-                }
+            for (var _i = 0, schemaAssociations_1 = schemaAssociations; _i < schemaAssociations_1.length; _i++) {
+                var schemaAssociation = schemaAssociations_1[_i];
+                var uris = schemaAssociation.uris.map(normalizeId);
+                var association = this.addFilePatternAssociation(schemaAssociation.pattern, uris);
+                this.contributionAssociations.push(association);
             }
         }
     };
@@ -5356,52 +5483,41 @@ var JSONSchemaService = /** @class */ (function () {
     JSONSchemaService.prototype.getOrAddSchemaHandle = function (id, unresolvedSchemaContent) {
         return this.schemasById[id] || this.addSchemaHandle(id, unresolvedSchemaContent);
     };
-    JSONSchemaService.prototype.getOrAddFilePatternAssociation = function (pattern) {
-        var fpa = this.filePatternAssociationById[pattern];
-        if (!fpa) {
-            fpa = new FilePatternAssociation(pattern);
-            this.filePatternAssociationById[pattern] = fpa;
-            this.filePatternAssociations.push(fpa);
-        }
+    JSONSchemaService.prototype.addFilePatternAssociation = function (pattern, uris) {
+        var fpa = new FilePatternAssociation(pattern, uris);
+        this.filePatternAssociations.push(fpa);
         return fpa;
     };
     JSONSchemaService.prototype.registerExternalSchema = function (uri, filePatterns, unresolvedSchemaContent) {
-        if (filePatterns === void 0) { filePatterns = null; }
-        var id = this.normalizeId(uri);
+        var id = normalizeId(uri);
         this.registeredSchemasIds[id] = true;
+        this.cachedSchemaForResource = undefined;
         if (filePatterns) {
-            for (var _i = 0, filePatterns_1 = filePatterns; _i < filePatterns_1.length; _i++) {
-                var pattern = filePatterns_1[_i];
-                this.getOrAddFilePatternAssociation(pattern).addSchema(id);
-            }
+            this.addFilePatternAssociation(filePatterns, [uri]);
         }
         return unresolvedSchemaContent ? this.addSchemaHandle(id, unresolvedSchemaContent) : this.getOrAddSchemaHandle(id);
     };
     JSONSchemaService.prototype.clearExternalSchemas = function () {
         this.schemasById = {};
         this.filePatternAssociations = [];
-        this.filePatternAssociationById = {};
         this.registeredSchemasIds = {};
+        this.cachedSchemaForResource = undefined;
         for (var id in this.contributionSchemas) {
             this.schemasById[id] = this.contributionSchemas[id];
             this.registeredSchemasIds[id] = true;
         }
-        for (var pattern in this.contributionAssociations) {
-            var fpa = this.getOrAddFilePatternAssociation(pattern);
-            for (var _i = 0, _a = this.contributionAssociations[pattern]; _i < _a.length; _i++) {
-                var schemaId = _a[_i];
-                var id = this.normalizeId(schemaId);
-                fpa.addSchema(id);
-            }
+        for (var _i = 0, _a = this.contributionAssociations; _i < _a.length; _i++) {
+            var contributionAssociation = _a[_i];
+            this.filePatternAssociations.push(contributionAssociation);
         }
     };
     JSONSchemaService.prototype.getResolvedSchema = function (schemaId) {
-        var id = this.normalizeId(schemaId);
+        var id = normalizeId(schemaId);
         var schemaHandle = this.schemasById[id];
         if (schemaHandle) {
             return schemaHandle.getResolvedSchema();
         }
-        return this.promise.resolve(null);
+        return this.promise.resolve(undefined);
     };
     JSONSchemaService.prototype.loadSchema = function (url) {
         if (!this.requestService) {
@@ -5436,12 +5552,12 @@ var JSONSchemaService = /** @class */ (function () {
         var resolveErrors = schemaToResolve.errors.slice(0);
         var schema = schemaToResolve.schema;
         if (schema.$schema) {
-            var id = this.normalizeId(schema.$schema);
+            var id = normalizeId(schema.$schema);
             if (id === 'http://json-schema.org/draft-03/schema') {
                 return this.promise.resolve(new ResolvedSchema({}, [localize('json.schema.draft03.notsupported', "Draft-03 schemas are not supported.")]));
             }
             else if (id === 'https://json-schema.org/draft/2019-09/schema') {
-                schemaToResolve.errors.push(localize('json.schema.draft201909.notsupported', "Draft 2019-09 schemas are not yet fully supported."));
+                resolveErrors.push(localize('json.schema.draft201909.notsupported', "Draft 2019-09 schemas are not yet fully supported."));
             }
         }
         var contextService = this.contextService;
@@ -5459,7 +5575,8 @@ var JSONSchemaService = /** @class */ (function () {
             });
             return current;
         };
-        var merge = function (target, sourceRoot, sourceURI, path) {
+        var merge = function (target, sourceRoot, sourceURI, refSegment) {
+            var path = refSegment ? decodeURIComponent(refSegment) : undefined;
             var section = findSection(sourceRoot, path);
             if (section) {
                 for (var key in section) {
@@ -5472,19 +5589,19 @@ var JSONSchemaService = /** @class */ (function () {
                 resolveErrors.push(localize('json.schema.invalidref', '$ref \'{0}\' in \'{1}\' can not be resolved.', path, sourceURI));
             }
         };
-        var resolveExternalLink = function (node, uri, linkPath, parentSchemaURL, parentSchemaDependencies) {
+        var resolveExternalLink = function (node, uri, refSegment, parentSchemaURL, parentSchemaDependencies) {
             if (contextService && !/^\w+:\/\/.*/.test(uri)) {
                 uri = contextService.resolveRelativePath(uri, parentSchemaURL);
             }
-            uri = _this.normalizeId(uri);
+            uri = normalizeId(uri);
             var referencedHandle = _this.getOrAddSchemaHandle(uri);
             return referencedHandle.getUnresolvedSchema().then(function (unresolvedSchema) {
                 parentSchemaDependencies[uri] = true;
                 if (unresolvedSchema.errors.length) {
-                    var loc = linkPath ? uri + '#' + linkPath : uri;
+                    var loc = refSegment ? uri + '#' + refSegment : uri;
                     resolveErrors.push(localize('json.schema.problemloadingref', 'Problems loading reference \'{0}\': {1}', loc, unresolvedSchema.errors[0]));
                 }
-                merge(node, unresolvedSchema.schema, uri, linkPath);
+                merge(node, unresolvedSchema.schema, uri, refSegment);
                 return resolveRefs(node, unresolvedSchema.schema, uri, referencedHandle.dependencies);
             });
         };
@@ -5515,7 +5632,8 @@ var JSONSchemaService = /** @class */ (function () {
                 for (var _a = 0, maps_1 = maps; _a < maps_1.length; _a++) {
                     var map = maps_1[_a];
                     if (typeof map === 'object') {
-                        for (var key in map) {
+                        for (var k in map) {
+                            var key = k;
                             var entry = map[key];
                             if (typeof entry === 'object') {
                                 toWalk.push(entry);
@@ -5558,7 +5676,7 @@ var JSONSchemaService = /** @class */ (function () {
                         }
                     }
                 }
-                collectEntries(next.items, next.additionalProperties, next.not, next.contains, next.propertyNames, next.if, next.then, next.else);
+                collectEntries(next.items, next.additionalItems, next.additionalProperties, next.not, next.contains, next.propertyNames, next.if, next.then, next.else);
                 collectMapEntries(next.definitions, next.properties, next.patternProperties, next.dependencies);
                 collectArrayEntries(next.anyOf, next.allOf, next.oneOf, next.items);
             };
@@ -5579,22 +5697,28 @@ var JSONSchemaService = /** @class */ (function () {
         if (document && document.root && document.root.type === 'object') {
             var schemaProperties = document.root.properties.filter(function (p) { return (p.keyNode.value === '$schema') && p.valueNode && p.valueNode.type === 'string'; });
             if (schemaProperties.length > 0) {
-                var schemeId = _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__["getNodeValue"](schemaProperties[0].valueNode);
-                if (schemeId && _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__["startsWith"](schemeId, '.') && this.contextService) {
-                    schemeId = this.contextService.resolveRelativePath(schemeId, resource);
-                }
-                if (schemeId) {
-                    var id = this.normalizeId(schemeId);
-                    return this.getOrAddSchemaHandle(id).getResolvedSchema();
+                var valueNode = schemaProperties[0].valueNode;
+                if (valueNode && valueNode.type === 'string') {
+                    var schemeId = _parser_jsonParser_js__WEBPACK_IMPORTED_MODULE_3__["getNodeValue"](valueNode);
+                    if (schemeId && _utils_strings_js__WEBPACK_IMPORTED_MODULE_2__["startsWith"](schemeId, '.') && this.contextService) {
+                        schemeId = this.contextService.resolveRelativePath(schemeId, resource);
+                    }
+                    if (schemeId) {
+                        var id = normalizeId(schemeId);
+                        return this.getOrAddSchemaHandle(id).getResolvedSchema();
+                    }
                 }
             }
+        }
+        if (this.cachedSchemaForResource && this.cachedSchemaForResource.resource === resource) {
+            return this.cachedSchemaForResource.resolvedSchema;
         }
         var seen = Object.create(null);
         var schemas = [];
         for (var _i = 0, _a = this.filePatternAssociations; _i < _a.length; _i++) {
             var entry = _a[_i];
             if (entry.matchesPattern(resource)) {
-                for (var _b = 0, _c = entry.getSchemas(); _b < _c.length; _b++) {
+                for (var _b = 0, _c = entry.getURIs(); _b < _c.length; _b++) {
                     var schemaId = _c[_b];
                     if (!seen[schemaId]) {
                         schemas.push(schemaId);
@@ -5603,10 +5727,9 @@ var JSONSchemaService = /** @class */ (function () {
                 }
             }
         }
-        if (schemas.length > 0) {
-            return this.createCombinedSchema(resource, schemas).getResolvedSchema();
-        }
-        return this.promise.resolve(null);
+        var resolvedSchema = schemas.length > 0 ? this.createCombinedSchema(resource, schemas).getResolvedSchema() : this.promise.resolve(undefined);
+        this.cachedSchemaForResource = { resource: resource, resolvedSchema: resolvedSchema };
+        return resolvedSchema;
     };
     JSONSchemaService.prototype.createCombinedSchema = function (resource, schemaIds) {
         if (schemaIds.length === 1) {
@@ -5620,9 +5743,33 @@ var JSONSchemaService = /** @class */ (function () {
             return this.addSchemaHandle(combinedSchemaId, combinedSchema);
         }
     };
+    JSONSchemaService.prototype.getMatchingSchemas = function (document, jsonDocument, schema) {
+        if (schema) {
+            var id = schema.id || ('schemaservice://untitled/matchingSchemas/' + idCounter++);
+            return this.resolveSchemaContent(new UnresolvedSchema(schema), id, {}).then(function (resolvedSchema) {
+                return jsonDocument.getMatchingSchemas(resolvedSchema.schema).filter(function (s) { return !s.inverted; });
+            });
+        }
+        return this.getSchemaForResource(document.uri, jsonDocument).then(function (schema) {
+            if (schema) {
+                return jsonDocument.getMatchingSchemas(schema.schema).filter(function (s) { return !s.inverted; });
+            }
+            return [];
+        });
+    };
     return JSONSchemaService;
 }());
 
+var idCounter = 0;
+function normalizeId(id) {
+    // remove trailing '#', normalize drive capitalization
+    try {
+        return _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__["URI"].parse(id).toString();
+    }
+    catch (e) {
+        return id;
+    }
+}
 function toDisplayString(url) {
     try {
         var uri = _vscode_uri_index_js__WEBPACK_IMPORTED_MODULE_1__["URI"].parse(url);
@@ -5639,18 +5786,18 @@ function toDisplayString(url) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js":
-/*!**************************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js ***!
-  \**************************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js":
+/*!***************************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSelectionRanges.js ***!
+  \***************************************************************************************************************************/
 /*! exports provided: getSelectionRanges */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSelectionRanges", function() { return getSelectionRanges; });
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5716,20 +5863,20 @@ function getSelectionRanges(document, positions, doc) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js":
-/*!*********************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js ***!
-  \*********************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonValidation.js ***!
+  \**********************************************************************************************************************/
 /*! exports provided: JSONValidation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONValidation", function() { return JSONValidation; });
-/* harmony import */ var _jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jsonSchemaService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
-/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
-/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../../fillers/vscode-nls.js */ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
-/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/objects.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
+/* harmony import */ var _jsonSchemaService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jsonSchemaService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/services/jsonSchemaService.js");
+/* harmony import */ var _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsonLanguageTypes.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageTypes.js");
+/* harmony import */ var _fillers_vscode_nls_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../fillers/vscode-nls.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js");
+/* harmony import */ var _utils_objects_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/objects.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -5748,7 +5895,7 @@ var JSONValidation = /** @class */ (function () {
     JSONValidation.prototype.configure = function (raw) {
         if (raw) {
             this.validationEnabled = raw.validate;
-            this.commentSeverity = raw.allowComments ? void 0 : _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Error;
+            this.commentSeverity = raw.allowComments ? undefined : _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Error;
         }
     };
     JSONValidation.prototype.doValidation = function (textDocument, jsonDocument, documentSettings, schema) {
@@ -5772,7 +5919,7 @@ var JSONValidation = /** @class */ (function () {
             if (schema) {
                 if (schema.errors.length && jsonDocument.root) {
                     var astRoot = jsonDocument.root;
-                    var property = astRoot.type === 'object' ? astRoot.properties[0] : null;
+                    var property = astRoot.type === 'object' ? astRoot.properties[0] : undefined;
                     if (property && property.keyNode.value === '$schema') {
                         var node = property.valueNode || property;
                         var range = _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__["Range"].create(textDocument.positionAt(node.offset), textDocument.positionAt(node.offset + node.length));
@@ -5790,10 +5937,10 @@ var JSONValidation = /** @class */ (function () {
                     }
                 }
                 if (schemaAllowsComments(schema.schema)) {
-                    commentSeverity = void 0;
+                    commentSeverity = undefined;
                 }
                 if (schemaAllowsTrailingCommas(schema.schema)) {
-                    trailingCommaSeverity = void 0;
+                    trailingCommaSeverity = undefined;
                 }
             }
             for (var _i = 0, _a = jsonDocument.syntaxErrors; _i < _a.length; _i++) {
@@ -5850,8 +5997,9 @@ function schemaAllowsTrailingCommas(schemaRef) {
         if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_3__["isBoolean"])(schemaRef.allowTrailingCommas)) {
             return schemaRef.allowTrailingCommas;
         }
-        if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_3__["isBoolean"])(schemaRef['allowsTrailingCommas'])) { // deprecated
-            return schemaRef['allowsTrailingCommas'];
+        var deprSchemaRef = schemaRef;
+        if (Object(_utils_objects_js__WEBPACK_IMPORTED_MODULE_3__["isBoolean"])(deprSchemaRef['allowsTrailingCommas'])) { // deprecated
+            return deprSchemaRef['allowsTrailingCommas'];
         }
         if (schemaRef.allOf) {
             for (var _i = 0, _a = schemaRef.allOf; _i < _a.length; _i++) {
@@ -5869,18 +6017,18 @@ function toDiagnosticSeverity(severityLevel) {
     switch (severityLevel) {
         case 'error': return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Error;
         case 'warning': return _jsonLanguageTypes_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Warning;
-        case 'ignore': return void 0;
+        case 'ignore': return undefined;
     }
-    return void 0;
+    return undefined;
 }
 
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js":
-/*!**********************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js ***!
-  \**********************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js":
+/*!***********************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/colors.js ***!
+  \***********************************************************************************************************/
 /*! exports provided: hexDigit, colorFromHex, colorFrom256RGB */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5915,7 +6063,7 @@ function hexDigit(charCode) {
 }
 function colorFromHex(text) {
     if (text[0] !== '#') {
-        return null;
+        return undefined;
     }
     switch (text.length) {
         case 4:
@@ -5947,7 +6095,7 @@ function colorFromHex(text) {
                 alpha: (hexDigit(text.charCodeAt(7)) * 0x10 + hexDigit(text.charCodeAt(8))) / 255.0
             };
     }
-    return null;
+    return undefined;
 }
 function colorFrom256RGB(red, green, blue, alpha) {
     if (alpha === void 0) { alpha = 1.0; }
@@ -5962,10 +6110,10 @@ function colorFrom256RGB(red, green, blue, alpha) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js":
-/*!********************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js ***!
-  \********************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js":
+/*!*********************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/json.js ***!
+  \*********************************************************************************************************/
 /*! exports provided: stringifyObject */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6018,10 +6166,10 @@ function stringifyObject(obj, indent, stringifyLiteral) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js ***!
-  \***********************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/objects.js ***!
+  \************************************************************************************************************/
 /*! exports provided: equals, isNumber, isDefined, isBoolean, isString */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6101,10 +6249,10 @@ function isString(val) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js ***!
-  \***********************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/utils/strings.js ***!
+  \************************************************************************************************************/
 /*! exports provided: startsWith, endsWith, convertSimple2RegExpPattern, repeat */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6162,10 +6310,10 @@ function repeat(value, count) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js":
-/*!*****************************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
-  \*****************************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js":
+/*!******************************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-textdocument/lib/esm/main.js ***!
+  \******************************************************************************************************************/
 /*! exports provided: TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6359,20 +6507,24 @@ var TextDocument;
             }
             return diff;
         });
-        var lastModifiedOffset = text.length;
-        for (var i = sortedEdits.length - 1; i >= 0; i--) {
-            var e = sortedEdits[i];
+        var lastModifiedOffset = 0;
+        var spans = [];
+        for (var _i = 0, sortedEdits_1 = sortedEdits; _i < sortedEdits_1.length; _i++) {
+            var e = sortedEdits_1[_i];
             var startOffset = document.offsetAt(e.range.start);
-            var endOffset = document.offsetAt(e.range.end);
-            if (endOffset <= lastModifiedOffset) {
-                text = text.substring(0, startOffset) + e.newText + text.substring(endOffset, text.length);
-            }
-            else {
+            if (startOffset < lastModifiedOffset) {
                 throw new Error('Overlapping edit');
             }
-            lastModifiedOffset = startOffset;
+            else if (startOffset > lastModifiedOffset) {
+                spans.push(text.substring(lastModifiedOffset, startOffset));
+            }
+            if (e.newText.length) {
+                spans.push(e.newText);
+            }
+            lastModifiedOffset = document.offsetAt(e.range.end);
         }
-        return text;
+        spans.push(text.substr(lastModifiedOffset));
+        return spans.join('');
     }
     TextDocument.applyEdits = applyEdits;
 })(TextDocument || (TextDocument = {}));
@@ -6441,10 +6593,10 @@ function getWellformedEdit(textEdit) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js":
-/*!**************************************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js ***!
-  \**************************************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-languageserver-types/main.js ***!
+  \***************************************************************************************************/
 /*! exports provided: Position, Range, Location, LocationLink, Color, ColorInformation, ColorPresentation, FoldingRangeKind, FoldingRange, DiagnosticRelatedInformation, DiagnosticSeverity, DiagnosticTag, Diagnostic, Command, TextEdit, TextDocumentEdit, CreateFile, RenameFile, DeleteFile, WorkspaceEdit, WorkspaceChange, TextDocumentIdentifier, VersionedTextDocumentIdentifier, TextDocumentItem, MarkupKind, MarkupContent, CompletionItemKind, InsertTextFormat, CompletionItemTag, CompletionItem, CompletionList, MarkedString, Hover, ParameterInformation, SignatureInformation, DocumentHighlightKind, DocumentHighlight, SymbolKind, SymbolTag, SymbolInformation, DocumentSymbol, CodeActionKind, CodeActionContext, CodeAction, CodeLens, FormattingOptions, DocumentLink, SelectionRange, EOL, TextDocument */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8031,16 +8183,17 @@ var Is;
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js":
-/*!**********************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js ***!
-  \**********************************************************************************************************************/
-/*! exports provided: URI */
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-uri/index.js ***!
+  \***********************************************************************************/
+/*! exports provided: URI, uriToFsPath */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URI", function() { return URI; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uriToFsPath", function() { return uriToFsPath; });
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8157,6 +8310,7 @@ var _regexp = /^(([^:/?#]+?):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
  * (http://tools.ietf.org/html/rfc3986#section-3) with minimal validation
  * and encoding.
  *
+ * ```txt
  *       foo://example.com:8042/over/there?name=ferret#nose
  *       \_/   \______________/\_________/ \_________/ \__/
  *        |           |            |            |        |
@@ -8164,6 +8318,7 @@ var _regexp = /^(([^:/?#]+?):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
  *        |   _____________________|__
  *       / \ /                        \
  *       urn:example:animal:ferret:nose
+ * ```
  */
 var URI = /** @class */ (function () {
     /**
@@ -8236,7 +8391,7 @@ var URI = /** @class */ (function () {
             // if (this.scheme !== 'file') {
             // 	console.warn(`[UriError] calling fsPath with scheme ${this.scheme}`);
             // }
-            return _makeFsPath(this);
+            return uriToFsPath(this, false);
         },
         enumerable: true,
         configurable: true
@@ -8299,7 +8454,7 @@ var URI = /** @class */ (function () {
         if (!match) {
             return new _URI(_empty, _empty, _empty, _empty, _empty);
         }
-        return new _URI(match[2] || _empty, decodeURIComponent(match[4] || _empty), decodeURIComponent(match[5] || _empty), decodeURIComponent(match[7] || _empty), decodeURIComponent(match[9] || _empty), _strict);
+        return new _URI(match[2] || _empty, percentDecode(match[4] || _empty), percentDecode(match[5] || _empty), percentDecode(match[7] || _empty), percentDecode(match[9] || _empty), _strict);
     };
     /**
      * Creates a new URI from a file system path, e.g. `c:\my\files`,
@@ -8348,6 +8503,25 @@ var URI = /** @class */ (function () {
     URI.from = function (components) {
         return new _URI(components.scheme, components.authority, components.path, components.query, components.fragment);
     };
+    // /**
+    //  * Join a URI path with path fragments and normalizes the resulting path.
+    //  *
+    //  * @param uri The input URI.
+    //  * @param pathFragment The path fragment to add to the URI path.
+    //  * @returns The resulting URI.
+    //  */
+    // static joinPath(uri: URI, ...pathFragment: string[]): URI {
+    // 	if (!uri.path) {
+    // 		throw new Error(`[UriError]: cannot call joinPaths on URI without path`);
+    // 	}
+    // 	let newPath: string;
+    // 	if (isWindows && uri.scheme === 'file') {
+    // 		newPath = URI.file(paths.win32.join(uriToFsPath(uri, true), ...pathFragment)).path;
+    // 	} else {
+    // 		newPath = paths.posix.join(uri.path, ...pathFragment);
+    // 	}
+    // 	return uri.with({ path: newPath });
+    // }
     // ---- printing/externalize ---------------------------
     /**
      * Creates a string representation for this URI. It's guaranteed that calling
@@ -8385,7 +8559,7 @@ var URI = /** @class */ (function () {
 }());
 
 var _pathSepMarker = isWindows ? 1 : undefined;
-// tslint:disable-next-line:class-name
+// eslint-disable-next-line @typescript-eslint/class-name-casing
 var _URI = /** @class */ (function (_super) {
     __extends(_URI, _super);
     function _URI() {
@@ -8397,7 +8571,7 @@ var _URI = /** @class */ (function (_super) {
     Object.defineProperty(_URI.prototype, "fsPath", {
         get: function () {
             if (!this._fsPath) {
-                this._fsPath = _makeFsPath(this);
+                this._fsPath = uriToFsPath(this, false);
             }
             return this._fsPath;
         },
@@ -8543,7 +8717,7 @@ function encodeURIComponentMinimal(path) {
 /**
  * Compute `fsPath` for the given uri
  */
-function _makeFsPath(uri) {
+function uriToFsPath(uri, keepDriveLetterCasing) {
     var value;
     if (uri.authority && uri.path.length > 1 && uri.scheme === 'file') {
         // unc path: file://shares/c$/far/boo
@@ -8552,8 +8726,13 @@ function _makeFsPath(uri) {
     else if (uri.path.charCodeAt(0) === 47 /* Slash */
         && (uri.path.charCodeAt(1) >= 65 /* A */ && uri.path.charCodeAt(1) <= 90 /* Z */ || uri.path.charCodeAt(1) >= 97 /* a */ && uri.path.charCodeAt(1) <= 122 /* z */)
         && uri.path.charCodeAt(2) === 58 /* Colon */) {
-        // windows drive letter: file:///c:/far/boo
-        value = uri.path[1].toLowerCase() + uri.path.substr(2);
+        if (!keepDriveLetterCasing) {
+            // windows drive letter: file:///c:/far/boo
+            value = uri.path[1].toLowerCase() + uri.path.substr(2);
+        }
+        else {
+            value = uri.path.substr(1);
+        }
     }
     else {
         // other path
@@ -8637,14 +8816,35 @@ function _asFormatted(uri, skipEncoding) {
     }
     return res;
 }
+// --- decode
+function decodeURIComponentGraceful(str) {
+    try {
+        return decodeURIComponent(str);
+    }
+    catch (_a) {
+        if (str.length > 3) {
+            return str.substr(0, 3) + decodeURIComponentGraceful(str.substr(3));
+        }
+        else {
+            return str;
+        }
+    }
+}
+var _rEncodedAsHex = /(%[0-9A-Za-z][0-9A-Za-z])+/g;
+function percentDecode(str) {
+    if (!str.match(_rEncodedAsHex)) {
+        return str;
+    }
+    return str.replace(_rEncodedAsHex, function (match) { return decodeURIComponentGraceful(match); });
+}
 
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js":
-/*!******************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js ***!
-  \******************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/fillers/vscode-nls.js ***!
+  \*******************************************************************************/
 /*! exports provided: loadMessageBundle, config */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8686,19 +8886,20 @@ function config(opt) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/jsonMode.js":
-/*!********************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/jsonMode.js ***!
-  \********************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/jsonMode.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/jsonMode.js ***!
+  \*********************************************************************/
 /*! exports provided: setupMode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupMode", function() { return setupMode; });
-/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "../../node_modules/monaco-editor/esm/vs/language/json/workerManager.js");
-/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "../../node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js");
-/* harmony import */ var _tokenization_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tokenization.js */ "../../node_modules/monaco-editor/esm/vs/language/json/tokenization.js");
+/* harmony import */ var _workerManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./workerManager.js */ "./node_modules/monaco-editor/esm/vs/language/json/workerManager.js");
+/* harmony import */ var _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./languageFeatures.js */ "./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js");
+/* harmony import */ var _tokenization_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tokenization.js */ "./node_modules/monaco-editor/esm/vs/language/json/tokenization.js");
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8723,38 +8924,38 @@ function setupMode(defaults) {
         var languageId = defaults.languageId, modeConfiguration = defaults.modeConfiguration;
         disposeAll(providers);
         if (modeConfiguration.documentFormattingEdits) {
-            providers.push(monaco.languages.registerDocumentFormattingEditProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentFormattingEditProvider"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerDocumentFormattingEditProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentFormattingEditProvider"](worker)));
         }
         if (modeConfiguration.documentRangeFormattingEdits) {
-            providers.push(monaco.languages.registerDocumentRangeFormattingEditProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentRangeFormattingEditProvider"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerDocumentRangeFormattingEditProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentRangeFormattingEditProvider"](worker)));
         }
         if (modeConfiguration.completionItems) {
-            providers.push(monaco.languages.registerCompletionItemProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["CompletionAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerCompletionItemProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["CompletionAdapter"](worker)));
         }
         if (modeConfiguration.hovers) {
-            providers.push(monaco.languages.registerHoverProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["HoverAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerHoverProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["HoverAdapter"](worker)));
         }
         if (modeConfiguration.documentSymbols) {
-            providers.push(monaco.languages.registerDocumentSymbolProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentSymbolAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerDocumentSymbolProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentSymbolAdapter"](worker)));
         }
         if (modeConfiguration.tokens) {
-            providers.push(monaco.languages.setTokensProvider(languageId, Object(_tokenization_js__WEBPACK_IMPORTED_MODULE_2__["createTokenizationSupport"])(true)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].setTokensProvider(languageId, Object(_tokenization_js__WEBPACK_IMPORTED_MODULE_2__["createTokenizationSupport"])(true)));
         }
         if (modeConfiguration.colors) {
-            providers.push(monaco.languages.registerColorProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentColorAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerColorProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DocumentColorAdapter"](worker)));
         }
         if (modeConfiguration.foldingRanges) {
-            providers.push(monaco.languages.registerFoldingRangeProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FoldingRangeAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerFoldingRangeProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["FoldingRangeAdapter"](worker)));
         }
         if (modeConfiguration.diagnostics) {
             providers.push(new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticsAdapter"](languageId, worker, defaults));
         }
         if (modeConfiguration.selectionRanges) {
-            providers.push(monaco.languages.registerSelectionRangeProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SelectionRangeAdapter"](worker)));
+            providers.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].registerSelectionRangeProvider(languageId, new _languageFeatures_js__WEBPACK_IMPORTED_MODULE_1__["SelectionRangeAdapter"](worker)));
         }
     }
     registerProviders();
-    disposables.push(monaco.languages.setLanguageConfiguration(defaults.languageId, richEditConfiguration));
+    disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_3__["languages"].setLanguageConfiguration(defaults.languageId, richEditConfiguration));
     var modeConfiguration = defaults.modeConfiguration;
     defaults.onDidChange(function (newDefaults) {
         if (newDefaults.modeConfiguration !== modeConfiguration) {
@@ -8793,10 +8994,10 @@ var richEditConfiguration = {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js":
-/*!****************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js ***!
-  \****************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/languageFeatures.js ***!
+  \*****************************************************************************/
 /*! exports provided: DiagnosticsAdapter, CompletionAdapter, HoverAdapter, DocumentSymbolAdapter, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, DocumentColorAdapter, FoldingRangeAdapter, SelectionRangeAdapter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -8811,15 +9012,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DocumentColorAdapter", function() { return DocumentColorAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FoldingRangeAdapter", function() { return FoldingRangeAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionRangeAdapter", function() { return SelectionRangeAdapter; });
-/* harmony import */ var _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/vscode-json-languageservice/jsonLanguageService.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js");
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/monaco-editor-core.js");
+/* harmony import */ var _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_deps/vscode-json-languageservice/jsonLanguageService.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/vscode-json-languageservice/jsonLanguageService.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
 
-var Uri = monaco.Uri;
-var Range = monaco.Range;
 // --- diagnostics --- ---
 var DiagnosticsAdapter = /** @class */ (function () {
     function DiagnosticsAdapter(_languageId, _worker, defaults) {
@@ -8841,7 +9041,7 @@ var DiagnosticsAdapter = /** @class */ (function () {
             _this._doValidate(model.uri, modeId);
         };
         var onModelRemoved = function (model) {
-            monaco.editor.setModelMarkers(model, _this._languageId, []);
+            _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].setModelMarkers(model, _this._languageId, []);
             var uriStr = model.uri.toString();
             var listener = _this._listener[uriStr];
             if (listener) {
@@ -8849,18 +9049,18 @@ var DiagnosticsAdapter = /** @class */ (function () {
                 delete _this._listener[uriStr];
             }
         };
-        this._disposables.push(monaco.editor.onDidCreateModel(onModelAdd));
-        this._disposables.push(monaco.editor.onWillDisposeModel(function (model) {
+        this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].onDidCreateModel(onModelAdd));
+        this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].onWillDisposeModel(function (model) {
             onModelRemoved(model);
             _this._resetSchema(model.uri);
         }));
-        this._disposables.push(monaco.editor.onDidChangeModelLanguage(function (event) {
+        this._disposables.push(_fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].onDidChangeModelLanguage(function (event) {
             onModelRemoved(event.model);
             onModelAdd(event.model);
             _this._resetSchema(event.model.uri);
         }));
         this._disposables.push(defaults.onDidChange(function (_) {
-            monaco.editor.getModels().forEach(function (model) {
+            _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].getModels().forEach(function (model) {
                 if (model.getModeId() === _this._languageId) {
                     onModelRemoved(model);
                     onModelAdd(model);
@@ -8869,13 +9069,13 @@ var DiagnosticsAdapter = /** @class */ (function () {
         }));
         this._disposables.push({
             dispose: function () {
-                monaco.editor.getModels().forEach(onModelRemoved);
+                _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].getModels().forEach(onModelRemoved);
                 for (var key in _this._listener) {
                     _this._listener[key].dispose();
                 }
             }
         });
-        monaco.editor.getModels().forEach(onModelAdd);
+        _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].getModels().forEach(onModelAdd);
     }
     DiagnosticsAdapter.prototype.dispose = function () {
         this._disposables.forEach(function (d) { return d && d.dispose(); });
@@ -8887,15 +9087,17 @@ var DiagnosticsAdapter = /** @class */ (function () {
         });
     };
     DiagnosticsAdapter.prototype._doValidate = function (resource, languageId) {
-        this._worker(resource).then(function (worker) {
+        this._worker(resource)
+            .then(function (worker) {
             return worker.doValidation(resource.toString()).then(function (diagnostics) {
                 var markers = diagnostics.map(function (d) { return toDiagnostics(resource, d); });
-                var model = monaco.editor.getModel(resource);
+                var model = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].getModel(resource);
                 if (model && model.getModeId() === languageId) {
-                    monaco.editor.setModelMarkers(model, languageId, markers);
+                    _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].setModelMarkers(model, languageId, markers);
                 }
             });
-        }).then(undefined, function (err) {
+        })
+            .then(undefined, function (err) {
             console.error(err);
         });
     };
@@ -8904,12 +9106,16 @@ var DiagnosticsAdapter = /** @class */ (function () {
 
 function toSeverity(lsSeverity) {
     switch (lsSeverity) {
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"].Error: return monaco.MarkerSeverity.Error;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"].Warning: return monaco.MarkerSeverity.Warning;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"].Information: return monaco.MarkerSeverity.Info;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["DiagnosticSeverity"].Hint: return monaco.MarkerSeverity.Hint;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Error:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["MarkerSeverity"].Error;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Warning:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["MarkerSeverity"].Warning;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Information:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["MarkerSeverity"].Info;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["DiagnosticSeverity"].Hint:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["MarkerSeverity"].Hint;
         default:
-            return monaco.MarkerSeverity.Info;
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["MarkerSeverity"].Info;
     }
 }
 function toDiagnostics(resource, diag) {
@@ -8936,61 +9142,107 @@ function fromRange(range) {
     if (!range) {
         return void 0;
     }
-    return { start: { line: range.startLineNumber - 1, character: range.startColumn - 1 }, end: { line: range.endLineNumber - 1, character: range.endColumn - 1 } };
+    return {
+        start: {
+            line: range.startLineNumber - 1,
+            character: range.startColumn - 1
+        },
+        end: { line: range.endLineNumber - 1, character: range.endColumn - 1 }
+    };
 }
 function toRange(range) {
     if (!range) {
         return void 0;
     }
-    return new Range(range.start.line + 1, range.start.character + 1, range.end.line + 1, range.end.character + 1);
+    return new _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["Range"](range.start.line + 1, range.start.character + 1, range.end.line + 1, range.end.character + 1);
+}
+function isInsertReplaceEdit(edit) {
+    return (typeof edit.insert !== 'undefined' &&
+        typeof edit.replace !== 'undefined');
 }
 function toCompletionItemKind(kind) {
-    var mItemKind = monaco.languages.CompletionItemKind;
+    var mItemKind = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].CompletionItemKind;
     switch (kind) {
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Text: return mItemKind.Text;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Method: return mItemKind.Method;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Function: return mItemKind.Function;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Constructor: return mItemKind.Constructor;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Field: return mItemKind.Field;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Variable: return mItemKind.Variable;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Class: return mItemKind.Class;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Interface: return mItemKind.Interface;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Module: return mItemKind.Module;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Property: return mItemKind.Property;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Unit: return mItemKind.Unit;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Value: return mItemKind.Value;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Enum: return mItemKind.Enum;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Keyword: return mItemKind.Keyword;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Snippet: return mItemKind.Snippet;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Color: return mItemKind.Color;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].File: return mItemKind.File;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Reference: return mItemKind.Reference;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Text:
+            return mItemKind.Text;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Method:
+            return mItemKind.Method;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Function:
+            return mItemKind.Function;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Constructor:
+            return mItemKind.Constructor;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Field:
+            return mItemKind.Field;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Variable:
+            return mItemKind.Variable;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Class:
+            return mItemKind.Class;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Interface:
+            return mItemKind.Interface;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Module:
+            return mItemKind.Module;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Property:
+            return mItemKind.Property;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Unit:
+            return mItemKind.Unit;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Value:
+            return mItemKind.Value;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Enum:
+            return mItemKind.Enum;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Keyword:
+            return mItemKind.Keyword;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Snippet:
+            return mItemKind.Snippet;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Color:
+            return mItemKind.Color;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].File:
+            return mItemKind.File;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Reference:
+            return mItemKind.Reference;
     }
     return mItemKind.Property;
 }
 function fromCompletionItemKind(kind) {
-    var mItemKind = monaco.languages.CompletionItemKind;
+    var mItemKind = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].CompletionItemKind;
     switch (kind) {
-        case mItemKind.Text: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Text;
-        case mItemKind.Method: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Method;
-        case mItemKind.Function: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Function;
-        case mItemKind.Constructor: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Constructor;
-        case mItemKind.Field: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Field;
-        case mItemKind.Variable: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Variable;
-        case mItemKind.Class: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Class;
-        case mItemKind.Interface: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Interface;
-        case mItemKind.Module: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Module;
-        case mItemKind.Property: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Property;
-        case mItemKind.Unit: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Unit;
-        case mItemKind.Value: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Value;
-        case mItemKind.Enum: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Enum;
-        case mItemKind.Keyword: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Keyword;
-        case mItemKind.Snippet: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Snippet;
-        case mItemKind.Color: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Color;
-        case mItemKind.File: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].File;
-        case mItemKind.Reference: return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Reference;
+        case mItemKind.Text:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Text;
+        case mItemKind.Method:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Method;
+        case mItemKind.Function:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Function;
+        case mItemKind.Constructor:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Constructor;
+        case mItemKind.Field:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Field;
+        case mItemKind.Variable:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Variable;
+        case mItemKind.Class:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Class;
+        case mItemKind.Interface:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Interface;
+        case mItemKind.Module:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Module;
+        case mItemKind.Property:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Property;
+        case mItemKind.Unit:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Unit;
+        case mItemKind.Value:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Value;
+        case mItemKind.Enum:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Enum;
+        case mItemKind.Keyword:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Keyword;
+        case mItemKind.Snippet:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Snippet;
+        case mItemKind.Color:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Color;
+        case mItemKind.File:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].File;
+        case mItemKind.Reference:
+            return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Reference;
     }
-    return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["CompletionItemKind"].Property;
+    return _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["CompletionItemKind"].Property;
 }
 function toTextEdit(textEdit) {
     if (!textEdit) {
@@ -9009,19 +9261,21 @@ var CompletionAdapter = /** @class */ (function () {
         get: function () {
             return [' ', ':'];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     CompletionAdapter.prototype.provideCompletionItems = function (model, position, context, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) {
+        return this._worker(resource)
+            .then(function (worker) {
             return worker.doComplete(resource.toString(), fromPosition(position));
-        }).then(function (info) {
+        })
+            .then(function (info) {
             if (!info) {
                 return;
             }
             var wordInfo = model.getWordUntilPosition(position);
-            var wordRange = new Range(position.lineNumber, wordInfo.startColumn, position.lineNumber, wordInfo.endColumn);
+            var wordRange = new _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["Range"](position.lineNumber, wordInfo.startColumn, position.lineNumber, wordInfo.endColumn);
             var items = info.items.map(function (entry) {
                 var item = {
                     label: entry.label,
@@ -9031,17 +9285,25 @@ var CompletionAdapter = /** @class */ (function () {
                     documentation: entry.documentation,
                     detail: entry.detail,
                     range: wordRange,
-                    kind: toCompletionItemKind(entry.kind),
+                    kind: toCompletionItemKind(entry.kind)
                 };
                 if (entry.textEdit) {
-                    item.range = toRange(entry.textEdit.range);
+                    if (isInsertReplaceEdit(entry.textEdit)) {
+                        item.range = {
+                            insert: toRange(entry.textEdit.insert),
+                            replace: toRange(entry.textEdit.replace)
+                        };
+                    }
+                    else {
+                        item.range = toRange(entry.textEdit.range);
+                    }
                     item.insertText = entry.textEdit.newText;
                 }
                 if (entry.additionalTextEdits) {
                     item.additionalTextEdits = entry.additionalTextEdits.map(toTextEdit);
                 }
-                if (entry.insertTextFormat === _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["InsertTextFormat"].Snippet) {
-                    item.insertTextRules = monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet;
+                if (entry.insertTextFormat === _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["InsertTextFormat"].Snippet) {
+                    item.insertTextRules = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].CompletionItemInsertTextRule.InsertAsSnippet;
                 }
                 return item;
             });
@@ -9055,7 +9317,9 @@ var CompletionAdapter = /** @class */ (function () {
 }());
 
 function isMarkupContent(thing) {
-    return thing && typeof thing === 'object' && typeof thing.kind === 'string';
+    return (thing &&
+        typeof thing === 'object' &&
+        typeof thing.kind === 'string');
 }
 function toMarkdownString(entry) {
     if (typeof entry === 'string') {
@@ -9091,9 +9355,11 @@ var HoverAdapter = /** @class */ (function () {
     }
     HoverAdapter.prototype.provideHover = function (model, position, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) {
+        return this._worker(resource)
+            .then(function (worker) {
             return worker.doHover(resource.toString(), fromPosition(position));
-        }).then(function (info) {
+        })
+            .then(function (info) {
             if (!info) {
                 return;
             }
@@ -9109,32 +9375,50 @@ var HoverAdapter = /** @class */ (function () {
 // --- definition ------
 function toLocation(location) {
     return {
-        uri: Uri.parse(location.uri),
+        uri: _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["Uri"].parse(location.uri),
         range: toRange(location.range)
     };
 }
 // --- document symbols ------
 function toSymbolKind(kind) {
-    var mKind = monaco.languages.SymbolKind;
+    var mKind = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].SymbolKind;
     switch (kind) {
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].File: return mKind.Array;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Module: return mKind.Module;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Namespace: return mKind.Namespace;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Package: return mKind.Package;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Class: return mKind.Class;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Method: return mKind.Method;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Property: return mKind.Property;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Field: return mKind.Field;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Constructor: return mKind.Constructor;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Enum: return mKind.Enum;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Interface: return mKind.Interface;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Function: return mKind.Function;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Variable: return mKind.Variable;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Constant: return mKind.Constant;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].String: return mKind.String;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Number: return mKind.Number;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Boolean: return mKind.Boolean;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["SymbolKind"].Array: return mKind.Array;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].File:
+            return mKind.Array;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Module:
+            return mKind.Module;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Namespace:
+            return mKind.Namespace;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Package:
+            return mKind.Package;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Class:
+            return mKind.Class;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Method:
+            return mKind.Method;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Property:
+            return mKind.Property;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Field:
+            return mKind.Field;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Constructor:
+            return mKind.Constructor;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Enum:
+            return mKind.Enum;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Interface:
+            return mKind.Interface;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Function:
+            return mKind.Function;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Variable:
+            return mKind.Variable;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Constant:
+            return mKind.Constant;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].String:
+            return mKind.String;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Number:
+            return mKind.Number;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Boolean:
+            return mKind.Boolean;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["SymbolKind"].Array:
+            return mKind.Array;
     }
     return mKind.Function;
 }
@@ -9144,7 +9428,9 @@ var DocumentSymbolAdapter = /** @class */ (function () {
     }
     DocumentSymbolAdapter.prototype.provideDocumentSymbols = function (model, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) { return worker.findDocumentSymbols(resource.toString()); }).then(function (items) {
+        return this._worker(resource)
+            .then(function (worker) { return worker.findDocumentSymbols(resource.toString()); })
+            .then(function (items) {
             if (!items) {
                 return;
             }
@@ -9175,7 +9461,9 @@ var DocumentFormattingEditProvider = /** @class */ (function () {
     DocumentFormattingEditProvider.prototype.provideDocumentFormattingEdits = function (model, options, token) {
         var resource = model.uri;
         return this._worker(resource).then(function (worker) {
-            return worker.format(resource.toString(), null, fromFormattingOptions(options)).then(function (edits) {
+            return worker
+                .format(resource.toString(), null, fromFormattingOptions(options))
+                .then(function (edits) {
                 if (!edits || edits.length === 0) {
                     return;
                 }
@@ -9193,7 +9481,9 @@ var DocumentRangeFormattingEditProvider = /** @class */ (function () {
     DocumentRangeFormattingEditProvider.prototype.provideDocumentRangeFormattingEdits = function (model, range, options, token) {
         var resource = model.uri;
         return this._worker(resource).then(function (worker) {
-            return worker.format(resource.toString(), fromRange(range), fromFormattingOptions(options)).then(function (edits) {
+            return worker
+                .format(resource.toString(), fromRange(range), fromFormattingOptions(options))
+                .then(function (edits) {
                 if (!edits || edits.length === 0) {
                     return;
                 }
@@ -9210,7 +9500,9 @@ var DocumentColorAdapter = /** @class */ (function () {
     }
     DocumentColorAdapter.prototype.provideDocumentColors = function (model, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) { return worker.findDocumentColors(resource.toString()); }).then(function (infos) {
+        return this._worker(resource)
+            .then(function (worker) { return worker.findDocumentColors(resource.toString()); })
+            .then(function (infos) {
             if (!infos) {
                 return;
             }
@@ -9222,13 +9514,17 @@ var DocumentColorAdapter = /** @class */ (function () {
     };
     DocumentColorAdapter.prototype.provideColorPresentations = function (model, info, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) { return worker.getColorPresentations(resource.toString(), info.color, fromRange(info.range)); }).then(function (presentations) {
+        return this._worker(resource)
+            .then(function (worker) {
+            return worker.getColorPresentations(resource.toString(), info.color, fromRange(info.range));
+        })
+            .then(function (presentations) {
             if (!presentations) {
                 return;
             }
             return presentations.map(function (presentation) {
                 var item = {
-                    label: presentation.label,
+                    label: presentation.label
                 };
                 if (presentation.textEdit) {
                     item.textEdit = toTextEdit(presentation.textEdit);
@@ -9249,7 +9545,9 @@ var FoldingRangeAdapter = /** @class */ (function () {
     }
     FoldingRangeAdapter.prototype.provideFoldingRanges = function (model, context, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) { return worker.getFoldingRanges(resource.toString(), context); }).then(function (ranges) {
+        return this._worker(resource)
+            .then(function (worker) { return worker.getFoldingRanges(resource.toString(), context); })
+            .then(function (ranges) {
             if (!ranges) {
                 return;
             }
@@ -9270,9 +9568,12 @@ var FoldingRangeAdapter = /** @class */ (function () {
 
 function toFoldingRangeKind(kind) {
     switch (kind) {
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRangeKind"].Comment: return monaco.languages.FoldingRangeKind.Comment;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRangeKind"].Imports: return monaco.languages.FoldingRangeKind.Imports;
-        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_0__["FoldingRangeKind"].Region: return monaco.languages.FoldingRangeKind.Region;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["FoldingRangeKind"].Comment:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].FoldingRangeKind.Comment;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["FoldingRangeKind"].Imports:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].FoldingRangeKind.Imports;
+        case _deps_vscode_json_languageservice_jsonLanguageService_js__WEBPACK_IMPORTED_MODULE_1__["FoldingRangeKind"].Region:
+            return _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["languages"].FoldingRangeKind.Region;
     }
     return void 0;
 }
@@ -9282,7 +9583,9 @@ var SelectionRangeAdapter = /** @class */ (function () {
     }
     SelectionRangeAdapter.prototype.provideSelectionRanges = function (model, positions, token) {
         var resource = model.uri;
-        return this._worker(resource).then(function (worker) { return worker.getSelectionRanges(resource.toString(), positions.map(fromPosition)); }).then(function (selectionRanges) {
+        return this._worker(resource)
+            .then(function (worker) { return worker.getSelectionRanges(resource.toString(), positions.map(fromPosition)); })
+            .then(function (selectionRanges) {
             if (!selectionRanges) {
                 return;
             }
@@ -9303,10 +9606,10 @@ var SelectionRangeAdapter = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/tokenization.js":
-/*!************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/tokenization.js ***!
-  \************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/tokenization.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/tokenization.js ***!
+  \*************************************************************************/
 /*! exports provided: createTokenizationSupport, TOKEN_DELIM_OBJECT, TOKEN_DELIM_ARRAY, TOKEN_DELIM_COLON, TOKEN_DELIM_COMMA, TOKEN_VALUE_BOOLEAN, TOKEN_VALUE_NULL, TOKEN_VALUE_STRING, TOKEN_VALUE_NUMBER, TOKEN_PROPERTY_NAME, TOKEN_COMMENT_BLOCK, TOKEN_COMMENT_LINE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9324,17 +9627,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_PROPERTY_NAME", function() { return TOKEN_PROPERTY_NAME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_COMMENT_BLOCK", function() { return TOKEN_COMMENT_BLOCK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOKEN_COMMENT_LINE", function() { return TOKEN_COMMENT_LINE; });
-/* harmony import */ var _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/jsonc-parser/main.js */ "../../node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
+/* harmony import */ var _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_deps/jsonc-parser/main.js */ "./node_modules/monaco-editor/esm/vs/language/json/_deps/jsonc-parser/main.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-
 function createTokenizationSupport(supportComments) {
     return {
-        getInitialState: function () { return new JSONState(null, null, false); },
-        tokenize: function (line, state, offsetDelta, stopAtOffset) { return tokenize(supportComments, line, state, offsetDelta, stopAtOffset); }
+        getInitialState: function () { return new JSONState(null, null, false, null); },
+        tokenize: function (line, state, offsetDelta, stopAtOffset) {
+            return tokenize(supportComments, line, state, offsetDelta, stopAtOffset);
+        }
     };
 }
 var TOKEN_DELIM_OBJECT = 'delimiter.bracket.json';
@@ -9348,14 +9652,50 @@ var TOKEN_VALUE_NUMBER = 'number.json';
 var TOKEN_PROPERTY_NAME = 'string.key.json';
 var TOKEN_COMMENT_BLOCK = 'comment.block.json';
 var TOKEN_COMMENT_LINE = 'comment.line.json';
+var ParentsStack = /** @class */ (function () {
+    function ParentsStack(parent, type) {
+        this.parent = parent;
+        this.type = type;
+    }
+    ParentsStack.pop = function (parents) {
+        if (parents) {
+            return parents.parent;
+        }
+        return null;
+    };
+    ParentsStack.push = function (parents, type) {
+        return new ParentsStack(parents, type);
+    };
+    ParentsStack.equals = function (a, b) {
+        if (!a && !b) {
+            return true;
+        }
+        if (!a || !b) {
+            return false;
+        }
+        while (a && b) {
+            if (a === b) {
+                return true;
+            }
+            if (a.type !== b.type) {
+                return false;
+            }
+            a = a.parent;
+            b = b.parent;
+        }
+        return true;
+    };
+    return ParentsStack;
+}());
 var JSONState = /** @class */ (function () {
-    function JSONState(state, scanError, lastWasColon) {
+    function JSONState(state, scanError, lastWasColon, parents) {
         this._state = state;
         this.scanError = scanError;
         this.lastWasColon = lastWasColon;
+        this.parents = parents;
     }
     JSONState.prototype.clone = function () {
-        return new JSONState(this._state, this.scanError, this.lastWasColon);
+        return new JSONState(this._state, this.scanError, this.lastWasColon, this.parents);
     };
     JSONState.prototype.equals = function (other) {
         if (other === this) {
@@ -9364,8 +9704,9 @@ var JSONState = /** @class */ (function () {
         if (!other || !(other instanceof JSONState)) {
             return false;
         }
-        return this.scanError === other.scanError &&
-            this.lastWasColon === other.lastWasColon;
+        return (this.scanError === other.scanError &&
+            this.lastWasColon === other.lastWasColon &&
+            ParentsStack.equals(this.parents, other.parents));
     };
     JSONState.prototype.getStateData = function () {
         return this._state;
@@ -9378,7 +9719,8 @@ var JSONState = /** @class */ (function () {
 function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
     if (offsetDelta === void 0) { offsetDelta = 0; }
     // handle multiline strings and block comments
-    var numberOfInsertedCharacters = 0, adjustOffset = false;
+    var numberOfInsertedCharacters = 0;
+    var adjustOffset = false;
     switch (state.scanError) {
         case 2 /* UnexpectedEndOfString */:
             line = '"' + line;
@@ -9389,14 +9731,17 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
             numberOfInsertedCharacters = 2;
             break;
     }
-    var scanner = _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__["createScanner"](line), kind, ret, lastWasColon = state.lastWasColon;
-    ret = {
+    var scanner = _deps_jsonc_parser_main_js__WEBPACK_IMPORTED_MODULE_0__["createScanner"](line);
+    var lastWasColon = state.lastWasColon;
+    var parents = state.parents;
+    var ret = {
         tokens: [],
         endState: state.clone()
     };
     while (true) {
-        var offset = offsetDelta + scanner.getPosition(), type = '';
-        kind = scanner.scan();
+        var offset = offsetDelta + scanner.getPosition();
+        var type = '';
+        var kind = scanner.scan();
         if (kind === 17 /* EOF */) {
             break;
         }
@@ -9413,18 +9758,22 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
         // brackets and type
         switch (kind) {
             case 1 /* OpenBraceToken */:
+                parents = ParentsStack.push(parents, 0 /* Object */);
                 type = TOKEN_DELIM_OBJECT;
                 lastWasColon = false;
                 break;
             case 2 /* CloseBraceToken */:
+                parents = ParentsStack.pop(parents);
                 type = TOKEN_DELIM_OBJECT;
                 lastWasColon = false;
                 break;
             case 3 /* OpenBracketToken */:
+                parents = ParentsStack.push(parents, 1 /* Array */);
                 type = TOKEN_DELIM_ARRAY;
                 lastWasColon = false;
                 break;
             case 4 /* CloseBracketToken */:
+                parents = ParentsStack.pop(parents);
                 type = TOKEN_DELIM_ARRAY;
                 lastWasColon = false;
                 break;
@@ -9446,7 +9795,10 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
                 lastWasColon = false;
                 break;
             case 10 /* StringLiteral */:
-                type = lastWasColon ? TOKEN_VALUE_STRING : TOKEN_PROPERTY_NAME;
+                var currentParent = parents ? parents.type : 0 /* Object */;
+                var inArray = currentParent === 1 /* Array */;
+                type =
+                    lastWasColon || inArray ? TOKEN_VALUE_STRING : TOKEN_PROPERTY_NAME;
                 lastWasColon = false;
                 break;
             case 11 /* NumericLiteral */:
@@ -9465,7 +9817,7 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
                     break;
             }
         }
-        ret.endState = new JSONState(state.getStateData(), scanner.getTokenError(), lastWasColon);
+        ret.endState = new JSONState(state.getStateData(), scanner.getTokenError(), lastWasColon, parents);
         ret.tokens.push({
             startIndex: offset,
             scopes: type
@@ -9477,16 +9829,17 @@ function tokenize(comments, line, state, offsetDelta, stopAtOffset) {
 
 /***/ }),
 
-/***/ "../../node_modules/monaco-editor/esm/vs/language/json/workerManager.js":
-/*!*************************************************************************************************************!*\
-  !*** /Users/jiangjunyu/Projects/github/F2/node_modules/monaco-editor/esm/vs/language/json/workerManager.js ***!
-  \*************************************************************************************************************/
+/***/ "./node_modules/monaco-editor/esm/vs/language/json/workerManager.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/monaco-editor/esm/vs/language/json/workerManager.js ***!
+  \**************************************************************************/
 /*! exports provided: WorkerManager */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WorkerManager", function() { return WorkerManager; });
+/* harmony import */ var _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fillers/monaco-editor-core.js */ "./node_modules/monaco-editor/esm/vs/language/json/fillers/monaco-editor-core.js");
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9526,7 +9879,7 @@ var WorkerManager = /** @class */ (function () {
     WorkerManager.prototype._getClient = function () {
         this._lastUsedTime = Date.now();
         if (!this._client) {
-            this._worker = monaco.editor.createWebWorker({
+            this._worker = _fillers_monaco_editor_core_js__WEBPACK_IMPORTED_MODULE_0__["editor"].createWebWorker({
                 // module that exports the create() method and returns a `JSONWorker` instance
                 moduleId: 'vs/language/json/jsonWorker',
                 label: this._defaults.languageId,
@@ -9548,11 +9901,14 @@ var WorkerManager = /** @class */ (function () {
             resources[_i] = arguments[_i];
         }
         var _client;
-        return this._getClient().then(function (client) {
+        return this._getClient()
+            .then(function (client) {
             _client = client;
-        }).then(function (_) {
+        })
+            .then(function (_) {
             return _this._worker.withSyncedResources(resources);
-        }).then(function (_) { return _client; });
+        })
+            .then(function (_) { return _client; });
     };
     return WorkerManager;
 }());
