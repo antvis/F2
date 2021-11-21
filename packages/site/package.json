@@ -14,7 +14,7 @@
     "@antv/f2": "^4.0.0-alpha.2",
     "@antv/f2-graphic": "^0.0.2-alpha.0",
     "@antv/f2-react": "^0.0.2-alpha.0",
-    "@antv/gatsby-theme-antv": "1.1.13",
+    "@antv/gatsby-theme-antv": "~1.1.15",
     "gatsby": "^2.17.7",
     "gh-pages": "^2.1.1"
   },
