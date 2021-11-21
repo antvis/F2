@@ -58,7 +58,7 @@
     "coverage": "jest --coverage",
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
-    "publish": "npm run build && npm run test && lerna publish prerelease --dist-tag next --npm-client=npm",
+    "publish": "npm run build && npm run test && lerna publish prerelease --dist-tag next",
     "ci": "npm run lint && npm run build && npm run test",
     "refresh": "lerna clean && yarn && lerna bootstrap",
     "site:start": "cd ./packages/site && npm run site:start",
