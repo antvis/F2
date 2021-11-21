@@ -2,7 +2,11 @@ import { jsx } from '../../jsx';
 import { renderShape } from '../../base/diff';
 import Component from '../../base/component';
 import Chart from '../../chart';
+import { isFunction } from '@antv/util';
 
+type TriggerMap = {
+  [triggerType: string]: (items: any[], records: any[], legend) => void;
+};
 interface LegendItem {
   /**
    * 标记颜色。
@@ -50,15 +54,66 @@ export interface LegendProps {
    * 图例标记。
    */
   marker?: 'circle' | 'square';
+
+  /**
+   * 事件触发
+   */
+  triggerMap?: TriggerMap;
 }
 
 export default (View) => {
   return class Legend extends Component<LegendProps> {
     maxItemWidth: number;
+    constructor(props) {
+      super(props);
+      this.state = {
+        items: [],
+      };
+    }
+
+    didMount() {
+      this._initEvent();
+    }
+
+    _initItems() {
+      const { items } = this.props;
+      this.setState({
+        items: items?.length ? items : this.getOriginItems(),
+      });
+    }
+
+    _initEvent() {
+      const { context, props } = this;
+      const { canvas } = context;
+      const { triggerMap, chart } = props;
+
+      if (!triggerMap) return;
+
+      Object.keys(triggerMap).forEach((type) => {
+        canvas.on(type.toLowerCase(), (event) => {
+          const { points } = event;
+          const items = this.getOriginItems();
+          const records = chart.getSnapRecords(points[0]);
+          const cb = triggerMap[type];
+          if (isFunction(cb)) {
+            cb(items, records, this);
+          }
+        });
+      });
+    }
 
     getItems() {
-      const { props } = this;
-      const { chart } = props;
+      return this.state.items;
+    }
+
+    setItems(items) {
+      this.setState({
+        items,
+      });
+    }
+
+    getOriginItems() {
+      const { chart } = this.props;
       return chart.getLegendItems();
     }
 
@@ -74,6 +129,7 @@ export default (View) => {
     }
 
     willMount() {
+      this._initItems();
       const { props } = this;
       const shape = renderShape(this, this.render(), false);
       const { height, width } = shape.get('attrs');
@@ -93,7 +149,7 @@ export default (View) => {
     render() {
       const { props, maxItemWidth, context } = this;
       const { width } = context;
-      const items = props.items || this.getItems();
+      const items = this.getItems();
 
       return <View {...props} items={items} maxItemWidth={maxItemWidth || width} />;
     }

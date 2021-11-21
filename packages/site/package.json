@@ -18,6 +18,9 @@
     "gatsby": "^2.17.7",
     "gh-pages": "^2.1.1"
   },
+  "devDependencies": {
+    "lodash": "^4.17.21"
+  },
   "scripts": {
     "site:start": "npm run site:develop",
     "site:develop": "gatsby develop --open",
