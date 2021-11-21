@@ -16,6 +16,10 @@ module.exports = {
     description: 'The Grammar of Graphics in JavaScript',
     siteUrl: 'https://f2.antv.vision',
     githubUrl: repository.url,
+    versions: {
+      '3.8.x': 'https://f2.antv.vision',
+      '4.0.x': 'https://f2-next.antv.vision'
+    },
     navs: [
       {
         slug: 'docs/tutorial/getting-started',
