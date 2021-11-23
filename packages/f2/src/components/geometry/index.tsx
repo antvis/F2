@@ -27,7 +27,8 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   startOnZero = false;
   // 是否连接空值
   connectNulls: boolean = false;
-
+  // 是否需要排序
+  sortable: boolean = false;
   attrController: AttrController;
 
   // 动画配置
@@ -122,7 +123,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
       chart.scale.adjustStartZero(y.scale);
     }
     // 饼图的scale调整，关闭nice
-    if(isPolar && transposed && adjust === 'stack') {
+    if (isPolar && transposed && adjust === 'stack') {
       const { y } = attrs;
       chart.scale.adjustPieScale(y.scale);
     }
@@ -256,12 +257,36 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const groupedArray = records.map((record) => record.children);
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
+    // 数据排序（非必须）
+    if(this.sortable) {
+      this._sortData(dataArray);
+    }
 
     // scale适配调整，主要是调整 y 轴是否从 0 开始 以及 饼图
     this._adjustScales();
 
     this.dataArray = dataArray;
     this.records = records;
+  }
+
+  _sortData(dataArray) {
+    const xScale = this.getXScale();
+    const { field, type } = xScale;
+    if (type !== 'identity' && xScale.values.length > 1) {
+      each(dataArray, (children) => {
+        children.sort((record1, record2) => {
+          if (type === 'timeCat') {
+            return (
+              toTimeStamp(record1[FIELD_ORIGIN][field]) - toTimeStamp(record2[FIELD_ORIGIN][field])
+            );
+          }
+          return (
+            xScale.translate(record1[FIELD_ORIGIN][field]) -
+            xScale.translate(record2[FIELD_ORIGIN][field])
+          );
+        });
+      });
+    }
   }
 
   _initEvent() {

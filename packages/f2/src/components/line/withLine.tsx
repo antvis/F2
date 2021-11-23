@@ -8,6 +8,7 @@ export default (View) => {
     getDefaultCfg() {
       return {
         geomType: 'line',
+        sortable: true,
       };
     }
 
