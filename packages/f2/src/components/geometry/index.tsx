@@ -257,23 +257,25 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     const groupedArray = records.map((record) => record.children);
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
-    // 数据排序（非必须）
-    if(this.sortable) {
-      this._sortData(dataArray);
-    }
 
     // scale适配调整，主要是调整 y 轴是否从 0 开始 以及 饼图
     this._adjustScales();
 
     this.dataArray = dataArray;
+
+    // 数据排序（非必须）
+    if (this.sortable) {
+      this._sortData(records);
+    }
+
     this.records = records;
   }
 
-  _sortData(dataArray) {
+  _sortData(records) {
     const xScale = this.getXScale();
     const { field, type } = xScale;
     if (type !== 'identity' && xScale.values.length > 1) {
-      each(dataArray, (children) => {
+      each(records, ({ children }) => {
         children.sort((record1, record2) => {
           if (type === 'timeCat') {
             return (
