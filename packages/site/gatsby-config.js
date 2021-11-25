@@ -1,4 +1,4 @@
-const { repository } = require('./package.json');
+const { repository, version } = require('./package.json');
 
 module.exports = {
   plugins: [
@@ -17,8 +17,9 @@ module.exports = {
     siteUrl: 'https://f2-next.antv.vision',
     githubUrl: repository.url,
     versions: {
-      '3.8.x': 'https://f2.antv.vision',
-      '4.0.x': 'https://f2-next.antv.vision',
+      [version]: 'https://f2-next.antv.vision',
+      '4.x': 'https://f2-next.antv.vision',
+      '3.x': 'https://f2.antv.vision',
     },
     navs: [
       {
