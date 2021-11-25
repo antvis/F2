@@ -22,13 +22,6 @@ class InjectTestComponent extends Component {
         interactionContext.doMove(-0.001 * i);
       }, i * 100);
     }
-
-    setTimeout(() => {
-      // expect: 这里播放动画
-      this.props.chart.setState({
-        zoomRange: [0, 0],
-      });
-    }, 1000);
   }
 }
 

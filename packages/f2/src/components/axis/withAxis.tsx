@@ -4,9 +4,15 @@ import equal from '../../base/equal';
 import Component from '../../base/component';
 import { Style, Tick, AxisProps } from './types';
 
+type BBox = {
+  height: number;
+  width: number;
+};
+
 export default (View) => {
   return class Axis extends Component<AxisProps> {
     style: Style = {};
+    maxBBox: BBox;
 
     constructor(props: AxisProps) {
       super(props);
@@ -60,8 +66,8 @@ export default (View) => {
       return scales.length > 0 ? 'x' : 'y';
     }
     // 获取ticks最大的宽高
-    getMaxBBox(ticks, style: Style) {
-      const { context } = this;
+    getMaxBBox(ticks, style: Style): BBox {
+      const { context, maxBBox } = this;
       const { measureText } = context;
       const { labelOffset } = style;
 
@@ -73,10 +79,22 @@ export default (View) => {
         width = Math.max(width, bbox.width);
         height = Math.max(height, bbox.height);
       });
-      return {
+
+      let bbox = {
         width: width + labelOffset,
         height: height + labelOffset,
       };
+
+      // 增量更新，以最大的宽高作为限制
+      if (maxBBox) {
+        bbox = {
+          height: Math.max(0, maxBBox.height - bbox.height),
+          width: Math.max(0, maxBBox.width - bbox.width),
+        };
+      }
+
+      this.maxBBox = bbox;
+      return bbox;
     }
 
     _getPosition() {
