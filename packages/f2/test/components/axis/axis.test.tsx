@@ -248,6 +248,7 @@ describe('Axis 轴', () => {
                 stroke: '#e8e8e8',
                 lineWidth: 1,
               },
+              labelOffset: '50px',
             }}
           />
           <Axis

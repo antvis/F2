@@ -1,4 +1,4 @@
-import { deepMix, isFunction, mix, each, clone } from '@antv/util';
+import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
@@ -132,10 +132,15 @@ export default (View) => {
         if (style[key] === null) {
           return;
         }
+        const styleValue = isFunction(style[key]) ? undefined : style[key]
 
-        this.style[key] = px2hd(
-          deepMix(clone(value), isFunction(style[key]) ? undefined : style[key])
-        );
+        if (isString(value) || isNumber(value)) {
+          this.style[key] = px2hd(styleValue) || value;
+        } else {
+          this.style[key] = px2hd(
+            deepMix(clone(value), styleValue)
+          );
+        }
       });
 
       return ticks.map((tick: Tick, index) => {
