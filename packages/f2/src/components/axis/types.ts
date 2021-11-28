@@ -28,9 +28,10 @@ export interface Style<Type = void> {
   label?: StyleText<Type>;
 }
 
-export interface StyleProps<Type = void> extends Omit<Style, 'label' | 'grid'> {
+export interface StyleProps<Type = void> extends Omit<Style, 'label' | 'grid' | 'labelOffset'> {
   label?: StyleText<Type> | LabelCallback<Type>;
   grid?: LineAttrs | GridCallBack;
+  labelOffset?: number | string;
 }
 
 interface Point {
