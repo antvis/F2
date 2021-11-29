@@ -1,4 +1,4 @@
-import { jsx } from '../../../';
+import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 import { TextAttrs } from '../../../types';
 

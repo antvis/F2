@@ -1,5 +1,5 @@
 import Component from './base/component';
-import { Children } from '.';
+import Children from './children';
 
 class Timeline extends Component {
   index: number;
