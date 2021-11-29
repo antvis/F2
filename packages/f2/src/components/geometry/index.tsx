@@ -1,8 +1,7 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject, includes } from '@antv/util';
+import { isFunction, each, upperFirst, mix, groupToMap, isObject } from '@antv/util';
 import Component from '../../base/component';
-import { group as arrayGroup, merge as arrayMerge, values } from '../../util/array';
+import { merge as arrayMerge } from '../../util/array';
 import * as Adjust from '../../adjust';
-import { Linear, Category } from '../../attr';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
@@ -75,7 +74,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }
 
     // zoomRange发生变化,records也需要重新计算
-    if(!equal(nextZoomRange, lastZoomRange)) {
+    if (!equal(nextZoomRange, lastZoomRange)) {
       this.records = null;
     }
   }

@@ -78,25 +78,12 @@ export default (View) => {
       return result;
     }
 
-    // 把 records 拍平
-    flatRecords() {
-      const { records } = this;
-      return records.reduce((prevRecords, record) => {
-        const { children } = record;
-        return prevRecords.concat(
-          children.reduce((prevPoints, child) => {
-            return prevPoints.concat(child.points);
-          }, [])
-        );
-      }, []);
-    }
-
     mapping() {
       const records = super.mapping();
       const { props, connectNulls: defaultConnectNulls } = this;
       const { coord, connectNulls = defaultConnectNulls } = props;
-      for (let i = 0, len = records.length; i < len; i++) {
-        const record = records[i];
+
+      return records.map((record) => {
         const { children } = record;
         const { size, color, shape, y } = children[0];
         const points = children;
@@ -105,10 +92,10 @@ export default (View) => {
         }
         const splitPoints = this.splitNulls(points, connectNulls);
 
-        record.children = splitPoints.map((points) => {
+        const newChildren = splitPoints.map((points) => {
           const [topPoints, bottomPoints] = isArray(y)
-          ? this.splitPoints(points)
-          : [points, undefined];
+            ? this.splitPoints(points)
+            : [points, undefined];
           return {
             size,
             color,
@@ -117,9 +104,12 @@ export default (View) => {
             bottomPoints,
           };
         });
-      }
 
-      return records;
+        return {
+          ...record,
+          children: newChildren,
+        };
+      });
     }
 
     render() {
