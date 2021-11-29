@@ -13,12 +13,16 @@ export default (View) => {
     chart: any;
     triggerRef: any;
 
+    constructor(props) {
+      super(props);
+      // 创建ref
+      this.triggerRef = {};
+    }
+
     didMount() {
       const { context, props } = this;
       const { canvas } = context;
       const { onClick } = props;
-      // 创建ref
-      this.triggerRef = {};
 
       canvas.on('click', (ev) => {
         const { points } = ev;
@@ -93,7 +97,9 @@ export default (View) => {
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
-      return <View ref={this.triggerRef} points={points} theme={theme} coord={coord} {...props} />;
+      return (
+        <View triggerRef={this.triggerRef} points={points} theme={theme} coord={coord} {...props} />
+      );
     }
   };
 };
