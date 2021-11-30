@@ -1,3 +1,11 @@
+function delay(time) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+}
+
 const createContext = (title = '', { height = '225px', width = '300px' }: any = {}) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');
@@ -11,4 +19,4 @@ const createContext = (title = '', { height = '225px', width = '300px' }: any = 
   return context;
 };
 
-export { createContext };
+export { createContext, delay };

@@ -1,61 +1,22 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
-import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart, Component } from '../../../src';
-import { Interval, Axis, Legend, Tooltip, Line } from '../../../src/components';
-import { createContext } from '../../util';
-
-class Interaction {}
-
-class CustomInteraction extends Interaction {}
-
-class InjectTestComponent extends Component {
-  didMount() {
-    const interactionContext = this.props.chart.interaction.context;
-    window.interactionContext = interactionContext;
-    interactionContext.doZoom(0.5, 0.5, 1.5);
-
-    for (let i = 0; i <= 9; i++) {
-      setTimeout(() => {
-        // interactionContext.doZoom(0.5, 0.5, 1.5)
-        interactionContext.start();
-        interactionContext.doMove(-0.001 * i);
-      }, i * 100);
-    }
-  }
-}
+import { Canvas, Chart } from '../../../src';
+import { Axis, Line } from '../../../src/components';
+import { createContext, delay } from '../../util';
 
 describe('Interaction 交互', () => {
-  it.only('平移和缩放', async () => {
+  it('平移和缩放', async () => {
     const context = createContext('基础柱状图', {
-      width: '500px',
+      width: '350px',
       height: '300px',
     });
     const chartRef = { current: null };
     const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/KbnoL5QgL0/index.json');
     const data = await res.json();
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
-          coord={
-            {
-              // type: Polar,
-              // transposed: true,
-              // left: 100,
-              // top: 100,
-              // right: 100,
-              // bottom: 100,
-            }
-          }
-          scale={{
-            // genre: {},
-            reportDateTimestamp: {
-              range: [0, 1],
-              mask: 'MM-DD',
-            },
-          }}
           interactions={[
             {
               type: 'pan', // 平移
@@ -75,25 +36,28 @@ describe('Interaction 交互', () => {
             // }
           ]}
         >
-          {/* <Legend /> */}
-          <Axis field="reportDateTimestamp" type="timeCat" />
+          <Axis field="reportDateTimestamp" type="timeCat" mask="MM-DD" />
           <Axis field="rate" />
-          {/* <Axis field="genre" position="top"/> */}
-          {/* <Axis field="sold" position="right" /> */}
-          <Line
-            x="reportDateTimestamp"
-            y="rate"
-            color="codeType"
-            // adjust="stack"
-          />
-          <InjectTestComponent />
-          {/* <Tooltip /> */}
+          <Line x="reportDateTimestamp" y="rate" color="codeType" />
         </Chart>
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    const chart = chartRef.current;
+
+    const interactionContext = chart.interaction.context;
+    interactionContext.doZoom(0.5, 0.5, 1.5);
+
+    await delay(100);
+    interactionContext.start();
+    interactionContext.doMove(-0.008);
+
+    await delay(100);
+    expect(chart.coord.top).toBe(15);
+    expect(chart.coord.left).toBeCloseTo(41.96);
+    expect(chart.coord.bottom).toBeCloseTo(267.5);
   });
 });
