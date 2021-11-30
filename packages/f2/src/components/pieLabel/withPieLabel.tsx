@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { Component } from '../../index';
+import Component from '../../base/component';
 import { deepMix, toInteger, isArray } from '@antv/util';
 import { isInBBox } from '../../util';
 
