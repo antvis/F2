@@ -12,7 +12,6 @@ type BBox = {
 export default (View) => {
   return class Axis extends Component<AxisProps> {
     style: Style = {};
-    maxBBox: BBox;
 
     constructor(props: AxisProps) {
       super(props);
@@ -67,7 +66,7 @@ export default (View) => {
     }
     // 获取ticks最大的宽高
     getMaxBBox(ticks, style: Style): BBox {
-      const { context, maxBBox } = this;
+      const { context } = this;
       const { measureText } = context;
       const { labelOffset } = style;
 
@@ -80,20 +79,10 @@ export default (View) => {
         height = Math.max(height, bbox.height);
       });
 
-      let bbox = {
+      const bbox = {
         width: width + labelOffset,
         height: height + labelOffset,
       };
-
-      // 增量更新，以最大的宽高作为限制
-      if (maxBBox) {
-        bbox = {
-          height: Math.max(0, maxBBox.height - bbox.height),
-          width: Math.max(0, maxBBox.width - bbox.width),
-        };
-      }
-
-      this.maxBBox = bbox;
       return bbox;
     }
 
@@ -132,14 +121,12 @@ export default (View) => {
         if (style[key] === null) {
           return;
         }
-        const styleValue = isFunction(style[key]) ? undefined : style[key]
+        const styleValue = isFunction(style[key]) ? undefined : style[key];
 
         if (isString(value) || isNumber(value)) {
           this.style[key] = px2hd(styleValue) || value;
         } else {
-          this.style[key] = px2hd(
-            deepMix(clone(value), styleValue)
-          );
+          this.style[key] = px2hd(deepMix(clone(value), styleValue));
         }
       });
 
@@ -182,8 +169,8 @@ export default (View) => {
 
     // 主要是计算coord的布局
     updateCoord() {
-      const { props, context } = this;
-      const { visible, style, chart, coord } = props;
+      const { props } = this;
+      const { visible, chart, coord } = props;
       if (visible === false) {
         return;
       }

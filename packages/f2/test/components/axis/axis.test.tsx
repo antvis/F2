@@ -209,6 +209,7 @@ describe('Axis 轴', () => {
                 }
                 return cfg;
               },
+              labelOffset: '8px',
             }}
           />
           <Line x="index" y="value" color="#2FC25B" />

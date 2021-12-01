@@ -100,7 +100,6 @@ class Chart extends Component implements IChart, InteractionMixin {
     const {
       style: nextStyle,
       data: nextData,
-      coord: nextCoord,
       scale: nextScale,
       interactions: nextInteractions,
     } = nextProps;
@@ -118,11 +117,6 @@ class Chart extends Component implements IChart, InteractionMixin {
       coordController.updateLayout(this.layout);
     }
 
-    // willReceiveProps 一定会触发render，
-    // render 时要重置 coord 范围，重置后需要让所有子组件都重新render
-    // 所以这里不比较是否有差异，每次都新建，让所有子组件重新render
-    this.coord = coordController.create(nextCoord, this.layout);
-
     if (nextData !== lastData) {
       scaleController.changeData(nextData);
     }
@@ -131,6 +125,13 @@ class Chart extends Component implements IChart, InteractionMixin {
     if (!equal(nextScale, lastScale)) {
       scaleController.update(nextScale);
     }
+  }
+
+  willUpdate() {
+    const { coordController, props } = this;
+    // render 时要重置 coord 范围，重置后需要让所有子组件都重新render
+    // 所以这里不比较是否有差异，每次都新建，让所有子组件重新render
+    this.coord = coordController.create(props.coord, this.layout);
   }
 
   private getStyle(props, context) {
