@@ -1,14 +1,10 @@
 export default {
-  pkgs: [
-    "graphic",
-    "f2",
-    "react",
-  ],
+  pkgs: ['graphic', 'f2', 'react', 'my'],
   cjs: {
-    type: "babel",
+    type: 'babel',
   },
   esm: {
-    type: "babel",
+    type: 'babel',
   },
   runtimeHelpers: true,
   lessInBabelMode: true,

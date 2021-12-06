@@ -7,13 +7,16 @@ import Timeline from './timeline';
 import Canvas from './canvas';
 import Chart from './chart';
 
+import { jsx as createElement } from './jsx';
+
 export * from './components';
 export { jsx, render } from './jsx';
-export { Children, Component, Timeline, Canvas, Chart };
+export { Children, createElement, Component, Timeline, Canvas, Chart };
 
 // F2 namespace
 const F2 = {
   Children,
+  createElement,
   Component,
   Timeline,
   Canvas,

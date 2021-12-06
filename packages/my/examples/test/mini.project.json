@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "beforeCompile": "npm run beforeCompile"
+  },
+  "enableAppxNg": true,
+  "enableNodeModuleBabelTransform": true,
+  "node_modules_es6_whitelist": ["d3-hierarchy", "@antv/f2"]
+}
