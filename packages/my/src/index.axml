@@ -1,0 +1,10 @@
+<canvas
+  a:if="{{$pageId >= 0}}"
+  id="f2-canvas-{{$pageId}}-{{$id}}"
+  class="f2-canvas"
+  width="{{width}}"
+  height="{{height}}"
+  onTouchStart="touchStart"
+  onTouchMove="touchMove"
+  onTouchEnd="touchEnd"
+/>
