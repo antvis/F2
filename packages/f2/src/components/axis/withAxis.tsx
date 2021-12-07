@@ -1,4 +1,4 @@
-import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
+import { deepMix, isFunction, mix, each, clone, isString, isNumber, isNil } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import Component from '../../base/component';
@@ -167,6 +167,41 @@ export default (View) => {
       });
     }
 
+    _getBaseline() {
+      const { coord, offset, position } = this.props;
+      if (!position) {
+        return;
+      }
+      const dimType = this._getDimType();
+      const otherDim = dimType === 'x' ? 'y' : 'x';
+
+      if (isNil(offset)) {
+        let defaultBaseline = 0;
+        switch (position) {
+          case 'left':
+            defaultBaseline = coord.left;
+            break;
+          case 'top':
+            defaultBaseline = coord.top;
+            break;
+          case 'right':
+            defaultBaseline = coord.right;
+            break;
+          case 'bottom':
+            defaultBaseline = coord.bottom;
+            break;
+        }
+        return defaultBaseline;
+      }
+
+      const normalizedBaseline = {
+        [otherDim]: offset,
+        [dimType]: 0,
+      };
+
+      return coord.convertPoint(normalizedBaseline)[otherDim];
+    }
+
     // 主要是计算coord的布局
     updateCoord() {
       const { props } = this;
@@ -209,6 +244,7 @@ export default (View) => {
 
       const ticks = this.getTicks();
       const position = this._getPosition();
+      const baseline = this._getBaseline();
       const dimType = this._getDimType();
 
       return (
@@ -219,6 +255,7 @@ export default (View) => {
           coord={coord}
           position={position}
           dimType={dimType}
+          baseline={baseline}
         />
       );
     }

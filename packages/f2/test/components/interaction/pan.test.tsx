@@ -13,7 +13,7 @@ describe('Interaction 交互', () => {
     const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/KbnoL5QgL0/index.json');
     const data = await res.json();
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
         <Chart
           ref={chartRef}
           data={data}
@@ -57,7 +57,7 @@ describe('Interaction 交互', () => {
 
     await delay(100);
     expect(chart.coord.top).toBe(15);
-    expect(chart.coord.left).toBeCloseTo(41.96);
+    expect(chart.coord.left).toBeCloseTo(43.139);
     expect(chart.coord.bottom).toBeCloseTo(267.5);
   });
 });

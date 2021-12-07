@@ -545,4 +545,90 @@ describe('Axis 轴', () => {
     const canvas = new type(props);
     canvas.render();
   });
+
+  it('轴基准线', async () => {
+    const context = createContext('轴基准线 - 四象限图 - X/Y 都是线性数据');
+    const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/6HodecuhvM/scatter.json');
+    const data = await res.json();
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart
+          data={data}
+          scale={{
+            height: { min: -220, max: 220 },
+            weight: { min: -120, max: 120 },
+          }}
+        >
+          <Axis
+            field="weight"
+            offset={0.5}
+            position="left"
+            style={{ line: { fill: '#000', stroke: '#000' } }}
+          />
+          <Axis
+            field="height"
+            offset={0.5}
+            position="bottom"
+            style={{ line: { fill: '#000', stroke: '#000' }, grid: (text) => {
+              if(text === '0') {
+                return {
+                  stroke: '#000'
+                }
+              }
+              return {}
+            } }}
+          />
+          <Point x="height" y="weight" color="#A3ABBF" size={10} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+  });
+
+  it('轴基准线', async () => {
+    const context = createContext('轴基准线 - 四象限图 - X/Y 线性和非线性');
+    const data = [
+      { genre: 'Sports', sold: 275 },
+      { genre: 'Strategy', sold: 115 },
+      { genre: 'Action', sold: 120 },
+      { genre: 'Shooter', sold: 350 },
+      { genre: 'Other', sold: 150 }
+    ]
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart
+          data={data}
+          scale={{
+            sold: { min: -400, max: 400 },
+          }}
+        >
+          <Axis
+            field="sold"
+            offset={0.5}
+            position="left"
+            style={{ line: { fill: '#000', stroke: '#000' } }}
+          />
+          <Axis
+            field="genre"
+            offset={0.5}
+            position="bottom"
+            style={{ line: { fill: '#000', stroke: '#000' }, grid: (text) => {
+              if(text === 'Action') {
+                return {
+                  stroke: '#000'
+                }
+              }
+              return {}
+            } }}
+          />
+          <Interval x="genre" y="sold" color="genre" size={10} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+  });
 });

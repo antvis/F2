@@ -55,6 +55,9 @@ export interface RectProps<Type = void> {
   coord?: RectCord;
   style?: Style<Type>;
   animation?: any;
+  position?: 'right' | 'left' | 'top' | 'bottom';
+  dimType?: 'x' | 'y';
+  baseline?: number;
 }
 
 export interface PolarProps {
@@ -110,5 +113,9 @@ export interface AxisProps {
    * note: 作为 `<Chart />` 子元素时将自动注入
    */
   zoomRange?: [number, number];
+  /**
+   * 轴的位置偏移量，范围是[0~1]
+   */
+  offset?: number;
   [key: string]: any; // TODO
 }

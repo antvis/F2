@@ -3,8 +3,8 @@ import { RectProps } from '../types';
 import { TextAttrs } from '../../../types';
 
 export default (props: RectProps<'bottom'>) => {
-  const { ticks, coord, style, animation } = props;
-  const { left, right, bottom } = coord;
+  const { ticks, coord, style, animation, baseline } = props;
+  const { left, right } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
   return (
@@ -51,9 +51,9 @@ export default (props: RectProps<'bottom'>) => {
         <line
           attrs={{
             x1: left,
-            y1: bottom,
+            y1: baseline,
             x2: right,
-            y2: bottom,
+            y2: baseline,
             ...line,
           }}
         />

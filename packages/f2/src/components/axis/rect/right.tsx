@@ -2,8 +2,8 @@ import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 
 export default (props: RectProps) => {
-  const { ticks, coord, style } = props;
-  const { top, right, bottom } = coord;
+  const { ticks, coord, style, baseline } = props;
+  const { top, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
   return (
@@ -47,9 +47,9 @@ export default (props: RectProps) => {
       {line ? (
         <line
           attrs={{
-            x1: right,
+            x1: baseline,
             y1: top,
-            x2: right,
+            x2: baseline,
             y2: bottom,
             ...line,
           }}
