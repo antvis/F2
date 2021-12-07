@@ -32,7 +32,7 @@ class Animation {
     return new Animator(element, animation);
   }
 
-  play(container, onAnimationEnd) {
+  play(container, onAnimationEnd?) {
     const { canvas } = this;
     const animators: Animator[] = [];
     let maxDuration = 0;

@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "@antv/adjust": "~0.1.1",
+    "@antv/event-emitter": "^0.1.2",
     "@antv/f2-graphic": "^0.0.2-alpha.0",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
@@ -28,13 +29,7 @@
     "d3-interpolate": "~2.0.1",
     "fecha": "^2.3.3"
   },
-  "devDependencies": {
-    "babel-plugin-module-resolver": "^4.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
-  },
+  "devDependencies": {},
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {

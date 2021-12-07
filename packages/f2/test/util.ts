@@ -1,8 +1,6 @@
 function delay(time) {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
+    setTimeout(resolve, time);
   });
 }
 
