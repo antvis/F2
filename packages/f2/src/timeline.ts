@@ -5,17 +5,6 @@ class Timeline extends Component {
   index: number;
   delay: number;
 
-  static find(children) {
-    if (!children) return null;
-    const elements = Children.toArray(children);
-    for (let i = 0, len = elements.length; i < len; i++) {
-      const element = elements[i];
-      if (element && element.component && element.component.constructor === Timeline) {
-        return element.component;
-      }
-    }
-  }
-
   constructor(props) {
     super(props);
     const { delay, start = 0, children } = props;
@@ -27,7 +16,19 @@ class Timeline extends Component {
     };
   }
 
-  next() {
+  didMount() {
+    const { context } = this;
+    const { root } = context;
+    root.on('animationEnd', this.next);
+  }
+
+  didUnmount() {
+    const { context } = this;
+    const { root } = context;
+    root.off('animationEnd', this.next);
+  }
+
+  next = () => {
     const { state, props } = this;
     const { index, count, delay } = state;
     const { loop } = props;
@@ -39,10 +40,8 @@ class Timeline extends Component {
           index: next,
         });
       }, delay || 0);
-      return true;
     }
-    return false;
-  }
+  };
 
   render() {
     const { state, props } = this;

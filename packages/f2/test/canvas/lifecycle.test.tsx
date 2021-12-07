@@ -1,40 +1,46 @@
 import { jsx, Canvas, Component } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 const context = createContext();
 
+const methodCallback = jest.fn((method: string, params?) => method);
+
 class Test extends Component {
-  didMount() {
-    console.log('Test didMount');
+  willMount() {
+    methodCallback('componentWillMount');
   }
 
-  shouldUpdate() {
-    console.log('Test shouldUpdate');
+  didMount() {
+    methodCallback('componentDidMount');
+  }
+
+  shouldUpdate(nextProps) {
+    methodCallback('componentShouldUpdate', nextProps);
     return true;
   }
 
   willReceiveProps(nextProps) {
-    console.log('Test willReceiveProps, nextProps:', nextProps);
+    methodCallback('componentWillReceiveProps', nextProps);
   }
 
   willUpdate() {
-    console.log('Test willUpdate');
+    methodCallback('componentWillUpdate');
   }
 
   didUpdate() {
-    console.log('Test didUpdate');
+    methodCallback('componentDidUpdate');
   }
 
   willUnmount() {
-    console.log('Test willUnmount');
+    methodCallback('componentWillUnmount');
   }
 
   didUnmount() {
-    console.log('Test didUnmount');
+    methodCallback('componentDidUnmount');
   }
 
   render() {
+    methodCallback('componentRender');
     const { props } = this;
-    console.log('Test render');
 
     const { width = 0 } = props;
     return (
@@ -49,7 +55,7 @@ class Test extends Component {
         animation={{
           appear: {
             easing: 'linear',
-            duration: 300,
+            duration: 30,
             property: ['width'],
             start: {
               width: 0,
@@ -58,7 +64,7 @@ class Test extends Component {
           },
           update: {
             easing: 'linear',
-            duration: 300,
+            duration: 30,
             property: ['width'],
           },
         }}
@@ -68,38 +74,42 @@ class Test extends Component {
 }
 
 class TestContainer extends Component {
+  willMount() {
+    methodCallback('containerWillMount');
+  }
+
   didMount() {
-    console.log('TestContainer didMount');
+    methodCallback('containerDidMount');
   }
 
   shouldUpdate() {
-    console.log('TestContainer shouldUpdate');
+    methodCallback('containerShouldUpdate');
     return true;
   }
 
   willReceiveProps(nextProps) {
-    console.log('TestContainer willReceiveProps, nextProps:', nextProps);
+    methodCallback('containerWillReceiveProps', nextProps);
   }
 
   willUpdate() {
-    console.log('TestContainer willUpdate');
+    methodCallback('containerWillUpdate');
   }
 
   didUpdate() {
-    console.log('TestContainer didUpdate');
+    methodCallback('containerDidUpdate');
   }
 
   willUnmount() {
-    console.log('TestContainer willUnmount');
+    methodCallback('containerWillUnmount');
   }
 
   didUnmount() {
-    console.log('TestContainer didUnmount');
+    methodCallback('containerDidUnmount');
   }
 
   render() {
+    methodCallback('containerRender');
     const { props } = this;
-    console.log('TestContainer render');
 
     const { children } = props;
     return children;
@@ -107,9 +117,9 @@ class TestContainer extends Component {
 }
 
 describe('Canvas', () => {
-  it('生命周期', () => {
+  it('生命周期', async () => {
     const ref = { current: null };
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={2}>
         <TestContainer>
           <Test width={10} ref={ref} />
@@ -118,52 +128,103 @@ describe('Canvas', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
 
-    setTimeout(() => {
-      console.log('调用update');
-      canvas.update(
-        (
-          <Canvas context={context} pixelRatio={2}>
-            <TestContainer>
-              <Test width={20} ref={ref} />
-            </TestContainer>
-          </Canvas>
-        ).props
-      );
-    }, 1000);
+    expect(methodCallback.mock.calls).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+    ]);
 
-    setTimeout(() => {
-      console.log('调用forceUpdate');
-      ref.current.forceUpdate();
-    }, 2000);
+    function pickMethod(calls) {
+      return calls.map(([method]) => [method]);
+    }
 
-    setTimeout(() => {
-      console.log('无动画更新');
-      canvas.update(
-        (
-          <Canvas context={context} pixelRatio={2}>
-            <TestContainer animate={false}>
-              <Test width={30} ref={ref} />
-            </TestContainer>
-          </Canvas>
-        ).props
-      );
-    }, 3000);
-    // const testComponent = canvas.component.components;
+    await delay(50);
+    canvas.update(
+      (
+        <Canvas context={context} pixelRatio={1}>
+          <TestContainer>
+            <Test width={20} ref={ref} />
+          </TestContainer>
+        </Canvas>
+      ).props
+    );
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+    ]);
+    expect(methodCallback.mock.calls[15]).toEqual(['componentShouldUpdate', { width: 20 }]);
+    expect(methodCallback.mock.calls[16]).toEqual(['componentWillReceiveProps', { width: 20 }]);
 
-    // expect(context.canvas.width).toBe(359);
-    // expect(context.canvas.height).toBe(400);
+    await delay(50);
+    ref.current.forceUpdate();
+    await delay(10);
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+    ]);
 
-    // expect(testComponent).toBeInstanceOf(Test);
+    await delay(50);
+    canvas.update(
+      (
+        <Canvas context={context} pixelRatio={2}>
+          <TestContainer animate={false}>
+            <Test width={30} ref={ref} />
+          </TestContainer>
+        </Canvas>
+      ).props
+    );
 
-    // canvas.render();
-
-    // // @ts-ignore
-    // const rect = testComponent.container._attrs.children[0];
-    // expect(rect._attrs.type).toBe('rect');
-    // expect(rect._attrs.attrs.fill).toBe('red');
+    await delay(50);
+    expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
   });
 });
