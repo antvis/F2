@@ -6,7 +6,7 @@ const SHAPE_MAP = {};
 const INDEX = '_INDEX';
 
 function getComparer(compare) {
-  return function (left, right) {
+  return function(left, right) {
     const result = compare(left, right);
     return result === 0 ? left[INDEX] - right[INDEX] : result;
   };
@@ -50,7 +50,7 @@ export default {
     }
 
     children.sort(
-      getComparer(function (obj1, obj2) {
+      getComparer(function(obj1, obj2) {
         return obj1.get('zIndex') - obj2.get('zIndex');
       })
     );
@@ -108,8 +108,8 @@ export default {
       item._attrs.aria = aria;
     }
 
-    if (type === 'text' && canvas && canvas.get('fontFamily')) {
-      item._attrs.attrs.fontFamily = item._attrs.attrs.fontFamily || canvas.get('fontFamily');
+    if (type === 'text' && canvas && canvas.get('fontFamily') && !item._attrs.attrs.fontFamily) {
+      item.attr('fontFamily', canvas.get('fontFamily'));
     }
 
     const clip = item._attrs.attrs.clip;
