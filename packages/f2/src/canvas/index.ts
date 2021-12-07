@@ -73,17 +73,18 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
       style: customStyle,
     } = props;
 
+    const theme = px2hd(deepMix({}, defaultTheme, customTheme))
+
     // 创建G的canvas
     const canvas = createCanvas({
       context,
       pixelRatio,
+      fontFamily: theme.fontFamily,
       width,
       height,
     });
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
-
-    const theme = px2hd(deepMix({}, defaultTheme, customTheme));
 
     const style = px2hd({
       left: 0,
