@@ -36,7 +36,7 @@ const renderChart = (Component) => {
   return container;
 };
 
-describe.skip('Guide ', () => {
+describe('Guide ', () => {
   it('image & text', () => {
     const container = renderChart(
       <Chart data={data}>
@@ -127,28 +127,43 @@ describe.skip('Guide ', () => {
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
         {data.map((item) => {
-          return <PointGuide records={[{ genre: item.genre, sold: 'min' }]} color="#262626" />;
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'min' }]}
+              style={{ stroke: '#262626' }}
+            />
+          );
         })}
         {data.map((item) => {
-          return <PointGuide records={[{ genre: item.genre, sold: 'median' }]} color="#FF6797" />;
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'median' }]}
+              style={{ stroke: '#FF6797' }}
+            />
+          );
         })}
         {data.map((item) => {
-          return <PointGuide records={[{ genre: item.genre, sold: 'max' }]} color="#82DC95" />;
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'max' }]}
+              style={{ stroke: '#82DC95' }}
+            />
+          );
         })}
       </Chart>
     );
 
     const GuideY1 =
       container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY1).toBe(285);
     const GuideY2 =
       container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY2).toBe(150);
     const GuideY3 =
       container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY3).toBe(15);
   });
 
@@ -158,28 +173,37 @@ describe.skip('Guide ', () => {
         {/* 折线 */}
         <Line x="genre" y="sold" color="type" />
         {data.map((item, index) => {
-          return <PointGuide records={[{ genre: item.genre, sold: '100%' }]} color="green" />;
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: '100%' }]}
+              style={{ stroke: 'green' }}
+            />
+          );
         })}
         {data.map((item, index) => {
-          return <PointGuide records={[{ genre: item.genre, sold: '50%' }]} color="red" />;
+          return (
+            <PointGuide records={[{ genre: item.genre, sold: '50%' }]} style={{ stroke: 'red' }} />
+          );
         })}
         {data.map((item, index) => {
-          return <PointGuide records={[{ genre: item.genre, sold: '0%' }]} color="blue" />;
+          return (
+            <PointGuide records={[{ genre: item.genre, sold: '0%' }]} style={{ stroke: 'blue' }} />
+          );
         })}
       </Chart>
     );
 
     const GuideY1 =
       container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY1).toBe(15);
     const GuideY2 =
       container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY2).toBe(150);
     const GuideY3 =
       container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
-        .attrs.y;
+        .children[0]._attrs.attrs.y;
     expect(GuideY3).toBe(285);
   });
 });
