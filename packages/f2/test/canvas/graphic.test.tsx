@@ -42,12 +42,11 @@ describe('Canvas', () => {
   it('图形绘制', () => {
     const ref = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={2}>
+      <Canvas context={context} pixelRatio={1}>
         <View />
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
   });

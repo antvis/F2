@@ -27,7 +27,7 @@ class Text extends Shape<TextProp> {
       lineWidth: 0,
       lineCount: 1,
       fontSize: 12,
-      fontFamily: 'sans-serif',
+      fontFamily: '',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontVariant: 'normal',
