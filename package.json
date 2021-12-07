@@ -50,7 +50,7 @@
     "clean": "lerna clean",
     "dev": "npm run test-watch",
     "build": "father build",
-    "build-watch": "father build -w",
+    "build-watch": "DEV=true father build -w",
     "test": "jest",
     "test-cov": "jest --coverage",
     "test-live": "npm run test-watch packages",
