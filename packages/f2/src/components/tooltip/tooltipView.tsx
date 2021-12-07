@@ -11,6 +11,10 @@ const defaultStyle = {
     lineWidth: '2px',
   },
   showTooltipMarker: true,
+  tooltipMarkerStyle: {
+    fill: '#fff',
+    lineWidth: '3px',
+  },
   background: {
     radius: '2px',
     fill: 'rgba(0, 0, 0, 0.65)',
@@ -111,6 +115,7 @@ export default class TooltipView extends Component {
       crosshairsStyle,
       crosshairsType = defaultStyle.crosshairsType,
       snap = defaultStyle.snap,
+      tooltipMarkerStyle = defaultStyle.tooltipMarkerStyle,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
@@ -128,10 +133,9 @@ export default class TooltipView extends Component {
                     x,
                     y,
                     r: 3,
-                    fill: '#fff',
-                    lineWidth: '3px',
                     stroke: color,
                     ...shape,
+                    ...tooltipMarkerStyle,
                   }}
                 />
               );
