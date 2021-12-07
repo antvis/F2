@@ -28,8 +28,8 @@ interface IF2Canvas {
 }
 
 function measureText(canvas, px2hd) {
-  return (text: string, font) => {
-    const { fontSize, fontFamily, fontStyle, fontWeight, fontVariant } = font;
+  return (text: string, font?) => {
+    const { fontSize, fontFamily, fontStyle, fontWeight, fontVariant } = font || {};
     const shape = canvas.addShape('text', {
       attrs: {
         x: 0,
@@ -73,7 +73,7 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
       style: customStyle,
     } = props;
 
-    const theme = px2hd(deepMix({}, defaultTheme, customTheme))
+    const theme = px2hd(deepMix({}, defaultTheme, customTheme));
 
     // 创建G的canvas
     const canvas = createCanvas({
