@@ -1,4 +1,3 @@
-import { isFunction } from '@antv/util';
 import Component from '../../base/component';
 import { jsx } from '../../jsx';
 
@@ -85,7 +84,7 @@ export default class TooltipView extends Component {
   }
   render() {
     const { props } = this;
-    const { records, chart, coord, layout, xFormatter, yFormatter } = props;
+    const { records, chart, coord, layout } = props;
     const { top: layoutTop } = layout;
     if (!records || !records.length) return null;
     const {
@@ -180,8 +179,6 @@ export default class TooltipView extends Component {
               {records.map((record) => {
                 const yValue = yScale.getText(record[yField]);
                 const xValue = xScale.getText(record[xField]);
-                const formatX = isFunction(xFormatter) ? xFormatter(xValue) : xValue;
-                const formatY = isFunction(yFormatter) ? yFormatter(yValue) : yValue;
                 return (
                   <group
                     style={{
@@ -207,14 +204,14 @@ export default class TooltipView extends Component {
                       attrs={{
                         ...defaultStyle.nameStyle,
                         ...nameStyle,
-                        text: formatY ? `${formatX}${joinString}` : formatX,
+                        text: yValue ? `${xValue}${joinString}` : xValue,
                       }}
                     />
                     <text
                       attrs={{
                         ...defaultStyle.valueStyle,
                         ...valueStyle,
-                        text: formatY,
+                        text: yValue,
                       }}
                     />
                   </group>
