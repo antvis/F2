@@ -11,6 +11,10 @@ const defaultStyle = {
     lineWidth: '2px',
   },
   showTooltipMarker: true,
+  tooltipMarkerStyle: {
+    fill: '#fff',
+    lineWidth: '3px',
+  },
   background: {
     radius: '2px',
     fill: 'rgba(0, 0, 0, 0.65)',
@@ -97,6 +101,7 @@ export default class TooltipView extends Component {
     const firstRecord = records[0];
     const { x, y, xField, yField, origin: firstOrigin } = firstRecord;
     const yScale = chart.getScale(yField);
+    const xScale = chart.getScale(xField);
     const {
       background,
       showTitle,
@@ -110,6 +115,7 @@ export default class TooltipView extends Component {
       crosshairsStyle,
       crosshairsType = defaultStyle.crosshairsType,
       snap = defaultStyle.snap,
+      tooltipMarkerStyle = defaultStyle.tooltipMarkerStyle,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
@@ -127,10 +133,9 @@ export default class TooltipView extends Component {
                     x,
                     y,
                     r: 3,
-                    fill: '#fff',
-                    lineWidth: '3px',
                     stroke: color,
                     ...shape,
+                    ...tooltipMarkerStyle,
                   }}
                 />
               );
@@ -176,7 +181,8 @@ export default class TooltipView extends Component {
               }}
             >
               {records.map((record) => {
-                const value = yScale.getText(record[yField]);
+                const yValue = yScale.getText(record[yField]);
+                const xValue = xScale.getText(record[xField]);
                 return (
                   <group
                     style={{
@@ -202,14 +208,14 @@ export default class TooltipView extends Component {
                       attrs={{
                         ...defaultStyle.nameStyle,
                         ...nameStyle,
-                        text: value ? `${record[xField]}${joinString}` : record[xField],
+                        text: yValue ? `${xValue}${joinString}` : xValue,
                       }}
                     />
                     <text
                       attrs={{
                         ...defaultStyle.valueStyle,
                         ...valueStyle,
-                        text: value,
+                        text: yValue,
                       }}
                     />
                   </group>
