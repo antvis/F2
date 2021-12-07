@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 
 const context = createContext('动态排序', { width: '300px', height: '500px' });
 
@@ -34,9 +34,10 @@ const data = [
 ];
 
 describe('Chart', () => {
-  it('Chart render', () => {
+  it('Chart render', async () => {
+    const intervalRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={2}>
+      <Canvas context={context} pixelRatio={1}>
         {/* <Chart
           data={sort(data[1])}
           coord={{
@@ -47,7 +48,7 @@ describe('Chart', () => {
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
         </Chart> */}
-        <Timeline delay={200}>
+        <Timeline delay={0}>
           {data.map((item) => {
             return (
               <Chart
@@ -58,7 +59,7 @@ describe('Chart', () => {
               >
                 <Axis field="genre" />
                 <Axis field="sold" />
-                <Interval x="genre" y="sold" color="genre" />
+                <Interval ref={intervalRef} x="genre" y="sold" color="genre" />
                 {item.map((record) => {
                   return (
                     <TextGuide
@@ -82,8 +83,17 @@ describe('Chart', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
+
+    const interval = intervalRef.current;
+    expect(interval.records.length).toBe(5);
+    expect(interval.records[0].children[0].x).toBeCloseTo(87.9);
+    expect(interval.records[0].children[0].y).toBeCloseTo(422.25);
+
+    await delay(1000);
+    expect(interval.records.length).toBe(5);
+    expect(interval.records[0].children[0].x).toBeCloseTo(97.28);
+    expect(interval.records[0].children[0].y).toBeCloseTo(422.25);
   });
 });

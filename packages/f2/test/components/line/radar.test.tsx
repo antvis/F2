@@ -1,5 +1,3 @@
-/* @jsx React.createElement */
-import React from 'react';
 import { jsx, Canvas, Chart, Area } from '../../../src';
 import { Line, Point, Axis, Legend } from '../../../src/components';
 import { createContext } from '../../util';

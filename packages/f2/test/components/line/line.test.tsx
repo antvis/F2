@@ -1,11 +1,6 @@
-/* @jsx React.createElement */
 import { Rect } from '../../../src/coord';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactCanvas from '../../../../react/src/index';
-import { jsx, Component, Canvas, Chart, Timeline } from '../../../src';
-import { Line, Point, Axis, Tooltip, Legend } from '../../../src/components';
-import { createContext } from '../../util';
+import { jsx, Component, Canvas, Chart, Line, Point, Axis, Tooltip, Legend } from '../../../src';
+import { createContext, delay } from '../../util';
 
 const data = [
   {
@@ -962,16 +957,9 @@ describe('折线图', () => {
     });
   });
 
-  it.skip('动态折线图', () => {
+  it('动态折线图', async () => {
+    const context = createContext('动态折线图');
     const data = [];
-    const { offsetWidth } = document.body;
-    const height = offsetWidth * 0.75;
-
-    class TestComponent extends Component {
-      constructor(props) {
-        super(props);
-      }
-    }
 
     // 添加数据，模拟数据，可以指定当前时间的偏移的秒
     function getRecord(offset?) {
@@ -981,12 +969,13 @@ describe('折线图', () => {
         value: Math.random() + 10,
       };
     }
-
+    data.push(getRecord(-3));
     data.push(getRecord(-2));
     data.push(getRecord(-1));
-    data.push(getRecord(null));
 
-    class ChartComponent extends React.Component<any, any> {
+    const lineRef = { current: null };
+
+    class DynamicLine extends Component {
       constructor(props) {
         super(props);
         this.state = {
@@ -994,51 +983,64 @@ describe('折线图', () => {
         };
       }
 
-      componentDidMount() {
+      didMount() {
         // 更新数据
-        for (let i = 40; i > 0; i--) {
+        for (let i = 0; i <= 40; i++) {
           setTimeout(() => {
             const { data } = this.state;
-            this.setState({ data: [].concat(data, getRecord(0)) });
-          }, i * 1000);
+            this.setState({ data: [].concat(data, getRecord(i)) });
+          }, i * 30);
         }
       }
 
       render() {
         const { data } = this.state;
         return (
-          <div className="">
-            <ReactCanvas width={offsetWidth} height={height}>
-              <Chart
-                data={data}
-                scale={{
-                  time: {
-                    type: 'timeCat',
-                  },
-                  value: {
-                    min: 0,
-                  },
-                }}
-              >
-                <Line x="time" y="value" />
-                <Axis field="value" />
-                <Axis field="time" />
-                <TestComponent />
-              </Chart>
-            </ReactCanvas>
-          </div>
+          <Chart
+            data={data}
+            scale={{
+              time: {
+                type: 'timeCat',
+              },
+              value: {
+                min: 0,
+              },
+            }}
+          >
+            <Line ref={lineRef} x="time" y="value" />
+            <Axis field="value" />
+            <Axis field="time" />
+          </Chart>
         );
       }
     }
+    const { props } = (
+      <Canvas context={context} animate={false}>
+        <DynamicLine />
+      </Canvas>
+    );
 
-    const appDOM = document.createElement('div');
-    appDOM.id = 'app';
-    document.body.appendChild(appDOM);
+    const canvas = new Canvas(props);
+    canvas.render();
 
-    const Element = <ChartComponent />;
+    const container = lineRef.current.container;
+    const polyline = container
+      .get('children')[0]
+      .get('children')[0]
+      .get('children')[0]
+      .get('children')[0];
 
-    // For debug
-    ReactDOM.render(Element, document.getElementById('app'));
+    expect(polyline.get('attrs').points.length).toBe(3);
+
+    await delay(80);
+
+    const newPolyline = container
+      .get('children')[0]
+      .get('children')[0]
+      .get('children')[0]
+      .get('children')[0];
+
+    expect(newPolyline.get('attrs').points.length > 3).toBe(true);
   });
 
   describe('其他折线图', () => {

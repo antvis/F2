@@ -12,14 +12,3 @@ import { jsx as createElement } from './jsx';
 export * from './components';
 export { jsx, render } from './jsx';
 export { Children, createElement, Component, Timeline, Canvas, Chart };
-
-// F2 namespace
-const F2 = {
-  Children,
-  createElement,
-  Component,
-  Timeline,
-  Canvas,
-  Chart,
-};
-export default F2;

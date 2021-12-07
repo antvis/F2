@@ -1,7 +1,6 @@
 import { createCanvas } from '@antv/f2-graphic';
 import { deepMix } from '@antv/util';
 import Component from '../base/component';
-import Timeline from '../timeline';
 import Layout from '../base/layout';
 import equal from '../base/equal';
 import Animation from './animation';
@@ -9,6 +8,7 @@ import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from './updater';
 import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
+import EE from '@antv/event-emitter';
 
 interface ChartProps {
   context?: CanvasRenderingContext2D;
@@ -21,7 +21,6 @@ interface ChartProps {
   px2hd?: any;
   theme?: any;
   style?: any;
-  onAnimationEnd?: () => void;
 }
 
 interface IF2Canvas {
@@ -58,6 +57,8 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
   animation?: Animation;
   layout: Layout;
   theme: any;
+
+  private _ee: EE;
 
   constructor(props: ChartProps) {
     super(props);
@@ -122,6 +123,7 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
     this.animate = animate;
     this.animation = animation;
     this.theme = theme;
+    this._ee = new EE();
   }
 
   renderComponents(components: Component[]) {
@@ -142,20 +144,20 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
   }
 
   draw() {
-    const { canvas, animate, animation, props, children } = this;
+    const { canvas, animate } = this;
     if (animate === false) {
       canvas.draw();
       return;
     }
-    // 查找timeline
-    const timeline = Timeline.find(children);
-    const { onAnimationEnd } = props;
+    this.play();
+  }
+
+  play() {
+    const { canvas, animation } = this;
     // 执行动画
     animation.abort();
     animation.play(canvas, () => {
-      if (!timeline || !timeline.next()) {
-        onAnimationEnd && onAnimationEnd();
-      }
+      this.emit('animationEnd');
     });
   }
 
@@ -170,6 +172,18 @@ class Canvas extends Component<ChartProps> implements IF2Canvas {
   destroy() {
     const { canvas } = this;
     canvas.destroy();
+  }
+
+  on(type: string, listener) {
+    this._ee.on(type, listener);
+  }
+
+  emit(type: string, event?: any) {
+    this._ee.emit(type, event);
+  }
+
+  off(type: string, listener?) {
+    this._ee.off(type, listener);
   }
 }
 

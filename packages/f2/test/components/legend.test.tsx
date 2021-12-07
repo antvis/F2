@@ -1,4 +1,3 @@
-import React from 'react';
 import { clone, values } from '@antv/util';
 import { jsx, Component, Canvas, Chart, Tooltip } from '../../src';
 import { Line, Axis, Legend } from '../../src/components';
@@ -50,15 +49,14 @@ describe('图例', () => {
                   },
                   pressend: (items, records, legend) => {
                     legend.setItems(items);
-                  }
+                  },
                 }}
               />
             </Chart>
           </Canvas>
         );
 
-        // @ts-ignore
-        const canvas = new type(props);
+        const canvas = new Canvas(props);
         canvas.render();
       });
   });
