@@ -91,7 +91,7 @@ describe('Chart', () => {
     expect(interval.records[0].children[0].x).toBeCloseTo(88.2);
     expect(interval.records[0].children[0].y).toBeCloseTo(422.25);
 
-    await delay(1000);
+    await delay(2000);
     expect(interval.records.length).toBe(5);
     expect(interval.records[0].children[0].x).toBeCloseTo(97.57);
     expect(interval.records[0].children[0].y).toBeCloseTo(422.25);

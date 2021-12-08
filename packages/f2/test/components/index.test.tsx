@@ -1,7 +1,7 @@
-import { Treemap } from '../../src/components';
+import { Geometry } from '../../src/components';
 
 describe('Components', () => {
   it('Component', () => {
-    expect(Treemap).not.toBe(null);
+    expect(Geometry).not.toBe(null);
   });
 });

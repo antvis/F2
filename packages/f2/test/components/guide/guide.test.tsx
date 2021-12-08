@@ -1,260 +1,208 @@
-import { jsx } from '../../../src';
-import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart } from '../../../src';
+import { jsx } from '../../../src/jsx';
 import {
-  LineGuide,
-  TextGuide,
-  PointGuide,
-  ArcGuide,
-  RectGuide,
-  Interval,
-  Line,
   Axis,
-  Point,
+  Line,
+  withGuide,
+  ImageGuide,
+  PointGuide,
+  TextGuide,
+  LineGuide,
 } from '../../../src/components';
+import { Canvas, Chart } from '../../../src';
 import { createContext } from '../../util';
+// import data from '../../fund-charts/test/data/managerData'
 
 const data = [
-  { type: 'a', genre: 'Sports', sold: 5 },
-  { type: 'a', genre: 'Strategy', sold: 10 },
-  { type: 'a', genre: 'Action', sold: 20 },
-  { type: 'a', genre: 'Shooter', sold: 20 },
-  { type: 'a', genre: 'Other', sold: 40 },
-  { type: 'b', genre: 'Sports', sold: 5 },
-  { type: 'b', genre: 'Strategy', sold: 10 },
-  { type: 'b', genre: 'Action', sold: 20 },
-  { type: 'b', genre: 'Shooter', sold: 20 },
-  { type: 'b', genre: 'Other', sold: 40 },
+  { genre: 'Sports', sold: 275, type: 'a' },
+  { genre: 'Strategy', sold: 115, type: 'a' },
+  { genre: 'Action', sold: 120, type: 'a' },
+  { genre: 'Shooter', sold: 350, type: 'a' },
+  { genre: 'Other', sold: 150, type: 'a' },
 ];
 
-describe('Guide', () => {
-  it('TextGuide', () => {
-    const context = createContext('TextGuide');
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Interval
-            x="genre"
-            y="sold"
-            color="genre"
-            // adjust="stack"
-          />
-          {data.map((item) => {
-            const { sold } = item;
-            return (
-              <TextGuide
-                records={[item]}
-                content={sold + '个'}
-                style={{
-                  fill: '#000',
-                  fontSize: '20px',
-                }}
-              />
-            );
-          })}
-        </Chart>
-      </Canvas>
+const renderChart = (Component) => {
+  const context = createContext();
+  const { type, props } = (
+    <Canvas height={300} width={300} context={context} animate={false}>
+      {Component}
+    </Canvas>
+  );
+
+  const chart = new Canvas(props);
+  chart.render();
+
+  const container = chart.container;
+  return container;
+};
+
+describe('Guide ', () => {
+  it('image & text', () => {
+    const container = renderChart(
+      <Chart data={data}>
+        {/* 折线 */}
+        <Line x="genre" y="sold" color="type" />
+
+        {/* 文字Guide */}
+        {data.map((item) => {
+          const { sold } = item;
+          return (
+            <TextGuide
+              records={[item]}
+              onClick={(ev) => {
+                console.log('ev: ', ev.points);
+              }}
+              content={sold + '个'}
+              attrs={{
+                fill: '#000',
+                fontSize: '24px',
+              }}
+              offsetY={-20}
+              offsetX={-15}
+            />
+          );
+        })}
+
+        {/* 图片Guide */}
+        {data.map((item, key) => {
+          return (
+            <ImageGuide
+              records={[item]}
+              onClick={(ev) => {
+                console.log('ev: ', ev.points);
+              }}
+              src="https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png"
+              attrs={{
+                height: 24,
+                width: 24,
+              }}
+              offsetY={-4}
+            />
+          );
+        })}
+      </Chart>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
+    // 10个图例 和1条线
+    expect(container._attrs.children[0]._attrs.children.length).toBe(11);
   });
 
-  it('LineGuide', async () => {
-    const context = createContext('LineGuide');
-    const res = await fetch('https://gw.alipayobjects.com/os/antfincdn/m6tXpvS56l/guide-line.json');
-    const data = await res.json();
+  it('point', () => {
+    const container = renderChart(
+      <Chart data={data}>
+        {/* 折线 */}
+        <Line x="genre" y="sold" color="type" />
+        {data.map((item) => {
+          return <PointGuide records={[item]} />;
+        })}
+      </Chart>
+    );
+    expect(container._attrs.children[0]._attrs.children.length).toBe(6);
+  });
+  it('line', () => {
+    const container = renderChart(
+      <Chart data={data}>
+        {/* 折线 */}
+        <Line x="genre" y="sold" color="type" />
+        {data.map((item) => {
+          return (
+            <LineGuide
+              records={[
+                { genre: item.genre, sold: 'min' },
+                { genre: item.genre, sold: item.sold },
+              ]}
+              offsetY={[60, 0]}
+            />
+          );
+        })}
+      </Chart>
+    );
+    expect(container._attrs.children[0]._attrs.children.length).toBe(6);
+  });
+  it('tag', () => {});
 
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="month" tickCount={2} />
-          <Axis field="PM" />
-          <Line x="month" y="PM" />
-          {data.map((item) => {
-            return (
-              <LineGuide
-                records={[
-                  { month: 'min', PM: 25 },
-                  { month: 'max', PM: 25 },
-                ]}
-                style={{
-                  stroke: '#d0502d',
-                  lineWidth: 2,
-                  lineCap: 'round',
-                }}
-              />
-            );
-          })}
-        </Chart>
-      </Canvas>
+  it('使用min、max、median', () => {
+    const container = renderChart(
+      <Chart data={data}>
+        {/* 折线 */}
+        <Line x="genre" y="sold" color="type" />
+        {data.map((item) => {
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'min' }]}
+              style={{ stroke: '#262626' }}
+            />
+          );
+        })}
+        {data.map((item) => {
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'median' }]}
+              style={{ stroke: '#FF6797' }}
+            />
+          );
+        })}
+        {data.map((item) => {
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: 'max' }]}
+              style={{ stroke: '#82DC95' }}
+            />
+          );
+        })}
+      </Chart>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
+    const GuideY1 =
+      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY1).toBe(285);
+    const GuideY2 =
+      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY2).toBe(150);
+    const GuideY3 =
+      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY3).toBe(15);
   });
 
-  it('PointGuide', () => {
-    const context = createContext('PointGuide');
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Interval
-            x="genre"
-            y="sold"
-            color="genre"
-            // adjust="stack"
-          />
-          {data.map((item) => {
-            const { sold } = item;
-            return (
-              <PointGuide
-                records={[item]}
-                content={sold + '个'}
-                style={{
-                  r: 6,
-                }}
-              />
-            );
-          })}
-        </Chart>
-      </Canvas>
+  it('使用百分比字符串代表位置', () => {
+    const container = renderChart(
+      <Chart data={data} theme={{ padding: [0, 0, 0, 0] }}>
+        {/* 折线 */}
+        <Line x="genre" y="sold" color="type" />
+        {data.map((item, index) => {
+          return (
+            <PointGuide
+              records={[{ genre: item.genre, sold: '100%' }]}
+              style={{ stroke: 'green' }}
+            />
+          );
+        })}
+        {data.map((item, index) => {
+          return (
+            <PointGuide records={[{ genre: item.genre, sold: '50%' }]} style={{ stroke: 'red' }} />
+          );
+        })}
+        {data.map((item, index) => {
+          return (
+            <PointGuide records={[{ genre: item.genre, sold: '0%' }]} style={{ stroke: 'blue' }} />
+          );
+        })}
+      </Chart>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
-  });
-
-  it('ArcGuide', () => {
-    const context = createContext('ArcGuide');
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart
-          data={[
-            {
-              x: '1',
-              y: 85,
-            },
-          ]}
-          coord={{
-            type: Polar,
-            transposed: true,
-            innerRadius: 0.8,
-          }}
-          scale={{
-            y: {
-              max: 100,
-              min: 0,
-            },
-          }}
-        >
-          <ArcGuide
-            records={[
-              {
-                x: 0,
-                y: 0,
-              },
-              {
-                x: 1,
-                y: 99.98,
-              },
-            ]}
-            style={{
-              lineWidth: 11,
-              stroke: '#ccc',
-            }}
-          />
-          <Interval x="x" y="y" />
-        </Chart>
-      </Canvas>
-    );
-
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
-  });
-
-  it('RectGuide', () => {
-    const context = createContext('RectGuide');
-    const data = [
-      {
-        date: '2018-05-14',
-        pv: 709,
-      },
-      {
-        date: '2018-05-15',
-        pv: 936,
-      },
-      {
-        date: '2018-05-16',
-        pv: 627,
-      },
-      {
-        date: '2018-05-17',
-        pv: 872,
-      },
-      {
-        date: '2018-05-18',
-        pv: 824,
-      },
-      {
-        date: '2018-05-19',
-        pv: 258,
-      },
-      {
-        date: '2018-05-20',
-        pv: 59,
-      },
-      {
-        date: '2018-05-21',
-        pv: 880,
-      },
-      {
-        date: '2018-05-22',
-        pv: 995,
-      },
-      {
-        date: '2018-05-23',
-        pv: 842,
-      },
-    ];
-
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Line x="date" y="pv" />
-          <Point x="date" y="pv" />
-          <Axis field="date" tickCount={3} />
-          <Axis field="pv" tickCount={5} />
-          <RectGuide
-            records={[
-              { date: '2018-05-19', pv: 'max' },
-              { date: '2018-05-20', pv: 'min' },
-            ]}
-            style={{
-              fillOpacity: 0.1,
-              fill: '#fa541c',
-            }}
-          />
-          <TextGuide
-            records={[{ date: '2018-05-19', pv: 'max' }]}
-            content={'weekend'}
-            style={{
-              textAlign: 'start',
-              textBaseline: 'top',
-              fill: '#fa541c',
-            }}
-            offsetX={-8}
-          />
-        </Chart>
-      </Canvas>
-    );
-
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
+    const GuideY1 =
+      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY1).toBe(15);
+    const GuideY2 =
+      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY2).toBe(150);
+    const GuideY3 =
+      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0]._attrs.attrs.y;
+    expect(GuideY3).toBe(285);
   });
 });

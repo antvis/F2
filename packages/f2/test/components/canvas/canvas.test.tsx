@@ -1,7 +1,10 @@
 import { jsx } from '../../../src/jsx';
 import { createContext } from '../../util';
 import { Canvas, Component } from '../../../src';
-const context = createContext();
+const context = createContext('', {
+  width: '300px',
+  height: '300px',
+});
 
 class Test extends Component {
   render() {
@@ -19,26 +22,24 @@ class Test extends Component {
   }
 }
 
-describe.skip('Canvas', () => {
+describe('Canvas', () => {
   it('初始化', () => {
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Test />
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas: Canvas = new type(props);
+    const canvas = new Canvas(props);
     const testComponent = canvas.props.children.type;
 
-    expect(context.canvas.width).toBe(200);
-    expect(context.canvas.height).toBe(150);
+    expect(context.canvas.width).toBe(300);
+    expect(context.canvas.height).toBe(300);
 
     expect(testComponent).toBe(Test);
 
     canvas.render();
 
-    // @ts-ignore
     const rect = canvas.children.component.container._attrs.children[0];
     expect(rect._attrs.type).toBe('rect');
     expect(rect._attrs.attrs.fill).toBe('red');

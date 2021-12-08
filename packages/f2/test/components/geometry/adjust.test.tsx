@@ -1,7 +1,6 @@
 import { jsx } from '../../../src/jsx';
-import Geometry from '../../../src/components/geometry';
 import { createContext } from '../../util';
-import { Canvas, Chart, Interval, Axis } from '../../../src';
+import { Canvas, Chart, Interval } from '../../../src';
 const context = createContext();
 
 const data = [
@@ -18,72 +17,64 @@ const data = [
   { genre: 'Other', sold: -190, type: 'b' },
 ];
 
-class GeometryTest extends Geometry {
-  render() {
-    const mappedArray = this.mapping();
-    return (
-      <group>
-        {mappedArray.map((dataArray) => {
-          return dataArray.map((item) => {
-            const { x, y } = item;
-            return (
-              <circle
-                attrs={{
-                  x,
-                  y,
-                  r: '20px',
-                  fill: '#000',
-                }}
-              />
-            );
-          });
-        })}
-      </group>
-    );
-  }
-}
-
-describe.skip('adjust', () => {
-  let canvas;
-  const chartRef = { current: null };
-  const componentRef = { current: null };
-
-  it('geometry render', (done) => {
-    const { type, props } = (
-      <Canvas context={context} height={197}>
-        <Chart ref={chartRef} data={data}>
-          {/* <Axis field="genre"/>
-          <Axis field="sold"/> */}
-          <Interval
-            ref={componentRef}
-            position="genre*sold"
-            color="type"
-            // adjust="dodge"
-          />
+describe('adjust', () => {
+  const intervalRef = { current: null };
+  it('default', async () => {
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Interval ref={intervalRef} x="genre" y="sold" color="type" />
         </Chart>
       </Canvas>
     );
 
-    // @ts-ignore
-    canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
 
-    setTimeout(() => {
-      const container = componentRef.current.container;
-      const group = container.get('children')[0];
-      expect(group.get('children').length).toBe(10);
+    const interval = intervalRef.current;
 
-      expect(group.get('children')[0].get('type')).toBe('rect');
-      expect(group.get('children')[0].get('attrs').x).toBeCloseTo(52.01);
-      expect(group.get('children')[0].get('attrs').y).toBeCloseTo(140.25);
-      expect(group.get('children')[0].get('attrs').width).toBeCloseTo(16.45);
-      expect(group.get('children')[0].get('attrs').height).toBeCloseTo(-57.40625);
+    expect(interval.records.length).toBe(2);
+    expect(interval.records[0].children[0].x).toBeCloseTo(42);
+    expect(interval.records[0].children[0].y).toBeCloseTo(94.22);
+  });
 
-      expect(group.get('children')[5].get('attrs').x).toBeCloseTo(27.34);
-      expect(group.get('children')[5].get('attrs').y).toBeCloseTo(140.25);
-      expect(group.get('children')[5].get('attrs').width).toBeCloseTo(16.45);
-      expect(group.get('children')[5].get('attrs').height).toBeCloseTo(-57.40625);
-      done();
-    }, 600);
+  it('stack', async () => {
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Interval ref={intervalRef} x="genre" y="sold" color="type" adjust="stack" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    const interval = intervalRef.current;
+
+    expect(interval.records.length).toBe(2);
+    expect(interval.records[0].children[0].x).toBeCloseTo(42);
+    expect(interval.records[0].children[0].y).toBeInstanceOf(Array);
+    expect(interval.records[0].children[0].y[0]).toBeCloseTo(161.25);
+    expect(interval.records[0].children[0].y[1]).toBeCloseTo(105.39);
+  });
+
+  it('dodge', async () => {
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Interval ref={intervalRef} x="genre" y="sold" color="type" adjust="dodge" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    const interval = intervalRef.current;
+
+    expect(interval.records.length).toBe(2);
+    expect(interval.records[0].children[0].x).toBeCloseTo(31.88);
+    expect(interval.records[0].children[0].y).toBeCloseTo(94.22);
   });
 });

@@ -1,7 +1,7 @@
 import { clone, values } from '@antv/util';
-import { jsx, Component, Canvas, Chart, Tooltip } from '../../src';
-import { Line, Axis, Legend } from '../../src/components';
-import { createContext } from '../util';
+import { jsx, Component, Canvas, Chart, Tooltip } from '../../../src';
+import { Line, Axis, Legend } from '../../../src/components';
+import { createContext } from '../../util';
 
 const { offsetWidth } = document.body;
 const height = offsetWidth * 0.75;

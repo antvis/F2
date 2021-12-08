@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Axis, Interval } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 const context = createContext();
 
 const data = [
@@ -16,10 +16,12 @@ const data = [
 ];
 
 describe('Chart', () => {
-  it('Chart render', () => {
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={2}>
+  it('Chart render', async () => {
+    const chartRef = { current: null };
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart
+          ref={chartRef}
           data={data}
           coord={
             {
@@ -28,9 +30,6 @@ describe('Chart', () => {
             }
           }
           scale={{}}
-          // style={{
-          //   left: 50,
-          // }}
         >
           <Axis field="genre" />
           <Axis field="sold" />
@@ -39,29 +38,34 @@ describe('Chart', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
+    const chart = chartRef.current;
 
-    setTimeout(() => {
-      console.log('调用update');
-      canvas.update(
-        (
-          <Canvas context={context} pixelRatio={2}>
-            <Chart
-              data={data}
-              style={{
-                left: 50,
-                width: 100,
-              }}
-            >
-              <Axis field="genre" />
-              <Axis field="sold" />
-              <Interval x="genre" y="sold" color="genre" />
-            </Chart>
-          </Canvas>
-        ).props
-      );
-    }, 1000);
+    expect(chart.coord.left).toBeCloseTo(33.62);
+    expect(chart.coord.width).toBeCloseTo(251.38);
+
+    await delay(500);
+    canvas.update(
+      (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            ref={chartRef}
+            data={data}
+            style={{
+              left: 50,
+              width: 100,
+            }}
+          >
+            <Axis field="genre" />
+            <Axis field="sold" />
+            <Interval x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      ).props
+    );
+
+    expect(chart.coord.left).toBeCloseTo(83.62);
+    expect(chart.coord.width).toBeCloseTo(51.38);
   });
 });
