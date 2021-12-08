@@ -104,9 +104,9 @@ export default (props: LineViewProps) => {
                     points: points.map((point) => {
                       return { x: point.x, y: point.y };
                     }),
-                    ...shape,
                     stroke: color,
                     lineWidth: size,
+                    ...shape,
                   }}
                   animation={deepMix({
                     update: {
