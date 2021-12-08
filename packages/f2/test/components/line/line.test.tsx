@@ -499,7 +499,20 @@ describe('折线图', () => {
                 />
                 <Axis field="value" tickCount={5} />
                 <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
-                {/* TODO(@buli): 动态 legend value */}
+                <Tooltip
+                  showCrosshairs
+                  crosshairsType="xy"
+                  crosshairsStyle={{
+                    stroke: "#1577FE",
+                    lineWidth: "1px",
+                    lineDash: [2, 2],
+                  }}
+                  custom
+                  showXTip
+                  showYTip
+                  xTipBackground={{ fill: '#1677FF', radius: '2px' }}
+                  yTipBackground={{ fill: '#1677FF', radius: '2px' }}
+                />
                 <Legend position="top" />
               </Chart>
             </Canvas>

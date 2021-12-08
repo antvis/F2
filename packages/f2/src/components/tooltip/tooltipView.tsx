@@ -1,3 +1,4 @@
+import { isFunction } from '@antv/util';
 import Component from '../../base/component';
 import { jsx } from '../../jsx';
 
@@ -49,6 +50,27 @@ const defaultStyle = {
   },
   layout: 'horizontal',
   snap: false,
+  xTipTextStyle: {
+    fontSize: 12,
+    fill: '#fff'
+  },
+  yTipTextStyle: {
+    fontSize: 12,
+    fill: '#fff'
+  },
+  xTipBackground: {
+    radius: '2px' as `${number}px`,
+    fill: 'rgba(0, 0, 0, 0.65)',
+    padding: ['6px', '10px'],
+    marginLeft: "-50%",
+  },
+  yTipBackground: {
+    radius: '2px' as `${number}px`,
+    fill: 'rgba(0, 0, 0, 0.65)',
+    padding: ['6px', '10px'],
+    marginLeft: "-100%",
+    marginTop: "-50%",
+  },
 };
 
 function directionEnabled(mode: string, dir: string) {
@@ -78,13 +100,15 @@ export default class TooltipView extends Component {
     }
     const { records, coord } = props;
     if (!records || !records.length) return null;
-    const firstRecord = records[0];
-    const { x } = firstRecord;
-    const { left: coordLeft, width: coordWidth } = coord;
-    const { width } = group.get('attrs');
-    const halfWidth = width / 2;
-    const moveX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - halfWidth);
-    itemsRef.current.moveTo(moveX, 0);
+    if (itemsRef.current) {
+      const firstRecord = records[0];
+      const { x } = firstRecord;
+      const { left: coordLeft, width: coordWidth } = coord;
+      const { width } = group.get('attrs');
+      const halfWidth = width / 2;
+      const moveX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - halfWidth);
+      itemsRef.current.moveTo(moveX, 0);
+    }
   }
   render() {
     const { props } = this;
@@ -116,14 +140,27 @@ export default class TooltipView extends Component {
       crosshairsType = defaultStyle.crosshairsType,
       snap = defaultStyle.snap,
       tooltipMarkerStyle = defaultStyle.tooltipMarkerStyle,
+      showXTip,
+      showYTip,
+      xTip,
+      yTip,
+      xTipTextStyle = defaultStyle.xTipTextStyle,
+      yTipTextStyle = defaultStyle.yTipTextStyle,
+      xTipBackground = defaultStyle.xTipBackground,
+      yTipBackground = defaultStyle.yTipBackground,
+      custom = false,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
       ...defaultStyle.itemMarkerStyle,
     };
 
+    const xTipText = xScale.getText(records[0][xField]);
+    const yTipText = yScale.getText(records[0][yField]);
+
     return (
       <group>
+        {/* 辅助点 */}
         {snap
           ? records.map((item) => {
               const { x, y, color, shape } = item;
@@ -148,7 +185,9 @@ export default class TooltipView extends Component {
             top: layoutTop,
           }}
         >
-          <group
+          {/* 非自定义模式时显示的文本信息 */}
+          {!custom &&
+            <group
             ref={this.itemsRef}
             style={{
               ...defaultStyle.background,
@@ -223,6 +262,8 @@ export default class TooltipView extends Component {
               })}
             </group>
           </group>
+          }
+          {/* 辅助线 */}
           {showCrosshairs ? (
             <group>
               {directionEnabled(crosshairsType, 'x') ? (
@@ -258,6 +299,52 @@ export default class TooltipView extends Component {
             }}
           /> */}
         </group>
+        {/* X 轴辅助信息 */}
+        {showXTip &&
+          <group
+              style={{
+                left: x,
+                top: coordBottom,
+                ...defaultStyle.xTipBackground,
+                ...xTipBackground,
+              }}
+              attrs={{
+                ...defaultStyle.xTipBackground,
+                ...xTipBackground,
+              }}
+            >
+              <text
+                attrs={{
+                  ...defaultStyle.xTipTextStyle,
+                  ...xTipTextStyle,
+                  text: isFunction(xTip) ? xTip(xTipText) : xTipText,
+                }}
+              />
+          </group>
+        }
+        {/* Y 轴辅助信息 */}
+        {showYTip &&
+          <group
+            style={{
+              left: coordLeft,
+              top: y,
+              ...defaultStyle.yTipBackground,
+              ...yTipBackground,
+            }}
+            attrs={{
+              ...defaultStyle.yTipBackground,
+              ...yTipBackground,
+            }}
+          >
+            <text
+              attrs={{
+                ...defaultStyle.yTipTextStyle,
+                ...yTipTextStyle,
+                text: isFunction(yTip) ? yTip(yTipText) : yTipText,
+              }}
+            />
+          </group>
+        }
       </group>
     );
   }
