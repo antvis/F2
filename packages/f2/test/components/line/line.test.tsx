@@ -503,8 +503,8 @@ describe('折线图', () => {
                   showCrosshairs
                   crosshairsType="xy"
                   crosshairsStyle={{
-                    stroke: "#1577FE",
-                    lineWidth: "1px",
+                    stroke: '#1577FE',
+                    lineWidth: '1px',
                     lineDash: [2, 2],
                   }}
                   custom
@@ -997,13 +997,14 @@ describe('折线图', () => {
       }
 
       didMount() {
-        // 更新数据
-        for (let i = 0; i <= 40; i++) {
-          setTimeout(() => {
-            const { data } = this.state;
-            this.setState({ data: [].concat(data, getRecord(i)) });
-          }, i * 30);
-        }
+        setTimeout(() => {
+          const { data } = this.state;
+          let newData = [].concat(data);
+          for (let i = 0; i <= 10; i++) {
+            newData.push(getRecord(i));
+          }
+          this.setState({ data: newData });
+        }, 20);
       }
 
       render() {
@@ -1045,7 +1046,7 @@ describe('折线图', () => {
 
     expect(polyline.get('attrs').points.length).toBe(3);
 
-    await delay(200);
+    await delay(300);
 
     const newPolyline = container
       .get('children')[0]

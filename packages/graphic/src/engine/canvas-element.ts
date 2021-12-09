@@ -13,8 +13,11 @@ class CanvasElement extends EventEmit {
     super();
     this.context = ctx;
     // canvas实际的宽高 (width/height) * pixelRatio
-    this.width = 0;
-    this.height = 0;
+
+    // 有可能是 node canvas 创建的 context 对象
+    const canvas = ctx.canvas || {};
+    this.width = canvas.width || 0;
+    this.height = canvas.height || 0;
     this.style = {};
     this.currentStyle = {};
     this.attrs = {};

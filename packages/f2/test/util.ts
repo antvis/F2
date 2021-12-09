@@ -4,7 +4,7 @@ function delay(time) {
   });
 }
 
-const createContext = (title = '', { height = '225px', width = '300px' }: any = {}) => {
+const createContext = (title = '', { width = '300px', height = '225px' }: any = {}) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');
   titleEl.innerText = title + ':';

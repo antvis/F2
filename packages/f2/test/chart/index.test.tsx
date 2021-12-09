@@ -18,19 +18,9 @@ const data = [
 describe('Chart', () => {
   it('Chart render', async () => {
     const chartRef = { current: null };
-    const { props } = (
+    const { type, props } = (
       <Canvas context={context} pixelRatio={1}>
-        <Chart
-          ref={chartRef}
-          data={data}
-          coord={
-            {
-              // type: Polar,
-              // transposed: true,
-            }
-          }
-          scale={{}}
-        >
+        <Chart data={data} ref={chartRef}>
           <Axis field="genre" />
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
@@ -45,7 +35,9 @@ describe('Chart', () => {
     expect(chart.coord.left).toBeCloseTo(33.62);
     expect(chart.coord.width).toBeCloseTo(251.38);
 
-    await delay(500);
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+
     canvas.update(
       (
         <Canvas context={context} pixelRatio={1}>
@@ -67,5 +59,7 @@ describe('Chart', () => {
 
     expect(chart.coord.left).toBeCloseTo(83.62);
     expect(chart.coord.width).toBeCloseTo(51.38);
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });
