@@ -1,6 +1,6 @@
-import { jsx, compareRenderTree, render } from '../../src/jsx';
+import { jsx, compareRenderTree } from '../../src/jsx';
 
-describe.skip('compareRenderTree', () => {
+describe('compareRenderTree', () => {
   describe('null', () => {
     it('都为null', () => {
       const renderElement = compareRenderTree(null, null);
@@ -13,7 +13,7 @@ describe.skip('compareRenderTree', () => {
       const nextElement = null;
       const lastElement = <text />;
       const renderElement = compareRenderTree(nextElement, lastElement);
-      expect(renderElement.status).toBe('delete');
+      expect(renderElement).toBe(null);
     });
 
     it('存在子节点', () => {
@@ -23,7 +23,24 @@ describe.skip('compareRenderTree', () => {
           <text />
         </group>
       );
+      const renderElement = compareRenderTree(nextElement, lastElement);
+      expect(renderElement).toBe(null);
+    });
 
+    it('单节点-有动画', () => {
+      const nextElement = null;
+      const lastElement = <text animation={{ leave: {} }} />;
+      const renderElement = compareRenderTree(nextElement, lastElement);
+      expect(renderElement.status).toBe('delete');
+    });
+
+    it('存在子节点', () => {
+      const nextElement = null;
+      const lastElement = (
+        <group>
+          <text animation={{ leave: {} }} />
+        </group>
+      );
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.status).toBe('delete');
       expect(renderElement.props.children.status).toBe('delete');
@@ -37,10 +54,21 @@ describe.skip('compareRenderTree', () => {
 
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.length).toBe(2);
+      expect(renderElement[0]).toBe(null);
+      expect(renderElement[1].key).toBe('2');
+      expect(renderElement[1].status).toBe('appear');
+    });
+
+    it('一个节点存在key-有动画', () => {
+      const nextElement = <group key="2"></group>;
+      const lastElement = <group key="1" animation={{ leave: {} }}></group>;
+
+      const renderElement = compareRenderTree(nextElement, lastElement);
+      expect(renderElement.length).toBe(2);
       expect(renderElement[0].key).toBe('1');
       expect(renderElement[0].status).toBe('delete');
       expect(renderElement[1].key).toBe('2');
-      expect(renderElement[1].status).toBe(undefined);
+      expect(renderElement[1].status).toBe('appear');
     });
   });
 
@@ -79,18 +107,18 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
+      // 原对象
       expect(nextElement.props.children.length).toBe(2);
+
       expect(renderElement.props.children.length).toBe(2);
       expect(renderElement.props.children[0].type).toBe('text');
       expect(renderElement.props.children[0].status).toBe('update');
 
       // 是个数组
       expect(renderElement.props.children[1].length).toBe(2);
-      expect(renderElement.props.children[1][0].type).toBe('rect');
-      expect(renderElement.props.children[1][0].status).toBe('delete');
+      expect(renderElement.props.children[1][0]).toBe(null);
       expect(renderElement.props.children[1][1].type).toBe('text');
-      expect(renderElement.props.children[1][1].status).toBe(undefined);
+      expect(renderElement.props.children[1][1].status).toBe('appear');
     });
 
     it('空节点', () => {
@@ -108,7 +136,7 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
+      // 原对象
       expect(nextElement.props.children.length).toBe(2);
 
       expect(renderElement.props.children.length).toBe(3);
@@ -116,9 +144,8 @@ describe.skip('compareRenderTree', () => {
       expect(renderElement.props.children[0].status).toBe('update');
 
       expect(renderElement.props.children[1].type).toBe('text');
-      expect(renderElement.props.children[1].status).toBe(undefined);
-      expect(renderElement.props.children[2].type).toBe('rect');
-      expect(renderElement.props.children[2].status).toBe('delete');
+      expect(renderElement.props.children[1].status).toBe('appear');
+      expect(renderElement.props.children[2]).toBe(null);
     });
 
     it('新元素存在空节点', () => {
@@ -136,19 +163,17 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
+      // 原对象
       expect(nextElement.props.children.length).toBe(3);
 
-      expect(renderElement.props.children.length).toBe(4);
+      expect(renderElement.props.children.length).toBe(3);
       expect(renderElement.props.children[0].type).toBe('text');
       expect(renderElement.props.children[0].status).toBe('update');
 
       expect(renderElement.props.children[1]).toBe(null);
 
       expect(renderElement.props.children[2].type).toBe('text');
-      expect(renderElement.props.children[2].status).toBe(undefined);
-      expect(renderElement.props.children[3].type).toBe('rect');
-      expect(renderElement.props.children[3].status).toBe('delete');
+      expect(renderElement.props.children[2].status).toBe('appear');
     });
 
     it('1个到多个', () => {
@@ -164,14 +189,14 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
+      // 原对象
       expect(nextElement.props.children.length).toBe(2);
 
       expect(renderElement.props.children.length).toBe(2);
       expect(renderElement.props.children[0].type).toBe('text');
       expect(renderElement.props.children[0].status).toBe('update');
       expect(renderElement.props.children[1].type).toBe('text');
-      expect(renderElement.props.children[1].status).toBe(undefined);
+      expect(renderElement.props.children[1].status).toBe('appear');
     });
 
     it('多个到1个', () => {
@@ -187,13 +212,12 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
+      // 原对象
       expect(nextElement.props.children.type).toBe('text');
       expect(renderElement.props.children.length).toBe(2);
       expect(renderElement.props.children[0].type).toBe('text');
       expect(renderElement.props.children[0].status).toBe('update');
-      expect(renderElement.props.children[1].type).toBe('text');
-      expect(renderElement.props.children[1].status).toBe('delete');
+      expect(renderElement.props.children[1]).toBe(null);
     });
 
     it('不存在key map', () => {
@@ -232,8 +256,7 @@ describe.skip('compareRenderTree', () => {
         </group>
       );
       const renderElement = compareRenderTree(nextElement, lastElement);
-      // 不修改原对象
-      // @ts-ignore
+      // 原对象
       expect(nextElement.status).toBe(undefined);
       expect(nextElement.props.children.length).toBe(2);
 
@@ -241,8 +264,8 @@ describe.skip('compareRenderTree', () => {
       expect(renderElement.props.children.length).toBe(3);
       expect(renderElement.props.children[0].status).toBe('update');
       // 空为添加
-      expect(renderElement.props.children[1].status).toBe(undefined);
-      expect(renderElement.props.children[2].status).toBe('delete');
+      expect(renderElement.props.children[1].status).toBe('appear');
+      expect(renderElement.props.children[2]).toBe(null);
     });
 
     it('存在key map', () => {
@@ -263,10 +286,10 @@ describe.skip('compareRenderTree', () => {
       const renderElement = compareRenderTree(nextElement, lastElement);
       expect(renderElement.status).toBe('update');
       expect(renderElement.props.children.length).toBe(3);
+
       expect(renderElement.props.children[0].status).toBe('update');
-      // 空为添加
-      expect(renderElement.props.children[1].status).toBe(undefined);
-      expect(renderElement.props.children[2].status).toBe('delete');
+      expect(renderElement.props.children[1].status).toBe('appear');
+      expect(renderElement.props.children[2]).toBe(null);
     });
   });
 });

@@ -1,6 +1,6 @@
-import { jsx } from '../../src/jsx';
-import { createContext } from '../util';
-import { Canvas, Chart, Interval, Axis } from '../../src';
+import { jsx } from '../../../src/jsx';
+import { createContext } from '../../util';
+import { Canvas, Chart, Interval, Axis } from '../../../src';
 const context = createContext();
 
 const data = [
@@ -36,8 +36,7 @@ describe('Interval', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -52,8 +51,7 @@ describe('Interval', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });
