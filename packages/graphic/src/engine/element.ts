@@ -2,7 +2,7 @@ import { mix, isObject, isArray } from '@antv/util';
 import MatrixUtil from '../util/matrix';
 import Vector2 from '../util/vector2';
 import { parseStyle } from '../util/style-parse';
-import * as Array from '../util/array';
+import { remove as arrayRemove } from '../util/array';
 import { ElementAttrs } from '../types';
 
 const ALIAS_ATTRS_MAP = {
@@ -260,7 +260,7 @@ class Element<T extends ElementProp = ElementProp> {
     const parent = this.get('parent');
     if (parent) {
       const children = parent.get('children');
-      Array.remove(children, this);
+      arrayRemove(children, this);
     }
 
     return this;

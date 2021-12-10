@@ -1,5 +1,5 @@
 import JSX from './interface';
-import { extendMap, batch2hd } from '../util';
+import { extendMap, px2hd } from '../util';
 import { omit } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
@@ -14,8 +14,8 @@ function createNodeTree(element: any, container: any) {
   });
 
   // const { style, attrs } = props;
-  let style = batch2hd(props.style);
-  const attrs = batch2hd(props.attrs);
+  let style = px2hd(props.style);
+  const attrs = px2hd(props.attrs);
 
   // 文本要自动计算文本的宽高, TODO, 后面再优化
   if (type === 'text') {

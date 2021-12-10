@@ -1,6 +1,5 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject } from '@antv/util';
+import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
 import Component from '../../base/component';
-import { merge as arrayMerge } from '../../util/array';
 import * as Adjust from '../../adjust';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps } from './interface';
@@ -228,11 +227,11 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   }
 
   _updateStackRange(field, scale, dataArray) {
-    const mergeArray = arrayMerge(dataArray);
+    const flattenArray = flatten(dataArray);
     let min = Infinity;
     let max = -Infinity;
-    for (let i = 0, len = mergeArray.length; i < len; i++) {
-      const obj = mergeArray[i];
+    for (let i = 0, len = flattenArray.length; i < len; i++) {
+      const obj = flattenArray[i];
       const tmpMin = Math.min.apply(null, obj[field]);
       const tmpMax = Math.max.apply(null, obj[field]);
       if (tmpMin < min) {

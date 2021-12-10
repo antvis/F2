@@ -4,10 +4,8 @@ import {
   isNumber,
   isString,
   isArray,
-  isObject,
-  isFunction,
 } from '@antv/util';
-import * as ArrayUtil from './array';
+
 // 默认设置50
 let ONE_REM: number;
 try {
@@ -101,38 +99,6 @@ function extendMap(arr: any[], fn: Function) {
   return newArray;
 }
 
-// @ts-ignore
-const map = (children: any, fn: any) => {
-  if (!children) {
-    return fn(children);
-  }
-  if (isArray(children)) {
-    return children.map((child) => {
-      return map(child, fn);
-    });
-  }
-  return fn(children);
-};
-
-// components 和 children 需要是相同的2棵树
-// @ts-ignore
-function mapTwo(components, children, fn) {
-  if (!components) {
-    return fn(components, children);
-  }
-  if (isArray(components)) {
-    // 防止children为空的情况
-    children = children || [];
-    const len = Math.max(components.length, children.length);
-    const newComponents = [];
-    for (let i = 0; i < len; i++) {
-      newComponents.push(mapTwo(components[i], children[i], fn));
-    }
-    return newComponents;
-  }
-  return fn(components, children);
-}
-
 function toTimeStamp(value) {
   if (isString(value)) {
     if (value.indexOf('T') > 0) {
@@ -173,20 +139,11 @@ function getElementsByClassName(element, className) {
 }
 
 export {
-  isNumber,
-  isString,
-  isArray,
-  isObject,
-  isFunction,
   // px2hd 含义更清晰
   batch2hd as px2hd,
-  batch2hd,
   extendMap,
-  map,
-  mapTwo,
   parsePadding,
   toTimeStamp,
   isInBBox,
-  ArrayUtil,
   getElementsByClassName,
 };

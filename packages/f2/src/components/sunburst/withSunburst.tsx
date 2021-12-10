@@ -2,9 +2,9 @@ import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import { partition, hierarchy } from 'd3-hierarchy';
 import { Category } from '../../attr';
-import { isInBBox, isFunction } from '../../util';
+import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
-import { mix } from '@antv/util';
+import { mix, isFunction } from '@antv/util';
 import Coord from '../../coord';
 
 function rootParent(data) {
@@ -68,7 +68,7 @@ export default (View): any => {
         const { x0, x1, y0, y1 } = node;
         const rect = coord.convertRect({
           x: [x0, x1],
-          y: [y0, y1]
+          y: [y0, y1],
         });
         mix(node, rect);
         // 递归处理
