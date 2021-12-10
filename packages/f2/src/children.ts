@@ -1,5 +1,4 @@
 import { isArray, isNil } from '@antv/util';
-import { map } from './util';
 
 function cloneElement(element, props) {
   if (!element) return element;
@@ -10,6 +9,18 @@ function cloneElement(element, props) {
       ...props,
     },
   };
+}
+
+function map(children: any, fn: any) {
+  if (!children) {
+    return fn(children);
+  }
+  if (isArray(children)) {
+    return children.map((child) => {
+      return map(child, fn);
+    });
+  }
+  return fn(children);
 }
 
 function compareArray(

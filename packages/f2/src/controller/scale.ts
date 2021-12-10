@@ -1,5 +1,4 @@
-import { each, mix, isNil, isFunction, isNumber } from '@antv/util';
-import { values as arrayValues, getRange } from '../util/array';
+import { each, mix, isNil, isFunction, isNumber, valuesOfKey, getRange } from '@antv/util';
 import { registerTickMethod, Scale, getScale } from '@antv/scale';
 import CatTick from './scale/cat-tick';
 import LinearTick from './scale/linear-tick';
@@ -143,7 +142,7 @@ class ScaleController {
     if (!option) {
       return null;
     }
-    const values = option.values ? option.values : arrayValues(data, field);
+    const values = option.values ? option.values : valuesOfKey(data, field);
     const scaleOption = this._getOption({
       ...option,
       field,
@@ -191,7 +190,7 @@ class ScaleController {
       return null;
     }
     scale.change({
-      nice: false
+      nice: false,
     });
   }
 

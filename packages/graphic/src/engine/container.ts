@@ -1,5 +1,5 @@
 import { upperFirst, isArray } from '@antv/util';
-import * as Array from '../util/array';
+import { remove as arrayRemove } from '../util/array';
 import Shape from './shape';
 
 const SHAPE_MAP = {};
@@ -87,7 +87,7 @@ export default {
       const parent = item.get('parent');
       if (parent) {
         const descendants = parent.get('children');
-        Array.remove(descendants, item);
+        arrayRemove(descendants, item);
       }
       this._setEvn(item);
       children.push(item);

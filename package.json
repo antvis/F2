@@ -26,16 +26,10 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.8",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-transform-react-jsx": "^7.12.10",
-    "@babel/preset-env": "^7.12.10",
-    "@babel/preset-typescript": "^7.12.7",
     "@types/jest": "^26.0.20",
     "@types/jest-image-snapshot": "^4.3.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "babel-jest": "^26.6.3",
     "canvas-to-buffer": "^1.1.1",
     "eslint": "^7.32.0",
     "father": "^2.30.0",

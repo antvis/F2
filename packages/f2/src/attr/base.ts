@@ -1,6 +1,5 @@
 import { Scale, ScaleConfig } from '@antv/scale';
-import { mix, isFunction, isNil, isArray } from '@antv/util';
-import { values as arrayValues } from '../util/array';
+import { mix, isFunction, isNil, isArray, valuesOfKey } from '@antv/util';
 
 class Base {
   data: any;
@@ -14,7 +13,7 @@ class Base {
 
     const { scale, field, data } = this;
     if (!scale && data) {
-      const values = arrayValues(data, field);
+      const values = valuesOfKey(data, field);
       this.scale = this.createScale({ values, field });
     }
   }

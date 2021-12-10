@@ -1,14 +1,6 @@
-import {
-  each,
-  isString,
-  isNil,
-  isFunction,
-  isNumber,
-  upperFirst,
-} from '@antv/util';
+import { each, isString, isNil, isFunction, isNumber, isArray, upperFirst } from '@antv/util';
 import * as Attrs from '../attr';
 import equal from '../base/equal';
-import { isArray } from '../util';
 import ScaleController from './scale';
 
 type AttrOption = {
@@ -21,7 +13,7 @@ export type Attr = GroupAttr | 'x' | 'y';
 
 type AttrsRange = {
   [key: string]: any;
-}
+};
 
 const { Identity, Linear, Category } = Attrs;
 // 需要映射的属性名
@@ -55,7 +47,7 @@ class AttrController {
     if (isString(option)) {
       return {
         field: option,
-        type: 'category'
+        type: 'category',
       };
     }
 
@@ -64,7 +56,7 @@ class AttrController {
         return {
           type: 'identity',
           field: option,
-        }
+        };
       }
     }
 
@@ -141,7 +133,7 @@ class AttrController {
       ...option,
       data: this.scaleController.getData(),
       scale, // 默认使用数据字段的scale
-    }
+    };
 
     // Attr的默认类型和scale类型保持一致
     let AttrConstructor = scale.isLinear ? Linear : Category;
@@ -229,8 +221,8 @@ class AttrController {
 
     return {
       linearAttrs,
-      nonlinearAttrs
-    }
+      nonlinearAttrs,
+    };
   }
 }
 
