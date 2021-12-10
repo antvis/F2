@@ -79,19 +79,13 @@ class Canvas extends EventEmit {
     }
 
     if (context && canvas && !canvas.getContext) {
-      canvas.getContext = function () {
+      canvas.getContext = function() {
         return context;
       };
     }
-    let width = this.get('width');
-    if (!width) {
-      width = getWidth(canvas);
-    }
+    const width = this.get('width') || getWidth(canvas) || canvas.width;
 
-    let height = this.get('height');
-    if (!height) {
-      height = getHeight(canvas);
-    }
+    const height = this.get('height') || getHeight(canvas) || canvas.height;
 
     this.set('canvas', this);
     this.set('el', canvas);

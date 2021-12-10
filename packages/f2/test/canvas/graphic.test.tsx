@@ -1,5 +1,5 @@
 import { jsx, Canvas, Component } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 const context = createContext();
 
 function View() {
@@ -39,9 +39,9 @@ function View() {
 }
 
 describe('Canvas', () => {
-  it('图形绘制', () => {
+  it('图形绘制', async () => {
     const ref = { current: null };
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <View />
       </Canvas>
@@ -49,5 +49,8 @@ describe('Canvas', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
   });
 });
