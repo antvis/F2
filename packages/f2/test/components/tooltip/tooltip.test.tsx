@@ -19,6 +19,11 @@ const data = [
 
 describe('tooltip', () => {
   it('Tooltip render', () => {
+    const onChange = (records) => {
+      records.forEach((record) => {
+        record.value = null; // 使得tooltip只展示x轴信息
+      });
+    };
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <Chart
@@ -37,6 +42,7 @@ describe('tooltip', () => {
             // showTitle={true}
             // showItemMarker={true}
             showCrosshairs={true}
+            onChange={onChange}
           />
         </Chart>
       </Canvas>
