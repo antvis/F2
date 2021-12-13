@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Axis, Interval, Tooltip } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay, gestureSimulator } from '../../util';
 const context = createContext();
 
 const data = [
@@ -18,12 +18,8 @@ const data = [
 ];
 
 describe('tooltip', () => {
-  it('Tooltip render', () => {
-    const onChange = (records) => {
-      records.forEach((record) => {
-        record.value = null; // 使得tooltip只展示x轴信息
-      });
-    };
+  it('Tooltip render', async () => {
+    const onChangeMockCallback = jest.fn();
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <Chart
@@ -42,7 +38,7 @@ describe('tooltip', () => {
             // showTitle={true}
             // showItemMarker={true}
             showCrosshairs={true}
-            onChange={onChange}
+            onChange={onChangeMockCallback}
           />
         </Chart>
       </Canvas>
@@ -51,5 +47,9 @@ describe('tooltip', () => {
     // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(100);
+    await gestureSimulator(context.canvas, 'press', { clientX: 170, clientY: 21 });
+    expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
+    expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
   });
 });
