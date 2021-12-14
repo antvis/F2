@@ -1,5 +1,6 @@
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
+import { isFunction } from '@antv/util';
 
 export default (View) => {
   return class Tooltip extends Component {
@@ -33,11 +34,14 @@ export default (View) => {
 
     show(point) {
       const { props } = this;
-      const { chart } = props;
+      const { chart, onChange } = props;
       const records = chart.getSnapRecords(point);
       this.setState({
         records,
       });
+      if (isFunction(onChange)) {
+        onChange(records);
+      }
     }
 
     hide() {
