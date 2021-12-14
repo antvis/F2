@@ -32,6 +32,7 @@ describe('图例', () => {
               <Tooltip showCrosshairs snap />
               <Legend
                 position="bottom"
+                // position="left"
                 marker="square"
                 // 自定义图例样式
                 style={{

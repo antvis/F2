@@ -71,6 +71,25 @@ export default (View) => {
       };
     }
 
+    willMount() {
+      this._initItems();
+      const { props } = this;
+      const shape = renderShape(this, this.render(), false);
+      const { height, width } = shape.get('attrs');
+
+      const { position = 'top', chart } = props;
+      const isVertical = position === 'left' || position === 'right';
+      if (!isVertical) {
+        chart.layoutCoord(position, { width, height });
+        shape.remove();
+        return;
+      }
+      const maxItemWidth = this.getMaxItemWidth(shape);
+      shape.remove();
+      this.maxItemWidth = maxItemWidth;
+      chart.layoutCoord(position, { width: maxItemWidth, height });
+    }
+
     didMount() {
       this._initEvent();
     }
@@ -103,7 +122,8 @@ export default (View) => {
     }
 
     getItems() {
-      return this.state.items;
+      const { items } = this.state;
+      return items?.length ? items : (this.getOriginItems() || []);
     }
 
     setItems(items) {
@@ -126,24 +146,6 @@ export default (View) => {
         }
       });
       return maxItemWidth;
-    }
-
-    willMount() {
-      this._initItems();
-      const { props } = this;
-      const shape = renderShape(this, this.render(), false);
-      const { height, width } = shape.get('attrs');
-
-      const { position = 'top', chart } = props;
-      const isVertical = position === 'left' || position === 'right';
-      if (!isVertical) {
-        chart.layoutCoord(position, { width, height });
-        return;
-      }
-      const maxItemWidth = this.getMaxItemWidth(shape);
-      this.maxItemWidth = maxItemWidth;
-      shape.remove();
-      chart.layoutCoord(position, { width: maxItemWidth, height });
     }
 
     render() {
