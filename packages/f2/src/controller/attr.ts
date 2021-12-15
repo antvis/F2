@@ -147,7 +147,11 @@ class AttrController {
       // Category 分类属性创建自己的scale，不使用数据字段的
       if (type === 'category' || !Attrs[upperFirst(type)]) {
         AttrConstructor = Category;
-        delete attrOption.scale;
+        const { scale } = attrOption;
+        // 如果原本的 scale.type 为 cat，则直接复用之前的 scale
+        if (scale.type !== 'cat') {
+          delete attrOption.scale;
+        }
       } else {
         AttrConstructor = Attrs[upperFirst(type)];
       }

@@ -488,7 +488,12 @@ describe('折线图', () => {
                 coord={{
                   type: Rect,
                 }}
-                scale={{}}
+                scale={{
+                  type: {
+                    type: 'cat',
+                    values: ['金属', '农副产品', '能源'],
+                  },
+                }}
               >
                 <Axis
                   field="date"
@@ -498,7 +503,16 @@ describe('折线图', () => {
                   }}
                 />
                 <Axis field="value" tickCount={5} />
-                <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
+                <Line
+                  ref={lineRef}
+                  x="date"
+                  y="value"
+                  lineWidth="4px"
+                  // color={{
+                  //   field: 'type',
+                  // }}
+                  color="type"
+                />
                 <Tooltip
                   showCrosshairs
                   crosshairsType="xy"
