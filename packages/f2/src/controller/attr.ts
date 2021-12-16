@@ -2,6 +2,7 @@ import { each, isString, isNil, isFunction, isNumber, isArray, upperFirst } from
 import * as Attrs from '../attr';
 import equal from '../base/equal';
 import ScaleController from './scale';
+import { Scale, ScaleConfig } from '@antv/scale';
 
 type AttrOption = {
   field?: string | Record<any, any>;
@@ -20,6 +21,15 @@ const { Identity, Linear, Category } = Attrs;
 const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
+
+function cloneScale(scale: Scale, scaleConfig: ScaleConfig) {
+  // @ts-ignore
+  return new scale.constructor({
+    // @ts-ignore
+    ...scale.__cfg__,
+    ...scaleConfig,
+  });
+}
 
 class AttrController {
   private scaleController: ScaleController;
@@ -118,7 +128,7 @@ class AttrController {
   }
 
   private createAttr(option) {
-    const { type, field } = option;
+    const { type, field, scale: scaleConfig } = option;
     if (isNil(field) || type === Identity) {
       return new Identity(option);
     }
@@ -132,7 +142,8 @@ class AttrController {
     const attrOption = {
       ...option,
       data: this.scaleController.getData(),
-      scale, // 默认使用数据字段的scale
+      // scaleConfig 只在属性映射中生效
+      scale: scaleConfig ? cloneScale(scale, scaleConfig) : scale,
     };
 
     // Attr的默认类型和scale类型保持一致
@@ -143,14 +154,8 @@ class AttrController {
       AttrConstructor = type;
     }
 
-    if (isString(type)) {
-      // Category 分类属性创建自己的scale，不使用数据字段的
-      if (type === 'category' || !Attrs[upperFirst(type)]) {
-        AttrConstructor = Category;
-        delete attrOption.scale;
-      } else {
-        AttrConstructor = Attrs[upperFirst(type)];
-      }
+    if (isString(type) && Attrs[upperFirst(type)]) {
+      AttrConstructor = Attrs[upperFirst(type)];
     }
 
     return new AttrConstructor(attrOption);
@@ -168,9 +173,9 @@ class AttrController {
       if (equal(nextOption, lastOption)) {
         nextAttrs[attrName] = lastAttrs[attrName];
       }
-      const { field, scale } = nextOption;
+      const { field } = nextOption;
       if (field) {
-        scaleController.setScale(field, scale);
+        scaleController.setScale(field);
       }
     });
     this.options = nextOptions;
@@ -212,7 +217,12 @@ class AttrController {
     const nonlinearAttrs = [];
 
     attrNames.forEach((attrName) => {
-      if (attrs[attrName].constructor === Linear) {
+      if (attrName === 'x' || attrName === 'y') {
+        linearAttrs.push(attrName);
+        return;
+      }
+      const { scale } = attrs[attrName];
+      if (scale && scale.type === 'linear') {
         linearAttrs.push(attrName);
       } else {
         nonlinearAttrs.push(attrName);

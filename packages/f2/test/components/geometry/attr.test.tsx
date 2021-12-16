@@ -2,17 +2,17 @@ import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart, Component } from '../../../src';
 import { Interval, Axis, Point, Line, Area } from '../../../src/components';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 
 const data = [
   {
     year: '1951 年',
-    sales: 38,
+    sales: 20,
     type: 'companyA',
   },
   {
     year: '1952 年',
-    sales: 52,
+    sales: 145,
     type: 'companyA',
   },
   {
@@ -22,7 +22,7 @@ const data = [
   },
   {
     year: '1957 年',
-    sales: 145,
+    sales: 52,
     type: 'companyA',
   },
   {
@@ -97,55 +97,62 @@ describe('Geometry - Attr', () => {
   it('不传color', () => {
     const context = createContext('不传color', { width: '380px' });
 
+    const geometryRef = { current: null };
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" shape="type" />
+          <Line ref={geometryRef} x="year" y="sales" shape="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+
+    const canvas = new Canvas(props);
     canvas.render();
+    expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
   });
   it('color = {value}', () => {
     const context = createContext('color = {value} 传入一个颜色值', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" color="red" shape="type" />
+          <Line ref={geometryRef} x="year" y="sales" color="red" shape="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('red');
   });
   it('color = {field}', () => {
     const context = createContext('color = {field} 传入一个分类域', { width: '380px' });
-
+    const geometryRef = { current: null };
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" size={3} color="type" />
+          <Line ref={geometryRef} x="year" y="sales" size={3} color="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
+    expect(geometryRef.current.records[1].children[0].color).toBe('#2FC25B');
   });
   it('color = {{ field, range }}', () => {
     const context = createContext('color = {{ field, range }} 传入分类域和值域', {
       width: '380px',
     });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -153,6 +160,7 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={12}
@@ -164,12 +172,36 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('blue');
+    expect(geometryRef.current.records[0].children[0].size).toBe(12);
+    expect(geometryRef.current.records[1].children[0].color).toBe('red');
   });
-  it('color = {{ type, field, range }}', () => {
-    const context = createContext('color = {{ type, field, range }} 线性值域', { width: '380px' });
+
+  it('color = {[ field, colors ]} ', () => {
+    const context = createContext('color = {[ field, colors ]} 快捷设置', { width: '380px' });
+    const geometryRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point ref={geometryRef} x="year" y="sales" size={12} color={['type', ['blue', 'red']]} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('blue');
+    expect(geometryRef.current.records[1].children[0].color).toBe('red');
+  });
+  it('color = {{ field, range }}', () => {
+    const context = createContext('color = {{ field, range }} 线性值域', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -177,35 +209,73 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={12}
             color={{
               field: 'sales',
               range: ['blue', 'red'],
+              scale: {},
             }}
           />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
-
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records.length).toBe(1);
+    // scales 的 scale 是 Linear， 有nice 处理
+    expect(geometryRef.current.records[0].children[0].color).toBe('rgb(32, 0, 223)');
   });
-  
-  it('数据更新后也更新值域', () => {
-    class InjectTestComponent extends Component {
-      didMount() {    
-        setTimeout(() => {
-          // expect: 这里播放动画
-          this.props.chart.setState({
-            zoomRange: [0, 0.99],
-          });
-        }, 1000);
-      }
-    }
+
+  it('color = {{ field, range, scale }}', () => {
+    const context = createContext('color = {{ field, range, scale }} 线性值域', { width: '380px' });
+    const chartRef = { current: null };
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart ref={chartRef} data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={12}
+            color={{
+              field: 'sales',
+              range: ['blue', 'red'],
+              scale: {
+                nice: false,
+              },
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records.length).toBe(1);
+    // color 有独立的 scale 配置
+    expect(geometryRef.current.records[0].children[0].color).toBe('rgb(0, 0, 255)'); // blue
+    expect(geometryRef.current.attrs.color.scale.nice).toBe(false);
+
+    expect(geometryRef.current.attrs.color.scale.min).toBe(20);
+    expect(geometryRef.current.attrs.color.scale.max).toBe(145);
+
+    // 不影响 chart 的设置
+    expect(chartRef.current.scale.scales.sales.nice).toBe(true);
+    expect(chartRef.current.scale.scales.sales.min).toBe(0);
+    expect(chartRef.current.scale.scales.sales.max).toBe(160);
+  });
+
+  it('数据更新后也更新值域', async () => {
     const context = createContext('数据更新后也更新值域', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -213,6 +283,7 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={12}
@@ -220,37 +291,65 @@ describe('Geometry - Attr', () => {
               type: 'linear',
               field: 'sales',
               range: ['blue', 'red'],
+              scale: {
+                nice: false,
+              },
             }}
           />
-          <InjectTestComponent />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
-    setTimeout(() => {
-      props.children.props.children[2].props.color.range = ['red', 'blue'];
-      props.children.props.children[2].props.size = 24
-      canvas.update(props);
-    }, 300)
+
+    await delay(500);
+
+    canvas.update(
+      (
+        <Canvas context={context}>
+          <Chart data={data}>
+            <Axis field="year" />
+            <Axis field="sales" />
+            <Point
+              ref={geometryRef}
+              x="year"
+              y="sales"
+              size={24}
+              color={{
+                type: 'linear',
+                field: 'sales',
+                range: ['red', 'blue'],
+                scale: {
+                  nice: false,
+                },
+              }}
+            />
+          </Chart>
+        </Canvas>
+      ).props
+    );
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('rgb(255, 0, 0)'); // red
+    expect(geometryRef.current.records[0].children[0].size).toBe(24);
   });
-  it('color = {{ type, field, callback }}', () => {
-    const context = createContext('color = {{ type, field, callback }} 回调函数设置值域', {
+  it('color = {{ field, callback }}', () => {
+    const context = createContext('color = {{ field, callback }} 回调函数设置值域', {
       width: '380px',
     });
 
+    const geometryRef = { current: null };
+
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={12}
             color={{
-              type: 'linear',
               field: 'sales',
               callback: (val) => {
                 if (val > 70) {
@@ -263,25 +362,43 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('blue');
   });
-  it('color = {[ field, colors ]} ', () => {
-    const context = createContext('color = {[ field, colors ]} 快捷设置', { width: '380px' });
+
+  it('color = {{ type, field }}', () => {
+    const context = createContext('color = {{ type, field }} linear 到 categroy 映射', {
+      width: '380px',
+    });
+
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Point x="year" y="sales" size={12} color={['type', ['blue', 'red']]} />
+          <Point
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={12}
+            color={{
+              field: 'sales',
+              type: 'category',
+              range: ['blue', 'red'],
+            }}
+          />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('blue');
+    expect(geometryRef.current.records[0].children[1].color).toBe('red');
   });
 
   /**
@@ -290,56 +407,76 @@ describe('Geometry - Attr', () => {
    * 1. 数字常量，代表不同shape的size（如point影响半径、line/area影响线的粗细，interval影响柱状图的宽度
    * 2. 字段名，按字段的值做size大小的映射
    */
-  it('不传size', () => {
+  it('不传size', async () => {
     const context = createContext('不传size', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Interval x="year" y="sales" color="type" adjust="dodge" />
+          <Interval ref={geometryRef} x="year" y="sales" color="type" adjust="dodge" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+
+    const container = geometryRef.current.container;
+    expect(geometryRef.current.records[0].children[0].size).toBe(undefined);
+
+    const rect =
+      container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs
+        .children[0];
+    expect(rect._attrs.attrs.x).toBeCloseTo(46.82);
+    expect(rect._attrs.attrs.y).toBeCloseTo(170.31);
+    expect(rect._attrs.attrs.width).toBeCloseTo(10.18);
+    expect(rect._attrs.attrs.height).toBeCloseTo(22.19);
   });
 
   it('size = {value} 直接设置size', () => {
     const context = createContext('size = {value} 直接设置size', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Interval x="year" y="sales" size={16} color="type" adjust="dodge" />
+          <Interval ref={geometryRef} x="year" y="sales" size={16} color="type" adjust="dodge" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(16);
+    expect(geometryRef.current.records[1].children[0].size).toBe(16);
   });
 
   it('size = {field}  用size大小来做分类', () => {
     const context = createContext('size = {field}  用size大小来做分类', { width: '380px' });
+    const geometryRef = { current: null };
 
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
           {/* 用size大小来做分类 */}
-          <Point x="year" y="sales" size="type" />
+          <Point ref={geometryRef} x="year" y="sales" size="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(2);
+    expect(geometryRef.current.records[1].children[0].size).toBe(4);
   });
 
   it('size = {{ field, range }} 用size大小来做分类', () => {
@@ -347,12 +484,15 @@ describe('Geometry - Attr', () => {
       width: '380px',
     });
 
+    const geometryRef = { current: null };
+
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
           <Interval
+            ref={geometryRef}
             x="year"
             y="sales"
             color="type"
@@ -365,14 +505,40 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(10);
+    expect(geometryRef.current.records[1].children[0].size).toBe(20);
   });
+
+  it('size = {[ field, sizes ]} 用size大小来做分类', () => {
+    const context = createContext('size = {{ type, field, callback }} 用size大小来做分类', {
+      width: '380px',
+    });
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point ref={geometryRef} x="year" y="sales" size={['type', [10, 20]]} />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(10);
+    expect(geometryRef.current.records[1].children[0].size).toBe(20);
+  });
+
   it('size = {{ type, field, range }} 数值越大，size越大', () => {
     const context = createContext('size = {{ type, field, range }} 数值越大，size越大', {
       width: '380px',
     });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -380,26 +546,35 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={{
               // 数值越大，size越大
-              type: 'linear',
               field: 'sales',
-              range: [0, 40],
+              range: [10, 40],
+              scale: {
+                nice: false,
+              },
             }}
           />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(10);
+    expect(geometryRef.current.records[0].children[1].size).toBe(40);
+    const size = geometryRef.current.records[0].children[2].size;
+    expect(size > 10 && size < 40).toBe(true);
   });
+
   it('size = {{ type, field, callback }} 数值越大，size越大', () => {
     const context = createContext('size = {{ type, field, callback }} 数值越大，size越大', {
       width: '380px',
     });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -407,6 +582,7 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Point
+            ref={geometryRef}
             x="year"
             y="sales"
             size={{
@@ -424,28 +600,11 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
-  });
 
-  it('size = {[ field, sizes ]} 用size大小来做分类', () => {
-    const context = createContext('size = {{ type, field, callback }} 用size大小来做分类', {
-      width: '380px',
-    });
-
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="year" />
-          <Axis field="sales" />
-          <Point x="year" y="sales" size={['type', [10, 20]]} />
-        </Chart>
-      </Canvas>
-    );
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
+    expect(geometryRef.current.records[0].children[0].size).toBe(10);
+    expect(geometryRef.current.records[0].children[1].size).toBe(50);
   });
 
   /**
@@ -457,59 +616,87 @@ describe('Geometry - Attr', () => {
       width: '380px',
     });
 
+    const geometryRef = { current: null };
+
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" color="type" />
+          <Line ref={geometryRef} x="year" y="sales" color="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+    });
   });
   it('shape = {shape}', () => {
     const context = createContext('shape = {shape} 指定一种shape', {
       width: '380px',
     });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" color="type" shape="smooth" />
+          <Line ref={geometryRef} x="year" y="sales" color="type" shape="smooth" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      smooth: true,
+    });
   });
   it('shape = {field}', () => {
     const context = createContext('shape = {field} 指定一个分类字段', {
       width: '380px',
     });
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Line x="year" y="sales" color="type" shape="type" />
+          <Line ref={geometryRef} x="year" y="sales" color="type" shape="type" />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+    });
+    expect(geometryRef.current.records[1].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      lineDash: [2, 2],
+    });
   });
   it('shape = {{ field, range }}', () => {
     const context = createContext('shape = {{ field, range }} 指定字段和值域', {
       width: '380px',
     });
+
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -517,6 +704,7 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Line
+            ref={geometryRef}
             x="year"
             y="sales"
             color="type"
@@ -528,14 +716,28 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      lineDash: [2, 2],
+    });
+    expect(geometryRef.current.records[1].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      smooth: true,
+    });
   });
-  it('shape = {{ type, field, callback }}', () => {
-    const context = createContext('shape = {{ type, field, callback }} 根据数据判断shape', {
+  it('shape = {[ field, shapes ]}', () => {
+    const context = createContext('shape = {[ field, shapes ]} 数组传入', {
       width: '380px',
     });
+
+    const geometryRef = { current: null };
 
     const { type, props } = (
       <Canvas context={context}>
@@ -543,6 +745,44 @@ describe('Geometry - Attr', () => {
           <Axis field="year" />
           <Axis field="sales" />
           <Line
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={'2px'}
+            shape={['type', ['smooth', 'dash']]}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      smooth: true,
+    });
+    expect(geometryRef.current.records[1].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      lineDash: [2, 2],
+    });
+  });
+  it('shape = {{ type, field, callback }}', () => {
+    const context = createContext('shape = {{ type, field, callback }} 根据数据判断shape', {
+      width: '380px',
+    });
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Line
+            ref={geometryRef}
             x="year"
             y="sales"
             size={'2px'}
@@ -560,26 +800,19 @@ describe('Geometry - Attr', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
-  });
-  it('shape = {[ field, shapes ]}', () => {
-    const context = createContext('shape = {[ field, shapes ]} 数组传入', {
-      width: '380px',
-    });
 
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="year" />
-          <Axis field="sales" />
-          <Line x="year" y="sales" size={'2px'} shape={['type', ['smooth', 'dash']]} />
-        </Chart>
-      </Canvas>
-    );
-    // @ts-ignore
-    const canvas = new type(props);
-    canvas.render();
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+    });
+    expect(geometryRef.current.records[1].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 1,
+      lineDash: [2, 2],
+    });
   });
 });
