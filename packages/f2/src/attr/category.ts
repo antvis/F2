@@ -8,8 +8,13 @@ class Category extends Base {
 
   _mapping(value: any) {
     const { scale, range } = this;
-    const index = scale.translate(value);
-    return range[index % range.length];
+    if (scale.type === 'cat') {
+      const index = scale.translate(value);
+      return range[index % range.length];
+    }
+    const normalizeValue = scale.scale(value);
+    const index = Math.round(normalizeValue * (range.length - 1));
+    return range[index];
   }
 }
 

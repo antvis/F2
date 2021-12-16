@@ -467,60 +467,68 @@ describe('折线图', () => {
   });
 
   describe('对比折线图', () => {
-    it('走势对比', () => {
+    it('走势对比', async () => {
       const MULTIPLE_SERIES = '走势对比';
       const context = createContext(MULTIPLE_SERIES);
       const chartRef = { current: null };
       const lineRef = { current: null };
-      fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
-        .then((res) => res.json())
-        .then((data) => {
-          const { type, props } = (
-            <Canvas
-              context={context}
-              pixelRatio={window.devicePixelRatio}
-              width={offsetWidth}
-              height={height}
-            >
-              <Chart
-                ref={chartRef}
-                data={data}
-                coord={{
-                  type: Rect,
-                }}
-                scale={{}}
-              >
-                <Axis
-                  field="date"
-                  tickCount={3}
-                  style={{
-                    label: { align: 'between' },
-                  }}
-                />
-                <Axis field="value" tickCount={5} />
-                <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
-                <Tooltip
-                  showCrosshairs
-                  crosshairsType="xy"
-                  crosshairsStyle={{
-                    stroke: '#1577FE',
-                    lineWidth: '1px',
-                    lineDash: [2, 2],
-                  }}
-                  custom
-                  showXTip
-                  showYTip
-                  xTipBackground={{ fill: '#1677FF', radius: '2px' }}
-                  yTipBackground={{ fill: '#1677FF', radius: '2px' }}
-                />
-                <Legend position="top" />
-              </Chart>
-            </Canvas>
-          );
+      const res = await fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
+      );
+      const data = await res.json();
+      const { type, props } = (
+        <Canvas
+          context={context}
+          pixelRatio={window.devicePixelRatio}
+          width={offsetWidth}
+          height={height}
+        >
+          <Chart
+            ref={chartRef}
+            data={data}
+            coord={{
+              type: Rect,
+            }}
+            scale={{
+              type: {
+                type: 'cat',
+                values: ['金属', '农副产品', '能源'],
+              },
+            }}
+          >
+            <Axis
+              field="date"
+              tickCount={3}
+              style={{
+                label: { align: 'between' },
+              }}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
+            <Tooltip
+              showCrosshairs
+              crosshairsType="xy"
+              crosshairsStyle={{
+                stroke: '#1577FE',
+                lineWidth: '1px',
+                lineDash: [2, 2],
+              }}
+              custom
+              showXTip
+              showYTip
+              xTipBackground={{ fill: '#1677FF', radius: '2px' }}
+              yTipBackground={{ fill: '#1677FF', radius: '2px' }}
+            />
+            <Legend position="top" />
+          </Chart>
+        </Canvas>
+      );
 
-          const canvas = new Canvas(props);
-          canvas.render();
-        });
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      const line = lineRef.current;
+      expect(line.attrs.color.scale.values).toEqual(['金属', '农副产品', '能源']);
     });
 
     it('style支持传入函数', () => {
