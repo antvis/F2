@@ -1,7 +1,8 @@
 import { each, mix, isNil, isFunction, isNumber, valuesOfKey, getRange } from '@antv/util';
-import { registerTickMethod, Scale, getScale } from '@antv/scale';
+import { registerTickMethod, Scale, getScale, ScaleConfig } from '@antv/scale';
 import CatTick from './scale/cat-tick';
 import LinearTick from './scale/linear-tick';
+import Chart from '../chart';
 
 // 覆盖0.3.x的 cat 方法
 registerTickMethod('cat', CatTick);
@@ -9,20 +10,41 @@ registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
 
+type ScaleOption = { type?: string } & ScaleConfig;
+
+const WIDTH_RATIO = {
+  MUPTIPLE_PIE: 0.5,
+};
+
+function isFullCircle(coord) {
+  if (!coord.isPolar) {
+    return false;
+  }
+  const startAngle = coord.startAngle;
+  const endAngle = coord.endAngle;
+  if (!isNil(startAngle) && !isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
+    return false;
+  }
+  return true;
+}
+
 class ScaleController {
   private data: any;
   // scale 实例的配置
   private options: any;
   // scale 实例
   private scales: any;
+  // chart 实例
+  chart: Chart;
 
-  constructor(data) {
+  constructor(data, chart) {
     this.data = data;
+    this.chart = chart;
     this.options = {};
     this.scales = {};
   }
 
-  private _getType(option) {
+  private _getType(option: ScaleOption) {
     const { type, values, field } = option;
     if (type) {
       return type;
@@ -36,7 +58,7 @@ class ScaleController {
     return 'cat';
   }
 
-  private _getOption(option) {
+  private _getOption(option: ScaleOption) {
     const { values, field } = option;
     const type = this._getType(option);
 
@@ -44,12 +66,9 @@ class ScaleController {
 
     // identity
     if (type === 'identity') {
-      option.value = field;
       option.field = field.toString();
       option.values = [field];
-      return option;
     }
-
     // linear 类型
     if (type === 'linear') {
       // 设置默认nice
@@ -65,7 +84,6 @@ class ScaleController {
         option.max = max;
       }
 
-      return option;
     }
     // 分类类型
     if (type === 'cat') {
@@ -83,7 +101,42 @@ class ScaleController {
         range = [offset, 1 - offset];
       }
       option.range = range;
+    }
+
+    // 调整 range
+    const newOption = this._adjustRange(option);
+    return newOption;
+  }
+
+  // 调整 range，为了让图形居中
+  private _adjustRange(option: ScaleOption) {
+    const { type, ...config } = option;
+    const { range, values } = config;
+    // 如果是线性, 或者有自定义range都不处理
+    if (type === 'linear' || range || !values) {
       return option;
+    }
+    const count = values.length;
+    // 单只有一条数据时，在中间显示
+    if (count === 1) {
+      option.range = [0.5, 1];
+    } else {
+      const { chart } = this;
+      const coord = chart.getCoord();
+      const widthRatio = WIDTH_RATIO.MUPTIPLE_PIE;
+      let offset = 0;
+      if (isFullCircle(coord)) {
+        if (!coord.transposed) {
+          option.range = [0, 1 - 1 / count];
+        } else {
+          offset = 1 / count * widthRatio;
+          option.range = [offset / 2, 1 - offset / 2];
+        }
+      } else {
+        // 为了让图形居中，设置 range
+        offset = 1 / count * 0.5;
+        option.range = [offset, 1 - offset];
+      }
     }
     return option;
   }
@@ -98,7 +151,7 @@ class ScaleController {
   }
 
   // 更新或创建scale
-  setScale(field: string, option: any = {}) {
+  setScale(field: string, option: ScaleOption) {
     const { options, scales } = this;
     options[field] = mix({}, options[field], option);
     // 如果scale有更新，scale 也需要重新创建
@@ -107,13 +160,13 @@ class ScaleController {
     }
   }
 
-  create(options) {
+  create(options: {[k: string]: ScaleOption}) {
     this.update(options);
   }
 
-  update(options) {
+  update(options: {[k: string]: ScaleOption}) {
     if (!options) return;
-    each(options, (option, field: string) => {
+    each(options, (option: ScaleOption, field: string) => {
       this.setScale(field, option);
     });
     // 为了让外部感知到scale有变化
