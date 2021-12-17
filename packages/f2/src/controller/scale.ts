@@ -13,7 +13,9 @@ registerTickMethod('wilkinson-extended', LinearTick);
 type ScaleOption = { type?: string } & ScaleConfig;
 
 const WIDTH_RATIO = {
-  MUPTIPLE_PIE: 0.5,
+  column: 1 / 2,
+  rose: 0.999999,
+  multiplePie: 3 / 4,
 };
 
 function isFullCircle(coord) {
@@ -123,7 +125,7 @@ class ScaleController {
     } else {
       const { chart } = this;
       const coord = chart.getCoord();
-      const widthRatio = WIDTH_RATIO.MUPTIPLE_PIE;
+      const widthRatio = WIDTH_RATIO.multiplePie;
       let offset = 0;
       if (isFullCircle(coord)) {
         if (!coord.transposed) {
