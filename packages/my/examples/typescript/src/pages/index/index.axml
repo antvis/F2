@@ -1,0 +1,3 @@
+<view class="container">
+  <f2 onRender="onRenderChart"></f2>
+</view>
