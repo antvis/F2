@@ -153,7 +153,7 @@ class ScaleController {
   }
 
   // 更新或创建scale
-  setScale(field: string, option: ScaleOption) {
+  setScale(field: string, option?: ScaleOption) {
     const { options, scales } = this;
     options[field] = mix({}, options[field], option);
     // 如果scale有更新，scale 也需要重新创建
