@@ -1,10 +1,12 @@
 <canvas
-  a:if="{{$pageId >= 0}}"
-  id="f2-canvas-{{$pageId}}-{{$id}}"
+  a:if="{{id}}"
+  type="{{type}}"
+  id="{{id}}"
   class="f2-canvas"
   width="{{width}}"
   height="{{height}}"
   onTouchStart="touchStart"
   onTouchMove="touchMove"
   onTouchEnd="touchEnd"
+  onReady="onCanvasReady"
 />
