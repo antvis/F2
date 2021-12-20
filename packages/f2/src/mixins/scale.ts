@@ -1,5 +1,4 @@
 import ScaleController from '../controller/scale';
-import Chart from '../chart';
 
 class ScaleMixin {
   data: any;

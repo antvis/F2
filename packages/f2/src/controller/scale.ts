@@ -2,7 +2,6 @@ import { each, mix, isNil, isFunction, isNumber, valuesOfKey, getRange } from '@
 import { registerTickMethod, Scale, getScale, ScaleConfig } from '@antv/scale';
 import CatTick from './scale/cat-tick';
 import LinearTick from './scale/linear-tick';
-import Chart from '../chart';
 
 // 覆盖0.3.x的 cat 方法
 registerTickMethod('cat', CatTick);
