@@ -1054,7 +1054,8 @@ describe('折线图', () => {
 
     expect(polyline.get('attrs').points.length).toBe(3);
 
-    await delay(300);
+    await delay(100);
+    await delay(100);
 
     const newPolyline = container
       .get('children')[0]

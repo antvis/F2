@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@antv/f2",
+    "moduleResolution": "node",
+    "types": ["mini-types"]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
