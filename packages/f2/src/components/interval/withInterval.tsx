@@ -85,7 +85,7 @@ export default (Views) => {
 
     render() {
       const { props } = this;
-      const { coord, shape = 'rect', style, animation, showLabel, labelCfg: customLabelCfg } = props;
+      const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
       const labelCfg = deepMix({
@@ -102,7 +102,6 @@ export default (Views) => {
           coord={coord}
           records={records}
           shape={shape}
-          style={style}
           animation={animation}
           showLabel={showLabel}
           labelCfg={labelCfg}
