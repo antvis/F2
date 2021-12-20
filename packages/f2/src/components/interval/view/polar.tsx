@@ -10,7 +10,7 @@ export default (props) => {
         return (
           <group key={key}>
             {children.map((item) => {
-              const { key, xMin, xMax, yMin, yMax, color } = item;
+              const { key, xMin, xMax, yMin, yMax, color, shape } = item;
               return (
                 <sector
                   key={key}
@@ -22,6 +22,7 @@ export default (props) => {
                     endAngle: xMax,
                     r0: yMin,
                     r: yMax,
+                    ...shape,
                   }}
                   animation={{
                     // appear: {
