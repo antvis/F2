@@ -36,12 +36,9 @@ class ScaleController {
   private options: any;
   // scale 实例
   private scales: any;
-  // chart 实例
-  chart: Chart;
 
-  constructor(data, chart) {
+  constructor(data) {
     this.data = data;
-    this.chart = chart;
     this.options = {};
     this.scales = {};
   }
@@ -99,20 +96,9 @@ class ScaleController {
       if (count === 1) {
         range = [0.5, 1];
       } else {
-        const { chart } = this;
-        const coord = chart.getCoord();
-        if (isFullCircle(coord)) {
-          if (!coord.transposed) { // 玫瑰图
-            range = [0, 1 - 1 / count];
-          } else { // 饼图
-            const offset = (1 / count) * WIDTH_RATIO.multiplePie;
-            range = [offset / 2, 1 - offset / 2];
-          }
-        } else {
-          // 前后都留半个 1 / count
-          const offset = (1 / count) * 0.5;
-          range = [offset, 1 - offset];
-        }
+        // 前后都留半个 1 / count
+        const offset = (1 / count) * 0.5;
+        range = [offset, 1 - offset];
       }
       option.range = range;
     }

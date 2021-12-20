@@ -59,7 +59,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
     this.layoutController = new LayoutController();
     this.coordController = new CoordController();
-    this.scaleController = new ScaleController(data, this);
+    this.scaleController = new ScaleController(data);
     this.scale = this.scaleController;
 
     const { layoutController, coordController, scaleController } = this;
