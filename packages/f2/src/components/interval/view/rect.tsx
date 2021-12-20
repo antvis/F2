@@ -10,7 +10,7 @@ export default props => {
         return (
           <group key={key}>
             {children.map((item) => {
-              const { key, xMin, xMax, yMin, yMax, color } = item;
+              const { key, xMin, xMax, yMin, yMax, color, shape } = item;
               return (
                 <rect
                   key={key}
@@ -20,6 +20,7 @@ export default props => {
                     width: xMax - xMin,
                     height: yMax - yMin,
                     fill: color,
+                    ...shape,
                   }}
                   animation={deepMix({
                     appear: {
