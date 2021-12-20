@@ -12,24 +12,6 @@ registerTickMethod('wilkinson-extended', LinearTick);
 
 type ScaleOption = { type?: string } & ScaleConfig;
 
-const WIDTH_RATIO = {
-  column: 1 / 2,
-  rose: 0.999999,
-  multiplePie: 3 / 4,
-};
-
-function isFullCircle(coord) {
-  if (!coord.isPolar) {
-    return false;
-  }
-  const startAngle = coord.startAngle;
-  const endAngle = coord.endAngle;
-  if (!isNil(startAngle) && !isNil(endAngle) && endAngle - startAngle < Math.PI * 2) {
-    return false;
-  }
-  return true;
-}
-
 class ScaleController {
   private data: any;
   // scale 实例的配置
