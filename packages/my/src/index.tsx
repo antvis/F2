@@ -8,6 +8,10 @@ function wrapEvent(e) {
   }
   return e;
 }
+const getPixelRatio = () => my.getSystemInfoSync().pixelRatio;
+
+// 判断是否是新版 canvas 所支持的调用方法（AppX 2.7.0 及以上）
+const isAppX2CanvasEnv = () => my.canIUse('canvas.onReady') && my.canIUse('createSelectorQuery.return.node');
 
 Component({
   props: {
@@ -15,17 +19,11 @@ Component({
     // width height 会作为元素兜底的宽高使用
     width: null,
     height: null,
+    type: '2d', // canvas 2d, 基础库 2.7 以上支持
   },
   didMount() {
-    const pageId = (this.$page && this.$page.$id) || 0;
-    const id = `f2-canvas-${pageId}-${this.$id}`;
-    // @ts-ignore
-    const myCtx = my.createCanvasContext(id, { page: this.$page });
-    const context = F2Context(myCtx);
-
-    this.setData({
-      $pageId: pageId,
-    });
+    this.setCanvasId();
+    const { id } = this.data;
     const query = my.createSelectorQuery({ page: this.$page });
     query
       .select(`#${id}`)
@@ -33,29 +31,20 @@ Component({
       .exec((res) => {
         // 获取画布实际宽高, 用props的宽高做失败兜底
         const { width, height } = res && res[0] ? res[0] : this.props;
-        if (!width || !height) {
-          return;
-        }
-        const pixelRatio = my.getSystemInfoSync().pixelRatio;
+        const pixelRatio = getPixelRatio();
         // 高清解决方案
-        this.setData(
-          {
-            id,
+        this.setData({
             width: width * pixelRatio,
             height: height * pixelRatio,
           },
           () => {
-            const children = this.props.onRender();
-            const canvas = new Canvas({
-              pixelRatio,
-              width,
-              height,
-              context,
-              children,
-            });
-            canvas.render();
-            this.canvas = canvas;
-            this.canvasEl = canvas.canvas.get('el');
+            if (isAppX2CanvasEnv()) {
+              console.log('new version sdk for canvas: ', my.SDKVersion);
+              return;
+            }
+            const myCtx = my.createCanvasContext(id);
+            const context = F2Context(myCtx);
+            this.canvasRender({ width, height, context, pixelRatio });
           }
         );
       });
@@ -74,6 +63,45 @@ Component({
     canvas.destroy();
   },
   methods: {
+    setCanvasId() {
+      const pageId = (this.$page && this.$page.$id) || 0;
+      const id = `f2-canvas-${pageId}-${this.$id}`;
+      this.setData({ id });
+    },
+    onCanvasReady() {
+      const { id } = this.data;
+      const query: any = my.createSelectorQuery();
+      query
+        .select(`#${id}`)
+        .node()
+        .exec((res) => {
+          if(!res[0]) {
+            return;
+          }
+          const canvas = res[0].node;
+          const context = canvas.getContext('2d');
+          const { width, height} = canvas;
+          const pixelRatio = getPixelRatio();
+          // 这里的宽高要消除之前 didMount 里设置高清分辨率的影响
+          this.canvasRender({ width: width / pixelRatio, height: height / pixelRatio, pixelRatio, context });
+        });
+    },
+    canvasRender({ width, height, pixelRatio, context }: any) {
+      if (!width || !height) {
+        return;
+      }
+      const children = this.props.onRender();
+      const canvas = new Canvas({
+        pixelRatio,
+        width,
+        height,
+        context,
+        children,
+      });
+      canvas.render();
+      this.canvas = canvas;
+      this.canvasEl = canvas.canvas.get('el');
+    },
     touchStart(e) {
       const canvasEl = this.canvasEl;
       if (!canvasEl) {
