@@ -70,6 +70,7 @@ class ScaleController {
     if (type === 'identity') {
       option.field = field.toString();
       option.values = [field];
+      return option;
     }
     // linear 类型
     if (type === 'linear') {
@@ -85,9 +86,10 @@ class ScaleController {
       if (isNil(option.max)) {
         option.max = max;
       }
+      return option;
     }
-    // 分类类型
-    if (type === 'cat') {
+    // 分类类型和 timeCat 类型，调整 range
+    if (type === 'cat' || type === 'timeCat') {
       if (option.range) {
         return option;
       }
@@ -97,44 +99,24 @@ class ScaleController {
       if (count === 1) {
         range = [0.5, 1];
       } else {
-        // 前后都留半个 1 / count
-        const offset = (1 / count) * 0.5;
-        range = [offset, 1 - offset];
+        const { chart } = this;
+        const coord = chart.getCoord();
+        if (isFullCircle(coord)) {
+          if (!coord.transposed) { // 玫瑰图
+            range = [0, 1 - 1 / count];
+          } else { // 饼图
+            const offset = (1 / count) * WIDTH_RATIO.multiplePie;
+            range = [offset / 2, 1 - offset / 2];
+          }
+        } else {
+          // 前后都留半个 1 / count
+          const offset = (1 / count) * 0.5;
+          range = [offset, 1 - offset];
+        }
       }
       option.range = range;
     }
 
-    // 调整 range
-    const newOption = this._adjustRange(option);
-    return newOption;
-  }
-
-  // 调整 range，为了让图形居中
-  private _adjustRange(option: ScaleOption) {
-    const { type, ...config } = option;
-    const { range, values } = config;
-    // 如果是线性, 或者有自定义range都不处理
-    if (type === 'linear' || range || !values) {
-      return option;
-    }
-    const count = values.length;
-    // 单只有一条数据时，在中间显示
-    if (count === 1) {
-      option.range = [0.5, 1];
-    } else {
-      const { chart } = this;
-      const coord = chart.getCoord();
-      const widthRatio = WIDTH_RATIO.multiplePie;
-      let offset = 0;
-      if (isFullCircle(coord)) {
-        if (!coord.transposed) {
-          option.range = [0, 1 - 1 / count];
-        } else {
-          offset = (1 / count) * widthRatio;
-          option.range = [offset / 2, 1 - offset / 2];
-        }
-      }
-    }
     return option;
   }
 

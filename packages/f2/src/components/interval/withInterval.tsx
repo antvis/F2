@@ -52,23 +52,6 @@ export default (Views) => {
       return size;
     }
 
-    _adjustScales() {
-      super._adjustScales();
-      const { attrs, props } = this;
-      const { coord } = props;
-      const { x } = attrs;
-      const { scale } = x;
-      const { values } = scale;
-      const count = values.length;
-      const offset = (1 / count) * 0.5;
-      if (!coord.isPolar) {
-        // 调整 range 使图形居中
-        scale.change({
-          range: [offset, 1 - offset],
-        });
-      }
-    }
-
     mapping() {
       const records = super.mapping();
 
