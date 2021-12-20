@@ -155,8 +155,8 @@ export default class TooltipView extends Component {
       ...defaultStyle.itemMarkerStyle,
     };
 
-    const xTipText = xScale.getText(records[0][xField]);
-    const yTipText = yScale.getText(records[0][yField]);
+    const xTipText = xScale.getText(records[0].origin[xField]);
+    const yTipText = yScale.getText(records[0].origin[yField]);
 
     return (
       <group>

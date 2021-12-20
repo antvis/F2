@@ -37,8 +37,13 @@ describe('tooltip', () => {
             alwaysShow={true}
             // showTitle={true}
             // showItemMarker={true}
-            showCrosshairs={true}
+            showCrosshairs
             onChange={onChangeMockCallback}
+            crosshairsType="xy"
+            snap
+            custom
+            showXTip
+            showYTip
           />
         </Chart>
       </Canvas>
