@@ -24,7 +24,7 @@ function isFullCircle(coord) {
   }
   const startAngle = coord.startAngle;
   const endAngle = coord.endAngle;
-  if (!isNil(startAngle) && !isNil(endAngle) && (endAngle - startAngle) < Math.PI * 2) {
+  if (!isNil(startAngle) && !isNil(endAngle) && endAngle - startAngle < Math.PI * 2) {
     return false;
   }
   return true;
@@ -85,7 +85,6 @@ class ScaleController {
       if (isNil(option.max)) {
         option.max = max;
       }
-
     }
     // 分类类型
     if (type === 'cat') {
@@ -131,13 +130,9 @@ class ScaleController {
         if (!coord.transposed) {
           option.range = [0, 1 - 1 / count];
         } else {
-          offset = 1 / count * widthRatio;
+          offset = (1 / count) * widthRatio;
           option.range = [offset / 2, 1 - offset / 2];
         }
-      } else {
-        // 为了让图形居中，设置 range
-        offset = 1 / count * 0.5;
-        option.range = [offset, 1 - offset];
       }
     }
     return option;
@@ -162,11 +157,11 @@ class ScaleController {
     }
   }
 
-  create(options: {[k: string]: ScaleOption}) {
+  create(options: { [k: string]: ScaleOption }) {
     this.update(options);
   }
 
-  update(options: {[k: string]: ScaleOption}) {
+  update(options: { [k: string]: ScaleOption }) {
     if (!options) return;
     each(options, (option: ScaleOption, field: string) => {
       this.setScale(field, option);

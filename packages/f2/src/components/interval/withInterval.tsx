@@ -52,6 +52,23 @@ export default (Views) => {
       return size;
     }
 
+    _adjustScales() {
+      super._adjustScales();
+      const { attrs, props } = this;
+      const { coord } = props;
+      const { x } = attrs;
+      const { scale } = x;
+      const { values } = scale;
+      const count = values.length;
+      const offset = (1 / count) * 0.5;
+      if (!coord.isPolar) {
+        // 调整 range 使图形居中
+        scale.change({
+          range: [offset, 1 - offset],
+        });
+      }
+    }
+
     mapping() {
       const records = super.mapping();
 
@@ -85,14 +102,24 @@ export default (Views) => {
 
     render() {
       const { props } = this;
-      const { coord, shape = 'rect', style, animation, showLabel, labelCfg: customLabelCfg } = props;
+      const {
+        coord,
+        shape = 'rect',
+        style,
+        animation,
+        showLabel,
+        labelCfg: customLabelCfg,
+      } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
-      const labelCfg = deepMix({
-        label: null,
-        offsetX: 0,
-        offsetY: 0,
-      }, customLabelCfg);
+      const labelCfg = deepMix(
+        {
+          label: null,
+          offsetX: 0,
+          offsetY: 0,
+        },
+        customLabelCfg
+      );
 
       if (!View) return null;
 
