@@ -225,6 +225,10 @@ class Chart extends Component implements IChart, InteractionMixin {
     });
   }
 
+  getCoord() {
+    return this.coord;
+  }
+
   render(): JSX.Element {
     const { props, state, layout, coord } = this;
     const { children, data } = props;

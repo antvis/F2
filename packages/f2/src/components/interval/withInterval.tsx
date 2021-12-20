@@ -88,11 +88,14 @@ export default (Views) => {
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
-      const labelCfg = deepMix({
-        label: null,
-        offsetX: 0,
-        offsetY: 0,
-      }, customLabelCfg);
+      const labelCfg = deepMix(
+        {
+          label: null,
+          offsetX: 0,
+          offsetY: 0,
+        },
+        customLabelCfg
+      );
 
       if (!View) return null;
 

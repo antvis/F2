@@ -1,5 +1,5 @@
 import { each, mix, isNil, isFunction, isNumber, valuesOfKey, getRange } from '@antv/util';
-import { registerTickMethod, Scale, getScale } from '@antv/scale';
+import { registerTickMethod, Scale, getScale, ScaleConfig } from '@antv/scale';
 import CatTick from './scale/cat-tick';
 import LinearTick from './scale/linear-tick';
 
@@ -8,6 +8,8 @@ registerTickMethod('cat', CatTick);
 registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
+
+type ScaleOption = { type?: string } & ScaleConfig;
 
 class ScaleController {
   private data: any;
@@ -22,7 +24,7 @@ class ScaleController {
     this.scales = {};
   }
 
-  private _getType(option) {
+  private _getType(option: ScaleOption) {
     const { type, values, field } = option;
     if (type) {
       return type;
@@ -36,7 +38,7 @@ class ScaleController {
     return 'cat';
   }
 
-  private _getOption(option) {
+  private _getOption(option: ScaleOption) {
     const { values, field } = option;
     const type = this._getType(option);
 
@@ -44,12 +46,10 @@ class ScaleController {
 
     // identity
     if (type === 'identity') {
-      option.value = field;
       option.field = field.toString();
       option.values = [field];
       return option;
     }
-
     // linear 类型
     if (type === 'linear') {
       // 设置默认nice
@@ -64,11 +64,10 @@ class ScaleController {
       if (isNil(option.max)) {
         option.max = max;
       }
-
       return option;
     }
-    // 分类类型
-    if (type === 'cat') {
+    // 分类类型和 timeCat 类型，调整 range
+    if (type === 'cat' || type === 'timeCat') {
       if (option.range) {
         return option;
       }
@@ -83,8 +82,8 @@ class ScaleController {
         range = [offset, 1 - offset];
       }
       option.range = range;
-      return option;
     }
+
     return option;
   }
 
@@ -98,7 +97,7 @@ class ScaleController {
   }
 
   // 更新或创建scale
-  setScale(field: string, option: any = {}) {
+  setScale(field: string, option?: ScaleOption) {
     const { options, scales } = this;
     options[field] = mix({}, options[field], option);
     // 如果scale有更新，scale 也需要重新创建
@@ -107,13 +106,13 @@ class ScaleController {
     }
   }
 
-  create(options) {
+  create(options: { [k: string]: ScaleOption }) {
     this.update(options);
   }
 
-  update(options) {
+  update(options: { [k: string]: ScaleOption }) {
     if (!options) return;
-    each(options, (option, field: string) => {
+    each(options, (option: ScaleOption, field: string) => {
       this.setScale(field, option);
     });
     // 为了让外部感知到scale有变化

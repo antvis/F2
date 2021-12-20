@@ -54,4 +54,67 @@ describe('Interval', () => {
     const canvas = new Canvas(props);
     canvas.render();
   });
+
+  it('x scale 为 timeCat', () => {
+    const data = [
+      {
+        time: '2016-08-08 00:00:00',
+        tem: 10,
+      },
+      {
+        time: '2016-08-08 00:10:00',
+        tem: 22,
+      },
+      {
+        time: '2016-08-08 00:30:00',
+        tem: 20,
+      },
+      {
+        time: '2016-08-09 00:35:00',
+        tem: 26,
+      },
+      {
+        time: '2016-08-09 01:00:00',
+        tem: 20,
+      },
+    ];
+    const context = createContext('x scale 为 timeCat');
+    const chartRef = { current: null };
+    const { offsetWidth } = document.body;
+    const height = offsetWidth * 0.75;
+    const { props } = (
+      <Canvas
+        context={context}
+        pixelRatio={window.devicePixelRatio}
+        width={offsetWidth}
+        height={height}
+      >
+        <Chart
+          ref={chartRef}
+          data={data}
+          scale={{
+            time: {
+              type: 'timeCat',
+              tickCount: 3,
+            },
+            tem: {
+              tickCount: 5,
+            },
+          }}
+        >
+          <Axis field="time" />
+          <Axis field="tem" />
+          <Interval x="time" y="tem" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    const timeScale = chartRef.current.scale.getScale('time');
+    const { range } = timeScale;
+    expect(range[0]).toBeGreaterThan(0);
+    expect(range[1]).toBeLessThan(1);
+  });
 });
