@@ -1,11 +1,12 @@
 {
   "name": "@antv/f2-wx",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "miniprogram": "es",
   "dependencies": {
+    "@antv/f2": "^4.0.0-alpha.7",
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {

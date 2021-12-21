@@ -6,6 +6,7 @@ lib/
 es/
 mocks/
 node_modules/
+miniprogram_npm/
 demos/assets/
 lib/
 demos/index.html

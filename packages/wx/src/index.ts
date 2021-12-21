@@ -14,8 +14,7 @@ Component({
    */
   properties: {
     onRender: {
-      // @ts-ignore
-      type: 'Function',
+      type: null,
       value: () => {},
     },
   },
