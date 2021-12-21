@@ -7,7 +7,6 @@ yarn-error.log*
 
 # lock
 package-lock.json
-yarn.lock
 
 # Runtime data
 pids
@@ -39,7 +38,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-miniprogram_npm
 
 # Typescript v1 declaration files
 typings/
@@ -62,22 +60,24 @@ typings/
 # dotenv environment variables file
 .env
 
-build
-dist
-lib
-es
-temp
 .DS_Store
-.vscode
-.idea
-es5/
-es6/
-es/
-demos/index.html
-demos/assets/screenshots
-demos/debug.html
+
+# npmignore - content above this line is automatically generated and modifications may be omitted
+# see npmjs.com/npmignore for more details.
+test
 
 *.sw*
 *.un~
-public
+.idea
+bin
+demos
+docs
+temp
+webpack-dev.config.js
+webpack.config.js
+examples
+site
+gatsby-browser.js
+gatsby-config.js
 .cache
+public

@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "f2": "@antv/f2-wx"
+  }
+}
