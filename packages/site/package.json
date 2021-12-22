@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-site",
-  "version": "4.0.0-alpha.6",
+  "version": "4.0.0-alpha.7",
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
@@ -11,9 +11,9 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "dependencies": {
-    "@antv/f2": "^4.0.0-alpha.7",
+    "@antv/f2": "^4.0.0-alpha.8",
     "@antv/f2-graphic": "^0.0.2-alpha.1",
-    "@antv/f2-react": "^0.0.2-alpha.5",
+    "@antv/f2-react": "^0.0.2-alpha.6",
     "@antv/gatsby-theme-antv": "~1.1.15",
     "gatsby": "^2.17.7",
     "gh-pages": "^2.1.1"
