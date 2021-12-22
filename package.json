@@ -47,7 +47,7 @@
     "dev": "npm run test-watch",
     "build": "father build",
     "build-watch": "CI=true father build -w",
-    "build-ci": "CI=true father build",
+    "build-ci": "CI=true npm run build",
     "test": "jest",
     "test-cov": "jest --coverage",
     "test-live": "npm run test-watch packages",
