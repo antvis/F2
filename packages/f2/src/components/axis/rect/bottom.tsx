@@ -81,7 +81,7 @@ export default (props: RectProps<'bottom'>) => {
                 textAttrs.textAlign = 'center';
               }
             } else {
-              textAttrs.textAlign = align;
+              textAttrs.textAlign = textAttrs.textAlign || align;
             }
 
             return (

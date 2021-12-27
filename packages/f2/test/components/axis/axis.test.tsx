@@ -207,6 +207,7 @@ describe('Axis 轴', () => {
                 } else {
                   cfg.fill = '#52C41A';
                 }
+                cfg.textAlign = 'center';
                 return cfg;
               },
               labelOffset: '8px',
