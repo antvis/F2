@@ -21,8 +21,18 @@ Component({
     height: null,
     type: '2d', // canvas 2d, 基础库 2.7 以上支持
   },
-  didMount() {
+  /**
+   * 组件创建时触发
+   * 注意：
+   *    使用该生命周期，项目配置需启用："component2": true
+   */
+  onInit() {
     this.setCanvasId();
+  },
+  didMount() {
+    if (isAppX2CanvasEnv()) {
+      return;
+    }
     const { id } = this.data;
     const query = my.createSelectorQuery({ page: this.$page });
     query
@@ -33,15 +43,12 @@ Component({
         const { width, height } = res && res[0] ? res[0] : this.props;
         const pixelRatio = getPixelRatio();
         // 高清解决方案
-        this.setData({
+        this.setData(
+          {
             width: width * pixelRatio,
             height: height * pixelRatio,
           },
           () => {
-            if (isAppX2CanvasEnv()) {
-              console.log('new version sdk for canvas: ', my.SDKVersion);
-              return;
-            }
             const myCtx = my.createCanvasContext(id);
             const context = F2Context(myCtx);
             this.canvasRender({ width, height, context, pixelRatio });
@@ -75,15 +82,16 @@ Component({
         .select(`#${id}`)
         .node()
         .exec((res) => {
-          if(!res[0]) {
+          if (!res[0]) {
             return;
           }
           const canvas = res[0].node;
-          const context = canvas.getContext('2d');
-          const { width, height} = canvas;
+          const { width, height } = canvas;
           const pixelRatio = getPixelRatio();
-          // 这里的宽高要消除之前 didMount 里设置高清分辨率的影响
-          this.canvasRender({ width: width / pixelRatio, height: height / pixelRatio, pixelRatio, context });
+          canvas.width = width * pixelRatio;
+          canvas.height = height * pixelRatio;
+          const context = canvas.getContext('2d');
+          this.canvasRender({ width, height, pixelRatio, context });
         });
     },
     canvasRender({ width, height, pixelRatio, context }: any) {
