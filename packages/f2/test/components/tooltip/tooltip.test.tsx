@@ -1,6 +1,5 @@
 import { jsx, Canvas, Chart, Axis, Interval, Tooltip } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
-const context = createContext();
 
 const data = [
   { type: 'a', genre: 'Sports', sold: 5 },
@@ -19,6 +18,7 @@ const data = [
 
 describe('tooltip', () => {
   it('Tooltip render', async () => {
+    const context = createContext('Tooltip render');
     const onChangeMockCallback = jest.fn();
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
@@ -56,5 +56,29 @@ describe('tooltip', () => {
     await gestureSimulator(context.canvas, 'press', { clientX: 170, clientY: 21 });
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
+  }),
+  it('Tooltip 默认展示', async () => {
+    const context = createContext('Tooltip 默认展示');
+    const { props } = (
+      <Canvas context={context} pixelRatio={2}>
+        <Chart
+          data={data}
+          style={
+            {
+              // left: 50,
+            }
+          }
+        >
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip alwaysShow={true} defaultItem={data[0]} snap showCrosshairs />
+        </Chart>
+      </Canvas>
+    );
+
+    // @ts-ignored
+    const canvas = new Canvas(props);
+    canvas.render();
   });
 });

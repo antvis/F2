@@ -12,6 +12,12 @@ export default (View) => {
     }
 
     didMount() {
+      const { props } = this;
+      const { chart, defaultItem } = props;
+      if(defaultItem) {
+        const point = chart.getPosition(defaultItem);
+        this.show(point);
+      }
       this._initEvent();
     }
 
