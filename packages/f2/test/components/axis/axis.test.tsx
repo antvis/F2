@@ -2,7 +2,7 @@ import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Interval, Axis, Line, Legend, Tooltip, Point, Area } from '../../../src/components';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import valuationData from './data/valuation.json';
 import bubbleData from './data/bubble.json';
 
@@ -183,12 +183,21 @@ describe('Axis 轴', () => {
     canvas.render();
   });
 
-  it('label 回调', () => {
+  it('label 回调', async () => {
     const context = createContext('label 回调');
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={valuationData}>
-          <Axis field="index" />
+          <Axis
+            field="index"
+            style={{
+              label: (text) => {
+                return {
+                  align: 'end',
+                };
+              },
+            }}
+          />
           <Axis
             field="value"
             formatter={(v) => {
@@ -216,9 +225,12 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
   it('grid样式', () => {

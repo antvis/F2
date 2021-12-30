@@ -62,7 +62,7 @@ export default (props: RectProps<'bottom'>) => {
         ? ticks.map((tick, index) => {
             const { points, text, tickValue, labelStyle } = tick;
             const start = points[0];
-            const { align = 'center' } = label || {};
+            const { align = 'center' } = labelStyle || label || {};
             const textAttrs: TextAttrs = {
               x: start.x,
               y: start.y + labelOffset,
