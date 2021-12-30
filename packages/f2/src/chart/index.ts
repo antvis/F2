@@ -183,6 +183,33 @@ class Chart extends Component implements IChart, InteractionMixin {
     return geometrys;
   }
 
+  /**
+   * calculate dataset's position on canvas
+   * @param  {Object} record the dataset
+   * @return {Object} return the position
+   */
+  getPosition(record) {
+    const coord = this.getCoord();
+    const xScale = this.getXScales()[0];
+    const xField = xScale.field;
+    const yScales = this.getYScales();
+    // default first
+    let yScale = yScales[0];
+    let yField = yScale.field;
+    for (let i = 0, len = yScales.length; i < len; i++) {
+      const scale = yScales[i];
+      const field = scale.field;
+      if (record[field]) {
+        yScale = scale;
+        yField = field;
+        break;
+      }
+    }
+    const x = xScale.scale(record[xField]);
+    const y = yScale.scale(record[yField]);
+    return coord.convertPoint({ x, y });
+  }
+
   getSnapRecords(point) {
     const geometrys = this.getGeometrys();
     if (!geometrys.length) return;
