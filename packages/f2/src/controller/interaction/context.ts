@@ -135,11 +135,9 @@ class Context {
     });
     const { data } = chart;
     data.forEach((item) => {
-      if (pinchScaleType === 'timeCat') {
-        const value = toTimeStamp(item[pinchField]);
-        if (pinchValueMap[value]) {
-          values.push(item[followField]);
-        }
+      const value = pinchScaleType === 'timeCat' ? toTimeStamp(item[pinchField]) : item[pinchField];
+      if (pinchValueMap[value]) {
+        values.push(item[followField]);
       }
     });
     const { min, max } = getRange(values);
