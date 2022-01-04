@@ -1191,5 +1191,32 @@ describe('折线图', () => {
       const canvas = new Canvas(props);
       canvas.render();
     });
+
+    it('指定线宽', async () => {
+      const BASE = '指定线宽';
+      const context = createContext(BASE);
+      const { type, props } = (
+        <Canvas
+          context={context}
+          pixelRatio={1}
+        >
+          <Chart data={data}>
+            <Axis
+              field="date"
+              tickCount={3}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line size="6px" x="date" y="value" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();      
+    });
+
   });
+  
 });
