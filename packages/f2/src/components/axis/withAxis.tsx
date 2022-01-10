@@ -135,7 +135,7 @@ export default (View) => {
         const { label: defaultLabelStyle, grid: defaultGridStyle } = themeAxis;
         if (isFunction(label)) {
           tick.labelStyle = px2hd(
-            mix({}, defaultLabelStyle, label(tick.text, index, ticks.length))
+            mix({}, defaultLabelStyle, label(tick.text, index, ticks))
           );
         }
         if (isFunction(grid)) {

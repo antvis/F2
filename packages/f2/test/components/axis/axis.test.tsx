@@ -233,6 +233,32 @@ describe('Axis 轴', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('label 回调参数', async () => {
+    const context = createContext('label 回调参数');
+    const labelMockCallback = jest.fn();
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis field="index" />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              label: labelMockCallback,
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
+  });
+
   it('grid样式', () => {
     const context = createContext('grid样式');
 
