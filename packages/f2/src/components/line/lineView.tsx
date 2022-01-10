@@ -105,8 +105,8 @@ export default (props: LineViewProps) => {
                       return { x: point.x, y: point.y };
                     }),
                     stroke: color,
-                    lineWidth: size,
                     ...shape,
+                    lineWidth: size || shape.lineWidth,
                   }}
                   animation={deepMix({
                     update: {
