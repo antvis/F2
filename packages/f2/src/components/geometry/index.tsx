@@ -517,6 +517,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
       const { text, tickValue } = tick;
       const color = colorAttr.mapping(tickValue);
       return {
+        field: scale.field,
         color,
         name: text, // for display
         tickValue,

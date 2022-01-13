@@ -122,7 +122,7 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-function getElementsByClassName(element, className) {
+function getElementsByClassName(className: string, element) {
   if (!element || !className) return [];
   let rst = [];
   if (element.get('className') === className) {
@@ -132,7 +132,7 @@ function getElementsByClassName(element, className) {
   if (children && children.length) {
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
-      rst = rst.concat(getElementsByClassName(child, className));
+      rst = rst.concat(getElementsByClassName(className, child));
     }
   }
   return rst;
