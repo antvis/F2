@@ -30,7 +30,7 @@ class Component<T = any> {
   willReceiveProps(_props: T) {}
   willUpdate() {}
   didUpdate() {}
-  render() {
+  render(): JSX.Element | null {
     return null;
   }
   didUnmount() {}
