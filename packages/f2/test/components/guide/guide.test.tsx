@@ -9,8 +9,8 @@ import {
   LineGuide,
 } from '../../../src/components';
 import { Canvas, Chart } from '../../../src';
-import { createContext } from '../../util';
-// import data from '../../fund-charts/test/data/managerData'
+import { createContext, delay } from '../../util';
+import imageBianzu from './images/bianzu';
 
 const data = [
   { genre: 'Sports', sold: 275, type: 'a' },
@@ -20,189 +20,202 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' },
 ];
 
-const renderChart = (Component) => {
-  const context = createContext();
-  const { type, props } = (
-    <Canvas height={300} width={300} context={context} animate={false}>
-      {Component}
-    </Canvas>
-  );
-
-  const chart = new Canvas(props);
-  chart.render();
-
-  const container = chart.container;
-  return container;
-};
-
 describe('Guide ', () => {
-  it('image & text', () => {
-    const container = renderChart(
-      <Chart data={data}>
-        {/* 折线 */}
-        <Line x="genre" y="sold" color="type" />
+  it('image & text', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" color="type" />
 
-        {/* 文字Guide */}
-        {data.map((item) => {
-          const { sold } = item;
-          return (
-            <TextGuide
-              records={[item]}
-              onClick={(ev) => {
-                console.log('ev: ', ev.points);
-              }}
-              content={sold + '个'}
-              attrs={{
-                fill: '#000',
-                fontSize: '24px',
-              }}
-              offsetY={-20}
-              offsetX={-15}
-            />
-          );
-        })}
+          {data.map((item) => {
+            const { sold } = item;
+            return (
+              <TextGuide
+                records={[item]}
+                onClick={(ev) => {
+                  console.log('ev: ', ev.points);
+                }}
+                content={`${sold}`}
+                attrs={{
+                  fill: '#000',
+                  fontSize: '24px',
+                }}
+                offsetY={-20}
+                offsetX={-15}
+              />
+            );
+          })}
 
-        {/* 图片Guide */}
-        {data.map((item, key) => {
-          return (
-            <ImageGuide
-              records={[item]}
-              onClick={(ev) => {
-                console.log('ev: ', ev.points);
-              }}
-              src="https://gw.alipayobjects.com/zos/antfincdn/9EHLIAnxXj/bianzu.png"
-              attrs={{
-                height: 24,
-                width: 24,
-              }}
-              offsetY={-4}
-            />
-          );
-        })}
-      </Chart>
+          {/* 图片Guide */}
+          {data.map((item, key) => {
+            return (
+              <ImageGuide
+                records={[item]}
+                onClick={(ev) => {
+                  console.log('ev: ', ev.points);
+                }}
+                src={imageBianzu}
+                attrs={{
+                  height: 24,
+                  width: 24,
+                }}
+                offsetY={-4}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
     );
+    const chart = new Canvas(props);
+    chart.render();
+
+    const container = chart.container;
 
     // 10个图例 和1条线
     expect(container._attrs.children[0]._attrs.children.length).toBe(11);
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('point', () => {
-    const container = renderChart(
-      <Chart data={data}>
-        {/* 折线 */}
-        <Line x="genre" y="sold" color="type" />
-        {data.map((item) => {
-          return <PointGuide records={[item]} />;
-        })}
-      </Chart>
+  it('point', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          {/* 折线 */}
+          <Line x="genre" y="sold" color="type" />
+          {data.map((item) => {
+            return <PointGuide records={[item]} />;
+          })}
+        </Chart>
+      </Canvas>
     );
+
+    const chart = new Canvas(props);
+    chart.render();
+
+    const container = chart.container;
     expect(container._attrs.children[0]._attrs.children.length).toBe(6);
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
-  it('line', () => {
-    const container = renderChart(
-      <Chart data={data}>
-        {/* 折线 */}
-        <Line x="genre" y="sold" color="type" />
-        {data.map((item) => {
-          return (
-            <LineGuide
-              records={[
-                { genre: item.genre, sold: 'min' },
-                { genre: item.genre, sold: item.sold },
-              ]}
-              offsetY={[60, 0]}
-            />
-          );
-        })}
-      </Chart>
+  it('line', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          {/* 折线 */}
+          <Line x="genre" y="sold" color="type" />
+          {data.map((item) => {
+            return (
+              <LineGuide
+                records={[
+                  { genre: item.genre, sold: 'min' },
+                  { genre: item.genre, sold: item.sold },
+                ]}
+                offsetY={[60, 0]}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
     );
+
+    const chart = new Canvas(props);
+    chart.render();
+
+    const container = chart.container;
     expect(container._attrs.children[0]._attrs.children.length).toBe(6);
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
   it('tag', () => {});
 
-  it('使用min、max、median', () => {
-    const container = renderChart(
-      <Chart data={data}>
-        {/* 折线 */}
-        <Line x="genre" y="sold" color="type" />
-        {data.map((item) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'min' }]}
-              style={{ stroke: '#262626' }}
-            />
-          );
-        })}
-        {data.map((item) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'median' }]}
-              style={{ stroke: '#FF6797' }}
-            />
-          );
-        })}
-        {data.map((item) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: 'max' }]}
-              style={{ stroke: '#82DC95' }}
-            />
-          );
-        })}
-      </Chart>
+  it('使用min、max、median', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          {/* 折线 */}
+          <Line x="genre" y="sold" color="type" />
+          {data.map((item) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: 'min' }]}
+                style={{ stroke: '#262626' }}
+              />
+            );
+          })}
+          {data.map((item) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: 'median' }]}
+                style={{ stroke: '#FF6797' }}
+              />
+            );
+          })}
+          {data.map((item) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: 'max' }]}
+                style={{ stroke: '#82DC95' }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
     );
 
-    const GuideY1 =
-      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY1).toBe(285);
-    const GuideY2 =
-      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY2).toBe(150);
-    const GuideY3 =
-      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY3).toBe(15);
+    const chart = new Canvas(props);
+    chart.render();
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('使用百分比字符串代表位置', () => {
-    const container = renderChart(
-      <Chart data={data} theme={{ padding: [0, 0, 0, 0] }}>
-        {/* 折线 */}
-        <Line x="genre" y="sold" color="type" />
-        {data.map((item, index) => {
-          return (
-            <PointGuide
-              records={[{ genre: item.genre, sold: '100%' }]}
-              style={{ stroke: 'green' }}
-            />
-          );
-        })}
-        {data.map((item, index) => {
-          return (
-            <PointGuide records={[{ genre: item.genre, sold: '50%' }]} style={{ stroke: 'red' }} />
-          );
-        })}
-        {data.map((item, index) => {
-          return (
-            <PointGuide records={[{ genre: item.genre, sold: '0%' }]} style={{ stroke: 'blue' }} />
-          );
-        })}
-      </Chart>
+  it('使用百分比字符串代表位置', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data} theme={{ padding: [0, 0, 0, 0] }}>
+          {/* 折线 */}
+          <Line x="genre" y="sold" color="type" />
+          {data.map((item, index) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: '100%' }]}
+                style={{ stroke: 'green' }}
+              />
+            );
+          })}
+          {data.map((item, index) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: '50%' }]}
+                style={{ stroke: 'red' }}
+              />
+            );
+          })}
+          {data.map((item, index) => {
+            return (
+              <PointGuide
+                records={[{ genre: item.genre, sold: '0%' }]}
+                style={{ stroke: 'blue' }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
     );
 
-    const GuideY1 =
-      container._attrs.children[0]._attrs.children[1]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY1).toBe(15);
-    const GuideY2 =
-      container._attrs.children[0]._attrs.children[6]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY2).toBe(150);
-    const GuideY3 =
-      container._attrs.children[0]._attrs.children[11]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0]._attrs.attrs.y;
-    expect(GuideY3).toBe(285);
+    const chart = new Canvas(props);
+    chart.render();
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
 });

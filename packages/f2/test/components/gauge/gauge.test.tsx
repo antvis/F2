@@ -1,12 +1,12 @@
 import { jsx } from '../../../src/jsx';
 import { Canvas, Gauge } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 const context = createContext();
 
 describe('Gauge', () => {
-  it('render', () => {
-    const { type, props } = (
-      <Canvas context={context}>
+  it('render', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Gauge
           center={{ x: 150, y: 150 }}
           startAngle={Math.PI}
@@ -18,8 +18,10 @@ describe('Gauge', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

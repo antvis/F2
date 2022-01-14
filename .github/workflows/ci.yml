@@ -24,7 +24,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node_version }}
 
@@ -50,3 +50,12 @@ jobs:
           npm run test
         env:
           CI: true
+
+      - name: save diff snapshot
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: diff snapshot
+          path: |
+            packages/**/__image_snapshots__/__diff_output__/*.png
+            !**/node_modules/**

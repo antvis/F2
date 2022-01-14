@@ -1,7 +1,7 @@
 import { jsx } from '../../../src/jsx';
 import { Polar } from '../../../src/coord';
 import { Canvas, Sunburst } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import data from './data';
 const context = createContext();
 
@@ -19,21 +19,19 @@ const colors = [
 ];
 
 describe('Sunburst', () => {
-  it('render', () => {
+  it('render', async () => {
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Sunburst
           data={data.children}
-          coord={
-            {
-              // type: Polar,
-              // transposed: true,
-              // left: 10,
-              // top: 10,
-              // width: 100,
-              // height: 100
-            }
-          }
+          coord={{
+            type: Polar,
+            // transposed: true,
+            // left: 10,
+            // top: 10,
+            // width: 100,
+            // height: 100
+          }}
           color={{
             field: 'name',
             // range: colors
@@ -43,8 +41,10 @@ describe('Sunburst', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

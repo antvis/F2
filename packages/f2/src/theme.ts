@@ -83,7 +83,7 @@ const chart = {
 
 const Theme = {
   fontFamily:
-    '"Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif',
+    '"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif',
   pixelRatio: 1,
   padding: [0, 0, 0, 0],
   chart,

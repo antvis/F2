@@ -1,10 +1,11 @@
 import { jsx } from '../../src';
 import { Canvas, Chart, Component } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 
 describe('base/component', () => {
-  it('子组件的 View props 更新后，则重新渲染', () => {
+  it('子组件的 View props 更新后，则重新渲染', async () => {
     const context = createContext('组件props更新后重绘');
+    const mockCallback = jest.fn();
 
     class StatedComponent extends Component {
       didMount() {
@@ -13,20 +14,20 @@ describe('base/component', () => {
       render() {
         const { state } = this;
         const { active } = state;
+        mockCallback(active);
         return (
           <rect
             attrs={{
-              fill: 'red',
+              fill: active ? 'red' : 'green',
               height: '100px',
               width: '100px',
-              fillOpacity: active ? 0.1 : 1,
             }}
           />
         );
       }
     }
 
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
         <Chart>
           <StatedComponent />
@@ -34,8 +35,11 @@ describe('base/component', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(50);
+
+    expect(mockCallback.mock.calls).toEqual([[undefined], [true]]);
   });
 });

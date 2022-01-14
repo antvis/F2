@@ -35,7 +35,7 @@ describe('Theme', () => {
           context={context}
           pixelRatio={1}
           theme={{
-            fontFamily: '"PingFang SC"',
+            fontFamily: '"Heiti SC"',
           }}
         >
           <Text ref={textRef} />
@@ -45,7 +45,7 @@ describe('Theme', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      expect(textRef.current.width).toBeCloseTo(29.58);
+      expect(textRef.current.width).toBeCloseTo(29.9159);
     });
   });
 });
