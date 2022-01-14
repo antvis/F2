@@ -9,6 +9,7 @@ const createContext = (title = '', { width = '300px', height = '225px' }: any = 
   const titleEl = document.createElement('p');
   titleEl.innerText = title + ':';
   titleEl.style.fontSize = '12px';
+  canvasEl.style.display = 'block';
   canvasEl.style.width = width;
   canvasEl.style.height = height;
   document.body.appendChild(titleEl);
@@ -22,9 +23,13 @@ const dispatchEvent = (dom: HTMLElement, eventType: string, exData: Record<strin
   event = Object.assign(event, exData);
   event.initEvent(eventType, true, true);
   dom.dispatchEvent(event);
-}
+};
 
-const gestureSimulator = async (dom, eventType: string, option: { clientX: number; clientY: number }) => {
+const gestureSimulator = async (
+  dom,
+  eventType: string,
+  option: { clientX: number; clientY: number }
+) => {
   const exData = {
     targetTouches: [option],
     touches: [option],

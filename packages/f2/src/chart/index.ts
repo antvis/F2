@@ -1,4 +1,5 @@
 import { Scale } from '@antv/scale';
+import { each } from '@antv/util';
 import Component from '../base/component';
 import equal from '../base/equal';
 import { applyMixins } from '../mixins';
@@ -91,6 +92,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     // state
     this.state = {
       zoomRange: [0, 1],
+      filters: {},
     };
   }
 
@@ -256,9 +258,31 @@ class Chart extends Component implements IChart, InteractionMixin {
     return this.coord;
   }
 
+  filter(field: string, condition) {
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        [field]: condition,
+      },
+    });
+  }
+
   render(): JSX.Element {
     const { props, state, layout, coord } = this;
-    const { children, data } = props;
+    const { children, data: originData } = props;
+    const { filters, zoomRange } = state;
+
+    let data = originData;
+    if (filters && Object.keys(filters).length) {
+      each(filters, (condition, field) => {
+        if (!condition) return;
+        data = data.filter((record) => {
+          return condition(record[field], record);
+        });
+      });
+      this.scaleController.changeData(data);
+    }
 
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
@@ -266,7 +290,7 @@ class Chart extends Component implements IChart, InteractionMixin {
         data,
         coord,
         layout,
-        zoomRange: state.zoomRange,
+        zoomRange,
       });
     });
   }

@@ -6,15 +6,12 @@ const Marker = ({ type, color }) => {
     return (
       <rect
         style={{
-          width: '20px',
-          height: '20px',
-          marginRight: '6px',
-          marginTop: '6px',
+          width: '12px',
+          height: '12px',
+          marginRight: '10px',
         }}
         attrs={{
           fill: color,
-          width: '14px',
-          height: '14px',
         }}
       />
     );
@@ -22,13 +19,12 @@ const Marker = ({ type, color }) => {
   return (
     <circle
       style={{
-        width: '20px',
-        height: '20px',
-        marginRight: '6px',
+        width: '12px',
+        height: '12px',
+        marginRight: '10px',
       }}
       attrs={{
         fill: color,
-        r: '6px',
       }}
     />
   );
@@ -37,27 +33,11 @@ const Marker = ({ type, color }) => {
 export default (props) => {
   const {
     items,
-    layout,
-    position,
-    maxItemWidth,
+    itemWidth,
     itemFormatter,
     style,
     marker = 'circle', // 图例标记默认为 circle
   } = props;
-  const { left, top, right, bottom, width, height } = layout;
-
-  const legendStyle = {
-    // default style
-    width,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: [0, '6px', '20px', 0],
-    justifyContent: 'center',
-    // custom style
-    ...style,
-  };
-
-  const isVertical = position === 'left' || position === 'right';
 
   const formatValue = (value) => {
     if (isFunction(itemFormatter)) {
@@ -66,52 +46,34 @@ export default (props) => {
     return `: ${value}`;
   };
 
-  if (isVertical) {
-    legendStyle.width = maxItemWidth;
-    legendStyle.flexDirection = 'column';
-    legendStyle.alignItems = 'flex-start';
-  }
-
-  if (position === 'left' || position === 'top') {
-    legendStyle.top = top;
-    legendStyle.left = left;
-  }
-
-  if (position === 'right') {
-    legendStyle.top = top;
-    legendStyle.left = right - maxItemWidth;
-  }
-
-  if (position === 'bottom') {
-    legendStyle.top = height + top;
-    legendStyle.left = left;
-  }
-
   return (
-    <group style={legendStyle}>
+    <group style={style}>
       {items.map((item) => {
-        const { color, name, value } = item;
+        const { color, name, value, filtered } = item;
         return (
           <group
+            className="legend-item"
             style={{
+              width: itemWidth,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
-              padding: ['6px', 0, 0, '6px'],
+              justifyContent: 'flex-start',
+              padding: ['6px', '6px', '6px', 0],
             }}
+            data-item={item}
           >
-            <Marker color={color} type={marker} />
+            <Marker color={filtered ? '#bfbfbf' : color} type={marker} />
             <text
               attrs={{
-                fill: 'black',
+                fill: filtered ? '#bfbfbf' : '#808080',
                 text: name,
               }}
             />
             {value ? (
               <text
                 attrs={{
-                  fill: 'black',
+                  fill: '#808080',
                   text: formatValue(value),
                 }}
               />
