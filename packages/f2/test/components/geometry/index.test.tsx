@@ -1,6 +1,6 @@
 import { jsx } from '../../../src/jsx';
 import Geometry from '../../../src/components/geometry';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import { Canvas, Chart, Interval, Axis } from '../../../src';
 const context = createContext();
 
@@ -43,16 +43,14 @@ describe('geometry', () => {
   const componentRef = { current: null };
 
   it('geometry render', () => {
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart ref={chartRef} data={data}>
           <GeometryTest ref={componentRef} x="genre" y="sold" />
         </Chart>
       </Canvas>
     );
-
-    // @ts-ignore
-    canvas = new type(props);
+    canvas = new Canvas(props);
     canvas.render();
 
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports']);
@@ -63,12 +61,15 @@ describe('geometry', () => {
     expect(group.get('children')[0].get('type')).toBe('circle');
   });
 
-  it('geometry update', () => {
+  it('geometry update', async () => {
     const newChart = (
       <Chart data={data1}>
         <GeometryTest ref={componentRef} x="genre" y="sold" />
       </Chart>
     );
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
 
     canvas.update({
       children: newChart,
@@ -79,5 +80,8 @@ describe('geometry', () => {
     const container = componentRef.current.container;
     const group = container.get('children')[0];
     expect(group.get('children').length).toBe(2);
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
   });
 });

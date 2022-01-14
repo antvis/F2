@@ -205,25 +205,14 @@ const data = [
   },
 ];
 
-const { offsetWidth } = document.body;
-const height = offsetWidth * 0.75;
-
 describe('折线图', () => {
   describe('基础折线图', () => {
-    it('基础折线图', () => {
-      const BASE = '基础折线图';
-      const context = createContext(BASE);
+    it('基础折线图', async () => {
+      const context = createContext('基础折线图');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             ref={chartRef}
             data={data}
@@ -260,23 +249,17 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
     it('开启无障碍', () => {
-      const ARIA = '开启无障碍';
-      const context = createContext(ARIA);
+      const context = createContext('开启无障碍');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-          padding="8px"
-        >
+        <Canvas context={context} pixelRatio={1} padding="8px">
           <Chart
             ref={chartRef}
             data={data}
@@ -304,52 +287,43 @@ describe('折线图', () => {
       canvas.render();
     });
 
-    it('带点', () => {
-      const WITH_POINT = '带点';
+    it('带点', async () => {
       const data = [
         {
-          day: '周一',
+          day: 'Mon',
           value: 300,
         },
         {
-          day: '周二',
+          day: 'Tue',
           value: 400,
         },
         {
-          day: '周三',
+          day: 'Wed',
           value: 350,
         },
         {
-          day: '周四',
+          day: 'Thu',
           value: 500,
         },
         {
-          day: '周五',
+          day: 'Fri',
           value: 490,
         },
         {
-          day: '周六',
+          day: 'Sat',
           value: 600,
         },
         {
-          day: '周日',
+          day: 'Sun',
           value: 900,
         },
       ];
-      const context = createContext(WITH_POINT);
+      const context = createContext('带点');
       const chartRef = { current: null };
       const lineRef = { current: null };
       const pointRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
-      const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-          theme={{ sizes: [8] }}
-        >
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} theme={{ sizes: [8] }}>
           <Chart
             ref={chartRef}
             data={data}
@@ -374,10 +348,12 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('曲线', () => {
-      const SMOOTH = '曲线';
+    it('曲线', async () => {
       const data = [
         {
           time: '2016-08-08 00:00:00',
@@ -416,18 +392,11 @@ describe('折线图', () => {
           tem: 18,
         },
       ];
-      const context = createContext(SMOOTH);
+      const context = createContext('曲线');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             ref={chartRef}
             data={data}
@@ -459,17 +428,15 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
-
-    // TODO(@buli): 折线图平移
-
-    // TODO(@buli): 曲线平移
   });
 
   describe('对比折线图', () => {
     it('走势对比', async () => {
-      const MULTIPLE_SERIES = '走势对比';
-      const context = createContext(MULTIPLE_SERIES);
+      const context = createContext('走势对比');
       const chartRef = { current: null };
       const lineRef = { current: null };
       const res = await fetch(
@@ -477,12 +444,7 @@ describe('折线图', () => {
       );
       const data = await res.json();
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             ref={chartRef}
             data={data}
@@ -531,82 +493,75 @@ describe('折线图', () => {
       expect(line.attrs.color.scale.values).toEqual(['金属', '农副产品', '能源']);
     });
 
-    it('style支持传入函数', () => {
-      const MULTIPLE_SERIES = 'style支持传入函数';
-      const context = createContext(MULTIPLE_SERIES);
+    it('style支持传入函数', async () => {
+      const context = createContext('style支持传入函数');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
-        .then((res) => res.json())
-        .then((data) => {
-          const { type, props } = (
-            <Canvas
-              context={context}
-              pixelRatio={window.devicePixelRatio}
-              width={offsetWidth}
-              height={height}
-            >
-              <Chart
-                ref={chartRef}
-                data={data}
-                coord={{
-                  type: Rect,
-                }}
-                scale={{}}
-              >
-                <Axis
-                  field="date"
-                  tickCount={3}
-                  style={{
-                    label: { align: 'between' },
-                  }}
-                />
-                <Axis field="value" tickCount={5} />
-                <Line
-                  ref={lineRef}
-                  x="date"
-                  y="value"
-                  lineWidth="4px"
-                  color={{
-                    field: 'type',
-                    callback: (type) => {
-                      if (type === '金属') {
-                        return '#666';
-                      }
-                      return 'red';
-                    },
-                  }}
-                  style={{
-                    field: 'type', // 可选指定field
-                    smooth: true, // 传入非函数的值
-                    stroke: (type) => {
-                      // 传入函数
-                      if (type === '金属') {
-                        return '#666';
-                      }
-                      return 'red';
-                    },
-                    lineWidth: (type) => {
-                      if (type === '金属') {
-                        return 2;
-                      }
-                      return 1;
-                    },
-                  }}
-                />
-                {/* TODO(@buli): 动态 legend value */}
-                <Legend position="top" />
-              </Chart>
-            </Canvas>
-          );
+      const res = await fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json'
+      );
+      const data = await res.json();
+      const { type, props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            ref={chartRef}
+            data={data}
+            coord={{
+              type: Rect,
+            }}
+            scale={{}}
+          >
+            <Axis
+              field="date"
+              tickCount={3}
+              style={{
+                label: { align: 'between' },
+              }}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line
+              ref={lineRef}
+              x="date"
+              y="value"
+              lineWidth="4px"
+              color={{
+                field: 'type',
+                callback: (type) => {
+                  if (type === '金属') {
+                    return '#666';
+                  }
+                  return 'red';
+                },
+              }}
+              style={{
+                field: 'type', // 可选指定field
+                smooth: true, // 传入非函数的值
+                stroke: (type) => {
+                  // 传入函数
+                  if (type === '金属') {
+                    return '#666';
+                  }
+                  return 'red';
+                },
+                lineWidth: (type) => {
+                  if (type === '金属') {
+                    return 2;
+                  }
+                  return 1;
+                },
+              }}
+            />
+          </Chart>
+        </Canvas>
+      );
 
-          const canvas = new Canvas(props);
-          canvas.render();
-        });
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('虚实线对比', () => {
-      const MULTIPLE_SHAPE = '虚实线对比';
+    it('虚实线对比', async () => {
       const data = [
         {
           time: '2016-08-08 00:00:00',
@@ -699,18 +654,11 @@ describe('折线图', () => {
           type: '实际收益率',
         },
       ];
-      const context = createContext(MULTIPLE_SHAPE);
+      const context = createContext('虚实线对比');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             ref={chartRef}
             data={data}
@@ -757,17 +705,18 @@ describe('折线图', () => {
               }}
               color="type"
             />
-            <Legend position="top" />
           </Chart>
         </Canvas>
       );
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('折线锚点', () => {
-      const ANCHOR_POINT = '折线锚点';
+    it('折线锚点', async () => {
       const data = [
         {
           date: '2017-06-05',
@@ -900,18 +849,11 @@ describe('折线图', () => {
           tag: 0,
         },
       ];
-      const context = createContext(ANCHOR_POINT);
+      const context = createContext('折线锚点');
       const chartRef = { current: null };
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={window.devicePixelRatio}
-          width={offsetWidth}
-          height={height}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             ref={chartRef}
             data={data}
@@ -953,21 +895,6 @@ describe('折线图', () => {
                 callback: (val) => (val === 2 ? '#518DFE' : '#F35833'),
               }}
             />
-            <Legend
-              position="top"
-              items={[
-                {
-                  name: '买入点',
-                  marker: 'circle',
-                  color: '#F35833',
-                },
-                {
-                  name: '卖出点',
-                  marker: 'circle',
-                  color: '#518DFE',
-                },
-              ]}
-            />
             <Tooltip snap />
           </Chart>
         </Canvas>
@@ -975,6 +902,9 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
   });
 
@@ -1067,119 +997,105 @@ describe('折线图', () => {
   });
 
   describe('其他折线图', () => {
-    it('存在空值', () => {
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
-      fetch('https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json')
-        .then((res) => res.json())
-        .then((data) => {
-          const NULL_VALUE = '存在空值';
-          const context = createContext(NULL_VALUE);
-          const lineRef = { current: null };
-          const { type, props } = (
-            <Canvas
-              context={context}
-              pixelRatio={window.devicePixelRatio}
-              width={offsetWidth}
-              height={height}
-            >
-              <Chart
-                data={data}
-                coord={{
-                  type: Rect,
-                }}
-                scale={{
-                  count: {
-                    min: 0,
-                    max: 100,
-                  },
-                  year: {
-                    tickCount: 3,
-                  },
-                }}
-              >
-                <Axis
-                  field="year"
-                  style={{
-                    label: {
-                      align: 'center',
-                      textAlign: 'start',
-                      textBaseline: 'middle',
-                      rotate: Math.PI / 2,
-                    },
-                  }}
-                />
-                <Axis field="count" />
-                <Line
-                  ref={lineRef}
-                  x="year"
-                  y="count"
-                  color={{
-                    field: 'medalType',
-                    map: (val) => {
-                      if (val === 'Gold Medals') {
-                        return '#f3ac32';
-                      } else if (val === 'Silver Medals') {
-                        return '#b8b8b8';
-                      } else if (val === 'Bronze Medals') {
-                        return '#bb6e36';
-                      }
-                    },
-                  }}
-                />
-                <Legend position="top" />
-              </Chart>
-            </Canvas>
-          );
+    it('存在空值', async () => {
+      const res = await fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/2TgqDdsXzK/usa-medals-won.json'
+      );
+      const data = await res.json();
+      const context = createContext('存在空值');
+      const lineRef = { current: null };
+      const { type, props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            data={data}
+            coord={{
+              type: Rect,
+            }}
+            scale={{
+              count: {
+                min: 0,
+                max: 100,
+              },
+              year: {
+                tickCount: 3,
+              },
+            }}
+          >
+            <Axis
+              field="year"
+              style={{
+                label: {
+                  align: 'center',
+                  textAlign: 'start',
+                  textBaseline: 'middle',
+                  rotate: Math.PI / 2,
+                },
+              }}
+            />
+            <Axis field="count" />
+            <Line
+              ref={lineRef}
+              x="year"
+              y="count"
+              color={{
+                field: 'medalType',
+                map: (val) => {
+                  if (val === 'Gold Medals') {
+                    return '#f3ac32';
+                  } else if (val === 'Silver Medals') {
+                    return '#b8b8b8';
+                  } else if (val === 'Bronze Medals') {
+                    return '#bb6e36';
+                  }
+                },
+              }}
+            />
+            <Legend position="top" />
+          </Chart>
+        </Canvas>
+      );
 
-          const canvas = new Canvas(props);
-          canvas.render();
-        });
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('连接空值数据', () => {
+    it('连接空值数据', async () => {
       const data = [
         {
-          day: '周一',
+          day: 'Mon',
           value: 300,
         },
         {
-          day: '周二',
+          day: 'Tue',
           value: 400,
         },
         {
-          day: '周三',
+          day: 'Wed',
           value: null,
         },
         {
-          day: '周四',
+          day: 'Thu',
           value: 500,
         },
         {
-          day: '周五',
+          day: 'Fri',
           value: 490,
         },
         {
-          day: '周六',
+          day: 'Sat',
           value: 600,
         },
         {
-          day: '周日',
+          day: 'Sun',
           value: 900,
         },
       ];
-      const CONNECT_NULL = '连接空值数据';
-      const context = createContext(CONNECT_NULL);
+      const context = createContext('连接空值数据');
       const lineRef = { current: null };
-      const { offsetWidth } = document.body;
-      const height = offsetWidth * 0.75;
       const { type, props } = (
-        <Canvas
-          context={context}
-          width={offsetWidth}
-          height={height}
-          pixelRatio={window.devicePixelRatio}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
             <Axis field="day" />
             <Axis field="value" />
@@ -1190,21 +1106,18 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
     it('指定线宽', async () => {
       const BASE = '指定线宽';
       const context = createContext(BASE);
       const { type, props } = (
-        <Canvas
-          context={context}
-          pixelRatio={1}
-        >
+        <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
-            <Axis
-              field="date"
-              tickCount={3}
-            />
+            <Axis field="date" tickCount={3} />
             <Axis field="value" tickCount={5} />
             <Line size="6px" x="date" y="value" />
           </Chart>
@@ -1214,9 +1127,7 @@ describe('折线图', () => {
       const canvas = new Canvas(props);
       canvas.render();
       await delay(1000);
-      expect(context).toMatchImageSnapshot();      
+      expect(context).toMatchImageSnapshot();
     });
-
   });
-  
 });

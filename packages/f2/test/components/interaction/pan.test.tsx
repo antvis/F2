@@ -48,6 +48,7 @@ describe('Interaction 交互', () => {
 
     const chart = chartRef.current;
 
+    await delay(500);
     const interactionContext = chart.interaction.context;
     interactionContext.doZoom(0.5, 0.5, 1.5);
 

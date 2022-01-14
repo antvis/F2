@@ -1,6 +1,6 @@
 import { jsx } from '../../../src/jsx';
-import { createContext } from '../../util';
 import { Canvas, Chart, Interval, Axis } from '../../../src';
+import { createContext, delay } from '../../util';
 const context = createContext();
 
 const data = [
@@ -12,10 +12,10 @@ const data = [
 ];
 
 describe('Interval', () => {
-  it('render', () => {
+  it('render', async () => {
     const ref = {};
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="genre" />
           <Axis field="sold" min={0} />
@@ -38,11 +38,14 @@ describe('Interval', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('startOnZero', () => {
-    const { type, props } = (
-      <Canvas context={context}>
+  it('startOnZero', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="genre" />
           <Axis field="sold" min={0} />
@@ -53,6 +56,9 @@ describe('Interval', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
   it('x scale 为 timeCat', () => {
