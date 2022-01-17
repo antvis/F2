@@ -60,7 +60,6 @@ describe('Timeline', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
   });

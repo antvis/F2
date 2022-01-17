@@ -50,14 +50,19 @@ describe('Chart', () => {
                 <Year year={year} />
                 <Axis field="country" />
                 <Axis field="income" />
-                <Interval x="country" y="income" color="country" animation={{
-                  appear: {
-                    duration: 100,
-                  },
-                  update: {
-                    duration: 1000,
-                  }
-                }} />
+                <Interval
+                  x="country"
+                  y="income"
+                  color="country"
+                  animation={{
+                    appear: {
+                      duration: 100,
+                    },
+                    update: {
+                      duration: 1000,
+                    },
+                  }}
+                />
                 {data[year].map((record) => {
                   return (
                     <TextGuide
@@ -76,7 +81,7 @@ describe('Chart', () => {
                         },
                         update: {
                           duration: 1000,
-                        }
+                        },
                       }}
                     />
                   );
@@ -88,7 +93,6 @@ describe('Chart', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
   });

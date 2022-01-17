@@ -108,8 +108,7 @@ describe('PieLabel', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });
