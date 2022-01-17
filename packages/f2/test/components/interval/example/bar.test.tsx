@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
@@ -24,14 +23,13 @@ describe('条形图', () => {
     const context = createContext('基础条形图');
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart ref={chartRef} data={data} coord={{ transposed: true }} scale={}>
+        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" />
         </Chart>
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -40,14 +38,13 @@ describe('条形图', () => {
     const context = createContext('分组条形图');
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart ref={chartRef} data={data} coord={{ transposed: true }} scale={}>
+        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" adjust="dodge" />
         </Chart>
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -56,14 +53,13 @@ describe('条形图', () => {
     const context = createContext('堆叠条形图');
     const { type, props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart ref={chartRef} data={data} coord={{ transposed: true }} scale={}>
+        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" adjust="stack" />
         </Chart>
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

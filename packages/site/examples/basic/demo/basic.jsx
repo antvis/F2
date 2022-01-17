@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Interval, Axis, Tooltip } from '@antv/f2';
+import { jsx, Canvas, Chart, Interval, Axis, Tooltip, Legend } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');
 
@@ -8,12 +8,13 @@ const data = [
   { genre: 'Strategy', sold: 115 },
   { genre: 'Action', sold: 120 },
   { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
+  { genre: 'Other', sold: 150 },
 ];
 
 const { props } = (
-  <Canvas context={ context } pixelRatio={window.devicePixelRatio}>
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
     <Chart data={data}>
+      <Legend />
       <Axis field="genre" />
       <Axis field="sold" />
       <Interval x="genre" y="sold" color="genre" />

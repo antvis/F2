@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
 import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
@@ -59,8 +58,7 @@ describe('图例 - position', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -83,8 +81,7 @@ describe('图例 - position', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -107,8 +104,7 @@ describe('图例 - position', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -131,8 +127,7 @@ describe('图例 - position', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

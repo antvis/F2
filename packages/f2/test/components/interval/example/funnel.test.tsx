@@ -49,17 +49,16 @@ describe('漏斗图', () => {
                 text: data.action,
                 fill: color,
               }),
-              guide: (data => ({
+              guide: (data) => ({
                 text: (data.percent * 100).toFixed(0) + '%',
-                fill: '#fff'
-              }))
+                fill: '#fff',
+              }),
             }}
           />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -104,8 +103,7 @@ describe('漏斗图', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

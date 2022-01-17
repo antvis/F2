@@ -52,8 +52,7 @@ describe('环形图', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
   it('嵌套环形图', () => {
@@ -109,8 +108,7 @@ describe('环形图', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
   it('环形进度条', () => {
@@ -172,8 +170,7 @@ describe('环形图', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

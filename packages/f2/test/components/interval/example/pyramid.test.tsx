@@ -48,22 +48,21 @@ describe('金字塔图', () => {
               label: (data, color) => {
                 return {
                   text: data.action,
-                  fill: color
+                  fill: color,
                 };
               },
-              guide: data => {
+              guide: (data) => {
                 return {
                   text: (data.percent * 100).toFixed(0) + '%',
-                  fill: '#fff'
+                  fill: '#fff',
                 };
-              }
+              },
             }}
           />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -110,22 +109,21 @@ describe('金字塔图', () => {
               label: (data, color) => {
                 return {
                   text: data.action,
-                  fill: color
+                  fill: color,
                 };
               },
-              guide: data => {
+              guide: (data) => {
                 return {
                   text: (data.percent * 100).toFixed(0) + '%',
-                  fill: '#fff'
+                  fill: '#fff',
                 };
-              }
+              },
             }}
           />
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });
