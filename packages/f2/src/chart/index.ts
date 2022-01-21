@@ -1,5 +1,5 @@
 import { Scale } from '@antv/scale';
-import { each } from '@antv/util';
+import { each, findIndex, isArray } from '@antv/util';
 import Component from '../base/component';
 import equal from '../base/equal';
 import { applyMixins } from '../mixins';
@@ -35,6 +35,17 @@ interface IChart {
   props: Props;
 }
 
+export interface PositionLayout {
+  position: 'top' | 'right' | 'bottom' | 'left';
+  width: number;
+  height: number;
+}
+
+export interface ComponentPosition {
+  component: Component;
+  layout: PositionLayout | PositionLayout[];
+}
+
 // 统计图表
 class Chart extends Component implements IChart, InteractionMixin {
   data: any;
@@ -42,6 +53,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   private layout: Layout;
   // 坐标系
   private coord: Coord;
+  private componentsPosition: ComponentPosition[] = [];
 
   // 交互
   interaction: InteractionController;
@@ -56,6 +68,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
+
     const { data, coord: coordOption, scale, interactions = [] } = props;
 
     this.layoutController = new LayoutController();
@@ -149,9 +162,10 @@ class Chart extends Component implements IChart, InteractionMixin {
     });
   }
 
-  layoutCoord(position, box) {
+  // 给需要显示的组件留空
+  layoutCoord(layout: PositionLayout) {
     const { coord } = this;
-    const { width: boxWidth, height: boxHeight } = box;
+    const { position, width: boxWidth, height: boxHeight } = layout;
     let { left, top, width, height } = coord;
     switch (position) {
       case 'left':
@@ -170,6 +184,46 @@ class Chart extends Component implements IChart, InteractionMixin {
         break;
     }
     coord.update({ left, top, width, height });
+  }
+
+  resetCoordLayout() {
+    const { coord, layout } = this;
+    coord.update(layout);
+  }
+
+  updateCoordLayout(layout: PositionLayout | PositionLayout[]) {
+    if (isArray(layout)) {
+      layout.forEach((item) => {
+        this.layoutCoord(item);
+      });
+      return;
+    }
+    this.layoutCoord(layout);
+  }
+
+  updateCoordFor(component: Component, layout: PositionLayout | PositionLayout[]) {
+    if (!layout) return;
+    const { componentsPosition } = this;
+    const componentPosition = { component, layout };
+    const existIndex = findIndex(componentsPosition, (item) => {
+      return item.component === component;
+    });
+    // 说明是已经存在的组件
+    if (existIndex > -1) {
+      componentsPosition.splice(existIndex, 1, componentPosition);
+
+      // 先重置，然后整体重新算一次
+      this.resetCoordLayout();
+      componentsPosition.forEach((componentPosition) => {
+        const { layout } = componentPosition;
+        this.updateCoordLayout(layout);
+      });
+      return;
+    }
+
+    // 是新组件，直接添加
+    componentsPosition.push(componentPosition);
+    this.updateCoordLayout(layout);
   }
 
   getGeometrys() {
