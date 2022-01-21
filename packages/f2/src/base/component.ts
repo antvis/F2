@@ -5,9 +5,9 @@ export interface ComponentContext {
   [key: string]: any;
 }
 
-class Component<T = any> {
-  props: T;
-  state: any;
+class Component<P = any, S = any> {
+  props: P;
+  state: S;
   context: ComponentContext;
   refs: {
     [key: string]: any;
@@ -21,13 +21,13 @@ class Component<T = any> {
   animate: boolean;
   constructor(props, context?, updater?) {
     this.props = props;
-    this.state = {};
+    this.state = {} as S;
     this.context = context;
     this.updater = updater;
   }
   willMount() {}
   didMount() {}
-  willReceiveProps(_props: T) {}
+  willReceiveProps(_props: P) {}
   willUpdate() {}
   didUpdate() {}
   render(): JSX.Element | null {

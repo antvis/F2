@@ -1,6 +1,7 @@
 import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
+import { PositionLayout } from '../../chart/index';
 import Component from '../../base/component';
 import { Style, Tick, AxisProps } from './types';
 
@@ -10,7 +11,7 @@ type BBox = {
 };
 
 export default (View) => {
-  return class Axis extends Component<AxisProps> {
+  return class Axis extends Component<AxisProps, {}> {
     style: Style = {};
 
     constructor(props: AxisProps) {
@@ -134,9 +135,7 @@ export default (View) => {
         const { label, grid } = style;
         const { label: defaultLabelStyle, grid: defaultGridStyle } = themeAxis;
         if (isFunction(label)) {
-          tick.labelStyle = px2hd(
-            mix({}, defaultLabelStyle, label(tick.text, index, ticks))
-          );
+          tick.labelStyle = px2hd(mix({}, defaultLabelStyle, label(tick.text, index, ticks)));
         }
         if (isFunction(grid)) {
           tick.gridStyle = px2hd(mix({}, defaultGridStyle, grid(tick.text, index, ticks.length)));
@@ -167,37 +166,50 @@ export default (View) => {
       });
     }
 
-    // 主要是计算coord的布局
-    updateCoord() {
+    measureLayout(): PositionLayout | PositionLayout[] {
       const { props } = this;
-      const { visible, chart, coord } = props;
+      const { visible, coord } = props;
       if (visible === false) {
-        return;
+        return null;
       }
 
       const ticks = this.getTicks();
       const bbox = this.getMaxBBox(ticks, this.style);
-      const { isPolar, left, top, width: coordWidth, height: coordHeight } = coord;
+      const { isPolar } = coord;
       const dimType = this._getDimType();
       const { width, height } = bbox;
-
       if (isPolar) {
         // 机坐标系的 y 不占位置
         if (dimType === 'y') {
-          return;
+          return null;
         }
-        coord.update({
-          left: left + width,
-          top: top + height,
-          width: coordWidth - width * 2,
-          height: coordHeight - height * 2,
-        });
-        return;
+        // 4 个方向都需要留空
+        return ['top', 'right', 'bottom', 'left'].map(
+          (position: 'top' | 'right' | 'bottom' | 'left') => {
+            return {
+              position,
+              width,
+              height,
+            };
+          }
+        );
       }
 
       // 直角坐标系下
       const position = this._getPosition();
-      chart.layoutCoord(position, bbox);
+      return {
+        position,
+        width,
+        height,
+      };
+    }
+
+    // 主要是计算coord的布局
+    updateCoord() {
+      const { props } = this;
+      const { chart } = props;
+      const layout = this.measureLayout();
+      chart.updateCoordFor(this, layout);
     }
 
     render() {

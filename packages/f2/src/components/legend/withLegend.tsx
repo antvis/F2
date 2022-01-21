@@ -192,7 +192,11 @@ export default (View) => {
       const { width, height } = style;
       const marginNumber = context.px2hd(margin);
 
-      chart.layoutCoord(position, { width: width + marginNumber, height: height + marginNumber });
+      chart.updateCoordFor(this, {
+        position,
+        width: width + marginNumber,
+        height: height + marginNumber,
+      });
     }
 
     willMount() {
