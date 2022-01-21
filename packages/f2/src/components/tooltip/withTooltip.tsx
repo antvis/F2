@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
 import { isArray, isFunction } from '@antv/util';
+import Component from '../../base/component';
 
 export default (View) => {
   return class Tooltip extends Component {
@@ -11,10 +11,21 @@ export default (View) => {
       };
     }
 
+    updateCoord() {
+      const { props, context } = this;
+      const { padding = '10px', chart } = props;
+
+      chart.updateCoordFor(this, { position: 'top', width: 0, height: context.px2hd(padding) });
+    }
+
+    willMount(): void {
+      this.updateCoord();
+    }
+
     didMount() {
       const { props } = this;
       const { chart, defaultItem } = props;
-      if(defaultItem) {
+      if (defaultItem) {
         const point = chart.getPosition(defaultItem);
         this.show(point);
       }
@@ -41,14 +52,26 @@ export default (View) => {
     show(point) {
       const { props } = this;
       const { chart, onChange } = props;
-      const records = chart.getSnapRecords(point);
-      if (isArray(records) && records.length > 0) {
-        this.setState({
-          records,
-        });
-        if (isFunction(onChange)) {
-          onChange(records);
-        }
+      const snapRecords = chart.getSnapRecords(point);
+
+      const records = snapRecords.map((record) => {
+        const { origin, xField, yField, x, y, color } = record;
+        const xScale = chart.getScale(xField);
+        const yScale = chart.getScale(yField);
+        const xText = xScale.getText(origin[xField]);
+        const yText = yScale.getText(origin[yField]);
+
+        return { origin, x, y, color, xField, yField, xText, yText };
+      });
+
+      if (!isArray(records) || !records.length) {
+        return;
+      }
+      this.setState({
+        records,
+      });
+      if (isFunction(onChange)) {
+        onChange(records);
       }
     }
 
@@ -57,13 +80,17 @@ export default (View) => {
         records: null,
       });
     }
+
     render() {
       const { props, state } = this;
       const { visible } = props;
       if (visible === false) {
         return null;
       }
-      return <View {...props} {...state} />;
+      const { records } = state;
+      if (!records || !records.length) return null;
+
+      return <View {...props} records={records} />;
     }
   };
 };

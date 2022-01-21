@@ -11,4 +11,5 @@ import { jsx as createElement } from './jsx';
 
 export * from './components';
 export { jsx, render } from './jsx';
+export { default as createRef } from './createRef';
 export { Children, createElement, Component, Timeline, Canvas, Chart };
