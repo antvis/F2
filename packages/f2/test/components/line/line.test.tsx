@@ -1,5 +1,5 @@
 import { Rect } from '../../../src/coord';
-import { jsx, Component, Canvas, Chart, Line, Point, Axis, Tooltip, Legend } from '../../../src';
+import { jsx, Component, Canvas, Chart, Line, Point, Axis, Legend } from '../../../src';
 import { createContext, delay } from '../../util';
 
 const data = [
@@ -341,7 +341,6 @@ describe('折线图', () => {
             <Axis field="value" tickCount={5} />
             <Line x="day" y="value" ref={lineRef} />
             <Point x="day" y="value" ref={pointRef} />
-            <Tooltip snap />
           </Chart>
         </Canvas>
       );
@@ -421,7 +420,6 @@ describe('折线图', () => {
             />
             <Axis field="tem" />
             <Line x="time" y="tem" ref={lineRef} shape="smooth" />
-            <Tooltip />
           </Chart>
         </Canvas>
       );
@@ -467,20 +465,6 @@ describe('折线图', () => {
             />
             <Axis field="value" tickCount={5} />
             <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
-            <Tooltip
-              showCrosshairs
-              crosshairsType="xy"
-              crosshairsStyle={{
-                stroke: '#1577FE',
-                lineWidth: '1px',
-                lineDash: [2, 2],
-              }}
-              custom
-              showXTip
-              showYTip
-              xTipBackground={{ fill: '#1677FF', radius: '2px' }}
-              yTipBackground={{ fill: '#1677FF', radius: '2px' }}
-            />
             <Legend position="top" />
           </Chart>
         </Canvas>
@@ -895,7 +879,6 @@ describe('折线图', () => {
                 callback: (val) => (val === 2 ? '#518DFE' : '#F35833'),
               }}
             />
-            <Tooltip snap />
           </Chart>
         </Canvas>
       );
