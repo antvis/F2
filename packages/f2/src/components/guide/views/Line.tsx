@@ -1,9 +1,10 @@
 import { jsx } from '../../../jsx';
 import { isArray, deepMix } from '@antv/util';
+import { Style } from '../../../types';
 
 type LineGuideProps = {
   points?: { x: number; y: number }[] | null;
-  style?: any;
+  style?: Style;
   offsetX?: number | number[];
   offsetY?: number | number[];
   theme?: any;

@@ -1,10 +1,11 @@
 import { jsx } from '../../../jsx';
+import { Style } from '../../../types';
 
 type ImageGuideProps = {
   src: string;
   points?: { x: number; y: number }[] | null;
   attrs?: any;
-  style?: any;
+  style?: Style;
   offsetX?: number;
   offsetY?: number;
 };

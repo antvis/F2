@@ -1,5 +1,5 @@
 import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../src/jsx';
-import { createUpdater } from '../../src/canvas/updater';
+import { createUpdater } from '../../src/base/updater';
 
 const ViewA = () => {
   return <text />;

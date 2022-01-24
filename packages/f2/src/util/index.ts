@@ -28,7 +28,7 @@ function px2hd(px: number): number {
   return Number((px * SCALE).toFixed(1));
 }
 
-function parsePadding(padding: any) {
+function parsePadding(padding: number | number[]) {
   if (isNumber(padding)) {
     return [padding, padding, padding, padding];
   }
@@ -41,7 +41,7 @@ function parsePadding(padding: any) {
 
 type pxstr = `${number}px`;
 
-function batch2hd(value: pxstr | pxstr[] | any) {
+function batch2hd(value: pxstr | pxstr[] | number | number[] | string | string[] | any) {
   // 处理带px的数据
   if (isString(value) && /^-?\d+px$/.test(value)) {
     const num = value.substr(0, value.length - 2);
@@ -80,14 +80,14 @@ function batch2hd(value: pxstr | pxstr[] | any) {
 }
 
 // 展开数组
-function extendMap(arr: any[], fn: Function) {
+function extendMap(arr, fn: Function) {
   if (!arr) {
     return arr;
   }
   if (!isArray(arr)) {
     return [fn(arr)];
   }
-  let newArray: any = [];
+  let newArray = [];
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
     if (isArray(element)) {

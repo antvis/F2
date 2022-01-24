@@ -1,4 +1,6 @@
 import * as DOMUtil from '../util/dom';
+import Canvas from '../engine/canvas';
+import { Point } from '../types';
 const { convertPoints } = DOMUtil;
 
 // 计算滑动的方向
@@ -28,21 +30,21 @@ const getCenter = (point1, point2) => {
 const PRESS_DELAY = 250;
 
 class EventController {
-  processEvent: any;
-  canvas: any;
-  startTime: any;
-  endTime: any;
-  startPoints: any;
-  startDistance: any;
-  center: any;
-  pressTimeout: any;
-  eventType: any;
-  direction: any;
-  lastMoveTime: any;
-  prevMovePoints: any;
-  prevMoveTime: any;
-  lastMovePoints: any;
-  pinch: any;
+  processEvent: { [eventType: string]: boolean };
+  canvas: Canvas;
+  startTime: number;
+  endTime: number;
+  startPoints: Point[];
+  startDistance: number;
+  center: Point;
+  pressTimeout: NodeJS.Timeout;
+  eventType: string;
+  direction: 'none' | 'left' | 'right' | 'down' | 'up';
+  lastMoveTime: number;
+  prevMovePoints: Point[];
+  prevMoveTime: number;
+  lastMovePoints: Point[];
+  pinch: boolean;
 
   constructor({ canvas, el }) {
     // canvasEl
@@ -235,7 +237,7 @@ class EventController {
   clearPressTimeout() {
     if (this.pressTimeout) {
       clearTimeout(this.pressTimeout);
-      this.pressTimeout = 0;
+      this.pressTimeout = null;
     }
   }
   reset() {

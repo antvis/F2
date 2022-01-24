@@ -7,7 +7,7 @@ const coordMap = {
 };
 
 class CoordMixin {
-  createCoord(cfg: any, layout): Coord {
+  createCoord(cfg, layout): Coord {
     if (isString(cfg)) {
       cfg = {
         type: coordMap[cfg] || Rect,

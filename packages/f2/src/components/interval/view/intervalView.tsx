@@ -2,7 +2,7 @@ import { jsx } from '../../../jsx';
 import Rect from './rect';
 import Polar from './polar';
 
-export default (props: any) => {
+export default (props) => {
   const { coord } = props;
   const { type: coordType } = coord;
 

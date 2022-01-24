@@ -30,9 +30,11 @@ export type GeometryAdjust = {
   [k: string]: any;
 };
 
+export type AdjustConfig = GeometryAdjust | GeometryAdjustType;
+
 export interface GeometryProps {
   data?: any;
-  adjust?: GeometryAdjust | GeometryAdjustType;
+  adjust?: AdjustConfig;
   chart?: Chart;
   coord?: Coord;
   startOnZero?: boolean;

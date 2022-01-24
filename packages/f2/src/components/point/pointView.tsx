@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 
-export default (props: any) => {
+export default (props) => {
   const { records } = props;
   return (
     <group>

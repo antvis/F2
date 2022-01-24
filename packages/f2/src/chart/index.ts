@@ -1,4 +1,4 @@
-import { Scale } from '@antv/scale';
+import { ScaleConfig } from '@antv/scale';
 import { each, findIndex, isArray } from '@antv/util';
 import Component from '../base/component';
 import equal from '../base/equal';
@@ -27,9 +27,9 @@ interface Props {
   children: any;
 }
 
-type Scales = {
-  [field: string]: Scale;
-};
+// type Scales = {
+//   [field: string]: Scale;
+// };
 
 interface IChart {
   props: Props;
@@ -116,13 +116,13 @@ class Chart extends Component implements IChart, InteractionMixin {
       style: nextStyle,
       data: nextData,
       scale: nextScale,
-      interactions: nextInteractions,
+      // interactions: nextInteractions,
     } = nextProps;
     const {
       style: lastStyle,
       data: lastData,
       scale: lastScale,
-      interactions: lastInteractions,
+      // interactions: lastInteractions,
     } = lastProps;
 
     // 布局
@@ -280,7 +280,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     return geometrys[0].getLegendItems(point);
   }
 
-  setScale(field: string, option: any) {
+  setScale(field: string, option: ScaleConfig) {
     this.scaleController.setScale(field, option);
   }
 

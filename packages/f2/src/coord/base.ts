@@ -1,6 +1,6 @@
 import Layout from '../base/layout';
 import { Range, Point, Option } from './types';
-import { isArray } from '@antv/util'
+import { isArray } from '@antv/util';
 
 function transposedRect({ xMin, xMax, yMin, yMax }) {
   return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
@@ -84,7 +84,7 @@ class Base extends Layout {
   }
 
   // 把归一后的值映射到对应的定义域
-  convertPoint(point: any) {
+  convertPoint(point) {
     return point;
   }
 
@@ -93,7 +93,7 @@ class Base extends Layout {
     const [xStart, xEnd] = xRange;
     const [yStart, yEnd] = yRange;
 
-    const { xMin, xMax, yMin, yMax } = this.transformToRect(rectPoint)
+    const { xMin, xMax, yMin, yMax } = this.transformToRect(rectPoint);
 
     const x0 = xStart + (xEnd - xStart) * xMin;
     const x1 = xStart + (xEnd - xStart) * xMax;
@@ -110,10 +110,10 @@ class Base extends Layout {
 
   transformToRect(rectPoint: RectPoint) {
     const { transposed } = this;
-    const rect = convertRect(rectPoint)
+    const rect = convertRect(rectPoint);
     const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
 
-    return { xMin, xMax, yMin, yMax }
+    return { xMin, xMax, yMin, yMax };
   }
 
   // 把canvas坐标的点位映射回归一后的值

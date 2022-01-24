@@ -2,6 +2,7 @@ import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import { deepMix, toInteger, isArray } from '@antv/util';
 import { isInBBox } from '../../util';
+import { Ref } from '../../types';
 
 const DEFAULT_CONFIG = {
   anchorOffset: 5, // 锚点的偏移量
@@ -76,7 +77,7 @@ function findShapeByClassName(shape, point, className) {
 
 export default (View) => {
   return class PieLabel extends Component {
-    triggerRef: any;
+    triggerRef: Ref;
     labels: [];
     constructor(props) {
       super(props);

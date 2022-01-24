@@ -4,13 +4,14 @@ import { Category } from '../../attr';
 import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 import CoordController from '../../controller/coord';
 import Coord from '../../coord';
+import { Ref } from '../../types';
 
-export default (View): any => {
-  class Treemap extends Component {
+export default (View) => {
+  return class Treemap extends Component {
     coordController: CoordController;
     coord: Coord;
     color: Category;
-    triggerRef: any[];
+    triggerRef: Ref[];
 
     constructor(props, context, updater?) {
       super(props, context, updater);
@@ -53,7 +54,7 @@ export default (View): any => {
         const color = colorAttr.mapping(data[colorAttr.field]);
         const rect = coord.convertRect({
           x: [x0, x1],
-          y: [y0, y1]
+          y: [y0, y1],
         });
         return {
           key: data.key,
@@ -69,8 +70,5 @@ export default (View): any => {
       const { props, coord } = this;
       return <View nodes={nodes} {...props} coord={coord} />;
     }
-  }
-
-
-  return Treemap;
+  };
 };

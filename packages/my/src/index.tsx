@@ -11,7 +11,8 @@ function wrapEvent(e) {
 const getPixelRatio = () => my.getSystemInfoSync().pixelRatio;
 
 // 判断是否是新版 canvas 所支持的调用方法（AppX 2.7.0 及以上）
-const isAppX2CanvasEnv = () => my.canIUse('canvas.onReady') && my.canIUse('createSelectorQuery.return.node');
+const isAppX2CanvasEnv = () =>
+  my.canIUse('canvas.onReady') && my.canIUse('createSelectorQuery.return.node');
 
 Component({
   props: {
@@ -77,9 +78,10 @@ Component({
     },
     onCanvasReady() {
       const { id } = this.data;
-      const query: any = my.createSelectorQuery();
+      const query = my.createSelectorQuery();
       query
         .select(`#${id}`)
+        // @ts-ignore
         .node()
         .exec((res) => {
           if (!res[0]) {
@@ -94,7 +96,7 @@ Component({
           this.canvasRender({ width, height, pixelRatio, context });
         });
     },
-    canvasRender({ width, height, pixelRatio, context }: any) {
+    canvasRender({ width, height, pixelRatio, context }) {
       if (!width || !height) {
         return;
       }

@@ -1,8 +1,9 @@
 import { jsx } from '../../../jsx';
 import { deepMix } from '@antv/util';
+import { Style } from '../../../types';
 
 type PointGuideProps = {
-  style?: any;
+  style?: Style;
   offsetX?: number;
   offsetY?: number;
   points?: { x: number; y: number }[] | null;

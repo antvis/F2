@@ -1,14 +1,14 @@
 import { isArray, isFunction, isPlainObject } from '@antv/util';
 
-function objToString(obj: any) {
+function objToString(obj) {
   return Object.prototype.toString.call(obj);
 }
 
-function objectKeys(obj: any) {
+function objectKeys(obj) {
   return Object.keys(obj);
 }
 
-function equal(a: any, b: any): boolean {
+function equal(a, b): boolean {
   if (a === b) return true;
 
   if (typeof a !== typeof b) {

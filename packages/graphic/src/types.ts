@@ -50,6 +50,7 @@ export interface ElementAttrs {
 
   // TODO
   matrix?: number[];
+  // eslint-disable-next-line
   clip?: any;
 
   /* 以下为 alias */
@@ -98,7 +99,10 @@ export interface MarkerAttrs extends ShapeAttrs {
   x: number;
   y: number;
   radius: number;
-  symbol: 'circle' | 'square' | ((x: number, y: number, r: number, ctx: any) => void);
+  symbol:
+    | 'circle'
+    | 'square'
+    | ((x: number, y: number, r: number, ctx: CanvasRenderingContext2D) => void);
 }
 
 export interface RectAttrs extends ShapeAttrs {

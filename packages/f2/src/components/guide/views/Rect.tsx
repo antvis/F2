@@ -1,15 +1,16 @@
 import { jsx } from '../../../jsx';
-import { isArray, deepMix } from '@antv/util';
+import { deepMix } from '@antv/util';
+import { Style } from '../../../types';
 
 type RectGuideProps = {
   points?: { x: number; y: number }[] | null;
-  style?: any;
+  style?: Style;
   theme?: any;
 };
 
 export default (props: RectGuideProps) => {
   const { theme = {} } = props;
-  const { points, style, offsetX, offsetY } = deepMix({ ...theme.rect }, props);
+  const { points, style } = deepMix({ ...theme.rect }, props);
 
   const start = points[0] || {};
   const end = points[1] || {};

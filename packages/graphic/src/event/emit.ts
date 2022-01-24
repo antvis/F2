@@ -2,6 +2,7 @@
 import { isObject } from '@antv/util';
 
 class EventEmit {
+  // eslint-disable-next-line
   __events: any;
   constructor() {
     this.__events = {};

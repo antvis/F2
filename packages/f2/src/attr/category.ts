@@ -6,7 +6,7 @@ class Category extends Base {
     return new CategoryScale(scaleConfig);
   }
 
-  _mapping(value: any) {
+  _mapping(value) {
     const { scale, range } = this;
     if (scale.type === 'cat') {
       const index = scale.translate(value);

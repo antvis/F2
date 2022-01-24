@@ -1,5 +1,5 @@
 export default (layout) => {
-  const { width, height, left, top } = layout;
+  const { height, left, top } = layout;
   return {
     x: left,
     y: top + height / 2,

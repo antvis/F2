@@ -205,8 +205,8 @@ function changeTypeFromGroup(nextShapeElement, lastGroupElement) {
 }
 
 function changeElementType(nextElement, lastElement) {
-  const { type: nextType, _cache: _nextCache } = nextElement;
-  const { type: lastType, _cache: _lastCache } = lastElement;
+  const { type: nextType } = nextElement;
+  const { type: lastType } = lastElement;
 
   if (nextType === 'group') {
     return changeTypeToGroup(nextElement, lastElement);
@@ -221,7 +221,7 @@ function changeElementType(nextElement, lastElement) {
 }
 
 // 对比2个数组
-function compareArray(nextElements: any[], lastElements: any[]) {
+function compareArray(nextElements, lastElements) {
   const keyed = {};
   const nextLength = nextElements.length;
   const lastLength = lastElements.length;

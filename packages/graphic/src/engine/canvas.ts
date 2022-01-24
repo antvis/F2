@@ -11,6 +11,7 @@ import lang from './lang';
 const { getPixelRatio, getDomById, getWidth, getHeight, isCanvasElement } = DOMUtil;
 
 class Canvas extends EventEmit {
+  /* eslint-disable */
   _attrs: any;
   drawChildren: any;
   _getAriaLabel: any;
@@ -25,6 +26,7 @@ class Canvas extends EventEmit {
   add: any;
   _setEvn: any;
   offset: any;
+  /* eslint-enable */
 
   get(name) {
     return this._attrs[name];
