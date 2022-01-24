@@ -18,7 +18,7 @@ const defaultStyle = {
     lineWidth: '3px',
   },
   background: {
-    radius: '2px',
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
   },
@@ -60,14 +60,14 @@ const defaultStyle = {
     fill: '#fff',
   },
   xTipBackground: {
-    radius: '2px',
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
     marginLeft: '-50%',
     marginTop: '6px',
   },
   yTipBackground: {
-    radius: '2px',
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
     marginLeft: '-100%',
@@ -106,13 +106,16 @@ export default class TooltipView extends Component {
     const record = records[0];
     // 中心点
     const { x } = record;
-    const { left: coordLeft, top: coordTop, width: coordWidth } = coord;
-    const { width, height } = group.get('attrs');
+    const { left: coordLeft, width: coordWidth } = coord;
+    const { y, width, height } = group.get('attrs');
     const halfWidth = width / 2;
     // 让 tooltip 限制在 coord 的显示范围内
     const offsetX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - width);
-    group.moveTo(offsetX, -height - arrowWidth);
-    arrowRef.current.moveTo(0, coordTop - arrowWidth);
+
+    // 因为默认是从 coord 的范围内显示的，所以要往上移，移出 coord，避免挡住 geometry
+    const offset = Math.min(y, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
+    group.moveTo(offsetX, -offset);
+    arrowRef.current.moveTo(0, height - offset);
   }
   didMount() {
     this._position();
@@ -248,9 +251,9 @@ export default class TooltipView extends Component {
             ref={this.arrowRef}
             attrs={{
               points: [
-                { x: x - arrowWidth, y: 0 },
-                { x: x + arrowWidth, y: 0 },
-                { x: x, y: arrowWidth },
+                { x: x - arrowWidth, y: coordTop },
+                { x: x + arrowWidth, y: coordTop },
+                { x: x, y: coordTop + arrowWidth },
               ],
               fill: background.fill,
             }}

@@ -1,7 +1,11 @@
 // eslint-disable-next-line
-const { toMatchImageSnapshot } = require('jest-image-snapshot');
+const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
 // eslint-disable-next-line
 const CanvasConverter = require('canvas-to-buffer');
+const toMatchImageSnapshot = configureToMatchImageSnapshot({
+  failureThreshold: 0.001,
+  failureThresholdType: 'percent',
+});
 
 expect.extend({
   toMatchImageSnapshot(received) {
