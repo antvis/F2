@@ -1,11 +1,11 @@
-import { createCanvas } from '@antv/f2-graphic';
+import { createCanvas, Canvas as GCanvas, Group as GGroup } from '@antv/f2-graphic';
 import { deepMix } from '@antv/util';
 import Component from '../base/component';
 import Layout from '../base/layout';
 import equal from '../base/equal';
 import Animation from './animation';
 import { px2hd as defaultPx2hd } from '../util';
-import { createUpdater } from './updater';
+import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
 import EE from '@antv/event-emitter';
@@ -21,10 +21,6 @@ interface ChartProps {
   px2hd?: any;
   theme?: any;
   style?: any;
-}
-
-interface IF2Canvas {
-  container: any;
 }
 
 function measureText(canvas, px2hd) {
@@ -52,8 +48,9 @@ function measureText(canvas, px2hd) {
 }
 
 // 顶层Canvas标签
-class Canvas extends Component<ChartProps> implements IF2Canvas {
-  canvas: any;
+class Canvas extends Component<ChartProps> {
+  canvas: GCanvas;
+  container: GCanvas;
   animation?: Animation;
   layout: Layout;
   theme: any;

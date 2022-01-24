@@ -4,7 +4,7 @@ function delay(time) {
   });
 }
 
-const createContext = (title = '', { width = '300px', height = '225px' }: any = {}) => {
+const createContext = (title = '', { width = '300px', height = '225px' } = {}) => {
   const canvasEl = document.createElement('canvas');
   const titleEl = document.createElement('p');
   titleEl.innerText = title + ':';
@@ -18,8 +18,8 @@ const createContext = (title = '', { width = '300px', height = '225px' }: any = 
   return context;
 };
 
-const dispatchEvent = (dom: HTMLElement, eventType: string, exData: Record<string, any>) => {
-  let event: Event = document.createEvent('event');
+const dispatchEvent = (dom: HTMLElement, eventType: string, exData) => {
+  let event = document.createEvent('event');
   event = Object.assign(event, exData);
   event.initEvent(eventType, true, true);
   dom.dispatchEvent(event);

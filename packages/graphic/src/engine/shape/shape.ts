@@ -7,6 +7,7 @@ export interface ShapeProp extends ElementProp {
 }
 
 class Shape<T extends ShapeProp = ShapeProp> extends Element<T> {
+  /* eslint-disable */
   // // Shapes
   static Rect: any;
   static Image: any;
@@ -19,6 +20,7 @@ class Shape<T extends ShapeProp = ShapeProp> extends Element<T> {
   static Text: any;
   static Custom: any;
   static Marker: any;
+  /* eslint-enable */
 
   _initProperties() {
     this._attrs = {

@@ -35,10 +35,11 @@ type PX_FIELD_NAME =
 | 'points';
 
 type pxstr = `${number}px`;
+export type px = number | pxstr | string;
 
 interface PxPoint {
-  x: number | pxstr;
-  y: number | pxstr;
+  x: px;
+  y: px;
 }
 
 type SupportPx<T> = {
@@ -50,8 +51,40 @@ type SupportPx<T> = {
     :T[k];
 }
 
+export interface Style {
+  width?: px;
+  height?: px;
+  minWidth?: px;
+  minHeight?: px;
+  maxWidth?: px;
+  maxHeight?: px;
+  left?: px;
+  right?: px;
+  top?: px;
+  bottom?: px;
+  margin?: px | px[];
+  marginTop?: px;
+  marginRight?: px;
+  marginBottom?: px;
+  marginLeft?: px;
+  padding?: px | px[];
+  paddingTop?: px;
+  paddingRight?: px;
+  paddingBottom?: px;
+  paddingLeft?: px;
+  flexDirection?: 'column' | 'row';
+  justifyContent?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
+  alignItems?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  alignSelf?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  display?: 'flex';
+  flex?: number;
+  flexWrap?: 'wrap' | 'nowrap';
+  position?: 'relative' | 'absolute';
+  backgroundColor?: string;
+}
+
 interface IntrinsicElementsProps {
-  style?: any;
+  style?: Style;
   [k: string]: any;
 }
 

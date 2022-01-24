@@ -1,7 +1,8 @@
 import { isFunction } from '@antv/util';
-import { Ref, createRef } from '../../index';
+import createRef from '../../createRef';
 import Component from '../../base/component';
 import { jsx } from '../../jsx';
+import { Ref } from '../../types';
 
 // view 的默认配置
 const defaultStyle = {

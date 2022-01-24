@@ -54,7 +54,7 @@ export interface ElementProp {
   isShape?: boolean;
   parent?: Element;
   children?: Element[];
-  context?: any;
+  context?: CanvasRenderingContext2D;
 
   canFill?: boolean;
   canStroke?: boolean;
@@ -283,7 +283,7 @@ class Element<T extends ElementProp = ElementProp> {
 
     this._removeFromParent();
 
-    this._attrs = {} as any;
+    this._attrs = {} as T;
     this.set('destroyed', true);
   }
 

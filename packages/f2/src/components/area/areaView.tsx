@@ -1,7 +1,7 @@
 import { jsx } from '../../jsx';
 import { Smooth, BBox } from '@antv/f2-graphic';
 
-export default (props: any) => {
+export default (props) => {
   const { records, shape } = props;
   const isSmooth = shape === 'smooth';
   return (
@@ -23,8 +23,8 @@ export default (props: any) => {
                     }}
                     createPath={(context) => {
                       const constaint = [
-                        [ 0, 0 ],
-                        [ 1, 1 ]
+                        [0, 0],
+                        [1, 1],
                       ];
                       const bottomPointsLen = bottomPoints?.length || 0;
                       const topPoints = points.slice(0, points.length - bottomPointsLen);

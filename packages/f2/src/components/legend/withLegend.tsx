@@ -4,6 +4,7 @@ import Component from '../../base/component';
 import Chart from '../../chart';
 import { find } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
+import { Style } from '../../types';
 
 interface LegendItem {
   /**
@@ -59,7 +60,7 @@ export interface LegendProps {
   /**
    * 图例样式。
    */
-  style?: any;
+  style?: Style;
   /**
    * 图例标记。
    */
@@ -68,7 +69,7 @@ export interface LegendProps {
 
 export default (View) => {
   return class Legend extends Component<LegendProps> {
-    style: any;
+    style: Style;
     constructor(props) {
       super(props);
       this.state = {
@@ -136,7 +137,7 @@ export default (View) => {
       const itemWidth = width / lineMaxCount;
       const autoHeight = itemMaxHeight * lineCount;
 
-      const style = {
+      const style: Style = {
         left,
         top,
         width,

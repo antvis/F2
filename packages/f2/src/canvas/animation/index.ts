@@ -1,6 +1,7 @@
 import Timeline from './timelime';
 import Animator from './animator';
 import { ElementStatus } from '../../jsx';
+import { Canvas } from '@antv/f2-graphic';
 
 // 遍历全部节点
 function eachElement(element, fn) {
@@ -16,7 +17,7 @@ function eachElement(element, fn) {
 
 class Animation {
   timeline: Timeline;
-  canvas: any;
+  canvas: Canvas;
 
   constructor(canvas) {
     this.timeline = new Timeline();

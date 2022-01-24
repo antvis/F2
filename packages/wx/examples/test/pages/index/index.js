@@ -1,5 +1,5 @@
 // index.js
-import { createElement } from '@antv/f2';
+// import { createElement } from '@antv/f2';
 import Chart from './chart';
 import { jsx as _jsx } from "@antv/f2/jsx-runtime";
 const data = [{

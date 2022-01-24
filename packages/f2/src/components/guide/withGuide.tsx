@@ -1,6 +1,8 @@
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
 import { isString, isNil } from '@antv/util';
+import { Ref } from '../../types';
+import Chart from '../../chart';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -10,8 +12,8 @@ function isInBBox(bbox, point) {
 
 export default (View) => {
   return class Guide extends Component {
-    chart: any;
-    triggerRef: any;
+    chart: Chart;
+    triggerRef: Ref;
 
     constructor(props) {
       super(props);
@@ -38,7 +40,7 @@ export default (View) => {
 
     // 解析record里的模板字符串，如min、max、50%...
     parseReplaceStr(value, scale) {
-      const replaceMap = { min: 0, max: 1, median: 0.5 }
+      const replaceMap = { min: 0, max: 1, median: 0.5 };
 
       // 传入的是 min、max、median 的
       if (!isNil(replaceMap[value])) {
@@ -48,7 +50,7 @@ export default (View) => {
       // 传入的是 xx%
       if (isString(value) && value.indexOf('%') != -1 && !isNaN(Number(value.slice(0, -1)))) {
         const rateValue = Number(value.slice(0, -1));
-        const percent = (rateValue / 100);
+        const percent = rateValue / 100;
         return scale.invert(percent);
       }
 

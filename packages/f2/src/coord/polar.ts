@@ -47,7 +47,7 @@ class Polar extends Base {
     return true;
   }
 
-  convertPoint(point: any) {
+  convertPoint(point) {
     const { center, transposed, x, y } = this;
 
     const xDim = transposed ? 'y' : 'x';

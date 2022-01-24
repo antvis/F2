@@ -8,7 +8,7 @@ App({
 
     // 登录
     wx.login({
-      success: res => {
+      success: () => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })

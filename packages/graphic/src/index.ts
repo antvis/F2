@@ -17,11 +17,22 @@ function getEngine(name) {
   return { Canvas, Group, Shape };
 }
 
-function createCanvas(cfg) {
+function createCanvas(cfg): Canvas {
   const { renderer } = cfg;
   const G = getEngine(renderer);
   return new G.Canvas(cfg);
 }
 
-export { registerEngine, getEngine, createCanvas, Canvas, Group, Shape, Matrix, Vector2, Smooth, BBox };
+export {
+  registerEngine,
+  getEngine,
+  createCanvas,
+  Canvas,
+  Group,
+  Shape,
+  Matrix,
+  Vector2,
+  Smooth,
+  BBox,
+};
 export * from './types';
