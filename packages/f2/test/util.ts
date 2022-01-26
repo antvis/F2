@@ -19,44 +19,51 @@ const createContext = (title = '', { width = '300px', height = '225px' } = {}) =
 };
 
 const dispatchEvent = (dom: HTMLElement, eventType: string, exData) => {
-  let event = document.createEvent('event');
+  let event = new Event(eventType, { bubbles: true, cancelable: true });
   event = Object.assign(event, exData);
-  event.initEvent(eventType, true, true);
   dom.dispatchEvent(event);
 };
 
-const gestureSimulator = async (
-  dom,
-  eventType: string,
-  option: { clientX: number; clientY: number }
-) => {
-  const exData = {
-    targetTouches: [option],
-    touches: [option],
-    changedTouches: [option],
+const gestureSimulator = async (dom, eventType: string, option: { x: number; y: number }) => {
+  const { top, left } = dom.getBoundingClientRect();
+  const { x, y } = option;
+  const clientX = left + x;
+  const clientY = top + y;
+  const event = {
+    x,
+    y,
+    clientX,
+    clientY,
+  };
+
+  const touchEvent = {
+    ...event,
+    targetTouches: [event],
+    touches: [event],
+    changedTouches: [event],
   };
 
   if (['touchstart', 'touchmove', 'touchend'].indexOf(eventType) !== -1) {
-    dispatchEvent(dom, eventType, exData);
+    dispatchEvent(dom, eventType, touchEvent);
     return;
   }
 
   if (eventType === 'press') {
-    dispatchEvent(dom, 'touchstart', exData);
+    dispatchEvent(dom, 'touchstart', touchEvent);
     await delay(270);
-    dispatchEvent(dom, 'touchend', exData);
+    dispatchEvent(dom, 'touchend', touchEvent);
     return;
   }
 
   if (eventType === 'tap') {
-    dispatchEvent(dom, 'touchstart', exData);
+    dispatchEvent(dom, 'touchstart', touchEvent);
     await delay(50);
-    dispatchEvent(dom, 'touchend', exData);
+    dispatchEvent(dom, 'touchend', touchEvent);
     return;
   }
 
   if (eventType === 'click') {
-    dispatchEvent(dom, 'click', option);
+    dispatchEvent(dom, 'click', event);
     return;
   }
 };

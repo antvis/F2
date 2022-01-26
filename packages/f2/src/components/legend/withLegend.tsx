@@ -160,12 +160,15 @@ export default (View) => {
 
       if (position === 'left') {
         style.flexDirection = 'column';
+        style.justifyContent = 'center';
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
       }
 
       if (position === 'right') {
         style.flexDirection = 'column';
+        style.alignItems = 'flex-start';
+        style.justifyContent = 'center';
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
         style.left = right - itemMaxWidth;
