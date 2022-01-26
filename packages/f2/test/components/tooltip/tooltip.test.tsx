@@ -46,7 +46,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     canvas.render();
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { clientX: 170, clientY: 21 });
+    await gestureSimulator(context.canvas, 'press', { x: 170, y: 21 });
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
 
@@ -105,7 +105,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     canvas.render();
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { clientX: -10, clientY: 21 }); // 不合理坐标范围
+    await gestureSimulator(context.canvas, 'press', { x: -10, y: 21 }); // 不合理坐标范围
     expect(onChangeMockCallback.mock.calls.length).toBe(0); // 验证 onChange 未被调用
 
     await delay(500);
@@ -217,7 +217,7 @@ describe('tooltip', () => {
     canvas.render();
 
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { clientX: 170, clientY: 21 });
+    await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
