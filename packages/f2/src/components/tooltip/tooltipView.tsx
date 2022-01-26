@@ -126,7 +126,7 @@ export default class TooltipView extends Component {
   }
   render() {
     const { props, context } = this;
-    const { records, coord } = props;
+    const { records, point, coord } = props;
     const {
       left: coordLeft,
       top: coordTop,
@@ -135,7 +135,8 @@ export default class TooltipView extends Component {
       // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
-    const { x, y, xText: xFirstText, yText: yFirstText } = firstRecord;
+    const { x, y } = point;
+    const { name: xFirstText, value: yFirstText } = firstRecord;
     const {
       background: customBackground,
       // showTitle,
@@ -206,7 +207,7 @@ export default class TooltipView extends Component {
                 }}
               >
                 {records.map((record) => {
-                  const { xText, yText } = record;
+                  const { name, value } = record;
                   return (
                     <group
                       style={{
@@ -232,14 +233,14 @@ export default class TooltipView extends Component {
                         attrs={{
                           ...defaultStyle.nameStyle,
                           ...nameStyle,
-                          text: yText ? `${xText}${joinString}` : xText,
+                          text: value ? `${name}${joinString}` : name,
                         }}
                       />
                       <text
                         attrs={{
                           ...defaultStyle.valueStyle,
                           ...valueStyle,
-                          text: yText,
+                          text: value,
                         }}
                       />
                     </group>
