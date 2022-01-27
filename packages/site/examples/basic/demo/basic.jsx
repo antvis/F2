@@ -17,8 +17,8 @@ const { props } = (
       <Legend />
       <Axis field="genre" />
       <Axis field="sold" />
+      <Tooltip showTooltipMarker={true} />
       <Interval x="genre" y="sold" color="genre" />
-      <Tooltip />
     </Chart>
   </Canvas>
 );
