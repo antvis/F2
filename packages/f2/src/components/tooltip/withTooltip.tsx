@@ -64,7 +64,7 @@ export default (View) => {
       });
 
       const records = snapRecords.map((record) => {
-        const { origin, x, y, color, xField, yField } = record;
+        const { origin, xField, yField } = record;
         let name = xScale.getText(origin[xField]);
         const value = yScale.getText(origin[yField]);
         if (legendItems && legendItems.length) {
@@ -77,12 +77,7 @@ export default (View) => {
           }
         }
         return {
-          origin,
-          x,
-          y,
-          color,
-          xField,
-          yField,
+          ...record,
           name,
           value,
         };
