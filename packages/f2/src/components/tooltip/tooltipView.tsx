@@ -13,7 +13,7 @@ const defaultStyle = {
     stroke: 'rgba(0, 0, 0, 0.25)',
     lineWidth: '2px',
   },
-  showTooltipMarker: true,
+  showTooltipMarker: false,
   tooltipMarkerStyle: {
     fill: '#fff',
     lineWidth: '3px',
@@ -86,6 +86,49 @@ function directionEnabled(mode: string, dir: string) {
   return false;
 }
 
+const RenderItemMarker = (props) => {
+  const { records, coord, context } = props;
+  const point = coord.convertPoint({ x: 1, y: 1 });
+  const padding = context.px2hd('6px');
+  const xPoints = [
+    ...records.map((record) => record.xMin),
+    ...records.map((record) => record.xMax),
+  ];
+  const yPoints = [
+    ...records.map((record) => record.yMin),
+    ...records.map((record) => record.yMax),
+    // y 要到 coord 顶部
+    // point.y,
+  ];
+  if (coord.transposed) {
+    xPoints.push(point.x);
+  } else {
+    yPoints.push(point.y);
+  }
+  const xMin = Math.min.apply(null, xPoints);
+  const xMax = Math.max.apply(null, xPoints);
+  const yMin = Math.min.apply(null, yPoints);
+  const yMax = Math.max.apply(null, yPoints);
+
+  const x = coord.transposed ? xMin : xMin - padding;
+  const y = coord.transposed ? yMin - padding : yMin;
+  const width = coord.transposed ? xMax - xMin : xMax - xMin + 2 * padding;
+  const height = coord.transposed ? yMax - yMin + 2 * padding : yMax - yMin;
+
+  return (
+    <rect
+      attrs={{
+        x,
+        y,
+        width,
+        height,
+        fill: '#CCD6EC',
+        opacity: 0.3,
+      }}
+    />
+  );
+};
+
 export default class TooltipView extends Component {
   rootRef: Ref;
   arrowRef: Ref;
@@ -126,7 +169,7 @@ export default class TooltipView extends Component {
   }
   render() {
     const { props, context } = this;
-    const { records, coord } = props;
+    const { records, point, coord } = props;
     const {
       left: coordLeft,
       top: coordTop,
@@ -135,11 +178,13 @@ export default class TooltipView extends Component {
       // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
-    const { x, y, xText: xFirstText, yText: yFirstText } = firstRecord;
+    const { x, y } = point;
+    const { name: xFirstText, value: yFirstText } = firstRecord;
     const {
       background: customBackground,
       // showTitle,
       // titleStyle,
+      showTooltipMarker = defaultStyle.showTooltipMarker,
       showItemMarker = defaultStyle.showItemMarker,
       itemMarkerStyle: customItemMarkerStyle,
       nameStyle,
@@ -206,7 +251,7 @@ export default class TooltipView extends Component {
                 }}
               >
                 {records.map((record) => {
-                  const { xText, yText } = record;
+                  const { name, value } = record;
                   return (
                     <group
                       style={{
@@ -232,14 +277,14 @@ export default class TooltipView extends Component {
                         attrs={{
                           ...defaultStyle.nameStyle,
                           ...nameStyle,
-                          text: yText ? `${xText}${joinString}` : xText,
+                          text: value ? `${name}${joinString}` : name,
                         }}
                       />
                       <text
                         attrs={{
                           ...defaultStyle.valueStyle,
                           ...valueStyle,
-                          text: yText,
+                          text: value,
                         }}
                       />
                     </group>
@@ -259,6 +304,9 @@ export default class TooltipView extends Component {
               fill: background.fill,
             }}
           />
+          {showTooltipMarker ? (
+            <RenderItemMarker coord={coord} context={context} records={records} />
+          ) : null}
           {/* 辅助点 */}
           {snap
             ? records.map((item) => {
