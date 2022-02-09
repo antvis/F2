@@ -633,7 +633,7 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
     });
   });
   it('shape = {shape}', () => {
@@ -657,7 +657,7 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       smooth: true,
     });
   });
@@ -682,12 +682,12 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
     });
     expect(geometryRef.current.records[1].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       lineDash: [2, 2],
     });
   });
@@ -722,13 +722,13 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       lineDash: [2, 2],
     });
     expect(geometryRef.current.records[1].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       smooth: true,
     });
   });
@@ -760,13 +760,13 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       smooth: true,
     });
     expect(geometryRef.current.records[1].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       lineDash: [2, 2],
     });
   });
@@ -806,12 +806,12 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
     });
     expect(geometryRef.current.records[1].children[0].shape).toEqual({
       lineCap: 'round',
       lineJoin: 'round',
-      lineWidth: 1,
+      lineWidth: 2,
       lineDash: [2, 2],
     });
   });
