@@ -1,6 +1,7 @@
 import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 import { TextAttrs } from '../../../types';
+import { px2hd } from '../../../util'
 
 export default (props: RectProps<'bottom'>) => {
   const { ticks, coord, style, animation } = props;
@@ -40,7 +41,7 @@ export default (props: RectProps<'bottom'>) => {
                   x1: start.x,
                   y1: start.y,
                   x2: start.x,
-                  y2: start.y + tickLine.length,
+                  y2: start.y + px2hd(tickLine.length),
                   ...tickLine,
                 }}
               />

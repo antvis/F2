@@ -45,6 +45,8 @@ interface PxPoint {
 
 export type { AxisTypes }
 
+export * from '@antv/scale'
+
 type SupportPx<T> = {
   [k in keyof T]:
     k extends PX_FIELD_NAME ?
