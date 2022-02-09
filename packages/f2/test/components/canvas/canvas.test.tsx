@@ -49,7 +49,6 @@ describe('Canvas', () => {
     const { props } = <Canvas context={context} pixelRatio={1}></Canvas>;
 
     const canvas = new Canvas(props);
-    console.log('canvas: ', canvas.context);
     const shape = canvas.context.renderShapeOnce(<Test />);
 
     expect(shape._attrs.attrs.height).toBe(10);
@@ -73,7 +72,6 @@ describe('Canvas', () => {
 
     const canvas = new Canvas(props);
     const shape = canvas.context.renderShapeOnce(<Test />);
-    console.log('shape: ', shape);
 
     expect(shape._attrs.attrs.height).toBe(10);
   });
