@@ -151,10 +151,13 @@ export default class TooltipView extends Component {
     // 中心点
     const { x } = record;
     const { left: coordLeft, width: coordWidth } = coord;
-    const { y, width, height } = group.get('attrs');
+    const { y, width, height, radius } = group.get('attrs');
     const halfWidth = width / 2;
     // 让 tooltip 限制在 coord 的显示范围内
-    const offsetX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - width);
+    const offsetX = Math.min(
+      Math.max(x - coordLeft - halfWidth, -arrowWidth - radius),
+      coordWidth - width + arrowWidth + radius
+    );
 
     // 因为默认是从 coord 的范围内显示的，所以要往上移，移出 coord，避免挡住 geometry
     const offset = Math.min(y, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y

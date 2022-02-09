@@ -98,7 +98,7 @@ const Theme = {
   shape: {
     line: {
       default: {
-        lineWidth: '2px',
+        lineWidth: '4px',
         lineJoin: 'round',
         lineCap: 'round',
       },
