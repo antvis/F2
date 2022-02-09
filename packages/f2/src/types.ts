@@ -1,3 +1,4 @@
+import { AxisTypes } from './components/axis/types';
 import type {
   Point,
   CircleAttrs as CircleGraphicAttrs,
@@ -41,6 +42,8 @@ interface PxPoint {
   x: px;
   y: px;
 }
+
+export type { AxisTypes }
 
 type SupportPx<T> = {
   [k in keyof T]:
