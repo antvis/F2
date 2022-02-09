@@ -112,3 +112,8 @@ export interface AxisProps {
   zoomRange?: [number, number];
   [key: string]: any; // TODO
 }
+
+export namespace AxisTypes {
+  export type Props = AxisProps
+}
+
