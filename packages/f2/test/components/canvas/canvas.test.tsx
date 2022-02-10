@@ -44,4 +44,37 @@ describe('Canvas', () => {
     expect(rect._attrs.type).toBe('rect');
     expect(rect._attrs.attrs.fill).toBe('red');
   });
+
+  it('renderShapeOnce - Class Component', () => {
+    const { props } = <Canvas context={context} pixelRatio={1}></Canvas>;
+
+    const canvas = new Canvas(props);
+    console.log('canvas: ', canvas.context);
+    const shape = canvas.context.renderShapeOnce(<Test />);
+
+    expect(shape._attrs.attrs.height).toBe(10);
+  });
+
+  it('renderShapeOnce - Function Component', () => {
+    const { props } = <Canvas context={context} pixelRatio={1}></Canvas>;
+    const Test = () => {
+      return (
+        <rect
+          attrs={{
+            x: 10,
+            y: 10,
+            width: 10,
+            height: 10,
+            fill: 'red',
+          }}
+        />
+      );
+    };
+
+    const canvas = new Canvas(props);
+    const shape = canvas.context.renderShapeOnce(<Test />);
+    console.log('shape: ', shape);
+
+    expect(shape._attrs.attrs.height).toBe(10);
+  });
 });
