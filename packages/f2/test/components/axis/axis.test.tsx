@@ -312,7 +312,7 @@ describe('Axis 轴', () => {
             size={{
               type: 'linear',
               field: 'Einwohner',
-              range: [5, 20],
+              range: [5, 10],
             }}
             style={{
               fillOpacity: 0.7,

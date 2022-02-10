@@ -1,4 +1,4 @@
-import { createCanvas, Canvas as GCanvas, Group as GGroup } from '@antv/f2-graphic';
+import { createCanvas, Canvas as GCanvas } from '@antv/f2-graphic';
 import { deepMix } from '@antv/util';
 import Component from '../base/component';
 import Layout from '../base/layout';

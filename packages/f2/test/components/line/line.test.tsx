@@ -872,7 +872,7 @@ describe('折线图', () => {
               y="value"
               size={{
                 field: 'tag',
-                callback: (val) => (val ? 6 : 0),
+                callback: (val) => (val ? 3 : 0),
               }}
               color={{
                 field: 'tag',

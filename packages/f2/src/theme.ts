@@ -94,7 +94,7 @@ const Theme = {
     area: ['area', 'smooth'],
     interval: ['rect', 'pyramid', 'funnel'],
   },
-  sizes: ['4px', '8px', '10px', '12px'],
+  sizes: ['4px', '6px', '8px', '10px', '12px'],
   shape: {
     line: {
       default: {
