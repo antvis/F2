@@ -1,5 +1,5 @@
 import { jsx } from '../../src';
-import { Canvas, Chart, Component } from '../../src';
+import { Canvas, Component } from '../../src';
 import { createContext, delay } from '../util';
 
 describe('base/component', () => {
@@ -28,10 +28,8 @@ describe('base/component', () => {
     }
 
     const { props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart>
-          <StatedComponent />
-        </Chart>
+      <Canvas context={context} pixelRatio={1}>
+        <StatedComponent />
       </Canvas>
     );
 
