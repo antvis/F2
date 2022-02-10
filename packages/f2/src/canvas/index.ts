@@ -7,7 +7,7 @@ import Animation from './animation';
 import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';
-import { renderChildren, renderComponent } from '../base/diff';
+import { renderChildren, renderComponent, createComponent, renderShape } from '../base/diff';
 import EE from '@antv/event-emitter';
 
 interface ChartProps {
@@ -108,6 +108,7 @@ class Canvas extends Component<ChartProps> {
       theme,
       px2hd,
       measureText: measureText(canvas, px2hd),
+      renderShapeOnce: (element: JSX.Element)=> this.renderShapeOnce(this, element),
     };
 
     // 动画模块
@@ -165,6 +166,16 @@ class Canvas extends Component<ChartProps> {
     renderChildren(this, nextChildren, lastChildren);
     this.draw();
     return null;
+  }
+
+  private renderShapeOnce(component, element: JSX.Element) {
+    const Component = createComponent(component, element);
+    const shape = renderShape(Component, Component.render(), false)
+    setTimeout(() => {
+      // 从 canvas group 中移除掉
+      shape.remove();
+    }, 0)
+    return shape;
   }
 
   destroy() {
