@@ -1,7 +1,6 @@
 import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart } from '../../../src';
-import { Point } from '../../../src/components';
+import { Canvas, Chart, Point, Line } from '../../../src';
 import { createContext, delay } from '../../util';
 
 const url = 'https://gw.alipayobjects.com/os/antfincdn/6HodecuhvM/scatter.json';
@@ -85,7 +84,7 @@ describe('Point Chart', () => {
             color="name"
             size={{
               field: 'z',
-              range: [10, 20, 30, 40],
+              range: [5, 10, 15, 20],
             }}
           />
         </Chart>
@@ -96,6 +95,56 @@ describe('Point Chart', () => {
     canvas.render();
 
     await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('折线图带点', async () => {
+    const data = [
+      {
+        day: '周一',
+        value: 300,
+      },
+      {
+        day: '周二',
+        value: 400,
+      },
+      {
+        day: '周三',
+        value: 350,
+      },
+      {
+        day: '周四',
+        value: 500,
+      },
+      {
+        day: '周五',
+        value: 490,
+      },
+      {
+        day: '周六',
+        value: 600,
+      },
+      {
+        day: '周日',
+        value: 900,
+      },
+    ];
+
+    const context = createContext('折线图带点');
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="day" y="value" />
+          <Point x="day" y="value" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(100);
     expect(context).toMatchImageSnapshot();
   });
 });

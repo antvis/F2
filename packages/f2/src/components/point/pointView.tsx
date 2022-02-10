@@ -1,4 +1,5 @@
 import { jsx } from '../../jsx';
+import { isNil } from '@antv/util';
 
 export default (props) => {
   const { records } = props;
@@ -15,10 +16,10 @@ export default (props) => {
                   attrs={{
                     x,
                     y,
-                    r: (size ?? 4) / 2,
                     fill: color,
                     stroke: '#fff',
                     ...shape,
+                    r: isNil(size) ? shape.size : size,
                   }}
                   animation={{
                     appear: {

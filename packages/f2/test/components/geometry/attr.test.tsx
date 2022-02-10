@@ -476,7 +476,7 @@ describe('Geometry - Attr', () => {
     canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(2);
-    expect(geometryRef.current.records[1].children[0].size).toBe(4);
+    expect(geometryRef.current.records[1].children[0].size).toBe(3);
   });
 
   it('size = {{ field, range }} 用size大小来做分类', () => {
