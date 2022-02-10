@@ -142,7 +142,7 @@ class ScaleController {
     if (!option) {
       return null;
     }
-    const values = option.values ? option.values : valuesOfKey(data, field);
+    const values = option.values ? option.values : data ? valuesOfKey(data, field) : [];
     const scaleOption = this._getOption({
       ...option,
       field,

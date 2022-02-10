@@ -341,8 +341,9 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   render(): JSX.Element {
     const { props, state, layout, coord } = this;
-    const { children } = props;
+    const { children, data: originData } = props;
     const { zoomRange } = state;
+    if (!originData) return null;
     const data = this._getRenderData();
 
     return Children.map(children, (child) => {

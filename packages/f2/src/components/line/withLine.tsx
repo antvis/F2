@@ -85,7 +85,8 @@ export default (View) => {
 
       return records.map((record) => {
         const { children } = record;
-        const { size, color, shape, y } = children[0];
+        // children 有可能为空
+        const { size, color, shape, y } = children[0] || {};
         const points = children;
         if (coord.isPolar) {
           points.push(points[0]);

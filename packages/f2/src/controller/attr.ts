@@ -134,17 +134,17 @@ class AttrController {
     }
     const scale = this.scaleController.getScale(field);
 
-    // identity
-    if (scale && scale.type === 'identity') {
-      return new Identity(option);
-    }
-
     const attrOption = {
       ...option,
       data: this.scaleController.getData(),
       // scaleConfig 只在属性映射中生效
       scale: scaleConfig ? cloneScale(scale, scaleConfig) : scale,
     };
+
+    // identity
+    if (scale && scale.type === 'identity') {
+      return new Identity(attrOption);
+    }
 
     // Attr的默认类型和scale类型保持一致
     let AttrConstructor = scale.isLinear ? Linear : Category;
