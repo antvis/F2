@@ -106,13 +106,15 @@ const Theme = {
         smooth: true,
       },
       dash: {
-        lineDash: ['4px', '4px'],
+        lineDash: ['8px', '8px'],
       },
     },
     point: {
       default: {
-        lineWidth: '2px',
         size: '6px',
+      },
+      hollowCircle: {
+        lineWidth: '2px',
       },
     },
     area: {

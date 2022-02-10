@@ -10,14 +10,41 @@ export default (props) => {
         return (
           <group key={key}>
             {children.map((item) => {
-              const { x, y, size, color, shape } = item;
+              const { x, y, size, color, shapeName, shape } = item;
+              if (shapeName === 'rect') {
+                const rectSize = isNil(size) ? shape.size : size;
+                return (
+                  <rect
+                    attrs={{
+                      x: x - rectSize,
+                      y: y - rectSize,
+                      fill: color,
+                      stroke: color,
+                      ...shape,
+                      width: rectSize * 2,
+                      height: rectSize * 2,
+                    }}
+                    animation={{
+                      appear: {
+                        easing: 'linear',
+                        duration: 450,
+                      },
+                      update: {
+                        easing: 'linear',
+                        duration: 450,
+                        property: ['x', 'y', 'width', 'height', 'fill'],
+                      },
+                    }}
+                  />
+                );
+              }
               return (
                 <circle
                   attrs={{
                     x,
                     y,
-                    fill: color,
-                    stroke: '#fff',
+                    fill: shapeName === 'circle' ? color : null,
+                    stroke: shapeName === 'hollowCircle' ? color : null,
                     ...shape,
                     r: isNil(size) ? shape.size : size,
                   }}

@@ -397,12 +397,14 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
         });
 
         // 获取shape的style
-        const shape = this._getShapeStyle(attrValues.shape, child.origin);
+        const shapeName = attrValues.shape;
+        const shape = this._getShapeStyle(shapeName, child.origin);
 
         mix(child, attrValues, {
           normalized,
           x,
           y,
+          shapeName,
           shape,
         });
       }
