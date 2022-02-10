@@ -43,6 +43,7 @@ interface PxPoint {
   y: px;
 }
 
+export * from '@antv/scale'
 export type { AxisTypes }
 
 type SupportPx<T> = {
