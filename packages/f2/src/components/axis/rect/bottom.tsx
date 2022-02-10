@@ -2,8 +2,9 @@ import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 import { TextAttrs } from '../../../types';
 
-export default (props: RectProps<'bottom'>) => {
+export default (props: RectProps<'bottom'>, context) => {
   const { ticks, coord, style, animation } = props;
+  const { px2hd } = context;
   const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
@@ -40,7 +41,7 @@ export default (props: RectProps<'bottom'>) => {
                   x1: start.x,
                   y1: start.y,
                   x2: start.x,
-                  y2: start.y + tickLine.length,
+                  y2: start.y + px2hd(tickLine.length),
                   ...tickLine,
                 }}
               />
