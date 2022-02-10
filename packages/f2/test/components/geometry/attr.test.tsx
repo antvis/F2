@@ -688,7 +688,7 @@ describe('Geometry - Attr', () => {
       lineCap: 'round',
       lineJoin: 'round',
       lineWidth: 2,
-      lineDash: [2, 2],
+      lineDash: [4, 4],
     });
   });
   it('shape = {{ field, range }}', () => {
@@ -723,7 +723,7 @@ describe('Geometry - Attr', () => {
       lineCap: 'round',
       lineJoin: 'round',
       lineWidth: 2,
-      lineDash: [2, 2],
+      lineDash: [4, 4],
     });
     expect(geometryRef.current.records[1].children[0].shape).toEqual({
       lineCap: 'round',
@@ -767,7 +767,7 @@ describe('Geometry - Attr', () => {
       lineCap: 'round',
       lineJoin: 'round',
       lineWidth: 2,
-      lineDash: [2, 2],
+      lineDash: [4, 4],
     });
   });
   it('shape = {{ type, field, callback }}', () => {
@@ -812,7 +812,7 @@ describe('Geometry - Attr', () => {
       lineCap: 'round',
       lineJoin: 'round',
       lineWidth: 2,
-      lineDash: [2, 2],
+      lineDash: [4, 4],
     });
   });
 });
