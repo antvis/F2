@@ -1,10 +1,10 @@
 import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 import { TextAttrs } from '../../../types';
-import { px2hd } from '../../../util'
 
-export default (props: RectProps<'bottom'>) => {
+export default (props: RectProps<'bottom'>, context) => {
   const { ticks, coord, style, animation } = props;
+  const { px2hd } = context;
   const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
