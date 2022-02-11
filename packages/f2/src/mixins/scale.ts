@@ -1,6 +1,7 @@
-import ScaleController from '../controller/scale';
+import ScaleController, { ScaleOption } from '../controller/scale';
 
 class ScaleMixin {
+  // eslint-disable-next-line
   data: any;
   scale: ScaleController;
 
@@ -8,7 +9,7 @@ class ScaleMixin {
     return new ScaleController(data);
   }
 
-  setScale(field: string, option: any = {}) {
+  setScale(field: string, option: ScaleOption = {}) {
     this.scale.setScale(field, option);
   }
 

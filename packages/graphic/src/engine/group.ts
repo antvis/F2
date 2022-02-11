@@ -4,8 +4,22 @@ import Container from './container';
 import Vector2 from '../util/vector2';
 
 class Group extends Rect {
+  /* eslint-disable */
+  _attrs: any;
   drawChildren: any;
+  _getAriaLabel: any;
   clear: any;
+
+  // Container
+  getChildren: any;
+  addShape: any;
+  addGroup: any;
+  contain: any;
+  sort: any;
+  add: any;
+  _setEvn: any;
+  offset: any;
+  /* eslint-enable */
 
   _initProperties() {
     this._attrs = {

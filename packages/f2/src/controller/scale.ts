@@ -9,14 +9,15 @@ registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
 
-type ScaleOption = { type?: string } & ScaleConfig;
+export type ScaleOption = { type?: string } & ScaleConfig;
 
 class ScaleController {
+  // eslint-disable-next-line
   private data: any;
   // scale 实例的配置
-  private options: any;
+  private options: { [field: string]: ScaleOption };
   // scale 实例
-  private scales: any;
+  private scales: { [field: string]: Scale };
 
   constructor(data) {
     this.data = data;

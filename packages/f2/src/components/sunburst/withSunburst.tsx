@@ -6,6 +6,7 @@ import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
 import Coord from '../../coord';
+import { Ref } from '../../types';
 
 function rootParent(data) {
   let d = data;
@@ -15,12 +16,12 @@ function rootParent(data) {
   return d;
 }
 
-export default (View): any => {
-  class Sunburst extends Component {
+export default (View) => {
+  return class Sunburst extends Component {
     coordController: CoordController;
     coord: Coord;
     color: Category;
-    triggerRef: any[];
+    triggerRef: Ref[];
 
     constructor(props, context) {
       super(props, context);
@@ -52,6 +53,7 @@ export default (View): any => {
         });
         if (shape) {
           ev.shape = shape;
+          // @ts-ignore
           ev.payload = shape.payload;
           onClick && onClick(ev);
         }
@@ -103,7 +105,5 @@ export default (View): any => {
       const { coord, props } = this;
       return <View {...props} coord={coord} node={node} triggerRef={this.triggerRef} />;
     }
-  }
-
-  return Sunburst;
+  };
 };

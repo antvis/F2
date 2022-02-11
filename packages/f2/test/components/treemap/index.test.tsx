@@ -1,7 +1,7 @@
 import { jsx } from '../../../src/jsx';
 import { Polar } from '../../../src/coord';
 import { Canvas, Treemap } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 const context = createContext();
 const data = [
   {
@@ -57,9 +57,9 @@ const data = [
 ];
 
 describe('Treemap', () => {
-  it('render', () => {
+  it('render', async () => {
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Treemap
           data={data}
           coord={
@@ -81,9 +81,11 @@ describe('Treemap', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
 
     // const treemapContainer = canvas.container.get('children')[0];
     // const view = treemapContainer.get('children')[0];

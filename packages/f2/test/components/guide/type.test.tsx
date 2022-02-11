@@ -56,8 +56,7 @@ describe('Guide', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -91,14 +90,13 @@ describe('Guide', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
   it('PointGuide', () => {
     const context = createContext('PointGuide');
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Interval
@@ -123,8 +121,7 @@ describe('Guide', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -172,8 +169,7 @@ describe('Guide', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -253,8 +249,7 @@ describe('Guide', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

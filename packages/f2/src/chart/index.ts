@@ -1,4 +1,5 @@
-import { Scale } from '@antv/scale';
+import { ScaleConfig } from '@antv/scale';
+import { each, findIndex, isArray } from '@antv/util';
 import Component from '../base/component';
 import equal from '../base/equal';
 import { applyMixins } from '../mixins';
@@ -26,12 +27,23 @@ interface Props {
   children: any;
 }
 
-type Scales = {
-  [field: string]: Scale;
-};
+// type Scales = {
+//   [field: string]: Scale;
+// };
 
 interface IChart {
   props: Props;
+}
+
+export interface PositionLayout {
+  position: 'top' | 'right' | 'bottom' | 'left';
+  width: number;
+  height: number;
+}
+
+export interface ComponentPosition {
+  component: Component;
+  layout: PositionLayout | PositionLayout[];
 }
 
 // 统计图表
@@ -41,6 +53,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   private layout: Layout;
   // 坐标系
   private coord: Coord;
+  private componentsPosition: ComponentPosition[] = [];
 
   // 交互
   interaction: InteractionController;
@@ -55,6 +68,7 @@ class Chart extends Component implements IChart, InteractionMixin {
 
   constructor(props, context?, updater?) {
     super(props, context, updater);
+
     const { data, coord: coordOption, scale, interactions = [] } = props;
 
     this.layoutController = new LayoutController();
@@ -91,6 +105,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     // state
     this.state = {
       zoomRange: [0, 1],
+      filters: {},
     };
   }
 
@@ -101,13 +116,13 @@ class Chart extends Component implements IChart, InteractionMixin {
       style: nextStyle,
       data: nextData,
       scale: nextScale,
-      interactions: nextInteractions,
+      // interactions: nextInteractions,
     } = nextProps;
     const {
       style: lastStyle,
       data: lastData,
       scale: lastScale,
-      interactions: lastInteractions,
+      // interactions: lastInteractions,
     } = lastProps;
 
     // 布局
@@ -147,9 +162,10 @@ class Chart extends Component implements IChart, InteractionMixin {
     });
   }
 
-  layoutCoord(position, box) {
+  // 给需要显示的组件留空
+  layoutCoord(layout: PositionLayout) {
     const { coord } = this;
-    const { width: boxWidth, height: boxHeight } = box;
+    const { position, width: boxWidth, height: boxHeight } = layout;
     let { left, top, width, height } = coord;
     switch (position) {
       case 'left':
@@ -168,6 +184,46 @@ class Chart extends Component implements IChart, InteractionMixin {
         break;
     }
     coord.update({ left, top, width, height });
+  }
+
+  resetCoordLayout() {
+    const { coord, layout } = this;
+    coord.update(layout);
+  }
+
+  updateCoordLayout(layout: PositionLayout | PositionLayout[]) {
+    if (isArray(layout)) {
+      layout.forEach((item) => {
+        this.layoutCoord(item);
+      });
+      return;
+    }
+    this.layoutCoord(layout);
+  }
+
+  updateCoordFor(component: Component, layout: PositionLayout | PositionLayout[]) {
+    if (!layout) return;
+    const { componentsPosition } = this;
+    const componentPosition = { component, layout };
+    const existIndex = findIndex(componentsPosition, (item) => {
+      return item.component === component;
+    });
+    // 说明是已经存在的组件
+    if (existIndex > -1) {
+      componentsPosition.splice(existIndex, 1, componentPosition);
+
+      // 先重置，然后整体重新算一次
+      this.resetCoordLayout();
+      componentsPosition.forEach((componentPosition) => {
+        const { layout } = componentPosition;
+        this.updateCoordLayout(layout);
+      });
+      return;
+    }
+
+    // 是新组件，直接添加
+    componentsPosition.push(componentPosition);
+    this.updateCoordLayout(layout);
   }
 
   getGeometrys() {
@@ -224,7 +280,7 @@ class Chart extends Component implements IChart, InteractionMixin {
     return geometrys[0].getLegendItems(point);
   }
 
-  setScale(field: string, option: any) {
+  setScale(field: string, option: ScaleConfig) {
     this.scaleController.setScale(field, option);
   }
 
@@ -256,9 +312,38 @@ class Chart extends Component implements IChart, InteractionMixin {
     return this.coord;
   }
 
+  filter(field: string, condition) {
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        [field]: condition,
+      },
+    });
+  }
+
+  _getRenderData() {
+    const { props, state } = this;
+    const { data } = props;
+    const { filters } = state;
+    if (!filters || !Object.keys(filters).length) {
+      return data;
+    }
+    let filteredData = data;
+    each(filters, (condition, field) => {
+      if (!condition) return;
+      filteredData = filteredData.filter((record) => {
+        return condition(record[field], record);
+      });
+    });
+    return filteredData;
+  }
+
   render(): JSX.Element {
     const { props, state, layout, coord } = this;
-    const { children, data } = props;
+    const { children } = props;
+    const { zoomRange } = state;
+    const data = this._getRenderData();
 
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
@@ -266,7 +351,7 @@ class Chart extends Component implements IChart, InteractionMixin {
         data,
         coord,
         layout,
-        zoomRange: state.zoomRange,
+        zoomRange,
       });
     });
   }

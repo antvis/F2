@@ -5,7 +5,7 @@ function createClipElement(type: string, config) {
   return new Shape[type](config);
 }
 
-export default (element: any, animation, nextAttrs, lastAttrs) => {
+export default (element, animation, nextAttrs, lastAttrs) => {
   if (!animation) return null;
   // 获取shape的默认属性
   const status = element.get('status');

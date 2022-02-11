@@ -1,6 +1,8 @@
 import { isFunction } from '@antv/util';
+import createRef from '../../createRef';
 import Component from '../../base/component';
 import { jsx } from '../../jsx';
+import { Ref } from '../../types';
 
 // view 的默认配置
 const defaultStyle = {
@@ -11,13 +13,13 @@ const defaultStyle = {
     stroke: 'rgba(0, 0, 0, 0.25)',
     lineWidth: '2px',
   },
-  showTooltipMarker: true,
+  showTooltipMarker: false,
   tooltipMarkerStyle: {
     fill: '#fff',
     lineWidth: '3px',
   },
   background: {
-    radius: '2px',
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
   },
@@ -51,25 +53,26 @@ const defaultStyle = {
   layout: 'horizontal',
   snap: false,
   xTipTextStyle: {
-    fontSize: 12,
-    fill: '#fff'
+    fontSize: '24px',
+    fill: '#fff',
   },
   yTipTextStyle: {
-    fontSize: 12,
-    fill: '#fff'
+    fontSize: '24px',
+    fill: '#fff',
   },
   xTipBackground: {
-    radius: '2px' as `${number}px`,
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
-    marginLeft: "-50%",
+    marginLeft: '-50%',
+    marginTop: '6px',
   },
   yTipBackground: {
-    radius: '2px' as `${number}px`,
+    radius: '4px',
     fill: 'rgba(0, 0, 0, 0.65)',
     padding: ['6px', '10px'],
-    marginLeft: "-100%",
-    marginTop: "-50%",
+    marginLeft: '-100%',
+    marginTop: '-50%',
   },
 };
 
@@ -83,38 +86,90 @@ function directionEnabled(mode: string, dir: string) {
   return false;
 }
 
+const RenderItemMarker = (props) => {
+  const { records, coord, context } = props;
+  const point = coord.convertPoint({ x: 1, y: 1 });
+  const padding = context.px2hd('6px');
+  const xPoints = [
+    ...records.map((record) => record.xMin),
+    ...records.map((record) => record.xMax),
+  ];
+  const yPoints = [
+    ...records.map((record) => record.yMin),
+    ...records.map((record) => record.yMax),
+    // y 要到 coord 顶部
+    // point.y,
+  ];
+  if (coord.transposed) {
+    xPoints.push(point.x);
+  } else {
+    yPoints.push(point.y);
+  }
+  const xMin = Math.min.apply(null, xPoints);
+  const xMax = Math.max.apply(null, xPoints);
+  const yMin = Math.min.apply(null, yPoints);
+  const yMax = Math.max.apply(null, yPoints);
+
+  const x = coord.transposed ? xMin : xMin - padding;
+  const y = coord.transposed ? yMin - padding : yMin;
+  const width = coord.transposed ? xMax - xMin : xMax - xMin + 2 * padding;
+  const height = coord.transposed ? yMax - yMin + 2 * padding : yMax - yMin;
+
+  return (
+    <rect
+      attrs={{
+        x,
+        y,
+        width,
+        height,
+        fill: '#CCD6EC',
+        opacity: 0.3,
+      }}
+    />
+  );
+};
+
 export default class TooltipView extends Component {
-  rootRef: any;
-  itemsRef: any;
+  rootRef: Ref;
+  arrowRef: Ref;
 
   constructor(props) {
     super(props);
-    this.rootRef = { current: null };
-    this.itemsRef = { current: null };
+    this.rootRef = createRef();
+    this.arrowRef = createRef();
   }
-  didUpdate() {
-    const { props, rootRef, itemsRef } = this;
+  // 调整 显示的位置
+  _position() {
+    const { props, context, rootRef, arrowRef } = this;
     const group = rootRef.current;
     if (!group) {
       return;
     }
     const { records, coord } = props;
-    if (!records || !records.length) return null;
-    if (itemsRef.current) {
-      const firstRecord = records[0];
-      const { x } = firstRecord;
-      const { left: coordLeft, width: coordWidth } = coord;
-      const { width } = group.get('attrs');
-      const halfWidth = width / 2;
-      const moveX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - halfWidth);
-      itemsRef.current.moveTo(moveX, 0);
-    }
+    const arrowWidth = context.px2hd('6px');
+    const record = records[0];
+    // 中心点
+    const { x } = record;
+    const { left: coordLeft, width: coordWidth } = coord;
+    const { y, width, height } = group.get('attrs');
+    const halfWidth = width / 2;
+    // 让 tooltip 限制在 coord 的显示范围内
+    const offsetX = Math.min(Math.max(x - coordLeft - halfWidth, 0), coordWidth - width);
+
+    // 因为默认是从 coord 的范围内显示的，所以要往上移，移出 coord，避免挡住 geometry
+    const offset = Math.min(y, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
+    group.moveTo(offsetX, -offset);
+    arrowRef.current.moveTo(0, height - offset);
+  }
+  didMount() {
+    this._position();
+  }
+  didUpdate() {
+    this._position();
   }
   render() {
-    const { props } = this;
-    const { records, chart, coord, layout } = props;
-    const { top: layoutTop } = layout;
-    if (!records || !records.length) return null;
+    const { props, context } = this;
+    const { records, point, coord } = props;
     const {
       left: coordLeft,
       top: coordTop,
@@ -123,13 +178,13 @@ export default class TooltipView extends Component {
       // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
-    const { x, y, xField, yField, origin: firstOrigin } = firstRecord;
-    const yScale = chart.getScale(yField);
-    const xScale = chart.getScale(xField);
+    const { x, y } = point;
+    const { name: xFirstText, value: yFirstText } = firstRecord;
     const {
-      background,
-      showTitle,
-      titleStyle,
+      background: customBackground,
+      // showTitle,
+      // titleStyle,
+      showTooltipMarker = defaultStyle.showTooltipMarker,
       showItemMarker = defaultStyle.showItemMarker,
       itemMarkerStyle: customItemMarkerStyle,
       nameStyle,
@@ -155,114 +210,121 @@ export default class TooltipView extends Component {
       ...defaultStyle.itemMarkerStyle,
     };
 
-    const xTipText = xScale.getText(records[0].origin[xField]);
-    const yTipText = yScale.getText(records[0].origin[yField]);
+    const background = {
+      ...defaultStyle.background,
+      ...customBackground,
+    };
+
+    const arrowWidth = context.px2hd('6px');
 
     return (
       <group>
-        {/* 辅助点 */}
-        {snap
-          ? records.map((item) => {
-              const { x, y, color, shape } = item;
-              return (
-                <circle
-                  attrs={{
-                    x,
-                    y,
-                    r: 3,
-                    stroke: color,
-                    ...shape,
-                    ...tooltipMarkerStyle,
-                  }}
-                />
-              );
-            })
-          : null}
         <group
-          ref={this.rootRef}
           style={{
             left: coordLeft,
-            top: layoutTop,
+            top: coordTop,
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}
-          {!custom &&
-            <group
-            ref={this.itemsRef}
-            style={{
-              ...defaultStyle.background,
-              ...background,
-            }}
-            attrs={{
-              ...defaultStyle.background,
-              ...background,
-            }}
-          >
-            {showTitle ? (
-              <text
+          {!custom && (
+            <group ref={this.rootRef} style={background} attrs={background}>
+              {/* {showTitle ? (
+                <text
+                  style={{
+                    marginBottom: '6px',
+                  }}
+                  attrs={{
+                    text: firstOrigin[xField],
+                    fontSize: '24px',
+                    fill: '#fff',
+                    textAlign: 'start',
+                    ...titleStyle,
+                  }}
+                />
+              ) : null} */}
+              <group
                 style={{
-                  marginBottom: '6px',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  padding: [0, 0, 0, '6px'],
                 }}
-                attrs={{
-                  text: firstOrigin[xField],
-                  fontSize: '24px',
-                  fill: '#fff',
-                  textAlign: 'start',
-                  ...titleStyle,
-                }}
-              />
-            ) : null}
-            <group
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}
-            >
-              {records.map((record) => {
-                const yValue = yScale.getText(record[yField]);
-                const xValue = xScale.getText(record[xField]);
-                return (
-                  <group
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      padding: [0, '10px', 0, 0],
-                    }}
-                  >
-                    {showItemMarker ? (
-                      <marker
-                        style={{
-                          width: itemMarkerStyle.width,
-                          marginRight: '6px',
-                        }}
+              >
+                {records.map((record) => {
+                  const { name, value } = record;
+                  return (
+                    <group
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: [0, '6px', 0, 0],
+                      }}
+                    >
+                      {showItemMarker ? (
+                        <marker
+                          style={{
+                            width: itemMarkerStyle.width,
+                            marginRight: '6px',
+                          }}
+                          attrs={{
+                            ...itemMarkerStyle,
+                            fill: record.color,
+                          }}
+                        />
+                      ) : null}
+                      <text
                         attrs={{
-                          ...itemMarkerStyle,
-                          fill: record.color,
+                          ...defaultStyle.nameStyle,
+                          ...nameStyle,
+                          text: value ? `${name}${joinString}` : name,
                         }}
                       />
-                    ) : null}
-                    <text
-                      attrs={{
-                        ...defaultStyle.nameStyle,
-                        ...nameStyle,
-                        text: yValue ? `${xValue}${joinString}` : xValue,
-                      }}
-                    />
-                    <text
-                      attrs={{
-                        ...defaultStyle.valueStyle,
-                        ...valueStyle,
-                        text: yValue,
-                      }}
-                    />
-                  </group>
-                );
-              })}
+                      <text
+                        attrs={{
+                          ...defaultStyle.valueStyle,
+                          ...valueStyle,
+                          text: value,
+                        }}
+                      />
+                    </group>
+                  );
+                })}
+              </group>
             </group>
-          </group>
-          }
+          )}
+          <polygon
+            ref={this.arrowRef}
+            attrs={{
+              points: [
+                { x: x - arrowWidth, y: coordTop },
+                { x: x + arrowWidth, y: coordTop },
+                { x: x, y: coordTop + arrowWidth },
+              ],
+              fill: background.fill,
+            }}
+          />
+          {showTooltipMarker ? (
+            <RenderItemMarker coord={coord} context={context} records={records} />
+          ) : null}
+          {/* 辅助点 */}
+          {snap
+            ? records.map((item) => {
+                const { x, y, color, shape } = item;
+                return (
+                  <circle
+                    attrs={{
+                      x,
+                      y,
+                      r: '6px',
+                      stroke: color,
+                      ...shape,
+                      ...tooltipMarkerStyle,
+                    }}
+                  />
+                );
+              })
+            : null}
           {/* 辅助线 */}
           {showCrosshairs ? (
             <group>
@@ -292,38 +354,32 @@ export default class TooltipView extends Component {
               ) : null}
             </group>
           ) : null}
-          {/* <polygon
-            attrs={{
-              ...background,
-              // points
-            }}
-          /> */}
         </group>
         {/* X 轴辅助信息 */}
-        {showXTip &&
+        {showXTip && (
           <group
-              style={{
-                left: x,
-                top: coordBottom,
-                ...defaultStyle.xTipBackground,
-                ...xTipBackground,
-              }}
+            style={{
+              left: x,
+              top: coordBottom,
+              ...defaultStyle.xTipBackground,
+              ...xTipBackground,
+            }}
+            attrs={{
+              ...defaultStyle.xTipBackground,
+              ...xTipBackground,
+            }}
+          >
+            <text
               attrs={{
-                ...defaultStyle.xTipBackground,
-                ...xTipBackground,
+                ...defaultStyle.xTipTextStyle,
+                ...xTipTextStyle,
+                text: isFunction(xTip) ? xTip(xFirstText) : xFirstText,
               }}
-            >
-              <text
-                attrs={{
-                  ...defaultStyle.xTipTextStyle,
-                  ...xTipTextStyle,
-                  text: isFunction(xTip) ? xTip(xTipText) : xTipText,
-                }}
-              />
+            />
           </group>
-        }
+        )}
         {/* Y 轴辅助信息 */}
-        {showYTip &&
+        {showYTip && (
           <group
             style={{
               left: coordLeft,
@@ -340,11 +396,11 @@ export default class TooltipView extends Component {
               attrs={{
                 ...defaultStyle.yTipTextStyle,
                 ...yTipTextStyle,
-                text: isFunction(yTip) ? yTip(yTipText) : yTipText,
+                text: isFunction(yTip) ? yTip(yFirstText) : yFirstText,
               }}
             />
           </group>
-        }
+        )}
       </group>
     );
   }

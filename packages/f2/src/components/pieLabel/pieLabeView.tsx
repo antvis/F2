@@ -3,7 +3,7 @@ import { jsx } from '../../jsx';
 export default (props, context) => {
   const {
     sidePadding,
-    adjustOffset,
+    // adjustOffset,
     lineStyle,
     anchorStyle,
     labels,

@@ -1,10 +1,12 @@
 import { Linear as LinearScale, ScaleConfig } from '@antv/scale';
 import { isArray } from '@antv/util';
-import { interpolate } from 'd3-interpolate'
+import { interpolate } from 'd3-interpolate';
 import Base from './base';
 
 class Linear extends Base {
+  // eslint-disable-next-line
   interpolate: any;
+  range: number[];
 
   constructor(options) {
     super(options);
@@ -14,9 +16,9 @@ class Linear extends Base {
     return new LinearScale(scaleConfig);
   }
 
-  _updateInterpolate () {
+  _updateInterpolate() {
     const [min, max] = this.range;
-    this.interpolate = interpolate(min, max)
+    this.interpolate = interpolate(min, max);
   }
 
   update(options) {
@@ -24,7 +26,7 @@ class Linear extends Base {
     this._updateInterpolate();
   }
 
-  _mapping(value: any) {
+  _mapping(value) {
     const { scale, interpolate } = this;
 
     if (isArray(value)) {
@@ -36,7 +38,7 @@ class Linear extends Base {
     return interpolate(scale.scale(value));
   }
 
-  normalize(value: any) {
+  normalize(value) {
     const { scale } = this;
 
     if (isArray(value)) {

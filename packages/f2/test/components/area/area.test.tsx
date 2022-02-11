@@ -1,15 +1,7 @@
 import { jsx } from '../../../src/jsx';
 import { Rect } from '../../../src/coord';
 import { Canvas, Chart, Area, Line, Axis, Interval, Legend } from '../../../src';
-import { createContext } from '../../util';
-
-const { offsetWidth } = document.body;
-const height = offsetWidth * 0.75;
-const defaultCanvasCfg = {
-  width: offsetWidth,
-  height,
-  pixelRatio: window.devicePixelRatio,
-};
+import { createContext, delay } from '../../util';
 
 const data = [
   {
@@ -54,10 +46,10 @@ function formatterPercent(value) {
 
 describe('面积图', () => {
   describe('基础面积图', () => {
-    it('基础面积图', () => {
+    it('基础面积图', async () => {
       const context = createContext('基础面积图');
-      const { type, props } = (
-        <Canvas context={context} {...defaultCanvasCfg}>
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -77,12 +69,14 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const chart = new type(props);
+      const chart = new Canvas(props);
       chart.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('带负值面积图', () => {
+    it('带负值面积图', async () => {
       const context = createContext('带负值面积图');
       const data = [
         {
@@ -118,13 +112,8 @@ describe('面积图', () => {
           value: 60.32,
         },
       ];
-      const { type, props } = (
-        <Canvas
-          context={context}
-          width={offsetWidth}
-          height={height}
-          pixelRatio={window.devicePixelRatio}
-        >
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -146,12 +135,14 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const chart = new type(props);
+      const chart = new Canvas(props);
       chart.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('带负值面积图(x基线不为0)', () => {
+    it('带负值面积图(x基线不为0)', async () => {
       const context = createContext('带负值面积图(x基线不为0)');
       const data = [
         {
@@ -187,13 +178,8 @@ describe('面积图', () => {
           value: 60.32,
         },
       ];
-      const { type, props } = (
-        <Canvas
-          context={context}
-          width={offsetWidth}
-          height={height}
-          pixelRatio={window.devicePixelRatio}
-        >
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -212,12 +198,14 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const chart = new type(props);
+      const chart = new Canvas(props);
       chart.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('渐变填充面积图', () => {
+    it('渐变填充面积图', async () => {
       const context = createContext('渐变填充面积图');
       const data = [
         {
@@ -257,13 +245,8 @@ describe('面积图', () => {
           tem: 12,
         },
       ];
-      const { type, props } = (
-        <Canvas
-          context={context}
-          width={offsetWidth}
-          height={height}
-          pixelRatio={window.devicePixelRatio}
-        >
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -283,14 +266,16 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const chart = new type(props);
+      const chart = new Canvas(props);
       chart.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
   });
 
   describe('层叠面积图', () => {
-    it('层叠面积图', () => {
+    it('层叠面积图', async () => {
       const context = createContext('层叠面积图');
       const areaRef = { current: null };
       const data = [
@@ -790,8 +775,8 @@ describe('面积图', () => {
           date: '2011-11-02',
         },
       ];
-      const { type, props } = (
-        <Canvas context={context} {...defaultCanvasCfg}>
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -814,41 +799,45 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const canvas = new type(props);
+      const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('区域图(存在空值)', () => {
-      fetch('https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json')
-        .then((res) => res.json())
-        .then((data) => {
-          const context = createContext('区域图(存在空值)');
-          const { type, props } = (
-            <Canvas context={context} {...defaultCanvasCfg}>
-              <Chart
-                data={data}
-                scale={{
-                  year: {
-                    tickCount: 5,
-                    range: [0, 1],
-                  },
-                }}
-              >
-                <Axis field="value" />
-                <Axis field="year" />
-                <Area x="year" y="value" color="type" />
-                <Line x="year" y="value" color="type" />
-              </Chart>
-            </Canvas>
-          );
-          // @ts-ignore
-          const canvas = new type(props);
-          canvas.render();
-        });
+    it('区域图(存在空值)', async () => {
+      const res = await fetch(
+        'https://gw.alipayobjects.com/os/antfincdn/RJW3vmCf7v/area-none.json'
+      );
+      const data = await res.json();
+      const context = createContext('区域图(存在空值)');
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            data={data}
+            scale={{
+              year: {
+                tickCount: 5,
+                range: [0, 1],
+              },
+            }}
+          >
+            <Axis field="value" />
+            <Axis field="year" />
+            <Area x="year" y="value" color="type" />
+            <Line x="year" y="value" color="type" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
 
-    it('百分比层叠面积图', () => {
+    it('百分比层叠面积图', async () => {
       const context = createContext('百分比层叠面积图');
       const data = [
         {
@@ -978,8 +967,8 @@ describe('面积图', () => {
           percent: 0.08196293395980161,
         },
       ];
-      const { type, props } = (
-        <Canvas context={context} {...defaultCanvasCfg}>
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
           <Chart
             data={data}
             scale={{
@@ -1000,9 +989,11 @@ describe('面积图', () => {
           </Chart>
         </Canvas>
       );
-      // @ts-ignore
-      const canvas = new type(props);
+      const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
     });
   });
 });

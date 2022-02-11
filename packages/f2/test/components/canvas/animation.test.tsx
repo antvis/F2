@@ -39,18 +39,16 @@ class Test extends Component {
 
 describe('Canvas', () => {
   it('测试动画', (done) => {
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Test />
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas: Canvas = new type(props);
+    const canvas = new Canvas(props);
     const testComponent = canvas.children;
 
     canvas.render();
-    // @ts-ignore
     const rect = canvas.children.component.container._attrs.children[0];
 
     expect(rect._attrs.attrs.width).toBe(10);

@@ -1,4 +1,4 @@
-import { GeometryProps } from '../geometry/interface';
+import { GeometryProps, AdjustConfig } from '../geometry/interface';
 import Coord from '../../coord';
 
 interface Record {
@@ -18,6 +18,6 @@ export interface LineProps extends GeometryProps {
   coord?: Coord;
   connectNulls?: boolean;
   data?: any;
-  adjust?: any;
+  adjust?: AdjustConfig;
   endView?: (origin: any) => JSX.Element;
 }

@@ -35,7 +35,7 @@ export interface CanvasProps {
   canvasRef?: RefObject<HTMLCanvasElement>;
   ref?: RefObject<HTMLCanvasElement>;
   fallback?: React.Component;
-  children?: any;
+  children?: React.ReactElement | React.ReactElement[] | null;
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {

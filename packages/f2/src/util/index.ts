@@ -28,7 +28,7 @@ function px2hd(px: number): number {
   return Number((px * SCALE).toFixed(1));
 }
 
-function parsePadding(padding: any) {
+function parsePadding(padding: number | number[]) {
   if (isNumber(padding)) {
     return [padding, padding, padding, padding];
   }
@@ -41,7 +41,7 @@ function parsePadding(padding: any) {
 
 type pxstr = `${number}px`;
 
-function batch2hd(value: pxstr | pxstr[] | any) {
+function batch2hd(value: pxstr | pxstr[] | number | number[] | string | string[] | any) {
   // 处理带px的数据
   if (isString(value) && /^-?\d+px$/.test(value)) {
     const num = value.substr(0, value.length - 2);
@@ -80,14 +80,14 @@ function batch2hd(value: pxstr | pxstr[] | any) {
 }
 
 // 展开数组
-function extendMap(arr: any[], fn: Function) {
+function extendMap(arr, fn: Function) {
   if (!arr) {
     return arr;
   }
   if (!isArray(arr)) {
     return [fn(arr)];
   }
-  let newArray: any = [];
+  let newArray = [];
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
     if (isArray(element)) {
@@ -122,7 +122,7 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-function getElementsByClassName(element, className) {
+function getElementsByClassName(className: string, element) {
   if (!element || !className) return [];
   let rst = [];
   if (element.get('className') === className) {
@@ -132,7 +132,7 @@ function getElementsByClassName(element, className) {
   if (children && children.length) {
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
-      rst = rst.concat(getElementsByClassName(child, className));
+      rst = rst.concat(getElementsByClassName(className, child));
     }
   }
   return rst;

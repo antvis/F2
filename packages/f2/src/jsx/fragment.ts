@@ -1,4 +1,4 @@
-export default (props: any) => {
+export default (props) => {
   return {
     type: 'fragment',
     props,

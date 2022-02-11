@@ -1,10 +1,11 @@
 import { jsx } from '../../../jsx';
 import { deepMix } from '@antv/util';
+import { Style } from '../../../types';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;
   content: string | number;
-  style?: any;
+  style?: Style;
   offsetX?: number;
   offsetY?: number;
   theme?: any;
@@ -25,13 +26,16 @@ export default (props: TextGuideProps) => {
         y: posY,
         ...style,
       }}
-      animation={deepMix({
-        update: {
-          easing: 'linear',
-          duration: 450,
-          property: ['x', 'y'],
+      animation={deepMix(
+        {
+          update: {
+            easing: 'linear',
+            duration: 450,
+            property: ['x', 'y'],
+          },
         },
-      }, animation)}
+        animation
+      )}
     />
   );
 };

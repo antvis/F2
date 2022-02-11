@@ -1,53 +1,49 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
 import { Polar, Rect } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../src/components';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 
 describe('柱图示例', () => {
   // 基础
-  it('基础柱状图', () => {
-    const context = createContext('基础柱状图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('基础柱状图', async () => {
+    const context = createContext('基础柱状图');
     const data = [
       {
-        year: '1951 年',
+        year: '1951',
         sales: 38,
       },
       {
-        year: '1952 年',
+        year: '1952',
         sales: 52,
       },
       {
-        year: '1956 年',
+        year: '1956',
         sales: 61,
       },
       {
-        year: '1957 年',
+        year: '1957',
         sales: 145,
       },
       {
-        year: '1958 年',
+        year: '1958',
         sales: 48,
       },
       {
-        year: '1959 年',
+        year: '1959',
         sales: 38,
       },
       {
-        year: '1960 年',
+        year: '1960',
         sales: 38,
       },
       {
-        year: '1962 年',
+        year: '1962',
         sales: 38,
       },
     ];
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
@@ -55,51 +51,50 @@ describe('柱图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('区间柱状图', () => {
-    const context = createContext('区间柱状图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('区间柱状图', async () => {
+    const context = createContext('区间柱状图');
     const data = [
       {
-        x: '分类一',
+        x: 'cat1',
         y: [76, 100],
       },
       {
-        x: '分类二',
+        x: 'cat2',
         y: [56, 108],
       },
       {
-        x: '分类三',
+        x: 'cat3',
         y: [38, 129],
       },
       {
-        x: '分类四',
+        x: 'cat4',
         y: [58, 155],
       },
       {
-        x: '分类五',
+        x: 'cat5',
         y: [45, 120],
       },
       {
-        x: '分类六',
+        x: 'cat6',
         y: [23, 99],
       },
       {
-        x: '分类七',
+        x: 'cat7',
         y: [18, 56],
       },
       {
-        x: '分类八',
+        x: 'cat8',
         y: [18, 34],
       },
     ];
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="x" />
           <Axis field="y" />
@@ -107,44 +102,43 @@ describe('柱图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('渐变色柱状图', () => {
-    const context = createContext('区间柱状图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('渐变色柱状图', async () => {
+    const context = createContext('区间柱状图');
     const data = [
       {
-        year: '2014 年',
+        year: '2014',
         sales: 145,
         name: '1',
       },
       {
-        year: '2015 年',
+        year: '2015',
         sales: 121,
         name: '1',
       },
       {
-        year: '2016 年',
+        year: '2016',
         sales: 100,
         name: '1',
       },
       {
-        year: '2017 年',
+        year: '2017',
         sales: 97,
         name: '1',
       },
       {
-        year: '2018 年',
+        year: '2018',
         sales: 85,
         name: '1',
       },
     ];
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
@@ -152,59 +146,61 @@ describe('柱图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('纹理柱状图', () => {
-    const context = createContext('纹理柱状图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('纹理柱状图', async () => {
+    const context = createContext('纹理柱状图');
     const data = [
       {
-        year: '1951 年',
+        year: '1951',
         sales: 38,
       },
       {
-        year: '1952 年',
+        year: '1952',
         sales: 52,
       },
       {
-        year: '1956 年',
+        year: '1956',
         sales: 61,
       },
       {
-        year: '1957 年',
+        year: '1957',
         sales: 145,
       },
       {
-        year: '1958 年',
+        year: '1958',
         sales: 48,
       },
     ];
 
-    // @ts-ignore
-    const img = new Image();
-    img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
+    const pattern = await new Promise((resolve) => {
+      const img = new Image();
+      img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
+      img.onload = function() {
+        const pattern = context.createPattern(img, 'repeat');
+        resolve(pattern);
+      };
+    });
 
-    img.onload = function () {
-      const pattern = context.createPattern(img, 'repeat');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Interval x="year" y="sales" color={pattern} />
+        </Chart>
+      </Canvas>
+    );
 
-      const { type, props } = (
-        <Canvas context={context}>
-          <Chart data={data}>
-            <Axis field="year" />
-            <Axis field="sales" />
-            <Interval x="year" y="sales" color={pattern} />
-          </Chart>
-        </Canvas>
-      );
+    const canvas = new Canvas(props);
+    canvas.render();
 
-      const canvas = new type(props);
-
-      canvas.render();
-    };
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

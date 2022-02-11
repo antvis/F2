@@ -2,10 +2,12 @@ import { Scale, ScaleConfig } from '@antv/scale';
 import { mix, isFunction, isNil, isArray, valuesOfKey } from '@antv/util';
 
 class Base {
+  // eslint-disable-next-line
   data: any;
   field: string;
   scale: Scale;
-  range: any[];
+  // string[] => [#000, #fff], 颜色之类的范围
+  range: number[] | string[];
   callback: Function;
 
   constructor(options) {
@@ -23,7 +25,7 @@ class Base {
   }
 
   // 数据映射方法
-  _mapping(value): any {
+  _mapping(value) {
     return value;
   }
 
@@ -36,7 +38,7 @@ class Base {
   }
 
   // 归一化，参数是原始数据，返回是归一化的数据
-  normalize(value: any) {
+  normalize(value) {
     const { scale } = this;
 
     if (isArray(value)) {
@@ -53,7 +55,7 @@ class Base {
   }
 
   // 等于 normalize + convert， 参数是原始数据，返回是定义域的值
-  mapping(value): any {
+  mapping(value) {
     const rst = isFunction(this.callback) ? this.callback(value) : null;
     if (!isNil(rst)) {
       return rst;

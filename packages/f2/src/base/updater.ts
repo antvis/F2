@@ -5,7 +5,7 @@ function createUpdater(canvas) {
 
   function process() {
     let item;
-    let component;
+    // let component;
     while ((item = setStateQueue.shift())) {
       const { state, component, callback } = item;
 

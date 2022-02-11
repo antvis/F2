@@ -7,7 +7,7 @@ import getAnimation from './animation';
 import { ELEMENT_DELETE } from './elementStatus';
 
 // 转换成布局所需要的布局树
-function createNodeTree(element: any, container: any) {
+function createNodeTree(element, container) {
   const { key, ref, _cache, type, props, status, animation } = element;
   const children = extendMap(props.children, (child) => {
     return createNodeTree(child, container);
@@ -52,7 +52,7 @@ function createNodeTree(element: any, container: any) {
   };
 }
 
-function mergeLayout(parent: any, layout: any) {
+function mergeLayout(parent, layout) {
   if (!parent || !layout) return layout;
   const { left: parentLeft, top: parentTop } = parent;
   const { left, top } = layout;
@@ -63,7 +63,7 @@ function mergeLayout(parent: any, layout: any) {
   };
 }
 
-function createElement(node: any, container: any, parentLayout: any, animate: boolean) {
+function createElement(node, container, parentLayout, animate: boolean) {
   const {
     _cache = {},
     ref,
@@ -143,7 +143,7 @@ function filterDeleteElement(node) {
   return node;
 }
 
-export default (element: JSX.Element, container: any, animate?: boolean) => {
+export default (element: JSX.Element, container, animate?: boolean) => {
   if (!element) {
     return;
   }

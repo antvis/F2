@@ -12,45 +12,45 @@ function numberToMoney(n) {
 
 describe('Axis 轴', () => {
   // 基础
-  it('文本换行', () => {
+  it('文本换行', async () => {
     const context = createContext('文本换行');
 
     const data = [
       {
-        time: 'Jan.\n一月',
+        time: 'Jan.\nJan',
         value: 551990,
       },
       {
-        time: 'Feb.\n二月',
+        time: 'Feb.\nFeb',
         value: 513513,
       },
       {
-        time: 'Mar.\n三月',
+        time: 'Mar.\nMar',
         value: 538780,
       },
       {
-        time: 'Apr.\n四月',
+        time: 'Apr.\nApr',
         value: 419562,
       },
       {
-        time: 'May.\n五月',
+        time: 'May.\nMay',
         value: 332167,
       },
       {
-        time: 'Jun.\n六月',
+        time: 'Jun.\nJun',
         value: 297956,
       },
       {
-        time: 'Jul.\n七月',
+        time: 'Jul.\nJul',
         value: 311760,
       },
       {
-        time: 'Aug.\n八月',
+        time: 'Aug.\nAug',
         value: 330824,
       },
     ];
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="time" />
           <Axis field="value" />
@@ -58,12 +58,14 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('旋转', () => {
+  it('旋转', async () => {
     const context = createContext('旋转');
 
     const data = [
@@ -148,8 +150,8 @@ describe('Axis 轴', () => {
         NumberNewMicroBrewery: 1,
       },
     ];
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis
             field="Year"
@@ -178,14 +180,16 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
   it('label 回调', async () => {
     const context = createContext('label 回调');
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={valuationData}>
           <Axis
@@ -233,11 +237,40 @@ describe('Axis 轴', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('grid样式', () => {
+  it('label 回调参数', async () => {
+    const context = createContext('label 回调参数');
+    const labelMockCallback = jest.fn();
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis field="index" />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              label: labelMockCallback,
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('grid样式', async () => {
     const context = createContext('grid样式');
 
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           data={bubbleData}
           scale={{
@@ -288,12 +321,14 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('grid回调', () => {
+  it('grid回调', async () => {
     const context = createContext('grid样式');
     const data = [
       {
@@ -422,8 +457,8 @@ describe('Axis 轴', () => {
       return String(Math.floor(n * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           data={data}
           scale={{
@@ -481,12 +516,14 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('弧形网格线', () => {
+  it('弧形网格线', async () => {
     const context = createContext('弧形网格线');
     const data = [
       {
@@ -515,8 +552,8 @@ describe('Axis 轴', () => {
       },
     ];
 
-    const { type, props } = (
-      <Canvas context={context}>
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           data={data.reverse()}
           scale={{
@@ -553,8 +590,10 @@ describe('Axis 轴', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

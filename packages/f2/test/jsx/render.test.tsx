@@ -508,7 +508,6 @@ describe('layout', () => {
         </group>
       );
       // 把中间的元素标记为删除
-      // @ts-ignore
       groupJSXElement.status = ELEMENT_DELETE;
       const group = render(groupJSXElement, container);
       canvas.draw();

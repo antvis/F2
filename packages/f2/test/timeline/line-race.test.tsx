@@ -14,7 +14,6 @@ const countries = [
 ];
 
 const chartData = data.filter((item) => {
-  // @ts-ignore
   return countries.indexOf(item.country) >= 0;
 });
 
@@ -62,7 +61,7 @@ describe('Chart', () => {
             animation={{
               appear: {
                 duration: 5000,
-              }
+              },
             }}
             endView={EndView}
           />
@@ -70,7 +69,6 @@ describe('Chart', () => {
       </Canvas>
     );
 
-    // @ts-ignored
     const canvas = new Canvas(props);
     canvas.render();
   });

@@ -1,13 +1,15 @@
 import EventEmit from '../event/emit';
 
 class CanvasElement extends EventEmit {
-  context: any;
+  /* eslint-disable */
+  context: CanvasRenderingContext2D;
   width: number;
   height: number;
   style: any;
   currentStyle: any;
   attrs: any;
   isCanvasElement: boolean;
+  /* eslint-enable */
 
   constructor(ctx) {
     super();

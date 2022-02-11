@@ -23,13 +23,13 @@ declare global {
       type: ElementType;
       props: Props;
       // children: Element;
-      _cache: any;
+      _cache?: any;
       [key: string]: any;
     }
     interface ElementClass {
-      refs: any;
+      refs: {};
       props: Props;
-      render(): any;
+      render(): Element | null;
     }
     interface IntrinsicElements {
       group: RectProps;

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
@@ -55,8 +54,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
   it('区间柱状图', () => {
@@ -107,8 +105,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
   it('渐变色柱状图', () => {
@@ -152,8 +149,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -261,8 +257,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
   it('带负值的分组分组柱图', () => {
@@ -386,8 +381,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -487,8 +481,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -604,8 +597,7 @@ describe('柱状图示例', () => {
         </Chart>
       </Canvas>
     );
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 
@@ -654,8 +646,7 @@ describe('柱状图示例', () => {
       </Canvas>
     );
 
-    // @ts-ignore
-    const canvas = new type(props);
+    const canvas = new Canvas(props);
     canvas.render();
   });
 });

@@ -3,7 +3,7 @@ import { getMiddlePoint } from '../../../util/coord';
 import { convertToPoints } from '../util';
 
 // 金字塔图和漏斗图的View
-export default (props: any) => {
+export default (props) => {
   const { records, shape, showLabel, labelCfg, LabelView } = props;
 
   // 是否倒置
