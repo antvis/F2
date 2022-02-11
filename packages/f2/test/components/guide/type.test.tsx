@@ -7,6 +7,7 @@ import {
   PointGuide,
   ArcGuide,
   RectGuide,
+  TagGuide,
   Interval,
   Line,
   Axis,
@@ -245,6 +246,21 @@ describe('Guide', () => {
             }}
             offsetX={-8}
           />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+  });
+
+  it('TagGuide', () => {
+    const context = createContext('TagGuide');
+    const { props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20个" />
         </Chart>
       </Canvas>
     );
