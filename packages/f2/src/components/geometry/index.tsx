@@ -421,14 +421,16 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return records;
   }
 
+  getAttr(attrName: string) {
+    return this.attrController.getAttr(attrName);
+  }
+
   getXScale() {
-    const { attrController } = this;
-    return attrController.getAttr('x').scale;
+    return this.getAttr('x').scale;
   }
 
   getYScale() {
-    const { attrController } = this;
-    return attrController.getAttr('y').scale;
+    return this.getAttr('y').scale;
   }
 
   _getSnap(scale, invertPointX) {
