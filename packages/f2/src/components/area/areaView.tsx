@@ -1,8 +1,9 @@
 import { jsx } from '../../jsx';
+import { deepMix } from '@antv/util';
 import { Smooth, BBox } from '@antv/f2-graphic';
 
 export default (props) => {
-  const { records, shape } = props;
+  const { records, shape, animation } = props;
   const isSmooth = shape === 'smooth';
   return (
     <group>
@@ -58,6 +59,16 @@ export default (props) => {
                     fill: color,
                     ...shape,
                   }}
+                  animation={deepMix(
+                    {
+                      update: {
+                        easing: 'linear',
+                        duration: 450,
+                        property: ['points'],
+                      },
+                    },
+                    animation
+                  )}
                 />
               );
             })}
