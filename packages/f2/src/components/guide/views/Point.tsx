@@ -12,7 +12,7 @@ type PointGuideProps = {
 
 export default (props: PointGuideProps) => {
   const { theme } = props;
-  const { points, style, offsetX, offsetY } = deepMix({ ...theme.point }, props);
+  const { points, style, offsetX, offsetY, animationCfg } = deepMix({ ...theme.point }, props);
   const { x, y } = points[0] || {};
 
   const posX = x + (offsetX || 0);
@@ -26,6 +26,7 @@ export default (props: PointGuideProps) => {
           y: posY,
           ...style,
         }}
+        animation={animationCfg}
       />
     </group>
   );
