@@ -54,7 +54,7 @@ describe('PieLabel', () => {
     const context = createContext('带图例文本的饼图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}

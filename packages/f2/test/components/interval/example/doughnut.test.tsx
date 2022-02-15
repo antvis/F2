@@ -2,10 +2,10 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip, ArcGuide, TextGuide } from '../../../../src/components';
-import { createContext } from '../../../util';
+import { createContext, delay } from '../../../util';
 
 describe('环形图', () => {
-  it('基础环形图', () => {
+  it('基础环形图', async () => {
     const data = [
       {
         name: '股票类',
@@ -26,7 +26,7 @@ describe('环形图', () => {
     const context = createContext('基础环形图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
@@ -47,15 +47,17 @@ describe('环形图', () => {
               range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
             }}
           />
-          <Legend position="right" />
         </Chart>
       </Canvas>
     );
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('嵌套环形图', () => {
+  it('嵌套环形图', async () => {
     const data = [
       {
         a: '1',
@@ -91,7 +93,7 @@ describe('环形图', () => {
     const context = createContext('嵌套环形图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
@@ -110,8 +112,11 @@ describe('环形图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('环形进度条', () => {
+  it('环形进度条', async () => {
     const data = [
       {
         x: '1',
@@ -121,7 +126,7 @@ describe('环形图', () => {
     const context = createContext('环形进度条');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
@@ -172,5 +177,8 @@ describe('环形图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

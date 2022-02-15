@@ -2,7 +2,7 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
 import { Interval, Legend } from '../../../../src/components';
-import { createContext } from '../../../util';
+import { createContext, delay } from '../../../util';
 
 const data = [
   {
@@ -38,11 +38,11 @@ const data = [
 ];
 
 describe('饼图', () => {
-  it('基础饼图', () => {
+  it('基础饼图', async () => {
     const context = createContext('基础饼图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
@@ -60,12 +60,14 @@ describe('饼图', () => {
               range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
             }}
           />
-          <Legend position="right" />
         </Chart>
       </Canvas>
     );
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });
