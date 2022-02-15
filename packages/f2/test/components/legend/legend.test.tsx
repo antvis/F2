@@ -28,7 +28,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -51,7 +51,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -78,7 +78,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -102,7 +102,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -126,7 +126,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -150,7 +150,7 @@ describe('图例', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
   });
