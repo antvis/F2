@@ -13,7 +13,7 @@ import {
   Axis,
   Point,
 } from '../../../src/components';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 
 const data = [
   { type: 'a', genre: 'Sports', sold: 5 },
@@ -254,18 +254,21 @@ describe('Guide', () => {
     canvas.render();
   });
 
-  it('TagGuide', () => {
+  it('TagGuide', async () => {
     const context = createContext('TagGuide');
     const { props } = (
       <Canvas context={context}>
         <Chart data={data}>
           <Line x="genre" y="sold" />
-          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20个" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20" />
         </Chart>
       </Canvas>
     );
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
   });
 });

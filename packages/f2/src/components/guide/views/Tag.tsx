@@ -1,20 +1,10 @@
 import { jsx } from '../../../jsx';
-import { Style } from '../../../types';
-
-type BBox = {
-  width: number;
-  height: number;
-  minX: number;
-  minY: number;
-  maxX: number;
-  maxY: number;
-};
-
+import type { Types } from '@antv/f2-graphic';
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
   canvasWidth?: number;
   canvasHeight?: number;
-  guideBBox?: BBox;
+  guideBBox?: Types.BBox;
   offsetX?: number;
   offsetY?: number;
   autoAdjust?: boolean;

@@ -35,4 +35,6 @@ export {
   Smooth,
   BBox,
 };
-export * from './types';
+
+import * as Types from './types';
+export { Types };
