@@ -58,7 +58,6 @@ export default (Views) => {
       const { props } = this;
       const { coord } = props;
       const y0 = this.getY0Value();
-      const coordY0 = coord.convertPoint({ x: 0, y: y0 }).y;
       const defaultSize = this.getDefaultSize();
 
       for (let i = 0, len = records.length; i < len; i++) {
@@ -74,7 +73,7 @@ export default (Views) => {
             mix(child, coord.convertRect({ x, y, y0, size }));
           } else {
             const { x, y } = child;
-            const rect = { size: mappedSize, x, y, y0: coordY0 };
+            const rect = { size: mappedSize, x, y, y0 };
 
             mix(child, coord.transformToRect(rect));
           }
