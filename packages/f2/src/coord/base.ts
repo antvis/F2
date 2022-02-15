@@ -43,6 +43,13 @@ interface RectPoint {
   size?: number;
 }
 
+interface Rect {
+  xMin: number;
+  xMax: number;
+  yMin: number;
+  yMax: number;
+}
+
 /**
  * 直角坐标系
  * convert相关的方法，涉及将标准坐标系映射到实际坐标系内
@@ -88,12 +95,14 @@ class Base extends Layout {
     return point;
   }
 
-  convertRect(rectPoint: RectPoint) {
-    const { x: xRange, y: yRange } = this;
+  // 将标准坐标系下的矩形绘制关键点映射成实际绘制的坐标点
+  convertRect(rectPoint: RectPoint): Rect {
+    const { x: xRange, y: yRange, transposed } = this;
     const [xStart, xEnd] = xRange;
     const [yStart, yEnd] = yRange;
 
-    const { xMin, xMax, yMin, yMax } = this.transformToRect(rectPoint);
+    const rect = convertRect(rectPoint);
+    const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
 
     const x0 = xStart + (xEnd - xStart) * xMin;
     const x1 = xStart + (xEnd - xStart) * xMax;
@@ -108,9 +117,18 @@ class Base extends Layout {
     };
   }
 
-  transformToRect(rectPoint: RectPoint) {
+  // 将已经映射好的矩形绘制关键点转换成实际绘制的坐标点
+  transformToRect(rectPoint: RectPoint): Rect {
+    const { x, y, y0, size } = rectPoint;
+    const coordOrigin = this.convertPoint({ x: 0, y: y0 })
     const { transposed } = this;
-    const rect = convertRect(rectPoint);
+    const _rectPoint = {
+      size,
+      x: transposed ? y : x,
+      y: transposed ? x : y,
+      y0: transposed ? coordOrigin.x : coordOrigin.y,
+    }
+    const rect = convertRect(_rectPoint);
     const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
 
     return { xMin, xMax, yMin, yMax };

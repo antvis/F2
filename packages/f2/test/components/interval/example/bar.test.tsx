@@ -2,7 +2,7 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
-import { createContext } from '../../../util';
+import { createContext, delay } from '../../../util';
 
 const data = [
   { type: 'a', genre: 'Sports', sold: 5 },
@@ -31,6 +31,24 @@ describe('条形图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+  });
+
+  it('基础条形图-转置+设置固定size', async() => {
+    const chartRef = { current: null };
+    const context = createContext('基础条形图');
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
+          <Interval x="genre" y="sold" color="type" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
   it('分组条形图', () => {
