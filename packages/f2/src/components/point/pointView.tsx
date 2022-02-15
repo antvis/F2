@@ -1,8 +1,8 @@
 import { jsx } from '../../jsx';
-import { isNil } from '@antv/util';
+import { isNil, deepMix } from '@antv/util';
 
 export default (props) => {
-  const { records } = props;
+  const { records, animation } = props;
   return (
     <group>
       {records.map((record) => {
@@ -24,17 +24,20 @@ export default (props) => {
                       width: rectSize * 2,
                       height: rectSize * 2,
                     }}
-                    animation={{
-                      appear: {
-                        easing: 'linear',
-                        duration: 450,
+                    animation={deepMix(
+                      {
+                        appear: {
+                          easing: 'linear',
+                          duration: 450,
+                        },
+                        update: {
+                          easing: 'linear',
+                          duration: 450,
+                          property: ['x', 'y', 'width', 'height', 'fill'],
+                        },
                       },
-                      update: {
-                        easing: 'linear',
-                        duration: 450,
-                        property: ['x', 'y', 'width', 'height', 'fill'],
-                      },
-                    }}
+                      animation
+                    )}
                   />
                 );
               }
@@ -48,17 +51,20 @@ export default (props) => {
                     ...shape,
                     r: isNil(size) ? shape.size : size,
                   }}
-                  animation={{
-                    appear: {
-                      easing: 'linear',
-                      duration: 450,
+                  animation={deepMix(
+                    {
+                      appear: {
+                        easing: 'linear',
+                        duration: 450,
+                      },
+                      update: {
+                        easing: 'linear',
+                        duration: 450,
+                        property: ['x', 'y', 'r', 'fill'],
+                      },
                     },
-                    update: {
-                      easing: 'linear',
-                      duration: 450,
-                      property: ['x', 'y', 'r', 'fill'],
-                    },
-                  }}
+                    animation
+                  )}
                 />
               );
             })}
