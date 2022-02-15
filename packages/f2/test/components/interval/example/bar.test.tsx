@@ -18,26 +18,11 @@ const data = [
 ];
 
 describe('条形图', () => {
-  it('基础条形图', () => {
+  it('基础条形图', async () => {
     const chartRef = { current: null };
     const context = createContext('基础条形图');
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
-        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
-          <Interval x="genre" y="sold" color="type" />
-        </Chart>
-      </Canvas>
-    );
-
-    const canvas = new Canvas(props);
-    canvas.render();
-  });
-
-  it('基础条形图-转置+设置固定size', async() => {
-    const chartRef = { current: null };
-    const context = createContext('基础条形图');
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" />
         </Chart>
@@ -51,11 +36,29 @@ describe('条形图', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('分组条形图', () => {
+  it('基础条形图-转置+设置固定size', async () => {
+    const chartRef = { current: null };
+    const context = createContext('基础条形图');
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
+          <Interval x="genre" y="sold" color="type" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('分组条形图', async () => {
     const chartRef = { current: null };
     const context = createContext('分组条形图');
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" adjust="dodge" />
         </Chart>
@@ -64,13 +67,16 @@ describe('条形图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('堆叠条形图', () => {
+  it('堆叠条形图', async () => {
     const chartRef = { current: null };
     const context = createContext('堆叠条形图');
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" adjust="stack" />
         </Chart>
@@ -79,5 +85,8 @@ describe('条形图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

@@ -61,17 +61,17 @@ describe('图例 - position', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
 
     // legend click
     await gestureSimulator(context.canvas, 'click', { x: 137, y: 44 });
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
 
     // 反选
     await gestureSimulator(context.canvas, 'click', { x: 137, y: 44 });
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -97,7 +97,7 @@ describe('图例 - position', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -123,7 +123,7 @@ describe('图例 - position', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -149,7 +149,7 @@ describe('图例 - position', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 });

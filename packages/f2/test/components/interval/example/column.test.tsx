@@ -2,51 +2,51 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
-import { createContext } from '../../../util';
+import { createContext, delay } from '../../../util';
 
 describe('柱状图示例', () => {
   // 基础
-  it('基础柱状图', () => {
+  it('基础柱状图', async () => {
     const context = createContext('基础柱状图', {
       height: '300px',
       width: '400px',
     });
     const data = [
       {
-        year: '1951 年',
+        year: '1951',
         sales: 38,
       },
       {
-        year: '1952 年',
+        year: '1952',
         sales: 52,
       },
       {
-        year: '1956 年',
+        year: '1956',
         sales: 61,
       },
       {
-        year: '1957 年',
+        year: '1957',
         sales: 145,
       },
       {
-        year: '1958 年',
+        year: '1958',
         sales: 48,
       },
       {
-        year: '1959 年',
+        year: '1959',
         sales: 38,
       },
       {
-        year: '1960 年',
+        year: '1960',
         sales: 38,
       },
       {
-        year: '1962 年',
+        year: '1962',
         sales: 38,
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
@@ -56,8 +56,11 @@ describe('柱状图示例', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('区间柱状图', () => {
+  it('区间柱状图', async () => {
     const context = createContext('区间柱状图', {
       height: '300px',
       width: '400px',
@@ -97,51 +100,52 @@ describe('柱状图示例', () => {
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
-          <Axis field="x" />
-          <Axis field="y" />
           <Interval x="x" y="y" />
         </Chart>
       </Canvas>
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('渐变色柱状图', () => {
+  it('渐变色柱状图', async () => {
     const context = createContext('渐变色柱状图', {
       height: '300px',
       width: '400px',
     });
     const data = [
       {
-        year: '2014 年',
+        year: '2014',
         sales: 145,
         name: '1',
       },
       {
-        year: '2015 年',
+        year: '2015',
         sales: 121,
         name: '1',
       },
       {
-        year: '2016 年',
+        year: '2016',
         sales: 100,
         name: '1',
       },
       {
-        year: '2017 年',
+        year: '2017',
         sales: 97,
         name: '1',
       },
       {
-        year: '2018 年',
+        year: '2018',
         sales: 85,
         name: '1',
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
@@ -151,9 +155,12 @@ describe('柱状图示例', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('分组柱图', () => {
+  it('分组柱图', async () => {
     const context = createContext('分组柱图', {
       height: '300px',
       width: '400px',
@@ -241,7 +248,7 @@ describe('柱状图示例', () => {
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="月份" />
           <Axis field="月均降雨量" />
@@ -259,8 +266,11 @@ describe('柱状图示例', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
-  it('带负值的分组分组柱图', () => {
+  it('带负值的分组分组柱图', async () => {
     const context = createContext('带负值的分组分组柱图', {
       height: '300px',
       width: '400px',
@@ -373,19 +383,20 @@ describe('柱状图示例', () => {
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
-          <Axis field="time" />
-          <Axis field="tem" />
           <Interval x="time" y="tem" color="city" adjust="dodge" />
         </Chart>
       </Canvas>
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('层叠柱图', () => {
+  it('层叠柱图', async () => {
     const context = createContext('层叠柱图', {
       height: '300px',
       width: '400px',
@@ -473,7 +484,7 @@ describe('柱状图示例', () => {
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="月份" />
           <Axis field="月均降雨量" />
@@ -483,9 +494,12 @@ describe('柱状图示例', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('百分比层叠柱图', () => {
+  it('百分比层叠柱图', async () => {
     const context = createContext('百分比层叠柱图', {
       height: '300px',
       width: '400px',
@@ -589,7 +603,7 @@ describe('柱状图示例', () => {
       },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="percent" />
@@ -599,9 +613,12 @@ describe('柱状图示例', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('南丁格尔玫瑰图', () => {
+  it('南丁格尔玫瑰图', async () => {
     const data = [
       {
         year: '2001',
@@ -627,7 +644,7 @@ describe('柱状图示例', () => {
     const context = createContext('南丁格尔玫瑰图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+      <Canvas context={context} pixelRatio={1}>
         <Chart
           ref={chartRef}
           data={data}
@@ -648,5 +665,8 @@ describe('柱状图示例', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

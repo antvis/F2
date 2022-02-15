@@ -120,7 +120,7 @@ describe('Canvas', () => {
   it('生命周期', async () => {
     const ref = { current: null };
     const { props } = (
-      <Canvas context={context} pixelRatio={2}>
+      <Canvas context={context} pixelRatio={1}>
         <TestContainer>
           <Test width={10} ref={ref} />
           <Test width={10} />
@@ -216,7 +216,7 @@ describe('Canvas', () => {
     await delay(50);
     canvas.update(
       (
-        <Canvas context={context} pixelRatio={2}>
+        <Canvas context={context} pixelRatio={1}>
           <TestContainer animate={false}>
             <Test width={30} ref={ref} />
           </TestContainer>

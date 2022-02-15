@@ -89,12 +89,7 @@ describe('Interval', () => {
     const { offsetWidth } = document.body;
     const height = offsetWidth * 0.75;
     const { props } = (
-      <Canvas
-        context={context}
-        pixelRatio={window.devicePixelRatio}
-        width={offsetWidth}
-        height={height}
-      >
+      <Canvas context={context} pixelRatio={1} width={offsetWidth} height={height}>
         <Chart
           ref={chartRef}
           data={data}
