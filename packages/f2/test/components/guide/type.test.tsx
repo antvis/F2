@@ -257,7 +257,7 @@ describe('Guide', () => {
   it('TagGuide', async () => {
     const context = createContext('TagGuide');
     const { props } = (
-      <Canvas context={context}>
+      <Canvas context={context} animate={false}>
         <Chart data={data}>
           <Line x="genre" y="sold" />
           <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20" />
@@ -268,7 +268,7 @@ describe('Guide', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    await delay(100);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 });
