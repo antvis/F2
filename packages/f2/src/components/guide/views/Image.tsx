@@ -24,7 +24,7 @@ const baseAttrs = {
 
 export default (props: ImageGuideProps) => {
   const cfg = deepMix({}, defaultProps, props);
-  const { points, style, attrs, offsetX, offsetY, src, animationCfg } = cfg;
+  const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = attrs;
   const posX = x + (offsetX || 0) - height / 2;
@@ -50,7 +50,7 @@ export default (props: ImageGuideProps) => {
               property: ['x', 'y'],
             },
           },
-          animationCfg
+          animation
         )}
       />
     </group>

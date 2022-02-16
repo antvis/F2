@@ -118,10 +118,9 @@ export default (View) => {
       const theme = this.getGuideTheme();
       const { guideWidth, guideHeight, guideBBox } = this.state;
 
-      let animationCfg = animation;
       if (isFunction(animation)) {
         // 透传绘制关键点和chart实例
-        animationCfg = animation(points, chart);
+        props.animation = animation(points, chart);
       }
 
       return (
@@ -130,7 +129,6 @@ export default (View) => {
           points={points}
           theme={theme}
           coord={coord}
-          animationCfg={animationCfg}
           {...props}
           canvasWidth={width}
           canvasHeight={height}

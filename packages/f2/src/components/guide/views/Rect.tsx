@@ -10,7 +10,7 @@ type RectGuideProps = {
 
 export default (props: RectGuideProps) => {
   const { theme = {} } = props;
-  const { points, style, animationCfg } = deepMix({ ...theme.rect }, props);
+  const { points, style, animation } = deepMix({ ...theme.rect }, props);
 
   const start = points[0] || {};
   const end = points[1] || {};
@@ -25,7 +25,7 @@ export default (props: RectGuideProps) => {
           height: Math.abs(start.y - end.y),
           ...style,
         }}
-        animation={animationCfg}
+        animation={animation}
       />
     </group>
   );

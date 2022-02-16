@@ -235,7 +235,7 @@ describe('Guide ', () => {
             color="type"
             animation={{
               appear: {
-                duration: 300,
+                duration: 2000,
                 easing: 'quinticIn',
                 property: ['width'],
               },
@@ -256,12 +256,11 @@ describe('Guide ', () => {
                   fontSize: '24px',
                 }}
                 animation={(points, props) => {
-                  console.log('props: ', props);
 
                   return {
                     appear: {
                       easing: 'quinticIn',
-                      duration: 300,
+                      duration: 2000,
                       property: ['x'],
                       start: {
                         x: props.coord.left,

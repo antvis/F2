@@ -10,7 +10,7 @@ type ArcGuideProps = {
 
 export default (props: ArcGuideProps) => {
   const { theme = {} } = props;
-  const { coord, points, style, animationCfg } = deepMix({ ...theme.line }, props);
+  const { coord, points, style, animation } = deepMix({ ...theme.line }, props);
 
   const start = points[0] || {};
   const end = points[1] || {};
@@ -35,7 +35,7 @@ export default (props: ArcGuideProps) => {
           endAngle,
           ...style,
         }}
-        animation={animationCfg}
+        animation={animation}
       />
     </group>
   );

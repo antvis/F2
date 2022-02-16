@@ -12,7 +12,7 @@ type LineGuideProps = {
 
 export default (props: LineGuideProps) => {
   const { theme = {} } = props;
-  const { points, style, offsetX, offsetY, animationCfg } = deepMix({ ...theme.line }, props);
+  const { points, style, offsetX, offsetY, animation } = deepMix({ ...theme.line }, props);
   const { x: x1, y: y1 } = points[0] || {};
   const { x: x2, y: y2 } = points[1] || {};
 
@@ -32,7 +32,7 @@ export default (props: LineGuideProps) => {
           y2: posY2,
           ...style,
         }}
-        animation={animationCfg}
+        animation={animation}
       />
     </group>
   );
