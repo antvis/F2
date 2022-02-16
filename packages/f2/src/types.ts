@@ -114,7 +114,7 @@ export interface PolygonProps extends IntrinsicElementsProps {
   attrs?: PolygonAttrs;
 }
 
-export type PolylineAttrs = Partial<SupportPx<Types.LineAttrs>>;
+export type PolylineAttrs = Partial<SupportPx<Types.PolylineAttrs>>;
 export interface PolylineProps extends IntrinsicElementsProps {
   attrs?: PolylineAttrs;
 }
