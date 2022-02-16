@@ -7,12 +7,13 @@ import {
   PointGuide,
   ArcGuide,
   RectGuide,
+  TagGuide,
   Interval,
   Line,
   Axis,
   Point,
 } from '../../../src/components';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 
 const data = [
   { type: 'a', genre: 'Sports', sold: 5 },
@@ -251,5 +252,23 @@ describe('Guide', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+  });
+
+  it('TagGuide', async () => {
+    const context = createContext('TagGuide');
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
   });
 });

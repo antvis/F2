@@ -3,6 +3,7 @@ import Component from '../../base/component';
 import { isString, isNil } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
+import { renderShape } from '../../base/diff';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -19,6 +20,12 @@ export default (View) => {
       super(props);
       // 创建ref
       this.triggerRef = {};
+      this.state = {};
+    }
+
+    willMount() {
+      super.willMount();
+      this.getGuideBBox();
     }
 
     didMount() {
@@ -36,6 +43,24 @@ export default (View) => {
           onClick && onClick(ev);
         }
       });
+    }
+
+    getGuideBBox() {
+      const shape = renderShape(this, this.render(), false);
+      const { x, y, width, height } = shape.get('attrs');
+      // getBBox 没有包含 padding 所以这里手动计算 bbox
+      const bbox = {
+        minX: x,
+        minY: y,
+        maxX: x + width,
+        maxY: y + height,
+        width,
+        height,
+      };
+      this.setState({
+        guideBBox: bbox,
+      });
+      shape.destroy();
     }
 
     // 解析record里的模板字符串，如min、max、50%...
@@ -86,13 +111,26 @@ export default (View) => {
     }
 
     render() {
-      const { props } = this;
+      const { props, context } = this;
       const { coord, records = [] } = props;
+      const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
+      const { guideWidth, guideHeight, guideBBox } = this.state;
 
       return (
-        <View triggerRef={this.triggerRef} points={points} theme={theme} coord={coord} {...props} />
+        <View
+          triggerRef={this.triggerRef}
+          points={points}
+          theme={theme}
+          coord={coord}
+          {...props}
+          canvasWidth={width}
+          canvasHeight={height}
+          guideWidth={guideWidth}
+          guideHeight={guideHeight}
+          guideBBox={guideBBox}
+        />
       );
     }
   };
