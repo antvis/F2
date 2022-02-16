@@ -235,7 +235,7 @@ describe('Guide ', () => {
             color="type"
             animation={{
               appear: {
-                duration: 2000,
+                duration: 1000,
                 easing: 'quinticIn',
                 property: ['width'],
               },
@@ -260,7 +260,7 @@ describe('Guide ', () => {
                   return {
                     appear: {
                       easing: 'quinticIn',
-                      duration: 2000,
+                      duration: 1000,
                       property: ['x'],
                       start: {
                         x: props.coord.left,
@@ -277,7 +277,7 @@ describe('Guide ', () => {
     const chart = new Canvas(props);
     chart.render();
 
-    await delay(500);
+    await delay(1100);
     expect(context).toMatchImageSnapshot();
   });
 });
