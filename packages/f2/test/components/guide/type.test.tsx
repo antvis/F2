@@ -257,7 +257,7 @@ describe('Guide', () => {
   it('TagGuide', async () => {
     const context = createContext('TagGuide');
     const { props } = (
-      <Canvas context={context} animate={false}>
+      <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
           <Line x="genre" y="sold" />
           <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20" />
