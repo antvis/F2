@@ -1,5 +1,6 @@
 import { jsx } from '../../../jsx';
 import { Style } from '../../../types';
+import { deepMix } from '@antv/util';
 
 type ImageGuideProps = {
   src: string;
@@ -22,8 +23,8 @@ const baseAttrs = {
 };
 
 export default (props: ImageGuideProps) => {
-  const cfg = { ...defaultProps, ...props };
-  const { points, style, attrs, offsetX, offsetY, src } = cfg;
+  const cfg = deepMix({}, defaultProps, props);
+  const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = attrs;
   const posX = x + (offsetX || 0) - height / 2;
@@ -41,13 +42,16 @@ export default (props: ImageGuideProps) => {
           y: posY,
           src,
         }}
-        animation={{
-          update: {
-            easing: 'linear',
-            duration: 450,
-            property: ['x', 'y'],
+        animation={deepMix(
+          {
+            update: {
+              easing: 'linear',
+              duration: 450,
+              property: ['x', 'y'],
+            },
           },
-        }}
+          animation
+        )}
       />
     </group>
   );

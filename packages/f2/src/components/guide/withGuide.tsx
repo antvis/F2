@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
-import { isString, isNil } from '@antv/util';
+import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
 import { renderShape } from '../../base/diff';
@@ -112,11 +112,17 @@ export default (View) => {
 
     render() {
       const { props, context } = this;
-      const { coord, records = [] } = props;
+      const { coord, records = [], animation, chart } = props;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
       const { guideWidth, guideHeight, guideBBox } = this.state;
+
+      let animationCfg = animation;
+      if (isFunction(animation)) {
+        // 透传绘制关键点和chart实例
+        animationCfg = animation(points, chart);
+      }
 
       return (
         <View
@@ -130,6 +136,7 @@ export default (View) => {
           guideWidth={guideWidth}
           guideHeight={guideHeight}
           guideBBox={guideBBox}
+          animation={animationCfg}
         />
       );
     }

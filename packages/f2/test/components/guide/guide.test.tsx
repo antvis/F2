@@ -8,7 +8,7 @@ import {
   TextGuide,
   LineGuide,
 } from '../../../src/components';
-import { Canvas, Chart } from '../../../src';
+import { Canvas, Chart, Interval } from '../../../src';
 import { createContext, delay } from '../../util';
 import imageBianzu from './images/bianzu';
 
@@ -75,7 +75,7 @@ describe('Guide ', () => {
     // 10个图例 和1条线
     expect(container._attrs.children[0]._attrs.children.length).toBe(11);
 
-    await delay(50);
+    await delay(250);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -216,6 +216,68 @@ describe('Guide ', () => {
     chart.render();
 
     await delay(50);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('TextGuide 动画 - 支持callback配置', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          data={data}
+          coord={{
+            transposed: true,
+          }}
+        >
+          <Interval
+            x="genre"
+            y="sold"
+            color="type"
+            animation={{
+              appear: {
+                duration: 1000,
+                easing: 'quinticIn',
+                property: ['width'],
+              },
+            }}
+          />
+
+          {data.map((item) => {
+            const { sold } = item;
+            return (
+              <TextGuide
+                records={[item]}
+                onClick={(ev) => {
+                  console.log('ev: ', ev.points);
+                }}
+                content={`${sold}`}
+                attrs={{
+                  fill: '#000',
+                  fontSize: '24px',
+                }}
+                animation={(points, props) => {
+
+                  return {
+                    appear: {
+                      easing: 'quinticIn',
+                      duration: 1000,
+                      property: ['x'],
+                      start: {
+                        x: props.coord.left,
+                      },
+                    },
+                  };
+                }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
+    );
+    const chart = new Canvas(props);
+    chart.render();
+
+    await delay(1100);
     expect(context).toMatchImageSnapshot();
   });
 });
