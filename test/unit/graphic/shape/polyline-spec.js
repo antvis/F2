@@ -95,6 +95,26 @@ describe('Smooth Polyline', function() {
     expect(snapEqual(bbox.height, 35.502917125608604)).to.be.true;
   });
 
+  it('getBBox 1 point', function() {
+    const line = new Polyline({
+      attrs: {
+        points: [
+          { x: 10, y: 100 }
+        ],
+        lineWidth: 4,
+        strokeStyle: '#223273',
+        lineCap: 'round',
+        smooth: true
+      }
+    });
+    const bbox = line.getBBox();
+    expect(bbox.x).to.equal(8);
+    expect(bbox.y).to.equal(98);
+    expect(bbox.width).to.equal(4);
+    expect(bbox.height).to.equal(4);
+  });
+
+
   it('destroy', function() {
     line.destroy();
     expect(canvas.get('children').length).to.equal(0);

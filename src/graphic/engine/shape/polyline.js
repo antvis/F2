@@ -68,6 +68,9 @@ class Polyline extends Shape {
     const { points, smooth, lineWidth } = attrs;
 
     const filteredPoints = _filterPoints(points);
+    if (filteredPoints.length <= 1) {
+      return getBBoxFromPoints(filteredPoints, lineWidth);
+    }
     if (smooth) {
       const newPoints = [];
       const constaint = [
