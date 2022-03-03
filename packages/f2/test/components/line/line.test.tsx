@@ -1112,5 +1112,25 @@ describe('折线图', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
+
+    it('按条件判断隐藏 x 坐标轴', async () => {
+      const BASE = '按条件判断隐藏 x 坐标轴';
+      const context = createContext(BASE);
+      const showXAxis = false;  // 根据 showXAxis 值决定是否隐藏 x 坐标轴
+      const { type, props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            {showXAxis && (<Axis field="date" tickCount={3} />)}
+            <Axis field="value" tickCount={5} />
+            <Line size="6px" x="date" y="value" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });    
   });
 });

@@ -6,7 +6,9 @@ import Children from '../children';
 
 function pickElement(element) {
   if (!element) return element;
-  return Children.map(element, (item) => {
+
+  const newElement = isArray(element) ? element.filter((item) => item) : element;
+  return Children.map(newElement, (item) => {
     // 只需要这几个元素就可以了
     return pick(item, ['key', 'ref', 'type', 'props']);
   });
