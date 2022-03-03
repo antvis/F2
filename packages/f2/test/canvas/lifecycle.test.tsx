@@ -4,13 +4,17 @@ const context = createContext();
 
 const methodCallback = jest.fn((method: string, params?) => method);
 
+function pickMethod(calls) {
+  return calls.map(([method]) => [method]);
+}
+
 class Test extends Component {
   willMount() {
-    methodCallback('componentWillMount');
+    methodCallback('componentWillMount', this.props);
   }
 
   didMount() {
-    methodCallback('componentDidMount');
+    methodCallback('componentDidMount', this.props);
   }
 
   shouldUpdate(nextProps) {
@@ -131,7 +135,7 @@ describe('Canvas', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
-    expect(methodCallback.mock.calls).toEqual([
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
       ['containerWillMount'],
       ['containerRender'],
       ['componentWillMount'],
@@ -142,10 +146,6 @@ describe('Canvas', () => {
       ['componentDidMount'],
       ['containerDidMount'],
     ]);
-
-    function pickMethod(calls) {
-      return calls.map(([method]) => [method]);
-    }
 
     await delay(50);
     canvas.update(
@@ -226,5 +226,53 @@ describe('Canvas', () => {
 
     await delay(50);
     expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
+  });
+
+  it('第1个子组件为空', async () => {
+    methodCallback.mockClear();
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <TestContainer>
+          {null}
+          <Test width={10} id="2" />
+        </TestContainer>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(50);
+    canvas.update(
+      (
+        <Canvas context={context} pixelRatio={1}>
+          <TestContainer>
+            <Test width={20} id="1" />
+            <Test width={10} id="2" />
+          </TestContainer>
+        </Canvas>
+      ).props
+    );
+
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidUpdate'],
+    ]);
+
+    expect(methodCallback.mock.calls[2]).toEqual(['componentWillMount', { width: 10, id: '2' }]);
+    expect(methodCallback.mock.calls[10]).toEqual(['componentWillMount', { width: 20, id: '1' }]);
   });
 });
