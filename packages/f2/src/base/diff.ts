@@ -7,6 +7,7 @@ import Children from '../children';
 function pickElement(element) {
   if (!element) return element;
   return Children.map(element, (item) => {
+    if (!item) return item;
     // 只需要这几个元素就可以了
     return pick(item, ['key', 'ref', 'type', 'props']);
   });
@@ -108,7 +109,7 @@ function createComponent(parent: Component, element: JSX.Element): Component {
     component = new type(receiveProps, context, updater);
   } else {
     component = new Component(receiveProps, context, updater);
-    component.render = function () {
+    component.render = function() {
       // @ts-ignore
       return type(this.props, context, updater);
     };
@@ -282,7 +283,13 @@ function isContainer(children: JSX.Element) {
     const { type } = children;
     return typeof type === 'function';
   }
-  return isContainer(children[0]);
+
+  for (let i = 0, len = children.length; i < len; i++) {
+    if (isContainer(children[i])) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function renderChildren(parent: Component, nextChildren, lastChildren) {
