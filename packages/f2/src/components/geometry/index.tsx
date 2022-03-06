@@ -433,14 +433,15 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return this.getAttr('y').scale;
   }
 
-  _getSnap(scale, invertPointX) {
-    if (scale.isCategory) {
-      return scale.invert(invertPointX);
+  _getXSnap(invertPointX) {
+    const xScale = this.getXScale();
+    if (xScale.isCategory) {
+      return xScale.invert(invertPointX);
     }
 
     // linear 类型
-    const invertValue = scale.invert(invertPointX);
-    const values = scale.values;
+    const invertValue = xScale.invert(invertPointX);
+    const values = xScale.values;
     const len = values.length;
     // 如果只有1个点直接返回第1个点
     if (len === 1) {
@@ -466,6 +467,24 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return null;
   }
 
+  _getYSnapRecords(invertPointY, records) {
+    const yScale = this.getYScale();
+    const { field: yField } = yScale;
+    const yValue = yScale.invert(invertPointY);
+    // category
+    if (yScale.isCategory) {
+      return records.filter((record) => record[FIELD_ORIGIN][yField] === yValue);
+    }
+    // linear
+    return records.filter((record) => {
+      const rangeY = record[yField];
+      if (rangeY[0] <= yValue && rangeY[1] >= yValue) {
+        return true;
+      }
+      return false;
+    });
+  }
+
   // 把 records 拍平
   flatRecords() {
     const { records } = this;
@@ -476,7 +495,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
 
   getSnapRecords(point) {
     const { props } = this;
-    const { coord } = props;
+    const { coord, adjust } = props;
     const invertPoint = coord.invertPoint(point);
     const xScale = this.getXScale();
     const yScale = this.getYScale();
@@ -486,14 +505,24 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
       return [];
     }
 
+    const records = this.flatRecords();
+    
+    // 处理饼图
+    if (adjust === 'stack' && coord.isPolar && coord.transposed) {
+      // 弧度在半径范围内
+      if (invertPoint.x >= 0 && invertPoint.x <= 1) {
+        const snapRecords = this._getYSnapRecords(invertPoint.y, records);
+        return snapRecords;
+      }
+    }
+
     const rst = [];
-    const value = this._getSnap(xScale, invertPoint.x);
+    const value = this._getXSnap(invertPoint.x);
     if (!value) {
       return rst;
     }
     const { field: xField } = xScale;
     const { field: yField } = yScale;
-    const records = this.flatRecords();
     for (let i = 0, len = records.length; i < len; i++) {
       const record = {
         ...records[i],
@@ -507,6 +536,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
         rst.push(record);
       }
     }
+
     return rst;
   }
 

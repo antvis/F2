@@ -1,8 +1,61 @@
 import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
-import { Canvas, Chart } from '../../../../src';
-import { Interval, Legend } from '../../../../src/components';
-import { createContext, delay } from '../../../util';
+import { isArray } from '@antv/util';
+import { Canvas, Chart, Component } from '../../../../src';
+import { Interval } from '../../../../src/components';
+import { createContext, delay, gestureSimulator } from '../../../util';
+
+// @ts-ignore
+class Test extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      record: null,
+    };
+  }
+  didMount() {
+    super.didMount();
+    this._initEvent();
+  }
+
+  _handleEvent = (ev) => {
+    const { chart } = this.props;
+    const point = ev.points[0];
+    const pieData = chart.getSnapRecords(point);
+    if (isArray(pieData) && pieData.length > 0) {
+      this.setState({ record: pieData[0] });
+    }
+  };
+
+  _initEvent() {
+    const { context } = this;
+    const { canvas } = context;
+    canvas.on('click', this._handleEvent);
+  }
+
+  render() {
+    if (!this.state.record) {
+      return null;
+    }
+    const { record } = this.state;
+    const { coord } = this.props;
+    const { x, y } = coord?.center;
+    const { radius } = coord;
+
+    const { xMax, xMin } = record;
+    return (
+      <text
+        attrs={{
+          text: record.origin.name,
+          x: x + radius * Math.cos(xMin + (xMax - xMin) / 2),
+          y: y + radius * Math.sin(xMin + (xMax - xMin) / 2),
+          fill: '#000',
+          fontSize: '22px',
+        }}
+      />
+    );
+  }
+}
 
 const data = [
   {
@@ -67,6 +120,41 @@ describe('饼图', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('饼图-交互式label', async () => {
+    const context = createContext('饼图-交互式label');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+          }}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
+            }}
+          />
+          <Test />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await gestureSimulator(context.canvas, 'click', { x: 205, y: 76 });
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
