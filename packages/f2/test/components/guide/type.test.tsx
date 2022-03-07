@@ -271,4 +271,41 @@ describe('Guide', () => {
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('LineGuide in Category', async () => {
+    const context = createContext('LineGuideInCategory');
+    const data = [
+      { genre: 'Sports', sold: 275 },
+      { genre: 'Strategy', sold: 115 },
+      { genre: 'Action', sold: 120 },
+      { genre: 'Shooter', sold: 350 },
+      { genre: 'Other', sold: -110 },
+    ];
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" min={0} />
+          <Interval x="genre" y="sold" color="genre" />
+          <LineGuide
+            records={[
+              { genre: 'min', sold: 100 },
+              { genre: 'max', sold: 100 },
+            ]}
+            style={{
+              stroke: '#d0502d',
+              lineWidth: 2,
+              lineCap: 'round',
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });
