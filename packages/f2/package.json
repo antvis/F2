@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
