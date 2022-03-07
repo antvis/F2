@@ -229,6 +229,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   getGeometrys() {
     const { children } = this;
     const geometrys: Component[] = [];
+    // @ts-ignore
     Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
