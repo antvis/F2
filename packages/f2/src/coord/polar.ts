@@ -67,14 +67,15 @@ class Polar extends Base {
   }
 
   invertPoint(point) {
-    const { center, transposed, x: rangeX, y: rangeY } = this;
-    const x = { start: rangeX[0], end: rangeX[1] }
-    const y = { start: rangeY[0], end: rangeY[1] }
+    const { center, transposed, x, y } = this;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
 
+    const [xStart, xEnd] = x;
+    const [yStart, yEnd] = y;
+
     const m = [1, 0, 0, 1, 0, 0];
-    Matrix.rotate(m, m, x.start);
+    Matrix.rotate(m, m, xStart);
 
     let startV = [1, 0];
     Vector2.transformMat2d(startV, startV, m);
@@ -84,24 +85,23 @@ class Polar extends Base {
     if (Vector2.zero(pointV)) {
       return {
         x: 0,
-        y: 0
+        y: 0,
       };
     }
 
-    let theta = Vector2.angleTo(startV, pointV, x.end < x.start);
+    let theta = Vector2.angleTo(startV, pointV, xEnd < xStart);
     if (Math.abs(theta - Math.PI * 2) < 0.001) {
       theta = 0;
     }
     const l = Vector2.length(pointV);
-    let percentX = theta / (x.end - x.start);
-    percentX = x.end - x.start > 0 ? percentX : -percentX;
-    const percentY = (l - y.start) / (y.end - y.start);
+    let percentX = theta / (xEnd - xStart);
+    percentX = xEnd - xStart > 0 ? percentX : -percentX;
+    const percentY = (l - yStart) / (yEnd - yStart);
     const rst = {};
     rst[xDim] = percentX;
     rst[yDim] = percentY;
     return rst;
   }
-
 }
 
 export default Polar;

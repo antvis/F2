@@ -25,9 +25,15 @@ type PX_FIELD_NAME =
 type pxstr = `${number}px`;
 export type px = number | pxstr | string;
 
-interface PxPoint {
+export type Point = Types.Point;
+export interface PxPoint {
   x: px;
   y: px;
+}
+
+export interface Record {
+  origin: any;
+  [k: string]: any;
 }
 
 export * from '@antv/scale'
@@ -93,6 +99,11 @@ export type ElementType =
   | ((props: Props, context?: any) => any)
   | (new (props: Props, context?: any) => any);
 
+
+  
+export interface ShapeAttrs extends Partial<SupportPx<Types.ShapeAttrs>>{
+  [k: string]: any;
+}
 
 export type CircleAttrs = Partial<SupportPx<Types.CircleAttrs>>;
 export interface CircleProps extends IntrinsicElementsProps {

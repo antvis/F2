@@ -91,6 +91,7 @@ export default (View) => {
         : props.items?.length
         ? props.items
         : this.getOriginItems();
+      if (!renderItems) return null;
       return renderItems.map((item) => {
         const { tickValue } = item;
         return {
@@ -125,6 +126,7 @@ export default (View) => {
         position = 'top',
       } = props;
       const items = this.getItems();
+      if (!items || !items.length) return;
       const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
       const shape = renderShape(this, this.render(), false);
@@ -204,6 +206,8 @@ export default (View) => {
     }
 
     willMount() {
+      const items = this.getItems();
+      if (!items || !items.length) return;
       this._init();
       this.updateCoord();
     }
@@ -213,6 +217,8 @@ export default (View) => {
     }
 
     willUpdate(): void {
+      const items = this.getItems();
+      if (!items || !items.length) return;
       this.updateCoord();
     }
 
@@ -269,6 +275,9 @@ export default (View) => {
     render() {
       const { props, state } = this;
       const items = this.getItems();
+      if (!items || !items.length) {
+        return null;
+      }
       const { itemWidth, style } = state;
 
       return (
