@@ -25,16 +25,19 @@ export default (props) => {
                     r: yMax,
                     ...shape,
                   }}
-                  animation={deepMix({
-                    update: {
-                      easing: 'linear',
-                      duration: 450,
-                      property: ['x', 'y', 'startAngle', 'endAngle', 'r0', 'r'],
+                  animation={deepMix(
+                    {
+                      update: {
+                        easing: 'linear',
+                        duration: 450,
+                        property: ['x', 'y', 'startAngle', 'endAngle', 'r0', 'r'],
+                      },
                     },
-                  })}
+                    animation
+                  )}
                 />
               );
-            }, animation)}
+            })}
           </group>
         );
       })}
