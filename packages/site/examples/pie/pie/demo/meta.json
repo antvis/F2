@@ -20,8 +20,8 @@
       "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/zRpyGBwOnktHfsItbDCu.png"
     },
     {
-      "filename": "pie-click.js",
-      "title": "可点击的文本",
+      "filename": "selection.js",
+      "title": "饼图选中",
       "screenshot": "https://gw.alipayobjects.com/zos/rmsportal/TCJpeimSBuJPfkVVTWUA.gif"
     }
   ]
