@@ -90,9 +90,51 @@ class Base extends Layout {
     return false;
   }
 
-  // 把归一后的值映射到对应的定义域
+  _zoomVal(val, func) {
+    return isArray(val) ? val.map((v) => func(v)) : func(val);
+  }
+
+  /**
+   * 把归一后的值映射到对应的定义域
+   * @param point
+   */
+  convert(point) {
+    const { transposed, x, y } = this;
+    const xDim = transposed ? 'y' : 'x';
+    const yDim = transposed ? 'x' : 'y';
+    return {
+      x: this._zoomVal(point[xDim], (v) => x[0] + (x[1] - x[0]) * v),
+      y: this._zoomVal(point[yDim], (v) => y[0] + (y[1] - y[0]) * v),
+    };
+  }
+
+  /**
+   * convert 的反处理，把定义域的值，反处理到归一的值
+   */
+  invert(point) {
+    const { transposed, x, y } = this;
+    const xDim = transposed ? 'y' : 'x';
+    const yDim = transposed ? 'x' : 'y';
+    return {
+      [xDim]: this._zoomVal(point.x, (v) => (v - x[0]) / (x[1] - x[0])),
+      [yDim]: this._zoomVal(point.y, (v) => (v - y[0]) / (y[1] - y[0])),
+    };
+  }
+
+  /**
+   * 把归一化的值映射到 canvas 的坐标点
+   * @param point
+   * @returns
+   */
   convertPoint(point) {
-    return point;
+    return this.convert(point);
+  }
+
+  /**
+   * 把canvas坐标的点位映射回归一的值
+   */
+  invertPoint(point) {
+    return this.invert(point);
   }
 
   // 将标准坐标系下的矩形绘制关键点映射成实际绘制的坐标点
@@ -120,23 +162,18 @@ class Base extends Layout {
   // 将已经映射好的矩形绘制关键点转换成实际绘制的坐标点
   transformToRect(rectPoint: RectPoint): Rect {
     const { x, y, y0, size } = rectPoint;
-    const coordOrigin = this.convertPoint({ x: 0, y: y0 })
+    const coordOrigin = this.convertPoint({ x: 0, y: y0 });
     const { transposed } = this;
     const _rectPoint = {
       size,
       x: transposed ? y : x,
       y: transposed ? x : y,
       y0: transposed ? coordOrigin.x : coordOrigin.y,
-    }
+    };
     const rect = convertRect(_rectPoint);
     const { xMin, xMax, yMin, yMax } = transposed ? transposedRect(rect) : rect;
 
     return { xMin, xMax, yMin, yMax };
-  }
-
-  // 把canvas坐标的点位映射回归一后的值
-  invertPoint(point) {
-    return point;
   }
 }
 

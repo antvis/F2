@@ -1,6 +1,7 @@
 import Chart from '../../chart';
 import Coord from '../../coord';
 import { AnimationCycle } from '../../canvas/animation/interface';
+import { SelectionProps } from './selection';
 
 export interface AttrRange {
   shape?: any[];
@@ -32,7 +33,7 @@ export type GeometryAdjust = {
 
 export type AdjustConfig = GeometryAdjust | GeometryAdjustType;
 
-export interface GeometryProps {
+export interface GeometryProps extends SelectionProps {
   data?: any;
   adjust?: AdjustConfig;
   chart?: Chart;
