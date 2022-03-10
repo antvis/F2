@@ -37,6 +37,8 @@ export default (props) => {
     itemFormatter,
     style,
     marker = 'circle', // 图例标记默认为 circle
+    nameStyle,
+    valueStyle,
   } = props;
 
   const formatValue = (value) => {
@@ -68,6 +70,7 @@ export default (props) => {
               attrs={{
                 fill: filtered ? '#bfbfbf' : '#808080',
                 text: name,
+                ...nameStyle,
               }}
             />
             {value ? (
@@ -75,6 +78,7 @@ export default (props) => {
                 attrs={{
                   fill: '#808080',
                   text: formatValue(value),
+                  ...valueStyle,
                 }}
               />
             ) : null}
