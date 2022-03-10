@@ -24,23 +24,32 @@ const dispatchEvent = (dom: HTMLElement, eventType: string, exData) => {
   dom.dispatchEvent(event);
 };
 
-const gestureSimulator = async (dom, eventType: string, option: { x: number; y: number }) => {
+interface Option {
+  x: number;
+  y: number;
+}
+
+const gestureSimulator = async (dom, eventType: string, option: Option | Option[]) => {
   const { top, left } = dom.getBoundingClientRect();
-  const { x, y } = option;
-  const clientX = left + x;
-  const clientY = top + y;
-  const event = {
-    x,
-    y,
-    clientX,
-    clientY,
-  };
+  const options = Array.isArray(option) ? option : [option];
+  const events = options.map((option) => {
+    const { x, y } = option;
+    const clientX = left + x;
+    const clientY = top + y;
+    const event = {
+      x,
+      y,
+      clientX,
+      clientY,
+    };
+    return event;
+  });
 
   const touchEvent = {
-    ...event,
-    targetTouches: [event],
-    touches: [event],
-    changedTouches: [event],
+    ...events[0],
+    targetTouches: events,
+    touches: events,
+    changedTouches: events,
   };
 
   if (['touchstart', 'touchmove', 'touchend'].indexOf(eventType) !== -1) {
@@ -63,7 +72,7 @@ const gestureSimulator = async (dom, eventType: string, option: { x: number; y: 
   }
 
   if (eventType === 'click') {
-    dispatchEvent(dom, 'click', event);
+    dispatchEvent(dom, 'click', events[0]);
     return;
   }
 };
