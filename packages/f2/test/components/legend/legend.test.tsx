@@ -1,5 +1,5 @@
 import { clone, values } from '@antv/util';
-import { jsx, Component, Canvas, Chart, Tooltip, Geometry } from '../../../src';
+import { jsx, Component, Canvas, Chart, Tooltip, Geometry, Interval } from '../../../src';
 import { Line, Axis, Legend } from '../../../src/components';
 import { createContext, delay } from '../../util';
 
@@ -143,6 +143,36 @@ describe('图例', () => {
         <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
             <Legend position="right" />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('设置 nameStyle', async () => {
+      const data = [
+        { genre: 'Sports', sold: 275 },
+        { genre: 'Strategy', sold: 115 },
+        { genre: 'Action', sold: 120 },
+      ];
+      const context = createContext('设置 nameStyle', {
+        height: '100px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend
+              position="left"
+              nameStyle={{
+                fontSize: '40px',
+                fill: 'red',
+              }}
+            />
             <Geometry x="genre" y="sold" color="genre" />
           </Chart>
         </Canvas>

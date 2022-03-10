@@ -4,7 +4,7 @@ import Component from '../../base/component';
 import Chart from '../../chart';
 import { find } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
-import { Style } from '../../types';
+import { Style, TextAttrs } from '../../types';
 
 interface LegendItem {
   /**
@@ -65,6 +65,14 @@ export interface LegendProps {
    * 图例标记。
    */
   marker?: 'circle' | 'square';
+  /**
+   * 用于设置图例项的文本样式
+   */
+  nameStyle?: TextAttrs;
+  /**
+   * 用于设置图例项的文本样式
+   */
+  valueStyle?: TextAttrs;
 }
 
 export default (View) => {
