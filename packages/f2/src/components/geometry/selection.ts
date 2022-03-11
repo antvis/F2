@@ -21,9 +21,9 @@ export interface SelectionProps {
   selection?: {
     type?: 'single' | 'multiple';
     defaultSelected?: any[];
-    selectedStyle: ShapeAttrs | StyleType;
-    unSelectedStyle: ShapeAttrs | StyleType;
-    cancelable: boolean;
+    selectedStyle?: ShapeAttrs | StyleType;
+    unSelectedStyle?: ShapeAttrs | StyleType;
+    cancelable?: boolean;
   };
   [k: string]: any;
 }
@@ -60,6 +60,7 @@ class Selection<
             selected: null,
           } as S);
         }
+        return;
       }
 
       const { selected } = state;
