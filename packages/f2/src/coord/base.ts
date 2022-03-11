@@ -102,6 +102,16 @@ class Base extends Layout {
     const { transposed, x, y } = this;
     const xDim = transposed ? 'y' : 'x';
     const yDim = transposed ? 'x' : 'y';
+
+    const pointX = point[xDim];
+    const pointY = point[yDim];
+    // 超出边界不绘制
+    if (pointX < 0 || pointX > 1 || pointY < 0 || pointY > 1) {
+      return {
+        x: NaN,
+        y: NaN,
+      };
+    }
     return {
       x: this._zoomVal(point[xDim], (v) => x[0] + (x[1] - x[0]) * v),
       y: this._zoomVal(point[yDim], (v) => y[0] + (y[1] - y[0]) * v),

@@ -31,7 +31,7 @@ export interface PxPoint {
   y: px;
 }
 
-export interface Record {
+export interface DataRecord {
   origin: any;
   [k: string]: any;
 }

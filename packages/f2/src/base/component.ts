@@ -24,7 +24,7 @@ class Component<P = any, S = any> {
   // 对应 G 的group, 每个组件渲染的父接节点
   container: any;
   animate: boolean;
-  constructor(props, context?: ComponentContext, updater?: Updater<S>) {
+  constructor(props: P, context?: ComponentContext, updater?: Updater<S>) {
     this.props = props;
     this.state = {} as S;
     this.context = context;
@@ -42,8 +42,8 @@ class Component<P = any, S = any> {
   setState(partialState: S, callback?: () => void) {
     this.updater.enqueueSetState(this, partialState, callback);
   }
-  forceUpdate() {
-    this.updater.enqueueForceUpdate(this, {} as S);
+  forceUpdate(callback?: () => void) {
+    this.updater.enqueueForceUpdate(this, {} as S, callback);
   }
   setAnimate(animate: boolean) {
     this.animate = animate;
