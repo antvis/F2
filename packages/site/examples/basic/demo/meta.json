@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "basic.jsx",
+      "filename": "base.jsx",
       "title": "基础演示",
       "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/92dbeff4-526e-48df-b122-72ed50395b79.jpg"
     }
