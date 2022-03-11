@@ -1,57 +1,22 @@
-import F2 from '@antv/f2';
+import { Canvas, Chart, Line, Point, Axis, ScrollBar } from '@antv/f2';
+
+const context = document.getElementById('container').getContext('2d');
 
 fetch('https://gw.alipayobjects.com/os/antfincdn/Jpuku6k%24q%24/linear-pan.json')
-  .then(res => res.json())
-  .then(data => {
-    const chart = new F2.Chart({
-      id: 'container',
-      pixelRatio: window.devicePixelRatio
-    });
-    chart.source(data, {
-      release: {
-        min: 1990,
-        max: 2010
-      }
-    });
-    chart.tooltip({
-      showCrosshairs: true,
-      showItemMarker: false,
-      background: {
-        radius: 2,
-        fill: '#1890FF',
-        padding: [ 3, 5 ]
-      },
-      nameStyle: {
-        fill: '#fff'
-      },
-      onShow: function onShow(ev) {
-        const items = ev.items;
-        items[0].name = items[0].title;
-      }
-    });
-    chart.line().position('release*count');
-    chart.point().position('release*count').style({
-      lineWidth: 1,
-      stroke: '#fff'
-    });
+  .then((res) => res.json())
+  .then((data) => {
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={window.devicePixelRatio}>
+        <Chart data={data}>
+          <Axis field="release" tickCount={5} nice={false} />
+          <Axis field="count" />
+          <Line x="release" y="count" />
+          <Point x="release" y="count" />
+          <ScrollBar mode="x" range={[0.1, 0.3]} />
+        </Chart>
+      </Canvas>
+    );
 
-    chart.interaction('pan');
-    // 定义进度条
-    chart.scrollBar({
-      mode: 'x',
-      xStyle: {
-        offsetY: -5
-      }
-    });
-
-    // 绘制 tag
-    chart.guide().tag({
-      position: [ 1969, 1344 ],
-      withPoint: false,
-      content: '1,344',
-      limitInPlot: true,
-      offsetX: 5,
-      direct: 'cr'
-    });
+    const chart = new Canvas(props);
     chart.render();
   });
