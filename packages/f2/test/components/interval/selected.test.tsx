@@ -236,3 +236,48 @@ describe('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 });
+
+describe('cancelable = false', () => {
+  it('饼图空白区域点击', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart
+          data={data}
+          coord={{
+            radius: 0.8,
+            type: 'polar',
+            transposed: true,
+          }}
+        >
+          <Interval
+            x="a"
+            y="sold"
+            adjust="stack"
+            color="genre"
+            selection={{
+              defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
+              selectedStyle: (record) => {
+                const { yMax } = record;
+                return {
+                  r: yMax * 1.1,
+                };
+              },
+              cancelable: false,
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(200);
+
+    // 空白区域点击
+    await gestureSimulator(context.canvas, 'click', { x: 0, y: 0 });
+    await delay(200);
+    expect(context).toMatchImageSnapshot();
+  });
+});
