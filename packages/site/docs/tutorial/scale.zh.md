@@ -1,5 +1,5 @@
 ---
-title: 度量
+title: 度量 - Scale
 order: 4
 ---
 

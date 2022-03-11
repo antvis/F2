@@ -1,5 +1,5 @@
 ---
-title: 组件介绍
+title: 组件介绍 - Component
 order: 8
 ---
 
