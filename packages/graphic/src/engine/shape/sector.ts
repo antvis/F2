@@ -29,7 +29,9 @@ class Sector extends Shape<SectorProp> {
 
   createPath(context) {
     const attrs = this.get('attrs');
-    const { x, y, startAngle, endAngle, r, r0, anticlockwise } = attrs;
+    const { x, y, startAngle, r, r0, anticlockwise } = attrs;
+    // 最大为整个圆
+    const endAngle = Math.min(attrs.endAngle, startAngle + Math.PI * 2);
     context.beginPath();
     const unitX = Math.cos(startAngle);
     const unitY = Math.sin(startAngle);

@@ -2,6 +2,7 @@
 import { render, renderJSXElement, jsx, Fragment, compareRenderTree } from '../../src/jsx';
 import { ELEMENT_DELETE } from '../../src/jsx/elementStatus';
 import { Canvas } from '@antv/f2-graphic';
+import { createContext } from '../util';
 
 const canvasEl = document.createElement('canvas');
 canvasEl.style.width = '359px';
@@ -524,5 +525,76 @@ describe('layout', () => {
       expect(children[1].get('attrs').width).toBe(0);
       expect(children[1].get('attrs').height).toBe(0);
     });
+  });
+});
+
+describe('clip', () => {
+  it('rect', () => {
+    const context = createContext();
+    const canvas = new Canvas({
+      context,
+      pixelRatio: 1,
+    });
+    render(
+      <group>
+        <rect
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            fill: 'red',
+            clip: {
+              type: 'circle',
+              attrs: {
+                x: 50,
+                y: 50,
+                r: 40,
+              },
+            },
+          }}
+        />
+      </group>,
+      canvas
+    );
+
+    canvas.draw();
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('group', () => {
+    const context = createContext();
+    const canvas = new Canvas({
+      context,
+      pixelRatio: 1,
+    });
+    render(
+      <group
+        attrs={{
+          clip: {
+            type: 'circle',
+            attrs: {
+              x: 50,
+              y: 50,
+              r: 40,
+            },
+          },
+        }}
+      >
+        <rect
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            fill: 'red',
+          }}
+        />
+      </group>,
+      canvas
+    );
+    canvas.draw();
+
+    expect(context).toMatchImageSnapshot();
   });
 });
