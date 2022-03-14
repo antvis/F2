@@ -1,10 +1,15 @@
 import JSX from './interface';
 import { extendMap, px2hd } from '../util';
-import { omit } from '@antv/util';
+import { omit, upperFirst } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
 import getAnimation from './animation';
 import { ELEMENT_DELETE } from './elementStatus';
+import { Shape } from '@antv/f2-graphic';
+
+function createClipElement(type: string, config) {
+  return new Shape[upperFirst(type)](config);
+}
 
 // 转换成布局所需要的布局树
 function createNodeTree(element, container) {
@@ -89,6 +94,11 @@ function createElement(node, container, parentLayout, animate: boolean) {
   };
   // 缓存这次新的attrs
   _cache.attrs = elementAttrs;
+
+  if (elementAttrs.clip) {
+    const { clip } = elementAttrs;
+    elementAttrs.clip = createClipElement(clip.type, clip);
+  }
 
   let element;
   if (type === 'group') {
