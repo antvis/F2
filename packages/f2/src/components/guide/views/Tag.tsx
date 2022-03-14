@@ -204,7 +204,7 @@ export default (props: TagGuideProps) => {
         <polygon
           attrs={{
             points: arrowPoints,
-            fill: defaultStyle.arrow.fill,
+            fill: background?.fill ||  defaultStyle.arrow.fill,
           }}
         />
       )}
