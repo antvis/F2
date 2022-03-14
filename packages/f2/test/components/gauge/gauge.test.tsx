@@ -14,6 +14,8 @@ describe('Gauge', () => {
           percent={0.5}
           r="200px"
           tickCount={6}
+          tickOffset="-40px"
+          tickLength="20px"
         />
       </Canvas>
     );
