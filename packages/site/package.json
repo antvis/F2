@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-site",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
@@ -11,9 +11,9 @@
     "url": "https://github.com/antvis/f2/issues"
   },
   "dependencies": {
-    "@antv/f2": "^4.0.7",
+    "@antv/f2": "^4.0.8",
     "@antv/f2-graphic": "^0.0.2",
-    "@antv/f2-react": "^4.0.7",
+    "@antv/f2-react": "^4.0.8",
     "@antv/gatsby-theme-antv": "~1.1.15",
     "f2-touchemulator": "~0.0.1",
     "gatsby": "^2.17.7",
