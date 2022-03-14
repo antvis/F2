@@ -74,16 +74,17 @@ export default (Views) => {
           } else {
             const { x, y } = child;
             const rect = { size: mappedSize, x, y, y0 };
-
             mix(child, coord.transformToRect(rect));
           }
+
+          mix(child.shape, this.getSelectionStyle(child));
         }
       }
       return records;
     }
 
     render() {
-      const { props } = this;
+      const { props, state } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
@@ -97,12 +98,14 @@ export default (Views) => {
       );
 
       if (!View) return null;
+      const { selected } = state;
 
       const records = this.mapping();
       return (
         <View
           coord={coord}
           records={records}
+          selected={selected}
           shape={shape}
           animation={animation}
           showLabel={showLabel}

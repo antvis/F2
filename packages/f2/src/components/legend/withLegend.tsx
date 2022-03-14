@@ -4,7 +4,7 @@ import Component from '../../base/component';
 import Chart from '../../chart';
 import { find } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
-import { Style } from '../../types';
+import { Style, TextAttrs } from '../../types';
 
 interface LegendItem {
   /**
@@ -65,6 +65,14 @@ export interface LegendProps {
    * 图例标记。
    */
   marker?: 'circle' | 'square';
+  /**
+   * 用于设置图例项的文本样式
+   */
+  nameStyle?: TextAttrs;
+  /**
+   * 用于设置图例项的文本样式
+   */
+  valueStyle?: TextAttrs;
 }
 
 export default (View) => {
@@ -91,6 +99,7 @@ export default (View) => {
         : props.items?.length
         ? props.items
         : this.getOriginItems();
+      if (!renderItems) return null;
       return renderItems.map((item) => {
         const { tickValue } = item;
         return {
@@ -125,6 +134,7 @@ export default (View) => {
         position = 'top',
       } = props;
       const items = this.getItems();
+      if (!items || !items.length) return;
       const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
       const shape = renderShape(this, this.render(), false);
@@ -204,6 +214,8 @@ export default (View) => {
     }
 
     willMount() {
+      const items = this.getItems();
+      if (!items || !items.length) return;
       this._init();
       this.updateCoord();
     }
@@ -213,6 +225,8 @@ export default (View) => {
     }
 
     willUpdate(): void {
+      const items = this.getItems();
+      if (!items || !items.length) return;
       this.updateCoord();
     }
 
@@ -269,6 +283,9 @@ export default (View) => {
     render() {
       const { props, state } = this;
       const items = this.getItems();
+      if (!items || !items.length) {
+        return null;
+      }
       const { itemWidth, style } = state;
 
       return (

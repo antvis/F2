@@ -1,5 +1,5 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
-import Component from '../../base/component';
+import Selection, { SelectionState } from './selection';
 import * as Adjust from '../../adjust';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps } from './interface';
@@ -10,7 +10,10 @@ import { AnimationCycle } from '../../canvas/animation/interface';
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
 
-class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
+class Geometry<
+  P extends GeometryProps = GeometryProps,
+  S extends SelectionState = SelectionState
+> extends Selection<P, S> {
   isGeometry = true;
   geomType: GeomType;
 
@@ -36,7 +39,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     return {};
   }
 
-  constructor(props, context?) {
+  constructor(props: P, context?) {
     super(props, context);
     mix(this, this.getDefaultCfg());
 
@@ -92,6 +95,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
   }
 
   didMount() {
+    super.didMount();
     this._initEvent();
   }
 
@@ -396,9 +400,10 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
           y: normalized.y,
         });
 
-        // 获取shape的style
+        // 获取 shape 的 style
         const shapeName = attrValues.shape;
         const shape = this._getShapeStyle(shapeName, child.origin);
+        const selected = this.isSelected(child);
 
         mix(child, attrValues, {
           normalized,
@@ -406,6 +411,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
           y,
           shapeName,
           shape,
+          selected,
         });
       }
     }
@@ -493,7 +499,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }, []);
   }
 
-  getSnapRecords(point) {
+  getSnapRecords(point): any[] {
     const { props } = this;
     const { coord, adjust } = props;
     const invertPoint = coord.invertPoint(point);
@@ -506,7 +512,7 @@ class Geometry<T extends GeometryProps = GeometryProps> extends Component<T> {
     }
 
     const records = this.flatRecords();
-    
+
     // 处理饼图
     if (adjust === 'stack' && coord.isPolar && coord.transposed) {
       // 弧度在半径范围内

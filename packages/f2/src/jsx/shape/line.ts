@@ -1,11 +1,9 @@
 export default (layout) => {
   const { left, top, width, height } = layout;
-  const halfHeight = height / 2;
   return {
     x1: left,
-    y1: top + halfHeight,
+    y1: top,
     x2: left + width,
-    y2: top + halfHeight,
-    lineWidth: height,
+    y2: top + height,
   };
 };

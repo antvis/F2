@@ -2,8 +2,6 @@ import { ScaleConfig } from '@antv/scale';
 import { each, findIndex, isArray } from '@antv/util';
 import Component from '../base/component';
 import equal from '../base/equal';
-import { applyMixins } from '../mixins';
-import InteractionMixin from '../mixins/interaction';
 import Layout from '../base/layout';
 import Coord from '../coord';
 import Children from '../children';
@@ -18,13 +16,22 @@ interface Point {
   y: number;
 }
 
-interface Props {
+export interface Props {
   data: any;
   scale?: any;
   coord?: any;
   start?: Point;
   end?: Point;
   children: any;
+}
+
+export interface ChartChildProps {
+  data?: any;
+  chart?: Chart;
+  coord?: Coord;
+  interaction?: InteractionController;
+  layout?: Layout;
+  [k: string]: any;
 }
 
 // type Scales = {
@@ -47,18 +54,13 @@ export interface ComponentPosition {
 }
 
 // 统计图表
-class Chart extends Component implements IChart, InteractionMixin {
+class Chart extends Component implements IChart {
   data: any;
 
   private layout: Layout;
   // 坐标系
   private coord: Coord;
   private componentsPosition: ComponentPosition[] = [];
-
-  // 交互
-  interaction: InteractionController;
-  createInteractionController: ({ chart: any }) => any;
-  setInteraction: (type, cfg) => any;
 
   // controller
   private layoutController: LayoutController;
@@ -69,7 +71,7 @@ class Chart extends Component implements IChart, InteractionMixin {
   constructor(props, context?, updater?) {
     super(props, context, updater);
 
-    const { data, coord: coordOption, scale, interactions = [] } = props;
+    const { data, coord: coordOption, scale = [] } = props;
 
     this.layoutController = new LayoutController();
     this.coordController = new CoordController();
@@ -88,23 +90,10 @@ class Chart extends Component implements IChart, InteractionMixin {
     // scale
     scaleController.create(scale);
 
-    // 创建交互事件控制器
-    const interactionController: InteractionController = this.createInteractionController({
-      chart: this,
-    });
-
-    // 定义事件
-    interactions.forEach((interaction) => {
-      const { type, ...cfg } = interaction;
-      interactionController.createInteraction(type, cfg);
-    });
-
     this.data = data;
-    this.interaction = interactionController;
 
     // state
     this.state = {
-      zoomRange: [0, 1],
       filters: {},
     };
   }
@@ -112,18 +101,8 @@ class Chart extends Component implements IChart, InteractionMixin {
   // props 更新
   willReceiveProps(nextProps) {
     const { layoutController, coordController, scaleController, props: lastProps } = this;
-    const {
-      style: nextStyle,
-      data: nextData,
-      scale: nextScale,
-      // interactions: nextInteractions,
-    } = nextProps;
-    const {
-      style: lastStyle,
-      data: lastData,
-      scale: lastScale,
-      // interactions: lastInteractions,
-    } = lastProps;
+    const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
+    const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
 
     // 布局
     if (!equal(nextStyle, lastStyle)) {
@@ -341,27 +320,20 @@ class Chart extends Component implements IChart, InteractionMixin {
   }
 
   render(): JSX.Element {
-    const { props, state, layout, coord } = this;
+    const { props, layout, coord } = this;
     const { children, data: originData } = props;
-    const { zoomRange } = state;
     if (!originData) return null;
     const data = this._getRenderData();
 
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         chart: this,
-        data,
         coord,
+        data,
         layout,
-        zoomRange,
       });
     });
   }
 }
 
-// 多继承
-applyMixins(Chart, [InteractionMixin]);
-
-class ExportChart extends Chart {}
-
-export default ExportChart;
+export default Chart;

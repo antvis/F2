@@ -28,13 +28,13 @@ module.exports = {
           en: 'Manual',
         },
       },
-      // {
-      //   slug: 'docs/api',
-      //   title: {
-      //     zh: '组件文档',
-      //     en: 'Component Documentation'
-      //   }
-      // },
+      {
+        slug: 'docs/api',
+        title: {
+          zh: '组件API',
+          en: 'Component Documentation',
+        },
+      },
       {
         slug: 'examples/gallery',
         title: {
@@ -45,28 +45,12 @@ module.exports = {
     ],
     docs: [
       {
-        slug: 'tutorial/manual',
-        title: {
-          zh: '教程',
-          en: 'Tutorial',
-        },
-        order: 1,
-      },
-      {
         slug: 'api/chart',
         title: {
-          zh: '图表',
+          zh: '图表 - Chart',
           en: 'Chart',
         },
-        order: 1,
-      },
-      {
-        slug: 'api/graphic',
-        title: {
-          zh: '绘图',
-          en: 'Graphic',
-        },
-        order: 2,
+        order: 4,
       },
     ],
     examples: [

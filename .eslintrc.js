@@ -14,6 +14,7 @@ module.exports = {
       jsx: true,
     },
     jsxPragma: 'jsx',
+    jsxFragmentName: 'Fragment',
   },
   plugins: ['@typescript-eslint'],
   rules: {
