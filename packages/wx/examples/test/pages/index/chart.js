@@ -14,7 +14,15 @@ export default (props => {
     }), _jsx(Interval, {
       x: "genre",
       y: "sold",
-      color: "genre"
+      color: "genre",
+      selection: {
+        selectedStyle: {
+          fillOpacity: 1
+        },
+        unSelectedStyle: {
+          fillOpacity: 0.4
+        }
+      }
     })]
   });
 });

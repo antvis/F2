@@ -2,5 +2,6 @@
   "miniprogramRoot": "es",
   "enableAppxNg": true,
   "enableNodeModuleBabelTransform": true,
-  "node_modules_es6_whitelist": ["d3-hierarchy"]
+  "node_modules_es6_whitelist": ["d3-hierarchy", "@antv/f2"],
+  "component2": true
 }

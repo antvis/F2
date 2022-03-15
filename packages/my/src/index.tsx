@@ -112,6 +112,16 @@ Component({
       this.canvas = canvas;
       this.canvasEl = canvas.canvas.get('el');
     },
+    click(e) {
+      const canvasEl = this.canvasEl;
+      if (!canvasEl) {
+        return;
+      }
+      const event = wrapEvent(e);
+      // 包装成 touch 对象
+      event.touches = [e.detail];
+      canvasEl.dispatchEvent('click', event);
+    },
     touchStart(e) {
       const canvasEl = this.canvasEl;
       if (!canvasEl) {

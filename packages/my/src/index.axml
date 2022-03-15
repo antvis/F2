@@ -5,6 +5,7 @@
   class="f2-canvas"
   width="{{width}}"
   height="{{height}}"
+  onTap="click"
   onTouchStart="touchStart"
   onTouchMove="touchMove"
   onTouchEnd="touchEnd"
