@@ -13,9 +13,9 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 | 属性名 | 描述 |
 | --- | --- |
-| `fill` | 填充色、[渐变](/zh/docs/api/shape/shape-attrs/#渐变色)或[纹理](/zh/docs/api/shape/shape-attrs/#纹理)，默认值为空。 |
+| `fill` | 填充色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空。 |
 | `fillOpacity` | 用于设置图形填充颜色的透明度，默认值是 1。 |
-| `stroke` | 描边色、[渐变](/zh/docs/api/shape/shape-attrs/#渐变色)或[纹理](/zh/docs/api/shape/shape-attrs/#纹理)，默认值为空； |
+| `stroke` | 描边色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空； |
 | `strokeOpacity` | 用于设置边颜色的透明度，默认值是 1。 |
 | `shadowColor` | 描述阴影颜色的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor)。 |
 | `shadowBlur` | 描述模糊效果程度的属性； 它既不对应像素值也不受当前转换矩阵的影响。 默认值是 0，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowBlur)。 |
