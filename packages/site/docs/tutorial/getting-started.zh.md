@@ -17,52 +17,7 @@ F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代�
 
 ### 配置 jsx transform
 
-因为 F2 也使用了 jsx 语法来构建图表，所以需要使用 [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx) 来编译 jsx
-
-```bash
-npm install --save-dev @babel/plugin-transform-react-jsx
-```
-
-```json
-{
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "runtime": "automatic",
-        "importSource": "@antv/f2"
-      }
-    ]
-  ]
-}
-// 或者
-{
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "pragma": "jsx",
-        "pragmaFrag": "Fragment"
-      }
-    ]
-  ]
-}
-```
-
-更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
-
-### TypeScript
-
-如果你是使用 TypeScript, 那么只需在 `tsconfig.json` 中加入如下配置即可
-
-```json
-{
-  "compilerOptions": {
-    "jsxFactory": "jsx",
-    "jsxFragmentFactory": "Fragment"
-  }
-}
-```
+可见详细介绍：[配置 jsx transform](./jsx-transform)
 
 ## 安装
 
