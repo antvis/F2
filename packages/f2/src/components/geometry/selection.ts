@@ -19,6 +19,7 @@ type StyleType = (record: any) => ShapeAttrs;
 
 export interface SelectionProps {
   selection?: {
+    triggerOn?: 'click' | 'press' | string;
     type?: 'single' | 'multiple';
     defaultSelected?: any[];
     selectedStyle?: ShapeAttrs | StyleType;
@@ -48,9 +49,11 @@ class Selection<
   didMount() {
     const { props, state, container } = this;
     const canvas = container.get('canvas');
-    canvas.on('click', (ev) => {
-      const { selection, chart } = props;
-      if (!selection) return;
+    const { selection, chart } = props;
+    if (!selection) return;
+    // 默认为 click
+    const { triggerOn = 'click' } = selection;
+    canvas.on(triggerOn, (ev) => {
       const { points } = ev;
       const records = this.getSnapRecords(points[0]);
       const { type = 'single', cancelable = true } = selection;
