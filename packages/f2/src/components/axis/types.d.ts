@@ -64,7 +64,7 @@ export interface PolarProps {
   animation?: any;
 }
 
-class RectOrPolarCoord<T extends boolean> extends Coord {
+export class RectOrPolarCoord<T extends boolean> extends Coord {
   isPolar: T;
 }
 
@@ -114,6 +114,5 @@ export interface AxisProps {
 }
 
 export namespace AxisTypes {
-  export type Props = AxisProps
+  export type Props = AxisProps;
 }
-
