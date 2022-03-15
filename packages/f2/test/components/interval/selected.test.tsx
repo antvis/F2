@@ -187,6 +187,49 @@ describe('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('press 事件', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval
+            x="genre"
+            y="sold"
+            color="genre"
+            selection={{
+              triggerOn: 'press',
+              // type: 'multiple',
+              defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
+              selectedStyle: {
+                fillOpacity: 1,
+              },
+              unSelectedStyle: {
+                fillOpacity: 0.4,
+              },
+              cancelable: false,
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    await delay(200);
+
+    // 模拟 press 事件
+    await delay(20);
+    await gestureSimulator(context.canvas, 'touchstart', [{ x: 260, y: 170 }]);
+    await delay(20);
+    await gestureSimulator(context.canvas, 'touchmove', [{ x: 213, y: 165 }]);
+    await delay(20);
+    await gestureSimulator(context.canvas, 'touchend', [{ x: 213, y: 165 }]);
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('饼图', async () => {
     const context = createContext();
     const { props } = (

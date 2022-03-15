@@ -36,6 +36,12 @@ const data = [
 
 设置单选/多选， 默认为 `single`（单选），可选值： `'single' | 'multiple'`
 
+#### triggerOn: string
+
+触发的事件，默认为 `click`，可选 `'click' | 'press'`
+
+> 设置 press 时，需要把 cancelable 设置成 false, 否则会有明显的闪动
+
 #### defaultSelected: Array
 
 默认的选中项，可设置多个
