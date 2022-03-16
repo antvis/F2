@@ -3,9 +3,34 @@ import { deepMix } from '@antv/util';
 
 export default (props) => {
   const { coord, records, animation } = props;
-  const { center } = coord;
+  const { center, startAngle, endAngle, radius } = coord;
   return (
-    <group>
+    <group
+      animation={{
+        appear: {
+          easing: 'quadraticOut',
+          duration: 450,
+          // 特殊处理，appear 的动画设置在整体上
+          ...(animation && animation.appear),
+          clip: {
+            type: 'sector',
+            property: ['endAngle'],
+            attrs: {
+              x: center.x,
+              y: center.y,
+              startAngle,
+              r: radius,
+            },
+            start: {
+              endAngle: startAngle,
+            },
+            end: {
+              endAngle,
+            },
+          },
+        },
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (

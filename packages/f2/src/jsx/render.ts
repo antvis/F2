@@ -1,15 +1,11 @@
 import JSX from './interface';
 import { extendMap, px2hd } from '../util';
-import { omit, upperFirst } from '@antv/util';
+import { omit } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
 import getAnimation from './animation';
 import { ELEMENT_DELETE } from './elementStatus';
-import { Shape } from '@antv/f2-graphic';
-
-function createClipElement(type: string, config) {
-  return new Shape[upperFirst(type)](config);
-}
+import createClipElement from './createClipElement';
 
 // 转换成布局所需要的布局树
 function createNodeTree(element, container) {

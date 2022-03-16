@@ -52,7 +52,7 @@ function AnimationEndView(props) {
         appear: {
           easing: appear.easing,
           duration: appear.duration,
-          onFrame: function (t) {
+          onFrame: function(t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
             const children = element.get('children');
@@ -77,12 +77,14 @@ export default (props: LineViewProps) => {
     easing: 'linear',
     duration: 450,
     clip: {
-      type: 'Rect',
+      type: 'rect',
       property: ['width'],
-      start: {
+      attrs: {
         x: left,
         y: top,
         height: height,
+      },
+      start: {
         width: 0,
       },
       end: {
@@ -108,14 +110,17 @@ export default (props: LineViewProps) => {
                     ...shape,
                     lineWidth: size || shape.lineWidth,
                   }}
-                  animation={deepMix({
-                    update: {
-                      easing: 'linear',
-                      duration: 450,
-                      property: ['points'],
+                  animation={deepMix(
+                    {
+                      update: {
+                        easing: 'linear',
+                        duration: 450,
+                        property: ['points'],
+                      },
+                      appear,
                     },
-                    appear,
-                  }, animation)}
+                    animation
+                  )}
                 />
               );
             })}
