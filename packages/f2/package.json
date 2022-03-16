@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@antv/adjust": "~0.1.1",
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f2-graphic": "^0.0.2",
+    "@antv/f2-graphic": "^0.0.3",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5",
