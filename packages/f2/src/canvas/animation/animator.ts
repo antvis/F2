@@ -11,8 +11,8 @@ class Animator {
   // 动画定义
   animation: Animation;
 
-  // 裁剪区动画的shape
-  clip: any;
+  // 是否是裁剪动画
+  isClip: boolean = false;
 
   // 缓动函数
   easing: EasingFunction;
@@ -33,7 +33,7 @@ class Animator {
     this.element = element;
     this.animation = animation;
 
-    const { property = [], easing, duration, delay = 0, start, end, onFrame } = animation;
+    const { property = [], easing, duration, delay = 0, start, end, onFrame, isClip } = animation;
     const interpolates = property.map((name) => {
       if (isString(name)) {
         return interpolate(start[name], end[name]);
@@ -53,6 +53,7 @@ class Animator {
     this.onFrame = onFrame;
 
     this.totalDuration = duration + delay;
+    this.isClip = isClip;
 
     // 更新到初始状态
     this.update(0, 0);
@@ -80,7 +81,7 @@ class Animator {
   }
 
   update(t: number, time) {
-    const { element, clip, interpolates, property, onFrame } = this;
+    const { element, interpolates, property, onFrame } = this;
     let attrs = {};
     for (let i = property.length - 1; i >= 0; i--) {
       const name = property[i];
@@ -97,23 +98,18 @@ class Animator {
         ...this.onFrame(t, time),
       };
     }
-    if (clip) {
-      clip.attr(attrs);
-    } else {
-      element.attr(attrs);
-    }
+    element.attr(attrs);
   }
 
   onEnd() {
-    const { animation, clip, element } = this;
+    const { animation, isClip, element } = this;
     const { onEnd } = animation;
 
     onEnd && onEnd.call(this);
 
-    if (clip) {
+    if (isClip) {
       // 如果是裁剪区动画，要移除裁剪区
-      clip.remove(true);
-      element.attr('clip', null);
+      element.remove(true);
     }
 
     // 如果当前元素状态被标记为删除，等动画结束后直接删除

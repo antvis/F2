@@ -1,23 +1,20 @@
 import { ELEMENT_DELETE } from '../elementStatus';
-import { Shape } from '@antv/f2-graphic';
-
-function createClipElement(type: string, config) {
-  return new Shape[type](config);
-}
+import createClipElement from '../createClipElement';
 
 export default (element, animation, nextAttrs, lastAttrs) => {
   if (!animation) return null;
   // 获取shape的默认属性
   const status = element.get('status');
-  // const { appear, update, leave } = animationCfg;
-  // const animation = status === ELEMENT_DELETE ? leave : ( lastAttrs ? update : appear );
-  // if (!animation) return;
   const { clip, start, end, easing, delay, duration } = animation;
 
+  // 裁剪动画
   if (clip) {
-    const { type, start } = clip;
+    const { type, attrs, start: clipStart } = clip;
     const clipElement = createClipElement(type, {
-      attrs: start,
+      attrs: {
+        ...attrs,
+        ...clipStart,
+      },
     });
     // 默认用 animation 配置里的 easing 和 duration
     clip.easing = clip.easing || easing;

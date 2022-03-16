@@ -25,9 +25,9 @@ class Animation {
   }
 
   createAnimator(element, animation) {
-    const { duration } = animation;
+    const { duration, property, onFrame } = animation;
     // 校验关键参数
-    if (!duration) {
+    if (!duration || ((!property || !property.length) && !onFrame)) {
       return;
     }
     return new Animator(element, animation);
@@ -59,11 +59,12 @@ class Animation {
       const { clip } = animation;
       // 如果有裁剪区动画，处理裁剪区动画
       if (clip) {
-        const animator = this.createAnimator(element, clip);
+        clip.isClip = true;
+        const { element: clipElement } = clip;
+        const animator = this.createAnimator(clipElement, clip);
         if (animator) {
-          animator.clip = clip.element;
           maxDuration = Math.max(maxDuration, animator.totalDuration);
-          element.attr('clip', clip.element);
+          element.attr('clip', clipElement);
           animators.push(animator);
         }
       }

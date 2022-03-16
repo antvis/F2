@@ -35,6 +35,8 @@ class Polar extends Base {
 
     this.x = x;
     this.y = y;
+    this.startAngle = startAngle;
+    this.endAngle = endAngle;
     this.radius = radius;
     this.innnerRadius = innerRadiusRatio * radius;
     return this;

@@ -190,7 +190,7 @@ class Element<T extends ElementProp = ElementProp> {
   setContext(context) {
     const clip = this._attrs.attrs.clip;
     context.save();
-    if (clip) {
+    if (clip && !clip._attrs.destroyed) {
       clip.resetTransform(context);
       clip.createPath(context);
       context.clip();
