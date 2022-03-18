@@ -22,6 +22,15 @@ export default (View) => {
       this.updateCoord();
     }
 
+    willReceiveProps(nextProps) {
+      const { defaultItem: nextDefaultItem, chart } = nextProps;
+      const { defaultItem: lastDefaultItem } = this.props;
+      if (nextDefaultItem !== lastDefaultItem) {
+        const point = chart.getPosition(nextDefaultItem);
+        this.show(point);
+      }
+    }
+
     didMount() {
       const { props } = this;
       const { chart, defaultItem } = props;
