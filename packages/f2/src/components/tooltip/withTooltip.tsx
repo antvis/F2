@@ -4,6 +4,7 @@ import Component from '../../base/component';
 
 export default (View) => {
   return class Tooltip extends Component {
+    isPressEvent = false;
     constructor(props) {
       super(props);
       this.state = {
@@ -23,13 +24,27 @@ export default (View) => {
     }
 
     didMount() {
+      this._initShow();
+      this._initEvent();
+    }
+
+    didUpdate() {
+      // 主动触发的 press 等事件不需要重新执行 didUpdate
+      if (this.isPressEvent) {
+        // 重置
+        this.isPressEvent = false;
+        return;
+      }
+      this._initShow();
+    }
+
+    _initShow() {
       const { props } = this;
       const { chart, defaultItem } = props;
       if (defaultItem) {
         const point = chart.getPosition(defaultItem);
         this.show(point);
       }
-      this._initEvent();
     }
 
     _initEvent() {
@@ -39,6 +54,7 @@ export default (View) => {
 
       canvas.on(triggerOn, (ev) => {
         const { points } = ev;
+        this.isPressEvent = true;
         this.show(points[0]);
       });
 

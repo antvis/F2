@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Axis, Interval, Tooltip, Legend } from '../../../src';
+import { jsx, Canvas, Chart, Axis, Line, Interval, Tooltip, Legend } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -164,6 +164,37 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('Tooltip 默认展示更新', async () => {
+    const context = createContext('Tooltip 默认展示更新');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Legend />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip alwaysShow={true} defaultItem={data[0]} showCrosshairs />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    const newChart = (
+      <Chart data={data}>
+        <Axis field="genre" />
+        <Axis field="sold" />
+        <Legend />
+        <Interval x="genre" y="sold" color="genre" />
+        <Tooltip alwaysShow={true} defaultItem={data[1]} showCrosshairs />
+      </Chart>
+    );
+
+    canvas.update({children: newChart});          
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+  
   it('Tooltip 不触发回调的情形', async () => {
     const context = createContext('Tooltip 不触发回调的情形');
     const onChangeMockCallback = jest.fn();
