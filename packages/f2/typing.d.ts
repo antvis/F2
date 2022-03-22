@@ -1,2 +1,2 @@
 import '../../typings';
-import './src/jsx/interface';
+import './src/jsx/types';

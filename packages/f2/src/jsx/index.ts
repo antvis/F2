@@ -1,4 +1,4 @@
-import jsx from './jsx-classic';
+import { jsx } from './jsx-classic';
 import Fragment from './fragment';
 import render from './render';
 import renderJSXElement from './renderJSXElement';
