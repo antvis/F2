@@ -1,6 +1,7 @@
 import { isFunction } from '@antv/util';
 import Component from '../../base/component';
 import { ShapeAttrs, Point } from '../../types';
+import equal from '../../base/equal';
 
 function isEqual(origin1, origin2, fields: string[]) {
   if (origin1 === origin2) {
@@ -115,6 +116,19 @@ class Selection<
         selected: newSelected,
       } as S);
     });
+  }
+
+  willReceiveProps(nextProps: P): void {
+    const { selection: nextSelection } = nextProps;
+    const { selection: lastSelection } = this.props;
+    if (!nextSelection || !lastSelection) {
+      return;
+    }
+    const { defaultSelected: nextDefaultSelected } = nextSelection;
+    const { defaultSelected: lastDefaultSelected } = lastSelection;
+    if (!equal(nextDefaultSelected, lastDefaultSelected)) {
+      this.state.selected = nextDefaultSelected;
+    }
   }
 
   getSnapRecords(_point: Point) {
