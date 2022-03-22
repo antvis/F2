@@ -1,8 +1,8 @@
-import JSX from './interface';
+import JSX from './types';
 import { ElementType } from '../types';
 
 // 实现jsx-automatic 入口
-export default function(type: ElementType, config, key?: string): JSX.Element {
+export function jsx(type: ElementType, config, key?: string): JSX.Element {
   const { ref, ...props } = config || {};
   return {
     key,

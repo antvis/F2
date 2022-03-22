@@ -99,8 +99,6 @@ export type ElementType =
   | ((props: Props, context?: any) => any)
   | (new (props: Props, context?: any) => any);
 
-
-  
 export interface ShapeAttrs extends Partial<SupportPx<Types.ShapeAttrs>>{
   [k: string]: any;
 }
