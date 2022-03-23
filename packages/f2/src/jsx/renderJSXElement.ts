@@ -1,4 +1,4 @@
-import JSX from './types';
+import { JSX } from './jsx-namespace';
 import Children from '../children';
 
 // 主要是把function节点，全部转换成string标签节点

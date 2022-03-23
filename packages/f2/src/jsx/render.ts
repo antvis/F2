@@ -1,4 +1,4 @@
-import JSX from './types';
+import { JSX } from './jsx-namespace';
 import { extendMap, px2hd } from '../util';
 import { omit } from '@antv/util';
 import computeLayout from './css-layout';

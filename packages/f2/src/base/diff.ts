@@ -1,3 +1,4 @@
+import { JSX } from '../jsx/jsx-namespace';
 import { render, renderJSXElement, compareRenderTree } from '../jsx';
 import { isArray, isUndefined, isBoolean, pick } from '@antv/util';
 import Component from './component';
