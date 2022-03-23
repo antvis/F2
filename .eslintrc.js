@@ -27,6 +27,7 @@ module.exports = {
     'no-case-declarations': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-namespace': 0,
   },
   settings: {
     'import/parsers': {

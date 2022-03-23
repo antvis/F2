@@ -9,8 +9,7 @@
     "moduleResolution": "node",
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "allowJs": true
+    "skipLibCheck": true
   },
   "exclude": [
     "scripts",
