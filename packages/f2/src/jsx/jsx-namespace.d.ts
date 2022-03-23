@@ -2,6 +2,7 @@ import {
   Ref,
   ElementType,
   Props,
+  GroupProps,
   RectProps,
   CircleProps,
   LineProps,
@@ -31,7 +32,7 @@ export namespace JSX {
   }
 
   export interface IntrinsicElements {
-    group: RectProps;
+    group: GroupProps;
     rect: RectProps;
     circle: CircleProps;
     line: LineProps;

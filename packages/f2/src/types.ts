@@ -103,6 +103,10 @@ export interface ShapeAttrs extends Partial<SupportPx<Types.ShapeAttrs>>{
   [k: string]: any;
 }
 
+export interface GroupProps extends IntrinsicElementsProps {
+  attrs?: RectAttrs;
+}
+
 export type CircleAttrs = Partial<SupportPx<Types.CircleAttrs>>;
 export interface CircleProps extends IntrinsicElementsProps {
   attrs?: CircleAttrs;
