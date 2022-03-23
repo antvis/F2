@@ -54,6 +54,7 @@ class Geometry<
   }
 
   willReceiveProps(nextProps) {
+    super.willReceiveProps(nextProps);
     const { props: lastProps, attrController } = this;
     const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange } = nextProps;
     const { data: lastData, adjust: lastAdjust, zoomRange: lastZoomRange } = lastProps;

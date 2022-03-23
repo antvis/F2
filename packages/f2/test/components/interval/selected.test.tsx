@@ -324,3 +324,55 @@ describe('cancelable = false', () => {
     expect(context).toMatchImageSnapshot();
   });
 });
+
+describe('改变默认值', () => {
+  it('改变默认值', async () => {
+    const context = createContext();
+
+    const getProps = (data, defaultSelected) => {
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} animate={false}>
+          <Chart
+            data={data}
+            coord={{
+              radius: 0.8,
+              type: 'polar',
+              transposed: true,
+            }}
+          >
+            <Interval
+              x="a"
+              y="sold"
+              adjust="stack"
+              color="genre"
+              selection={{
+                defaultSelected,
+                selectedStyle: (record) => {
+                  const { yMax } = record;
+                  return {
+                    r: yMax * 1.1,
+                  };
+                },
+                cancelable: false,
+              }}
+            />
+          </Chart>
+        </Canvas>
+      );
+      return props;
+    };
+
+    const props = getProps(data, [{ a: '1', genre: 'Sports', sold: 275 }]);
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(200);
+    expect(context).toMatchImageSnapshot();
+
+    const updateProps = getProps([].concat(data), [{ a: '1', genre: 'Strategy', sold: 115 }]);
+    canvas.update(updateProps);
+
+    await delay(200);
+    expect(context).toMatchImageSnapshot();
+  });
+});
