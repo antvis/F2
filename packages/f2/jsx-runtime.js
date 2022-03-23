@@ -1,2 +1,2 @@
 'use strict';
-module.exports = require('./lib/jsx/jsx-runtime.js');
+module.exports = require('./lib/jsx/jsx-runtime');

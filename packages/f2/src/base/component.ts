@@ -1,3 +1,4 @@
+import { JSX } from '../jsx/jsx-namespace';
 import { px2hd } from '../util';
 
 export interface ComponentContext {

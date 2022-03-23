@@ -1,3 +1,4 @@
+import { JSX } from './jsx/jsx-namespace';
 import { isArray, isNil } from '@antv/util';
 
 function cloneElement(element, props) {
@@ -80,9 +81,9 @@ function compare(nextElement: JSX.Element, lastElement: JSX.Element, callback: F
   callback(nextElement, lastElement);
 }
 
-function toArray(element: JSX.Element) {
+function toArray(element: JSX.Element): JSX.Element[] | null {
   if (!element) {
-    return element;
+    return element as null;
   }
   if (!isArray(element)) {
     return [element];
