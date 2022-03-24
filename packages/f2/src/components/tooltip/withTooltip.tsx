@@ -81,15 +81,20 @@ export default (View) => {
 
       const records = snapRecords.map((record) => {
         const { origin, xField, yField } = record;
-        let name = xScale.getText(origin[xField]);
         const value = yScale.getText(origin[yField]);
-        if (legendItems && legendItems.length) {
-          const item = find<any>(legendItems, (item) => {
-            const { field, tickValue } = item;
-            return origin[field] === tickValue;
-          });
-          if (item && item.name) {
-            name = item.name;
+
+        // 默认取 alias 的配置
+        let name = yScale.alias;
+        if (!name) {
+          name = xScale.getText(origin[xField]);
+          if (legendItems && legendItems.length) {
+            const item = find<any>(legendItems, (item) => {
+              const { field, tickValue } = item;
+              return origin[field] === tickValue;
+            });
+            if (item && item.name) {
+              name = item.name;
+            }
           }
         }
         return {
