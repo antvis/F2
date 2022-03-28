@@ -14,11 +14,11 @@ module.exports = {
   siteMetadata: {
     title: 'F2',
     description: 'The Grammar of Graphics in JavaScript',
-    siteUrl: 'https://f2-next.antv.vision',
+    siteUrl: 'https://f2.antv.vision',
     githubUrl: repository.url,
     versions: {
-      '4.x': 'https://f2-next.antv.vision',
-      '3.x': 'https://f2.antv.vision',
+      '4.x': 'https://f2.antv.vision',
+      '3.x': 'https://f2-v3.antv.vision',
     },
     navs: [
       {
