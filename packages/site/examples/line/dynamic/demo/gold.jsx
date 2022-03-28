@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import { jsx, Canvas, Chart, Line, Axis, Tooltip, Legend } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');

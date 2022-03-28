@@ -193,7 +193,7 @@ module.exports = {
         <div class="mobile-container">
           <div class="mobile-header"></div>
           <div class="mobile-content">
-            <canvas id="container"/>
+            <canvas id="container" style="display: block; width: 375px; height: 260px;" />
           </div>
         </div>
       `,
