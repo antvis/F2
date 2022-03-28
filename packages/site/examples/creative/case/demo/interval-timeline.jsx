@@ -1,3 +1,4 @@
+/** @jsx jsx */
 import { jsx, Canvas, Timeline, Chart, Interval, Axis, Tooltip } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');

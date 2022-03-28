@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "flamegraph.js",
+      "filename": "flamegraph.jsx",
       "title": "火焰图",
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/FqRUZcyzh5/20211116113650.jpg"
     }
