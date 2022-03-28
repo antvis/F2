@@ -1,107 +1,57 @@
 import { jsx } from '../../../src';
-import { Polar, Rect } from '../../../src/coord';
+import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
-import { Interval, Legend, PieLabel } from '../../../src/components';
-import { createContext } from '../../util';
-
-const data = [
-  {
-    amount: 20,
-    ratio: 0.1,
-    memo: '学习',
-    const: 'const',
-  },
-  {
-    amount: 100,
-    ratio: 0.5,
-    memo: '睡觉',
-    const: 'const',
-  },
-  {
-    amount: 10,
-    ratio: 0.05,
-    memo: '吃饭',
-    const: 'const',
-  },
-  {
-    amount: 30,
-    ratio: 0.15,
-    memo: '讲礼貌',
-    const: 'const',
-  },
-  {
-    amount: 10,
-    ratio: 0.05,
-    memo: '其他',
-    const: 'const',
-  },
-  {
-    amount: 20,
-    ratio: 0.1,
-    memo: '运动',
-    const: 'const',
-  },
-  {
-    amount: 10,
-    ratio: 0.05,
-    memo: '暂无备注',
-    const: 'const',
-  },
-];
+import { Interval, PieLabel } from '../../../src/components';
+import { createContext, delay } from '../../util';
 
 describe('PieLabel', () => {
-  it('带图例文本的饼图', () => {
-    const context = createContext('带图例文本的饼图');
-    const chartRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
+  it('默认显示', async () => {
+    const context = createContext('默认显示', { width: '300px', height: '150px' });
+    const data = [
+      {
+        amount: 20,
+        memo: 'Study',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Sports',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart
-          ref={chartRef}
           data={data}
           coord={{
             type: Polar,
             transposed: true,
             innerRadius: 0.3,
-            radius: 0.6,
+            radius: 0.5,
           }}
-          scale={{}}
         >
-          <Interval
-            x="const"
-            y="ratio"
-            adjust="stack"
-            color={{
-              field: 'memo',
-              range: [
-                '#1890FF',
-                '#13C2C2',
-                '#2FC25B',
-                '#FACC14',
-                '#F04864',
-                '#8543E0',
-                '#3436C7',
-                '#223273',
-              ],
-            }}
-          />
-          {/* <Legend position="top" /> */}
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
             label1={(data) => {
               return {
                 text: data.memo,
-                fill: '#808080',
               };
             }}
             label2={(data) => {
               return {
                 fill: '#000000',
                 text: '$' + data.amount.toFixed(2),
-                fontWeight: 500,
-                fontSize: 10,
               };
-            }}
-            onClick={(data) => {
-              console.log(data);
             }}
           />
         </Chart>
@@ -110,5 +60,301 @@ describe('PieLabel', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('左边超过最大显示个数，第四象限显示在第一象限', async () => {
+    const context = createContext('左边超过最大显示个数，第四象限显示在第一象限', {
+      width: '300px',
+      height: '150px',
+    });
+    const data = [
+      {
+        amount: 20,
+        memo: 'Study',
+        const: 'const',
+      },
+      {
+        amount: 30,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Basketball',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Football',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Volleyball',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.3,
+            radius: 0.5,
+          }}
+        >
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
+          <PieLabel
+            label1={(data) => {
+              return {
+                text: data.memo,
+              };
+            }}
+            label2={(data) => {
+              return {
+                fill: '#000000',
+                text: '$' + data.amount.toFixed(2),
+              };
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('左边超过最大显示个数，第三象限显示在第二象限', async () => {
+    const context = createContext('左边超过最大显示个数，第三象限显示在第二象限', {
+      width: '300px',
+      height: '150px',
+    });
+    const data = [
+      {
+        amount: 20,
+        memo: 'Study',
+        const: 'const',
+      },
+      {
+        amount: 30,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Basketball',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Football',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Volleyball',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.3,
+            radius: 0.5,
+          }}
+        >
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
+          <PieLabel
+            label1={(data) => {
+              return {
+                text: data.memo,
+              };
+            }}
+            label2={(data) => {
+              return {
+                fill: '#000000',
+                text: '$' + data.amount.toFixed(2),
+              };
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('右边超过最大显示个数，第一象限显示在第四象限', async () => {
+    const context = createContext('右边超过最大显示个数，第一象限显示在第四象限', {
+      width: '300px',
+      height: '150px',
+    });
+    const data = [
+      {
+        amount: 10,
+        memo: 'Language',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Math',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Foreign',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 30,
+        memo: 'Sports',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.3,
+            radius: 0.5,
+          }}
+        >
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
+          <PieLabel
+            label1={(data) => {
+              return {
+                text: data.memo,
+              };
+            }}
+            label2={(data) => {
+              return {
+                fill: '#000000',
+                text: '$' + data.amount.toFixed(2),
+              };
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('右边超过最大显示个数，第二象限显示在第三象限', async () => {
+    const context = createContext('右边超过最大显示个数，第二象限显示在第三象限', {
+      width: '300px',
+      height: '150px',
+    });
+    const data = [
+      {
+        amount: 20,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Language',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Math',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Foreign',
+        const: 'const',
+      },
+
+      {
+        amount: 30,
+        memo: 'Sports',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.3,
+            radius: 0.5,
+          }}
+        >
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
+          <PieLabel
+            label1={(data) => {
+              return {
+                text: data.memo,
+              };
+            }}
+            label2={(data) => {
+              return {
+                fill: '#000000',
+                text: '$' + data.amount.toFixed(2),
+              };
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
   });
 });
