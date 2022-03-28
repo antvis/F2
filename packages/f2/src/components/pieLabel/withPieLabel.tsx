@@ -1,28 +1,27 @@
 import { jsx } from '../../jsx';
 import Component from '../../base/component';
-import { deepMix, toInteger, isArray } from '@antv/util';
-import { isInBBox } from '../../util';
-import { Ref } from '../../types';
+import { deepMix, isArray, isFunction } from '@antv/util';
+import { isInBBox, getElementsByClassName } from '../../util';
+import { Ref, Point } from '../../types';
 
 const DEFAULT_CONFIG = {
-  anchorOffset: 5, // 锚点的偏移量
-  inflectionOffset: 15, // 拐点的偏移量
-  sidePadding: 20, // 文本距离画布四边的距离
-  lineHeight: 32, // 文本的行高
-  adjustOffset: 15, // 发生调整时的偏移量
-  skipOverlapLabels: false, // 是否不展示重叠的文本
-  triggerOn: 'touchstart', // 点击行为触发的时间类型
-  activeShape: false, // 当有图形被选中的时候，是否激活图形
-  activeStyle: {
-    offset: 1,
-    appendRadius: 8,
-    fillOpacity: 0.5,
-  },
-  label1OffsetY: -1,
-  label2OffsetY: 1,
+  anchorOffset: '10px', // 锚点的偏移量
+  inflectionOffset: '30px', // 拐点的偏移量
+  sidePadding: '40px', // 文本距离画布四边的距离
+  height: '64px', // 文本的行高
+  adjustOffset: '30', // 发生调整时的偏移量
+  triggerOn: 'click', // 点击行为触发的时间类型
+  // activeShape: false, // 当有图形被选中的时候，是否激活图形
+  // activeStyle: {
+  //   offset: '1px',
+  //   appendRadius: '8px',
+  //   fillOpacity: 0.5,
+  // },
+  label1OffsetY: '-4px',
+  label2OffsetY: '4px',
 };
 
-function getEndPoint(center, angle, r) {
+function getEndPoint(center: Point, angle: number, r: number) {
   return {
     x: center.x + r * Math.cos(angle),
     y: center.y + r * Math.sin(angle),
@@ -30,43 +29,41 @@ function getEndPoint(center, angle, r) {
 }
 
 // 计算中间角度
-function getMiddleAngle(startAngle, endAngle) {
+function getMiddleAngle(startAngle: number, endAngle: number) {
   if (endAngle < startAngle) {
     endAngle += Math.PI * 2;
   }
   return (endAngle + startAngle) / 2;
 }
 
-// 判断两个矩形是否相交
-// function isOverlap(label1, label2) {
-//   const label1BBox = label1.getBBox();
-//   const label2BBox = label2.getBBox();
-//   return (
-//     Math.max(label1BBox.minX, label2BBox.minX) <=
-//       Math.min(label1BBox.maxX, label2BBox.maxX) &&
-//     Math.max(label1BBox.minY, label2BBox.minY) <=
-//       Math.min(label1BBox.maxY, label2BBox.maxY)
-//   );
-// }
+function move(from, to, count, center) {
+  const { x } = center;
+  const sort = from.sort((a, b) => {
+    const aDistance = Math.abs(a.x - x);
+    const bDistance = Math.abs(b.x - x);
+    return bDistance - aDistance;
+  });
+  return [sort.slice(0, sort.length - count), sort.slice(sort.length - count).concat(to)];
+}
 
-function findShapesByClass(shape, targetClassName) {
-  const { _attrs = {} } = shape || {};
-  const { children, className } = _attrs;
-  const result = [];
-  if (className === targetClassName) {
-    result.push(shape);
-  }
+// 第一象限
+function isFirstQuadrant(angle: number) {
+  return angle >= -Math.PI / 2 && angle < 0;
+}
+// 第二象限
+function isSecondQuadrant(angle: number) {
+  return angle >= 0 && angle < Math.PI / 2;
+}
 
-  if (children && children.length) {
-    for (let i = 0, len = children.length; i < len; i++) {
-      result.push(...findShapesByClass(children[i], targetClassName));
-    }
-  }
-  return result;
+function isThirdQuadrant(angle: number) {
+  return angle >= Math.PI / 2 && angle < Math.PI;
+}
+function isFourthQuadrant(angle: number) {
+  return angle >= Math.PI && angle < (Math.PI * 3) / 2;
 }
 
 function findShapeByClassName(shape, point, className) {
-  const targetShapes = findShapesByClass(shape, className);
+  const targetShapes = getElementsByClassName(className, shape);
   for (let i = 0, len = targetShapes.length; i < len; i++) {
     const shape = targetShapes[i];
     if (isInBBox(shape.getBBox(), point)) {
@@ -81,7 +78,6 @@ export default (View) => {
     labels: [];
     constructor(props) {
       super(props);
-      this.props = deepMix({}, DEFAULT_CONFIG, this.props);
       this.triggerRef = {};
     }
 
@@ -94,81 +90,203 @@ export default (View) => {
       this._initEvent();
     }
 
-    getLabels() {
-      const { context } = this;
+    getLabels(props) {
       const {
         chart,
+        coord,
         anchorOffset,
         inflectionOffset,
         label1,
         label2,
-        lineHeight,
-        // skipOverlapLabels,
-      } = this.props;
-      const { coord } = chart;
-      const { center, radius } = coord;
+        height: itemHeight,
+      } = props;
 
-      const halves = [
-        [], // left
-        [], // right
-      ]; // 存储左右 labels
-      let labels = [];
+      const {
+        center,
+        radius,
+        width: coordWidth,
+        height: coordHeight,
+        left: coordLeft,
+        right: coordRight,
+        top: coordTop,
+      } = coord;
+
+      const maxCountForOneSide = Math.floor(coordHeight / itemHeight);
+      const maxCount = maxCountForOneSide * 2;
 
       const geometry = chart.getGeometrys()[0];
-      const { records } = geometry;
+      const records = geometry
+        .flatRecords()
+        // 按角度大到小排序
+        .sort((a, b) => {
+          const angle1 = a.xMax - a.xMin;
+          const angle2 = b.xMax - b.xMin;
+          return angle2 - angle1;
+        })
+        // 只取前 maxCount 个显示
+        .slice(0, maxCount);
 
+      // 存储左右 labels
+      let halves = [
+        [], // left
+        [], // right
+      ];
       records.forEach((record) => {
-        const { children } = record;
-        const child = children[0];
-        const { xMin, xMax, color, origin } = child;
+        const { xMin, xMax, color, origin } = record;
 
-        // 算出锚点的基准位置
+        // 锚点角度
         const anchorAngle = getMiddleAngle(xMin, xMax);
+        // 锚点坐标
         const anchorPoint = getEndPoint(center, anchorAngle, radius + anchorOffset);
+        // 拐点坐标
         const inflectionPoint = getEndPoint(center, anchorAngle, radius + inflectionOffset);
+        // 锚点方向
+        const side = anchorPoint.x < center.x ? 'left' : 'right';
 
-        const label: any = {
+        const label = {
           origin,
-          _anchor: anchorPoint,
-          _inflection: inflectionPoint,
+          angle: anchorAngle,
+          anchor: anchorPoint,
+          inflection: inflectionPoint,
+          side,
           x: inflectionPoint.x,
           y: inflectionPoint.y,
           r: radius + inflectionOffset,
-          fill: color,
+          color,
+          label1: isFunction(label1) ? label1(origin, record) : label1,
+          label2: isFunction(label2) ? label2(origin, record) : label2,
         };
 
-        // 映射label1\label2
-        if (typeof label1 === 'function') {
-          label.label1 = label1(origin, color);
-        }
-        if (typeof label2 === 'function') {
-          label.label2 = label2(origin, color);
-        }
-
         // 判断文本的方向
-        if (anchorPoint.x < center.x) {
-          label._side = 'left';
+        if (side === 'left') {
           halves[0].push(label);
         } else {
-          label._side = 'right';
           halves[1].push(label);
         }
       });
 
-      const height = context.height;
-      // @ts-ignore
-      const maxCountForOneSide = toInteger(height / lineHeight, 10);
+      // 判断是有一边超过了显示的最大
+      if (halves[0].length > maxCountForOneSide) {
+        halves = move(halves[0], halves[1], halves[0].length - maxCountForOneSide, center);
+      } else if (halves[1].length > maxCountForOneSide) {
+        const [right, left] = move(
+          halves[1],
+          halves[0],
+          halves[1].length - maxCountForOneSide,
+          center
+        );
+        halves = [left, right];
+      }
 
-      halves.forEach((half) => {
-        if (half.length > maxCountForOneSide) {
-          half.splice(maxCountForOneSide, half.length - maxCountForOneSide);
-        }
+      // label 的最大宽度
+      const labelWidth = coordWidth / 2 - radius - anchorOffset - inflectionOffset;
+      const labels = [];
+      halves.forEach((half, index) => {
+        const showSide = index === 0 ? 'left' : 'right';
 
+        // 顺时针方向排序
         half.sort((a, b) => {
-          return a.y - b.y;
+          let aAngle = a.angle;
+          let bAngle = b.angle;
+          if (showSide === 'left') {
+            // 是否在第一象限
+            aAngle = isFirstQuadrant(aAngle) ? aAngle + Math.PI * 2 : aAngle;
+            bAngle = isFirstQuadrant(bAngle) ? bAngle + Math.PI * 2 : bAngle;
+            return bAngle - aAngle;
+          } else {
+            // 是否在第四象限
+            aAngle = isFourthQuadrant(aAngle) ? aAngle - Math.PI * 2 : aAngle;
+            bAngle = isFourthQuadrant(bAngle) ? bAngle - Math.PI * 2 : bAngle;
+            return aAngle - bAngle;
+          }
         });
 
-        labels = labels.concat(half);
+        const pointsY = half.map((label) => label.y);
+        const maxY = Math.max.apply(null, pointsY);
+        const minY = Math.min.apply(null, pointsY);
+
+        // 每个 label 占用的高度
+        const labelCount = half.length;
+        const labelHeight = coordHeight / labelCount;
+        const halfLabelHeight = labelHeight / 2;
+        // 线之间的间隔
+        const lineInterval = 2;
+
+        if (showSide === 'left') {
+          half.forEach((label, index) => {
+            const { anchor, inflection, angle, x, y } = label;
+
+            const points = [anchor, inflection];
+            const endX = coordLeft;
+            const endY = coordTop + halfLabelHeight + labelHeight * index;
+
+            // 文本开始点
+            const labelStart = {
+              x: endX + labelWidth + lineInterval * index,
+              y: endY,
+            };
+            // 文本结束点
+            const labelEnd = { x: endX, y: endY };
+
+            // 第四象限
+            if (isFirstQuadrant(angle)) {
+              const pointY = minY - lineInterval * (labelCount - index);
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            } else if (isThirdQuadrant(angle) || isFourthQuadrant(angle)) {
+              points.push({ x: labelStart.x, y });
+            } else if (isSecondQuadrant(angle)) {
+              const pointY = maxY + lineInterval * index;
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            }
+
+            points.push(labelStart);
+            points.push(labelEnd);
+
+            label.points = points;
+            label.side = showSide;
+
+            labels.push(label);
+          });
+        } else {
+          half.forEach((label, index) => {
+            const { anchor, inflection, angle, x, y } = label;
+
+            // 折线的点
+            const points = [anchor, inflection];
+            const endX = coordRight;
+            const endY = coordTop + halfLabelHeight + labelHeight * index;
+
+            // 文本开始点
+            const labelStart = {
+              x: endX - labelWidth - lineInterval * index,
+              y: endY,
+            };
+            // 文本结束点
+            const labelEnd = { x: endX, y: endY };
+
+            // 第四象限
+            if (isFourthQuadrant(angle)) {
+              const pointY = minY - lineInterval * (labelCount - index);
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            } else if (isFirstQuadrant(angle) || isSecondQuadrant(angle)) {
+              points.push({ x: labelStart.x, y });
+            } else if (isThirdQuadrant(angle)) {
+              const pointY = maxY + lineInterval * index;
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            }
+
+            points.push(labelStart);
+            points.push(labelEnd);
+
+            label.points = points;
+            label.side = showSide;
+            labels.push(label);
+          });
+        }
       });
 
       return labels;
@@ -197,14 +315,16 @@ export default (View) => {
     _initEvent() {
       const { context, props } = this;
       const { canvas } = context;
-      const { triggerOn } = props;
+      const { triggerOn = DEFAULT_CONFIG.triggerOn } = props;
 
       canvas.on(triggerOn, this._handleEvent);
     }
 
     render() {
-      const labels = this.getLabels();
-      return <View labels={labels} {...this.props} triggerRef={this.triggerRef} />;
+      const { context } = this;
+      const props = context.px2hd(deepMix({}, DEFAULT_CONFIG, this.props));
+      const labels = this.getLabels(props);
+      return <View labels={labels} {...props} triggerRef={this.triggerRef} />;
     }
   };
 };

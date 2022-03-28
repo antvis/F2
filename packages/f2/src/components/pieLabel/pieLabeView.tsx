@@ -1,48 +1,23 @@
 import { jsx } from '../../jsx';
 
-export default (props, context) => {
-  const {
-    sidePadding,
-    // adjustOffset,
-    lineStyle,
-    anchorStyle,
-    labels,
-    label1OffsetY,
-    label2OffsetY,
-    triggerRef,
-  } = props;
-
-  const defaultTextAttrs = {
-    x: 0,
-    y: 0,
-    fontSize: '24px',
-    lineHeight: '24px',
-    fill: '#808080',
-  };
+export default (props) => {
+  const { lineStyle, anchorStyle, labels, label1OffsetY, label2OffsetY, triggerRef } = props;
 
   return (
     <group ref={triggerRef}>
       {labels.map((label) => {
-        const { y, fill, _inflection, _anchor, origin, label1, label2 } = label;
-        const lastPoint = {
-          x: label._side === 'left' ? sidePadding : context.width - sidePadding,
-          y,
-        };
+        const { origin, anchor, side, color, label1, label2, points } = label;
+        const end = points[points.length - 1];
 
-        const textAttrs = {
-          textAlign: label._side === 'left' ? 'left' : 'right',
-          x: label._side === 'left' ? sidePadding : context.width - sidePadding,
-        };
-        const points = [_anchor, _inflection, lastPoint];
         return (
           <group>
             {/* 锚点 */}
             <circle
               attrs={{
-                r: 2,
-                x: _anchor.x,
-                y: _anchor.y,
-                fill,
+                r: '4px',
+                x: anchor.x,
+                y: anchor.y,
+                fill: color,
                 ...anchorStyle,
               }}
             />
@@ -50,8 +25,8 @@ export default (props, context) => {
             <polyline
               attrs={{
                 points,
-                lineWidth: 1,
-                stroke: fill,
+                lineWidth: '2px',
+                stroke: color,
                 ...lineStyle,
               }}
             />
@@ -59,10 +34,13 @@ export default (props, context) => {
             <text
               className="click"
               attrs={{
-                ...defaultTextAttrs,
+                x: end.x,
+                y: end.y + label1OffsetY,
+                fontSize: '24px',
+                lineHeight: '24px',
+                fill: color,
                 textBaseline: 'bottom',
-                y: y + label1OffsetY,
-                ...textAttrs,
+                textAlign: side === 'left' ? 'left' : 'right',
                 ...label1,
               }}
               data={origin}
@@ -71,10 +49,13 @@ export default (props, context) => {
             <text
               className="click"
               attrs={{
-                ...defaultTextAttrs,
+                x: end.x,
+                y: end.y + label2OffsetY,
+                fontSize: '24px',
+                lineHeight: '24px',
+                fill: '#808080',
                 textBaseline: 'top',
-                y: y + label2OffsetY,
-                ...textAttrs,
+                textAlign: side === 'left' ? 'left' : 'right',
                 ...label2,
               }}
               data={origin}
