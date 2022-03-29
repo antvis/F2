@@ -14,6 +14,6 @@ import { jsx as createElement } from './jsx';
 import { renderShape } from './base/diff'
 
 export * from './components';
-export { jsx, render } from './jsx';
+export { jsx, render, Fragment } from './jsx';
 export { default as createRef } from './createRef';
 export { Children, createElement, Component, Timeline, Canvas, Chart, renderShape };

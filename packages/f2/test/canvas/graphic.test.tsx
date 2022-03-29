@@ -1,6 +1,5 @@
-import { jsx, Canvas, Component } from '../../src';
+import { jsx, Canvas, Fragment, Component } from '../../src';
 import { createContext, delay } from '../util';
-const context = createContext();
 
 function View() {
   return (
@@ -38,12 +37,76 @@ function View() {
   );
 }
 
+function FragFunction() {
+  return (
+    <>
+      <rect
+        attrs={{
+          x: '10px',
+          y: '10px',
+          width: '80px',
+          height: '80px',
+          fill: 'red',
+        }}
+      />
+    </>
+  );
+}
+
+class FragComponent extends Component {
+  render() {
+    return (
+      <>
+        <rect
+          attrs={{
+            x: '10px',
+            y: '10px',
+            width: '80px',
+            height: '80px',
+            fill: 'red',
+          }}
+        />
+      </>
+    );
+  }
+}
+
 describe('Canvas', () => {
   it('图形绘制', async () => {
-    const ref = { current: null };
+    const context = createContext();
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} animate={false} pixelRatio={1}>
         <View />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('Fragment Function', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <FragFunction />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('Fragment Component', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <FragComponent />
       </Canvas>
     );
 
