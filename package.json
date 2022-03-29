@@ -63,6 +63,7 @@
     "site:develop": "cd ./packages/site && npm run site:develop",
     "site:build": "cd ./packages/site && npm run site:build",
     "site:deploy": "cd ./packages/site && npm run site:deploy",
+    "site:clean": "cd ./packages/site && npm run site:clean",
     "prettier": "prettier --write './packages/**/*.{ts,tsx}'"
   },
   "pre-commit": {

@@ -3,6 +3,7 @@
   "version": "4.0.11",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "unpkg": "dist/index.min.js",
   "types": "es/index.d.ts",
   "miniprogram": "dist",
   "keywords": [

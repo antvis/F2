@@ -197,6 +197,12 @@ module.exports = {
           </div>
         </div>
       `,
+      json: {
+        // riddle 需要添加如下配置
+        gravity: {
+          gmap: { '@antv/f2': '@antv/f2/dist/index.min.js' },
+        },
+      },
     },
     docsearchOptions: {
       apiKey: '349619374e9488b3f000714317d67381',
