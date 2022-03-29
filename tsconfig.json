@@ -13,8 +13,6 @@
   },
   "exclude": [
     "scripts",
-    "node_modules",
-    "**/test/**/*.ts",
-    "**/test/**/*.tsx",
+    "node_modules"
   ]
 }
