@@ -49,6 +49,10 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 | `shadowOffsetY` | Number | 描述阴影垂直偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY)。 |
 | `opacity` | Number | 设置图形和图片透明度的属性，默认值是 1。 数值的范围从 0.0 （完全透明）到 1.0 （完全不透明）。 |
 
+### 演示
+
+<playground path="docs/shape/demo/shape.jsx"></playground>
+
 ## group
 
 包含一组图形
@@ -227,6 +231,8 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 | **属性名** | **类型** | **描述** |
 | --- | --- | --- |
+| `x` | Number | 文本位置 |
+| `y` | Number | 文本位置 |
 | `text` | String | 文本内容 |
 | `textAlign` | String | 设置文本内容的当前对齐方式, 支持的属性：'start', 'center', 'end', 'left', 'right' |
 | `textBaseline` | String | 设置在绘制文本时使用的当前文本基线, 支持的属性：'top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom' |
@@ -242,7 +248,7 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 ```jsx
 <text
   attrs={{
-    text: '文本内容',
+    text: '文本',
     fontSize: 20,
     fill: '#000',
   }}
