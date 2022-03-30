@@ -52,4 +52,51 @@ const data = [
 
 ### style
 
-图例样式
+定义 Legend 的布局方式
+
+| **属性名** | **类型** | **描述** |
+| --- | --- | --- |
+| `flexDirection` | String | 支持的属性：'column', 'row' |
+| `justifyContent` | String | 支持的属性：'flex-start', 'center', 'flex-end', 'space-between', 'space-around' |
+| `alignItems` | String | 支持的属性： 'flex-start', 'center', 'flex-end', 'stretch' |
+| `alignSelf` | String | 支持的属性： 'flex-start', 'center', 'flex-end', 'stretch' |
+| `flexWrap` | String | 支持的属性：'wrap', 'nowrap' |
+
+```jsx
+<Legend
+  style={{
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+  }}
+/>
+```
+
+### nameStyle
+
+> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+
+图例名称样式
+
+```jsx
+<Legend
+  nameStyle={{
+    fontSize: '20px',
+    fill: '#000',
+  }}
+/>
+```
+
+### valueStyle
+
+> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+
+图例值样式
+
+```jsx
+<Legend
+  valueStyle={{
+    fontSize: '20px',
+    fill: '#000',
+  }}
+/>
+```

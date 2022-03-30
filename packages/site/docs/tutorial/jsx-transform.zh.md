@@ -1,6 +1,6 @@
 ---
 title: 配置 jsx transform
-order: 9
+order: 10
 ---
 
 F2 使用 JSX 语法来构建图表，所以需要在运行前对 JSX 语法进行编译， JSX 更多细节可参考 React 的官方文档 [JSX 简介](https://zh-hans.reactjs.org/docs/introducing-jsx.html)

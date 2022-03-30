@@ -1,6 +1,6 @@
 ---
 title: 组件介绍 - Component
-order: 8
+order: 9
 ---
 
 组件结构基本保持和 React 一致，如果你了解 React ，相信你一看就会
