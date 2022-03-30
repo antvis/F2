@@ -1,6 +1,6 @@
 ---
-title: 图形定义 - JSX
-order: 7
+title: 图形使用 - JSX
+order: 8
 ---
 
 在 F2 里，可以利用 JSX 方便的构建图形，和图形动画，图形属性可使用[绘图属性](shape-attrs)里的所有属性，动画可定义 `appear`, `update`, `leave` 3 个阶段的不同动画

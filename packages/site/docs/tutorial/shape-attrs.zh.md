@@ -1,6 +1,6 @@
 ---
 title: 绘图属性 - ShapeAttrs
-order: 6
+order: 7
 ---
 
 F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引擎。本篇列出了常见的绘图属性，更多关于绘图以及绘图属性的使用请至 [G](https://g.antv.vision/zh/) 中查看。
