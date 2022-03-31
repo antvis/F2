@@ -1,9 +1,7 @@
 /** @jsx jsx */
 import { jsx, Canvas } from '@antv/f2';
 
-const canvasEl = document.createElement('canvas');
-document.getElementById('container').appendChild(canvasEl);
-const context = canvasEl.getContext('2d');
+const context = document.getElementById('container').getContext('2d');
 
 const Shape = () => {
   return (
