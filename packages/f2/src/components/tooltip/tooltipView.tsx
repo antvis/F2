@@ -172,7 +172,7 @@ export default class TooltipView extends Component {
   }
   render() {
     const { props, context } = this;
-    const { records, point, coord } = props;
+    const { records, coord } = props;
     const {
       left: coordLeft,
       top: coordTop,
@@ -181,7 +181,7 @@ export default class TooltipView extends Component {
       // width: coordWidth,
     } = coord;
     const firstRecord = records[0];
-    const { x, y } = point;
+    const { x, y } = firstRecord;
     const { name: xFirstText, value: yFirstText } = firstRecord;
     const {
       background: customBackground,

@@ -1,11 +1,61 @@
 import { jsx } from '../../jsx';
 import { isArray, isFunction, find } from '@antv/util';
 import Component from '../../base/component';
+import equal from '../../base/equal';
+import { DataRecord, px, TextAttrs, LineAttrs, RectAttrs } from '../../types';
+import { ChartChildProps } from '../../chart';
+
+export interface TooltipProps extends ChartChildProps {
+  /**
+   * 顶部边距
+   */
+  padding?: px;
+  /**
+   * 显示事件名，默认为 press, 可以为 touchstart 等
+   */
+  triggerOn?: string;
+  /**
+   * 消失的事件名，默认为 pressend, 可以为 touchend 等
+   */
+  triggerOff?: string;
+  /**
+   * 是否一直显示
+   */
+  alwaysShow?: boolean;
+  /**
+   * 是否显示十字线
+   */
+  showCrosshairs?: boolean;
+  /**
+   * 十字线类型
+   */
+  crosshairsType?: 'x' | 'y' | 'xy';
+  /**
+   * 十字线样式
+   */
+  crosshairsStyle?: LineAttrs;
+  snap?: boolean;
+  /**
+   * 名称样式
+   */
+  nameStyle?: TextAttrs;
+  /**
+   * 值样式
+   */
+  valueStyle?: TextAttrs;
+  /**
+   * 背景样式
+   */
+  background?: RectAttrs;
+}
+
+export interface TooltipState {
+  records: DataRecord[];
+}
 
 export default (View) => {
-  return class Tooltip extends Component {
-    isPressEvent = false;
-    constructor(props) {
+  return class Tooltip extends Component<TooltipProps, TooltipState> {
+    constructor(props: TooltipProps) {
       super(props);
       this.state = {
         records: null,
@@ -28,23 +78,30 @@ export default (View) => {
       this._initEvent();
     }
 
-    didUpdate() {
-      // 主动触发的 press 等事件不需要重新执行 didUpdate
-      if (this.isPressEvent) {
-        // 重置
-        this.isPressEvent = false;
-        return;
+    willReceiveProps(nextProps) {
+      const { defaultItem: nextDefaultItem } = nextProps;
+      const { defaultItem: lastDefaultItem } = this.props;
+      if (!equal(nextDefaultItem, lastDefaultItem)) {
+        this._showByData(nextDefaultItem);
       }
-      this._initShow();
     }
 
     _initShow() {
       const { props } = this;
-      const { chart, defaultItem } = props;
+      const { defaultItem } = props;
       if (defaultItem) {
-        const point = chart.getPosition(defaultItem);
-        this.show(point);
+        this._showByData(defaultItem);
       }
+    }
+
+    _showByData(dataItem) {
+      const { props } = this;
+      const { chart } = props;
+      // 因为 tooltip 有可能在 geometry 之前，所以需要等 geometry render 完后再执行
+      setTimeout(() => {
+        const point = chart.getPosition(dataItem);
+        this.show(point);
+      }, 0);
     }
 
     _initEvent() {
@@ -54,7 +111,6 @@ export default (View) => {
 
       canvas.on(triggerOn, (ev) => {
         const { points } = ev;
-        this.isPressEvent = true;
         this.show(points[0]);
       });
 
@@ -67,17 +123,13 @@ export default (View) => {
 
     show(point) {
       const { props } = this;
-      const { chart, coord, onChange } = props;
+      const { chart, onChange } = props;
       const snapRecords = chart.getSnapRecords(point);
       if (!snapRecords || !snapRecords.length) return;
       const legendItems = chart.getLegendItems();
-      const { origin, xField, yField } = snapRecords[0];
+      const { xField, yField } = snapRecords[0];
       const xScale = chart.getScale(xField);
       const yScale = chart.getScale(yField);
-      const showPoint = coord.convertPoint({
-        x: xScale.scale(origin[xField]),
-        y: yScale.scale(origin[yField]),
-      });
 
       const records = snapRecords.map((record) => {
         const { origin, xField, yField } = record;
@@ -108,7 +160,6 @@ export default (View) => {
         return;
       }
       this.setState({
-        point: showPoint,
         records,
       });
       if (isFunction(onChange)) {
@@ -118,7 +169,6 @@ export default (View) => {
 
     hide() {
       this.setState({
-        point: null,
         records: null,
       });
     }
@@ -129,10 +179,10 @@ export default (View) => {
       if (visible === false) {
         return null;
       }
-      const { point, records } = state;
+      const { records } = state;
       if (!records || !records.length) return null;
 
-      return <View {...props} point={point} records={records} />;
+      return <View {...props} records={records} />;
     }
   };
 };

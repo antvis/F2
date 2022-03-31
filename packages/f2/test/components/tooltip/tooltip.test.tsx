@@ -164,11 +164,31 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('Tooltip 默认展示, tooltip 在 geometry 之前', async () => {
+    const context = createContext('Tooltip 默认展示, tooltip 在 geometry 之前');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Tooltip alwaysShow={true} defaultItem={data[0]} snap showCrosshairs />
+          <Interval x="genre" y="sold" color="genre" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('Tooltip 默认展示更新', async () => {
     const context = createContext('Tooltip 默认展示更新');
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
-        <Chart data={data}>
+        <Chart data={[...data]}>
           <Axis field="genre" />
           <Axis field="sold" />
           <Legend />
@@ -190,11 +210,11 @@ describe('tooltip', () => {
       </Chart>
     );
 
-    canvas.update({children: newChart});          
+    canvas.update({ children: newChart });
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });
-  
+
   it('Tooltip 不触发回调的情形', async () => {
     const context = createContext('Tooltip 不触发回调的情形');
     const onChangeMockCallback = jest.fn();
