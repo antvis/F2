@@ -51,7 +51,7 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 ### 演示
 
-<playground path="docs/shape/demo/shape.jsx"></playground>
+- [图形标签](/zh/examples/component/shape#shape)
 
 ## group
 
