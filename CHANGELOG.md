@@ -1,3 +1,28 @@
+#### 2022-04-02
+
+##### Chores
+
+*  添加 changelog script ([#1425](https://github.com/antvis/f2/pull/1425)) ([8b5df594](https://github.com/antvis/f2/commit/8b5df59496ccfc479a40260d69d3a333eb7b58ba))
+*  修改 issue 创建模板 ([#1426](https://github.com/antvis/f2/pull/1426)) ([b6854826](https://github.com/antvis/f2/commit/b685482659cad01f5d2fdf17900f5a1ac86ba0a4))
+*  去掉 npm next tag ([#1418](https://github.com/antvis/f2/pull/1418)) ([4c05e756](https://github.com/antvis/f2/commit/4c05e756d77f85ce6b47cfd463caf8fea26056c1))
+
+##### Documentation Changes
+
+*  调整 demo 的 shape 示例 ([#1428](https://github.com/antvis/f2/pull/1428)) ([1c7f7126](https://github.com/antvis/f2/commit/1c7f7126a712e10a60d674dca7708861a2706abf))
+*  文档里添加 playground 代码演示 ([#1427](https://github.com/antvis/f2/pull/1427)) ([34c79416](https://github.com/antvis/f2/commit/34c794167cf11f1c7aff7603ecb7d38818cd63bb))
+*  补全图形标签文档 ([#1424](https://github.com/antvis/f2/pull/1424)) ([e94601d0](https://github.com/antvis/f2/commit/e94601d015c919c60846a814041d37458154b1df))
+
+##### New Features
+
+*  添加 F2 jsx 版本的 apple-watch ([#1423](https://github.com/antvis/f2/pull/1423)) ([38b32023](https://github.com/antvis/f2/commit/38b3202398493795bd419eb26a6703edc5c27564))
+
+##### Bug Fixes
+
+*  tooltip 在 geometry 之前显示时，位置不对 ([#1429](https://github.com/antvis/f2/pull/1429)) ([d6f6f614](https://github.com/antvis/f2/commit/d6f6f6147fd6a8d670f94527bd311816e5d78deb))
+*  fragment 类型标签 ([#1422](https://github.com/antvis/f2/pull/1422)) ([28bcc8d4](https://github.com/antvis/f2/commit/28bcc8d4351b1a9634e2f5fed6f2d2324f0aa60d))
+*  修复单测文件 ts 类型报错 ([#1420](https://github.com/antvis/f2/pull/1420)) ([355f3ec5](https://github.com/antvis/f2/commit/355f3ec512e42f9272c72c16e345b97712478c48))
+*  官网 demo riddle 打开时报错 ([#1419](https://github.com/antvis/f2/pull/1419)) ([998eddca](https://github.com/antvis/f2/commit/998eddcad13ef4fb132a3337cbf0a69e147adcef))
+
 #### 3.8.9 (2021-06-03)
 
 ##### New Features
