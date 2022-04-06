@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "custom.jsx",
+      "title": "自定义图例",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f2904dad-1828-45a9-aacd-d1a3f623cddd.png"
+    }
+  ]
+}
