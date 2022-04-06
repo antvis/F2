@@ -52,14 +52,21 @@ module.exports = {
         },
         order: 4,
       },
-
+      {
+        slug: 'tutorial/advanced',
+        title: {
+          zh: '进阶 - Advanced',
+          en: 'Advanced',
+        },
+        order: 80,
+      },
       {
         slug: 'tutorial/question',
         title: {
           zh: '常见问题 - Question',
           en: 'Question',
         },
-        order: 20,
+        order: 90,
       },
     ],
     examples: [
