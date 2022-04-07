@@ -47,6 +47,8 @@ describe('empty data', () => {
 
     expect(canvas.container.get('children').length).toBe(1);
     expect(canvas.container.get('children')[0].get('children').length).toBe(0);
+
+    canvas.destroy();
   });
 
   it('data array is empty', async () => {

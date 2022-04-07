@@ -9,7 +9,7 @@ registerTickMethod('time-cat', CatTick);
 // 覆盖linear 度量的tick算法
 registerTickMethod('wilkinson-extended', LinearTick);
 
-export type ScaleOption = { type?: string } & ScaleConfig;
+export type ScaleOption = { type?: string; justifyContent?: boolean } & ScaleConfig;
 
 class ScaleController {
   // eslint-disable-next-line
@@ -40,7 +40,7 @@ class ScaleController {
   }
 
   private _getOption(option: ScaleOption) {
-    const { values, field } = option;
+    const { values, field, justifyContent } = option;
     const type = this._getType(option);
 
     option.type = type;
@@ -77,10 +77,14 @@ class ScaleController {
       // 如果只有一项，显示在中间
       if (count === 1) {
         range = [0.5, 1];
-      } else {
-        // 前后都留半个 1 / count
+      } else if (justifyContent) {
+        // 居中
         const offset = (1 / count) * 0.5;
         range = [offset, 1 - offset];
+      } else {
+        // 最后留 1 / count
+        const offset = 1 / count;
+        range = [0, 1 - offset];
       }
       option.range = range;
     }

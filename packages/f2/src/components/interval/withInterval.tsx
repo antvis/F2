@@ -8,6 +8,7 @@ export default (Views) => {
     getDefaultCfg() {
       return {
         geomType: 'interval',
+        justifyContent: true,
         startOnZero: true,
       };
     }

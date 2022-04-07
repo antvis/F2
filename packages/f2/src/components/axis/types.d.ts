@@ -1,6 +1,6 @@
 import { LineAttrs, TextAttrs } from '../../types';
 import Coord from '../../coord';
-import Chart from '../../chart';
+import { ChartChildProps } from '../../chart';
 
 interface TickLine extends LineAttrs {
   length?: number; // tick line 的长度
@@ -45,6 +45,7 @@ export interface Tick {
   tickValue: string | number;
   labelStyle?: Text;
   gridStyle?: LineAttrs;
+  gridPoints?: Point[];
 }
 
 type PolarCord = Pick<Coord, 'center'>;
@@ -62,6 +63,8 @@ export interface PolarProps {
   coord?: PolarCord;
   style?: Style;
   animation?: any;
+  grid?: 'line' | 'arc';
+  gridPoints?: Point[][];
 }
 
 export class RectOrPolarCoord<T extends boolean> extends Coord {
@@ -84,7 +87,7 @@ export interface PolarAxisProps {
   animation?: any;
 }
 
-export interface AxisProps {
+export interface AxisProps extends ChartChildProps {
   /**
    * 映射的字段名称
    */
@@ -98,18 +101,8 @@ export interface AxisProps {
    * 坐标轴样式定制
    */
   style?: StyleProps;
-  /**
-   * note: 作为 `<Chart />` 子元素时将自动注入
-   */
-  chart?: Chart;
-  /**
-   * note: 作为 `<Chart />` 子元素时将自动注入
-   */
-  coord?: Coord;
-  /**
-   * note: 作为 `<Chart />` 子元素时将自动注入
-   */
-  zoomRange?: [number, number];
+  // 网格线类型
+  grid?: 'arc' | 'line';
   [key: string]: any; // TODO
 }
 
