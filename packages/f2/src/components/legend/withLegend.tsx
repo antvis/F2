@@ -97,12 +97,8 @@ export default (View) => {
 
     getItems() {
       const { props, state } = this;
-      const { items, filtered } = state;
-      const renderItems = items?.length
-        ? items
-        : props.items?.length
-        ? props.items
-        : this.getOriginItems();
+      const { filtered } = state;
+      const renderItems = props.items?.length ? props.items : this.getOriginItems();
       if (!renderItems) return null;
       return renderItems.map((item) => {
         const { tickValue } = item;
@@ -277,12 +273,6 @@ export default (View) => {
         chart.filter(field, (value) => {
           return !filtered[value];
         });
-      });
-    }
-
-    setItems(items) {
-      this.setState({
-        items,
       });
     }
 
