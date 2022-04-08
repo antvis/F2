@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Area } from '../../../src';
-import { Line, Point, Axis, Legend } from '../../../src/components';
+import { Line, Point, Axis } from '../../../src/components';
 import { createContext, delay } from '../../util';
 
 const data = [
@@ -94,6 +94,27 @@ describe('雷达图', () => {
           <Chart data={data} coord="polar">
             <Axis field="item" />
             <Axis field="score" />
+            <Line x="item" y="score" color="user" />
+            <Area x="item" y="score" color="user" />
+            <Point x="item" y="score" color="user" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('雷达图 grid 为 line', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data} coord="polar">
+            <Axis field="item" grid="line" />
+            <Axis field="score" grid="line" />
             <Line x="item" y="score" color="user" />
             <Area x="item" y="score" color="user" />
             <Point x="item" y="score" color="user" />

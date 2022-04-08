@@ -3,21 +3,32 @@ import { Vector2 } from '@antv/f2-graphic';
 import { PolarProps } from '../types';
 
 export default (props: PolarProps) => {
-  const { ticks, coord, style } = props;
+  const { ticks, coord, style, grid: gridType } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
   return (
     <group>
       {grid
         ? ticks.map((tick) => {
-            const { points, gridStyle } = tick;
+            const { points, gridStyle, gridPoints } = tick;
             const end = points[points.length - 1];
+            if (gridType !== 'line') {
+              return (
+                <arc
+                  attrs={{
+                    x: center.x,
+                    y: center.y,
+                    r: Vector2.length([end.x - center.x, end.y - center.y]),
+                    ...grid,
+                    ...gridStyle,
+                  }}
+                />
+              );
+            }
             return (
-              <arc
+              <polyline
                 attrs={{
-                  x: center.x,
-                  y: center.y,
-                  r: Vector2.length([end.x - center.x, end.y - center.y]),
+                  points: gridPoints,
                   ...grid,
                   ...gridStyle,
                 }}

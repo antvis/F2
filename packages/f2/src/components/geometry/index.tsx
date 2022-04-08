@@ -24,6 +24,8 @@ class Geometry<
   dataArray: any;
   records: any[];
   mappedArray: any;
+  // x 轴居中
+  justifyContent = false;
   // y 轴是否从0开始
   startOnZero = false;
   // 是否连接空值
@@ -43,24 +45,26 @@ class Geometry<
     super(props, context);
     mix(this, this.getDefaultCfg());
 
-    const { chart } = props;
+    const { chart, coord } = props;
 
     const attrsRange = this._getThemeAttrsRange();
     this.attrController = new AttrController(chart.scale, attrsRange);
-    const { attrController } = this;
+    const { attrController, justifyContent } = this;
 
-    const attrOptions = attrController.getAttrOptions(props);
+    const attrOptions = attrController.getAttrOptions(props, !coord.isCyclic() || justifyContent);
     attrController.create(attrOptions);
   }
 
   willReceiveProps(nextProps) {
     super.willReceiveProps(nextProps);
-    const { props: lastProps, attrController } = this;
-    const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange } = nextProps;
+    const { props: lastProps, attrController, justifyContent } = this;
+    const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange, coord } = nextProps;
     const { data: lastData, adjust: lastAdjust, zoomRange: lastZoomRange } = lastProps;
 
-    const nextAttrOptions = attrController.getAttrOptions(nextProps);
-    const lastAttrOptions = attrController.getAttrOptions(lastProps);
+    const justifyContentCenter = !coord.isCyclic() || justifyContent;
+
+    const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
+    const lastAttrOptions = attrController.getAttrOptions(lastProps, justifyContentCenter);
     if (!equal(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
       this.records = null;

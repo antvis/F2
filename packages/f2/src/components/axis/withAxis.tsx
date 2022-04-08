@@ -108,6 +108,42 @@ export default (View) => {
 
       // 设置tick的样式
       ticks = this._setTicksStyle(ticks);
+      ticks = this._generateGridPoints(ticks);
+      return ticks;
+    }
+
+    /**
+     * 生成极坐标下网格线的交叉点
+     * @param ticks
+     * @returns
+     */
+    _generateGridPoints(ticks) {
+      const { props } = this;
+      const { chart, coord } = props;
+
+      if (!coord.isPolar) {
+        return ticks;
+      }
+      const dimType = this._getDimType();
+      // 只需要在 y 的时候生成
+      if (dimType !== 'y') {
+        return ticks;
+      }
+      const xScale = chart.getXScales()[0];
+      const xTicks = xScale.getTicks();
+      ticks.forEach((tick) => {
+        const gridPoints = xTicks.map((xTick) => {
+          return coord.convertPoint({
+            x: xTick.value,
+            y: tick.value,
+          });
+        });
+
+        // 添加第 1 个点，形成环状
+        gridPoints.push(gridPoints[0]);
+        tick.gridPoints = gridPoints;
+      });
+
       return ticks;
     }
 

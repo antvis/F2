@@ -50,8 +50,39 @@ function getTextAlignInfo(center, point) {
   };
 }
 
+const Line = (props) => {
+  const { line, gridType, center, radius, ticks } = props;
+  if (!line) return null;
+  if (gridType !== 'line') {
+    return (
+      <arc
+        attrs={{
+          x: center.x,
+          y: center.y,
+          r: radius,
+          ...line,
+        }}
+      />
+    );
+  }
+  const points = ticks.map((tick) => {
+    const { points } = tick;
+    return points[points.length - 1];
+  });
+  // 头尾相连
+  points.push(points[0]);
+  return (
+    <polyline
+      attrs={{
+        points,
+        ...line,
+      }}
+    />
+  );
+};
+
 export default (props: PolarProps) => {
-  const { ticks, coord, style } = props;
+  const { ticks, coord, style, grid: gridType } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
@@ -98,16 +129,7 @@ export default (props: PolarProps) => {
             );
           })
         : null}
-      {line ? (
-        <arc
-          attrs={{
-            x: center.x,
-            y: center.y,
-            r: radius,
-            ...line,
-          }}
-        />
-      ) : null}
+      <Line line={line} gridType={gridType} center={center} radius={radius} ticks={ticks} />
       {label
         ? ticks.map((tick) => {
             const { points, text, labelStyle } = tick;

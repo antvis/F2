@@ -80,7 +80,7 @@ class AttrController {
     return option;
   }
 
-  getAttrOptions(props) {
+  getAttrOptions(props, justifyContentCenter: boolean) {
     if (!props.x || !props.y) {
       throw new Error('x, y are required !');
     }
@@ -96,6 +96,8 @@ class AttrController {
     });
     // @ts-ignore
     const { x, y } = options;
+
+    x.justifyContent = justifyContentCenter;
 
     // x, y 都是固定Linear 映射
     x.type = Linear;
@@ -173,9 +175,9 @@ class AttrController {
       if (equal(nextOption, lastOption)) {
         nextAttrs[attrName] = lastAttrs[attrName];
       }
-      const { field } = nextOption;
+      const { field, justifyContent } = nextOption;
       if (field) {
-        scaleController.setScale(field);
+        scaleController.setScale(field, { justifyContent });
       }
     });
     this.options = nextOptions;

@@ -34,6 +34,49 @@ const data = [
 
 ## Props
 
+### visible: boolean
+
+是否显示，默认为 `true`
+
 ### field: string
 
 坐标轴的数据字段
+
+### position: string
+
+坐标轴显示的位置：`'top' | 'right' | 'bottom' | 'left'`
+
+### grid: string
+
+网格线类型：可选值为：`'arc' | 'line'`
+
+### style
+
+坐标轴的样式配置
+
+#### style.label: TextAttr | Function
+
+> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性) 文本样式文本样式
+
+#### style.tickLine
+
+```js
+{
+  tickLine: {
+    // 刻度线长度
+    length: 10,
+  }
+}
+```
+
+#### style.line
+
+> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
+
+轴线样式
+
+#### style.grid
+
+> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
+
+网格线样式
