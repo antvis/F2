@@ -111,7 +111,7 @@ export default (View) => {
 
       canvas.on(triggerOn, (ev) => {
         const { points } = ev;
-        this.show(points[0]);
+        this.show(points[0], ev);
       });
 
       canvas.on(triggerOff, (_ev) => {
@@ -121,7 +121,7 @@ export default (View) => {
       });
     }
 
-    show(point) {
+    show(point, _ev?) {
       const { props } = this;
       const { chart, onChange } = props;
       const snapRecords = chart.getSnapRecords(point);

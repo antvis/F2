@@ -508,9 +508,9 @@ class Geometry<
     const yScale = this.getYScale();
 
     // 如果不在coord坐标范围内，直接返回空
-    if (invertPoint.x < 0 || invertPoint.y < 0) {
-      return [];
-    }
+    // if (invertPoint.x < 0 || invertPoint.y < 0) {
+    //   return [];
+    // }
 
     const records = this.flatRecords();
 
