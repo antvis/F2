@@ -10,13 +10,15 @@ type PointGuideProps = {
   theme?: any;
 };
 
-export default (props: PointGuideProps) => {
+export default (props: PointGuideProps, context) => {
   const { theme } = props;
   const { points, style, offsetX, offsetY, animation } = deepMix({ ...theme.point }, props);
   const { x, y } = points[0] || {};
 
-  const posX = x + (offsetX || 0);
-  const posY = y + (offsetY || 0);
+  const offsetXNum = context.px2hd(offsetX);
+  const offsetYNum = context.px2hd(offsetY);
+  const posX = x + (offsetXNum || 0);
+  const posY = y + (offsetYNum || 0);
 
   return (
     <group>

@@ -54,7 +54,7 @@ const defaultStyle = {
   },
 };
 
-export default (props: TagGuideProps) => {
+export default (props: TagGuideProps, context) => {
   const cfg = { ...defaultProps, ...props };
   const {
     points,
@@ -73,8 +73,10 @@ export default (props: TagGuideProps) => {
   const { x, y } = points[0] || {};
   const { width: guideWidth, height: guideHeight } = guideBBox || {};
 
-  let posX = x + (offsetX || 0);
-  let posY = y + (offsetY || 0);
+  const offsetXNum = context.px2hd(offsetX);
+  const offsetYNum = context.px2hd(offsetY);
+  let posX = x + (offsetXNum || 0);
+  let posY = y + (offsetYNum || 0);
 
   const _getDirect = (point) => {
     let newDirect = direct;

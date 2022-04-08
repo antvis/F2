@@ -41,8 +41,8 @@ describe('Guide ', () => {
                   fill: '#000',
                   fontSize: '24px',
                 }}
-                offsetY={-20}
-                offsetX={-15}
+                offsetY="-40px"
+                offsetX="-30px"
               />
             );
           })}
@@ -60,7 +60,8 @@ describe('Guide ', () => {
                   height: 24,
                   width: 24,
                 }}
-                offsetY={-4}
+                offsetX="0px"
+                offsetY="-8px"
               />
             );
           })}
@@ -87,7 +88,7 @@ describe('Guide ', () => {
           {/* 折线 */}
           <Line x="genre" y="sold" color="type" />
           {data.map((item) => {
-            return <PointGuide records={[item]} />;
+            return <PointGuide records={[item]} offsetX="0px" offsetY="0px" />;
           })}
         </Chart>
       </Canvas>
@@ -116,7 +117,7 @@ describe('Guide ', () => {
                   { genre: item.genre, sold: 'min' },
                   { genre: item.genre, sold: item.sold },
                 ]}
-                offsetY={[60, 0]}
+                offsetY={['120px', 0]}
               />
             );
           })}
@@ -256,7 +257,6 @@ describe('Guide ', () => {
                   fontSize: '24px',
                 }}
                 animation={(points, props) => {
-
                   return {
                     appear: {
                       easing: 'quinticIn',

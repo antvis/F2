@@ -22,13 +22,16 @@ const baseAttrs = {
   width: '20px',
 };
 
-export default (props: ImageGuideProps) => {
+export default (props: ImageGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
   const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = attrs;
-  const posX = x + (offsetX || 0) - height / 2;
-  const posY = y + (offsetY || 0) - width / 2;
+
+  const offsetXNum = context.px2hd(offsetX);
+  const offsetYNum = context.px2hd(offsetY);
+  const posX = x + (offsetXNum || 0) - height / 2;
+  const posY = y + (offsetYNum || 0) - width / 2;
 
   return (
     <group style={style}>
