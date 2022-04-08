@@ -235,4 +235,101 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
   });
+
+  it('图例数据更新', async () => {
+    const data = [
+      {
+        name: '芳华',
+        percent: 0.4,
+        a: '1',
+      },
+      {
+        name: '妖猫传',
+        percent: 0.2,
+        a: '1',
+      },
+      {
+        name: '机器之血',
+        percent: 0.18,
+        a: '1',
+      },
+      {
+        name: '心理罪',
+        percent: 0.15,
+        a: '1',
+      },
+      {
+        name: '寻梦环游记',
+        percent: 0.05,
+        a: '1',
+      },
+      {
+        name: '其他',
+        percent: 0.02,
+        a: '1',
+      },
+    ];
+    const data1 = [
+      {
+        name: '妖猫传',
+        percent: 0.4,
+        a: '1',
+      },
+      {
+        name: '芳华',
+        percent: 0.2,
+        a: '1',
+      },
+      {
+        name: '机器之血',
+        percent: 0.18,
+        a: '1',
+      },
+      {
+        name: '心理罪',
+        percent: 0.15,
+        a: '1',
+      },
+      {
+        name: '寻梦环游记',
+        percent: 0.05,
+        a: '1',
+      },
+      {
+        name: '其他',
+        percent: 0.02,
+        a: '1',
+      },
+    ];
+    const context = createContext('图例数据更新');
+
+    const getProps = (data) => {
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            data={data}
+            coord={{
+              type: 'polar',
+              transposed: true,
+            }}
+            scale={{}}
+          >
+            <Interval x="a" y="percent" adjust="stack" color="name" animate={false} />
+            <Legend />
+          </Chart>
+        </Canvas>
+      );
+      return props;
+    };
+
+    const props = getProps(data);
+    const canvas = new Canvas(props);
+    canvas.render();
+    await delay(200);
+    expect(context).toMatchImageSnapshot();
+
+    const updateProps = getProps(data1);
+    canvas.update(updateProps);
+    expect(context).toMatchImageSnapshot();
+  });
 });
