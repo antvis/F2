@@ -73,6 +73,10 @@ export interface LegendProps {
    * 用于设置图例项的文本样式
    */
   valueStyle?: TextAttrs;
+  /**
+   * 是否可点击
+   */
+  clickable?: boolean;
 }
 
 export default (View) => {
@@ -233,7 +237,9 @@ export default (View) => {
     _initEvent() {
       const { context, props, container } = this;
       const { canvas } = context;
-      const { chart } = props;
+      const { chart, clickable = true } = props;
+
+      if (!clickable) return;
 
       // item 点击事件
       canvas.on('click', (ev) => {

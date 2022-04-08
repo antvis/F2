@@ -1,7 +1,7 @@
 import { clone, values } from '@antv/util';
 import { jsx, Component, Canvas, Chart, Tooltip, Geometry, Interval } from '../../../src';
 import { Line, Axis, Legend } from '../../../src/components';
-import { createContext, delay } from '../../util';
+import { createContext, delay, gestureSimulator } from '../../util';
 
 const { offsetWidth } = document.body;
 const height = offsetWidth * 0.75;
@@ -181,6 +181,57 @@ describe('图例', () => {
       canvas.render();
 
       await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+  });
+
+  describe('点击交互', () => {
+    const data = [
+      { genre: 'Sports', sold: 275 },
+      { genre: 'Strategy', sold: 115 },
+      { genre: 'Action', sold: 120 },
+    ];
+    it('可点击', async () => {
+      const context = createContext('可点击', {
+        height: '70px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(200);
+      expect(context).toMatchImageSnapshot();
+
+      await gestureSimulator(context.canvas, 'click', { x: 27, y: 20 });
+      await delay(200);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('不可点击', async () => {
+      const context = createContext('不可点击', {
+        height: '70px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend clickable={false} />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(200);
+      expect(context).toMatchImageSnapshot();
+
+      await gestureSimulator(context.canvas, 'click', { x: 27, y: 20 });
+      await delay(200);
       expect(context).toMatchImageSnapshot();
     });
   });
