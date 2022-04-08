@@ -11,12 +11,15 @@ type TextGuideProps = {
   theme?: any;
 };
 
-export default (props: TextGuideProps) => {
+export default (props: TextGuideProps, context) => {
   const { theme = {} } = props;
   const { points, style, offsetX, offsetY, content, animation } = deepMix({ ...theme.text }, props);
   const { x, y } = points[0] || {};
-  const posX = x + (offsetX || 0);
-  const posY = y + (offsetY || 0);
+
+  const offsetXNum = context.px2hd(offsetX);
+  const offsetYNum = context.px2hd(offsetY);
+  const posX = x + (offsetXNum || 0);
+  const posY = y + (offsetYNum || 0);
 
   return (
     <text
