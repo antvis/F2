@@ -87,10 +87,11 @@ export default (View) => {
         const { children } = record;
         // children 有可能为空
         const { size, color, shape, y } = children[0] || {};
-        const points = children;
-        if (coord.isPolar) {
-          points.push(points[0]);
-        }
+        // 极坐标时，需加入起点，从而闭合所绘图形
+        const points = coord.isPolar 
+        ? [...children, children[0]]
+        : children;
+
         const splitPoints = this.splitNulls(points, connectNulls);
 
         const newChildren = splitPoints.map((points) => {
