@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Area } from '../../../src';
-import { Line, Point, Axis } from '../../../src/components';
+import { Line, Point, Tooltip, Axis } from '../../../src/components';
 import { createContext, delay } from '../../util';
 
 const data = [
@@ -85,6 +85,34 @@ const data = [
   },
 ];
 
+const data1 = [
+  {
+    time: '10-01',
+    value: 10380,
+    name: '同行同层平均',
+  },
+  {
+    time: '12-02',
+    value: 15661,
+    name: '同行同层平均',
+  },
+  {
+    time: '12-03',
+    value: 13054,
+    name: '同行同层平均',
+  },
+  {
+    time: '12-04',
+    value: 12345,
+    name: '同行同层平均',
+  },
+  {
+    time: '12-05',
+    value: 13345,
+    name: '同行同层平均',
+  },
+];
+
 describe('雷达图', () => {
   describe('面积雷达图', () => {
     it('面积雷达图图', async () => {
@@ -128,5 +156,28 @@ describe('雷达图', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
+
+    it('雷达图 展示 Tooltip', async () => {
+      const context = createContext('Tooltip 默认展示');
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart
+            data={data1}
+            coord="polar"            
+          >
+            <Axis field="time" grid="line" />
+            <Axis field="value" grid="line" style={{label: {text: ''}}} />
+            <Line x="time" y="value" color="name" />
+            <Tooltip alwaysShow={true} defaultItem={data1[0]} snap />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });    
   });
 });
