@@ -18,6 +18,11 @@
       "filename": "radar-grid.jsx",
       "title": "雷达图-网格线",
       "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/f545cc7f-5335-463b-89a6-dc6b98645ced.png"
+    },
+    {
+      "filename": "radar-fill.jsx",
+      "title": "雷达图-网格背景",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/26d07051-d2d8-45f5-9a7a-1b8a878361f8.png"
     }
   ]
 }
