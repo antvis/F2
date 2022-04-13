@@ -109,6 +109,12 @@ export default (View) => {
       });
     }
 
+    setItems(items) {
+      this.setState({
+        items,
+      });
+    }
+
     getMaxItemBox(legendShape) {
       let maxItemWidth = 0;
       let maxItemHeight = 0;
