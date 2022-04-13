@@ -69,16 +69,20 @@ export default (View) => {
     getMaxBBox(ticks, style: Style): BBox {
       const { context } = this;
       const { measureText } = context;
-      const { labelOffset } = style;
+      const { label, labelOffset } = style;
 
       let width = 0;
       let height = 0;
       ticks.forEach((tick: Tick) => {
+        if (!label) return;
         const { labelStyle, text } = tick;
-        const bbox = measureText(text, { ...style.label, ...labelStyle });
+        const bbox = measureText(text, { ...label, ...labelStyle });
         width = Math.max(width, bbox.width);
         height = Math.max(height, bbox.height);
       });
+      if (!width && !height) {
+        return { width, height };
+      }
 
       const bbox = {
         width: width + labelOffset,
@@ -219,6 +223,7 @@ export default (View) => {
         if (dimType === 'y') {
           return null;
         }
+        console.log(bbox);
         // 4 个方向都需要留空
         return ['top', 'right', 'bottom', 'left'].map(
           (position: 'top' | 'right' | 'bottom' | 'left') => {

@@ -161,12 +161,9 @@ describe('雷达图', () => {
       const context = createContext('Tooltip 默认展示');
       const { props } = (
         <Canvas context={context} pixelRatio={1}>
-          <Chart
-            data={data1}
-            coord="polar"            
-          >
+          <Chart data={data1} coord="polar">
             <Axis field="time" grid="line" />
-            <Axis field="value" grid="line" style={{label: {text: ''}}} />
+            <Axis field="value" grid="line" style={{ label: null }} />
             <Line x="time" y="value" color="name" />
             <Tooltip alwaysShow={true} defaultItem={data1[0]} snap />
           </Chart>
@@ -178,6 +175,30 @@ describe('雷达图', () => {
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
-    });    
+    });
+
+    it('雷达图-label 为 null', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data} coord="polar">
+            <Axis
+              field="item"
+              style={{
+                label: null,
+              }}
+            />
+            <Axis field="score" />
+            <Line x="item" y="score" color="user" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
   });
 });
