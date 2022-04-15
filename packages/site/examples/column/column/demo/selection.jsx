@@ -36,6 +36,12 @@ const data = [
   },
 ];
 
+const delayCfg = {
+  data: data,
+  field: 'year',
+  delayUnit: 200,
+};
+
 const context = document.getElementById('container').getContext('2d');
 
 const { props } = (
@@ -56,7 +62,7 @@ const { props } = (
         animation={{
           update: {
             easing: 'linear',
-            duration: 200,
+            duration: 3000,
             property: ['x', 'y', 'width', 'height'],
           },
         }}
@@ -75,6 +81,7 @@ const { props } = (
             fillOpacity: 0.4,
           },
         }}
+        delayCfg={delayCfg}
       />
     </Chart>
   </Canvas>

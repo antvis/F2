@@ -94,6 +94,12 @@ const data = [
   },
 ];
 
+const delayCfg = {
+  data: data,
+  field: 'type',
+  delayUnit: 1200,
+};
+
 const context = document.getElementById('container').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -129,6 +135,7 @@ const { props } = (
           },
         }}
         color="type"
+        delayCfg={delayCfg}
       />
       <Legend position="top" />
     </Chart>

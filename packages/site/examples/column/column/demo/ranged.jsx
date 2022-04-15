@@ -36,13 +36,24 @@ const data = [
   },
 ];
 
+const delayCfg = {
+  data: data,
+  field: 'x',
+  delayUnit: 200,
+};
+
 const context = document.getElementById('container').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
     <Chart data={data}>
       <Axis field="x" />
       <Axis field="y" />
-      <Interval x="x" y="y" />
+      <Interval
+        x="x"
+        y="y"
+        animation={{ appear: { easing: 'elasticOut', duration: 3000 } }}
+        delayCfg={delayCfg}
+      />
     </Chart>
   </Canvas>
 );

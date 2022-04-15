@@ -2,6 +2,7 @@ import { jsx } from '../../jsx';
 import { mix, isNil, deepMix } from '@antv/util';
 import Geometry from '../geometry';
 import * as LabelViews from './label';
+import getDelayCfg from '../util';
 
 export default (Views) => {
   return class Interval extends Geometry {
@@ -84,6 +85,18 @@ export default (Views) => {
       return records;
     }
 
+    processDelayCfg(cfg) {
+      let _delayCfg = {};
+
+      if (cfg) {
+        const { scale: xScale } = this.attrs.x;
+        const { field } = xScale;
+        _delayCfg = getDelayCfg(cfg, field);
+      }
+
+      return _delayCfg;
+    }
+
     render() {
       const { props, state } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
@@ -102,6 +115,10 @@ export default (Views) => {
       const { selected } = state;
 
       const records = this.mapping();
+
+      const { delayCfg } = props;
+      const _delayCfg = this.processDelayCfg(delayCfg);
+
       return (
         <View
           coord={coord}
@@ -112,6 +129,7 @@ export default (Views) => {
           showLabel={showLabel}
           labelCfg={labelCfg}
           LabelView={LabelView}
+          delayCfg={_delayCfg}
         />
       );
     }

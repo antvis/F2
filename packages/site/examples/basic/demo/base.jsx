@@ -12,6 +12,19 @@ const data = [
   { genre: 'Other', sold: 150 },
 ];
 
+const animation = {
+  appear: {
+    easing: 'elasticOut',
+    duration: 1000,
+  },
+};
+
+const delayCfg = {
+  data: data,
+  field: 'genre',
+  delayUnit: 750,
+};
+
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
     <Chart data={data}>
@@ -19,7 +32,7 @@ const { props } = (
       <Axis field="genre" />
       <Axis field="sold" />
       <Tooltip showTooltipMarker={true} />
-      <Interval x="genre" y="sold" color="genre" />
+      <Interval x="genre" y="sold" color="genre" animation={animation} delayCfg={delayCfg} />
     </Chart>
   </Canvas>
 );

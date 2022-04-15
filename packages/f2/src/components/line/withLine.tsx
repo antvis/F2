@@ -2,6 +2,7 @@ import { jsx } from '../../jsx';
 import { isArray } from '@antv/util';
 import Geometry from '../geometry';
 import { LineProps } from './types';
+import getDelayCfg from '../util';
 
 export default (View) => {
   return class Line extends Geometry<LineProps> {
@@ -88,9 +89,7 @@ export default (View) => {
         // children 有可能为空
         const { size, color, shape, y } = children[0] || {};
         // 极坐标时，需加入起点，从而闭合所绘图形
-        const points = coord.isPolar 
-        ? [...children, children[0]]
-        : children;
+        const points = coord.isPolar ? [...children, children[0]] : children;
 
         const splitPoints = this.splitNulls(points, connectNulls);
 
@@ -114,11 +113,34 @@ export default (View) => {
       });
     }
 
+    processDelayCfg(cfg) {
+      let _delayCfg = {};
+
+      const { props } = this;
+      let isGroup = false;
+      isGroup = Object.keys(props).some((property) => {
+        return property === 'color' || 'size' || 'shape';
+      });
+      if (!isGroup) return;
+
+      if (cfg) {
+        const { scale: xScale } = this.attrs.x;
+        const { field } = xScale;
+        _delayCfg = getDelayCfg(cfg, field);
+      }
+
+      return _delayCfg;
+    }
+
     render() {
       const { props } = this;
       const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} />;
+
+      const { delayCfg } = props;
+      const _delayCfg = this.processDelayCfg(delayCfg);
+
+      return <View {...props} coord={coord} records={records} delayCfg={_delayCfg} />;
     }
   };
 };

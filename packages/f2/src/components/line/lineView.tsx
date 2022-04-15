@@ -2,6 +2,10 @@ import { deepMix, isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
 
+interface delayLineViewProps extends LineViewProps {
+  [k: string]: any;
+}
+
 function concatPoints(children) {
   let result = [];
   for (let i = 0; i < children.length; i++) {
@@ -52,7 +56,7 @@ function AnimationEndView(props) {
         appear: {
           easing: appear.easing,
           duration: appear.duration,
-          onFrame: function(t) {
+          onFrame: function (t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
             const children = element.get('children');
@@ -69,33 +73,47 @@ function AnimationEndView(props) {
   );
 }
 
-export default (props: LineViewProps) => {
+export default (props: delayLineViewProps) => {
   const { records, coord, animation, endView: EndView } = props;
   const { left, top, width, height } = coord;
+  const { delayCfg } = props;
+  // alert(delayCfg['delays']['能源']);
 
-  const appear = {
-    easing: 'linear',
-    duration: 450,
-    clip: {
-      type: 'rect',
-      property: ['width'],
-      attrs: {
-        x: left,
-        y: top,
-        height: height,
-      },
-      start: {
-        width: 0,
-      },
-      end: {
-        width: width,
-      },
-    },
-  };
   return (
     <group>
       {records.map((record) => {
         const { key, children } = record;
+
+        //#region delayCfg
+        let _delay = 0;
+        if (delayCfg && delayCfg.hasOwnProperty('field') && delayCfg.hasOwnProperty('delays')) {
+          const { delays } = delayCfg;
+          _delay = delays[key];
+        }
+        const appear = {
+          easing: 'linear',
+          delay: _delay,
+          duration: 450,
+          property: ['x1', 'y1', 'x2', 'y2'],
+
+          // clip: {
+          //   type: 'rect',
+          //   property: ['width'],
+          //   attrs: {
+          //     x: left,
+          //     y: top,
+          //     height: height,
+          //   },
+          //   start: {
+          //     width: 0,
+          //   },
+          //   end: {
+          //     width: width,
+          //   },
+          // },
+        };
+        //#endregion
+
         return (
           <group key={key}>
             {children.map((child) => {
@@ -111,15 +129,36 @@ export default (props: LineViewProps) => {
                     lineWidth: size || shape.lineWidth,
                   }}
                   animation={deepMix(
-                    {
-                      update: {
-                        easing: 'linear',
-                        duration: 450,
-                        property: ['points'],
+                    deepMix(
+                      {
+                        appear: {
+                          easing: 'linear',
+                          duration: 450,
+                          clip: {
+                            type: 'rect',
+                            property: ['width'],
+                            attrs: {
+                              x: left,
+                              y: top,
+                              height: height,
+                            },
+                            start: {
+                              width: 0,
+                            },
+                            end: {
+                              width: width,
+                            },
+                          },
+                        },
+                        update: {
+                          easing: 'linear',
+                          duration: 450,
+                          property: ['points'],
+                        },
                       },
-                      appear,
-                    },
-                    animation
+                      animation
+                    ),
+                    { appear: { delay: _delay } }
                   )}
                 />
               );

@@ -5,6 +5,12 @@ import _ from 'lodash';
 fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
   .then((res) => res.json())
   .then((data) => {
+    const delayCfg = {
+      data: data,
+      field: 'type',
+      delayUnit: 1200,
+    };
+
     const context = document.getElementById('container').getContext('2d');
     const { props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -17,7 +23,7 @@ fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
             }}
           />
           <Axis field="value" tickCount={5} />
-          <Line x="date" y="value" lineWidth="4px" color="type" />
+          <Line x="date" y="value" lineWidth="4px" color="type" delayCfg={delayCfg} />
           <Legend
             position="top"
             style={{

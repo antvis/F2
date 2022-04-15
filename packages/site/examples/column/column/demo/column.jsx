@@ -36,6 +36,12 @@ const data = [
   },
 ];
 
+const delayCfg = {
+  data: data,
+  field: 'year',
+  delayUnit: 200,
+};
+
 const context = document.getElementById('container').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -49,7 +55,12 @@ const { props } = (
     >
       <Axis field="year" />
       <Axis field="sales" />
-      <Interval x="year" y="sales" />
+      <Interval
+        x="year"
+        y="sales"
+        animation={{ appear: { easing: 'elasticOut', duration: 3000 } }}
+        delayCfg={delayCfg}
+      />
       <Tooltip />
     </Chart>
   </Canvas>
