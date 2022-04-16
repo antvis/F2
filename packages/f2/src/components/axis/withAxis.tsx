@@ -223,7 +223,6 @@ export default (View) => {
         if (dimType === 'y') {
           return null;
         }
-        console.log(bbox);
         // 4 个方向都需要留空
         return ['top', 'right', 'bottom', 'left'].map(
           (position: 'top' | 'right' | 'bottom' | 'left') => {

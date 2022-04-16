@@ -229,7 +229,7 @@ export default class TooltipView extends Component {
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}
-          {!custom && (
+          {!custom && (<group>
             <group ref={this.rootRef} style={background} attrs={background}>
               {/* {showTitle ? (
                 <text
@@ -295,18 +295,18 @@ export default class TooltipView extends Component {
                 })}
               </group>
             </group>
-          )}
-          <polygon
-            ref={this.arrowRef}
-            attrs={{
-              points: [
-                { x: x - arrowWidth, y: coordTop },
-                { x: x + arrowWidth, y: coordTop },
-                { x: x, y: coordTop + arrowWidth },
-              ],
-              fill: background.fill,
-            }}
-          />
+            <polygon
+              ref={this.arrowRef}
+              attrs={{
+                points: [
+                  { x: x - arrowWidth, y: coordTop },
+                  { x: x + arrowWidth, y: coordTop },
+                  { x: x, y: coordTop + arrowWidth },
+                ],
+                fill: background.fill,
+              }}
+            />
+          </group>)}
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}
