@@ -1,4 +1,4 @@
-import type * as Types from './types'
+import type * as Types from './types';
 export { JSX } from './jsx/jsx-namespace';
 export { Types };
 
@@ -11,7 +11,10 @@ import Canvas from './canvas';
 import Chart from './chart';
 
 import { jsx as createElement } from './jsx';
-import { renderShape } from './base/diff'
+import { renderShape } from './base/diff';
+
+import { processUserOpt, processAnimationTypeCfg } from './util/animationCfg';
+export { processUserOpt, processAnimationTypeCfg };
 
 export * from './components';
 export { jsx, render, Fragment } from './jsx';

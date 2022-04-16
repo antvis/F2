@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, Canvas, Chart, Interval, Axis } from '@antv/f2';
+import { processUserOpt, processAnimationTypeCfg } from '@antv/f2';
 
 const data = [
   {
@@ -83,6 +84,13 @@ const data = [
     月均降雨量: 42.4,
   },
 ];
+
+const delayCfg = processUserOpt(data, {
+  xField: '月份',
+  fields: ['月份', 'name'],
+  unit: 200,
+});
+
 const context = document.getElementById('container').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -96,6 +104,11 @@ const { props } = (
         adjust={{
           type: 'dodge',
           marginRatio: 0.05, // 设置分组间柱子的间距
+        }}
+        animation={{
+          appear: (item) => {
+            return processAnimationTypeCfg({ delay: delayCfg }, item);
+          },
         }}
       />
     </Chart>

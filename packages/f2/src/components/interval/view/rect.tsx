@@ -1,4 +1,4 @@
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction } from '@antv/util';
 import { jsx } from '../../../jsx';
 
 export default (props) => {
@@ -11,6 +11,21 @@ export default (props) => {
           <group key={key}>
             {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color, shape } = item;
+
+              //#region 处理接收的animation
+              let _thisAnimation = {};
+              if (animation) {
+                Object.keys(animation).map((animationType) => {
+                  let _animationCfg = animation[animationType];
+                  // 如果动画配置为函数，则执行该函数获取配置对象
+                  if (isFunction(_animationCfg)) {
+                    _animationCfg = _animationCfg(item);
+                  }
+                  _thisAnimation[animationType] = _animationCfg;
+                });
+              }
+              //#endregion
+
               return (
                 <rect
                   key={key}
@@ -39,7 +54,7 @@ export default (props) => {
                         property: ['x', 'y', 'width', 'height'],
                       },
                     },
-                    animation
+                    _thisAnimation
                   )}
                 />
               );

@@ -1,4 +1,4 @@
-import { deepMix, isArray } from '@antv/util';
+import { deepMix, isArray, isFunction } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
 
@@ -52,7 +52,7 @@ function AnimationEndView(props) {
         appear: {
           easing: appear.easing,
           duration: appear.duration,
-          onFrame: function(t) {
+          onFrame: function (t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
             const children = element.get('children');
@@ -96,6 +96,22 @@ export default (props: LineViewProps) => {
     <group>
       {records.map((record) => {
         const { key, children } = record;
+
+        //#region 处理接收的animation
+        let _thisAnimation = {};
+        if (animation) {
+          Object.keys(animation).map((animationType) => {
+            let _animationCfg = animation[animationType];
+            // 如果动画配置为函数，则执行该函数获取配置对象
+            if (isFunction(_animationCfg)) {
+              _animationCfg = _animationCfg(key);
+            }
+            _thisAnimation[animationType] = _animationCfg;
+          });
+        }
+        console.log(_thisAnimation);
+        //#endregion
+
         return (
           <group key={key}>
             {children.map((child) => {
@@ -112,14 +128,32 @@ export default (props: LineViewProps) => {
                   }}
                   animation={deepMix(
                     {
+                      appear: {
+                        easing: 'linear',
+                        duration: 450,
+                        clip: {
+                          type: 'rect',
+                          property: ['width'],
+                          attrs: {
+                            x: left,
+                            y: top,
+                            height: height,
+                          },
+                          start: {
+                            width: 0,
+                          },
+                          end: {
+                            width: width,
+                          },
+                        },
+                      },
                       update: {
                         easing: 'linear',
                         duration: 450,
                         property: ['points'],
                       },
-                      appear,
                     },
-                    animation
+                    _thisAnimation
                   )}
                 />
               );

@@ -1,10 +1,18 @@
 /** @jsx jsx */
 import { jsx, Canvas, Chart, Line, Axis, Legend } from '@antv/f2';
 import _ from 'lodash';
+import { processUserOpt, processAnimationTypeCfg } from '@antv/f2';
 
 fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
   .then((res) => res.json())
   .then((data) => {
+    const delay = processUserOpt(data, {
+      xField: 'date',
+      fields: ['type'],
+      units: [600],
+    });
+    const duration = 2000;
+
     const context = document.getElementById('container').getContext('2d');
     const { props } = (
       <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -17,7 +25,17 @@ fetch('https://gw.alipayobjects.com/os/antfincdn/OVMtvjbnut/series-line.json')
             }}
           />
           <Axis field="value" tickCount={5} />
-          <Line x="date" y="value" lineWidth="4px" color="type" />
+          <Line
+            x="date"
+            y="value"
+            lineWidth="4px"
+            color="type"
+            animation={{
+              appear: (item) => {
+                return processAnimationTypeCfg({ delay, duration }, item);
+              },
+            }}
+          />
           <Legend
             position="top"
             style={{
