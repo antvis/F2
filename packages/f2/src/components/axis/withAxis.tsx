@@ -2,7 +2,7 @@ import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv
 import { jsx } from '../../jsx';
 import equal from '../../base/equal';
 import { PositionLayout } from '../../chart/index';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { Style, Tick, AxisProps } from './types';
 
 type BBox = {

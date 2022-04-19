@@ -24,11 +24,17 @@ function View() {
       />
       <polyline
         attrs={{
+          // points: [
+          //   { x: '210px', y: '20px' },
+          //   { x: '220px', y: '40px' },
+          //   { x: '250px', y: '45px' },
+          //   { x: '300px', y: '80px' },
+          // ],
           points: [
-            { x: '210px', y: '20px' },
-            { x: '220px', y: '40px' },
-            { x: '250px', y: '45px' },
-            { x: '300px', y: '80px' },
+            ['210px', '20px'],
+            ['220px', '40px'],
+            ['250px', '45px'],
+            ['300px', '80px'],
           ],
           lineWidth: '4px',
           stroke: 'red',

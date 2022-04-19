@@ -1,7 +1,7 @@
 import { JSX } from '../jsx/jsx-namespace';
 import { ScaleConfig } from '@antv/scale';
 import { each, findIndex, isArray } from '@antv/util';
-import Component from '../base/component';
+import { Component } from '@antv/f-engine';
 import equal from '../base/equal';
 import Layout from '../base/layout';
 import Coord from '../coord';
