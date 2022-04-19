@@ -1,4 +1,4 @@
-import { isFunction } from '@antv/util';
+import { isFunction, find } from '@antv/util';
 import createRef from '../../createRef';
 import Component from '../../base/component';
 import { jsx } from '../../jsx';
@@ -129,6 +129,67 @@ const RenderItemMarker = (props) => {
   );
 };
 
+const RenderCrosshairs = (props) => {
+  const { records, coord, chart, crosshairsType, crosshairsStyle } = props;
+    const {
+      left: coordLeft,
+      top: coordTop,
+      right: coordRight,
+      bottom: coordBottom,
+      center
+    } = coord;  
+  const firstRecord = records[0];
+  const { x, y, origin, xField } = firstRecord;
+  if(coord.isPolar) {
+    // 极坐标下的辅助线
+    const xScale = chart.getScale(xField);
+    const ticks = xScale.getTicks();
+    const tick = find<any>(ticks, (tick) => origin[xField] === tick.tickValue);      
+    const end = coord.convertPoint({
+      x: tick.value,
+      y: 1,
+    });
+    return (
+      <line
+        attrs={{
+          x1: center.x,
+          y1: center.y,
+          x2: end.x,
+          y2: end.y,
+          ...crosshairsStyle,
+        }}
+      />
+    );
+  }
+
+  return (
+    <group>
+      {directionEnabled(crosshairsType, 'x') ? (
+        <line
+          attrs={{
+            x1: coordLeft,
+            y1: y,
+            x2: coordRight,
+            y2: y,
+            ...crosshairsStyle,
+          }}
+        />
+      ) : null}
+      {directionEnabled(crosshairsType, 'y') ? (
+        <line
+          attrs={{
+            x1: x,
+            y1: coordTop,
+            x2: x,
+            y2: coordBottom,
+            ...crosshairsStyle,
+          }}
+        />
+      ) : null}
+    </group>
+  );
+}
+
 export default class TooltipView extends Component {
   rootRef: Ref;
   arrowRef: Ref;
@@ -176,7 +237,6 @@ export default class TooltipView extends Component {
     const {
       left: coordLeft,
       top: coordTop,
-      right: coordRight,
       bottom: coordBottom,
       // width: coordWidth,
     } = coord;
@@ -184,6 +244,7 @@ export default class TooltipView extends Component {
     const { x, y } = firstRecord;
     const { name: xFirstText, value: yFirstText } = firstRecord;
     const {
+      chart,
       background: customBackground,
       // showTitle,
       // titleStyle,
@@ -229,7 +290,7 @@ export default class TooltipView extends Component {
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}
-          {!custom && (
+          {!custom && (<group>
             <group ref={this.rootRef} style={background} attrs={background}>
               {/* {showTitle ? (
                 <text
@@ -295,18 +356,18 @@ export default class TooltipView extends Component {
                 })}
               </group>
             </group>
-          )}
-          <polygon
-            ref={this.arrowRef}
-            attrs={{
-              points: [
-                { x: x - arrowWidth, y: coordTop },
-                { x: x + arrowWidth, y: coordTop },
-                { x: x, y: coordTop + arrowWidth },
-              ],
-              fill: background.fill,
-            }}
-          />
+            <polygon
+              ref={this.arrowRef}
+              attrs={{
+                points: [
+                  { x: x - arrowWidth, y: coordTop },
+                  { x: x + arrowWidth, y: coordTop },
+                  { x: x, y: coordTop + arrowWidth },
+                ],
+                fill: background.fill,
+              }}
+            />
+          </group>)}
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}
@@ -330,32 +391,13 @@ export default class TooltipView extends Component {
             : null}
           {/* 辅助线 */}
           {showCrosshairs ? (
-            <group>
-              {directionEnabled(crosshairsType, 'x') ? (
-                <line
-                  attrs={{
-                    x1: coordLeft,
-                    y1: y,
-                    x2: coordRight,
-                    y2: y,
-                    ...defaultStyle.crosshairsStyle,
-                    ...crosshairsStyle,
-                  }}
-                />
-              ) : null}
-              {directionEnabled(crosshairsType, 'y') ? (
-                <line
-                  attrs={{
-                    x1: x,
-                    y1: coordTop,
-                    x2: x,
-                    y2: coordBottom,
-                    ...defaultStyle.crosshairsStyle,
-                    ...crosshairsStyle,
-                  }}
-                />
-              ) : null}
-            </group>
+            <RenderCrosshairs
+              chart={chart}
+              coord={coord}
+              records={records}
+              crosshairsType={crosshairsType}
+              crosshairsStyle={{...defaultStyle.crosshairsStyle, ...crosshairsStyle}}
+            />
           ) : null}
         </group>
         {/* X 轴辅助信息 */}

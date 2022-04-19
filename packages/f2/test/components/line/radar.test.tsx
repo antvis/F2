@@ -88,7 +88,7 @@ const data = [
 const data1 = [
   {
     time: '10-01',
-    value: 10380,
+    value: 14380,
     name: '同行同层平均',
   },
   {
@@ -103,7 +103,7 @@ const data1 = [
   },
   {
     time: '12-04',
-    value: 12345,
+    value: 15345,
     name: '同行同层平均',
   },
   {
@@ -157,7 +157,7 @@ describe('雷达图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('雷达图 展示 Tooltip', async () => {
+    it('雷达图展示 Tooltip', async () => {
       const context = createContext('Tooltip 默认展示');
       const { props } = (
         <Canvas context={context} pixelRatio={1}>
@@ -166,6 +166,27 @@ describe('雷达图', () => {
             <Axis field="value" grid="line" style={{ label: null }} />
             <Line x="time" y="value" color="name" />
             <Tooltip alwaysShow={true} defaultItem={data1[0]} snap />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('雷达图展示辅助线', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data1} coord="polar">
+            <Axis field="time" grid="line" />
+            <Axis field="value" grid="line" style={{ label: null }} />
+            <Line x="time" y="value" color="name" />
+            <Point x="time" y="value" color="name" />
+            <Tooltip custom={true} alwaysShow defaultItem={data1[0]} snap showCrosshairs />
           </Chart>
         </Canvas>
       );
