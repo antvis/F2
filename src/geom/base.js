@@ -747,6 +747,18 @@ class Geom extends Base {
       invertPointX = xScale.rangeMin();
     }
 
+    if (xScale.isCategory) {
+      const min = xScale.rangeMin();
+      const max = xScale.rangeMax();
+      // 归一到 范围内
+      if (invertPointX < min) {
+        invertPointX = min;
+      }
+      if (invertPointX > max) {
+        invertPointX = max;
+      }
+    }
+
     let xValue = xScale.invert(invertPointX);
     if (!xScale.isCategory) {
       xValue = self._getSnap(xScale, xValue);
