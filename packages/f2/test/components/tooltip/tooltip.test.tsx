@@ -215,8 +215,8 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('Tooltip 不触发回调的情形', async () => {
-    const context = createContext('Tooltip 不触发回调的情形');
+  it.only('Tooltip 超出边界会展示边界值', async () => {
+    const context = createContext('Tooltip 超出边界会展示边界值');
     const onChangeMockCallback = jest.fn();
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -240,7 +240,6 @@ describe('tooltip', () => {
     canvas.render();
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: -10, y: 21 }); // 不合理坐标范围
-    expect(onChangeMockCallback.mock.calls.length).toBe(0); // 验证 onChange 未被调用
 
     await delay(500);
     expect(context).toMatchImageSnapshot();

@@ -6,6 +6,7 @@ import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
+import type { Scale } from '@antv/scale';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -436,11 +437,11 @@ class Geometry<
     return this.attrController.getAttr(attrName);
   }
 
-  getXScale() {
+  getXScale(): Scale {
     return this.getAttr('x').scale;
   }
 
-  getYScale() {
+  getYScale(): Scale {
     return this.getAttr('y').scale;
   }
 
