@@ -247,11 +247,11 @@ class Chart extends Component implements IChart {
     return coord.convertPoint({ x, y });
   }
 
-  getSnapRecords(point) {
+  getSnapRecords(point, inCoordRange?) {
     const geometrys = this.getGeometrys();
     if (!geometrys.length) return;
     // @ts-ignore
-    return geometrys[0].getSnapRecords(point);
+    return geometrys[0].getSnapRecords(point, inCoordRange);
   }
 
   getLegendItems(point?) {

@@ -6,6 +6,7 @@ import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
+import type { Scale } from '@antv/scale';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -436,11 +437,11 @@ class Geometry<
     return this.attrController.getAttr(attrName);
   }
 
-  getXScale() {
+  getXScale(): Scale {
     return this.getAttr('x').scale;
   }
 
-  getYScale() {
+  getYScale(): Scale {
     return this.getAttr('y').scale;
   }
 
@@ -504,7 +505,7 @@ class Geometry<
     }, []);
   }
 
-  getSnapRecords(point): any[] {
+  getSnapRecords(point, inCoordRange?): any[] {
     const { props } = this;
     const { coord, adjust } = props;
     const invertPoint = coord.invertPoint(point);
@@ -515,6 +516,15 @@ class Geometry<
     // if (invertPoint.x < 0 || invertPoint.y < 0) {
     //   return [];
     // }
+
+    // 是否调整 point，默认为不调整
+    if (inCoordRange) {
+      const { range: xRange } = xScale;
+      const { range: yRange } = yScale;
+      // 如果 inCoordRange=true，当 point 不在 coord 坐标范围内时，调整到 range 内
+      invertPoint.x = Math.min(Math.max(invertPoint.x, xRange[0]), xRange[1]);
+      invertPoint.y = Math.min(Math.max(invertPoint.y, yRange[0]), yRange[1]);
+    }
 
     const records = this.flatRecords();
 

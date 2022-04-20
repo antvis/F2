@@ -124,7 +124,7 @@ export default (View) => {
     show(point, _ev?) {
       const { props } = this;
       const { chart, onChange } = props;
-      const snapRecords = chart.getSnapRecords(point);
+      const snapRecords = chart.getSnapRecords(point, true); // 超出边界会自动调整
       if (!snapRecords || !snapRecords.length) return;
       const legendItems = chart.getLegendItems();
       const { xField, yField } = snapRecords[0];
