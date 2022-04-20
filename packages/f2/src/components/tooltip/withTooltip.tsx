@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 import { isArray, isFunction, find } from '@antv/util';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import equal from '../../base/equal';
 import { DataRecord, px, TextAttrs, LineAttrs, RectAttrs } from '../../types';
 import { ChartChildProps } from '../../chart';

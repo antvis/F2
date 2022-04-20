@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 
 const getPoint = (cener, angle, r) => {
   const x = cener.x + Math.cos(angle) * r;

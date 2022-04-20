@@ -1,6 +1,6 @@
 import { isFunction, find } from '@antv/util';
 import createRef from '../../createRef';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { jsx } from '../../jsx';
 import { Ref } from '../../types';
 

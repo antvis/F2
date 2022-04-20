@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 import { renderShape } from '../../base/diff';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';

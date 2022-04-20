@@ -1,5 +1,5 @@
 import { isFunction } from '@antv/util';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { ShapeAttrs, Point } from '../../types';
 import equal from '../../base/equal';
 

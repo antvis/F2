@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { partition, hierarchy } from 'd3-hierarchy';
 import { Category } from '../../attr';
 import { isInBBox } from '../../util';

@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 import CoordController from '../../controller/coord';

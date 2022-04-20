@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
+import { Component } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { isInBBox, getElementsByClassName } from '../../util';
 import { Ref, Point } from '../../types';
