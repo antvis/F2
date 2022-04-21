@@ -186,6 +186,7 @@ class Chart extends Component implements IChart {
     const existIndex = findIndex(componentsPosition, (item) => {
       return item.component === component;
     });
+
     // 说明是已经存在的组件
     if (existIndex > -1) {
       componentsPosition.splice(existIndex, 1, componentPosition);

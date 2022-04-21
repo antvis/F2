@@ -1,5 +1,5 @@
 import { jsx } from '../../../src/jsx';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import { Canvas, Component } from '../../../src';
 const context = createContext();
 
@@ -20,7 +20,7 @@ class Test extends Component {
         animation={{
           appear: {
             easing: 'linear',
-            duration: 10,
+            duration: 100,
             property: ['width'],
             start: {
               width: 10,
@@ -38,7 +38,7 @@ class Test extends Component {
 }
 
 describe('Canvas', () => {
-  it('测试动画', (done) => {
+  it('测试动画', async (done) => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Test />
@@ -47,18 +47,18 @@ describe('Canvas', () => {
 
     const canvas = new Canvas(props);
     const testComponent = canvas.children;
-
+    await delay(100);
     canvas.render();
-    const rect = canvas.children.component.container._attrs.children[0];
+    const rect = canvas.children.component.container.getChildren()[0];
 
-    expect(rect._attrs.attrs.width).toBe(10);
+    expect(rect.getAttribute('width')).toBe(10);
 
     // 动画结束后
     setTimeout(() => {
-      expect(rect._attrs.attrs.width).toBe(100);
+      expect(rect.getAttribute('width')).toBe(100);
       expect(onFrame.mock.calls.length > 1).toBe(true);
       expect(onEnd.mock.calls.length).toBe(1);
       done();
-    }, 100);
+    }, 1000);
   });
 });

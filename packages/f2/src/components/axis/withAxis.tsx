@@ -137,10 +137,7 @@ export default (View) => {
       const xTicks = xScale.getTicks();
       ticks.forEach((tick) => {
         const gridPoints = xTicks.map((xTick) => {
-          return coord.convertPoint({
-            x: xTick.value,
-            y: tick.value,
-          });
+          return coord.convertPoint([xTick.value, tick.value]);
         });
 
         // 添加第 1 个点，形成环状
@@ -215,6 +212,7 @@ export default (View) => {
 
       const ticks = this.getTicks();
       const bbox = this.getMaxBBox(ticks, this.style);
+
       const { isPolar } = coord;
       const dimType = this._getDimType();
       const { width, height } = bbox;

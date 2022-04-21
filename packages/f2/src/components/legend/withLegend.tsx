@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { renderShape } from '../../base/diff';
+import { renderShape } from '@antv/f-engine';
 import { Component } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
@@ -119,8 +119,10 @@ export default (View) => {
     getMaxItemBox(legendShape) {
       let maxItemWidth = 0;
       let maxItemHeight = 0;
-      (legendShape.get('children') || []).forEach((child) => {
-        const { width, height } = child.get('attrs');
+      (legendShape.getChildren() || []).forEach((child) => {
+        const width = child.getAttribute('width');
+        const height = child.getAttribute('height');
+        // const { width, height } = child.get('attrs');
         maxItemWidth = Math.max(maxItemWidth, width);
         maxItemHeight = Math.max(maxItemHeight, height);
       });
@@ -144,6 +146,7 @@ export default (View) => {
       if (!items || !items.length) return;
       const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
+      // @ts-ignore
       const shape = renderShape(this, this.render(), false);
       const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(shape);
       // 每行最多的个数

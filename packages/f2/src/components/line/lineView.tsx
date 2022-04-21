@@ -104,7 +104,7 @@ export default (props: LineViewProps) => {
                 <polyline
                   attrs={{
                     points: points.map((point) => {
-                      return { x: point.x, y: point.y };
+                      return [point.x, point.y];
                     }),
                     stroke: color,
                     ...shape,

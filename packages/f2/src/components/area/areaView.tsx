@@ -54,7 +54,9 @@ export default (props) => {
               return (
                 <polygon
                   attrs={{
-                    points,
+                    points: points.map((point) => {
+                      return [point.x, point.y];
+                    }),
                     lineWidth: '2px',
                     fill: color,
                     ...shape,

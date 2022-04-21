@@ -94,60 +94,60 @@ describe('Geometry - Attr', () => {
    * 1. 映射至颜色属性的数据源字段名，如果数据源中不存在这个字段名的话，则按照常量进行解析，这个时候会使用 F2 默认提供的颜色。
    * 2. 也可以直接指定某一个具体的颜色值 color，如 '#fff', 'white', 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff' 等。
    */
-  it('不传color', () => {
-    const context = createContext('不传color', { width: '380px' });
+  // it('不传color', () => {
+  //   const context = createContext('不传color', { width: '380px' });
 
-    const geometryRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="year" />
-          <Axis field="sales" />
-          <Line ref={geometryRef} x="year" y="sales" shape="type" />
-        </Chart>
-      </Canvas>
-    );
+  //   const geometryRef = { current: null };
+  //   const { type, props } = (
+  //     <Canvas context={context}>
+  //       <Chart data={data}>
+  //         <Axis field="year" />
+  //         <Axis field="sales" />
+  //         <Line ref={geometryRef} x="year" y="sales" shape="type" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
 
-    const canvas = new Canvas(props);
-    canvas.render();
-    expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
-  });
-  it('color = {value}', () => {
-    const context = createContext('color = {value} 传入一个颜色值', { width: '380px' });
-    const geometryRef = { current: null };
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
+  //   expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
+  // });
+  // it('color = {value}', () => {
+  //   const context = createContext('color = {value} 传入一个颜色值', { width: '380px' });
+  //   const geometryRef = { current: null };
 
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="year" />
-          <Axis field="sales" />
-          <Line ref={geometryRef} x="year" y="sales" color="red" shape="type" />
-        </Chart>
-      </Canvas>
-    );
-    const canvas = new Canvas(props);
-    canvas.render();
+  //   const { type, props } = (
+  //     <Canvas context={context}>
+  //       <Chart data={data}>
+  //         <Axis field="year" />
+  //         <Axis field="sales" />
+  //         <Line ref={geometryRef} x="year" y="sales" color="red" shape="type" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
 
-    expect(geometryRef.current.records[0].children[0].color).toBe('red');
-  });
-  it('color = {field}', () => {
-    const context = createContext('color = {field} 传入一个分类域', { width: '380px' });
-    const geometryRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context}>
-        <Chart data={data}>
-          <Axis field="year" />
-          <Axis field="sales" />
-          <Line ref={geometryRef} x="year" y="sales" size={3} color="type" />
-        </Chart>
-      </Canvas>
-    );
-    const canvas = new Canvas(props);
-    canvas.render();
+  //   expect(geometryRef.current.records[0].children[0].color).toBe('red');
+  // });
+  // it('color = {field}', () => {
+  //   const context = createContext('color = {field} 传入一个分类域', { width: '380px' });
+  //   const geometryRef = { current: null };
+  //   const { type, props } = (
+  //     <Canvas context={context}>
+  //       <Chart data={data}>
+  //         <Axis field="year" />
+  //         <Axis field="sales" />
+  //         <Line ref={geometryRef} x="year" y="sales" size={3} color="type" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
 
-    expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
-    expect(geometryRef.current.records[1].children[0].color).toBe('#2FC25B');
-  });
+  //   expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
+  //   expect(geometryRef.current.records[1].children[0].color).toBe('#2FC25B');
+  // });
   it('color = {{ field, range }}', () => {
     const context = createContext('color = {{ field, range }} 传入分类域和值域', {
       width: '380px',
@@ -429,13 +429,16 @@ describe('Geometry - Attr', () => {
     const container = geometryRef.current.container;
     expect(geometryRef.current.records[0].children[0].size).toBe(undefined);
 
-    const rect =
-      container._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs.children[0]._attrs
-        .children[0];
-    expect(rect._attrs.attrs.x).toBeCloseTo(46.82);
-    expect(rect._attrs.attrs.y).toBeCloseTo(170.31);
-    expect(rect._attrs.attrs.width).toBeCloseTo(10.18);
-    expect(rect._attrs.attrs.height).toBeCloseTo(22.19);
+    const rect = container
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0];
+    expect(rect.getAttribute('x')).toBeCloseTo(46.82);
+    expect(rect.getAttribute('y')).toBeCloseTo(170.31);
+    expect(rect.getAttribute('width')).toBeCloseTo(10.18);
+    expect(rect.getAttribute('height')).toBeCloseTo(22.19);
   });
 
   it('size = {value} 直接设置size', () => {

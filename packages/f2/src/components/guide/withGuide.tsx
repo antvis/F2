@@ -3,7 +3,7 @@ import { Component } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
-import { renderShape } from '../../base/diff';
+import { renderShape } from '@antv/f-engine';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -46,6 +46,7 @@ export default (View) => {
     }
 
     getGuideBBox() {
+      //@ts-ignore
       const shape = renderShape(this, this.render(), false);
       const { x, y, width, height } = shape.get('attrs');
       // getBBox 没有包含 padding 所以这里手动计算 bbox
