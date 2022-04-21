@@ -130,6 +130,8 @@ class Geometry<
     const { attrs, props, startOnZero: defaultStartOnZero } = this;
     const { chart, startOnZero = defaultStartOnZero, coord, adjust } = props;
     const { isPolar, transposed } = coord;
+    const { y } = attrs;
+    const yField = y.field;
     // 如果从 0 开始，只调整 y 轴 scale
     if (startOnZero) {
       const { y } = attrs;
@@ -139,6 +141,10 @@ class Geometry<
     if (isPolar && transposed && adjust === 'stack') {
       const { y } = attrs;
       chart.scale.adjustPieScale(y.scale);
+    }
+
+    if (adjust === 'stack') {
+      this._updateStackRange(yField, y.scale, this.dataArray);
     }
   }
 
@@ -227,10 +233,6 @@ class Geometry<
     }
     adjustInstance.processAdjust(groupedArray);
 
-    if (adjustType === 'Stack') {
-      this._updateStackRange(yField, y.scale, groupedArray);
-    }
-
     this.adjust = adjustInstance;
 
     return groupedArray;
@@ -271,10 +273,10 @@ class Geometry<
     // 根据adjust分组
     const dataArray = this._adjustData(groupedArray);
 
+    this.dataArray = dataArray;
+
     // scale适配调整，主要是调整 y 轴是否从 0 开始 以及 饼图
     this._adjustScales();
-
-    this.dataArray = dataArray;
 
     // 数据排序（非必须）
     if (this.sortable) {

@@ -181,4 +181,43 @@ describe('环形图', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('基础环形图 - 数值的和刚好等于nice处理后的最后一个tick值', async () => {
+    const data = [
+      { "type": "fundType", "name": "偏债型", "percent": 3 },
+      { "type": "fundType", "name": "偏股型", "percent": 97 }
+    ];
+    const context = createContext('基础环形图');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.7,
+            radius: 0.85,
+          }}
+        >
+          <Interval
+            x="type"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });
