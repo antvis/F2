@@ -6,7 +6,7 @@ import { Ref, Point } from '../../types';
 
 const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量
-  inflectionOffset: '30px', // 拐点的偏移量
+  inflectionOffset: '15px', // 拐点的偏移量
   sidePadding: '40px', // 文本距离画布四边的距离
   height: '64px', // 文本的行高
   adjustOffset: '30', // 发生调整时的偏移量
