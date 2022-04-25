@@ -371,6 +371,16 @@ export default class TooltipView extends Component {
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}
+          {/* 辅助线 */}
+          {showCrosshairs ? (
+            <RenderCrosshairs
+              chart={chart}
+              coord={coord}
+              records={records}
+              crosshairsType={crosshairsType}
+              crosshairsStyle={{...defaultStyle.crosshairsStyle, ...crosshairsStyle}}
+            />
+          ) : null}
           {/* 辅助点 */}
           {snap
             ? records.map((item) => {
@@ -382,6 +392,7 @@ export default class TooltipView extends Component {
                       y,
                       r: '6px',
                       stroke: color,
+                      fill: color,
                       ...shape,
                       ...tooltipMarkerStyle,
                     }}
@@ -389,16 +400,6 @@ export default class TooltipView extends Component {
                 );
               })
             : null}
-          {/* 辅助线 */}
-          {showCrosshairs ? (
-            <RenderCrosshairs
-              chart={chart}
-              coord={coord}
-              records={records}
-              crosshairsType={crosshairsType}
-              crosshairsStyle={{...defaultStyle.crosshairsStyle, ...crosshairsStyle}}
-            />
-          ) : null}
         </group>
         {/* X 轴辅助信息 */}
         {showXTip && (
