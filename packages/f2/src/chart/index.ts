@@ -10,7 +10,6 @@ import Children from '../children';
 import LayoutController from '../controller/layout';
 import CoordController from '../controller/coord';
 import ScaleController from '../controller/scale';
-import InteractionController from '../controller/interaction';
 
 interface Point {
   x: number;
@@ -30,7 +29,6 @@ export interface ChartChildProps {
   data?: any;
   chart?: Chart;
   coord?: Coord;
-  interaction?: InteractionController;
   layout?: Layout;
   [k: string]: any;
 }
