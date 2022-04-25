@@ -7,7 +7,7 @@ import { Ref, Point } from '../../types';
 const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量
   inflectionOffset: '30px', // 拐点的偏移量
-  sidePadding: '40px', // 文本距离画布四边的距离
+  sidePadding: '15px', // 文本距离画布四边的距离
   height: '64px', // 文本的行高
   adjustOffset: '30', // 发生调整时的偏移量
   triggerOn: 'click', // 点击行为触发的时间类型
@@ -99,6 +99,7 @@ export default (View) => {
         label1,
         label2,
         height: itemHeight,
+        sidePadding
       } = props;
 
       const {
@@ -179,7 +180,7 @@ export default (View) => {
       }
 
       // label 的最大宽度
-      const labelWidth = coordWidth / 2 - radius - anchorOffset - inflectionOffset;
+      const labelWidth = coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
       const labels = [];
       halves.forEach((half, index) => {
         const showSide = index === 0 ? 'left' : 'right';
@@ -217,7 +218,7 @@ export default (View) => {
             const { anchor, inflection, angle, x, y } = label;
 
             const points = [anchor, inflection];
-            const endX = coordLeft;
+            const endX = coordLeft +  sidePadding;
             const endY = coordTop + halfLabelHeight + labelHeight * index;
 
             // 文本开始点
@@ -255,7 +256,7 @@ export default (View) => {
 
             // 折线的点
             const points = [anchor, inflection];
-            const endX = coordRight;
+            const endX = coordRight - sidePadding;
             const endY = coordTop + halfLabelHeight + labelHeight * index;
 
             // 文本开始点
