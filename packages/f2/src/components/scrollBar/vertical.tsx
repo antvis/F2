@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '@antv/f-engine';
 
 export default (props, context) => {
   const { coord, range, position, layout } = props;
@@ -23,8 +23,6 @@ export default (props, context) => {
           left: 0,
           width: 0,
           height,
-        }}
-        attrs={{
           stroke: 'rgba(202, 215, 239, .2)',
           lineCap: 'round',
           lineWidth: '8px',
@@ -36,8 +34,6 @@ export default (props, context) => {
           top: barTop,
           width: 0,
           height: barHeight,
-        }}
-        attrs={{
           stroke: 'rgba(202, 215, 239, .5)',
           lineCap: 'round',
           lineWidth: '8px',

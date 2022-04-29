@@ -5,7 +5,7 @@ import { isFunction, isNumber } from '@antv/util';
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
  * @private
  */
-const supportsEventListenerOptions = (function () {
+const supportsEventListenerOptions = (function() {
   let supports = false;
   try {
     const options = Object.defineProperty({}, 'passive', {

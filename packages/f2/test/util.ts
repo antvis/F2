@@ -1,3 +1,8 @@
+const isTouch = (eventType) => {
+  if (eventType.indexOf('touch') !== -1) return true;
+  return false;
+};
+
 function delay(time) {
   return new Promise((resolve) => {
     setTimeout(resolve, time);
@@ -21,8 +26,10 @@ const createContext = (title = '', { width = '300px', height = '225px' } = {}) =
 };
 
 const dispatchEvent = (dom: HTMLElement, eventType: string, exData) => {
-  let event = new Event(eventType, { bubbles: true, cancelable: true });
-  event = Object.assign(event, exData);
+  let event = isTouch(eventType)
+    ? new TouchEvent(eventType, { bubbles: true, cancelable: true, ...exData })
+    : new MouseEvent(eventType, { bubbles: true, cancelable: true, ...exData });
+
   dom.dispatchEvent(event);
 };
 
@@ -38,12 +45,20 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
     const { x, y } = option;
     const clientX = left + x;
     const clientY = top + y;
-    const event = {
-      x,
-      y,
-      clientX,
-      clientY,
-    };
+    // @ts-ignore
+    const event = isTouch(eventType)
+      ? new Touch({
+          clientX,
+          clientY,
+          target: dom,
+          identifier: 0,
+        })
+      : {
+          clientX,
+          clientY,
+          target: dom,
+          identifier: 0,
+        };
     return event;
   });
 
@@ -74,7 +89,9 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
   }
 
   if (eventType === 'click') {
-    dispatchEvent(dom, 'click', events[0]);
+    dispatchEvent(dom, 'mousedown', events[0]);
+    await delay(50);
+    dispatchEvent(dom, 'mouseup', events[0]);
     return;
   }
 };

@@ -1,5 +1,4 @@
-import { jsx, Canvas, Component } from '../../src';
-import Timeline from '../../src/timeline';
+import { jsx, Canvas, Component, Timeline } from '../../src';
 import { createContext } from '../util';
 const context = createContext();
 

@@ -47,7 +47,7 @@ describe('数据选中', () => {
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
-    // 反选
+    // 反选;
     await gestureSimulator(context.canvas, 'click', { x: 213, y: 166 });
     await delay(200);
     expect(context).toMatchImageSnapshot();
@@ -230,149 +230,149 @@ describe('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('饼图', async () => {
-    const context = createContext();
-    const { props } = (
-      <Canvas context={context} pixelRatio={1} animate={false}>
-        <Chart
-          data={data}
-          coord={{
-            radius: 0.8,
-            type: 'polar',
-            transposed: true,
-          }}
-        >
-          <Interval
-            x="a"
-            y="sold"
-            adjust="stack"
-            color="genre"
-            selection={{
-              defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
-              selectedStyle: (record) => {
-                const { yMax, yMin } = record;
-                return {
-                  r: (yMax - yMin) * 1.1,
-                };
-              },
-              unSelectedStyle: {},
-              cancelable: true,
-            }}
-          />
-        </Chart>
-      </Canvas>
-    );
+  // it('饼图', async () => {
+  //   const context = createContext();
+  //   const { props } = (
+  //     <Canvas context={context} pixelRatio={1} animate={false}>
+  //       <Chart
+  //         data={data}
+  //         coord={{
+  //           radius: 0.8,
+  //           type: 'polar',
+  //           transposed: true,
+  //         }}
+  //       >
+  //         <Interval
+  //           x="a"
+  //           y="sold"
+  //           adjust="stack"
+  //           color="genre"
+  //           selection={{
+  //             defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
+  //             selectedStyle: (record) => {
+  //               const { yMax, yMin } = record;
+  //               return {
+  //                 r: (yMax - yMin) * 1.1,
+  //               };
+  //             },
+  //             unSelectedStyle: {},
+  //             cancelable: true,
+  //           }}
+  //         />
+  //       </Chart>
+  //     </Canvas>
+  //   );
 
-    const canvas = new Canvas(props);
-    canvas.render();
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
+  //   await delay(200);
+  //   expect(context).toMatchImageSnapshot();
 
-    // 选中
-    await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
+  //   // 选中
+  //   await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
+  //   await delay(200);
+  //   expect(context).toMatchImageSnapshot();
 
-    // 反选
-    await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
-  });
+  //   // 反选
+  //   await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
+  //   await delay(200);
+  //   expect(context).toMatchImageSnapshot();
+  // });
 });
 
-describe('cancelable = false', () => {
-  it('饼图空白区域点击', async () => {
-    const context = createContext();
-    const { props } = (
-      <Canvas context={context} pixelRatio={1} animate={false}>
-        <Chart
-          data={data}
-          coord={{
-            radius: 0.8,
-            type: 'polar',
-            transposed: true,
-          }}
-        >
-          <Interval
-            x="a"
-            y="sold"
-            adjust="stack"
-            color="genre"
-            selection={{
-              defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
-              selectedStyle: (record) => {
-                const { yMax } = record;
-                return {
-                  r: yMax * 1.1,
-                };
-              },
-              cancelable: false,
-            }}
-          />
-        </Chart>
-      </Canvas>
-    );
+// describe('cancelable = false', () => {
+//   it('饼图空白区域点击', async () => {
+//     const context = createContext();
+//     const { props } = (
+//       <Canvas context={context} pixelRatio={1} animate={false}>
+//         <Chart
+//           data={data}
+//           coord={{
+//             radius: 0.8,
+//             type: 'polar',
+//             transposed: true,
+//           }}
+//         >
+//           <Interval
+//             x="a"
+//             y="sold"
+//             adjust="stack"
+//             color="genre"
+//             selection={{
+//               defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
+//               selectedStyle: (record) => {
+//                 const { yMax } = record;
+//                 return {
+//                   r: yMax * 1.1,
+//                 };
+//               },
+//               cancelable: false,
+//             }}
+//           />
+//         </Chart>
+//       </Canvas>
+//     );
 
-    const canvas = new Canvas(props);
-    canvas.render();
+//     const canvas = new Canvas(props);
+//     canvas.render();
 
-    await delay(200);
+//     await delay(200);
 
-    // 空白区域点击
-    await gestureSimulator(context.canvas, 'click', { x: 0, y: 0 });
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
-  });
-});
+//     // 空白区域点击
+//     await gestureSimulator(context.canvas, 'click', { x: 0, y: 0 });
+//     await delay(200);
+//     expect(context).toMatchImageSnapshot();
+//   });
+// });
 
-describe('改变默认值', () => {
-  it('改变默认值', async () => {
-    const context = createContext();
+// describe('改变默认值', () => {
+//   it('改变默认值', async () => {
+//     const context = createContext();
 
-    const getProps = (data, defaultSelected) => {
-      const { props } = (
-        <Canvas context={context} pixelRatio={1} animate={false}>
-          <Chart
-            data={data}
-            coord={{
-              radius: 0.8,
-              type: 'polar',
-              transposed: true,
-            }}
-          >
-            <Interval
-              x="a"
-              y="sold"
-              adjust="stack"
-              color="genre"
-              selection={{
-                defaultSelected,
-                selectedStyle: (record) => {
-                  const { yMax } = record;
-                  return {
-                    r: yMax * 1.1,
-                  };
-                },
-                cancelable: false,
-              }}
-            />
-          </Chart>
-        </Canvas>
-      );
-      return props;
-    };
+//     const getProps = (data, defaultSelected) => {
+//       const { props } = (
+//         <Canvas context={context} pixelRatio={1} animate={false}>
+//           <Chart
+//             data={data}
+//             coord={{
+//               radius: 0.8,
+//               type: 'polar',
+//               transposed: true,
+//             }}
+//           >
+//             <Interval
+//               x="a"
+//               y="sold"
+//               adjust="stack"
+//               color="genre"
+//               selection={{
+//                 defaultSelected,
+//                 selectedStyle: (record) => {
+//                   const { yMax } = record;
+//                   return {
+//                     r: yMax * 1.1,
+//                   };
+//                 },
+//                 cancelable: false,
+//               }}
+//             />
+//           </Chart>
+//         </Canvas>
+//       );
+//       return props;
+//     };
 
-    const props = getProps(data, [{ a: '1', genre: 'Sports', sold: 275 }]);
-    const canvas = new Canvas(props);
-    canvas.render();
+//     const props = getProps(data, [{ a: '1', genre: 'Sports', sold: 275 }]);
+//     const canvas = new Canvas(props);
+//     canvas.render();
 
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
+//     await delay(200);
+//     expect(context).toMatchImageSnapshot();
 
-    const updateProps = getProps([].concat(data), [{ a: '1', genre: 'Strategy', sold: 115 }]);
-    canvas.update(updateProps);
+//     const updateProps = getProps([].concat(data), [{ a: '1', genre: 'Strategy', sold: 115 }]);
+//     canvas.update(updateProps);
 
-    await delay(200);
-    expect(context).toMatchImageSnapshot();
-  });
-});
+//     await delay(200);
+//     expect(context).toMatchImageSnapshot();
+//   });
+// });

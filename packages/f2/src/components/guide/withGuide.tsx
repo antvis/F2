@@ -48,7 +48,10 @@ export default (View) => {
     getGuideBBox() {
       //@ts-ignore
       const shape = renderShape(this, this.render(), false);
-      const { x, y, width, height } = shape.get('attrs');
+      const x = shape.getAttribute('x');
+      const y = shape.getAttribute('y');
+      const width = shape.getAttribute('width');
+      const height = shape.getAttribute('height');
       // getBBox 没有包含 padding 所以这里手动计算 bbox
       const bbox = {
         minX: x,

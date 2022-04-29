@@ -1,5 +1,5 @@
 import { isFunction } from '@antv/util';
-import { Component } from '@antv/f-engine';
+import { Component, Hammer } from '@antv/f-engine';
 import { ShapeAttrs, Point } from '../../types';
 import equal from '../../base/equal';
 
@@ -48,15 +48,17 @@ class Selection<
   }
 
   didMount() {
-    const { props, state, container } = this;
-    const canvas = container.get('canvas');
+    const { props, state, context } = this;
+    const { canvas } = context;
     const { selection, chart } = props;
     if (!selection) return;
     // 默认为 click
     const { triggerOn = 'click' } = selection;
-    canvas.on(triggerOn, (ev) => {
-      const { points } = ev;
-      const records = this.getSnapRecords(points[0]);
+    const hammer = new Hammer(canvas);
+    hammer.on(triggerOn, (ev) => {
+      const { canvas } = ev;
+      console.log(canvas);
+      const records = this.getSnapRecords(canvas);
       const { type = 'single', cancelable = true } = selection;
       if (!records || !records.length) {
         if (cancelable) {
@@ -161,6 +163,7 @@ class Selection<
     }
     const { selection } = props;
     const { selectedStyle, unSelectedStyle } = selection;
+
     const isSelected = this.isSelected(record);
     if (isSelected) {
       return isFunction(selectedStyle) ? selectedStyle(record) : selectedStyle;

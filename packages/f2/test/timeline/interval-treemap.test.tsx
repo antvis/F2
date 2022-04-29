@@ -21,16 +21,16 @@ describe('Chart', () => {
             <Axis field="genre" />
             <Axis field="sold" />
             <Interval
-              ref={intervalRef}
-              transformFrom={treemapRef}
+              // ref={intervalRef}
+              // transformFrom={treemapRef}
               x="genre"
               y="sold"
               color="genre"
             />
           </Chart>
           <Treemap
-            ref={treemapRef}
-            transformFrom={intervalRef}
+            // ref={treemapRef}
+            // transformFrom={intervalRef}
             data={data}
             color={{
               field: 'genre',

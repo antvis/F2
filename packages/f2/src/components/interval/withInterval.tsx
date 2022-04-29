@@ -111,7 +111,11 @@ export default (Views) => {
       const { selected } = state;
 
       const records = this.mapping();
+<<<<<<< HEAD
       const pointY0 = this.getPointY0();
+=======
+
+>>>>>>> 9973662e1 (feat: 对接事件交互等)
       return (
         <View
           coord={coord}
