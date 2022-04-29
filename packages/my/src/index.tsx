@@ -16,7 +16,7 @@ const isAppX2CanvasEnv = () =>
 
 Component({
   props: {
-    onRender: () => {},
+    onRender: (_props) => {},
     // width height 会作为元素兜底的宽高使用
     width: null,
     height: null,
@@ -60,7 +60,7 @@ Component({
   didUpdate() {
     const { canvas, props } = this;
     if (!canvas) return;
-    const children = props.onRender();
+    const children = props.onRender(props);
     canvas.update({
       children,
     });
@@ -100,7 +100,7 @@ Component({
       if (!width || !height) {
         return;
       }
-      const children = this.props.onRender();
+      const children = this.props.onRender(this.props);
       const canvas = new Canvas({
         pixelRatio,
         width,

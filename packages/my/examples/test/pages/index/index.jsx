@@ -1,4 +1,4 @@
-// index.js
+// 通过 createElement 方式创建
 import { createElement } from '@antv/f2';
 import Chart from './chart';
 
@@ -7,7 +7,7 @@ const data1 = [
   { genre: 'Strategy', sold: 115 },
   { genre: 'Action', sold: 120 },
   { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
+  { genre: 'Other', sold: 150 },
 ];
 
 const data2 = [
@@ -15,31 +15,28 @@ const data2 = [
   { genre: 'Strategy', sold: 115 },
   { genre: 'Action', sold: 20 },
   { genre: 'Shooter', sold: 50 },
-  { genre: 'Other', sold: 50 }
+  { genre: 'Other', sold: 50 },
 ];
 
 Page({
   data: {
-    onRenderChart: () => {},
+    // chartData: data1,
   },
   onReady() {
     this.setData({
-      onRenderChart: () => {
-        return this.renderChart(data1);
-      },
-    })
-
+      chartData: data1,
+    });
     // 模拟数据更新
     setTimeout(() => {
       this.setData({
-        onRenderChart: () => {
-          return this.renderChart(data2);
-        },
-      })
+        chartData: data2,
+      });
     }, 2000);
   },
-  renderChart(data) {
+  onRenderChart(props) {
+    const { data } = props;
     return <Chart data={data} />;
+
     // 如果不使用 jsx, 用下面代码效果也是一样的
     // return createElement(Chart, {
     //   data: data,
