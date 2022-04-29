@@ -39,7 +39,7 @@ Component({
         // 高清设置
         node.width = width * pixelRatio;
         node.height = height * pixelRatio;
-        const children = this.data.onRender();
+        const children = this.data.onRender(this.data);
         const canvas = new Canvas({
           pixelRatio,
           width,
@@ -51,6 +51,18 @@ Component({
         this.canvas = canvas;
         this.canvasEl = canvas.canvas.get('el');
       });
+  },
+
+  observers: {
+    // 处理 update
+    '**': function() {
+      const { canvas, data } = this;
+      if (!canvas) return;
+      const children = data.onRender(data);
+      canvas.update({
+        children,
+      });
+    },
   },
 
   lifetimes: {
