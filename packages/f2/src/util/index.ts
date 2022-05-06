@@ -1,10 +1,4 @@
-import {
-  isDate,
-  isPlainObject,
-  isNumber,
-  isString,
-  isArray,
-} from '@antv/util';
+import { isDate, isPlainObject, isNumber, isString, isArray } from '@antv/util';
 
 // 默认设置50
 let ONE_REM: number;
@@ -21,7 +15,7 @@ const SCALE = ONE_REM / 100;
  * @param {Number} px - 750视觉稿像素
  * @return {Number} 屏幕上实际像素
  */
-function px2hd(px: number): number {
+function defaultPx2hd(px: number): number {
   if (!px) {
     return 0;
   }
@@ -41,42 +35,45 @@ function parsePadding(padding: number | number[]) {
 
 type pxstr = `${number}px`;
 
-function batch2hd(value: pxstr | pxstr[] | number | number[] | string | string[] | any) {
-  // 处理带px的数据
-  if (isString(value) && /^-?\d+px$/.test(value)) {
-    const num = value.substr(0, value.length - 2);
-    return px2hd(Number(num));
-  }
-  if (isArray(value)) {
-    return value.map((v) => {
-      return batch2hd(v);
-    });
-  }
-  if (isPlainObject(value)) {
-    const result = {};
-    for (const key in value) {
-      if (value.hasOwnProperty(key)) {
-        const rst = batch2hd(value[key]);
-        if (!rst) {
-          result[key] = rst;
-          continue;
-        }
-        if (key === 'padding' || key === 'margin') {
-          const paddingArray = parsePadding(rst);
-          result[key] = paddingArray;
-          result[`${key}Top`] = paddingArray[0];
-          result[`${key}Right`] = paddingArray[1];
-          result[`${key}Bottom`] = paddingArray[2];
-          result[`${key}Left`] = paddingArray[3];
-          continue;
-        }
-        result[key] = rst;
-      }
+function batch2hd(px2hd) {
+  const batchPx2hd = (value: pxstr | pxstr[] | number | number[] | string | string[] | any) => {
+    // 处理带px的数据
+    if (isString(value) && /^-?\d+px$/.test(value)) {
+      const num = value.substr(0, value.length - 2);
+      return px2hd(Number(num));
     }
-    return result;
+    if (isArray(value)) {
+      return value.map((v) => {
+        return batchPx2hd(v);
+      });
+    }
+    if (isPlainObject(value)) {
+      const result = {};
+      for (const key in value) {
+        if (value.hasOwnProperty(key)) {
+          const rst = batchPx2hd(value[key]);
+          if (!rst) {
+            result[key] = rst;
+            continue;
+          }
+          if (key === 'padding' || key === 'margin') {
+            const paddingArray = parsePadding(rst);
+            result[key] = paddingArray;
+            result[`${key}Top`] = paddingArray[0];
+            result[`${key}Right`] = paddingArray[1];
+            result[`${key}Bottom`] = paddingArray[2];
+            result[`${key}Left`] = paddingArray[3];
+            continue;
+          }
+          result[key] = rst;
+        }
+      }
+      return result;
+    }
+    // 默认直接返回
+    return value;
   }
-  // 默认直接返回
-  return value;
+  return batchPx2hd;
 }
 
 // 展开数组
@@ -138,12 +135,6 @@ function getElementsByClassName(className: string, element) {
   return rst;
 }
 
-export {
-  // px2hd 含义更清晰
-  batch2hd as px2hd,
-  extendMap,
-  parsePadding,
-  toTimeStamp,
-  isInBBox,
-  getElementsByClassName,
-};
+const px2hd = batch2hd(defaultPx2hd);
+
+export { px2hd, batch2hd, extendMap, parsePadding, toTimeStamp, isInBBox, getElementsByClassName };
