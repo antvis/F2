@@ -21,6 +21,7 @@ interface ChartProps {
   px2hd?: any;
   theme?: any;
   style?: any;
+  createImage?: () => HTMLImageElement;
 }
 
 function measureText(canvas, px2hd) {
@@ -68,6 +69,7 @@ class Canvas extends Component<ChartProps> {
       px2hd = defaultPx2hd,
       theme: customTheme,
       style: customStyle,
+      createImage,
     } = props;
 
     const theme = px2hd(deepMix({}, defaultTheme, customTheme));
@@ -79,6 +81,7 @@ class Canvas extends Component<ChartProps> {
       fontFamily: theme.fontFamily,
       width,
       height,
+      createImage,
     });
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;

@@ -1,5 +1,6 @@
 import { jsx, Canvas, Fragment, Component } from '../../src';
 import { createContext, delay } from '../util';
+import imageBianzu from './images/bianzu';
 
 function View() {
   return (
@@ -115,5 +116,59 @@ describe('Canvas', () => {
 
     await delay(100);
     expect(context).toMatchImageSnapshot();
+  });
+
+  describe('image', () => {
+    it('image', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} animate={false} pixelRatio={1}>
+          <image
+            attrs={{
+              src: imageBianzu,
+              width: '200px',
+              height: '200px',
+            }}
+          />
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(100);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('createImage', async () => {
+      const createImageCallback = jest.fn();
+      const context = createContext();
+      const { props } = (
+        <Canvas
+          context={context}
+          animate={false}
+          pixelRatio={1}
+          createImage={() => {
+            createImageCallback();
+            return new Image();
+          }}
+        >
+          <image
+            attrs={{
+              src: imageBianzu,
+              width: '200px',
+              height: '200px',
+            }}
+          />
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(100);
+      expect(context).toMatchImageSnapshot();
+      expect(createImageCallback.mock.calls.length).toBe(1);
+    });
   });
 });
