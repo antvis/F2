@@ -7,6 +7,7 @@ export interface ImageProp extends RectProp {
   image: string;
   cacheImage: string;
   attrs?: ImageAttrs;
+  canvas?: any;
 }
 
 const imageCaches = {};
@@ -37,7 +38,7 @@ class ImageShape extends Rect<ImageProp> {
     const attrs = this.get('attrs');
     const { src } = attrs;
 
-    if (src && window.Image) {
+    if (src) {
       const cacheImage = this.get('cacheImage');
       // 如果有缓存，则直接从缓存中拿
       if (cacheImage && imageCaches[src]) {
@@ -45,21 +46,32 @@ class ImageShape extends Rect<ImageProp> {
         this.draw(context);
         return;
       }
-      this.set('loading', true);
-      const image = new Image();
-      // 设置跨域, 等同于 image.crossOrigin = 'anonymous'
-      image.crossOrigin = '';
-      image.onload = () => {
-        this.set('loading', false);
-        this.set('image', image);
-        this.draw(context);
-      };
-      // src 一定要在 crossOrigin 之后，否则 toDataURL 就会报 SecurityError
-      image.src = src;
 
-      // 设置全局缓存
-      if (cacheImage) {
-        imageCaches[src] = image;
+      let image = null;
+      const canvas = this.get('canvas');
+      if (canvas && canvas.get('createImage')) {
+        const createImage = canvas.get('createImage');
+        image = createImage();
+      } else if (window.Image) {
+        image = new Image();
+      }
+
+      if (image) {
+        this.set('loading', true);
+        // 设置跨域, 等同于 image.crossOrigin = 'anonymous'
+        image.crossOrigin = '';
+        image.onload = () => {
+          this.set('loading', false);
+          this.set('image', image);
+          this.draw(context);
+        };
+        // src 一定要在 crossOrigin 之后，否则 toDataURL 就会报 SecurityError
+        image.src = src;
+
+        // 设置全局缓存
+        if (cacheImage) {
+          imageCaches[src] = image;
+        }
       }
     }
   }
