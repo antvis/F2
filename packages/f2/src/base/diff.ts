@@ -1,5 +1,6 @@
 import { JSX } from '../jsx/jsx-namespace';
-import { render, renderJSXElement, compareRenderTree } from '../jsx';
+import { renderJSXElement, compareRenderTree } from '../jsx';
+import { render } from '../jsx/render';
 import { isArray, isUndefined, isBoolean, pick } from '@antv/util';
 import Component from './component';
 import equal from './equal';
@@ -29,6 +30,7 @@ function renderShape(component: Component, children: JSX.Element, animate?: bool
   container.clear();
 
   animate = isBoolean(animate) ? animate : componentAnimate;
+  const { px2hd } = context;
   const lastElement = __lastElement || (transformFrom && transformFrom.__lastElement);
 
   // children 是 shape 的 jsx 结构, component.render() 返回的结构
@@ -41,10 +43,10 @@ function renderShape(component: Component, children: JSX.Element, animate?: bool
   // 生成G的节点树, 存在数组的情况是根节点有变化，之前的树删除，新的树创建
   if (isArray(renderElement)) {
     return renderElement.map((element) => {
-      return render(element, container, animate);
+      return render(element, container, animate, px2hd);
     });
   } else {
-    return render(renderElement, container, animate);
+    return render(renderElement, container, animate, px2hd);
   }
 }
 

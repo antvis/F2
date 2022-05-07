@@ -1,5 +1,5 @@
 import { JSX } from './jsx-namespace';
-import { extendMap, px2hd } from '../util';
+import { extendMap, px2hd as defaultPx2hd } from '../util';
 import { omit } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
@@ -8,10 +8,10 @@ import { ELEMENT_DELETE } from './elementStatus';
 import createClipElement from './createClipElement';
 
 // 转换成布局所需要的布局树
-function createNodeTree(element, container) {
+function createNodeTree(element, container, px2hd) {
   const { key, ref, _cache, type, props, status, animation } = element;
   const children = extendMap(props.children, (child) => {
-    return createNodeTree(child, container);
+    return createNodeTree(child, container, px2hd);
   });
 
   // const { style, attrs } = props;
@@ -149,12 +149,18 @@ function filterDeleteElement(node) {
   return node;
 }
 
-export default (element: JSX.Element, container, animate?: boolean) => {
+function render(element: JSX.Element, container, animate?: boolean, px2hd = defaultPx2hd) {
   if (!element) {
     return;
   }
-  const nodeTree = createNodeTree(element, container);
+  const nodeTree = createNodeTree(element, container, px2hd);
   const computeLayoutTree = filterDeleteElement(nodeTree);
   computeLayout(computeLayoutTree);
   return createElement(nodeTree, container, null, animate);
+}
+
+export { render };
+
+export default (element: JSX.Element, container, animate?: boolean) => {
+  return render(element, container, animate);
 };

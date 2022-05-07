@@ -1,10 +1,10 @@
 import { createCanvas, Canvas as GCanvas } from '@antv/f2-graphic';
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction } from '@antv/util';
 import Component from '../base/component';
 import Layout from '../base/layout';
 import equal from '../base/equal';
 import Animation from './animation';
-import { px2hd as defaultPx2hd } from '../util';
+import { px2hd as defaultPx2hd, batch2hd } from '../util';
 import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
@@ -65,11 +65,12 @@ class Canvas extends Component<ChartProps> {
       width,
       height,
       animate = true,
-      px2hd = defaultPx2hd,
+      px2hd: customPx2hd,
       theme: customTheme,
       style: customStyle,
     } = props;
 
+    const px2hd = isFunction(customPx2hd) ? batch2hd(customPx2hd) : defaultPx2hd;
     const theme = px2hd(deepMix({}, defaultTheme, customTheme));
 
     // 创建G的canvas
