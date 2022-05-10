@@ -105,17 +105,11 @@ chart.render();
 ```bash
 $ npm install
 
+# setup
+$ npm run bootstrap
+
 # run test case
 $ npm run test-live
-
-# build watching file changes and run demos
-$ npm run dev
-
-# run demos
-$ npm run demos
-
-# run pack
-$ npm run bundler
 ```
 
 ## How to Contribute

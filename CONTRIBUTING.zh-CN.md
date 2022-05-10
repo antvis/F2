@@ -21,6 +21,10 @@
 # 先创建开发分支开发，分支名应该有含义，避免使用 update、tmp 之类的
 $ git checkout -b branch-name
 
+# 安装依赖并初始化项目
+$ npm i
+$ npm run bootstrap
+
 # 开发完成后跑下测试是否通过，必要时需要新增或修改测试用例
 $ npm test
 
