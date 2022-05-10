@@ -96,8 +96,8 @@ chart.render();
 ```bash
 $ npm install
 
-# 先编译
-$ npm run build
+# 先初始化 monorepo
+$ npm run bootstrap
 
 # 再跑测试用例
 $ npm run test-live
@@ -105,11 +105,8 @@ $ npm run test-live
 # 监听文件变化构建，并打开 demo 页面
 $ npm run dev
 
-# 打开 demo
-$ npm run demos
-
-# 按需打包
-$ npm run bundler
+# 打开某一个具体的测试用例
+$ npm run test-watch -- 'TestFileName'
 ```
 
 ## 如何贡献

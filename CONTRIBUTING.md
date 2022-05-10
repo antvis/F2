@@ -21,6 +21,10 @@ If you are developer of AntV repo and you are willing to contribute, feel free t
 # Create a new branch for development. The name of branch should be semantic, avoiding words like 'update' or 'tmp'. We suggest to use feature/xxx, if the modification is about to implement a new feature.
 $ git checkout -b branch-name
 
+# Initialize the project
+$ npm i
+$ npm run bootstrap
+
 # Run the test after you finish your modification. Add new test cases or change old ones if you feel necessary
 $ npm test
 
