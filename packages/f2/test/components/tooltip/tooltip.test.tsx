@@ -215,6 +215,33 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
+    const context = createContext('Tooltip 默认展示更新（新增图形元素导致的坐标变动）');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={[...data]}>
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip alwaysShow={true} defaultItem={data[0]} showCrosshairs />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    const newChart = (
+      <Chart data={data}>
+        <Interval x="genre" y="sold" color="genre" />
+        <Tooltip alwaysShow={true} defaultItem={data[0]} showCrosshairs />
+        <Axis field="genre" />
+        <Axis field="sold" />
+      </Chart>
+    );
+    await delay(10);
+    canvas.update({ children: newChart });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('Tooltip 超出边界会展示边界值', async () => {
     const context = createContext('Tooltip 超出边界会展示边界值');
     const onChangeMockCallback = jest.fn();
