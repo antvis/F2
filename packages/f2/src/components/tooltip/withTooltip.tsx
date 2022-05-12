@@ -79,9 +79,13 @@ export default (View) => {
     }
 
     willReceiveProps(nextProps) {
-      const { defaultItem: nextDefaultItem } = nextProps;
-      const { defaultItem: lastDefaultItem } = this.props;
-      if (!equal(nextDefaultItem, lastDefaultItem)) {
+      const { defaultItem: nextDefaultItem, coord: nextCoord } = nextProps;
+      const { defaultItem: lastDefaultItem, coord: lastCoord } = this.props;
+      // 默认元素或坐标有变动，均需重新渲染
+      if (
+        !equal(nextDefaultItem, lastDefaultItem) 
+      || !equal(nextCoord, lastCoord) 
+       ) {
         this._showByData(nextDefaultItem);
       }
     }
@@ -103,22 +107,36 @@ export default (View) => {
         this.show(point);
       }, 0);
     }
-
+    _triggerOn = (ev) => {
+      const { points } = ev;
+      this.show(points[0], ev);
+    };
+    _triggerOff = () => {
+      const { props: {alwaysShow = false} } = this;
+      if (!alwaysShow) {
+        this.hide();
+      }    
+    };
     _initEvent() {
       const { context, props } = this;
       const { canvas } = context;
-      const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
+      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
 
-      canvas.on(triggerOn, (ev) => {
-        const { points } = ev;
-        this.show(points[0], ev);
-      });
+      canvas.on(triggerOn, this._triggerOn);
+      canvas.on(triggerOff, this._triggerOff);
+    }
 
-      canvas.on(triggerOff, (_ev) => {
-        if (!alwaysShow) {
-          this.hide();
-        }
-      });
+    didUnmount(): void {
+      this._clearEvents();
+    }
+
+    _clearEvents() {
+      const { context, props } = this;
+      const { canvas } = context;
+      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
+      // 解绑事件
+      canvas.off(triggerOn, this._triggerOn);
+      canvas.off(triggerOff, this._triggerOff);
     }
 
     show(point, _ev?) {
