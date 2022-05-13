@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "4.0.18",
+  "version": "4.0.19",
   "main": "lib/index.js",
   "module": "es/index.js",
   "unpkg": "dist/index.min.js",

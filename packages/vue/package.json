@@ -1,18 +1,17 @@
 {
   "name": "@antv/f2-vue",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "dependencies": {
-    "@antv/f2": "^4.0.16",
+    "@antv/f2": "^4.0.19",
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {
     "@testing-library/vue": "~6.5.1",
     "vue": "~3.2.33"
   },
-  "peerDependencies": {},
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
   "repository": {
