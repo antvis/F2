@@ -1,4 +1,4 @@
-<script lang='jsx'>
+<script>
 import { toRaw } from 'vue';
 import Canvas from '@antv/f2-vue';
 import { Chart, Interval, Axis } from '@antv/f2';
