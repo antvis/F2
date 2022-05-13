@@ -1,6 +1,6 @@
 ---
 title: 如何在 Node.js 中使用
-order: 12
+order: 14
 ---
 
 ## 配置 jsx transform
