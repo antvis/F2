@@ -31,7 +31,6 @@ jobs:
       - name: install
         run: |
           yarn install
-          npm run bootstrap
 
       - name: lint
         run: |

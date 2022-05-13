@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* @jsx React.createElement */
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';

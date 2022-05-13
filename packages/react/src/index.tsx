@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component<{ fallback: React.Component }, { has
       const { fallback } = this.props;
       return fallback || null;
     }
-
+    // @ts-ignore
     return this.props.children || null;
   }
 }
