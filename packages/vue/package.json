@@ -4,6 +4,13 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
+  "keywords": [
+    "f2",
+    "charts",
+    "mobile",
+    "visualization",
+    "vue"
+  ],
   "dependencies": {
     "@antv/f2": "^4.0.19",
     "@babel/runtime": "^7.12.5"
