@@ -4,6 +4,15 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
+  "keywords": [
+    "f2",
+    "charts",
+    "mobile",
+    "visualization",
+    "miniprogram",
+    "my",
+    "alipay"
+  ],
   "dependencies": {
     "@antv/f2": "^4.0.19",
     "@antv/f2-context": "^0.0.1",
