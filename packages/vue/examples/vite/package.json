@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@antv/f2": "^4.0.0",
+    "@antv/f2-vue": "^4.0.0",
     "vue": "^3.2.25"
   },
   "devDependencies": {

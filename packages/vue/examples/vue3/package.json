@@ -8,10 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^3.0.0-0",
     "@antv/f2": "^4.0.0",
-    "@antv/f2-vue": "*"
+    "@antv/f2-vue": "^4.0.0",
+    "vue": "^3.2.25"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "~7.17.3",
