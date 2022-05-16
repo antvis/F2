@@ -100,4 +100,8 @@ export default {
       },
     });
   },
+  beforeUnmount() {
+    const { canvas } = this;
+    canvas.destroy();
+  },
 };
