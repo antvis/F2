@@ -1,6 +1,7 @@
 {
   "name": "@antv/f2",
   "version": "4.0.19",
+  "description": "Charts for mobile visualization.",
   "main": "lib/index.js",
   "module": "es/index.js",
   "unpkg": "dist/index.min.js",
