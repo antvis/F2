@@ -82,6 +82,7 @@ export interface LegendProps {
 export default (View) => {
   return class Legend extends Component<LegendProps> {
     style: Style;
+    itemWidth: Number;
     constructor(props) {
       super(props);
       this.state = {
@@ -195,12 +196,7 @@ export default (View) => {
         style.height = customHeight ? customHeight : autoHeight;
       }
 
-      this.setState({
-        items,
-        itemWidth,
-        style,
-      });
-
+      this.itemWidth = itemWidth;
       this.style = style;
 
       shape.remove();
@@ -283,12 +279,11 @@ export default (View) => {
     }
 
     render() {
-      const { props, state } = this;
+      const { props, itemWidth, style } = this;
       const items = this.getItems();
       if (!items || !items.length) {
         return null;
       }
-      const { itemWidth, style } = state;
 
       return (
         <View
