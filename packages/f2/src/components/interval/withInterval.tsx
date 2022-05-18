@@ -84,6 +84,15 @@ export default (Views) => {
       return records;
     }
 
+    // 获取Y轴坐标零点的画布位置
+    getPointY0() {
+      const { props } = this;
+      const { coord } = props;
+      const y0 = this.getY0Value();
+      const y0Point =  coord.convertPoint({ y: y0, x: 0 })
+      return y0Point?.y;
+    }
+
     render() {
       const { props, state } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
@@ -102,6 +111,7 @@ export default (Views) => {
       const { selected } = state;
 
       const records = this.mapping();
+      const pointY0 = this.getPointY0();
       return (
         <View
           coord={coord}
@@ -112,6 +122,7 @@ export default (Views) => {
           showLabel={showLabel}
           labelCfg={labelCfg}
           LabelView={LabelView}
+          pointY0={pointY0}
         />
       );
     }
