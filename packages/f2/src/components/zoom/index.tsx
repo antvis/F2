@@ -231,6 +231,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     updateRange(scale, originScale, newRange);
     const { chart, data, autoFit } = props;
 
+    debugger;
     if (autoFit) {
       const followScale = this._getFollowScales();
 
