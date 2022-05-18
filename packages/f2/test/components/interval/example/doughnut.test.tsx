@@ -23,6 +23,12 @@ describe('环形图', () => {
         a: '1',
       },
     ];
+
+    const map = {};
+    data.forEach(function(obj) {
+      map[obj.name] = obj.percent + '%';
+    });
+
     const context = createContext('基础环形图');
     const chartRef = { current: null };
     const { type, props } = (
@@ -47,6 +53,9 @@ describe('环形图', () => {
               range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
             }}
           />
+          <Legend  position="right" itemFormatter={name => {
+            return name + '     ' + map[name]
+          }}/>
         </Chart>
       </Canvas>
     );

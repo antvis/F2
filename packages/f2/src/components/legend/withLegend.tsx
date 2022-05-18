@@ -2,7 +2,7 @@ import { jsx } from '../../jsx';
 import { renderShape } from '../../base/diff';
 import Component from '../../base/component';
 import Chart from '../../chart';
-import { find } from '@antv/util';
+import { find, isFunction } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
 import { Style, TextAttrs } from '../../types';
 
@@ -25,10 +25,6 @@ interface LegendItem {
   marker?: string;
 }
 export interface LegendProps {
-  /**
-   * 代表图例对应的数据字段名。
-   */
-  field?: string;
   /**
    * 图表。
    */
@@ -98,6 +94,7 @@ export default (View) => {
     getItems() {
       const { props, state } = this;
       const { filtered } = state;
+      const { itemFormatter } = props;
       const renderItems = props.items?.length ? props.items : this.getOriginItems();
       if (!renderItems) return null;
       return renderItems.map((item) => {
@@ -105,6 +102,7 @@ export default (View) => {
         return {
           ...item,
           filtered: filtered[tickValue],
+          ...isFunction(itemFormatter) ? { name: itemFormatter(tickValue) } : {},
         };
       });
     }
