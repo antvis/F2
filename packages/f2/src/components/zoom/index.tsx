@@ -278,10 +278,8 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _bindEvents() {
-    const { context, props } = this;
-    const { canvas, root } = context;
-    const { pan, pinch, chart } = props;
-    // const hammer = new Hammer(canvas);
+    const { props } = this;
+    const { pan, pinch } = props;
 
     // 统一绑定事件
     if (pan !== false) {

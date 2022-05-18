@@ -40,6 +40,7 @@ function updateCategoryRange(scale: Scale, originScale: Scale, range: ZoomRange)
   if (isValuesEqual(currentValues, newValues) && isValuesEqual(currentTicks, newTicks)) {
     return;
   }
+  debugger;
   scale.change({
     values: newValues,
     ticks: newTicks,
@@ -54,6 +55,7 @@ function updateLinearRange(scale: Scale, originScale: Scale, range: ZoomRange) {
   const newMin = min + (max - min) * start;
   const newMax = min + (max - min) * end;
 
+  debugger;
   scale.change({ min: newMin, max: newMax, nice: false });
 }
 

@@ -8,10 +8,12 @@ export default (props: RectProps<'bottom'>, context) => {
   const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
+  const showTicks = ticks.filter((d) => !isNaN(d.value));
+
   return (
     <group>
       {grid
-        ? ticks.map((tick) => {
+        ? showTicks.map((tick) => {
             const { points, tickValue, gridStyle } = tick;
             const start = points[0];
             const end = points[points.length - 1];
@@ -31,7 +33,7 @@ export default (props: RectProps<'bottom'>, context) => {
           })
         : null}
       {tickLine && tickLine.length
-        ? ticks.map((tick) => {
+        ? showTicks.map((tick) => {
             const { points, tickValue } = tick;
             const start = points[0];
             return (
@@ -60,7 +62,7 @@ export default (props: RectProps<'bottom'>, context) => {
         />
       ) : null}
       {label
-        ? ticks.map((tick, index) => {
+        ? showTicks.map((tick, index) => {
             const { points, text, tickValue, labelStyle } = tick;
             const start = points[0];
             const { align = 'center' } = labelStyle || label || {};

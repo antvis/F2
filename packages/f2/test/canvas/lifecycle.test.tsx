@@ -225,7 +225,6 @@ describe('Canvas', () => {
     );
 
     // await delay(50);
-    debugger;
 
     expect(ref.current.container.getChildren()[0].getAttribute('width')).toBe(30);
     // expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);

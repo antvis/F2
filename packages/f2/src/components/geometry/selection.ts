@@ -56,9 +56,8 @@ class Selection<
     const { triggerOn = 'click' } = selection;
     const hammer = new Hammer(canvas);
     hammer.on(triggerOn, (ev) => {
-      const { canvas } = ev;
-      console.log(canvas);
-      const records = this.getSnapRecords(canvas);
+      const { points } = ev;
+      const records = this.getSnapRecords(points[0]);
       const { type = 'single', cancelable = true } = selection;
       if (!records || !records.length) {
         if (cancelable) {

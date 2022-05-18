@@ -92,6 +92,7 @@ export default (props: LineViewProps) => {
       },
     },
   };
+
   return (
     <group>
       {records.map((record) => {
@@ -100,10 +101,12 @@ export default (props: LineViewProps) => {
           <group key={key}>
             {children.map((child) => {
               const { points, color, size, shape } = child;
+              const fliterPoints = points.filter((point) => !isNaN(point.x) && !isNaN(point.y));
+
               return (
                 <polyline
                   attrs={{
-                    points: points.map((point) => {
+                    points: fliterPoints.map((point) => {
                       return [point.x, point.y];
                     }),
                     stroke: color,

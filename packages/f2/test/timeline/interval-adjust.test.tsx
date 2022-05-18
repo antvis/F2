@@ -45,11 +45,6 @@ const data = [
   { type: 'a', genre: 'Action', sold: 20 },
   { type: 'a', genre: 'Shooter', sold: 20 },
   { type: 'a', genre: 'Other', sold: 40 },
-  // { type: 'b', genre: 'Sports', sold: 50 },
-  // { type: 'b', genre: 'Strategy', sold: 5 },
-  // { type: 'b', genre: 'Action', sold: 2 },
-  // { type: 'b', genre: 'Shooter', sold: 40 },
-  // { type: 'b', genre: 'Other', sold: 4 },
 ];
 
 describe('Chart', () => {
@@ -57,7 +52,7 @@ describe('Chart', () => {
     const treemapRef = {};
     const intervalRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={2}>
+      <Canvas context={context} pixelRatio={1}>
         <Timeline delay={700}>
           <Chart data={lineData}>
             {/* <Axis field="genre" /> */}
@@ -87,5 +82,6 @@ describe('Chart', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    // console.log(intervalRef);
   });
 });
