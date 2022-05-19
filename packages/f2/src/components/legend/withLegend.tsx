@@ -70,6 +70,10 @@ export interface LegendProps {
    */
   valueStyle?: TextAttrs;
   /**
+   * value展示文案的前缀
+   */
+   valuePrefix?: string;
+  /**
    * 是否可点击
    */
   clickable?: boolean;
@@ -94,15 +98,13 @@ export default (View) => {
     getItems() {
       const { props, state } = this;
       const { filtered } = state;
-      const { itemFormatter } = props;
       const renderItems = props.items?.length ? props.items : this.getOriginItems();
       if (!renderItems) return null;
       return renderItems.map((item) => {
-        const { tickValue, value, name } = item;
+        const { tickValue } = item;
         return {
           ...item,
-          filtered: filtered[tickValue],
-          ...isFunction(itemFormatter) ? { name: itemFormatter(value, name) } : {},
+          filtered: filtered[tickValue]
         };
       });
     }

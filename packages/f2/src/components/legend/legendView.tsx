@@ -39,19 +39,18 @@ export default (props) => {
     marker = 'circle', // 图例标记默认为 circle
     nameStyle,
     valueStyle,
+    valuePrefix
   } = props;
 
-  const formatValue = (value) => {
-    if (isFunction(itemFormatter)) {
-      return `: ${itemFormatter(value)}`;
-    }
-    return `: ${value}`;
+  const formatValue = (value, valuePrefix = ": ") => {
+    return `${valuePrefix}${value}`;
   };
 
   return (
     <group style={style}>
       {items.map((item) => {
-        const { color, name, value, filtered } = item;
+        const { color, name, value, filtered, tickValue } = item;
+        const valueText = isFunction(itemFormatter) ? itemFormatter(value, tickValue) : value;
         return (
           <group
             className="legend-item"
@@ -73,11 +72,11 @@ export default (props) => {
                 ...nameStyle,
               }}
             />
-            {value ? (
+            { valueText ? (
               <text
                 attrs={{
                   fill: '#808080',
-                  text: formatValue(value),
+                  text: formatValue(valueText, valuePrefix),
                   ...valueStyle,
                 }}
               />

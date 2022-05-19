@@ -24,7 +24,7 @@ describe('环形图', () => {
       },
     ];
 
-    const map = {}; 
+    const map = {};
     data.forEach(function(obj) {
       map[obj.name] = obj.percent + '%';
     });
@@ -53,9 +53,13 @@ describe('环形图', () => {
               range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
             }}
           />
-          <Legend  position="right" itemFormatter={(value, name) => {
-            return name + '     ' + map[name]
-          }}/>
+          <Legend
+            position="right"
+            itemFormatter={(value, name) => {
+              return map[name];
+            }}
+            valuePrefix="      "
+          />
         </Chart>
       </Canvas>
     );
@@ -193,8 +197,8 @@ describe('环形图', () => {
 
   it('基础环形图 - 数值的和刚好等于nice处理后的最后一个tick值', async () => {
     const data = [
-      { "type": "fundType", "name": "偏债型", "percent": 3 },
-      { "type": "fundType", "name": "偏股型", "percent": 97 }
+      { type: 'fundType', name: '偏债型', percent: 3 },
+      { type: 'fundType', name: '偏股型', percent: 97 },
     ];
     const context = createContext('基础环形图');
     const chartRef = { current: null };
