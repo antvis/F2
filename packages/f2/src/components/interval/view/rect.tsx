@@ -2,7 +2,7 @@ import { deepMix } from '@antv/util';
 import { jsx } from '../../../jsx';
 
 export default (props) => {
-  const { records, animation, pointY0 } = props;
+  const { records, animation, y0 } = props;
   return (
     <group>
       {records.map((record) => {
@@ -29,7 +29,7 @@ export default (props) => {
                         duration: 450,
                         property: ['y', 'height'],
                         start: {
-                          y: pointY0,
+                          y: y0,
                           height: 0,
                         },
                       },

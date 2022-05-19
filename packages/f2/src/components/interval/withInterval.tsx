@@ -122,7 +122,7 @@ export default (Views) => {
           showLabel={showLabel}
           labelCfg={labelCfg}
           LabelView={LabelView}
-          pointY0={pointY0}
+          y0={pointY0}
         />
       );
     }
