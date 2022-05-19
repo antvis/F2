@@ -382,4 +382,277 @@ describe('图例', () => {
     canvas.update(updateProps);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('图例 传入 itemFormatter', async () => {
+    const data = [
+      {
+        name: '股票类',
+        percent: 83.59,
+        a: '1',
+      },
+      {
+        name: '债券类',
+        percent: 2.17,
+        a: '1',
+      },
+      {
+        name: '现金类',
+        percent: 14.24,
+        a: '1',
+      },
+    ];
+
+    const map = {};
+    data.forEach(function(obj) {
+      map[obj.name] = obj.percent + '%';
+    });
+
+    const context = createContext('图例 传入 itemFormatter');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            innerRadius: 0.7,
+            radius: 0.85,
+          }}
+          scale={{}}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+            }}
+          />
+          <Legend
+            position="right"
+            itemFormatter={(value, name) => {
+              return map[name];
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  })
+  it('图例 传入 valuePrefix', async () => {
+    const data = [
+      {
+        name: '股票类',
+        percent: 83.59,
+        a: '1',
+      },
+      {
+        name: '债券类',
+        percent: 2.17,
+        a: '1',
+      },
+      {
+        name: '现金类',
+        percent: 14.24,
+        a: '1',
+      },
+    ];
+
+    const map = {};
+    data.forEach(function(obj) {
+      map[obj.name] = obj.percent + '%';
+    });
+
+    const context = createContext('图例 传入 valuePrefix');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            innerRadius: 0.7,
+            radius: 0.85,
+          }}
+          scale={{}}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+            }}
+          />
+          <Legend
+            position="right"
+            itemFormatter={(value, name) => {
+              return map[name];
+            }}
+            valuePrefix="  占比："
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  })
+  it('图例 传入 自定义items', async () => {
+    const data = [
+      {
+        name: '股票类',
+        percent: 83.59,
+        a: '1',
+      },
+      {
+        name: '债券类',
+        percent: 2.17,
+        a: '1',
+      },
+      {
+        name: '现金类',
+        percent: 14.24,
+        a: '1',
+      },
+    ];
+
+
+    const context = createContext('图例 传入 自定义items');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            innerRadius: 0.7,
+            radius: 0.85,
+          }}
+          scale={{}}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+            }}
+          />
+          <Legend
+            position="right"
+            items={[,
+              {
+                color: 'red',
+                name: '第一组',
+                value: '20'
+              },
+              {
+                color: 'blue',
+                name: '第二组',
+                value: '42'
+              }]}
+            itemFormatter={(value, name) => {
+              return value + '%';
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  })
+  it('图例 传入 自定义items + valuePrefix', async () => {
+    const data = [
+      {
+        name: '股票类',
+        percent: 83.59,
+        a: '1',
+      },
+      {
+        name: '债券类',
+        percent: 2.17,
+        a: '1',
+      },
+      {
+        name: '现金类',
+        percent: 14.24,
+        a: '1',
+      },
+    ];
+
+
+    const context = createContext('图例 传入 自定义items + valuePrefix');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            innerRadius: 0.7,
+            radius: 0.85,
+          }}
+          scale={{}}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+            }}
+          />
+          <Legend
+            position="right"
+            items={[,
+              {
+                color: 'red',
+                name: '第一组',
+                value: '20'
+              },
+              {
+                color: 'blue',
+                name: '第二组',
+                value: '42'
+              }]}
+            itemFormatter={(value, name) => {
+              return value + '%';
+            }}
+            valuePrefix="百分比是"
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  })
 });

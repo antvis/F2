@@ -2,7 +2,7 @@ import { jsx } from '../../jsx';
 import { renderShape } from '../../base/diff';
 import Component from '../../base/component';
 import Chart from '../../chart';
-import { find } from '@antv/util';
+import { find, isFunction } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
 import { Style, TextAttrs } from '../../types';
 
@@ -26,10 +26,6 @@ interface LegendItem {
 }
 export interface LegendProps {
   /**
-   * 代表图例对应的数据字段名。
-   */
-  field?: string;
-  /**
    * 图表。
    */
   readonly chart?: Chart;
@@ -52,7 +48,7 @@ export interface LegendProps {
   /**
    * 回调函数，用于格式化图例每项的文本显示。
    */
-  itemFormatter?: (value: string) => string;
+  itemFormatter?: (value: string, name: string) => string;
   /**
    * 图例项列表。
    */
@@ -73,6 +69,10 @@ export interface LegendProps {
    * 用于设置图例项的文本样式
    */
   valueStyle?: TextAttrs;
+  /**
+   * value展示文案的前缀
+   */
+   valuePrefix?: string;
   /**
    * 是否可点击
    */
@@ -105,7 +105,7 @@ export default (View) => {
         const { tickValue } = item;
         return {
           ...item,
-          filtered: filtered[tickValue],
+          filtered: filtered[tickValue]
         };
       });
     }
