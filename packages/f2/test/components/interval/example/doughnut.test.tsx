@@ -24,7 +24,7 @@ describe('环形图', () => {
       },
     ];
 
-    const map = {};
+    const map = {}; 
     data.forEach(function(obj) {
       map[obj.name] = obj.percent + '%';
     });
@@ -53,7 +53,7 @@ describe('环形图', () => {
               range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
             }}
           />
-          <Legend  position="right" itemFormatter={name => {
+          <Legend  position="right" itemFormatter={(value, name) => {
             return name + '     ' + map[name]
           }}/>
         </Chart>

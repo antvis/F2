@@ -48,7 +48,7 @@ export interface LegendProps {
   /**
    * 回调函数，用于格式化图例每项的文本显示。
    */
-  itemFormatter?: (value: string) => string;
+  itemFormatter?: (value: string, name: string) => string;
   /**
    * 图例项列表。
    */
@@ -98,11 +98,11 @@ export default (View) => {
       const renderItems = props.items?.length ? props.items : this.getOriginItems();
       if (!renderItems) return null;
       return renderItems.map((item) => {
-        const { tickValue } = item;
+        const { tickValue, value, name } = item;
         return {
           ...item,
           filtered: filtered[tickValue],
-          ...isFunction(itemFormatter) ? { name: itemFormatter(tickValue) } : {},
+          ...isFunction(itemFormatter) ? { name: itemFormatter(value, name) } : {},
         };
       });
     }
