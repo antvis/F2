@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-react",
-  "version": "4.0.19",
+  "version": "4.0.20",
   "description": "F2 for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,7 +13,7 @@
     "react"
   ],
   "dependencies": {
-    "@antv/f2": "^4.0.19",
+    "@antv/f2": "^4.0.20",
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {

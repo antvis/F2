@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-my",
-  "version": "4.0.19",
+  "version": "4.0.20",
   "description": "F2 for alipay mini-program",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -15,7 +15,7 @@
     "alipay"
   ],
   "dependencies": {
-    "@antv/f2": "^4.0.19",
+    "@antv/f2": "^4.0.20",
     "@antv/f2-context": "^0.0.1",
     "@babel/runtime": "^7.12.5"
   },
