@@ -183,6 +183,56 @@ describe('图例', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
+
+    it('自定义 items', async () => {
+      const data = [
+        { genre: 'Sports', sold: 275 },
+        { genre: 'Strategy', sold: 115 },
+        { genre: 'Action', sold: 120 },
+      ];
+      const context = createContext('自定义 items', {
+        height: '100px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend
+              items={[
+                {
+                  name: 'Sports',
+                  value: 0.1,
+                },
+                {
+                  name: 'Strategy',
+                  value: 0.2,
+                },
+                {
+                  name: 'Action',
+                  value: 0.3,
+                },
+              ]}
+              itemFormatter={(v) => {
+                return (v * 100).toFixed(2) + '%';
+              }}
+              nameStyle={{
+                fontSize: '40px',
+                fill: 'red',
+              }}
+              valueStyle={{
+                fontSize: '40px',
+                fill: 'red',
+              }}
+            />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
   });
 
   describe('点击交互', () => {
