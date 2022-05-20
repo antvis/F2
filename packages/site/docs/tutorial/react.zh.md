@@ -39,3 +39,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+**完整示例可参考**
+
+- codesandbox: https://codesandbox.io/s/f2-react-gd3e84
+- https://github.com/antvis/F2/tree/master/packages/react/examples
