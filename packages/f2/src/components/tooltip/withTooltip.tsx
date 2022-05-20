@@ -82,10 +82,7 @@ export default (View) => {
       const { defaultItem: nextDefaultItem, coord: nextCoord } = nextProps;
       const { defaultItem: lastDefaultItem, coord: lastCoord } = this.props;
       // 默认元素或坐标有变动，均需重新渲染
-      if (
-        !equal(nextDefaultItem, lastDefaultItem) 
-      || !equal(nextCoord, lastCoord) 
-       ) {
+      if (!equal(nextDefaultItem, lastDefaultItem) || !equal(nextCoord, lastCoord)) {
         this._showByData(nextDefaultItem);
       }
     }
@@ -93,12 +90,11 @@ export default (View) => {
     _initShow() {
       const { props } = this;
       const { defaultItem } = props;
-      if (defaultItem) {
-        this._showByData(defaultItem);
-      }
+      this._showByData(defaultItem);
     }
 
     _showByData(dataItem) {
+      if (!dataItem) return;
       const { props } = this;
       const { chart } = props;
       // 因为 tooltip 有可能在 geometry 之前，所以需要等 geometry render 完后再执行
@@ -112,10 +108,12 @@ export default (View) => {
       this.show(points[0], ev);
     };
     _triggerOff = () => {
-      const { props: {alwaysShow = false} } = this;
+      const {
+        props: { alwaysShow = false },
+      } = this;
       if (!alwaysShow) {
         this.hide();
-      }    
+      }
     };
     _initEvent() {
       const { context, props } = this;
