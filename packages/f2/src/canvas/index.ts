@@ -10,7 +10,7 @@ import defaultTheme from '../theme';
 import { renderChildren, renderComponent } from '../base/diff';
 import EE from '@antv/event-emitter';
 
-interface ChartProps {
+export interface ChartProps {
   context?: CanvasRenderingContext2D;
   pixelRatio?: number;
   width?: number | string;
@@ -22,6 +22,10 @@ interface ChartProps {
   theme?: any;
   style?: any;
   createImage?: () => HTMLImageElement;
+  /**
+   * 是否横屏
+   */
+  landscape?: boolean;
 }
 
 function measureText(canvas, px2hd) {
@@ -70,6 +74,7 @@ class Canvas extends Component<ChartProps> {
       theme: customTheme,
       style: customStyle,
       createImage,
+      landscape,
     } = props;
 
     const px2hd = isFunction(customPx2hd) ? batch2hd(customPx2hd) : defaultPx2hd;
@@ -83,6 +88,7 @@ class Canvas extends Component<ChartProps> {
       width,
       height,
       createImage,
+      landscape,
     });
 
     const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
