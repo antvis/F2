@@ -6,6 +6,7 @@
   "module": "es/index.js",
   "types": "es/index.d.ts",
   "keywords": [
+    "antv",
     "f2",
     "charts",
     "mobile",

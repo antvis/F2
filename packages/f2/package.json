@@ -8,6 +8,7 @@
   "types": "es/index.d.ts",
   "miniprogram": "dist",
   "keywords": [
+    "antv",
     "f2",
     "charts",
     "mobile",
