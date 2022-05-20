@@ -118,6 +118,85 @@ describe('Canvas', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  describe('rect', () => {
+    it('rect', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} animate={false} pixelRatio={1}>
+          <group>
+            <rect
+              attrs={{
+                x: '10px',
+                y: '10px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: 4,
+              }}
+            />
+            <rect
+              attrs={{
+                x: '60px',
+                y: '10px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: '8px',
+              }}
+            />
+
+            <rect
+              attrs={{
+                x: '10px',
+                y: '60px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: [4, 0],
+              }}
+            />
+            <rect
+              attrs={{
+                x: '60px',
+                y: '60px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: ['8px', 0],
+              }}
+            />
+            <rect
+              attrs={{
+                x: '110px',
+                y: '60px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: [0, '8px'],
+              }}
+            />
+            <rect
+              attrs={{
+                x: '10px',
+                y: '110px',
+                width: '40px',
+                height: '40px',
+                fill: 'red',
+                radius: ['8px', '8px', 0, 0],
+              }}
+            />
+          </group>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(100);
+      expect(context).toMatchImageSnapshot();
+    });
+  });
+
   describe('image', () => {
     it('image', async () => {
       const context = createContext();
