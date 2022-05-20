@@ -48,6 +48,11 @@
       "filename": "radar.jsx",
       "title": "雷达图动画",
       "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/191d53e5-ba04-49f9-9119-f0a377723323.gif"
+    },
+    {
+      "filename": "landscape.jsx",
+      "title": "横屏展示",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/13354d7e-e306-4a13-a807-f35cef07c4c8.png"
     }
   ]
 }
