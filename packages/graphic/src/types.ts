@@ -110,7 +110,13 @@ export interface RectAttrs extends ShapeAttrs {
   y?: number;
   width: number;
   height: number;
-  radius?: number;
+  radius?:
+    | number
+    | string
+    | [string | number]
+    | [string | number, string | number]
+    | [string | number, string | number, string | number]
+    | [string | number, string | number, string | number, string | number];
 }
 export interface PolygonAttrs extends ShapeAttrs {
   points: Point[];

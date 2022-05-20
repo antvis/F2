@@ -1,19 +1,26 @@
 import Shape, { ShapeProp } from './shape';
 import { RectAttrs } from '../../types';
-import { isNumber, isString } from '@antv/util';
+import { isNumber, isArray, isNil } from '@antv/util';
 
 export interface RectProp extends ShapeProp {
   attrs?: RectAttrs;
 }
 
-function parsePadding(padding: number | string | number[] | string[]) {
-  if (isNumber(padding) || isString(padding)) {
-    return [padding, padding, padding, padding];
+function parsePadding(padding: number | number[]) {
+  let top = 0;
+  let right = 0;
+  let bottom = 0;
+  let left = 0;
+
+  if (isNumber(padding)) {
+    top = bottom = left = right = padding;
+  } else if (isArray(padding)) {
+    top = padding[0];
+    right = !isNil(padding[1]) ? padding[1] : padding[0];
+    bottom = !isNil(padding[2]) ? padding[2] : padding[0];
+    left = !isNil(padding[3]) ? padding[3] : right;
   }
-  const top = padding[0];
-  const right = padding[1] ? padding[1] : padding[0];
-  const bottom = padding[2] ? padding[2] : top;
-  const left = padding[3] ? padding[3] : right;
+
   return [top, right, bottom, left];
 }
 
