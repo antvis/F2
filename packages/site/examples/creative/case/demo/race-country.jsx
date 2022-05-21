@@ -54,7 +54,21 @@ fetch('https://gw.alipayobjects.com/os/antfincdn/XaPUX1Tqp0/race-country.json')
                     },
                   }}
                 />
-                <Interval x="country" y="income" color="country" />
+                <Interval
+                  x="country"
+                  y="income"
+                  color="country"
+                  animation={{
+                    appear: {
+                      easing: 'linear',
+                      duration: 300,
+                      property: ['width'],
+                      start: {
+                        width: 0,
+                      },
+                    },
+                  }}
+                />
                 {data[year].map((record) => {
                   return (
                     <TextGuide
