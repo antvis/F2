@@ -21,7 +21,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@antv/adjust": "~0.1.1",
+    "@antv/adjust": "^0.2.5",
     "@antv/event-emitter": "^0.1.2",
     "@antv/f2-graphic": "^0.0.4",
     "@antv/scale": "~0.3.3",
