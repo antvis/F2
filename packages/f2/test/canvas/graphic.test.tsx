@@ -249,5 +249,38 @@ describe('Canvas', () => {
       expect(context).toMatchImageSnapshot();
       expect(createImageCallback.mock.calls.length).toBe(1);
     });
+
+    it('image 绘制层级', async () => {
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} animate={false} pixelRatio={1}>
+          <group>
+            <image
+              attrs={{
+                src:
+                  'https://gw.alipayobjects.com/mdn/zhima_credit/afts/img/A*Ckg-R4Md9MgAAAAAAAAAAAAAARQnAQ',
+                width: '200px',
+                height: '200px',
+              }}
+            />
+            <rect
+              attrs={{
+                x: '100px',
+                y: '100px',
+                width: '60px',
+                height: '60px',
+                fill: '#000',
+              }}
+            />
+          </group>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(500);
+      expect(context).toMatchImageSnapshot();
+    });
   });
 });

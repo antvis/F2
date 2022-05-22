@@ -63,7 +63,9 @@ class ImageShape extends Rect<ImageProp> {
         image.onload = () => {
           this.set('loading', false);
           this.set('image', image);
-          this.draw(context);
+          // this.draw(context);
+          // 这里需要调用 canvas.draw 进行重新绘制，否则 image 会一直在最上层
+          canvas.draw();
         };
         // src 一定要在 crossOrigin 之后，否则 toDataURL 就会报 SecurityError
         image.src = src;
