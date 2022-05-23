@@ -2,14 +2,11 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
-import { createContext } from '../../../util';
+import { createContext, delay } from '../../../util';
 
 describe('漏斗图', () => {
-  it('基础漏斗图', () => {
-    const context = createContext('基础漏斗图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('基础漏斗图', async () => {
+    const context = createContext('基础漏斗图');
     const data = [
       { action: '浏览网站', pv: 50000, percent: 1 },
       { action: '放入购物车', pv: 35000, percent: 0.7 },
@@ -18,7 +15,7 @@ describe('漏斗图', () => {
       { action: '完成交易', pv: 8000, percent: 0.16 },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart
           data={data}
           coord={{
@@ -60,13 +57,13 @@ describe('漏斗图', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
-  it('倒置漏斗图', () => {
-    const context = createContext('倒置漏斗图', {
-      height: '300px',
-      width: '400px',
-    });
+  it('倒置漏斗图', async () => {
+    const context = createContext('倒置漏斗图');
     const data = [
       { action: '浏览网站', pv: 50000, percent: 1 },
       { action: '放入购物车', pv: 35000, percent: 0.7 },
@@ -75,7 +72,7 @@ describe('漏斗图', () => {
       { action: '完成交易', pv: 8000, percent: 0.16 },
     ];
     const { type, props } = (
-      <Canvas context={context}>
+      <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart
           data={data}
           coord={{
@@ -105,5 +102,8 @@ describe('漏斗图', () => {
     );
     const canvas = new Canvas(props);
     canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

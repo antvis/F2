@@ -89,7 +89,7 @@ export default (Views) => {
       const { props } = this;
       const { coord } = props;
       const y0 = this.getY0Value();
-      const y0Point =  coord.convertPoint({ y: y0, x: 0 })
+      const y0Point = coord.convertPoint({ y: y0, x: 0 });
       return y0Point?.y;
     }
 

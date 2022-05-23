@@ -21,7 +21,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@antv/adjust": "~0.1.1",
+    "@antv/adjust": "~0.2.5",
     "@antv/event-emitter": "^0.1.2",
     "@antv/f2-graphic": "^0.0.4",
     "@antv/scale": "~0.3.3",
@@ -30,8 +30,7 @@
     "d3-cloud": "~1.2.5",
     "d3-color": "~2.0.0",
     "d3-hierarchy": "~2.0.0",
-    "d3-interpolate": "~2.0.1",
-    "fecha": "^2.3.3"
+    "d3-interpolate": "~2.0.1"
   },
   "homepage": "https://github.com/antvis/f2",
   "author": "https://github.com/orgs/antvis/people",
