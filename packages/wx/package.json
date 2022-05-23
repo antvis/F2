@@ -9,6 +9,7 @@
   "keywords": [
     "antv",
     "f2",
+    "chart",
     "charts",
     "mobile",
     "visualization",
@@ -23,8 +24,9 @@
   "devDependencies": {
     "miniprogram-api-typings": "^3.4.4"
   },
-  "homepage": "https://github.com/antvis/f2",
+  "homepage": "https://f2.antv.vision/zh/docs/tutorial/miniprogram",
   "author": "https://github.com/orgs/antvis/people",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/f2"

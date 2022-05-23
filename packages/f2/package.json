@@ -10,6 +10,7 @@
   "keywords": [
     "antv",
     "f2",
+    "chart",
     "charts",
     "mobile",
     "visualization",
@@ -33,8 +34,9 @@
     "d3-interpolate": "~2.0.1",
     "fecha": "^2.3.3"
   },
-  "homepage": "https://github.com/antvis/f2",
+  "homepage": "https://f2.antv.vision/",
   "author": "https://github.com/orgs/antvis/people",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/f2"
