@@ -1,15 +1,20 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
 import Selection, { SelectionState } from './selection';
-import * as Adjust from '../../adjust';
+import { Adjust, getAdjust } from '@antv/adjust';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
-import type { Scale } from '@antv/scale';
+import { Scale } from '@antv/scale';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
+
+export interface AdjustProp {
+  type: string;
+  adjust: Adjust;
+}
 
 class Geometry<
   P extends GeometryProps = GeometryProps,
@@ -19,7 +24,7 @@ class Geometry<
   geomType: GeomType;
 
   attrs: any;
-  adjust: any;
+  adjust: AdjustProp;
 
   // 预处理后的数据
   dataArray: any;
@@ -189,7 +194,7 @@ class Geometry<
     const scales = [attrs.x.scale, attrs.y.scale];
     for (let j = 0, len = data.length; j < len; j++) {
       const obj = data[j];
-      const count = Math.min(2, scales.length);
+      const count = scales.length;
       for (let i = 0; i < count; i++) {
         const scale = scales[i];
         if (scale.isCategory) {
@@ -200,9 +205,13 @@ class Geometry<
     }
   }
 
-  _adjustData(groupedArray) {
+  _adjustData(records) {
     const { attrs, props } = this;
     const { adjust } = props;
+
+    // groupedArray 是二维数组
+    const groupedArray = records.map((record) => record.children);
+
     if (!adjust) {
       return groupedArray;
     }
@@ -213,29 +222,37 @@ class Geometry<
           }
         : adjust;
     const adjustType = upperFirst(adjustCfg.type);
-    if (!Adjust[adjustType]) {
+    const AdjustConstructor = getAdjust(adjustType);
+    if (!AdjustConstructor) {
       throw new Error('not support such adjust : ' + adjust);
     }
-    const { x, y } = attrs;
-    const xField = x.field;
-    const yField = y.field;
-    const adjustInstance = new Adjust[adjustType]({
-      xField,
-      yField,
-      ...adjustCfg,
-    });
 
     if (adjustType === 'Dodge') {
       for (let i = 0, len = groupedArray.length; i < len; i++) {
         // 如果是dodge, 需要处理数字再处理
         this._numberic(groupedArray[i]);
       }
+      adjustCfg.adjustNames = ['x'];
     }
-    adjustInstance.processAdjust(groupedArray);
 
-    this.adjust = adjustInstance;
+    const { x, y } = attrs;
+    adjustCfg.xField = x.field;
+    adjustCfg.yField = y.field;
 
-    return groupedArray;
+    const adjustInstance = new AdjustConstructor(adjustCfg);
+    const adjustData = adjustInstance.process(groupedArray);
+
+    this.adjust = {
+      type: adjustCfg.type,
+      adjust: adjustInstance,
+    };
+
+    // process 返回的是新数组，所以要修改 records
+    records.forEach((record, index: number) => {
+      record.children = adjustData[index];
+    });
+
+    return adjustData;
   }
 
   _updateStackRange(field, scale, dataArray) {
@@ -268,10 +285,8 @@ class Geometry<
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
     const records = this._groupData(data);
-    // groupedArray 是二维数组
-    const groupedArray = records.map((record) => record.children);
     // 根据adjust分组
-    const dataArray = this._adjustData(groupedArray);
+    const dataArray = this._adjustData(records);
 
     this.dataArray = dataArray;
 
