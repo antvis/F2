@@ -44,8 +44,8 @@ export default (props) => {
               return (
                 <circle
                   attrs={{
-                    x,
-                    y,
+                    cx: x,
+                    cy: y,
                     fill: shapeName === 'circle' ? color : null,
                     stroke: shapeName === 'hollowCircle' ? color : null,
                     ...shape,
