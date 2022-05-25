@@ -1,13 +1,14 @@
 // @ts-nocheck
 /* @jsx React.createElement */
-import React from 'react';
+import { Canvas, Chart, Component, Line } from '@antv/f2';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
 import ReactCanvas from '../src';
-import { Canvas, Chart, Line } from '@antv/f2';
 
 // @ts-ignore
 Enzyme.configure({ adapter: new Adapter() });
+
 
 const data = [
   { genre: 'Sports', sold: 275 },
@@ -48,6 +49,39 @@ describe('<Canvas >', () => {
     // 触发update
     wrapper.setProps({ a: 2 });
     expect(line.props.a).toBe(2);
+
+    wrapper.unmount();
+  });
+
+  it('Chart render with Error', () => {
+    class Test extends Component {
+      render() {
+        throw new Error('Render Error');
+      }
+    }
+
+
+    const onError = jest.fn(() => {
+      // do something
+    })
+
+    const wrapper = mount(
+      <ReactCanvas
+        width={100}
+        height={100}
+        className="newClass"
+        fallback={<div>Chart Fallback</div>}
+        onError={onError}
+      >
+        <Test />
+      </ReactCanvas>
+    );
+
+    // 断言 fallback 触发
+    expect(wrapper.html()).toBe('<div>Chart Fallback</div>');
+
+    // 断言 onError 触发
+    expect(onError.mock.calls.length).toBe(1);
 
     wrapper.unmount();
   });
