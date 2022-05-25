@@ -114,25 +114,25 @@ export default (props: TagGuideProps, context) => {
     const { minX, minY } = guideBBox || {};
     if (direct === 'tl') {
       arrowPoints = [
-        { x: minX, y: minY - 1 }, // 这个 1 是为了防止出现白边
-        { x: minX, y: minY + side },
-        { x: minX - side - 1, y: minY - 1 },
+        { x, y: y - side },
+        { x, y },
+        { x: x - side, y: y - side },
       ];
       posX -= (guideWidth || 0);
       posY = posY - (guideHeight || 0) - side;
     } else if (direct === 'cl') {
       arrowPoints = [
-        { x: minX - 1, y: minY - 1 - side / 2 },
-        { x: minX - 1, y: minY + 1 + side / 2 },
-        { x: minX + side, y: minY },
+        { x: x - side / 1.4 - 2, y: y - side / 1.4 },
+        { x: x - side / 1.4 - 2, y: y + side / 1.4 },
+        { x, y },
       ];
       posX = posX - (guideWidth || 0) - side;
       posY -= (guideHeight / 2 || 0);
     } else if (direct === 'bl') {
       arrowPoints = [
-        { x: minX, y: -side + minY },
-        { x: minX - side - 1, y: minY + 1 },
-        { x: minX, y: minY + 1 },
+        { x, y },
+        { x, y: y + side + 1 },
+        { x: x - side, y: y + side + 1 },
       ];
       posX = posX - (guideWidth || 0);
       posY += side;
@@ -179,6 +179,7 @@ export default (props: TagGuideProps, context) => {
 
   const dr = autoAdjust ? _getDirect(points[0]) : direct;
   const arrowPoints = _getArrowPoints(dr);
+  console.log(dr, guideBBox, arrowPoints);
 
   return (
     <group
