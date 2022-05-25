@@ -142,4 +142,5 @@ export default {
 
 **完整示例可参考**
 
+- codesandbox: https://codesandbox.io/s/f2-vue-9yywsh?file=/src/App.vue
 - https://github.com/antvis/F2/tree/master/packages/vue/examples
