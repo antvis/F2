@@ -1,14 +1,13 @@
 // @ts-nocheck
 /* @jsx React.createElement */
 import { Canvas, Chart, Component, Line } from '@antv/f2';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import ReactCanvas from '../src';
 
 // @ts-ignore
 Enzyme.configure({ adapter: new Adapter() });
-
 
 const data = [
   { genre: 'Sports', sold: 275 },
@@ -65,7 +64,9 @@ describe('<Canvas >', () => {
       // do something
     })
 
-    const wrapper = mount(
+    // 这里只能用 shallow rendering，否则 throw Error 会让 jest 单测报错
+    // https://stackoverflow.com/questions/53756105/exception-handling-in-jest-enzyme
+    const wrapper = shallow(
       <ReactCanvas
         width={100}
         height={100}
