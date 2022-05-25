@@ -20,7 +20,10 @@ type PX_FIELD_NAME =
 | 'sy'
 | 'swidth'
 | 'sheight'
-| 'points';
+| 'points'
+| 'shadowBlur'
+| 'shadowOffsetX'
+| 'shadowOffsetY';
 
 type pxstr = `${number}px`;
 export type px = number | pxstr | string;

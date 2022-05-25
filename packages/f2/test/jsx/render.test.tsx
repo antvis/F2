@@ -597,4 +597,44 @@ describe('clip', () => {
 
     expect(context).toMatchImageSnapshot();
   });
+
+  it('function', () => {
+    const context = createContext();
+    const canvas = new Canvas({
+      context,
+      pixelRatio: 1,
+    });
+    render(
+      <group
+        attrs={{
+          x: 50,
+          clip: function(parentAttrs) {
+            const { x } = parentAttrs;
+            return {
+              type: 'circle',
+              attrs: {
+                x,
+                y: 50,
+                r: 40,
+              },
+            };
+          },
+        }}
+      >
+        <rect
+          attrs={{
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            fill: 'red',
+          }}
+        />
+      </group>,
+      canvas
+    );
+    canvas.draw();
+
+    expect(context).toMatchImageSnapshot();
+  });
 });

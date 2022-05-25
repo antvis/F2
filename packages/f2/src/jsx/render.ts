@@ -1,6 +1,6 @@
 import { JSX } from './jsx-namespace';
 import { extendMap, px2hd as defaultPx2hd } from '../util';
-import { omit } from '@antv/util';
+import { isFunction, omit } from '@antv/util';
 import computeLayout from './css-layout';
 import getShapeAttrs from './shape';
 import getAnimation from './animation';
@@ -93,7 +93,8 @@ function createElement(node, container, parentLayout, animate: boolean) {
 
   if (elementAttrs.clip) {
     const { clip } = elementAttrs;
-    elementAttrs.clip = createClipElement(clip.type, clip);
+    const clipConfig = isFunction(clip) ? clip(elementAttrs) : clip;
+    elementAttrs.clip = createClipElement(clipConfig.type, clipConfig);
   }
 
   let element;
