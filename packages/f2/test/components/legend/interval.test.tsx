@@ -31,16 +31,16 @@ describe('Interval', () => {
     await delay(800);
     expect(context).toMatchImageSnapshot();
 
-    // await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
-    // await delay(500);
-    // expect(context).toMatchImageSnapshot();
+    await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
 
-    // await gestureSimulator(context.canvas, 'click', { x: 109, y: 24 });
-    // await delay(500);
-    // expect(context).toMatchImageSnapshot();
+    await gestureSimulator(context.canvas, 'click', { x: 109, y: 24 });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
 
-    // await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
-    // await delay(500);
-    // expect(context).toMatchImageSnapshot();
+    await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
   });
 });

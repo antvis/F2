@@ -2,12 +2,7 @@ import { deepMix } from '@antv/util';
 import { jsx } from '../../../jsx';
 
 export default (props) => {
-<<<<<<< HEAD
   const { records, animation, y0 } = props;
-=======
-  const { records, animation } = props;
-
->>>>>>> 9973662e1 (feat: 对接事件交互等)
   return (
     <group>
       {records.map((record) => {
