@@ -12,261 +12,261 @@ function numberToMoney(n) {
 
 describe('Axis 轴', () => {
   // 基础
-  // it('文本换行', async () => {
-  //   const context = createContext('文本换行');
+  it('文本换行', async () => {
+    const context = createContext('文本换行');
 
-  //   const data = [
-  //     {
-  //       time: 'Jan.\nJan',
-  //       value: 551990,
-  //     },
-  //     {
-  //       time: 'Feb.\nFeb',
-  //       value: 513513,
-  //     },
-  //     {
-  //       time: 'Mar.\nMar',
-  //       value: 538780,
-  //     },
-  //     {
-  //       time: 'Apr.\nApr',
-  //       value: 419562,
-  //     },
-  //     {
-  //       time: 'May.\nMay',
-  //       value: 332167,
-  //     },
-  //     {
-  //       time: 'Jun.\nJun',
-  //       value: 297956,
-  //     },
-  //     {
-  //       time: 'Jul.\nJul',
-  //       value: 311760,
-  //     },
-  //     {
-  //       time: 'Aug.\nAug',
-  //       value: 330824,
-  //     },
-  //   ];
-  //   const { props } = (
-  //     <Canvas context={context} pixelRatio={1}>
-  //       <Chart data={data}>
-  //         <Axis field="time" />
-  //         <Axis field="value" />
-  //         <Interval x="time" y="value" color="#2FC25B" />
-  //       </Chart>
-  //     </Canvas>
-  //   );
-  //   const canvas = new Canvas(props);
-  //   canvas.render();
+    const data = [
+      {
+        time: 'Jan.\nJan',
+        value: 551990,
+      },
+      {
+        time: 'Feb.\nFeb',
+        value: 513513,
+      },
+      {
+        time: 'Mar.\nMar',
+        value: 538780,
+      },
+      {
+        time: 'Apr.\nApr',
+        value: 419562,
+      },
+      {
+        time: 'May.\nMay',
+        value: 332167,
+      },
+      {
+        time: 'Jun.\nJun',
+        value: 297956,
+      },
+      {
+        time: 'Jul.\nJul',
+        value: 311760,
+      },
+      {
+        time: 'Aug.\nAug',
+        value: 330824,
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="time" />
+          <Axis field="value" />
+          <Interval x="time" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
 
-  //   await delay(1000);
-  //   expect(context).toMatchImageSnapshot();
-  // });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 
-  // it('旋转', async () => {
-  //   const context = createContext('旋转');
+  it('旋转', async () => {
+    const context = createContext('旋转');
 
-  //   const data = [
-  //     {
-  //       Year: '1987',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '1989',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '1995',
-  //       NumberNewMicroBrewery: 2,
-  //     },
-  //     {
-  //       Year: '1996',
-  //       NumberNewMicroBrewery: 2,
-  //     },
-  //     {
-  //       Year: '1997',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '1998',
-  //       NumberNewMicroBrewery: 3,
-  //     },
-  //     {
-  //       Year: '1999',
-  //       NumberNewMicroBrewery: 2,
-  //     },
-  //     {
-  //       Year: '2006',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '2007',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '2008',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //     {
-  //       Year: '2009',
-  //       NumberNewMicroBrewery: 2,
-  //     },
-  //     {
-  //       Year: '2010',
-  //       NumberNewMicroBrewery: 3,
-  //     },
-  //     {
-  //       Year: '2011',
-  //       NumberNewMicroBrewery: 4,
-  //     },
-  //     {
-  //       Year: '2012',
-  //       NumberNewMicroBrewery: 5,
-  //     },
-  //     {
-  //       Year: '2013',
-  //       NumberNewMicroBrewery: 11,
-  //     },
-  //     {
-  //       Year: '2014',
-  //       NumberNewMicroBrewery: 20,
-  //     },
-  //     {
-  //       Year: '2015',
-  //       NumberNewMicroBrewery: 16,
-  //     },
-  //     {
-  //       Year: '2016',
-  //       NumberNewMicroBrewery: 13,
-  //     },
-  //     {
-  //       Year: '2017',
-  //       NumberNewMicroBrewery: 6,
-  //     },
-  //     {
-  //       Year: '2018',
-  //       NumberNewMicroBrewery: 1,
-  //     },
-  //   ];
-  //   const { props } = (
-  //     <Canvas context={context} pixelRatio={1}>
-  //       <Chart data={data}>
-  //         <Axis
-  //           field="Year"
-  //           style={{
-  //             label: {
-  //               // rotate: -Math.PI / 2,
-  //               // @ts-ignore
-  //               transform: 'rotate(-90deg)',
-  //               // textAlign: 'end',
-  //               textBaseline: 'middle',
-  //             },
-  //           }}
-  //         />
-  //         <Axis field="NumberNewMicroBrewery" />
-  //         <Interval
-  //           x="Year"
-  //           y="NumberNewMicroBrewery"
-  //           color={{
-  //             field: 'NumberNewMicroBrewery',
-  //             callback: function(val) {
-  //               if (val === 20) {
-  //                 return '#1890ff';
-  //               }
-  //               return '#66B5FF';
-  //             },
-  //           }}
-  //         />
-  //       </Chart>
-  //     </Canvas>
-  //   );
-  //   const canvas = new Canvas(props);
-  //   canvas.render();
+    const data = [
+      {
+        Year: '1987',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '1989',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '1995',
+        NumberNewMicroBrewery: 2,
+      },
+      {
+        Year: '1996',
+        NumberNewMicroBrewery: 2,
+      },
+      {
+        Year: '1997',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '1998',
+        NumberNewMicroBrewery: 3,
+      },
+      {
+        Year: '1999',
+        NumberNewMicroBrewery: 2,
+      },
+      {
+        Year: '2006',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '2007',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '2008',
+        NumberNewMicroBrewery: 1,
+      },
+      {
+        Year: '2009',
+        NumberNewMicroBrewery: 2,
+      },
+      {
+        Year: '2010',
+        NumberNewMicroBrewery: 3,
+      },
+      {
+        Year: '2011',
+        NumberNewMicroBrewery: 4,
+      },
+      {
+        Year: '2012',
+        NumberNewMicroBrewery: 5,
+      },
+      {
+        Year: '2013',
+        NumberNewMicroBrewery: 11,
+      },
+      {
+        Year: '2014',
+        NumberNewMicroBrewery: 20,
+      },
+      {
+        Year: '2015',
+        NumberNewMicroBrewery: 16,
+      },
+      {
+        Year: '2016',
+        NumberNewMicroBrewery: 13,
+      },
+      {
+        Year: '2017',
+        NumberNewMicroBrewery: 6,
+      },
+      {
+        Year: '2018',
+        NumberNewMicroBrewery: 1,
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis
+            field="Year"
+            style={{
+              label: {
+                // rotate: -Math.PI / 2,
+                // @ts-ignore
+                transform: 'rotate(-90deg)',
+                // textAlign: 'end',
+                textBaseline: 'middle',
+              },
+            }}
+          />
+          <Axis field="NumberNewMicroBrewery" />
+          <Interval
+            x="Year"
+            y="NumberNewMicroBrewery"
+            color={{
+              field: 'NumberNewMicroBrewery',
+              callback: function(val) {
+                if (val === 20) {
+                  return '#1890ff';
+                }
+                return '#66B5FF';
+              },
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
 
-  //   await delay(1000);
-  //   expect(context).toMatchImageSnapshot();
-  // });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 
-  // it('label 回调', async () => {
-  //   const context = createContext('label 回调');
-  //   const { props } = (
-  //     <Canvas context={context} pixelRatio={1}>
-  //       <Chart data={valuationData}>
-  //         <Axis
-  //           field="index"
-  //           style={{
-  //             label: (text) => {
-  //               return {
-  //                 align: 'end',
-  //               };
-  //             },
-  //           }}
-  //         />
-  //         <Axis
-  //           field="value"
-  //           formatter={(v) => {
-  //             return v.toFixed(2) + '%';
-  //           }}
-  //           style={{
-  //             label: (text) => {
-  //               const number = parseInt(text);
-  //               const cfg = {} as any;
-  //               if (number > 0) {
-  //                 cfg.text = '+' + text;
-  //                 cfg.fill = '#F5222D';
-  //               } else if (number === 0) {
-  //                 cfg.fill = '#000';
-  //                 cfg.fontWeight = 'bold';
-  //               } else {
-  //                 cfg.fill = '#52C41A';
-  //               }
-  //               return cfg;
-  //             },
-  //             labelOffset: '8px',
-  //           }}
-  //         />
-  //         <Line x="index" y="value" color="#2FC25B" />
-  //       </Chart>
-  //     </Canvas>
-  //   );
+  it('label 回调', async () => {
+    const context = createContext('label 回调');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis
+            field="index"
+            style={{
+              label: (text) => {
+                return {
+                  align: 'end',
+                };
+              },
+            }}
+          />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              label: (text) => {
+                const number = parseInt(text);
+                const cfg = {} as any;
+                if (number > 0) {
+                  cfg.text = '+' + text;
+                  cfg.fill = '#F5222D';
+                } else if (number === 0) {
+                  cfg.fill = '#000';
+                  cfg.fontWeight = 'bold';
+                } else {
+                  cfg.fill = '#52C41A';
+                }
+                return cfg;
+              },
+              labelOffset: '8px',
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
 
-  //   const canvas = new Canvas(props);
-  //   canvas.render();
+    const canvas = new Canvas(props);
+    canvas.render();
 
-  //   await delay(1000);
-  //   expect(context).toMatchImageSnapshot();
-  // });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 
-  // it('label 回调参数', async () => {
-  //   const context = createContext('label 回调参数');
-  //   const labelMockCallback = jest.fn();
-  //   const { type, props } = (
-  //     <Canvas context={context} pixelRatio={1}>
-  //       <Chart data={valuationData}>
-  //         <Axis field="index" />
-  //         <Axis
-  //           field="value"
-  //           formatter={(v) => {
-  //             return v.toFixed(2) + '%';
-  //           }}
-  //           style={{
-  //             label: labelMockCallback,
-  //           }}
-  //         />
-  //         <Line x="index" y="value" color="#2FC25B" />
-  //       </Chart>
-  //     </Canvas>
-  //   );
+  it('label 回调参数', async () => {
+    const context = createContext('label 回调参数');
+    const labelMockCallback = jest.fn();
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis field="index" />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              label: labelMockCallback,
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
 
-  //   const canvas = new Canvas(props);
-  //   canvas.render();
-  //   expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
+    const canvas = new Canvas(props);
+    canvas.render();
+    expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
 
-  //   await delay(1000);
-  //   expect(context).toMatchImageSnapshot();
-  // });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 
   it('grid样式', async () => {
     const context = createContext('grid样式');
@@ -292,7 +292,7 @@ describe('Axis 轴', () => {
             field="Pro-Kopf-BIP (USD)"
             style={{
               grid: {
-                // lineDash: null,
+                lineDash: null,
                 stroke: '#e8e8e8',
                 lineWidth: 1,
               },
@@ -303,7 +303,7 @@ describe('Axis 轴', () => {
             field="Anzahl Flüchtlinge"
             style={{
               grid: {
-                // lineDash: null,
+                lineDash: null,
               },
             }}
           />
@@ -525,77 +525,77 @@ describe('Axis 轴', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  // it('弧形网格线', async () => {
-  //   const context = createContext('弧形网格线');
-  //   const data = [
-  //     {
-  //       name: 'Samsung',
-  //       percent: 21.2,
-  //     },
-  //     {
-  //       name: 'Apple',
-  //       percent: 14.6,
-  //     },
-  //     {
-  //       name: 'Huawei',
-  //       percent: 9.5,
-  //     },
-  //     {
-  //       name: 'Oppo',
-  //       percent: 6.8,
-  //     },
-  //     {
-  //       name: 'Vivo',
-  //       percent: 5.3,
-  //     },
-  //     {
-  //       name: 'Others',
-  //       percent: 42.7,
-  //     },
-  //   ];
+  it('弧形网格线', async () => {
+    const context = createContext('弧形网格线');
+    const data = [
+      {
+        name: 'Samsung',
+        percent: 21.2,
+      },
+      {
+        name: 'Apple',
+        percent: 14.6,
+      },
+      {
+        name: 'Huawei',
+        percent: 9.5,
+      },
+      {
+        name: 'Oppo',
+        percent: 6.8,
+      },
+      {
+        name: 'Vivo',
+        percent: 5.3,
+      },
+      {
+        name: 'Others',
+        percent: 42.7,
+      },
+    ];
 
-  //   const { props } = (
-  //     <Canvas context={context} pixelRatio={1}>
-  //       <Chart
-  //         data={data.reverse()}
-  //         scale={{
-  //           percent: {
-  //             max: 100,
-  //           },
-  //         }}
-  //         coord={{
-  //           type: 'polar',
-  //           transposed: true,
-  //           endAngle: 2 * Math.PI,
-  //           startAngle: Math.PI / 2,
-  //           innerRadius: 0.3,
-  //         }}
-  //       >
-  //         <Axis field="percent" visible={false} />
-  //         <Axis
-  //           field="name"
-  //           style={{
-  //             grid: {
-  //               lineDash: null,
-  //               // TODO:暂时有点问题
-  //               // type: 'arc',
-  //             },
-  //             line: null,
-  //             label: {
-  //               fontSize: 12,
-  //               fontWeight: 'bold',
-  //               fill: '#E5875B',
-  //             },
-  //           }}
-  //         />
-  //         <Interval x="name" y="percent" color={['percent', ['#E5875B', '#C2832B']]} />
-  //       </Chart>
-  //     </Canvas>
-  //   );
-  //   const canvas = new Canvas(props);
-  //   canvas.render();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          data={data.reverse()}
+          scale={{
+            percent: {
+              max: 100,
+            },
+          }}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            endAngle: 2 * Math.PI,
+            startAngle: Math.PI / 2,
+            innerRadius: 0.3,
+          }}
+        >
+          <Axis field="percent" visible={false} />
+          <Axis
+            field="name"
+            style={{
+              grid: {
+                lineDash: null,
+                // TODO:暂时有点问题
+                // type: 'arc',
+              },
+              line: null,
+              label: {
+                fontSize: 12,
+                fontWeight: 'bold',
+                fill: '#E5875B',
+              },
+            }}
+          />
+          <Interval x="name" y="percent" color={['percent', ['#E5875B', '#C2832B']]} />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
 
-  //   await delay(1000);
-  //   expect(context).toMatchImageSnapshot();
-  // });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

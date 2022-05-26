@@ -24,8 +24,8 @@ export default (props: PointGuideProps, context) => {
     <group>
       <circle
         attrs={{
-          x: posX,
-          y: posY,
+          cx: posX,
+          cy: posY,
           ...style,
         }}
         animation={animation}

@@ -20,10 +20,10 @@ describe('空数据', () => {
 
     expect(
       ref.current.container
-        .get('children')[0]
-        .get('children')[0]
-        .get('children')[0]
-        .get('children').length
+        .getChildren()[0]
+        .getChildren()[0]
+        .getChildren()[0]
+        .getChildren().length
     ).toBe(0);
   });
 });

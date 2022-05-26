@@ -29,10 +29,7 @@ type pxstr = `${number}px`;
 export type px = number | pxstr | string;
 
 export type Point = Types.Point;
-export interface PxPoint {
-  x: px;
-  y: px;
-}
+export type PxPoint = [px,px]
 
 export interface DataRecord {
   origin: any;

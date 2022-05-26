@@ -1,6 +1,5 @@
-import { jsx } from '../../../src/jsx';
 import { Polar } from '../../../src/coord';
-import { Canvas, Treemap } from '../../../src';
+import { Canvas, Treemap, jsx } from '../../../src';
 import { createContext, delay } from '../../util';
 const context = createContext();
 const data = [

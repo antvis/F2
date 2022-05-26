@@ -122,10 +122,10 @@ function isInBBox(bbox, point) {
 function getElementsByClassName(className: string, element) {
   if (!element || !className) return [];
   let rst = [];
-  if (element.get('className') === className) {
+  if (element.getAttribute('className') === className) {
     rst.push(element);
   }
-  const children = element.get('children');
+  const children = element.getChildren();
   if (children && children.length) {
     for (let i = 0; i < children.length; i++) {
       const child = children[i];

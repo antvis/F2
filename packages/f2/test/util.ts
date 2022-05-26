@@ -26,7 +26,7 @@ const createContext = (title = '', { width = '300px', height = '225px' } = {}) =
 };
 
 const dispatchEvent = (dom: HTMLElement, eventType: string, exData) => {
-  let event = isTouch(eventType)
+  const event = isTouch(eventType)
     ? new TouchEvent(eventType, { bubbles: true, cancelable: true, ...exData })
     : new MouseEvent(eventType, { bubbles: true, cancelable: true, ...exData });
 

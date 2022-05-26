@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { Component } from '@antv/f-engine';
+import { Component, Hammer } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { isInBBox, getElementsByClassName } from '../../util';
 import { Ref, Point } from '../../types';
@@ -317,8 +317,8 @@ export default (View) => {
       const { context, props } = this;
       const { canvas } = context;
       const { triggerOn = DEFAULT_CONFIG.triggerOn } = props;
-
-      canvas.on(triggerOn, this._handleEvent);
+      const hammer = new Hammer(canvas);
+      hammer.on(triggerOn, this._handleEvent);
     }
 
     render() {

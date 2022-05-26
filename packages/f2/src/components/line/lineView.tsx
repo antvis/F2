@@ -55,7 +55,7 @@ function AnimationEndView(props) {
           onFrame: function(t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
-            const children = element.get('children');
+            const children = element.getChildren();
             const point = getPoint(points, t);
             children.forEach((child) => {
               child.moveTo(point.x, point.y);

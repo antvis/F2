@@ -1,6 +1,5 @@
 import { jsx } from '../../jsx';
-import { renderShape } from '@antv/f-engine';
-import { Component } from '@antv/f-engine';
+import { Component, Hammer, renderShape } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
 import { getElementsByClassName, isInBBox } from '../../util';
@@ -122,7 +121,7 @@ export default (View) => {
       (legendShape.getChildren() || []).forEach((child) => {
         const width = child.getAttribute('width');
         const height = child.getAttribute('height');
-        // const { width, height } = child.get('attrs');
+
         maxItemWidth = Math.max(maxItemWidth, width);
         maxItemHeight = Math.max(maxItemHeight, height);
       });
@@ -244,7 +243,8 @@ export default (View) => {
       if (!clickable) return;
 
       // item 点击事件
-      canvas.on('click', (ev) => {
+      const hammer = new Hammer(canvas);
+      hammer.on('click', (ev) => {
         const { points } = ev;
         const point = points[0];
         const bbox = container.getBBox();

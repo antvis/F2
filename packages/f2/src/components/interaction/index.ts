@@ -1,4 +1,4 @@
-import { Component } from '@antv/f-engine';
+import { Component, Hammer } from '@antv/f-engine';
 
 // 缩放
 class interaction extends Component {
@@ -6,6 +6,7 @@ class interaction extends Component {
   processEvent = 'touchmove';
   endEvent = 'touchend';
   resetEvent = null;
+  hammer: Hammer;
 
   preStart?: (ev) => void;
   onStart?: (ev) => void;
@@ -15,6 +16,12 @@ class interaction extends Component {
   onEnd?: (ev) => void;
   preReset?: (ev) => void;
   onReset?: (ev) => void;
+
+  willMount(): void {
+    const { context } = this;
+    const { canvas } = context;
+    this.hammer = new Hammer(canvas);
+  }
 
   didMount(): void {
     this._bindEvents();
@@ -58,10 +65,10 @@ class interaction extends Component {
     const { context, startEvent, processEvent, endEvent, resetEvent } = this;
     const { canvas } = context;
     // 统一绑定事件
-    canvas.on(startEvent, this._start);
-    canvas.on(processEvent, this._process);
-    canvas.on(endEvent, this._end);
-    canvas.on(resetEvent, this._reset);
+    this.hammer.on(startEvent, this._start);
+    this.hammer.on(processEvent, this._process);
+    this.hammer.on(endEvent, this._end);
+    this.hammer.on(resetEvent, this._reset);
   }
 
   _clearEvents() {
@@ -69,10 +76,10 @@ class interaction extends Component {
     const { canvas } = context;
 
     // 统一解绑事件
-    canvas.off(startEvent, this._start);
-    canvas.off(processEvent, this._process);
-    canvas.off(endEvent, this._end);
-    canvas.off(resetEvent, this._reset);
+    this.hammer.off(startEvent, this._start);
+    this.hammer.off(processEvent, this._process);
+    this.hammer.off(endEvent, this._end);
+    this.hammer.off(resetEvent, this._reset);
   }
 }
 

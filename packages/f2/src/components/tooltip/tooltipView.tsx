@@ -131,20 +131,14 @@ const RenderItemMarker = (props) => {
 
 const RenderCrosshairs = (props) => {
   const { records, coord, chart, crosshairsType, crosshairsStyle } = props;
-    const {
-      left: coordLeft,
-      top: coordTop,
-      right: coordRight,
-      bottom: coordBottom,
-      center
-    } = coord;  
+  const { left: coordLeft, top: coordTop, right: coordRight, bottom: coordBottom, center } = coord;
   const firstRecord = records[0];
   const { x, y, origin, xField } = firstRecord;
-  if(coord.isPolar) {
+  if (coord.isPolar) {
     // 极坐标下的辅助线
     const xScale = chart.getScale(xField);
     const ticks = xScale.getTicks();
-    const tick = find<any>(ticks, (tick) => origin[xField] === tick.tickValue);      
+    const tick = find<any>(ticks, (tick) => origin[xField] === tick.tickValue);
     const end = coord.convertPoint({
       x: tick.value,
       y: 1,
@@ -188,7 +182,7 @@ const RenderCrosshairs = (props) => {
       ) : null}
     </group>
   );
-}
+};
 
 export default class TooltipView extends Component {
   rootRef: Ref;
@@ -212,7 +206,12 @@ export default class TooltipView extends Component {
     // 中心点
     const { x } = record;
     const { left: coordLeft, width: coordWidth } = coord;
-    const { y, width, height, radius } = group.get('attrs');
+
+    const y = group.getAttribute('y');
+    const width = group.getAttribute('width');
+    const height = group.getAttribute('height');
+    const radius = group.getAttribute('radius');
+
     const halfWidth = width / 2;
     // 让 tooltip 限制在 coord 的显示范围内
     const offsetX = Math.min(
@@ -285,13 +284,13 @@ export default class TooltipView extends Component {
       <group>
         <group
           style={{
-            left: coordLeft,
-            top: coordTop,
+            x: coordLeft,
+            y: coordTop,
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}
-          {!custom && (<group>
-            <group ref={this.rootRef} style={background} attrs={background}>
+          {!custom && (
+            <group ref={this.rootRef}>
               {/* {showTitle ? (
                 <text
                   style={{
@@ -356,18 +355,18 @@ export default class TooltipView extends Component {
                 })}
               </group>
             </group>
-            <polygon
-              ref={this.arrowRef}
-              attrs={{
-                points: [
-                  { x: x - arrowWidth, y: coordTop },
-                  { x: x + arrowWidth, y: coordTop },
-                  { x: x, y: coordTop + arrowWidth },
-                ],
-                fill: background.fill,
-              }}
-            />
-          </group>)}
+          )}
+          <polygon
+            ref={this.arrowRef}
+            attrs={{
+              points: [
+                [x - arrowWidth, 0],
+                [x + arrowWidth, 0],
+                [x, arrowWidth],
+              ],
+              fill: background.fill,
+            }}
+          />
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}
@@ -378,7 +377,7 @@ export default class TooltipView extends Component {
               coord={coord}
               records={records}
               crosshairsType={crosshairsType}
-              crosshairsStyle={{...defaultStyle.crosshairsStyle, ...crosshairsStyle}}
+              crosshairsStyle={{ ...defaultStyle.crosshairsStyle, ...crosshairsStyle }}
             />
           ) : null}
           {/* 辅助点 */}
@@ -388,8 +387,8 @@ export default class TooltipView extends Component {
                 return (
                   <circle
                     attrs={{
-                      x,
-                      y,
+                      cx: x,
+                      cy: y,
                       r: '6px',
                       stroke: color,
                       fill: color,

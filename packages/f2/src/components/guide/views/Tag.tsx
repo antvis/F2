@@ -111,7 +111,8 @@ export default (props: TagGuideProps, context) => {
 
   const _getArrowPoints = (direct) => {
     let arrowPoints = [];
-    const { minX, minY } = guideBBox || {};
+    const minX = 0
+    const minY = 0
     if (direct === 'tl') {
       arrowPoints = [
         { x: minX, y: minY - 1 }, // 这个 1 是为了防止出现白边
@@ -179,18 +180,14 @@ export default (props: TagGuideProps, context) => {
 
   const dr = autoAdjust ? _getDirect(points[0]) : direct;
   const arrowPoints = _getArrowPoints(dr);
-
   return (
     <group
-      attrs={{
-        fill: defaultStyle.container.fill,
-        radius: defaultStyle.container.radius,
-        ...background,
-      }}
       style={{
-        left: posX,
-        top: posY,
+        x: posX,
+        y: posY, 
+        fill: defaultStyle.container.fill,
         padding: defaultStyle.container.padding,
+        radius: defaultStyle.container.radius,
         ...background,
       }}
     >
@@ -198,14 +195,14 @@ export default (props: TagGuideProps, context) => {
         attrs={{
           text: content,
           fontSize: defaultStyle.text.fontSize,
-          fill: defaultStyle.text.fill,
+          fill:  'black'|| defaultStyle.text.fill,
           ...textStyle,
         }}
       />
       {guideBBox && (
         <polygon
           attrs={{
-            points: arrowPoints,
+            points: arrowPoints.map(d=>[d.x,d.y]),
             fill: background?.fill ||  defaultStyle.arrow.fill,
           }}
         />
