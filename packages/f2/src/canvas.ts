@@ -6,6 +6,7 @@ import { px2hd as defaultPx2hd } from './util';
 
 class f2Canvas extends Canvas {
   layout: Layout;
+
   constructor(props) {
     const theme = deepMix({}, defaultTheme, props.theme);
     props = {

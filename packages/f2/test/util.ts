@@ -1,5 +1,6 @@
 const isTouch = (eventType) => {
   if (eventType.indexOf('touch') !== -1) return true;
+  if (eventType.indexOf('press') !== -1) return true;
   return false;
 };
 

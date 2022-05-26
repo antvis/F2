@@ -39,10 +39,10 @@ export default (props) => {
     marker = 'circle', // 图例标记默认为 circle
     nameStyle,
     valueStyle,
-    valuePrefix
+    valuePrefix,
   } = props;
 
-  const formatValue = (value, valuePrefix = ": ") => {
+  const formatValue = (value, valuePrefix = ': ') => {
     return `${valuePrefix}${value}`;
   };
 
@@ -77,7 +77,7 @@ export default (props) => {
                 ...nameStyle,
               }}
             />
-            { valueText ? (
+            {valueText ? (
               <text
                 attrs={{
                   fill: '#808080',

@@ -16,20 +16,14 @@ function View() {
       />
       <circle
         attrs={{
-          x: '150px',
-          y: '50px',
+          cx: '150px',
+          cy: '50px',
           r: '50px',
           fill: 'red',
         }}
       />
       <polyline
         attrs={{
-          // points: [
-          //   { x: '210px', y: '20px' },
-          //   { x: '220px', y: '40px' },
-          //   { x: '250px', y: '45px' },
-          //   { x: '300px', y: '80px' },
-          // ],
           points: [
             ['210px', '20px'],
             ['220px', '40px'],

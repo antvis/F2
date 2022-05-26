@@ -75,81 +75,81 @@ describe('图例 - position', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('饼图图例 - bottom', async () => {
-    const context = createContext('饼图图例 - bottom');
-    const chartRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
-        <Chart
-          ref={chartRef}
-          data={data}
-          coord={{
-            type: Polar,
-            transposed: true,
-          }}
-        >
-          <Interval x="a" y="percent" adjust="stack" color="name" />
-          <Legend position="bottom" />
-        </Chart>
-      </Canvas>
-    );
+  // it('饼图图例 - bottom', async () => {
+  //   const context = createContext('饼图图例 - bottom');
+  //   const chartRef = { current: null };
+  //   const { type, props } = (
+  //     <Canvas context={context} pixelRatio={1}>
+  //       <Chart
+  //         ref={chartRef}
+  //         data={data}
+  //         coord={{
+  //           type: Polar,
+  //           transposed: true,
+  //         }}
+  //       >
+  //         <Interval x="a" y="percent" adjust="stack" color="name" />
+  //         <Legend position="bottom" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
 
-    const canvas = new Canvas(props);
-    canvas.render();
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
 
-    await delay(1000);
-    expect(context).toMatchImageSnapshot();
-  });
+  //   await delay(1000);
+  //   expect(context).toMatchImageSnapshot();
+  // });
 
-  it('饼图图例 - left', async () => {
-    const context = createContext('饼图图例 - left');
-    const chartRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
-        <Chart
-          ref={chartRef}
-          data={data}
-          coord={{
-            type: Polar,
-            transposed: true,
-          }}
-        >
-          <Interval x="a" y="percent" adjust="stack" color="name" />
-          <Legend position="left" />
-        </Chart>
-      </Canvas>
-    );
+  // it('饼图图例 - left', async () => {
+  //   const context = createContext('饼图图例 - left');
+  //   const chartRef = { current: null };
+  //   const { type, props } = (
+  //     <Canvas context={context} pixelRatio={1}>
+  //       <Chart
+  //         ref={chartRef}
+  //         data={data}
+  //         coord={{
+  //           type: Polar,
+  //           transposed: true,
+  //         }}
+  //       >
+  //         <Interval x="a" y="percent" adjust="stack" color="name" />
+  //         <Legend position="left" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
 
-    const canvas = new Canvas(props);
-    canvas.render();
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
 
-    await delay(1000);
-    expect(context).toMatchImageSnapshot();
-  });
+  //   await delay(1000);
+  //   expect(context).toMatchImageSnapshot();
+  // });
 
-  it('饼图图例 - right', async () => {
-    const context = createContext('饼图图例 - right');
-    const chartRef = { current: null };
-    const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
-        <Chart
-          ref={chartRef}
-          data={data}
-          coord={{
-            type: 'polar',
-            transposed: true,
-          }}
-        >
-          <Interval x="a" y="percent" adjust="stack" color="name" />
-          <Legend position="right" />
-        </Chart>
-      </Canvas>
-    );
+  // it('饼图图例 - right', async () => {
+  //   const context = createContext('饼图图例 - right');
+  //   const chartRef = { current: null };
+  //   const { type, props } = (
+  //     <Canvas context={context} pixelRatio={1}>
+  //       <Chart
+  //         ref={chartRef}
+  //         data={data}
+  //         coord={{
+  //           type: 'polar',
+  //           transposed: true,
+  //         }}
+  //       >
+  //         <Interval x="a" y="percent" adjust="stack" color="name" />
+  //         <Legend position="right" />
+  //       </Chart>
+  //     </Canvas>
+  //   );
 
-    const canvas = new Canvas(props);
-    canvas.render();
+  //   const canvas = new Canvas(props);
+  //   canvas.render();
 
-    await delay(1000);
-    expect(context).toMatchImageSnapshot();
-  });
+  //   await delay(1000);
+  //   expect(context).toMatchImageSnapshot();
+  // });
 });

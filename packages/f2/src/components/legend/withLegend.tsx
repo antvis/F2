@@ -2,7 +2,7 @@ import { jsx } from '../../jsx';
 import { Component, Hammer, renderShape } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
-import { getElementsByClassName, isInBBox } from '../../util';
+import { isInBBox } from '../../util';
 import { Style, TextAttrs } from '../../types';
 
 interface LegendItem {
@@ -71,7 +71,7 @@ export interface LegendProps {
   /**
    * value展示文案的前缀
    */
-   valuePrefix?: string;
+  valuePrefix?: string;
   /**
    * 是否可点击
    */
@@ -104,7 +104,7 @@ export default (View) => {
         const { tickValue } = item;
         return {
           ...item,
-          filtered: filtered[tickValue]
+          filtered: filtered[tickValue],
         };
       });
     }
@@ -246,12 +246,14 @@ export default (View) => {
       const hammer = new Hammer(canvas);
       hammer.on('click', (ev) => {
         const { points } = ev;
+
         const point = points[0];
         const bbox = container.getBBox();
         if (!isInBBox(bbox, point)) {
           return;
         }
-        const legendItems = getElementsByClassName('legend-item', container);
+
+        const legendItems = container.getElementsByClassName('legend-item');
         if (!legendItems.length) {
           return;
         }

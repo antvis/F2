@@ -114,27 +114,16 @@ function toTimeStamp(value) {
 }
 
 function isInBBox(bbox, point) {
-  const { minX, maxX, minY, maxY } = bbox;
+  // const { minX, maxX, minY, maxY } = bbox;
+  const { left, top, width, height } = bbox;
+  const minX = left
+  const maxX = left + width
+  const minY = top
+  const maxY = top + height
   const { x, y } = point;
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-function getElementsByClassName(className: string, element) {
-  if (!element || !className) return [];
-  let rst = [];
-  if (element.getAttribute('className') === className) {
-    rst.push(element);
-  }
-  const children = element.getChildren();
-  if (children && children.length) {
-    for (let i = 0; i < children.length; i++) {
-      const child = children[i];
-      rst = rst.concat(getElementsByClassName(className, child));
-    }
-  }
-  return rst;
-}
-
 const px2hd = batch2hd(defaultPx2hd);
 
-export { px2hd, batch2hd, extendMap, parsePadding, toTimeStamp, isInBBox, getElementsByClassName };
+export { px2hd, batch2hd, extendMap, parsePadding, toTimeStamp, isInBBox };

@@ -1,7 +1,7 @@
 import { jsx } from '../../jsx';
 import { Component, Hammer } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
-import { isInBBox, getElementsByClassName } from '../../util';
+import { isInBBox } from '../../util';
 import { Ref, Point } from '../../types';
 
 const DEFAULT_CONFIG = {
@@ -63,7 +63,7 @@ function isFourthQuadrant(angle: number) {
 }
 
 function findShapeByClassName(shape, point, className) {
-  const targetShapes = getElementsByClassName(className, shape);
+  const targetShapes = shape.getElementsByClassName(className);
   for (let i = 0, len = targetShapes.length; i < len; i++) {
     const shape = targetShapes[i];
     if (isInBBox(shape.getBBox(), point)) {
@@ -99,7 +99,7 @@ export default (View) => {
         label1,
         label2,
         height: itemHeight,
-        sidePadding
+        sidePadding,
       } = props;
 
       const {
@@ -180,7 +180,8 @@ export default (View) => {
       }
 
       // label 的最大宽度
-      const labelWidth = coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
+      const labelWidth =
+        coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
       const labels = [];
       halves.forEach((half, index) => {
         const showSide = index === 0 ? 'left' : 'right';
@@ -218,7 +219,7 @@ export default (View) => {
             const { anchor, inflection, angle, x, y } = label;
 
             const points = [anchor, inflection];
-            const endX = coordLeft +  sidePadding;
+            const endX = coordLeft + sidePadding;
             const endY = coordTop + halfLabelHeight + labelHeight * index;
 
             // 文本开始点
