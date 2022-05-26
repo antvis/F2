@@ -1,7 +1,11 @@
 import React, { RefObject, forwardRef } from 'react';
 import { Canvas } from '@antv/f2';
 
-class ErrorBoundary extends React.Component<{ fallback: React.Component }, { hasError: boolean }> {
+type ReactErrorBoundaryProps = {
+  fallback: React.Component;
+  onError: (error: Error) => void;
+};
+class ErrorBoundary extends React.Component<ReactErrorBoundaryProps, { hasError: boolean }> {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -12,7 +16,13 @@ class ErrorBoundary extends React.Component<{ fallback: React.Component }, { has
   }
 
   componentDidCatch(error, _errorInfo) {
+    const { onError } = this.props;
+    
     console.error('图表渲染失败: ', error);
+
+    if (typeof onError === 'function') {
+      onError(error);
+    }
   }
 
   render() {
@@ -35,6 +45,7 @@ export interface CanvasProps {
   canvasRef?: RefObject<HTMLCanvasElement>;
   ref?: RefObject<HTMLCanvasElement>;
   fallback?: React.Component;
+  onError?: (error: Error) => void;
   children?: React.ReactElement | React.ReactElement[] | null;
 }
 
@@ -91,9 +102,10 @@ class ReactCanvas extends React.Component<CanvasProps> {
 }
 
 export default forwardRef((props: CanvasProps, ref: RefObject<HTMLCanvasElement>) => {
-  const { fallback } = props;
+  const { fallback, onError } = props;
   return React.createElement(ErrorBoundary, {
-    fallback: fallback,
+    fallback,
+    onError,
     children: React.createElement(ReactCanvas, {
       ...props,
       ref,
