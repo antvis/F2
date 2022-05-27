@@ -24,6 +24,7 @@
   "dependencies": {
     "@antv/adjust": "~0.2.5",
     "@antv/event-emitter": "^0.1.2",
+    "@antv/f-engine": "^0.0.0",
     "@antv/f2-graphic": "^0.0.5",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",

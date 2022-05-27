@@ -264,6 +264,7 @@ export default (View) => {
         if (!clickItem) {
           return;
         }
+        // @ts-ignore
         const dataItem = clickItem.get('data-item');
         if (!dataItem) {
           return;
