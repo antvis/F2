@@ -1,5 +1,4 @@
-import { jsx } from '../../../src/jsx';
-import { Canvas, Chart, Interval, Axis } from '../../../src';
+import { Canvas, Chart, Interval, Axis, jsx } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -12,6 +11,7 @@ const data = [
 
 describe('数据选中', () => {
   it('柱图-单选', async () => {
+    debugger;
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
