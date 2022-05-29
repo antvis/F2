@@ -53,22 +53,15 @@ describe('<Canvas >', () => {
   });
 
   it('Chart render with Error', () => {
-    const originOnError = window.onError;
-
-    // jest 内部有一些 uncaught error 会导致用例失败，所以这里需要先全局捕获一下
-    window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-      return false;
-    };
-
+    const spyOnError = jest.spyOn(window, 'onerror').mockImplementation(() => {});
+    const spyOnConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     class Test extends Component {
       render() {
         throw new Error('Render Error');
       }
     }
 
-    const onError = jest.fn(() => {
-      // do something
-    });
+    const onError = jest.fn();
 
     const wrapper = mount(
       <ReactCanvas fallback={<div>Chart Fallback</div>} onError={onError}>
@@ -81,8 +74,9 @@ describe('<Canvas >', () => {
 
     // 断言 onError 触发
     expect(onError.mock.calls.length).toBe(1);
+    expect(spyOnError).toHaveBeenCalled();
 
-    // reset global onerror callback
-    window.onerror = originOnError;
+    spyOnError.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 });
