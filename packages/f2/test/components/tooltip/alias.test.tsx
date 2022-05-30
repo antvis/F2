@@ -9,7 +9,7 @@ const data = [
   { type: 'a', genre: 'Other', sold: 40 },
 ];
 
-describe('alias', () => {
+describe.skip('alias', () => {
   it('别名', async () => {
     const context = createContext();
     const { props } = (

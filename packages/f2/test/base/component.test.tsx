@@ -2,7 +2,7 @@ import { jsx } from '../../src';
 import { Canvas, Component } from '../../src';
 import { createContext, delay } from '../util';
 
-describe('base/component', () => {
+describe.skip('base/component', () => {
   it('子组件的 View props 更新后，则重新渲染', async () => {
     const context = createContext('组件props更新后重绘');
     const mockCallback = jest.fn();

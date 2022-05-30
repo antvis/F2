@@ -13,7 +13,7 @@ class Text extends Component {
 }
 
 describe('Theme', () => {
-  describe('字体主题设置', () => {
+  describe.skip('字体主题设置', () => {
     it('默认主题', () => {
       const textRef = { current: null };
       const { props } = (

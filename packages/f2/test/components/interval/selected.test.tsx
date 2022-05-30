@@ -9,9 +9,8 @@ const data = [
   { a: '1', genre: 'Other', sold: 110 },
 ];
 
-describe('数据选中', () => {
+describe.skip('数据选中', () => {
   it('柱图-单选', async () => {
-    debugger;
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -230,7 +229,7 @@ describe('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('饼图', async () => {
+  it.skip('饼图', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -325,7 +324,7 @@ describe('cancelable = false', () => {
   });
 });
 
-describe('改变默认值', () => {
+describe.skip('改变默认值', () => {
   it('改变默认值', async () => {
     const context = createContext();
 

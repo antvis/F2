@@ -99,7 +99,7 @@ const data1 = [
   },
 ];
 
-describe('tooltip', () => {
+describe.skip('tooltip', () => {
   it('Tooltip render', async () => {
     const context = createContext('Tooltip render');
     const onChangeMockCallback = jest.fn();

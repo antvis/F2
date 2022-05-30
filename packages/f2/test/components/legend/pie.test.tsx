@@ -37,7 +37,7 @@ const data = [
   },
 ];
 
-describe('图例 - position', () => {
+describe.skip('图例 - position', () => {
   it('饼图图例 - top', async () => {
     const context = createContext('饼图图例 - top');
     const chartRef = { current: null };

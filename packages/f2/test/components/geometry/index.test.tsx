@@ -23,6 +23,7 @@ class GeometryTest extends Geometry {
             return (
               <circle
                 attrs={{
+                  // @ts-ignore
                   cx: x,
                   cy: y,
                   r: '20px',

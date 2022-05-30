@@ -12,7 +12,7 @@ const data = [
 ];
 
 describe('Interval', () => {
-  it('legend 点击', async () => {
+  it.skip('legend 点击', async () => {
     const context = createContext();
     const { type, props } = (
       <Canvas context={context} pixelRatio={1}>

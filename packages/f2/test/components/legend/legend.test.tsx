@@ -32,7 +32,7 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('自定义样式', async () => {
+    it.skip('自定义样式', async () => {
       const context = createContext('自定义样式', {
         height: '70px',
       });
@@ -154,7 +154,7 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('设置 nameStyle', async () => {
+    it.skip('设置 nameStyle', async () => {
       const data = [
         { genre: 'Sports', sold: 275 },
         { genre: 'Strategy', sold: 115 },
@@ -446,7 +446,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 valuePrefix', async () => {
     const data = [
       {
@@ -511,7 +511,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 自定义items', async () => {
     const data = [
       {
@@ -530,7 +530,6 @@ describe('图例', () => {
         a: '1',
       },
     ];
-
 
     const context = createContext('图例 传入 自定义items');
     const chartRef = { current: null };
@@ -558,17 +557,19 @@ describe('图例', () => {
           />
           <Legend
             position="right"
-            items={[,
+            items={[
+              ,
               {
                 color: 'red',
                 name: '第一组',
-                value: '20'
+                value: '20',
               },
               {
                 color: 'blue',
                 name: '第二组',
-                value: '42'
-              }]}
+                value: '42',
+              },
+            ]}
             itemFormatter={(value, name) => {
               return value + '%';
             }}
@@ -582,7 +583,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 自定义items + valuePrefix', async () => {
     const data = [
       {
@@ -601,7 +602,6 @@ describe('图例', () => {
         a: '1',
       },
     ];
-
 
     const context = createContext('图例 传入 自定义items + valuePrefix');
     const chartRef = { current: null };
@@ -629,17 +629,19 @@ describe('图例', () => {
           />
           <Legend
             position="right"
-            items={[,
+            items={[
+              ,
               {
                 color: 'red',
                 name: '第一组',
-                value: '20'
+                value: '20',
               },
               {
                 color: 'blue',
                 name: '第二组',
-                value: '42'
-              }]}
+                value: '42',
+              },
+            ]}
             itemFormatter={(value, name) => {
               return value + '%';
             }}
@@ -654,5 +656,5 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
 });

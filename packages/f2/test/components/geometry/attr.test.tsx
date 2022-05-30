@@ -87,7 +87,7 @@ const data = [
   },
 ];
 
-describe('Geometry - Attr', () => {
+describe.skip('Geometry - Attr', () => {
   /**
    * Color Attr
    * 如果接收一个参数，则可以是：

@@ -18,7 +18,7 @@ const data = [
 describe('Chart', () => {
   it('Chart render', async () => {
     const chartRef = { current: null };
-    const { type, props } = (
+    const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data} ref={chartRef}>
           <Axis field="genre" />
@@ -30,10 +30,6 @@ describe('Chart', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
-    const chart = chartRef.current;
-
-    expect(chart.coord.left).toBeCloseTo(33.62);
-    expect(chart.coord.width).toBeCloseTo(251.38);
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -57,8 +53,6 @@ describe('Chart', () => {
       ).props
     );
 
-    expect(chart.coord.left).toBeCloseTo(83.62);
-    expect(chart.coord.width).toBeCloseTo(51.38);
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
