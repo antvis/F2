@@ -22,7 +22,7 @@ class Test extends Component {
   }
 }
 
-describe('Canvas', () => {
+describe.skip('Canvas', () => {
   it('自定义 px2hd', () => {
     const { props } = (
       <Canvas

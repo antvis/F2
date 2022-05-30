@@ -1,9 +1,8 @@
 import { jsx } from '../../jsx';
-import { renderShape } from '../../base/diff';
-import Component from '../../base/component';
+import { Component, Hammer, renderShape } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
-import { getElementsByClassName, isInBBox } from '../../util';
+import { isInBBox } from '../../util';
 import { Style, TextAttrs } from '../../types';
 
 interface LegendItem {
@@ -72,7 +71,7 @@ export interface LegendProps {
   /**
    * value展示文案的前缀
    */
-   valuePrefix?: string;
+  valuePrefix?: string;
   /**
    * 是否可点击
    */
@@ -105,7 +104,7 @@ export default (View) => {
         const { tickValue } = item;
         return {
           ...item,
-          filtered: filtered[tickValue]
+          filtered: filtered[tickValue],
         };
       });
     }
@@ -119,8 +118,10 @@ export default (View) => {
     getMaxItemBox(legendShape) {
       let maxItemWidth = 0;
       let maxItemHeight = 0;
-      (legendShape.get('children') || []).forEach((child) => {
-        const { width, height } = child.get('attrs');
+      (legendShape.getChildren() || []).forEach((child) => {
+        const width = child.getAttribute('width');
+        const height = child.getAttribute('height');
+
         maxItemWidth = Math.max(maxItemWidth, width);
         maxItemHeight = Math.max(maxItemHeight, height);
       });
@@ -140,10 +141,12 @@ export default (View) => {
         height: customHeight,
         position = 'top',
       } = props;
+
       const items = this.getItems();
       if (!items || !items.length) return;
       const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
+      // @ts-ignore
       const shape = renderShape(this, this.render(), false);
       const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(shape);
       // 每行最多的个数
@@ -240,14 +243,17 @@ export default (View) => {
       if (!clickable) return;
 
       // item 点击事件
-      canvas.on('click', (ev) => {
+      const hammer = new Hammer(canvas);
+      hammer.on('click', (ev) => {
         const { points } = ev;
+
         const point = points[0];
         const bbox = container.getBBox();
         if (!isInBBox(bbox, point)) {
           return;
         }
-        const legendItems = getElementsByClassName('legend-item', container);
+
+        const legendItems = container.getElementsByClassName('legend-item');
         if (!legendItems.length) {
           return;
         }
@@ -258,6 +264,7 @@ export default (View) => {
         if (!clickItem) {
           return;
         }
+        // @ts-ignore
         const dataItem = clickItem.get('data-item');
         if (!dataItem) {
           return;

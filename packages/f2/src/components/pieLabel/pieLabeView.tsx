@@ -15,8 +15,8 @@ export default (props) => {
             <circle
               attrs={{
                 r: '4px',
-                x: anchor.x,
-                y: anchor.y,
+                cx: anchor.x,
+                cy: anchor.y,
                 fill: color,
                 ...anchorStyle,
               }}
@@ -24,7 +24,7 @@ export default (props) => {
             {/* 线 */}
             <polyline
               attrs={{
-                points,
+                points: points.map((d) => [d.x, d.y]),
                 lineWidth: '2px',
                 stroke: color,
                 ...lineStyle,

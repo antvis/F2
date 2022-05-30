@@ -33,7 +33,7 @@ const data = [
   ],
 ];
 
-describe('Chart', () => {
+describe.skip('Chart', () => {
   it('Chart render', async () => {
     const intervalRef = { current: null };
     const { type, props } = (

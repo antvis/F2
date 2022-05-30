@@ -72,6 +72,7 @@ class EventController {
     this.emitEvent('click', ev);
   };
   _start = (ev) => {
+    console.log('start', ev);
     const points = convertPoints(ev, this.canvas);
     if (!points) {
       return;

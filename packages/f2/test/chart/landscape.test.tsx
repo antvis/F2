@@ -22,7 +22,7 @@ const data = [
   { type: 'a', genre: 'Other', sold: 40 },
 ];
 
-describe('横屏', () => {
+describe.skip('横屏', () => {
   it('横屏显示', async () => {
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1} landscape={true}>

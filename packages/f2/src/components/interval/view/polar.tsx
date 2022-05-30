@@ -4,6 +4,7 @@ import { deepMix } from '@antv/util';
 export default (props) => {
   const { coord, records, animation } = props;
   const { center, startAngle, endAngle, radius } = coord;
+
   return (
     <group
       animation={{
@@ -44,6 +45,7 @@ export default (props) => {
                     x: center.x,
                     y: center.y,
                     fill: color,
+                    lineWidth: 1,
                     startAngle: xMin,
                     endAngle: xMax,
                     r0: yMin,

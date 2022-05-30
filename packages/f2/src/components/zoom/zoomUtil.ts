@@ -40,6 +40,7 @@ function updateCategoryRange(scale: Scale, originScale: Scale, range: ZoomRange)
   if (isValuesEqual(currentValues, newValues) && isValuesEqual(currentTicks, newTicks)) {
     return;
   }
+
   scale.change({
     values: newValues,
     ticks: newTicks,

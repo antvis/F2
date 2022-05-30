@@ -1,9 +1,9 @@
 import { jsx } from '../../jsx';
-import Component from '../../base/component';
+import { Component, Hammer } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
-import { renderShape } from '../../base/diff';
+import { renderShape } from '@antv/f-engine';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -33,7 +33,8 @@ export default (View) => {
       const { canvas } = context;
       const { onClick } = props;
 
-      canvas.on('click', (ev) => {
+      const hammer = new Hammer(canvas);
+      hammer.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;
@@ -46,8 +47,12 @@ export default (View) => {
     }
 
     getGuideBBox() {
+      //@ts-ignore
       const shape = renderShape(this, this.render(), false);
-      const { x, y, width, height } = shape.get('attrs');
+      const x = shape.getAttribute('x');
+      const y = shape.getAttribute('y');
+      const width = shape.getAttribute('width');
+      const height = shape.getAttribute('height');
       // getBBox 没有包含 padding 所以这里手动计算 bbox
       const bbox = {
         minX: x,

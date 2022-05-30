@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { mix, isNil, deepMix } from '@antv/util';
 import Geometry from '../geometry';
 import * as LabelViews from './label';

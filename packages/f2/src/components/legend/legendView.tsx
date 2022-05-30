@@ -39,15 +39,20 @@ export default (props) => {
     marker = 'circle', // 图例标记默认为 circle
     nameStyle,
     valueStyle,
-    valuePrefix
+    valuePrefix,
   } = props;
 
-  const formatValue = (value, valuePrefix = ": ") => {
+  const formatValue = (value, valuePrefix = ': ') => {
     return `${valuePrefix}${value}`;
   };
 
   return (
-    <group style={style}>
+    <group
+      style={{
+        display: 'flex',
+        ...style,
+      }}
+    >
       {items.map((item) => {
         const { color, name, value, filtered, tickValue } = item;
         const valueText = isFunction(itemFormatter) ? itemFormatter(value, tickValue) : value;
@@ -72,7 +77,7 @@ export default (props) => {
                 ...nameStyle,
               }}
             />
-            { valueText ? (
+            {valueText ? (
               <text
                 attrs={{
                   fill: '#808080',

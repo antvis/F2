@@ -960,23 +960,23 @@ describe('折线图', () => {
 
     const container = lineRef.current.container;
     const polyline = container
-      .get('children')[0]
-      .get('children')[0]
-      .get('children')[0]
-      .get('children')[0];
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0];
 
-    expect(polyline.get('attrs').points.length).toBe(3);
+    expect(polyline.getAttribute('points').length).toBe(3);
 
     await delay(100);
     await delay(100);
 
     const newPolyline = container
-      .get('children')[0]
-      .get('children')[0]
-      .get('children')[0]
-      .get('children')[0];
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0]
+      .getChildren()[0];
 
-    expect(newPolyline.get('attrs').points.length > 3).toBe(true);
+    expect(newPolyline.getAttribute('points').length > 3).toBe(true);
   });
 
   describe('其他折线图', () => {

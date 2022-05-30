@@ -4,7 +4,7 @@ import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip, ArcGuide, TextGuide } from '../../../../src/components';
 import { createContext, delay } from '../../../util';
 
-describe('环形图', () => {
+describe.skip('环形图', () => {
   it('基础环形图', async () => {
     const data = [
       {

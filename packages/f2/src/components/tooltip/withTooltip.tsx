@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 import { isArray, isFunction, find } from '@antv/util';
-import Component from '../../base/component';
+import { Component, Hammer } from '@antv/f-engine';
 import equal from '../../base/equal';
 import { DataRecord, px, TextAttrs, LineAttrs, RectAttrs } from '../../types';
 import { ChartChildProps } from '../../chart';
@@ -55,6 +55,7 @@ export interface TooltipState {
 
 export default (View) => {
   return class Tooltip extends Component<TooltipProps, TooltipState> {
+    hammer: Hammer;
     constructor(props: TooltipProps) {
       super(props);
       this.state = {
@@ -87,6 +88,17 @@ export default (View) => {
       }
     }
 
+    didUnmount(): void {
+      this._clearEvents();
+    }
+
+    _clearEvents() {
+      const { props } = this;
+      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
+      // 解绑事件
+      this.hammer.off(triggerOn, this._triggerOn);
+      this.hammer.off(triggerOff, this._triggerOff);
+    }
     _initShow() {
       const { props } = this;
       const { defaultItem } = props;
@@ -118,23 +130,19 @@ export default (View) => {
     _initEvent() {
       const { context, props } = this;
       const { canvas } = context;
-      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
+      const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
+      const hammer = new Hammer(canvas);
+      hammer.on(triggerOn, (ev) => {
+        const { points } = ev;
+        this.show(points[0], ev);
+      });
 
-      canvas.on(triggerOn, this._triggerOn);
-      canvas.on(triggerOff, this._triggerOff);
-    }
-
-    didUnmount(): void {
-      this._clearEvents();
-    }
-
-    _clearEvents() {
-      const { context, props } = this;
-      const { canvas } = context;
-      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
-      // 解绑事件
-      canvas.off(triggerOn, this._triggerOn);
-      canvas.off(triggerOff, this._triggerOff);
+      hammer.on(triggerOff, (_ev) => {
+        if (!alwaysShow) {
+          this.hide();
+        }
+      });
+      this.hammer = hammer;
     }
 
     show(point, _ev?) {

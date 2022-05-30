@@ -6,6 +6,7 @@ export default (props: PolarProps) => {
   const { ticks, coord, style, grid: gridType } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
+
   return (
     <group>
       {grid
@@ -28,7 +29,7 @@ export default (props: PolarProps) => {
             return (
               <polyline
                 attrs={{
-                  points: gridPoints,
+                  points: gridPoints.map((d) => [d.x, d.y]),
                   ...grid,
                   ...gridStyle,
                 }}

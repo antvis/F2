@@ -224,8 +224,10 @@ describe('Canvas', () => {
       ).props
     );
 
-    await delay(50);
-    expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
+    // await delay(50);
+
+    expect(ref.current.container.getChildren()[0].getAttribute('width')).toBe(30);
+    // expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
   });
 
   it('第1个子组件为空', async () => {

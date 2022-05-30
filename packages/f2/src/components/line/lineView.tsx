@@ -55,7 +55,7 @@ function AnimationEndView(props) {
           onFrame: function(t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
-            const children = element.get('children');
+            const children = element.getChildren();
             const point = getPoint(points, t);
             children.forEach((child) => {
               child.moveTo(point.x, point.y);
@@ -92,6 +92,7 @@ export default (props: LineViewProps) => {
       },
     },
   };
+
   return (
     <group>
       {records.map((record) => {
@@ -100,11 +101,13 @@ export default (props: LineViewProps) => {
           <group key={key}>
             {children.map((child) => {
               const { points, color, size, shape } = child;
+              const fliterPoints = points.filter((point) => !isNaN(point.x) && !isNaN(point.y));
+
               return (
                 <polyline
                   attrs={{
-                    points: points.map((point) => {
-                      return { x: point.x, y: point.y };
+                    points: fliterPoints.map((point) => {
+                      return [point.x, point.y];
                     }),
                     stroke: color,
                     ...shape,

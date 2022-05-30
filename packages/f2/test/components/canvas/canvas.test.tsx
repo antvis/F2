@@ -40,8 +40,9 @@ describe('Canvas', () => {
 
     canvas.render();
 
-    const rect = canvas.children.component.container._attrs.children[0];
-    expect(rect._attrs.type).toBe('rect');
-    expect(rect._attrs.attrs.fill).toBe('red');
+    const rect = canvas.children.component.container.getChildren()[0];
+
+    expect(rect.config.type).toBe('rect');
+    expect(rect.getAttribute('fill')).toBe('red');
   });
 });
