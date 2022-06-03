@@ -10,11 +10,12 @@ export default (props) => {
         return (
           <group key={key}>
             {children.map((item) => {
-              const { x, y, size, color, shapeName, shape } = item;
+              const { key, x, y, size, color, shapeName, shape } = item;
               if (shapeName === 'rect') {
                 const rectSize = isNil(size) ? shape.size : size;
                 return (
                   <rect
+                    key={key}
                     attrs={{
                       x: x - rectSize,
                       y: y - rectSize,
@@ -43,6 +44,7 @@ export default (props) => {
               }
               return (
                 <circle
+                  key={key}
                   attrs={{
                     cx: x,
                     cy: y,

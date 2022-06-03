@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "scripts",
