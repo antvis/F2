@@ -21,15 +21,40 @@ const data = [
 ];
 
 const data2 = [
-  { key: 'Sports', type: 'a', genre: 'Sports', sold: 5 },
-  { key: 'Strategy', type: 'a', genre: 'Strategy', sold: 10 },
-  { key: 'Action', type: 'a', genre: 'Action', sold: 20 },
-  { key: 'Shooter', type: 'a', genre: 'Shooter', sold: 20 },
-  { key: 'Sports', type: 'b', genre: 'Sports', sold: 5 },
-  { key: 'Strategy', type: 'b', genre: 'Strategy', sold: 10 },
-  { key: 'Action', type: 'b', genre: 'Action', sold: 20 },
-  { key: 'Shooter', type: 'b', genre: 'Shooter', sold: 20 },
-  { key: 'Other', type: 'b', genre: 'Other', sold: 40 },
+  { date: '2010-01-10', genre: 'Sports', sold: 50 },
+  { date: '2010-02-10', genre: 'Sports', sold: 40 },
+  { date: '2010-03-10', genre: 'Sports', sold: 60 },
+  { date: '2010-04-10', genre: 'Sports', sold: 40 },
+  { date: '2010-05-10', genre: 'Sports', sold: 60 },
+  { date: '2010-06-10', genre: 'Sports', sold: 50 },
+
+  { date: '2010-01-10', genre: 'Strategy', sold: 30 },
+  { date: '2010-02-10', genre: 'Strategy', sold: 50 },
+  { date: '2010-03-10', genre: 'Strategy', sold: 10 },
+  { date: '2010-04-10', genre: 'Strategy', sold: 30 },
+  { date: '2010-05-10', genre: 'Strategy', sold: 35 },
+  { date: '2010-06-10', genre: 'Strategy', sold: 25 },
+
+  { date: '2010-01-10', genre: 'Action', sold: 5 },
+  { date: '2010-02-10', genre: 'Action', sold: 10 },
+  { date: '2010-03-10', genre: 'Action', sold: 20 },
+  { date: '2010-04-10', genre: 'Action', sold: 10 },
+  { date: '2010-05-10', genre: 'Action', sold: 40 },
+  { date: '2010-06-10', genre: 'Action', sold: 50 },
+
+  { date: '2010-01-10', genre: 'Shooter', sold: 50 },
+  { date: '2010-02-10', genre: 'Shooter', sold: 40 },
+  { date: '2010-03-10', genre: 'Shooter', sold: 20 },
+  { date: '2010-04-10', genre: 'Shooter', sold: 30 },
+  { date: '2010-05-10', genre: 'Shooter', sold: 10 },
+  { date: '2010-06-10', genre: 'Shooter', sold: 5 },
+
+  { date: '2010-01-10', genre: 'Other', sold: 30 },
+  { date: '2010-02-10', genre: 'Other', sold: 40 },
+  { date: '2010-03-10', genre: 'Other', sold: 80 },
+  { date: '2010-04-10', genre: 'Other', sold: 60 },
+  { date: '2010-05-10', genre: 'Other', sold: 20 },
+  { date: '2010-06-10', genre: 'Other', sold: 10 },
 ];
 
 describe('Chart', () => {
@@ -43,7 +68,7 @@ describe('Chart', () => {
     const roseRef = {};
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
-        <Timeline delay={200} loop>
+        <Timeline delay={200}>
           <Chart data={data}>
             <Axis field="genre" />
             <Axis field="sold" />
@@ -55,7 +80,6 @@ describe('Chart', () => {
               color="genre"
               style={{
                 radius: 10,
-                lineWidth: '4px',
                 stroke: '#fff',
               }}
             />
@@ -82,18 +106,18 @@ describe('Chart', () => {
             value="sold"
             space={4}
           />
-          {/* <Chart data={data2}>
-            <Axis field="genre" />
+          <Chart data={data2}>
+            <Axis field="date" />
             <Axis field="sold" />
             <Line
               ref={lineRef}
               transformFrom={treemapRef}
-              x="genre"
+              x="date"
               y="sold"
               color="genre"
-              size="sold"
+              size={2}
             />
-          </Chart> */}
+          </Chart>
           <Chart
             data={data}
             coord={{
@@ -103,7 +127,7 @@ describe('Chart', () => {
           >
             <Interval
               ref={pieRef}
-              transformFrom={treemapRef}
+              transformFrom={lineRef}
               x="type"
               y="sold"
               adjust="stack"
