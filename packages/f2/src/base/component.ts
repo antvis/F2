@@ -33,7 +33,7 @@ class Component<P = any, S = any> {
   }
   willMount() {}
   didMount() {}
-  willReceiveProps(_props: P) {}
+  willReceiveProps(_props: P, context?: P) {}
   willUpdate() {}
   didUpdate() {}
   render(): JSX.Element | null {
