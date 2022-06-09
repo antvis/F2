@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 
 export default (props) => {
   const { coord, node } = props;
@@ -18,8 +18,8 @@ export default (props) => {
                   y,
                   lineWidth: '1px',
                   stroke: '#fff',
-                  startAngle: xMin,
-                  endAngle: xMax,
+                  startAngle: `${xMin} rad`,
+                  endAngle: `${xMax} rad`,
                   r0: yMin,
                   r: yMax,
                   anticlockwise: false,

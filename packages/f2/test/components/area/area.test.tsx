@@ -1,4 +1,4 @@
-import { jsx } from '../../../src/jsx';
+import { jsx } from '../../../src';
 import { Rect } from '../../../src/coord';
 import { Canvas, Chart, Area, Line, Axis, Interval, Legend } from '../../../src';
 import { createContext, delay } from '../../util';

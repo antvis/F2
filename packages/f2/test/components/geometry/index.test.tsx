@@ -1,4 +1,4 @@
-import { jsx } from '../../../src/jsx';
+import { jsx } from '../../../src';
 import Geometry from '../../../src/components/geometry';
 import { createContext, delay } from '../../util';
 import { Canvas, Chart, Interval, Axis } from '../../../src';
