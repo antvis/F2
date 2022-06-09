@@ -102,9 +102,9 @@ export default (props: LineViewProps) => {
             {children.map((child) => {
               const { points, color, size, shape } = child;
               const fliterPoints = points.filter((point) => !isNaN(point.x) && !isNaN(point.y));
-
               return (
                 <polyline
+                  key={key}
                   attrs={{
                     points: fliterPoints.map((point) => {
                       return [point.x, point.y];
@@ -127,9 +127,9 @@ export default (props: LineViewProps) => {
                 />
               );
             })}
-            {EndView ? (
+            {/* {EndView ? (
               <AnimationEndView record={record} EndView={EndView} appear={appear} />
-            ) : null}
+            ) : null} */}
           </group>
         );
       })}
