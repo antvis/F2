@@ -141,7 +141,7 @@ const data2 = [
     name: '本店',
   },
 ];
-describe.skip('雷达图', () => {
+describe('雷达图', () => {
   describe('面积雷达图', () => {
     it('面积雷达图图', async () => {
       const context = createContext();
@@ -185,7 +185,7 @@ describe.skip('雷达图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('雷达图展示 Tooltip', async () => {
+    it.skip('雷达图展示 Tooltip', async () => {
       const context = createContext('Tooltip 默认展示');
       const { props } = (
         <Canvas context={context} pixelRatio={1}>

@@ -137,7 +137,10 @@ export default (View) => {
       const xTicks = xScale.getTicks();
       ticks.forEach((tick) => {
         const gridPoints = xTicks.map((xTick) => {
-          return coord.convertPoint([xTick.value, tick.value]);
+          return coord.convertPoint({
+            x: xTick.value,
+            y: tick.value,
+          });
         });
 
         // 添加第 1 个点，形成环状

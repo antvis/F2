@@ -13,7 +13,7 @@ class Text extends Component {
 }
 
 describe('Theme', () => {
-  describe.skip('字体主题设置', () => {
+  describe('字体主题设置', () => {
     it('默认主题', () => {
       const textRef = { current: null };
       const { props } = (
@@ -25,7 +25,7 @@ describe('Theme', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      expect(textRef.current.width).toBeCloseTo(30.02);
+      expect(textRef.current.width).toBeCloseTo(31.02);
     });
 
     it('自定义设置', () => {
@@ -45,7 +45,7 @@ describe('Theme', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      expect(textRef.current.width).toBeCloseTo(29.9159);
+      expect(textRef.current.width).toBeCloseTo(30.9159);
     });
   });
 });

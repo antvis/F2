@@ -283,8 +283,8 @@ export default class TooltipView extends Component {
       <group>
         <group
           style={{
-            x: coordLeft,
-            y: coordTop,
+            left: coordLeft,
+            top: coordTop,
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}

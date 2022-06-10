@@ -33,7 +33,7 @@ const data = [
   ],
 ];
 
-describe.skip('Chart', () => {
+describe('Chart', () => {
   it('Chart render', async () => {
     const intervalRef = { current: null };
     const { type, props } = (
@@ -88,12 +88,12 @@ describe.skip('Chart', () => {
 
     const interval = intervalRef.current;
     expect(interval.records.length).toBe(5);
-    expect(interval.records[0].children[0].x).toBeCloseTo(88.2);
-    expect(interval.records[0].children[0].y).toBeCloseTo(422.25);
+    expect(interval.records[0].children[0].x).toBeCloseTo(89.078);
+    expect(interval.records[0].children[0].y).toBeCloseTo(418.65);
 
     await delay(2000);
     expect(interval.records.length).toBe(5);
-    expect(interval.records[0].children[0].x).toBeCloseTo(97.57);
-    expect(interval.records[0].children[0].y).toBeCloseTo(422.25);
+    expect(interval.records[0].children[0].x).toBeCloseTo(98.408);
+    expect(interval.records[0].children[0].y).toBeCloseTo(418.65);
   });
 });
