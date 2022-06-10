@@ -13,6 +13,7 @@ export default (props: PolarProps) => {
         ? ticks.map((tick) => {
             const { points, gridStyle, gridPoints } = tick;
             const end = points[points.length - 1];
+
             if (gridType !== 'line') {
               return (
                 <arc

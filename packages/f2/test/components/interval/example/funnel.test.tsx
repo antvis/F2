@@ -4,7 +4,7 @@ import { Canvas, Chart } from '../../../../src';
 import { Interval, Axis, Legend, Tooltip } from '../../../../src/components';
 import { createContext, delay } from '../../../util';
 
-describe.skip('漏斗图', () => {
+describe('漏斗图', () => {
   it('基础漏斗图', async () => {
     const context = createContext('基础漏斗图');
     const data = [

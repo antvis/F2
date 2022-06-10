@@ -74,7 +74,7 @@ const Line = (props) => {
   return (
     <polyline
       attrs={{
-        points,
+        points: points.map((d) => [d.x, d.y]),
         ...line,
       }}
     />

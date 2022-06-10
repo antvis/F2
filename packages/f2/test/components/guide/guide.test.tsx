@@ -1,4 +1,4 @@
-import { jsx } from '../../../src/jsx';
+import { jsx } from '../../../src';
 import {
   Axis,
   Line,

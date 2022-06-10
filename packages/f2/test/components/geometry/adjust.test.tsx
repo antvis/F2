@@ -1,4 +1,4 @@
-import { jsx } from '../../../src/jsx';
+import { jsx } from '../../../src';
 import { createContext } from '../../util';
 import { Canvas, Chart, Interval } from '../../../src';
 const context = createContext();

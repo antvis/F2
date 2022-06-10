@@ -62,7 +62,7 @@ export default (props) => {
                 <group>
                   <polygon
                     attrs={{
-                      points,
+                      points: points.map((d) => [d.x, d.y]),
                       fill: color,
                       ...shape,
                     }}

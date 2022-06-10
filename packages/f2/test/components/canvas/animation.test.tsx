@@ -1,4 +1,4 @@
-import { jsx } from '../../../src/jsx';
+import { jsx } from '../../../src';
 import { createContext, delay } from '../../util';
 import { Canvas, Component } from '../../../src';
 const context = createContext();
