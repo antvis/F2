@@ -2,6 +2,8 @@ export type EasingFunction = (t: number) => number;
 export type InterpolateFunction = (t: number) => any;
 
 export interface Animation {
+  // 效果名称
+  effect?: string;
   // 缓动函数
   easing?: string | EasingFunction;
   duration: number;
@@ -16,6 +18,7 @@ export interface Animation {
   // 每一帧的处理函数
   onFrame?: any;
   onEnd?: any;
+  clip?: any;
 }
 
 /**

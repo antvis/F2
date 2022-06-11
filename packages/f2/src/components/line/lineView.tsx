@@ -1,6 +1,7 @@
 import { deepMix, isArray } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
+import * as AnimationEffect from '../../util/animation';
 
 function concatPoints(children) {
   let result = [];
@@ -71,29 +72,47 @@ function AnimationEndView(props) {
 
 export default (props: LineViewProps) => {
   const { records, coord, animation, endView: EndView } = props;
-
   const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;
+
+  const effect = AnimationEffect[animation.appear.effect];
+
+  const a = effect(center.x, center.y);
+  console.log(a);
+
+  const matrix = Matrix.generateDefault();
+  const startMatrix = Matrix.transform(matrix, [
+    ['t', center.x, center.y],
+    ['s', 0.01, 0.01],
+    ['t', -center.x, -center.y],
+  ]);
 
   const appear = coord.isPolar
     ? {
         easing: 'quadraticOut',
         duration: 450,
-        clip: {
-          type: 'sector',
-          property: ['endAngle'],
-          attrs: {
-            x: center.x,
-            y: center.y,
-            startAngle,
-            r: radius,
-          },
-          start: {
-            endAngle: startAngle,
-          },
-          end: {
-            endAngle,
-          },
+        property: ['matrix'],
+        start: {
+          matrix: startMatrix,
         },
+        end: {
+          matrix,
+        },
+        // clip: {
+        //   type: 'sector',
+        //   property: ['endAngle'],
+        //   attrs: {
+        //     x: center.x,
+        //     y: center.y,
+        //     startAngle,
+        //     r: radius,
+        //   },
+        //   start: {
+        //     endAngle: startAngle,
+        //   },
+        //   end: {
+        //     endAngle,
+        //   },
+        // },
       }
     : {
         easing: 'quadraticOut',

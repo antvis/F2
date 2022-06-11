@@ -139,7 +139,7 @@ const data2 = [
     time: '12-05',
     value: 11345,
     name: '本店',
-  },  
+  },
 ];
 describe('雷达图', () => {
   describe('面积雷达图', () => {
@@ -150,9 +150,29 @@ describe('雷达图', () => {
           <Chart data={data} coord="polar">
             <Axis field="item" />
             <Axis field="score" />
-            <Line x="item" y="score" color="user" />
-            <Area x="item" y="score" color="user" />
-            <Point x="item" y="score" color="user" />
+            <Line
+              x="item"
+              y="score"
+              color="user"
+              a={111}
+              animation={{
+                appear: {
+                  delay: 1000,
+                  duration: 300,
+                },
+              }}
+            />
+            <Area
+              x="item"
+              y="score"
+              color="user"
+              animation={{
+                appear: {
+                  delay: 1000,
+                  duration: 300,
+                },
+              }}
+            />
           </Chart>
         </Canvas>
       );
@@ -164,19 +184,91 @@ describe('雷达图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('雷达图 grid 为 line', async () => {
+    it.only('雷达图 grid 为 line', async () => {
       const context = createContext();
+      const Sector = (props) => {
+        const { coord } = props;
+        const { center, startAngle, endAngle, radius } = coord;
+        return (
+          <sector
+            attrs={{
+              x: center.x,
+              y: center.y,
+              r: radius,
+              startAngle: -Math.PI / 2,
+              endAngle: (Math.PI * 3) / 2,
+              fill: 'r(0.5,0.5,0.5) 0:#ffffff 1:#1890ff',
+              fillOpacity: 0.3,
+            }}
+            animation={{
+              appear: {
+                easing: 'linear',
+                duration: 4000,
+                property: ['startAngle', 'endAngle'],
+                clip: {
+                  type: 'sector',
+                  property: ['startAngle', 'endAngle'],
+                  attrs: {
+                    x: center.x,
+                    y: center.y,
+                    startAngle: -Math.PI / 2,
+                    endAngle: -Math.PI / 4,
+                    r: radius,
+                  },
+                  start: {
+                    startAngle: -Math.PI / 2,
+                    endAngle: -Math.PI / 4,
+                  },
+                  end: {
+                    // 转 2 圈
+                    startAngle: -Math.PI / 2 + Math.PI * 4,
+                    endAngle: -Math.PI / 4 + Math.PI * 4,
+                  },
+                },
+                onEnd: function() {
+                  this.element.remove();
+                },
+              },
+            }}
+          />
+        );
+      };
       const { props } = (
         <Canvas context={context} pixelRatio={1}>
           <Chart data={data} coord="polar">
             <Axis field="item" grid="line" />
             <Axis field="score" grid="line" />
-            <Line x="item" y="score" color="user" />
-            <Area x="item" y="score" color="user" />
-            <Point x="item" y="score" color="user" />
+            <Line
+              x="item"
+              y="score"
+              color="user"
+              animation={{
+                appear: {
+                  effect: 'scaleOut',
+                  easing: 'linear',
+                  delay: 2000,
+                  duration: 2000,
+                },
+              }}
+            />
+            <Area
+              x="item"
+              y="score"
+              color="user"
+              animation={{
+                appear: {
+                  easing: 'linear',
+                  delay: 2000,
+                  duration: 2000,
+                },
+              }}
+            />
+            <Sector />
           </Chart>
         </Canvas>
       );
+
+      await delay(1000);
 
       const canvas = new Canvas(props);
       canvas.render();
@@ -259,13 +351,18 @@ describe('雷达图', () => {
             <Axis field="value" grid="line" style={{ label: null }} />
             <Line x="time" y="value" color="name" />
             <Point x="time" y="value" color="name" />
-            <Tooltip custom={true} alwaysShow defaultItem={data2[0]} snap showCrosshairs 
-                // tooltipMarkerStyle中不设置fill时，默认使用record 记录中color自动填充                
-                tooltipMarkerStyle = {{
-                  r: 5,
-                  stroke: '#fff',
-                  lineWidth: '4px',      
-                }}
+            <Tooltip
+              custom={true}
+              alwaysShow
+              defaultItem={data2[0]}
+              snap
+              showCrosshairs
+              // tooltipMarkerStyle中不设置fill时，默认使用record 记录中color自动填充
+              tooltipMarkerStyle={{
+                r: 5,
+                stroke: '#fff',
+                lineWidth: '4px',
+              }}
             />
           </Chart>
         </Canvas>
@@ -277,6 +374,5 @@ describe('雷达图', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
-    
   });
 });
