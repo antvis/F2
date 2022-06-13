@@ -45,7 +45,7 @@ describe('Theme', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      expect(textRef.current.width).toBeCloseTo(30.9159);
+      expect(textRef.current.width).toBeCloseTo(31.0239);
     });
   });
 });

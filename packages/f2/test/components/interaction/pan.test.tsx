@@ -102,7 +102,7 @@ describe.skip('平移和缩放', () => {
     });
   });
 
-  describe('平移和缩放-cate类型', () => {
+  describe.skip('平移和缩放-cate类型', () => {
     const context = createContext('对比折线', {
       width: '350px',
       height: '300px',
