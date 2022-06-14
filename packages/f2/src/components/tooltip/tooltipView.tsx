@@ -224,6 +224,7 @@ export default class TooltipView extends Component {
     this._position();
   }
   didUpdate() {
+    // debugger;
     this._position();
   }
   render() {
