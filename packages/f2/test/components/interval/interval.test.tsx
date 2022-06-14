@@ -61,7 +61,7 @@ describe('Interval', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('x scale 为 timeCat', () => {
+  it('x scale 为 timeCat', async () => {
     const data = [
       {
         time: '2016-08-08 00:00:00',
@@ -112,7 +112,7 @@ describe('Interval', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
-
+    await delay(0);
     const timeScale = chartRef.current.scale.getScale('time');
     const { range } = timeScale;
     expect(range[0]).toBeGreaterThan(0);

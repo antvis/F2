@@ -1,5 +1,5 @@
 import { jsx } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import { Canvas, Chart, Interval } from '../../../src';
 const context = createContext();
 
@@ -30,6 +30,7 @@ describe('adjust', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
 
     const interval = intervalRef.current;
 
@@ -49,7 +50,7 @@ describe('adjust', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
-
+    await delay(0);
     const interval = intervalRef.current;
 
     expect(interval.records.length).toBe(2);
@@ -70,7 +71,7 @@ describe('adjust', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
-
+    await delay(0);
     const interval = intervalRef.current;
 
     expect(interval.records.length).toBe(2);

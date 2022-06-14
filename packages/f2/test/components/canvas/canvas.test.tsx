@@ -1,5 +1,5 @@
 import { jsx } from '../../../src';
-import { createContext } from '../../util';
+import { createContext, delay } from '../../util';
 import { Canvas, Component } from '../../../src';
 const context = createContext('', {
   width: '300px',
@@ -23,7 +23,7 @@ class Test extends Component {
 }
 
 describe('Canvas', () => {
-  it('初始化', () => {
+  it('初始化', async () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Test />
@@ -31,14 +31,15 @@ describe('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
+    canvas.render();
+    await delay(0);
+
     const testComponent = canvas.props.children.type;
 
     expect(context.canvas.width).toBe(300);
     expect(context.canvas.height).toBe(300);
 
     expect(testComponent).toBe(Test);
-
-    canvas.render();
 
     const rect = canvas.children.component.container.getChildren()[0];
 
