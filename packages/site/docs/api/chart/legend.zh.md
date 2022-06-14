@@ -100,3 +100,19 @@ const data = [
   }}
 />
 ```
+
+### clickable
+
+是否支持点击，默认为 true
+
+### onClick
+
+item 点击的回调
+
+```jsx
+<Legend
+  onClick={(item) => {
+    console.log(item); // => { field: 'genre', color: '#1890FF', name: 'Sports'}
+  }}
+/>
+```
