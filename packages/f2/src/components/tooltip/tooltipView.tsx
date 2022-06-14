@@ -195,8 +195,8 @@ export default class TooltipView extends Component {
   // 调整 显示的位置
   _position() {
     const { props, context, rootRef, arrowRef } = this;
-    const group = rootRef.current;
-    if (!group) {
+    const rect = rootRef.current.childNodes[0];
+    if (!rect) {
       return;
     }
     const { records, coord } = props;
@@ -205,11 +205,8 @@ export default class TooltipView extends Component {
     // 中心点
     const { x } = record;
     const { left: coordLeft, width: coordWidth } = coord;
-
-    const y = group.getAttribute('y');
-    const width = group.getAttribute('width');
-    const height = group.getAttribute('height');
-    const radius = group.getAttribute('radius');
+    const { y, width, height } = rect.getBBox();
+    const radius = rect.getAttribute('radius');
 
     const halfWidth = width / 2;
     // 让 tooltip 限制在 coord 的显示范围内
@@ -220,8 +217,8 @@ export default class TooltipView extends Component {
 
     // 因为默认是从 coord 的范围内显示的，所以要往上移，移出 coord，避免挡住 geometry
     const offset = Math.min(y, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
-    group.moveTo(offsetX, -offset);
-    arrowRef.current.moveTo(0, height - offset);
+    rect.translate(offsetX, -offset);
+    arrowRef.current.translate(0, height - offset);
   }
   didMount() {
     this._position();
@@ -281,15 +278,16 @@ export default class TooltipView extends Component {
 
     return (
       <group>
-        <group
-          style={{
-            left: coordLeft,
-            top: coordTop,
-          }}
-        >
+        <group>
           {/* 非自定义模式时显示的文本信息 */}
           {!custom && (
-            <group ref={this.rootRef}>
+            <group
+              ref={this.rootRef}
+              style={{
+                x: coordLeft,
+                y: coordTop,
+              }}
+            >
               {/* {showTitle ? (
                 <text
                   style={{
@@ -304,12 +302,13 @@ export default class TooltipView extends Component {
                   }}
                 />
               ) : null} */}
-              <group
+              <rect
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                   padding: [0, 0, 0, '6px'],
+                  ...background,
                 }}
               >
                 {records.map((record) => {
@@ -352,16 +351,16 @@ export default class TooltipView extends Component {
                     </group>
                   );
                 })}
-              </group>
+              </rect>
             </group>
           )}
           <polygon
             ref={this.arrowRef}
             attrs={{
               points: [
-                [x - arrowWidth, 0],
-                [x + arrowWidth, 0],
-                [x, arrowWidth],
+                [x - arrowWidth, coordTop],
+                [x + arrowWidth, coordTop],
+                [x, arrowWidth + coordTop],
               ],
               fill: background.fill,
             }}

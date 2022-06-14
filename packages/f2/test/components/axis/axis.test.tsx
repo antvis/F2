@@ -10,7 +10,7 @@ function numberToMoney(n) {
   return String(Math.floor(n * 100) / 100).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-describe.skip('Axis 轴', () => {
+describe('Axis 轴', () => {
   // 基础
   it('文本换行', async () => {
     const context = createContext('文本换行');
@@ -262,6 +262,7 @@ describe.skip('Axis 轴', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
     expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
 
     await delay(1000);

@@ -9,7 +9,7 @@ const data = [
   { a: '1', genre: 'Other', sold: 110 },
 ];
 
-describe.skip('数据选中', () => {
+describe('数据选中', () => {
   it('柱图-单选', async () => {
     const context = createContext();
     const { props } = (
@@ -186,7 +186,7 @@ describe.skip('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('press 事件', async () => {
+  it.skip('press 事件', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -229,7 +229,7 @@ describe.skip('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('饼图', async () => {
+  it('饼图', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -324,7 +324,7 @@ describe('cancelable = false', () => {
   });
 });
 
-describe.skip('改变默认值', () => {
+describe('改变默认值', () => {
   it('改变默认值', async () => {
     const context = createContext();
 

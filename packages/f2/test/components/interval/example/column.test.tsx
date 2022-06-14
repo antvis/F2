@@ -270,7 +270,7 @@ describe('柱状图示例', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
-  it.skip('带负值的分组分组柱图', async () => {
+  it('带负值的分组分组柱图', async () => {
     const context = createContext('带负值的分组分组柱图');
     const data = [
       {

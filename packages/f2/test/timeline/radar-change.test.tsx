@@ -77,7 +77,7 @@ const data1 = [
   ],
 ];
 
-describe.skip('雷达图', () => {
+describe('雷达图', () => {
   it('面积雷达图图', async () => {
     const context = createContext('排名折线图', {
       width: '350px',

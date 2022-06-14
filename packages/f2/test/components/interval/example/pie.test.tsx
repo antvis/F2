@@ -2,6 +2,7 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { isArray } from '@antv/util';
 import { Canvas, Chart, Component } from '../../../../src';
+import { Hammer } from '@antv/f-engine';
 import { Interval } from '../../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../../util';
 
@@ -30,7 +31,8 @@ class Test extends Component {
   _initEvent() {
     const { context } = this;
     const { canvas } = context;
-    canvas.on('click', this._handleEvent);
+    const hammer = new Hammer(canvas);
+    hammer.on('click', this._handleEvent);
   }
 
   render() {
@@ -154,6 +156,7 @@ describe('饼图', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
+    await delay(200);
     await gestureSimulator(context.canvas, 'click', { x: 205, y: 76 });
     await delay(1000);
     expect(context).toMatchImageSnapshot();
