@@ -65,6 +65,7 @@ export default (props) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
+              //TODO: padding改为’12px‘ 就和原来一致了
               padding: ['6px', '6px', '6px', 0],
             }}
             data-item={item}

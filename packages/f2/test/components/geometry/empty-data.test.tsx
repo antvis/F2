@@ -30,7 +30,7 @@ class Custom extends Geometry {
   }
 }
 
-describe.skip('empty data', () => {
+describe('empty data', () => {
   it('data is null', async () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>

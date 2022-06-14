@@ -3,7 +3,7 @@ import { Canvas, Gauge } from '../../../src';
 import { createContext, delay } from '../../util';
 const context = createContext();
 
-describe.skip('Gauge', () => {
+describe('Gauge', () => {
   it('render', async () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>

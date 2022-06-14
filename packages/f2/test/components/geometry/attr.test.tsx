@@ -87,14 +87,14 @@ const data = [
   },
 ];
 
-describe.skip('Geometry - Attr', () => {
+describe('Geometry - Attr', () => {
   /**
    * Color Attr
    * 如果接收一个参数，则可以是：
    * 1. 映射至颜色属性的数据源字段名，如果数据源中不存在这个字段名的话，则按照常量进行解析，这个时候会使用 F2 默认提供的颜色。
    * 2. 也可以直接指定某一个具体的颜色值 color，如 '#fff', 'white', 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff' 等。
    */
-  it('不传color', () => {
+  it('不传color', async () => {
     const context = createContext('不传color', { width: '380px' });
 
     const geometryRef = { current: null };
@@ -109,10 +109,10 @@ describe.skip('Geometry - Attr', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
   });
-  it('color = {value}', () => {
+  it('color = {value}', async () => {
     const context = createContext('color = {value} 传入一个颜色值', { width: '380px' });
     const geometryRef = { current: null };
 
@@ -126,11 +126,11 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('red');
   });
-  it('color = {field}', () => {
+  it('color = {field}', async () => {
     const context = createContext('color = {field} 传入一个分类域', { width: '380px' });
     const geometryRef = { current: null };
     const { type, props } = (
@@ -143,12 +143,12 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('#1890FF');
     expect(geometryRef.current.records[1].children[0].color).toBe('#2FC25B');
   });
-  it('color = {{ field, range }}', () => {
+  it('color = {{ field, range }}', async () => {
     const context = createContext('color = {{ field, range }} 传入分类域和值域', {
       width: '380px',
     });
@@ -173,14 +173,14 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('blue');
     expect(geometryRef.current.records[0].children[0].size).toBe(12);
     expect(geometryRef.current.records[1].children[0].color).toBe('red');
   });
 
-  it('color = {[ field, colors ]} ', () => {
+  it('color = {[ field, colors ]} ', async () => {
     const context = createContext('color = {[ field, colors ]} 快捷设置', { width: '380px' });
     const geometryRef = { current: null };
     const { type, props } = (
@@ -194,12 +194,12 @@ describe.skip('Geometry - Attr', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('blue');
     expect(geometryRef.current.records[1].children[0].color).toBe('red');
   });
-  it('color = {{ field, range }}', () => {
+  it('color = {{ field, range }}', async () => {
     const context = createContext('color = {{ field, range }} 线性值域', { width: '380px' });
     const geometryRef = { current: null };
 
@@ -223,14 +223,14 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records.length).toBe(1);
     // scales 的 scale 是 Linear， 有nice 处理
     expect(geometryRef.current.records[0].children[0].color).toBe('rgb(32, 0, 223)');
   });
 
-  it('color = {{ field, range, scale }}', () => {
+  it('color = {{ field, range, scale }}', async () => {
     const context = createContext('color = {{ field, range, scale }} 线性值域', { width: '380px' });
     const chartRef = { current: null };
     const geometryRef = { current: null };
@@ -257,7 +257,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records.length).toBe(1);
     // color 有独立的 scale 配置
@@ -300,11 +300,11 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
 
-    canvas.update(
+    await canvas.update(
       (
         <Canvas context={context}>
           <Chart data={data}>
@@ -332,7 +332,7 @@ describe.skip('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[0].color).toBe('rgb(255, 0, 0)'); // red
     expect(geometryRef.current.records[0].children[0].size).toBe(24);
   });
-  it('color = {{ field, callback }}', () => {
+  it('color = {{ field, callback }}', async () => {
     const context = createContext('color = {{ field, callback }} 回调函数设置值域', {
       width: '380px',
     });
@@ -363,12 +363,12 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('blue');
   });
 
-  it('color = {{ type, field }}', () => {
+  it('color = {{ type, field }}', async () => {
     const context = createContext('color = {{ type, field }} linear 到 categroy 映射', {
       width: '380px',
     });
@@ -395,7 +395,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].color).toBe('blue');
     expect(geometryRef.current.records[0].children[1].color).toBe('red');
@@ -435,13 +435,13 @@ describe.skip('Geometry - Attr', () => {
       .getChildren()[0]
       .getChildren()[0]
       .getChildren()[0];
-    expect(rect.getAttribute('x')).toBeCloseTo(46.82);
-    expect(rect.getAttribute('y')).toBeCloseTo(170.31);
-    expect(rect.getAttribute('width')).toBeCloseTo(10.18);
-    expect(rect.getAttribute('height')).toBeCloseTo(22.19);
+    expect(rect.getAttribute('x')).toBeCloseTo(47.79);
+    expect(rect.getAttribute('y')).toBeCloseTo(166.81);
+    expect(rect.getAttribute('width')).toBeCloseTo(10.15);
+    expect(rect.getAttribute('height')).toBeCloseTo(21.6875);
   });
 
-  it('size = {value} 直接设置size', () => {
+  it('size = {value} 直接设置size', async () => {
     const context = createContext('size = {value} 直接设置size', { width: '380px' });
     const geometryRef = { current: null };
 
@@ -455,13 +455,13 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(16);
     expect(geometryRef.current.records[1].children[0].size).toBe(16);
   });
 
-  it('size = {field}  用size大小来做分类', () => {
+  it('size = {field}  用size大小来做分类', async () => {
     const context = createContext('size = {field}  用size大小来做分类', { width: '380px' });
     const geometryRef = { current: null };
 
@@ -476,13 +476,13 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(2);
     expect(geometryRef.current.records[1].children[0].size).toBe(3);
   });
 
-  it('size = {{ field, range }} 用size大小来做分类', () => {
+  it('size = {{ field, range }} 用size大小来做分类', async () => {
     const context = createContext('size = {{ field, range }} 用size大小来做分类', {
       width: '380px',
     });
@@ -509,13 +509,13 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(10);
     expect(geometryRef.current.records[1].children[0].size).toBe(20);
   });
 
-  it('size = {[ field, sizes ]} 用size大小来做分类', () => {
+  it('size = {[ field, sizes ]} 用size大小来做分类', async () => {
     const context = createContext('size = {{ type, field, callback }} 用size大小来做分类', {
       width: '380px',
     });
@@ -531,13 +531,13 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(10);
     expect(geometryRef.current.records[1].children[0].size).toBe(20);
   });
 
-  it('size = {{ type, field, range }} 数值越大，size越大', () => {
+  it('size = {{ type, field, range }} 数值越大，size越大', async () => {
     const context = createContext('size = {{ type, field, range }} 数值越大，size越大', {
       width: '380px',
     });
@@ -565,7 +565,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(10);
     expect(geometryRef.current.records[0].children[1].size).toBe(40);
@@ -573,7 +573,7 @@ describe.skip('Geometry - Attr', () => {
     expect(size > 10 && size < 40).toBe(true);
   });
 
-  it('size = {{ type, field, callback }} 数值越大，size越大', () => {
+  it('size = {{ type, field, callback }} 数值越大，size越大', async () => {
     const context = createContext('size = {{ type, field, callback }} 数值越大，size越大', {
       width: '380px',
     });
@@ -604,7 +604,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].size).toBe(10);
     expect(geometryRef.current.records[0].children[1].size).toBe(50);
@@ -614,7 +614,7 @@ describe.skip('Geometry - Attr', () => {
    * Shape Attr
    * 只支持接收一个参数，指定几何图像对象绘制的形状。
    */
-  it('不传shape', () => {
+  it('不传shape', async () => {
     const context = createContext('不传shape', {
       width: '380px',
     });
@@ -631,7 +631,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
@@ -639,7 +639,7 @@ describe.skip('Geometry - Attr', () => {
       lineWidth: 2,
     });
   });
-  it('shape = {shape}', () => {
+  it('shape = {shape}', async () => {
     const context = createContext('shape = {shape} 指定一种shape', {
       width: '380px',
     });
@@ -655,7 +655,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
@@ -664,7 +664,7 @@ describe.skip('Geometry - Attr', () => {
       smooth: true,
     });
   });
-  it('shape = {field}', () => {
+  it('shape = {field}', async () => {
     const context = createContext('shape = {field} 指定一个分类字段', {
       width: '380px',
     });
@@ -680,7 +680,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
@@ -694,7 +694,7 @@ describe.skip('Geometry - Attr', () => {
       lineDash: [4, 4],
     });
   });
-  it('shape = {{ field, range }}', () => {
+  it('shape = {{ field, range }}', async () => {
     const context = createContext('shape = {{ field, range }} 指定字段和值域', {
       width: '380px',
     });
@@ -720,7 +720,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
@@ -735,7 +735,7 @@ describe.skip('Geometry - Attr', () => {
       smooth: true,
     });
   });
-  it('shape = {[ field, shapes ]}', () => {
+  it('shape = {[ field, shapes ]}', async () => {
     const context = createContext('shape = {[ field, shapes ]} 数组传入', {
       width: '380px',
     });
@@ -758,7 +758,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',
@@ -773,7 +773,7 @@ describe.skip('Geometry - Attr', () => {
       lineDash: [4, 4],
     });
   });
-  it('shape = {{ type, field, callback }}', () => {
+  it('shape = {{ type, field, callback }}', async () => {
     const context = createContext('shape = {{ type, field, callback }} 根据数据判断shape', {
       width: '380px',
     });
@@ -804,7 +804,7 @@ describe.skip('Geometry - Attr', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(geometryRef.current.records[0].children[0].shape).toEqual({
       lineCap: 'round',

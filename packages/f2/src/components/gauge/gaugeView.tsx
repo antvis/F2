@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 
 export default (props) => {
   const { center, startAngle, endAngle, r, percent, ticks } = props;
@@ -11,8 +11,8 @@ export default (props) => {
           x,
           y,
           r,
-          startAngle,
-          endAngle,
+          startAngle: `${startAngle} rad`,
+          endAngle: `${endAngle} rad`,
           lineWidth: '20px',
           lineCap: 'round',
           stroke: '#e7e7e7',
@@ -23,8 +23,8 @@ export default (props) => {
           x,
           y,
           r,
-          startAngle,
-          endAngle: startAngle,
+          startAngle: `${startAngle} rad`,
+          endAngle: `${startAngle} rad`,
           lineWidth: '40px',
           lineCap: 'round',
           stroke: '#0075ff',
@@ -35,10 +35,10 @@ export default (props) => {
             duration: 500,
             property: ['endAngle'],
             start: {
-              endAngle: startAngle,
+              endAngle: `${startAngle} rad`,
             },
             end: {
-              endAngle: startAngle + diff * percent,
+              endAngle: `${startAngle + diff * percent} rad`,
             },
           },
         }}
