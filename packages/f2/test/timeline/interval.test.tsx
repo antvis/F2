@@ -85,6 +85,7 @@ describe('Chart', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
 
     const interval = intervalRef.current;
     expect(interval.records.length).toBe(5);

@@ -1,5 +1,5 @@
 import { jsx, Canvas, Component } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 const context = createContext();
 
 class Text extends Component {
@@ -14,7 +14,7 @@ class Text extends Component {
 
 describe('Theme', () => {
   describe('字体主题设置', () => {
-    it('默认主题', () => {
+    it('默认主题', async () => {
       const textRef = { current: null };
       const { props } = (
         <Canvas context={context} pixelRatio={1}>
@@ -24,11 +24,12 @@ describe('Theme', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+      await delay(0);
 
       expect(textRef.current.width).toBeCloseTo(31.02);
     });
 
-    it('自定义设置', () => {
+    it('自定义设置', async () => {
       const textRef = { current: null };
       const { props } = (
         <Canvas
@@ -44,6 +45,7 @@ describe('Theme', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+      await delay(0);
 
       expect(textRef.current.width).toBeCloseTo(31.0239);
     });

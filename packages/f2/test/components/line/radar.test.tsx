@@ -185,7 +185,7 @@ describe('雷达图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('雷达图展示 Tooltip', async () => {
+    it.only('雷达图展示 Tooltip', async () => {
       const context = createContext('Tooltip 默认展示');
       const { props } = (
         <Canvas context={context} pixelRatio={1}>

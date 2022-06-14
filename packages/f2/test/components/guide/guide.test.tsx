@@ -70,6 +70,7 @@ describe('Guide ', () => {
     );
     const chart = new Canvas(props);
     chart.render();
+    await delay(0);
 
     const container = chart.container;
 
@@ -96,6 +97,7 @@ describe('Guide ', () => {
 
     const chart = new Canvas(props);
     chart.render();
+    await delay(0);
 
     const container = chart.container;
     expect(container.getChildren()[0].getChildren().length).toBe(6);
@@ -127,6 +129,7 @@ describe('Guide ', () => {
 
     const chart = new Canvas(props);
     chart.render();
+    await delay(0);
 
     const container = chart.container;
     expect(container.getChildren()[0].getChildren().length).toBe(6);

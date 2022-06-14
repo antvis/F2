@@ -262,6 +262,7 @@ describe('Axis 轴', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
     expect(labelMockCallback.mock.calls[0][2].length).toBeGreaterThan(1);
 
     await delay(1000);

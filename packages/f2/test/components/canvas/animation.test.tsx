@@ -49,6 +49,7 @@ describe('Canvas', () => {
     const testComponent = canvas.children;
     await delay(100);
     canvas.render();
+    await delay(0);
     const rect = canvas.children.component.container.getChildren()[0];
 
     expect(rect.getAttribute('width')).toBe(10);

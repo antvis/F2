@@ -472,7 +472,7 @@ describe('折线图', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
-
+      await delay(0);
       const line = lineRef.current;
       expect(line.attrs.color.scale.values).toEqual(['金属', '农副产品', '能源']);
     });
@@ -957,6 +957,7 @@ describe('折线图', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
 
     const container = lineRef.current.container;
     const polyline = container

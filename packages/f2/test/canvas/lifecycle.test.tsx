@@ -134,6 +134,7 @@ describe('Canvas', () => {
 
     const canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
 
     expect(pickMethod(methodCallback.mock.calls)).toEqual([
       ['containerWillMount'],
@@ -157,6 +158,7 @@ describe('Canvas', () => {
         </Canvas>
       ).props
     );
+    await delay(0);
     expect(pickMethod(methodCallback.mock.calls)).toEqual([
       ['containerWillMount'],
       ['containerRender'],
@@ -223,8 +225,7 @@ describe('Canvas', () => {
         </Canvas>
       ).props
     );
-
-    // await delay(50);
+    await delay(50);
 
     expect(ref.current.container.getChildren()[0].getAttribute('width')).toBe(30);
     // expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
@@ -256,6 +257,7 @@ describe('Canvas', () => {
         </Canvas>
       ).props
     );
+    await delay(0);
 
     expect(pickMethod(methodCallback.mock.calls)).toEqual([
       ['containerWillMount'],

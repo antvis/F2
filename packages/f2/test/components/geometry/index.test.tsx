@@ -43,7 +43,7 @@ describe('geometry', () => {
   const chartRef = { current: null };
   const componentRef = { current: null };
 
-  it('geometry render', () => {
+  it('geometry render', async () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart ref={chartRef} data={data}>
@@ -53,6 +53,7 @@ describe('geometry', () => {
     );
     canvas = new Canvas(props);
     canvas.render();
+    await delay(0);
 
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports']);
 
@@ -75,6 +76,7 @@ describe('geometry', () => {
     canvas.update({
       children: newChart,
     });
+    await delay(0);
 
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports', 'Strategy']);
 
