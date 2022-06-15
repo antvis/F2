@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { Component, Hammer } from '@antv/f-engine';
+import { Component } from '@antv/f-engine';
 import { partition, hierarchy } from 'd3-hierarchy';
 import { Category } from '../../attr';
 import { isInBBox } from '../../util';
@@ -45,8 +45,7 @@ export default (View) => {
       const { canvas } = context;
       this.triggerRef = [];
 
-      const hammer = new Hammer(canvas);
-      hammer.on('click', (ev) => {
+      context.root.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.find((ref) => {
           return isInBBox(ref.current.getBBox(), points[0]);

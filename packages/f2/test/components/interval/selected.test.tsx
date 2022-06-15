@@ -215,17 +215,14 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
 
     // 模拟 press 事件
-    await delay(20);
-    await gestureSimulator(context.canvas, 'touchstart', [{ x: 260, y: 170 }]);
-    await delay(20);
-    await gestureSimulator(context.canvas, 'touchmove', [{ x: 213, y: 165 }]);
-    await delay(20);
-    await gestureSimulator(context.canvas, 'touchend', [{ x: 213, y: 165 }]);
-    await delay(300);
+    gestureSimulator(context.canvas, 'touchstart', { x: 260, y: 170 });
+    gestureSimulator(context.canvas, 'touchmove', { x: 213, y: 165 });
+    gestureSimulator(context.canvas, 'touchend', { x: 213, y: 165 });
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 

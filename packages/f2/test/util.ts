@@ -42,7 +42,7 @@ interface Option {
 const gestureSimulator = async (dom, eventType: string, option: Option | Option[]) => {
   const { top, left } = dom.getBoundingClientRect();
   const options = Array.isArray(option) ? option : [option];
-  const events = options.map((option) => {
+  const events = options.map((option, i) => {
     const { x, y } = option;
     const clientX = left + x;
     const clientY = top + y;
@@ -52,13 +52,13 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
           clientX,
           clientY,
           target: dom,
-          identifier: 0,
+          identifier: i,
         })
       : {
           clientX,
           clientY,
           target: dom,
-          identifier: 0,
+          identifier: i,
         };
     return event;
   });
@@ -77,7 +77,7 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
 
   if (eventType === 'press') {
     dispatchEvent(dom, 'touchstart', touchEvent);
-    await delay(270);
+    await delay(300);
     dispatchEvent(dom, 'touchend', touchEvent);
     return;
   }

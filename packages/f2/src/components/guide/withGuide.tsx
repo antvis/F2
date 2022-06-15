@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { Component, Hammer } from '@antv/f-engine';
+import { Component } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
@@ -33,8 +33,7 @@ export default (View) => {
       const { canvas } = context;
       const { onClick } = props;
 
-      const hammer = new Hammer(canvas);
-      hammer.on('click', (ev) => {
+      context.root.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;

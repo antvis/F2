@@ -7,6 +7,7 @@ export default (props, context) => {
   const [start, end] = range;
   const barLeft = width * start;
   const barWidth = width * (end - start);
+  if (isNaN(barWidth)) return;
   return (
     <group
       style={{

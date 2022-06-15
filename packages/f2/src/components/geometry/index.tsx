@@ -1,5 +1,4 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
-import { Hammer } from '@antv/f-engine';
 import Selection, { SelectionState } from './selection';
 import { Adjust, getAdjust } from '@antv/adjust';
 import { toTimeStamp } from '../../util/index';
@@ -326,11 +325,10 @@ class Geometry<
   _initEvent() {
     const { context, props } = this;
     const { canvas } = context;
-    const hammer = new Hammer(canvas);
     ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
       (eventName) => {
         if (props[eventName]) {
-          hammer.on(eventName.substr(2).toLowerCase(), (ev) => {
+          context.root.on(eventName.substr(2).toLowerCase(), (ev) => {
             ev.geometry = this;
             props[eventName](ev);
           });
