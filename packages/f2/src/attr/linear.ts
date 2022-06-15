@@ -1,6 +1,6 @@
 import { Linear as LinearScale, ScaleConfig } from '@antv/scale';
 import { isArray } from '@antv/util';
-import { interpolate } from 'd3-interpolate';
+import { interpolate } from '../deps/d3-interpolate/src';
 import Base from './base';
 
 class Linear extends Base {
