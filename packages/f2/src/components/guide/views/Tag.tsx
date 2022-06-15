@@ -43,7 +43,7 @@ const defaultStyle = {
   container: {
     fill: '#1677FF',
     radius: 2,
-    padding: [1, 3],
+    padding: [3, 5],
   },
   text: {
     fontSize: '22px' as `${number}px`,
