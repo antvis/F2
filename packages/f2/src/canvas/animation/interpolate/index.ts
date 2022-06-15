@@ -1,4 +1,8 @@
-import { interpolateNumber, interpolateNumberArray, interpolateRgb } from 'd3-interpolate';
+import {
+  interpolateNumber,
+  interpolateNumberArray,
+  interpolateRgb,
+} from '../../../deps/d3-interpolate/src';
 
 import interpolateObjectArray from './interpolateObjectArray';
 
