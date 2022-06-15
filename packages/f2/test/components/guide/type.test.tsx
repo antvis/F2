@@ -260,7 +260,7 @@ describe('Guide', () => {
       <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
           <Line x="genre" y="sold" />
-          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tl" content="20" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tc" content="20" />
         </Chart>
       </Canvas>
     );
