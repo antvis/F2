@@ -1,5 +1,5 @@
+import { deepMix, isNil } from '@antv/util';
 import { jsx } from '../../jsx';
-import { isNil, deepMix } from '@antv/util';
 
 export default (props) => {
   const { records, animation } = props;
@@ -11,6 +11,9 @@ export default (props) => {
           <group key={key}>
             {children.map((item) => {
               const { x, y, size, color, shapeName, shape } = item;
+              if (isNaN(x) || isNaN(y)) {
+                return null;
+              }
               if (shapeName === 'rect') {
                 const rectSize = isNil(size) ? shape.size : size;
                 return (
