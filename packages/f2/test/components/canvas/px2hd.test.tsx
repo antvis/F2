@@ -22,8 +22,8 @@ class Test extends Component {
   }
 }
 
-describe.skip('Canvas', () => {
-  it('自定义 px2hd', () => {
+describe('Canvas', () => {
+  it('自定义 px2hd', async () => {
     const { props } = (
       <Canvas
         context={context}
@@ -37,6 +37,7 @@ describe.skip('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
+    await canvas.render();
     const testComponent = canvas.props.children.type;
 
     expect(context.canvas.width).toBe(300);
@@ -44,10 +45,9 @@ describe.skip('Canvas', () => {
 
     expect(testComponent).toBe(Test);
 
-    canvas.render();
-
-    const rect = canvas.children.component.container._attrs.children[0];
-    expect(rect._attrs.type).toBe('rect');
-    expect(rect._attrs.attrs.fill).toBe('red');
+    const rect = canvas.children.component.container.getChildren()[0];
+    console.log(rect);
+    expect(rect.config.type).toBe('rect');
+    expect(rect.getAttribute('fill')).toBe('red');
   });
 });

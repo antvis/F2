@@ -2,7 +2,7 @@ import { CanvasRenderer, Canvas } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 import Layout from './base/layout';
 import defaultTheme from './theme';
-import { px2hd as defaultPx2hd } from './util';
+import { px2hd as defaultPx2hd, batch2hd } from './util';
 
 class f2Canvas extends Canvas {
   layout: Layout;
@@ -11,7 +11,7 @@ class f2Canvas extends Canvas {
     const theme = deepMix({}, defaultTheme, props.theme);
     props = {
       ...props,
-      px2hd: props.px2hd || defaultPx2hd,
+      px2hd: props.px2hd ? batch2hd(props.px2hd) : defaultPx2hd,
       renderer: props.renderer || new CanvasRenderer(),
       theme,
     };

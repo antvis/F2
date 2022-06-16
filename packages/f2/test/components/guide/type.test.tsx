@@ -254,7 +254,7 @@ describe('Guide', () => {
     canvas.render();
   });
 
-  it.skip('TagGuide', async () => {
+  it('TagGuide', async () => {
     const context = createContext('TagGuide');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>

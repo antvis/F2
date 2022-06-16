@@ -99,8 +99,8 @@ const data1 = [
   },
 ];
 
-describe.skip('tooltip', () => {
-  it('Tooltip render', async () => {
+describe('tooltip', () => {
+  it.skip('Tooltip render', async () => {
     const context = createContext('Tooltip render');
     const onChangeMockCallback = jest.fn();
     const { props } = (
@@ -199,7 +199,8 @@ describe.skip('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
+
     const newChart = (
       <Chart data={data}>
         <Axis field="genre" />
@@ -210,12 +211,12 @@ describe.skip('tooltip', () => {
       </Chart>
     );
 
-    canvas.update({ children: newChart });
+    await canvas.update({ children: newChart });
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 
-  it('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
+  it.only('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
     const context = createContext('Tooltip 默认展示更新（新增图形元素导致的坐标变动）');
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -227,7 +228,7 @@ describe.skip('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     const newChart = (
       <Chart data={data}>
         <Interval x="genre" y="sold" color="genre" />
@@ -236,13 +237,12 @@ describe.skip('tooltip', () => {
         <Axis field="sold" />
       </Chart>
     );
-    await delay(10);
-    canvas.update({ children: newChart });
+    await canvas.update({ children: newChart });
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 
-  it('Tooltip 超出边界会展示边界值', async () => {
+  it.skip('Tooltip 超出边界会展示边界值', async () => {
     const context = createContext('Tooltip 超出边界会展示边界值');
     const onChangeMockCallback = jest.fn();
     const { props } = (
@@ -272,7 +272,7 @@ describe.skip('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('分组柱状图-tooltip', async () => {
+  it.skip('分组柱状图-tooltip', async () => {
     const context = createContext('分组柱图');
 
     const { props } = (
@@ -302,7 +302,7 @@ describe.skip('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('分组柱状图-tooltip', async () => {
+  it.skip('分组柱状图-tooltip', async () => {
     const context = createContext('分组柱图');
 
     const { props } = (

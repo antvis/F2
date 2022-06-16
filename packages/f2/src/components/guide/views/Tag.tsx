@@ -1,4 +1,4 @@
-import { jsx } from '../../../jsx';
+import { jsx } from '../../../index';
 import type { Types } from '@antv/f2-graphic';
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
@@ -178,27 +178,50 @@ export default (props: TagGuideProps, context) => {
     return arrowPoints;
   };
 
+  const _getTextWrapper = () => {
+    const { width, height } = context.measureText(content, {
+      fontSize: defaultStyle.text.fontSize,
+      fill: defaultStyle.text.fill,
+      ...textStyle
+    })
+
+    const x = - width / 2 - defaultStyle.container.padding[1];
+    const y= - height - defaultStyle.container.padding[0]
+    return {
+      x,
+      y
+    }
+  }
   const dr = autoAdjust ? _getDirect(points[0]) : direct;
   const arrowPoints = _getArrowPoints(dr);
+  const textWrapper = _getTextWrapper();
+
   return (
     <group
-      style={{
-        x: posX,
-        y: posY, 
-        fill: defaultStyle.container.fill,
-        padding: defaultStyle.container.padding,
-        radius: defaultStyle.container.radius,
-        ...background,
-      }}
+    style={{
+      x: posX,
+      y: posY
+    }}
     >
+      <rect 
+        style={{
+          display: 'flex',
+          fill: defaultStyle.container.fill,
+          padding: defaultStyle.container.padding,
+          radius: defaultStyle.container.radius,
+          transform: `translate(${textWrapper.x}, ${textWrapper.y})`,
+          ...background
+        }}
+      >
       <text
         attrs={{
           text: content,
           fontSize: defaultStyle.text.fontSize,
-          fill:  'black'|| defaultStyle.text.fill,
-          ...textStyle,
+          fill: defaultStyle.text.fill,
+          ...textStyle
         }}
       />
+      </rect>
       {guideBBox && (
         <polygon
           attrs={{

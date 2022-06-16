@@ -32,7 +32,7 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('自定义样式', async () => {
+    it('自定义样式', async () => {
       const context = createContext('自定义样式', {
         height: '70px',
       });
@@ -154,7 +154,7 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('设置 nameStyle', async () => {
+    it('设置 nameStyle', async () => {
       const data = [
         { genre: 'Sports', sold: 275 },
         { genre: 'Strategy', sold: 115 },
