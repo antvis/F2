@@ -118,8 +118,11 @@ Component({
         return;
       }
       const event = wrapEvent(e);
+      const { detail, target } = e;
+      const { x, y } = detail;
+      const { offsetLeft = 0, offsetTop = 0 } = target;
       // 包装成 touch 对象
-      event.touches = [e.detail];
+      event.touches = [{ x: x - offsetLeft, y: y - offsetTop }];
       canvasEl.dispatchEvent('click', event);
     },
     touchStart(e) {
