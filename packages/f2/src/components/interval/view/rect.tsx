@@ -11,6 +11,9 @@ export default (props) => {
           <group key={key}>
             {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color, shape } = item;
+              if (isNaN(xMin) || isNaN(xMax) || isNaN(yMin) || isNaN(yMax)) {
+                return null;
+              }
               return (
                 <rect
                   key={key}
