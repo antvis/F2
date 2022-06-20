@@ -236,6 +236,7 @@ describe('图例', () => {
   });
 
   describe('点击交互', () => {
+    const onClick = jest.fn();
     const data = [
       { genre: 'Sports', sold: 275 },
       { genre: 'Strategy', sold: 115 },
@@ -248,7 +249,7 @@ describe('图例', () => {
       const { props } = (
         <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
-            <Legend />
+            <Legend onClick={onClick} />
             <Geometry x="genre" y="sold" color="genre" />
           </Chart>
         </Canvas>
@@ -261,6 +262,12 @@ describe('图例', () => {
       await gestureSimulator(context.canvas, 'click', { x: 27, y: 20 });
       await delay(200);
       expect(context).toMatchImageSnapshot();
+      expect(onClick.mock.calls.length).toBe(1);
+      expect(onClick.mock.calls[0][0]).toMatchObject({
+        field: 'genre',
+        color: '#1890FF',
+        name: 'Sports',
+      });
     });
 
     it('不可点击', async () => {
@@ -446,7 +453,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 valuePrefix', async () => {
     const data = [
       {
@@ -511,7 +518,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 自定义items', async () => {
     const data = [
       {
@@ -530,7 +537,6 @@ describe('图例', () => {
         a: '1',
       },
     ];
-
 
     const context = createContext('图例 传入 自定义items');
     const chartRef = { current: null };
@@ -558,17 +564,19 @@ describe('图例', () => {
           />
           <Legend
             position="right"
-            items={[,
+            items={[
+              ,
               {
                 color: 'red',
                 name: '第一组',
-                value: '20'
+                value: '20',
               },
               {
                 color: 'blue',
                 name: '第二组',
-                value: '42'
-              }]}
+                value: '42',
+              },
+            ]}
             itemFormatter={(value, name) => {
               return value + '%';
             }}
@@ -582,7 +590,7 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
   it('图例 传入 自定义items + valuePrefix', async () => {
     const data = [
       {
@@ -601,7 +609,6 @@ describe('图例', () => {
         a: '1',
       },
     ];
-
 
     const context = createContext('图例 传入 自定义items + valuePrefix');
     const chartRef = { current: null };
@@ -629,17 +636,19 @@ describe('图例', () => {
           />
           <Legend
             position="right"
-            items={[,
+            items={[
+              ,
               {
                 color: 'red',
                 name: '第一组',
-                value: '20'
+                value: '20',
               },
               {
                 color: 'blue',
                 name: '第二组',
-                value: '42'
-              }]}
+                value: '42',
+              },
+            ]}
             itemFormatter={(value, name) => {
               return value + '%';
             }}
@@ -654,5 +663,5 @@ describe('图例', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
-  })
+  });
 });

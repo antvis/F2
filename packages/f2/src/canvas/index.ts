@@ -91,19 +91,6 @@ class Canvas extends Component<ChartProps> {
       landscape,
     });
 
-    const { width: canvasWidth, height: canvasHeight } = canvas._attrs;
-
-    const style = px2hd({
-      left: 0,
-      top: 0,
-      width: canvasWidth,
-      height: canvasHeight,
-      padding: theme.padding,
-      ...customStyle,
-    });
-
-    const layout = Layout.fromStyle(style);
-
     // 组件更新器
     const updater = createUpdater(this);
 
@@ -111,10 +98,6 @@ class Canvas extends Component<ChartProps> {
     const componentContext = {
       root: this,
       canvas,
-      left: layout.left,
-      top: layout.top,
-      width: layout.width,
-      height: layout.height,
       theme,
       px2hd,
       measureText: measureText(canvas, px2hd),
@@ -125,13 +108,14 @@ class Canvas extends Component<ChartProps> {
 
     this.canvas = canvas;
     this.container = canvas;
-    this.layout = layout;
     this.context = componentContext;
     this.updater = updater;
     this.animate = animate;
     this.animation = animation;
     this.theme = theme;
     this._ee = new EE();
+
+    this.updateLayout(props);
   }
 
   renderComponents(components: Component[]) {
@@ -147,8 +131,40 @@ class Canvas extends Component<ChartProps> {
     if (equal(nextProps, props)) {
       return;
     }
+
     this.props = nextProps;
+
     this.render();
+  }
+
+  resize(width?, height?) {
+    const { width: canvasWidth, height: canvasHeight } = this.canvas._attrs;
+    this.canvas.changeSize(width || canvasWidth, height || canvasHeight);
+    // this.canvas.clear();
+    // this.children = null;
+    this.updateLayout({ ...this.props, width, height });
+    this.render();
+  }
+
+  updateLayout(props) {
+    const { width: canvasWidth, height: canvasHeight } = this.canvas._attrs;
+    const style = this.context.px2hd({
+      left: 0,
+      top: 0,
+      width: props?.width || canvasWidth,
+      height: props?.height || canvasHeight,
+      padding: this.theme.padding,
+      ...props.style,
+    });
+    this.layout = Layout.fromStyle(style);
+
+    this.context = {
+      ...this.context,
+      left: this.layout.left,
+      top: this.layout.top,
+      width: this.layout.width,
+      height: this.layout.height,
+    };
   }
 
   draw() {

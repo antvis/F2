@@ -1,4 +1,4 @@
-import { interpolateObject } from 'd3-interpolate';
+import { interpolateObject } from '../../../deps/d3-interpolate/src';
 
 function interpolateObjectArray(a, b) {
   const na = a ? a.length : 0;

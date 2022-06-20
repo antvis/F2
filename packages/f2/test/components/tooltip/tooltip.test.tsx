@@ -238,7 +238,7 @@ describe('tooltip', () => {
     );
     await delay(10);
     canvas.update({ children: newChart });
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 

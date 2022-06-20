@@ -188,7 +188,7 @@ function destroyElement(elements: JSX.Element) {
   });
 }
 
-function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
+function diffElement(parent: Component, nextElement: JSX.Element, lastElement: JSX.Element) {
   if (!nextElement && !lastElement) {
     return null;
   }
@@ -215,7 +215,8 @@ function diffElement(nextElement: JSX.Element, lastElement: JSX.Element) {
 
   // 保留component， 等下一阶段处理
   nextElement.component = lastComponent;
-  if (equal(nextProps, lastProps)) {
+
+  if (equal(nextProps, lastProps) && lastComponent.context === parent.context) {
     return null;
   }
   return nextElement;
@@ -232,7 +233,7 @@ function diff(parent: Component, nextChildren, lastChildren) {
   let childrenArray = [];
   // 1. 第一轮比较， 直接destroy的元素处理掉，destroy 的元素不需要进入下一阶段
   Children.compare(nextChildren, lastChildren, (next, last) => {
-    const element = diffElement(next, last);
+    const element = diffElement(parent, next, last);
 
     if (element) {
       childrenArray = childrenArray.concat(Children.toArray(element).filter(Boolean));
@@ -257,9 +258,10 @@ function diff(parent: Component, nextChildren, lastChildren) {
     } else {
       const { props } = element;
       if (component.willReceiveProps) {
-        component.willReceiveProps(props);
+        component.willReceiveProps(props, parent.context);
       }
       component.props = props;
+      component.context = parent.context;
     }
 
     element.component = component;

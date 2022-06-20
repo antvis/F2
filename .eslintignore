@@ -15,6 +15,7 @@ docs/
 public
 types/
 types-test/
+**/deps/**/*.js
 **/*.test.ts
 **/*.test.tsx
 **/*.test.js

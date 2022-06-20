@@ -72,11 +72,12 @@ export interface LegendProps {
   /**
    * value展示文案的前缀
    */
-   valuePrefix?: string;
+  valuePrefix?: string;
   /**
    * 是否可点击
    */
   clickable?: boolean;
+  onClick?: (item: LegendItem) => void;
 }
 
 export default (View) => {
@@ -105,7 +106,7 @@ export default (View) => {
         const { tickValue } = item;
         return {
           ...item,
-          filtered: filtered[tickValue]
+          filtered: filtered[tickValue],
         };
       });
     }
@@ -235,7 +236,7 @@ export default (View) => {
     _initEvent() {
       const { context, props, container } = this;
       const { canvas } = context;
-      const { chart, clickable = true } = props;
+      const { chart, clickable = true, onClick } = props;
 
       if (!clickable) return;
 
@@ -261,6 +262,9 @@ export default (View) => {
         const dataItem = clickItem.get('data-item');
         if (!dataItem) {
           return;
+        }
+        if (isFunction(onClick)) {
+          onClick(dataItem);
         }
         const { field, tickValue } = dataItem;
 

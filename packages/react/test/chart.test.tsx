@@ -1,10 +1,10 @@
 // @ts-nocheck
 /* @jsx React.createElement */
-import React from 'react';
+import { Canvas, Chart, Component, Line } from '@antv/f2';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
 import ReactCanvas from '../src';
-import { Canvas, Chart, Line } from '@antv/f2';
 
 // @ts-ignore
 Enzyme.configure({ adapter: new Adapter() });
@@ -51,31 +51,32 @@ describe('<Canvas >', () => {
 
     wrapper.unmount();
   });
+
+  it('Chart render with Error', () => {
+    const spyOnError = jest.spyOn(window, 'onerror').mockImplementation(() => {});
+    const spyOnConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    class Test extends Component {
+      render() {
+        throw new Error('Render Error');
+      }
+    }
+
+    const onError = jest.fn();
+
+    const wrapper = mount(
+      <ReactCanvas fallback={<div>Chart Fallback</div>} onError={onError}>
+        <Test />
+      </ReactCanvas>
+    );
+
+    // 断言 fallback 触发
+    expect(wrapper.html()).toBe('<div>Chart Fallback</div>');
+
+    // 断言 onError 触发
+    expect(onError.mock.calls.length).toBe(1);
+    expect(spyOnError).toHaveBeenCalled();
+
+    spyOnError.mockRestore();
+    spyOnConsoleError.mockRestore();
+  });
 });
-
-// class A extends React.Component {
-//   render() {
-//     return <div>A</div>
-//   }
-// }
-
-// class B extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.refA = React.createRef();
-//   }
-
-//   componentDidMount() {
-//     console.log(this.refA);
-//   }
-
-//   render() {
-//     return <div>
-//       <A ref={ this.refA }></A>
-//     </div>
-//   }
-// }
-
-// const root = document.createElement('div');
-// document.body.appendChild(root);
-// ReactDOM.render(<B />, root);
