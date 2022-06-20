@@ -272,6 +272,31 @@ describe('Guide', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('TagGuide不同方向', async () => {
+    const context = createContext('TagGuide');
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" />
+          <TagGuide records={[{ genre: 'Sports', sold: 5 }]} direct="tc" content="tag" />
+          <TagGuide records={[{ genre: 'Strategy', sold: 10 }]} direct="tl" content="tag" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tr" content="tag" />
+          <TagGuide records={[{ genre: 'Shooter', sold: 20 }]} direct="cl" content="tag" />
+          <TagGuide records={[{ genre: 'Other', sold: 40 }]} direct="cr" content="tag" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="bl" content="tag" />
+          <TagGuide records={[{ genre: 'Sports', sold: 5 }]} direct="bc" content="tag" />
+          <TagGuide records={[{ genre: 'Strategy', sold: 10 }]} direct="br" content="tag" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('LineGuide in Category', async () => {
     const context = createContext('LineGuideInCategory');
     const data = [
