@@ -1,6 +1,6 @@
 import { jsx } from '../../jsx';
 import { isArray, isFunction, find } from '@antv/util';
-import { Component, Hammer } from '@antv/f-engine';
+import { Component } from '@antv/f-engine';
 import equal from '../../base/equal';
 import { DataRecord, px, TextAttrs, LineAttrs, RectAttrs } from '../../types';
 import { ChartChildProps } from '../../chart';
@@ -55,7 +55,6 @@ export interface TooltipState {
 
 export default (View) => {
   return class Tooltip extends Component<TooltipProps, TooltipState> {
-    hammer: Hammer;
     constructor(props: TooltipProps) {
       super(props);
       this.state = {
@@ -93,11 +92,11 @@ export default (View) => {
     }
 
     _clearEvents() {
-      const { props } = this;
+      const { props, context } = this;
       const { triggerOn = 'press', triggerOff = 'pressend' } = props;
       // 解绑事件
-      this.hammer.off(triggerOn, this._triggerOn);
-      this.hammer.off(triggerOff, this._triggerOff);
+      context.root.off(triggerOn, this._triggerOn);
+      context.root.off(triggerOff, this._triggerOff);
     }
     _initShow() {
       const { props } = this;
@@ -129,20 +128,17 @@ export default (View) => {
     };
     _initEvent() {
       const { context, props } = this;
-      const { canvas } = context;
       const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
-      const hammer = new Hammer(canvas);
-      hammer.on(triggerOn, (ev) => {
+      context.root.on(triggerOn, (ev) => {
         const { points } = ev;
         this.show(points[0], ev);
       });
 
-      hammer.on(triggerOff, (_ev) => {
+      context.root.on(triggerOff, (_ev) => {
         if (!alwaysShow) {
           this.hide();
         }
       });
-      this.hammer = hammer;
     }
 
     show(point, _ev?) {

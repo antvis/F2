@@ -1,5 +1,5 @@
 import { jsx } from '../../jsx';
-import { Component, Hammer, renderShape } from '@antv/f-engine';
+import { Component, renderShape } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
@@ -243,8 +243,7 @@ export default (View) => {
       if (!clickable) return;
 
       // item 点击事件
-      const hammer = new Hammer(canvas);
-      hammer.on('click', (ev) => {
+      context.root.on('click', (ev) => {
         const { points } = ev;
 
         const point = points[0];

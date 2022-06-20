@@ -1,4 +1,4 @@
-import { Component, Hammer } from '@antv/f-engine';
+import { Component } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '@antv/scale';
@@ -54,7 +54,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   originScale: Scale;
   // 最小的缩放比例
   minScale: number;
-  hammer: Hammer;
 
   constructor(props: P) {
     super(props);
@@ -70,7 +69,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   willMount(): void {
     const { props, context } = this;
-    const { canvas } = context;
     const { range } = props;
     const scale = this._getScale();
     const { values } = scale;
@@ -80,7 +78,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     // 图表上最少显示 MIN_COUNT 个数据
     this.minScale = MIN_COUNT / values.length;
 
-    this.hammer = new Hammer(canvas);
     this.updateRange(range);
   }
 
@@ -109,6 +106,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   onPinch = (ev) => {
     const { mode = 'x' } = this.props;
     if (mode === 'x') {
+      console.log(ev.zoom, ev.center);
       this._doXPinch(ev);
       return;
     }
@@ -277,36 +275,37 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _bindEvents() {
-    const { props } = this;
+    const { props, context } = this;
+    const { canvas } = context;
     const { pan, pinch } = props;
-
     // 统一绑定事件
     if (pan !== false) {
-      this.hammer.on('panstart', this.onStart);
-      this.hammer.on('pan', this.onPan);
-      this.hammer.on('panend', this.onEnd);
+      context.root?.on('panstart', this.onStart);
+      context.root?.on('pan', this.onPan);
+      context.root?.on('panend', this.onEnd);
     }
 
     if (pinch !== false) {
-      this.hammer.on('pinchstart', this.onStart);
-      this.hammer.on('pinch', this.onPinch);
-      this.hammer.on('pinchend', this.onEnd);
+      context.root?.on('pinchstart', this.onStart);
+      context.root?.on('pinch', this.onPinch);
+      context.root?.on('pinchend', this.onEnd);
     }
   }
 
   _clearEvents() {
-    const { props } = this;
+    const { props, context } = this;
+    const { canvas } = context;
     const { pan, pinch } = props;
     // 统一解绑事件
     if (pan !== false) {
-      this.hammer.off('panstart', this.onStart);
-      this.hammer.off('pan', this.onPan);
-      this.hammer.off('panend', this.onEnd);
+      context.root?.off('panstart', this.onStart);
+      context.root?.off('pan', this.onPan);
+      context.root?.off('panend', this.onEnd);
     }
     if (pinch !== false) {
-      this.hammer.off('pinchstart', this.onStart);
-      this.hammer.off('pinch', this.onPinch);
-      this.hammer.off('pinchend', this.onEnd);
+      context.root?.off('pinchstart', this.onStart);
+      context.root?.off('pinch', this.onPinch);
+      context.root?.off('pinchend', this.onEnd);
     }
   }
 }

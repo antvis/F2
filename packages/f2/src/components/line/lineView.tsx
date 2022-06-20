@@ -102,6 +102,7 @@ export default (props: LineViewProps) => {
             {children.map((child) => {
               const { points, color, size, shape } = child;
               const fliterPoints = points.filter((point) => !isNaN(point.x) && !isNaN(point.y));
+              if (fliterPoints.length === 0) return;
               return (
                 <polyline
                   key={key}

@@ -216,7 +216,7 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.only('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
+  it('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
     const context = createContext('Tooltip 默认展示更新（新增图形元素导致的坐标变动）');
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -266,7 +266,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     canvas.render();
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { x: -10, y: 21 }); // 超出 coord 边界
+    await gestureSimulator(context.canvas, 'press', { x: 0, y: 21 }); // 超出 coord 边界
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
@@ -328,7 +328,7 @@ describe('tooltip', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });

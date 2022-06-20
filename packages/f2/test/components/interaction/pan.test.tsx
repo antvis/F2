@@ -96,13 +96,13 @@ describe.skip('平移和缩放', () => {
         { x: 200, y: 200 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 110, y: 110 });
+      await gestureSimulator(context.canvas, 'touchend', [{ x: 110, y: 110 }]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });
   });
 
-  describe.skip('平移和缩放-cate类型', () => {
+  describe('平移和缩放-cate类型', () => {
     const context = createContext('对比折线', {
       width: '350px',
       height: '300px',
@@ -135,7 +135,7 @@ describe.skip('平移和缩放', () => {
       );
 
       canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();

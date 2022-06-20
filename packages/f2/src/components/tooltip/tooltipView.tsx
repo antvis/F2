@@ -195,7 +195,7 @@ export default class TooltipView extends Component {
   // 调整 显示的位置
   _position() {
     const { props, context, rootRef, arrowRef } = this;
-    const rect = rootRef.current.childNodes[0];
+    const rect = rootRef.current?.childNodes[0];
     if (!rect) {
       return;
     }
@@ -224,7 +224,6 @@ export default class TooltipView extends Component {
     this._position();
   }
   didUpdate() {
-    // debugger;
     this._position();
   }
   render() {
