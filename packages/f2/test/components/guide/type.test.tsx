@@ -273,7 +273,7 @@ describe('Guide', () => {
   });
 
   it('TagGuide不同方向', async () => {
-    const context = createContext('TagGuide');
+    const context = createContext('TagGuide不同方向');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
@@ -293,6 +293,36 @@ describe('Guide', () => {
     const canvas = new Canvas(props);
     canvas.render();
 
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('TagGuide update', async () => {
+    const context = createContext('TagGuide update');
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tl" content="long long" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+    canvas.update(
+      (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+          <Line x="genre" y="sold" />
+          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tl" content="short" />
+        </Chart>
+        </Canvas>
+      ).props
+    );
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });

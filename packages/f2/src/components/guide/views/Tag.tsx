@@ -28,6 +28,10 @@ interface TagGuideProps {
    * 文字样式
    */
   textStyle?: any;
+  /**
+   * tagGuide ref
+   */
+  triggerRef?: any;
 }
 
 const defaultProps: TagGuideProps = {
@@ -69,6 +73,7 @@ export default (props: TagGuideProps, context) => {
     guideBBox,
     background,
     textStyle,
+    triggerRef,
   } = cfg;
   const { x, y } = points[0] || {};
   const { width: guideWidth, height: guideHeight } = guideBBox || {};
@@ -195,6 +200,7 @@ export default (props: TagGuideProps, context) => {
         padding: defaultStyle.container.padding,
         ...background,
       }}
+      ref={triggerRef}
     >
       <text
         attrs={{
