@@ -33,7 +33,7 @@ export default (View) => {
       const { canvas } = context;
       const { onClick } = props;
 
-      context.root.on('click', (ev) => {
+      context.gesture.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;

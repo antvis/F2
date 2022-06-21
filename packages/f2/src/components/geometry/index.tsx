@@ -328,7 +328,7 @@ class Geometry<
     ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
       (eventName) => {
         if (props[eventName]) {
-          context.root.on(eventName.substr(2).toLowerCase(), (ev) => {
+          context.gesture.on(eventName.substr(2).toLowerCase(), (ev) => {
             ev.geometry = this;
             props[eventName](ev);
           });

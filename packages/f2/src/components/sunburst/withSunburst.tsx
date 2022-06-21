@@ -45,7 +45,7 @@ export default (View) => {
       const { canvas } = context;
       this.triggerRef = [];
 
-      context.root.on('click', (ev) => {
+      context.gesture.on('click', (ev) => {
         const { points } = ev;
         const shape = this.triggerRef.find((ref) => {
           return isInBBox(ref.current.getBBox(), points[0]);

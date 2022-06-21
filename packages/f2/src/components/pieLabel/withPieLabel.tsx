@@ -318,7 +318,7 @@ export default (View) => {
       const { context, props } = this;
       const { canvas } = context;
       const { triggerOn = DEFAULT_CONFIG.triggerOn } = props;
-      context.root.on(triggerOn, this._handleEvent);
+      context.gesture.on(triggerOn, this._handleEvent);
     }
 
     render() {

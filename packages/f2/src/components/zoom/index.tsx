@@ -276,19 +276,18 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   _bindEvents() {
     const { props, context } = this;
-    const { canvas } = context;
     const { pan, pinch } = props;
     // 统一绑定事件
     if (pan !== false) {
-      context.root?.on('panstart', this.onStart);
-      context.root?.on('pan', this.onPan);
-      context.root?.on('panend', this.onEnd);
+      context.gesture?.on('panstart', this.onStart);
+      context.gesture?.on('pan', this.onPan);
+      context.gesture?.on('panend', this.onEnd);
     }
 
     if (pinch !== false) {
-      context.root?.on('pinchstart', this.onStart);
-      context.root?.on('pinch', this.onPinch);
-      context.root?.on('pinchend', this.onEnd);
+      context.gesture?.on('pinchstart', this.onStart);
+      context.gesture?.on('pinch', this.onPinch);
+      context.gesture?.on('pinchend', this.onEnd);
     }
   }
 
@@ -298,14 +297,14 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { pan, pinch } = props;
     // 统一解绑事件
     if (pan !== false) {
-      context.root?.off('panstart', this.onStart);
-      context.root?.off('pan', this.onPan);
-      context.root?.off('panend', this.onEnd);
+      context.gesture?.off('panstart', this.onStart);
+      context.gesture?.off('pan', this.onPan);
+      context.gesture?.off('panend', this.onEnd);
     }
     if (pinch !== false) {
-      context.root?.off('pinchstart', this.onStart);
-      context.root?.off('pinch', this.onPinch);
-      context.root?.off('pinchend', this.onEnd);
+      context.gesture?.off('pinchstart', this.onStart);
+      context.gesture?.off('pinch', this.onPinch);
+      context.gesture?.off('pinchend', this.onEnd);
     }
   }
 }

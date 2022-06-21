@@ -2,7 +2,7 @@ import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { isArray } from '@antv/util';
 import { Canvas, Chart, Component } from '../../../../src';
-import { Hammer } from '@antv/f-engine';
+import { Gesture } from '@antv/f-engine';
 import { Interval } from '../../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../../util';
 
@@ -31,7 +31,7 @@ class Test extends Component {
   _initEvent() {
     const { context } = this;
     const { canvas } = context;
-    const hammer = new Hammer(canvas);
+    const hammer = new Gesture(canvas);
     hammer.on('click', this._handleEvent);
   }
 
@@ -113,6 +113,43 @@ describe('饼图', () => {
             color={{
               field: 'name',
               range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('圆角圆环图', async () => {
+    const context = createContext('圆角圆环图');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            innerRadius: 0.5,
+          }}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+              range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
+            }}
+            style={{
+              radius: [10, 7, 4, 2],
             }}
           />
         </Chart>

@@ -243,7 +243,7 @@ export default (View) => {
       if (!clickable) return;
 
       // item 点击事件
-      context.root.on('click', (ev) => {
+      context.gesture.on('click', (ev) => {
         const { points } = ev;
 
         const point = points[0];

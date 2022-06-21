@@ -95,8 +95,8 @@ export default (View) => {
       const { props, context } = this;
       const { triggerOn = 'press', triggerOff = 'pressend' } = props;
       // 解绑事件
-      context.root.off(triggerOn, this._triggerOn);
-      context.root.off(triggerOff, this._triggerOff);
+      context.gesture.off(triggerOn, this._triggerOn);
+      context.gesture.off(triggerOff, this._triggerOff);
     }
     _initShow() {
       const { props } = this;
@@ -129,12 +129,12 @@ export default (View) => {
     _initEvent() {
       const { context, props } = this;
       const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
-      context.root.on(triggerOn, (ev) => {
+      context.gesture.on(triggerOn, (ev) => {
         const { points } = ev;
         this.show(points[0], ev);
       });
 
-      context.root.on(triggerOff, (_ev) => {
+      context.gesture.on(triggerOff, (_ev) => {
         if (!alwaysShow) {
           this.hide();
         }
