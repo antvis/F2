@@ -119,9 +119,9 @@ export default (props: TagGuideProps, context) => {
     // const { minX, minY } = guideBBox || {};
     if (direct === 'tl') {
       arrowPoints = [
-        { x: posX, y: posY - side },
+        { x: posX, y: posY - side - 1 },
         { x: posX, y: posY },
-        { x: posX - side, y: posY - side },
+        { x: posX - side, y: posY - side - 1 },
       ];
       posX -= (guideWidth || 0);
       posY = posY - (guideHeight || 0) - side;
