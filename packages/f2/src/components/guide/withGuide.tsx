@@ -45,6 +45,24 @@ export default (View) => {
       });
     }
 
+    didUpdate() {
+      super.didUpdate();
+      const shape = this.triggerRef.current;
+      if (!shape || shape.isDestroyed()) return;
+      const { x, y, width, height } = shape.get('attrs');
+      const bbox = {
+        minX: x,
+        minY: y,
+        maxX: x + width,
+        maxY: y + height,
+        width,
+        height,
+      };
+      this.setState({
+        guideBBox: bbox,
+      });
+    }
+
     getGuideBBox() {
       const shape = renderShape(this, this.render(), false);
       const { x, y, width, height } = shape.get('attrs');
@@ -116,7 +134,7 @@ export default (View) => {
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
-      const { guideWidth, guideHeight, guideBBox } = this.state;
+      const { guideBBox } = this.state;
 
       let animationCfg = animation;
       if (isFunction(animation)) {
@@ -133,8 +151,6 @@ export default (View) => {
           {...props}
           canvasWidth={width}
           canvasHeight={height}
-          guideWidth={guideWidth}
-          guideHeight={guideHeight}
           guideBBox={guideBBox}
           animation={animationCfg}
         />

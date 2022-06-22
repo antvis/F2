@@ -28,6 +28,10 @@ interface TagGuideProps {
    * 文字样式
    */
   textStyle?: any;
+  /**
+   * tagGuide ref
+   */
+  triggerRef?: any;
 }
 
 const defaultProps: TagGuideProps = {
@@ -69,6 +73,7 @@ export default (props: TagGuideProps, context) => {
     guideBBox,
     background,
     textStyle,
+    triggerRef,
   } = cfg;
   const { x, y } = points[0] || {};
   const { width: guideWidth, height: guideHeight } = guideBBox || {};
@@ -111,64 +116,66 @@ export default (props: TagGuideProps, context) => {
 
   const _getArrowPoints = (direct) => {
     let arrowPoints = [];
-    const { minX, minY } = guideBBox || {};
+    // const { minX, minY } = guideBBox || {};
     if (direct === 'tl') {
       arrowPoints = [
-        { x: minX, y: minY - 1 }, // 这个 1 是为了防止出现白边
-        { x: minX, y: minY + side },
-        { x: minX - side - 1, y: minY - 1 },
+        { x: posX, y: posY - side - 1 },
+        { x: posX, y: posY },
+        { x: posX - side, y: posY - side - 1 },
       ];
       posX -= (guideWidth || 0);
       posY = posY - (guideHeight || 0) - side;
     } else if (direct === 'cl') {
       arrowPoints = [
-        { x: minX - 1, y: minY - 1 - side / 2 },
-        { x: minX - 1, y: minY + 1 + side / 2 },
-        { x: minX + side, y: minY },
+        { x: posX - side - 1, y: posY - side },
+        { x: posX - side - 1, y: posY + side },
+        { x: posX, y: posY },
       ];
       posX = posX - (guideWidth || 0) - side;
       posY -= (guideHeight / 2 || 0);
     } else if (direct === 'bl') {
       arrowPoints = [
-        { x: minX, y: -side + minY },
-        { x: minX - side - 1, y: minY + 1 },
-        { x: minX, y: minY + 1 },
+        { x: posX, y: posY },
+        { x: posX, y: posY + side + 1 },
+        { x: posX - side, y: posY + side + 1 },
       ];
       posX = posX - (guideWidth || 0);
       posY += side;
-    } else if (direct === 'bc') {
+    } else if (direct === 'bc') { // 有问题
       arrowPoints = [
-        { x: guideWidth / 2 + minX, y: -side + minY },
-        { x: (guideWidth - side) / 2 + minX - 1, y: minY + 1 },
-        { x: (guideWidth + side) / 2 + minX + 1, y: minY + 1 },
+        { x: posX, y: posY },
+        { x: posX - side, y: posY + side + 1 },
+        { x: posX + side, y: posY + side + 1 },
       ];
+      posX = posX - (guideWidth / 2 || 0);
+      posY = posY + side;
     } else if (direct === 'br') {
       arrowPoints = [
-        { x: minX, y: minY - side },
-        { x: minX, y: minY + 1 },
-        { x: minX + side + 1, y: minY + 1 },
+        { x: posX, y: posY },
+        { x: posX, y: posY + side + 1 },
+        { x: posX + side, y: posY + side + 1 },
       ];
       posY += side;
     } else if (direct === 'cr') {
       arrowPoints = [
-        { x: minX - side, y: minY },
-        { x: minX + 1, y: minY - 1 - side / 2 },
-        { x: minX + 1, y: minY + 1 + side / 2 },
+        { x: posX, y: posY },
+        { x: posX + side, y: posY - side },
+        { x: posX + side, y: posY + side },
       ];
       posX += side;
       posY -= (guideHeight / 2 || 0);
     } else if (direct === 'tr') {
       arrowPoints = [
-        { x: minX, y: minY + side },
-        { x: minX, y: minY - 1 },
-        { x: side + minX + 1, y: minY - 1 },
+        { x: posX, y: posY },
+        { x: posX, y: posY - side - 1 },
+        { x: posX + side, y: posY - side - 1 },
       ];
       posY = posY - (guideHeight || 0) - side;
     } else if (direct === 'tc') {
       arrowPoints = [
-        { x: minX - 1 - side / 2, y: minY - 1 },
-        { x: minX + 1 + side / 2, y: minY - 1 },
-        { x: minX, y: minY + side },
+        { x: posX, y: posY },
+        { x: posX - side, y: posY - side - 1 },
+        { x: posX + side, y: posY - side - 1 },
       ];
       posX -= (guideWidth / 2 || 0);
       posY = posY - (guideHeight || 0) - side;
@@ -193,6 +200,7 @@ export default (props: TagGuideProps, context) => {
         padding: defaultStyle.container.padding,
         ...background,
       }}
+      ref={triggerRef}
     >
       <text
         attrs={{
