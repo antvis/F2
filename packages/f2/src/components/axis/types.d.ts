@@ -40,6 +40,7 @@ interface Point {
 }
 
 export interface Tick {
+  value: number;
   points: Point[];
   text: string;
   tickValue: string | number;
