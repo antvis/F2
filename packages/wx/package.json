@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-wx",
-  "version": "4.0.24",
+  "version": "4.0.25",
   "description": "F2 for weixin mini-program",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -18,7 +18,7 @@
     "weixin"
   ],
   "dependencies": {
-    "@antv/f2": "^4.0.24",
+    "@antv/f2": "^4.0.25",
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {
