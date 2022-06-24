@@ -612,4 +612,67 @@ describe('柱状图示例', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('花瓣图', async () => {
+    const data = [
+      {
+        year: '2001',
+        population: 25.8,
+      },
+      {
+        year: '2002',
+        population: 25.8,
+      },
+      {
+        year: '2003',
+        population: 25.8,
+      },
+      {
+        year: '2004',
+        population: 25.8,
+      },
+      {
+        year: '2005',
+        population: 25.8,
+      },
+      {
+        year: '2006',
+        population: 25.8,
+      },
+    ];
+    const context = createContext('南丁格尔玫瑰图');
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+          }}
+          scale={{
+            population: {
+              min: 0,
+            },
+          }}
+        >
+          <Interval
+            x="year"
+            y="population"
+            color="year"
+            style={{
+              radius: 30,
+            }}
+          />
+          <Legend position="right" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

@@ -21,40 +21,40 @@ const data = [
 ];
 
 const data2 = [
-  { date: '2010-01-10', genre: 'Sports', sold: 50 },
-  { date: '2010-02-10', genre: 'Sports', sold: 40 },
-  { date: '2010-03-10', genre: 'Sports', sold: 60 },
-  { date: '2010-04-10', genre: 'Sports', sold: 40 },
-  { date: '2010-05-10', genre: 'Sports', sold: 60 },
-  { date: '2010-06-10', genre: 'Sports', sold: 50 },
+  { date: '01-10', genre: 'Sports', sold: 50 },
+  { date: '02-10', genre: 'Sports', sold: 40 },
+  { date: '03-10', genre: 'Sports', sold: 60 },
+  { date: '04-10', genre: 'Sports', sold: 40 },
+  { date: '05-10', genre: 'Sports', sold: 60 },
+  { date: '06-10', genre: 'Sports', sold: 50 },
 
-  { date: '2010-01-10', genre: 'Strategy', sold: 30 },
-  { date: '2010-02-10', genre: 'Strategy', sold: 50 },
-  { date: '2010-03-10', genre: 'Strategy', sold: 10 },
-  { date: '2010-04-10', genre: 'Strategy', sold: 30 },
-  { date: '2010-05-10', genre: 'Strategy', sold: 35 },
-  { date: '2010-06-10', genre: 'Strategy', sold: 25 },
+  { date: '01-10', genre: 'Strategy', sold: 30 },
+  { date: '02-10', genre: 'Strategy', sold: 50 },
+  { date: '03-10', genre: 'Strategy', sold: 10 },
+  { date: '04-10', genre: 'Strategy', sold: 30 },
+  { date: '05-10', genre: 'Strategy', sold: 35 },
+  { date: '06-10', genre: 'Strategy', sold: 25 },
 
-  { date: '2010-01-10', genre: 'Action', sold: 5 },
-  { date: '2010-02-10', genre: 'Action', sold: 10 },
-  { date: '2010-03-10', genre: 'Action', sold: 20 },
-  { date: '2010-04-10', genre: 'Action', sold: 10 },
-  { date: '2010-05-10', genre: 'Action', sold: 40 },
-  { date: '2010-06-10', genre: 'Action', sold: 50 },
+  { date: '01-10', genre: 'Action', sold: 5 },
+  { date: '02-10', genre: 'Action', sold: 10 },
+  { date: '03-10', genre: 'Action', sold: 20 },
+  { date: '04-10', genre: 'Action', sold: 10 },
+  { date: '05-10', genre: 'Action', sold: 40 },
+  { date: '06-10', genre: 'Action', sold: 50 },
 
-  { date: '2010-01-10', genre: 'Shooter', sold: 50 },
-  { date: '2010-02-10', genre: 'Shooter', sold: 40 },
-  { date: '2010-03-10', genre: 'Shooter', sold: 20 },
-  { date: '2010-04-10', genre: 'Shooter', sold: 30 },
-  { date: '2010-05-10', genre: 'Shooter', sold: 10 },
-  { date: '2010-06-10', genre: 'Shooter', sold: 5 },
+  { date: '01-10', genre: 'Shooter', sold: 50 },
+  { date: '02-10', genre: 'Shooter', sold: 40 },
+  { date: '03-10', genre: 'Shooter', sold: 20 },
+  { date: '04-10', genre: 'Shooter', sold: 30 },
+  { date: '05-10', genre: 'Shooter', sold: 10 },
+  { date: '06-10', genre: 'Shooter', sold: 5 },
 
-  { date: '2010-01-10', genre: 'Other', sold: 30 },
-  { date: '2010-02-10', genre: 'Other', sold: 40 },
-  { date: '2010-03-10', genre: 'Other', sold: 80 },
-  { date: '2010-04-10', genre: 'Other', sold: 60 },
-  { date: '2010-05-10', genre: 'Other', sold: 20 },
-  { date: '2010-06-10', genre: 'Other', sold: 10 },
+  { date: '01-10', genre: 'Other', sold: 30 },
+  { date: '02-10', genre: 'Other', sold: 40 },
+  { date: '03-10', genre: 'Other', sold: 80 },
+  { date: '04-10', genre: 'Other', sold: 60 },
+  { date: '05-10', genre: 'Other', sold: 20 },
+  { date: '06-10', genre: 'Other', sold: 10 },
 ];
 
 describe('Chart', () => {
@@ -106,18 +106,6 @@ describe('Chart', () => {
             value="sold"
             space={4}
           />
-          <Chart data={data2}>
-            <Axis field="date" />
-            <Axis field="sold" />
-            <Line
-              ref={lineRef}
-              transformFrom={treemapRef}
-              x="date"
-              y="sold"
-              color="genre"
-              size={2}
-            />
-          </Chart>
           <Chart
             data={data}
             coord={{
@@ -127,7 +115,7 @@ describe('Chart', () => {
           >
             <Interval
               ref={pieRef}
-              transformFrom={lineRef}
+              transformFrom={treemapRef}
               x="type"
               y="sold"
               adjust="stack"
@@ -157,6 +145,11 @@ describe('Chart', () => {
                 stroke: '#fff',
               }}
             />
+          </Chart>
+          <Chart data={data2}>
+            <Axis field="date" />
+            <Axis field="sold" />
+            <Line ref={lineRef} transformFrom={roseRef} x="date" y="sold" color="genre" size={2} />
           </Chart>
         </Timeline>
       </Canvas>
