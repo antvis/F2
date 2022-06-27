@@ -21,8 +21,8 @@ class Test extends Component {
 
   _handleEvent = (ev) => {
     const { chart } = this.props;
-    const point = ev.points[0];
-    const pieData = chart.getSnapRecords(point);
+    const { x, y } = ev;
+    const pieData = chart.getSnapRecords({ x, y });
     if (isArray(pieData) && pieData.length > 0) {
       this.setState({ record: pieData[0] });
     }

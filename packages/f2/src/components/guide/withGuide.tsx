@@ -30,15 +30,14 @@ export default (View) => {
 
     didMount() {
       const { context, props } = this;
-      const { canvas } = context;
       const { onClick } = props;
 
       context.gesture.on('click', (ev) => {
-        const { points } = ev;
+        const { x, y } = ev;
         const shape = this.triggerRef.current;
         if (!shape || shape.isDestroyed()) return;
         const bbox = shape.getBBox();
-        if (isInBBox(bbox, points[0])) {
+        if (isInBBox(bbox, { x, y })) {
           ev.shape = shape;
           onClick && onClick(ev);
         }

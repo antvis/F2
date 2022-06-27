@@ -237,16 +237,15 @@ export default (View) => {
 
     _initEvent() {
       const { context, props, container } = this;
-      const { canvas } = context;
       const { chart, clickable = true } = props;
 
       if (!clickable) return;
 
       // item 点击事件
       context.gesture.on('click', (ev) => {
-        const { points } = ev;
+        const { x, y } = ev;
 
-        const point = points[0];
+        const point = { x, y };
         const bbox = container.getBBox();
         if (!isInBBox(bbox, point)) {
           return;
