@@ -297,7 +297,8 @@ export default (View) => {
     _handleEvent = (ev) => {
       const { chart, onClick } = this.props;
       const ele = this.triggerRef.current;
-      const point = ev.points[0];
+      const { points, x, y } = ev;
+      const point = points ? points[0] : { x, y };
 
       const shape = findShapeByClassName(ele, point, 'click');
       const pieData = chart.getSnapRecords(point);

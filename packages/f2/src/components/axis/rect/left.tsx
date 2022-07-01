@@ -2,10 +2,10 @@ import { jsx } from '../../../jsx';
 import { RectProps } from '../types';
 
 export default (props: RectProps) => {
-  const { ticks, coord, style, animation } = props;
+  const { ticks: originTicks, coord, style, animation } = props;
   const { left, top, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
-
+  const ticks = originTicks.filter((d) => !isNaN(d.value));
   return (
     <group>
       {grid

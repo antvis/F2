@@ -37,7 +37,7 @@ export default (props) => {
                       d.push(['C', sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]]);
                     }
                   }
-                  return d.join(' ');
+                  return d;
                 };
                 return (
                   <path

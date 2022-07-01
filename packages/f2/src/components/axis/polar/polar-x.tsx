@@ -82,10 +82,11 @@ const Line = (props) => {
 };
 
 export default (props: PolarProps) => {
-  const { ticks, coord, style, grid: gridType } = props;
+  const { ticks: originTicks, coord, style, grid: gridType } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
 
+  const ticks = originTicks.filter((d) => !isNaN(d.value));
   const firstTicks = ticks[0];
   const { points } = firstTicks;
   const end = points[points.length - 1];

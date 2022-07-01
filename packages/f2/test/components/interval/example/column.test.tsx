@@ -612,4 +612,80 @@ describe('柱状图示例', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('花瓣图', async () => {
+    const data = [
+      {
+        year: '2001',
+        population: 25,
+      },
+      {
+        year: '2002',
+        population: 25,
+      },
+      {
+        year: '2003',
+        population: 25,
+      },
+      {
+        year: '2004',
+        population: 25,
+      },
+      {
+        year: '2005',
+        population: 25,
+      },
+      {
+        year: '2006',
+        population: 25,
+      },
+    ];
+    const context = createContext('南丁格尔玫瑰图');
+    const chartRef = { current: null };
+    const ref = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          data={data}
+          ref={chartRef}
+          coord={{
+            type: Polar,
+          }}
+          scale={{
+            population: {
+              min: 0,
+            },
+          }}
+        >
+          <Interval
+            x="year"
+            y="population"
+            color="year"
+            style={{
+              radius: 30,
+            }}
+            ref={ref}
+          />
+          <Legend position="right" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    const { x, y } = chartRef.current.coord.center;
+
+    const animation = ref.current.container.animate(
+      [
+        { transform: 'rotate(0)', transformOrigin: `${x}px ${y}px` },
+        { transform: 'rotate(360deg)', transformOrigin: `${x}px ${y}px` },
+      ],
+      {
+        duration: 3000,
+        iterations: Infinity,
+      }
+    );
+  });
 });

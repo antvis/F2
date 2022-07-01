@@ -281,14 +281,15 @@ export default class TooltipView extends Component {
         <group>
           {/* 非自定义模式时显示的文本信息 */}
           {!custom && (
-            <group
-              ref={this.rootRef}
-              style={{
-                x: coordLeft,
-                y: coordTop,
-              }}
-            >
-              {/* {showTitle ? (
+            <group>
+              <group
+                ref={this.rootRef}
+                style={{
+                  x: coordLeft,
+                  y: coordTop,
+                }}
+              >
+                {/* {showTitle ? (
                 <text
                   style={{
                     marginBottom: '6px',
@@ -302,69 +303,71 @@ export default class TooltipView extends Component {
                   }}
                 />
               ) : null} */}
-              <rect
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  padding: [0, 0, 0, '6px'],
-                  ...background,
-                }}
-              >
-                {records.map((record) => {
-                  const { name, value } = record;
-                  return (
-                    <group
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: [0, '6px', 0, 0],
-                      }}
-                    >
-                      {showItemMarker ? (
-                        <marker
-                          style={{
-                            width: itemMarkerStyle.width,
-                            marginRight: '6px',
-                          }}
+                <rect
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    padding: [0, 0, 0, '6px'],
+                    ...background,
+                  }}
+                >
+                  {records.map((record) => {
+                    const { name, value } = record;
+                    return (
+                      <group
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          padding: [0, '6px', 0, 0],
+                        }}
+                      >
+                        {showItemMarker ? (
+                          <marker
+                            style={{
+                              width: itemMarkerStyle.width,
+                              marginRight: '6px',
+                            }}
+                            attrs={{
+                              ...itemMarkerStyle,
+                              fill: record.color,
+                            }}
+                          />
+                        ) : null}
+                        <text
                           attrs={{
-                            ...itemMarkerStyle,
-                            fill: record.color,
+                            ...defaultStyle.nameStyle,
+                            ...nameStyle,
+                            text: value ? `${name}${joinString}` : name,
                           }}
                         />
-                      ) : null}
-                      <text
-                        attrs={{
-                          ...defaultStyle.nameStyle,
-                          ...nameStyle,
-                          text: value ? `${name}${joinString}` : name,
-                        }}
-                      />
-                      <text
-                        attrs={{
-                          ...defaultStyle.valueStyle,
-                          ...valueStyle,
-                          text: value,
-                        }}
-                      />
-                    </group>
-                  );
-                })}
-              </rect>
+                        <text
+                          attrs={{
+                            ...defaultStyle.valueStyle,
+                            ...valueStyle,
+                            text: value,
+                          }}
+                        />
+                      </group>
+                    );
+                  })}
+                </rect>
+              </group>
+
+              <polygon
+                ref={this.arrowRef}
+                attrs={{
+                  points: [
+                    [x - arrowWidth, coordTop],
+                    [x + arrowWidth, coordTop],
+                    [x, arrowWidth + coordTop],
+                  ],
+                  fill: background.fill,
+                }}
+              />
             </group>
           )}
-          <polygon
-            ref={this.arrowRef}
-            attrs={{
-              points: [
-                [x - arrowWidth, coordTop],
-                [x + arrowWidth, coordTop],
-                [x, arrowWidth + coordTop],
-              ],
-              fill: background.fill,
-            }}
-          />
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}

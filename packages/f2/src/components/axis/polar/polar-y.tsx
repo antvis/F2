@@ -3,9 +3,10 @@ import { Vector2 } from '@antv/f2-graphic';
 import { PolarProps } from '../types';
 
 export default (props: PolarProps) => {
-  const { ticks, coord, style, grid: gridType } = props;
+  const { ticks: originTicks, coord, style, grid: gridType } = props;
   const { center } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
+  const ticks = originTicks.filter((d) => !isNaN(d.value));
 
   return (
     <group>
@@ -13,7 +14,6 @@ export default (props: PolarProps) => {
         ? ticks.map((tick) => {
             const { points, gridStyle, gridPoints } = tick;
             const end = points[points.length - 1];
-
             if (gridType !== 'line') {
               return (
                 <arc
