@@ -3,6 +3,14 @@ import type { Slots, VNode, VNodeNormalizedChildren } from 'vue';
 import { Children } from '@antv/f2';
 import type { ComponentContext, Updater } from '@antv/f2/es/base/component';
 
+// 自定义图形及自定义图表组件的函数执行后获得VNode，然后再转换为Props。
+// https://github.com/antvis/F2/blob/master/packages/f2/src/base/diff.ts#L117
+// return type(this.props, context, updater);
+export const toRawView = (View: Function) => {
+  return (props: Record<string, unknown>, context: ComponentContext, updater: Updater) =>
+    toRawChildren(Reflect.apply(View, undefined, [props, context, updater]));
+};
+
 export const toRawChildren = (slots: VNodeNormalizedChildren) => {
   return Children.map(slots, (slot: VNode | Slots) => {
     if (!slot) return slot;
@@ -17,10 +25,7 @@ export const toRawChildren = (slots: VNodeNormalizedChildren) => {
         const isF2Component = type.prototype && type.prototype.isF2Component;
         if (!isF2Component) {
           return {
-            type: (props: Record<string, unknown>, context: ComponentContext, updater: Updater) =>
-              // return type(this.props, context, updater);
-              // https://github.com/antvis/F2/blob/master/packages/f2/src/base/diff.ts#L117
-              toRawChildren(Reflect.apply(type, undefined, [props, context, updater])),
+            type: toRawView(type),
             key,
             ref,
             props: props,
@@ -47,9 +52,4 @@ export const toRawChildren = (slots: VNodeNormalizedChildren) => {
 
     return null;
   });
-};
-
-export const toRawView = (View: Function) => {
-  return (props: Record<string, unknown>, context: ComponentContext, updater: Updater) =>
-    toRawChildren(Reflect.apply(View, undefined, [props, context, updater]));
 };
