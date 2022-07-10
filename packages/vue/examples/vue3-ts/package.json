@@ -7,8 +7,8 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@antv/f2": "^4.0.25",
-    "@antv/f2-vue": "C:\\\\Users\\\\Justin\\\\source\\\\f2-vue",
+    "@antv/f2": "^4.0.0",
+    "@antv/f2-vue": "^4.0.0",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },
