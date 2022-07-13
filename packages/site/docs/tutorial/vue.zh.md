@@ -14,122 +14,57 @@ npm install @antv/f2 --save
 npm install @antv/f2-vue --save
 ```
 
-### 2. 配置 F2 的 JSX 编译
-
-```bash
-npm install @babel/plugin-transform-react-jsx --save-dev
-```
-
-打开 `vue.config.js` 添加如下代码
-
-```js
-{
-  chainWebpack: (config) => {
-    config.module
-      .rule('F2')
-      .test(/\.jsx$/)
-      .use('babel')
-      .loader('babel-loader')
-      .options({
-        plugins: [
-          [
-            '@babel/plugin-transform-react-jsx',
-            {
-              runtime: 'automatic',
-              importSource: '@antv/f2',
-            },
-          ],
-        ],
-      })
-      .end();
-  },
-}
-```
-
-### 3. Vite 中配置
-
-```bash
-npm install @rollup/plugin-babel --save-dev
-npm install @babel/plugin-transform-react-jsx --save-dev
-```
-
-打开 `vite.config.js` 添加如下配置
-
-```js
-import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-import { babel } from '@rollup/plugin-babel';
-
-export default defineConfig({
-  plugins: [
-    babel({
-      plugins: [
-        [
-          '@babel/plugin-transform-react-jsx',
-          {
-            runtime: 'automatic',
-            importSource: '@antv/f2',
-          },
-        ],
-      ],
-    }),
-    vue(),
-    vueJsx(),
-  ],
-});
-```
-
-### 4. 使用示例
+### 2. 使用示例
 
 ```vue
-<script>
-import { toRaw } from 'vue';
-import Canvas from '@antv/f2-vue';
-import { Chart, Interval, Axis } from '@antv/f2';
+<template>
+  <div class="container">
+    <Canvas>
+      <Chart ：data="state.data">
+        <Axis field="genre" />
+        <Axis field="sold" />
+        <Interval x="genre" y="sold" color="genre" />
+      </Chart>
+    </Canvas>
+  </div>
+</template>
+<script lang="ts" setup>
+import { shallowReactive, onMounted } from "vue"
+import Canvas from "@antv/f2-vue"
+import { Chart, Interval, Axis, Tooltip } from "@antv/f2"
+import Grahpic from "@/components/Grahpic"
+import Legend from "@/components/Legend"
 
 const data1 = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 },
-];
+  { genre: "Sports", sold: 275 },
+  { genre: "Strategy", sold: 115 },
+  { genre: "Action", sold: 120 },
+  { genre: "Shooter", sold: 350 },
+  { genre: "Other", sold: 150 },
+]
+
 const data2 = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 20 },
-  { genre: 'Shooter', sold: 50 },
-  { genre: 'Other', sold: 50 },
-];
-export default {
-  name: 'App',
-  data() {
-    return {
-      year: '2021',
-      chartData: data1,
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.year = '2022';
-      this.chartData = data2;
-    }, 1000);
-  },
-  render() {
-    const { year, chartData } = this;
-    return (
-      <div className="container">
-        <Canvas pixelRatio={window.devicePixelRatio}>
-          <Chart data={toRaw(chartData)}>
-            <Axis field="genre" />
-            <Axis field="sold" />
-            <Interval x="genre" y="sold" color="genre" />
-          </Chart>
-        </Canvas>
-      </div>
-    );
-  },
-};
+  { genre: "Sports", sold: 275 },
+  { genre: "Strategy", sold: 115 },
+  { genre: "Action", sold: 20 },
+  { genre: "Shooter", sold: 50 },
+  { genre: "Other", sold: 50 },
+]
+
+const state = shallowReactive<{
+  year: string
+  data: Record<string, string | number>[]  
+}>({
+  year: '2021',
+  data: data1  
+})
+
+onMounted(() => {
+  setTimeout(() => {
+      state.year = '2022';
+      state.chartData = data2;
+    }, 1000)
+})
 </script>
 
 <style>
@@ -138,6 +73,59 @@ export default {
   height: 300px;
 }
 </style>
+```
+
+### 3. 自定义 View
+在Vue中，自定义View的高阶组件需要从@antv/f2-vue中引入，例如：import { withLegend } from "@antv/f2-vue"。
+
+```tsx
+/** @jsxImportSource @antv/f2 */
+import { withLegend } from "@antv/f2-vue"
+
+// 自定义 Legend
+const Legend = withLegend((props: Record<string, unknown>) => {
+  const { items = [], itemWidth } = props
+
+  return (
+    <group
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {
+        //@ts-ignore
+        items.map((item) => {
+          const { color, name } = item
+          return (
+            <group
+              className="legend-item"
+              style={{
+                width: itemWidth as number,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              data-item={item}
+            >
+              <text
+                attrs={{
+                  fill: color,
+                  text: name,
+                }}
+              />
+            </group>
+          )
+        })
+      }
+    </group>
+  )
+})
+
+export default Legend
+
 ```
 
 **完整示例可参考**
