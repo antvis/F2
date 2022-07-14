@@ -1,5 +1,5 @@
 import { jsx } from '../../../index';
-import type { Types } from '@antv/f2-graphic';
+import type { Types } from '@antv/f-engine';
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
   canvasWidth?: number;

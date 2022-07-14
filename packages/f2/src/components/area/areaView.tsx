@@ -1,6 +1,6 @@
 import { jsx } from '../../index';
 import { deepMix } from '@antv/util';
-import { Smooth, BBox } from '@antv/f2-graphic';
+import { Smooth } from '@antv/f-engine';
 
 export default (props) => {
   const { records, shape, animation } = props;
