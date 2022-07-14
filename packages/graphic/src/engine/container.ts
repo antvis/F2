@@ -1,4 +1,4 @@
-import { upperFirst, isArray } from '@antv/util';
+import { isArray, upperFirst } from '@antv/util';
 import { remove as arrayRemove } from '../util/array';
 import Shape from './shape';
 
@@ -6,7 +6,7 @@ const SHAPE_MAP = {};
 const INDEX = '_INDEX';
 
 function getComparer(compare) {
-  return function(left, right) {
+  return function (left, right) {
     const result = compare(left, right);
     return result === 0 ? left[INDEX] - right[INDEX] : result;
   };
@@ -50,7 +50,7 @@ export default {
     }
 
     children.sort(
-      getComparer(function(obj1, obj2) {
+      getComparer(function (obj1, obj2) {
         return obj1.get('zIndex') - obj2.get('zIndex');
       })
     );
@@ -68,7 +68,7 @@ export default {
   },
 
   clear() {
-    const children = this.get('children');
+    const children = this.get('children') || [];
 
     while (children.length !== 0) {
       children[children.length - 1].remove(true);
