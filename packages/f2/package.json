@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "5.0.0-alpha.0",
+  "version": "5.0.0-alpha.1",
   "description": "Charts for mobile visualization.",
   "main": "lib/index.js",
   "module": "es/index.js",
