@@ -1,5 +1,5 @@
 import { AxisTypes } from './components/axis/types';
-import type { Types } from '@antv/f2-graphic';
+import type { Types } from '@antv/f-engine';
 
 type PX_FIELD_NAME =
   'lineWidth'
@@ -99,7 +99,7 @@ export type ElementType =
   | ((props: Props, context?: any) => any)
   | (new (props: Props, context?: any) => any);
 
-export interface ShapeAttrs extends Partial<SupportPx<Types.ShapeAttrs>>{
+export interface ShapeAttrs extends Partial<SupportPx<Types.ShapeStyleProps>>{
   [k: string]: any;
 }
 
@@ -107,57 +107,53 @@ export interface GroupProps extends IntrinsicElementsProps {
   attrs?: RectAttrs;
 }
 
-export type CircleAttrs = Partial<SupportPx<Types.CircleAttrs>>;
+export type CircleAttrs = Partial<SupportPx<Types.CircleStyleProps>>;
 export interface CircleProps extends IntrinsicElementsProps {
   attrs?: CircleAttrs;
 }
 
-export type RectAttrs = Partial<SupportPx<Types.RectAttrs>>;
+export type RectAttrs = Partial<SupportPx<Types.RectStyleProps>>;
 export interface RectProps extends IntrinsicElementsProps {
   attrs?: RectAttrs;
 }
 
-export type LineAttrs = Partial<SupportPx<Types.LineAttrs>>;
+export type LineAttrs = Partial<SupportPx<Types.LineStyleProps>>;
 export interface LineProps extends IntrinsicElementsProps {
   attrs?: LineAttrs;
 }
 
-export type PolygonAttrs = Partial<SupportPx<Types.PolygonAttrs>>;
+export type PolygonAttrs = Partial<SupportPx<Types.PolygonStyleProps>>;
 export interface PolygonProps extends IntrinsicElementsProps {
   attrs?: PolygonAttrs;
 }
 
-export type PolylineAttrs = Partial<SupportPx<Types.PolylineAttrs>>;
+export type PolylineAttrs = Partial<SupportPx<Types.PolylineStyleProps>>;
 export interface PolylineProps extends IntrinsicElementsProps {
   attrs?: PolylineAttrs;
 }
 
-export type ArcAttrs = Partial<SupportPx<Types.ArcAttrs>>
+export type ArcAttrs = Partial<SupportPx<Types.ArcStyleProps>>
 export interface ArcProps extends IntrinsicElementsProps {
   attrs?: ArcAttrs;
 }
 
-export type SectorAttrs = Partial<SupportPx<Types.SectorAttrs>>;
+export type SectorAttrs = Partial<SupportPx<Types.SectorStyleProps>>;
 export interface SectorProps extends IntrinsicElementsProps {
   attrs?: SectorAttrs;
 }
 
-export type TextAttrs = Partial<SupportPx<Types.TextAttrs>>;
+export type TextAttrs = Partial<SupportPx<Types.TextStyleProps>>;
 export interface TextProps extends IntrinsicElementsProps {
   attrs?: TextAttrs;
 }
 
-export type CustomAttrs = Partial<SupportPx<Types.CustomAttrs>>;
-export interface CustomProps extends IntrinsicElementsProps {
-  attrs?: CustomAttrs
-}
 
-export type MarkerAttrs = Partial<SupportPx<Types.MarkerAttrs>>;
+export type MarkerAttrs = Partial<SupportPx<Types.MarkerStyleProps>>;
 export interface MarkerProps extends IntrinsicElementsProps {
   attrs?: MarkerAttrs;
 }
 
-export type ImageAttrs = Partial<SupportPx<Types.ImageAttrs>>;
+export type ImageAttrs = Partial<SupportPx<Types.ImageStyleProps>>;
 export interface ImageProps extends IntrinsicElementsProps {
   attrs?: ImageAttrs;
 }

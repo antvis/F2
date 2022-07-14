@@ -1,6 +1,6 @@
 import Base from './base';
 import { Range, Option } from './types';
-import { Vector2, Matrix } from '@antv/f2-graphic';
+import { Vector2, Matrix } from '@antv/f-engine';
 
 interface PolarOption extends Option {
   radius: number; // 内半径比例

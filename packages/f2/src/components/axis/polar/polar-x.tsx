@@ -1,5 +1,5 @@
 import { jsx } from '../../../jsx';
-import { Vector2 } from '@antv/f2-graphic';
+import { Vector2 } from '@antv/f-engine';
 import { PolarProps } from '../types';
 // const { Vector2 } = G;
 
