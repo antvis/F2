@@ -58,7 +58,7 @@
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
     "changelog": "generate-changelog",
-    "publish": "npm run build && npm run test && lerna publish",
+    "publish": "npm run build && npm run test && lerna publish --dist-tag next",
     "ci": "npm run lint && npm run build && npm run test",
     "refresh": "lerna clean && yarn && lerna bootstrap",
     "site:start": "cd ./packages/site && npm run site:start",

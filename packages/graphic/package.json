@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-graphic",
-  "version": "0.0.5",
+  "version": "5.0.0-alpha.0",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
