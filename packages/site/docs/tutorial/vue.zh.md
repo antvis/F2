@@ -128,6 +128,50 @@ export default Legend
 
 ```
 
+### 4. 忽略运行时警告信息 
+在JSX/TSX中使用[图形标签（Shape）](./shape.zh.md)时，会有运行时警告 ``` [Vue warn]: resolveComponent can only be used in render() or setup(). ```。如需忽略警告，可在compilerOptions中添加isCustomElement定义，以便忽略图形标签。
+
+Vue Cli中的vue.config.js配置：
+```javascript
+const { defineConfig } = require('@vue/cli-service');
+
+module.exports = defineConfig({
+  chainWebpack: (config) => {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap((options) => {
+        options.compilerOptions = {
+          // Clear [Vue warn]: resolveComponent can only be used in render() or setup().
+          isCustomElement: (tagName) =>
+            ['group', 'text'].includes(tagName),
+        };
+        return options;
+      })
+      .end();
+  },
+});
+```
+
+Vite中的vite.config.ts配置：
+```typescript
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx({
+      // Clear [Vue warn]: resolveComponent can only be used in render() or setup().
+      isCustomElement: (tagName) =>
+        ['group', 'text'].includes(tagName),
+    }),
+  ],
+});
+```
+
 **完整示例可参考**
 
 - codesandbox: https://codesandbox.io/s/f2-vue-9yywsh?file=/src/App.vue
