@@ -11,7 +11,7 @@ export const toRawView = (View: Function) => {
     toRawChildren(Reflect.apply(View, undefined, [props, context, updater]));
 };
 
-export const toRawChildren = (slots: VNodeNormalizedChildren) => {
+export const toRawChildren = (slots: VNode | VNodeNormalizedChildren) => {
   return Children.map(slots, (slot: VNode | Slots) => {
     if (!slot) return slot;
 
@@ -47,6 +47,11 @@ export const toRawChildren = (slots: VNodeNormalizedChildren) => {
     // slot
     if (element.default) {
       const children = element.default();
+      // https://github.com/antvis/F2/blob/master/packages/f2/src/base/diff.ts#L37
+      // renderShape中renderJSXElement未判断children是否为数组，所以这里需要直接返回。
+      if (children.length === 1) {
+        return toRawChildren(children[0]);
+      }
       return toRawChildren(children);
     }
 
