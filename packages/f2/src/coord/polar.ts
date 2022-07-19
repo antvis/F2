@@ -85,7 +85,7 @@ class Polar extends Base {
 
     let startV = ([1, 0] as unknown) as vec2;
     vec2TransformMat2d(startV, startV, m);
-    startV = [startV[0], startV[1]];
+    startV = [startV[0], startV[1]];ååååå
 
     const pointV = ([point.x - center.x, point.y - center.y] as unknown) as vec2;
     if (vec2Zero(pointV)) {
