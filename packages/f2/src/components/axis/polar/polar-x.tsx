@@ -1,14 +1,13 @@
 import { jsx } from '../../../jsx';
-import { Vector2 } from '@antv/f-engine';
+import { Vector2, vec2 } from '@antv/f-engine';
 import { PolarProps } from '../types';
-// const { Vector2 } = G;
 
 // 相对圆心偏移量的点
 function getOffsetPoint(center, point, offset) {
   const vectorX = point.x - center.x;
   const vectorY = point.y - center.y;
   const vector = [vectorX, vectorY];
-  const vectorLength = Vector2.length(vector);
+  const vectorLength = Vector2.length((vector as unknown) as vec2);
   const offsetLength = vectorLength + offset;
 
   const x = (vectorX / vectorLength) * offsetLength;

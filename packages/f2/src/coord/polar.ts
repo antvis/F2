@@ -1,6 +1,7 @@
 import Base from './base';
 import { Range, Option } from './types';
 import { Vector2, Matrix } from '@antv/f-engine';
+import type { mat2d, vec2 } from '@antv/f-engine';
 
 interface PolarOption extends Option {
   radius: number; // 内半径比例
@@ -76,14 +77,15 @@ class Polar extends Base {
     const [xStart, xEnd] = x;
     const [yStart, yEnd] = y;
 
-    const m = [1, 0, 0, 1, 0, 0];
+    const m = ([1, 0, 0, 1, 0, 0] as unknown) as mat2d;
+
     Matrix.rotate(m, m, xStart);
 
-    let startV = [1, 0];
+    let startV = ([1, 0] as unknown) as vec2;
     Vector2.transformMat2d(startV, startV, m);
     startV = [startV[0], startV[1]];
 
-    const pointV = [point.x - center.x, point.y - center.y];
+    const pointV = ([point.x - center.x, point.y - center.y] as unknown) as vec2;
     if (Vector2.zero(pointV)) {
       return {
         x: 0,

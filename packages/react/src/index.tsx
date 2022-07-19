@@ -1,40 +1,5 @@
 import React, { RefObject, forwardRef } from 'react';
 import { Canvas } from '@antv/f2';
-
-type ReactErrorBoundaryProps = {
-  fallback: React.Component;
-  onError: (error: Error) => void;
-};
-class ErrorBoundary extends React.Component<ReactErrorBoundaryProps, { hasError: boolean }> {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(_error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, _errorInfo) {
-    const { onError } = this.props;
-    
-    console.error('图表渲染失败: ', error);
-
-    if (typeof onError === 'function') {
-      onError(error);
-    }
-  }
-
-  render() {
-    if (this.state.hasError) {
-      const { fallback } = this.props;
-      return fallback || null;
-    }
-    // @ts-ignore
-    return this.props.children || null;
-  }
-}
-
 export interface CanvasProps {
   className?: string;
   pixelRatio?: number;
@@ -49,18 +14,26 @@ export interface CanvasProps {
   children?: React.ReactElement | React.ReactElement[] | null;
 }
 
-class ReactCanvas extends React.Component<CanvasProps> {
+type CanvasState = { error: string | null };
+export default class ReactCanvas extends React.Component<CanvasProps, CanvasState> {
   canvasRef: RefObject<HTMLCanvasElement>;
   canvas: Canvas;
+  ready: Promise<null>;
+  resolveFn;
 
   constructor(props: CanvasProps) {
     super(props);
     const { canvasRef } = props;
+    this.state = { error: null };
     this.canvasRef = canvasRef || React.createRef();
+    this.ready = new Promise((resolve, reject) => {
+      this.resolveFn = resolve;
+    });
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const { canvasRef, props } = this;
+    const { onError } = props;
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
     const canvas = new Canvas({
@@ -71,44 +44,46 @@ class ReactCanvas extends React.Component<CanvasProps> {
       context,
     });
     this.canvas = canvas;
-    canvas.render();
-  }
 
-  componentDidUpdate() {
+    try {
+      await canvas.render();
+    } catch (error) {
+      this.setState({ error });
+      console.error('图表渲染失败: ', error);
+      if (typeof onError === 'function') {
+        onError(error);
+      }
+    }
+    this.resolveFn();
+  };
+
+  componentDidUpdate = async () => {
     const { canvas, props } = this;
-    canvas.update(props);
-  }
-
-  render() {
-    const { props } = this;
-    const { className = '' } = props;
-    return React.createElement('canvas', {
-      className: `f2-chart ${className}`,
-      ref: this.canvasRef,
-      style: {
-        width: '100%',
-        height: '100%',
-        display: 'block',
-        padding: 0,
-        margin: 0,
-      },
-    });
-  }
+    await canvas.update(props);
+  };
 
   componentWillUnmount() {
     const { canvas } = this;
     canvas.destroy();
   }
-}
 
-export default forwardRef((props: CanvasProps, ref: RefObject<HTMLCanvasElement>) => {
-  const { fallback, onError } = props;
-  return React.createElement(ErrorBoundary, {
-    fallback,
-    onError,
-    children: React.createElement(ReactCanvas, {
-      ...props,
-      ref,
-    }),
-  });
-}) as any;
+  render() {
+    const { props } = this;
+    const { className = '', fallback } = props;
+    if (this.state.error) {
+      return fallback || React.createElement('div', {}, 'error');
+    } else {
+      return React.createElement('canvas', {
+        className: `f2-chart ${className}`,
+        ref: this.canvasRef,
+        style: {
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          padding: 0,
+          margin: 0,
+        },
+      });
+    }
+  }
+}

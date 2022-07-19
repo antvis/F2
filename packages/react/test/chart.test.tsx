@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* @jsx React.createElement */
-import { Canvas, Chart, Component, Line } from '@antv/f2';
+import { Canvas, Chart, Line, Component } from '@antv/f2';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
@@ -28,12 +28,15 @@ function App(props: any) {
   );
 }
 
-describe.skip('<Canvas >', () => {
-  it('Chart render', () => {
+describe('<Canvas >', () => {
+  it('Chart render', async () => {
     const chartRef = React.createRef<any>();
     const lineRef = React.createRef<any>();
 
     const wrapper = mount(<App chartRef={chartRef} lineRef={lineRef} />);
+
+    // 渲染为异步，渲染完才可以拿到完整的ref
+    await chartRef.current.ready;
     expect(wrapper.html()).toBe(
       '<canvas class="f2-chart newClass" width="100" height="100" style="width: 100px; height: 100px; display: block; padding: 0px; margin: 0px;"></canvas>'
     );
@@ -42,18 +45,20 @@ describe.skip('<Canvas >', () => {
     const line = lineRef.current;
     // 断言实例生成和ref正确性
     expect(reactChart.canvas).toBeInstanceOf(Canvas);
+
     expect(line).toBeInstanceOf(Line);
     expect(line.props.a).toBeUndefined();
 
     // 触发update
-    wrapper.setProps({ a: 2 });
+    await wrapper.setProps({ a: 2 });
+    // await delay();
     expect(line.props.a).toBe(2);
 
     wrapper.unmount();
   });
 
-  it('Chart render with Error', () => {
-    const spyOnError = jest.spyOn(window, 'onerror').mockImplementation(() => {});
+  it('Chart render with Error', async () => {
+    const chartRef = React.createRef<any>();
     const spyOnConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     class Test extends Component {
       render() {
@@ -64,19 +69,20 @@ describe.skip('<Canvas >', () => {
     const onError = jest.fn();
 
     const wrapper = mount(
-      <ReactCanvas fallback={<div>Chart Fallback</div>} onError={onError}>
+      <ReactCanvas fallback={<div>Chart Fallback</div>} ref={chartRef} onError={onError}>
         <Test />
       </ReactCanvas>
     );
 
+    await chartRef.current.ready;
+
     // 断言 fallback 触发
-    expect(wrapper.html()).toBe('<div>Chart Fallback</div>');
+    expect(wrapper.instance().state.error.toString()).toBe('Error: Render Error');
 
     // 断言 onError 触发
     expect(onError.mock.calls.length).toBe(1);
-    expect(spyOnError).toHaveBeenCalled();
+    expect(spyOnConsoleError).toHaveBeenCalled();
 
-    spyOnError.mockRestore();
     spyOnConsoleError.mockRestore();
   });
 });

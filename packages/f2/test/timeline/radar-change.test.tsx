@@ -141,7 +141,7 @@ describe('雷达图', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(2000);
     expect(context).toMatchImageSnapshot();

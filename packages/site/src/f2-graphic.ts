@@ -1,3 +1,3 @@
-import * as Graphic from '@antv/f2-graphic';
+// import * as Graphic from '@antv/f2-graphic';
 
-export default Graphic;
+// export default Graphic;

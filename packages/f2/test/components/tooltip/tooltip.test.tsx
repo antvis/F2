@@ -127,7 +127,7 @@ describe('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 170, y: 21 });
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
