@@ -103,9 +103,9 @@ export default Legend
 ```
 
 ### 4. 忽略运行时警告信息 
-在JSX/TSX中使用[图形标签（Shape）](shape.zh.md)时，控制台中会有运行时警告 `[Vue warn]: resolveComponent can only be used in render() or setup().`，如需忽略此警告，可在compilerOptions中添加isCustomElement定义。
+在JSX/TSX中使用[图形标签（Shape）](shape.zh.md)时，控制台中会有运行时警告：`[Vue warn]: Failed to resolve component: group` 及 `[Vue warn]: resolveComponent can only be used in render() or setup().`，如需忽略此警告，可在compilerOptions的isCustomElement中添加group标签的判断。
 
-Vue Cli的vue.config.js配置：
+Vue Cli 的 vue.config.js 配置：
 ```javascript
 const { defineConfig } = require('@vue/cli-service');
 
@@ -116,9 +116,8 @@ module.exports = defineConfig({
       .use('vue-loader')
       .tap((options) => {
         options.compilerOptions = {
-          // Clear [Vue warn]: resolveComponent can only be used in render() or setup().
-          isCustomElement: (tagName) =>
-            ['group', 'text'].includes(tagName),
+          // Clear [Vue warn]: Failed to resolve component: group
+          isCustomElement: (tagName) => ['group'].includes(tagName),
         };
         return options;
       })
@@ -127,7 +126,7 @@ module.exports = defineConfig({
 });
 ```
 
-Vite中的vite.config.ts配置：
+Vite 中的 vite.config.ts 配置：
 ```typescript
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -138,9 +137,8 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx({
-      // Clear [Vue warn]: resolveComponent can only be used in render() or setup().
-      isCustomElement: (tagName) =>
-        ['group', 'text'].includes(tagName),
+      // Clear [Vue warn]: Failed to resolve component: group
+      isCustomElement: (tagName) => ['group'].includes(tagName),
     }),
   ],
 });
