@@ -11,7 +11,7 @@ module.exports = {
     '!**/node_modules/**',
   ],
   modulePathIgnorePatterns: ['packages/*/dist'],
-  testPathIgnorePatterns: [],
+  testPathIgnorePatterns: ['packages/vue/*'],
   testRegex: '/test/.*\\.test\\.tsx?$',
   setupFilesAfterEnv: ['<rootDir>/jest-setup.js'],
 };

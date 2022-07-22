@@ -14,6 +14,12 @@
     "visualization",
     "vue"
   ],
+  "scripts": {
+    "test": "jest",
+    "test-watch": "DEBUG_MODE=1 jest --watch",
+    "coverage": "jest --coverage",
+    "snapshot": "jest --updateSnapshot"
+  },
   "dependencies": {
     "@antv/f2": "^4.0.26",
     "@babel/runtime": "^7.12.5"
