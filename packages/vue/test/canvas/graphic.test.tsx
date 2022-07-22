@@ -1,3 +1,4 @@
+// @ts-nocheck
 /** @jsxImportSource @antv/f2 */
 import { Component } from '@antv/f2';
 import Canvas from '../../src';
@@ -73,7 +74,6 @@ class FragComponent extends Component {
 describe('Canvas', () => {
   it('图形绘制', async () => {
     const App = (
-      // @ts-ignore
       <Canvas animate={false} pixelRatio={1}>
         <View transformFrom={{}} />
       </Canvas>
@@ -85,7 +85,6 @@ describe('Canvas', () => {
 
   it('Fragment Function', async () => {
     const App = (
-      // @ts-ignore
       <Canvas animate={false} pixelRatio={1}>
         <FragFunction transformFrom={{}} />
       </Canvas>
@@ -97,7 +96,6 @@ describe('Canvas', () => {
 
   it('Fragment Component', async () => {
     const App = (
-      // @ts-ignore
       <Canvas animate={false} pixelRatio={1}>
         <FragComponent />
       </Canvas>
@@ -110,7 +108,6 @@ describe('Canvas', () => {
   describe('rect', () => {
     it('rect', async () => {
       const App = (
-        // @ts-ignore
         <Canvas animate={false} pixelRatio={1}>
           <group>
             <rect
@@ -186,7 +183,6 @@ describe('Canvas', () => {
   describe('image', () => {
     it('image', async () => {
       const App = (
-        // @ts-ignore
         <Canvas animate={false} pixelRatio={1}>
           <image
             attrs={{
@@ -205,7 +201,6 @@ describe('Canvas', () => {
     it('createImage', async () => {
       const createImageCallback = jest.fn();
       const App = (
-        // @ts-ignore
         <Canvas
           animate={false}
           pixelRatio={1}
@@ -231,7 +226,6 @@ describe('Canvas', () => {
 
     it('image 绘制层级', async () => {
       const App = (
-        // @ts-ignore
         <Canvas animate={false} pixelRatio={1}>
           <group>
             <image
