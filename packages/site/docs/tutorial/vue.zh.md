@@ -20,53 +20,27 @@ npm install @antv/f2-vue --save
 <template>
   <div class="container">
     <Canvas>
-      <Chart ：data="state.data">
+      <Chart :data="data">
         <Axis field="genre" />
         <Axis field="sold" />
+        <Tooltip :showTooltipMarker="true" />
         <Interval x="genre" y="sold" color="genre" />
       </Chart>
     </Canvas>
   </div>
 </template>
 <script lang="ts" setup>
-import { shallowReactive, onMounted } from "vue"
-import Canvas from "@antv/f2-vue"
-import { Chart, Interval, Axis, Tooltip } from "@antv/f2"
-import Grahpic from "@/components/Grahpic"
-import Legend from "@/components/Legend"
+import Canvas from '@antv/f2-vue';
+import { Chart, Interval, Axis, Tooltip } from '@antv/f2';
 
-const data1 = [
-  { genre: "Sports", sold: 275 },
-  { genre: "Strategy", sold: 115 },
-  { genre: "Action", sold: 120 },
-  { genre: "Shooter", sold: 350 },
-  { genre: "Other", sold: 150 },
-]
-
-const data2 = [
-  { genre: "Sports", sold: 275 },
-  { genre: "Strategy", sold: 115 },
-  { genre: "Action", sold: 20 },
-  { genre: "Shooter", sold: 50 },
-  { genre: "Other", sold: 50 },
-]
-
-const state = shallowReactive<{
-  year: string
-  data: Record<string, string | number>[]  
-}>({
-  year: '2021',
-  data: data1  
-})
-
-onMounted(() => {
-  setTimeout(() => {
-      state.year = '2022';
-      state.chartData = data2;
-    }, 1000)
-})
+const data = [
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: 150 },
+];
 </script>
-
 <style>
 .container {
   width: 500px;
@@ -76,8 +50,9 @@ onMounted(() => {
 ```
 
 ### 3. 自定义 View
-在Vue中，自定义View的高阶组件需要从@antv/f2-vue中引入，例如：import { withLegend } from "@antv/f2-vue"。
+在Vue中，[自定义View](advanced/custom-view)的高阶组件（HOC）需要从`@antv/f2-vue`中引入，例如：`import { withXXX } from "@antv/f2-vue"`。
 
+以下是自定义图例的示例：
 ```tsx
 /** @jsxImportSource @antv/f2 */
 import { withLegend } from "@antv/f2-vue"
@@ -125,13 +100,12 @@ const Legend = withLegend((props: Record<string, unknown>) => {
 })
 
 export default Legend
-
 ```
 
 ### 4. 忽略运行时警告信息 
-在JSX/TSX中使用[图形标签（Shape）](./shape.zh.md)时，会有运行时警告 ``` [Vue warn]: resolveComponent can only be used in render() or setup(). ```。如需忽略警告，可在compilerOptions中添加isCustomElement定义，以便忽略图形标签。
+在JSX/TSX中使用[图形标签（Shape）](shape.zh.md)时，控制台中会有运行时警告 `[Vue warn]: resolveComponent can only be used in render() or setup().`，如需忽略此警告，可在compilerOptions中添加isCustomElement定义。
 
-Vue Cli中的vue.config.js配置：
+Vue Cli的vue.config.js配置：
 ```javascript
 const { defineConfig } = require('@vue/cli-service');
 
