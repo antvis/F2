@@ -185,6 +185,7 @@ describe('Canvas', () => {
       const App = (
         <Canvas animate={false} pixelRatio={1}>
           <image
+            alt=""
             attrs={{
               src: imageBianzu,
               width: '200px',
@@ -210,6 +211,7 @@ describe('Canvas', () => {
           }}
         >
           <image
+            alt=""
             attrs={{
               src: imageBianzu,
               width: '200px',
@@ -229,6 +231,7 @@ describe('Canvas', () => {
         <Canvas animate={false} pixelRatio={1}>
           <group>
             <image
+              alt=""
               attrs={{
                 src:
                   'https://gw.alipayobjects.com/mdn/zhima_credit/afts/img/A*Ckg-R4Md9MgAAAAAAAAAAAAAARQnAQ',
