@@ -412,7 +412,7 @@ class Geometry<
           const attr = attrs[attrName];
           // 分类属性的线性映射
           if (attrController.isGroupAttr(attrName)) {
-            attrValues[attrName] = attr.mapping(child[attr.field]);
+            attrValues[attrName] = attr.mapping(child[attr.field], child);
           } else {
             normalized[attrName] = attr.normalize(child[attr.field]);
           }
