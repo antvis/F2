@@ -9,8 +9,8 @@
   </div>
   <div class="container">
     <Canvas>
-      <Chart :data="state.data">
-        <Grahpic :year="state.year" />
+      <Chart :data="data">
+        <Grahpic :year="year" />
         <Legend />
         <Axis field="genre" />
         <Axis field="sold" />
