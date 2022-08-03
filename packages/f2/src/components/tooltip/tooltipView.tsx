@@ -14,7 +14,7 @@ const defaultStyle = {
     lineWidth: '2px',
   },
   showTooltipMarker: false,
-  backgroundStyle: {
+  markerBackgroundStyle: {
     fill: '#CCD6EC',
     opacity: 0.3,
     padding: '6px',
@@ -92,9 +92,9 @@ function directionEnabled(mode: string, dir: string) {
 }
 
 const RenderItemMarker = (props) => {
-  const { records, coord, context, backgroundStyle } = props;
+  const { records, coord, context, markerBackgroundStyle } = props;
   const point = coord.convertPoint({ x: 1, y: 1 });
-  const padding = context.px2hd(backgroundStyle.padding || '6px');
+  const padding = context.px2hd(markerBackgroundStyle.padding || '6px');
   const xPoints = [
     ...records.map((record) => record.xMin),
     ...records.map((record) => record.xMax),
@@ -127,7 +127,7 @@ const RenderItemMarker = (props) => {
         y,
         width,
         height,
-        ...backgroundStyle
+        ...markerBackgroundStyle
       }}
     />
   );
@@ -253,7 +253,7 @@ export default class TooltipView extends Component {
       // showTitle,
       // titleStyle,
       showTooltipMarker = defaultStyle.showTooltipMarker,
-      backgroundStyle = defaultStyle.backgroundStyle,
+      markerBackgroundStyle = defaultStyle.markerBackgroundStyle,
       showItemMarker = defaultStyle.showItemMarker,
       itemMarkerStyle: customItemMarkerStyle,
       nameStyle,
@@ -374,7 +374,7 @@ export default class TooltipView extends Component {
             />
           </group>)}
           {showTooltipMarker ? (
-            <RenderItemMarker coord={coord} context={context} records={records} backgroundStyle={backgroundStyle} />
+            <RenderItemMarker coord={coord} context={context} records={records} markerBackgroundStyle={markerBackgroundStyle} />
           ) : null}
           {/* 辅助线 */}
           {showCrosshairs ? (

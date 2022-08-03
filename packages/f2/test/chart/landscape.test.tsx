@@ -30,7 +30,7 @@ describe('横屏', () => {
           <Axis field="genre" />
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
-          <Tooltip snap showTooltipMarker backgroundStyle={{ fill: 'l(90) 0:#ffffff 0.5:#7ec2f3 1:#1890ff', opacity: .3 }} />
+          <Tooltip snap showTooltipMarker markerBackgroundStyle={{ fill: 'l(90) 0:#ffffff 0.5:#7ec2f3 1:#1890ff', opacity: .3 }} />
         </Chart>
       </Canvas>
     );
