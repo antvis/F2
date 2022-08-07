@@ -6,8 +6,10 @@ import {
   watchEffect,
   onMounted,
   onBeforeUnmount,
+  type PropType,
+  type ExtractPropTypes,
+  type CSSProperties,
 } from 'vue';
-import type { PropType, ExtractPropTypes } from 'vue';
 import { Canvas } from '@antv/f2';
 import { toRawChildren } from './util';
 
@@ -24,7 +26,7 @@ export const canvasProps = {
     default: true,
   },
   px2hd: Function,
-  theme: String,
+  theme: Object as PropType<CSSProperties>,
   createImage: Function as PropType<() => HTMLImageElement>,
   landscape: Boolean,
 };
@@ -57,10 +59,14 @@ export default defineComponent({
 
     onMounted(() => {
       const container = containerRef.value;
-      if (container === undefined)
+
+      if (container === undefined) {
         throw new Error(`The Antv f2 chart's container wasn't mounted.`);
-      if (container.tagName !== 'CANVAS')
+      }
+
+      if (container.tagName !== 'CANVAS') {
         throw new Error(`The Antv f2 chart's container must be Canvas.`);
+      }
 
       state.context = container.getContext('2d');
 

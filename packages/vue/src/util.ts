@@ -1,5 +1,4 @@
-import { toRaw, isVNode } from 'vue';
-import type { Slots, VNode, VNodeNormalizedChildren } from 'vue';
+import { toRaw, isVNode, type Slots, type VNode, type VNodeNormalizedChildren } from 'vue';
 import { Children } from '@antv/f2';
 import type { ComponentContext, Updater } from '@antv/f2/es/base/component';
 
@@ -21,16 +20,13 @@ export const toRawChildren = (slots: VNode | VNodeNormalizedChildren) => {
     if (isVNode(element)) {
       const { type, key, ref, props, children } = element;
 
-      if (typeof type === 'function') {
-        const isF2Component = type.prototype && type.prototype.isF2Component;
-        if (!isF2Component) {
-          return {
-            type: toRawView(type),
-            key,
-            ref,
-            props: props,
-          };
-        }
+      if (typeof type === 'function' && !type.prototype.isF2Component) {
+        return {
+          type: toRawView(type),
+          key,
+          ref,
+          props: props,
+        };
       }
 
       return {
@@ -47,12 +43,7 @@ export const toRawChildren = (slots: VNode | VNodeNormalizedChildren) => {
     // slot
     if (element.default) {
       const children = element.default();
-      // https://github.com/antvis/F2/blob/master/packages/f2/src/base/diff.ts#L37
-      // renderShape中renderJSXElement未判断children是否为数组，所以这里需要直接返回。
-      if (children.length === 1) {
-        return toRawChildren(children[0]);
-      }
-      return toRawChildren(children);
+      return  toRawChildren(children.length === 1 ?children[0]:children)
     }
 
     return null;

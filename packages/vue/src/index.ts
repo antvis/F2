@@ -1,3 +1,2 @@
-import Canvas from './canvas';
-export default Canvas;
+export { default } from './canvas';
 export * from './components';
