@@ -23,10 +23,23 @@ export interface ZoomProps extends ChartChildProps {
    * 缩放
    */
   pinch?: boolean;
+
+  /**
+   * 横扫
+   */
+  swipe?: boolean
   /**
    * 自动同步 x/y 的坐标值
    */
   autoFit?: boolean;
+  /**
+   * 最少展示数据量，用于控制最小缩放比例, 默认是10
+   */
+  minCount?: number;
+  /**
+   * 漫游模式
+   */
+  roam?: boolean
 }
 
 export interface ZoomState {
@@ -69,15 +82,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   willMount(): void {
     const { props } = this;
-    const { range } = props;
+    const { range, minCount } = props;
     const scale = this._getScale();
     const { values } = scale;
     this.scale = scale;
     this.originScale = cloneScale(scale);
 
     // 图表上最少显示 MIN_COUNT 个数据
-    this.minScale = MIN_COUNT / values.length;
 
+    
     this.updateRange(range);
   }
 
@@ -93,6 +106,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   onPan = (ev) => {
     const { mode = 'x' } = this.props;
+    
     if (mode === 'x') {
       this._doXPan(ev);
       return;
@@ -102,6 +116,11 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       return;
     }
   };
+
+  onSwipe = (ev) => {
+    // TODO: 定义
+
+  }
 
   onPinch = (ev) => {
     const { mode = 'x' } = this.props;
@@ -120,8 +139,9 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   };
 
   _doXPan(ev) {
+    const { roam } = this.props;
     const { direction, deltaX } = ev;
-    if (direction === 'up' || direction === 'down') {
+    if (!roam && (direction === 'up' || direction === 'down')) {
       return;
     }
     ev.preventDefault && ev.preventDefault();
@@ -135,8 +155,9 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _doYPan(ev) {
+    const { roam } = this.props;
     const { direction, deltaY } = ev;
-    if (direction === 'left' || direction === 'right') {
+    if (!roam && (direction === 'left' || direction === 'right')) {
       return;
     }
     ev.preventDefault && ev.preventDefault();
@@ -276,7 +297,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   _bindEvents() {
     const { context, props } = this;
     const { canvas } = context;
-    const { pan, pinch } = props;
+    const { pan, pinch, swipe } = props;
     // 统一绑定事件
     if (pan !== false) {
       canvas.on('panstart', this.onStart);
@@ -289,12 +310,16 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       canvas.on('pinch', this.onPinch);
       canvas.on('pinchend', this.onEnd);
     }
+
+    if(swipe !== false) {
+      canvas.on('swipe', this.onSwipe);
+    }
   }
 
   _clearEvents() {
     const { context, props } = this;
     const { canvas } = context;
-    const { pan, pinch } = props;
+    const { pan, pinch, swipe } = props;
     // 统一解绑事件
     if (pan !== false) {
       canvas.off('panstart', this.onStart);
@@ -305,6 +330,9 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       canvas.off('pinchstart', this.onStart);
       canvas.off('pinch', this.onPinch);
       canvas.off('pinchend', this.onEnd);
+    }
+    if(swipe !== false) {
+      canvas.off('swipe', this.onSwipe);
     }
   }
 }
