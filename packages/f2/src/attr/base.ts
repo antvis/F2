@@ -55,8 +55,8 @@ class Base {
   }
 
   // 等于 normalize + convert， 参数是原始数据，返回是定义域的值
-  mapping(value) {
-    const rst = isFunction(this.callback) ? this.callback(value) : null;
+  mapping(value, child = null) {
+    const rst = isFunction(this.callback) ? this.callback(value, child) : null;
     if (!isNil(rst)) {
       return rst;
     }
