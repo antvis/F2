@@ -1,6 +1,6 @@
-import { isFunction, find } from '@antv/util';
-import createRef from '../../createRef';
+import { find, isFunction } from '@antv/util';
 import Component from '../../base/component';
+import createRef from '../../createRef';
 import { jsx } from '../../jsx';
 import { Ref } from '../../types';
 
@@ -131,20 +131,14 @@ const RenderItemMarker = (props) => {
 
 const RenderCrosshairs = (props) => {
   const { records, coord, chart, crosshairsType, crosshairsStyle } = props;
-    const {
-      left: coordLeft,
-      top: coordTop,
-      right: coordRight,
-      bottom: coordBottom,
-      center
-    } = coord;  
+  const { left: coordLeft, top: coordTop, right: coordRight, bottom: coordBottom, center } = coord;
   const firstRecord = records[0];
   const { x, y, origin, xField } = firstRecord;
-  if(coord.isPolar) {
+  if (coord.isPolar) {
     // 极坐标下的辅助线
     const xScale = chart.getScale(xField);
     const ticks = xScale.getTicks();
-    const tick = find<any>(ticks, (tick) => origin[xField] === tick.tickValue);      
+    const tick = find<any>(ticks, (tick) => origin[xField] === tick.tickValue);
     const end = coord.convertPoint({
       x: tick.value,
       y: 1,
@@ -188,7 +182,7 @@ const RenderCrosshairs = (props) => {
       ) : null}
     </group>
   );
-}
+};
 
 export default class TooltipView extends Component {
   rootRef: Ref;
@@ -268,6 +262,7 @@ export default class TooltipView extends Component {
       xTipBackground = defaultStyle.xTipBackground,
       yTipBackground = defaultStyle.yTipBackground,
       custom = false,
+      customText,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
@@ -290,9 +285,10 @@ export default class TooltipView extends Component {
           }}
         >
           {/* 非自定义模式时显示的文本信息 */}
-          {!custom && (<group>
-            <group ref={this.rootRef} style={background} attrs={background}>
-              {/* {showTitle ? (
+          {!custom && (
+            <group>
+              <group ref={this.rootRef} style={background} attrs={background}>
+                {/* {showTitle ? (
                 <text
                   style={{
                     marginBottom: '6px',
@@ -306,68 +302,80 @@ export default class TooltipView extends Component {
                   }}
                 />
               ) : null} */}
-              <group
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  padding: [0, 0, 0, '6px'],
-                }}
-              >
-                {records.map((record) => {
-                  const { name, value } = record;
-                  return (
-                    <group
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        padding: [0, '6px', 0, 0],
-                      }}
-                    >
-                      {showItemMarker ? (
-                        <marker
-                          style={{
-                            width: itemMarkerStyle.width,
-                            marginRight: '6px',
-                          }}
-                          attrs={{
-                            ...itemMarkerStyle,
-                            fill: record.color,
-                          }}
-                        />
-                      ) : null}
-                      <text
-                        attrs={{
-                          ...defaultStyle.nameStyle,
-                          ...nameStyle,
-                          text: value ? `${name}${joinString}` : name,
+                <group
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    padding: [0, 0, 0, '6px'],
+                  }}
+                >
+                  {records.map((record) => {
+                    const { name, value } = record;
+                    return (
+                      <group
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          padding: [0, '6px', 0, 0],
                         }}
-                      />
-                      <text
-                        attrs={{
-                          ...defaultStyle.valueStyle,
-                          ...valueStyle,
-                          text: value,
-                        }}
-                      />
-                    </group>
-                  );
-                })}
+                      >
+                        {showItemMarker ? (
+                          <marker
+                            style={{
+                              width: itemMarkerStyle.width,
+                              marginRight: '6px',
+                            }}
+                            attrs={{
+                              ...itemMarkerStyle,
+                              fill: record.color,
+                            }}
+                          />
+                        ) : null}
+                        {customText && isFunction(customText) ? (
+                          customText(record)
+                        ) : (
+                          <group
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <text
+                              attrs={{
+                                ...defaultStyle.nameStyle,
+                                ...nameStyle,
+                                text: value ? `${name}${joinString}` : name,
+                              }}
+                            />
+                            <text
+                              attrs={{
+                                ...defaultStyle.valueStyle,
+                                ...valueStyle,
+                                text: value,
+                              }}
+                            />
+                          </group>
+                        )}
+                      </group>
+                    );
+                  })}
+                </group>
               </group>
+              <polygon
+                ref={this.arrowRef}
+                attrs={{
+                  points: [
+                    { x: x - arrowWidth, y: coordTop },
+                    { x: x + arrowWidth, y: coordTop },
+                    { x: x, y: coordTop + arrowWidth },
+                  ],
+                  fill: background.fill,
+                }}
+              />
             </group>
-            <polygon
-              ref={this.arrowRef}
-              attrs={{
-                points: [
-                  { x: x - arrowWidth, y: coordTop },
-                  { x: x + arrowWidth, y: coordTop },
-                  { x: x, y: coordTop + arrowWidth },
-                ],
-                fill: background.fill,
-              }}
-            />
-          </group>)}
+          )}
           {showTooltipMarker ? (
             <RenderItemMarker coord={coord} context={context} records={records} />
           ) : null}
@@ -378,7 +386,7 @@ export default class TooltipView extends Component {
               coord={coord}
               records={records}
               crosshairsType={crosshairsType}
-              crosshairsStyle={{...defaultStyle.crosshairsStyle, ...crosshairsStyle}}
+              crosshairsStyle={{ ...defaultStyle.crosshairsStyle, ...crosshairsStyle }}
             />
           ) : null}
           {/* 辅助点 */}
