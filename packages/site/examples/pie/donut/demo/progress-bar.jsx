@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Canvas, Chart, Interval, TextGuide, ArcGuide } from '@antv/f2';
+import { jsx, Canvas, Chart, Interval, TextGuide, ArcGuide } from '@antv/f2';
 
 const data = [
   {
