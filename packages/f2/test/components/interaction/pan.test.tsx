@@ -12,7 +12,7 @@ describe('平移和缩放', () => {
 
     let canvas: Canvas;
 
-    it('初始化', async () => {
+    it.only('初始化', async () => {
       const res = await fetch(
         'https://gw.alipayobjects.com/os/antfincdn/Jpuku6k%24q%24/linear-pan.json'
       );
@@ -23,7 +23,7 @@ describe('平移和缩放', () => {
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
             <Line x="release" y="count" />
-            <ScrollBar mode="x" range={[0.1, 0.3]} />
+            <ScrollBar mode={['x', 'y']} range={[0.1, 0.3]} />
           </Chart>
         </Canvas>
       );

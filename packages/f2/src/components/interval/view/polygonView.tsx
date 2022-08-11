@@ -4,13 +4,17 @@ import { convertToPoints } from '../util';
 
 // 金字塔图和漏斗图的View
 export default (props) => {
-  const { records, shape, showLabel, labelCfg, LabelView } = props;
+  const { records, shape, showLabel, labelCfg, LabelView, clip } = props;
 
   // 是否倒置
   let overturn = false;
 
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record, index) => {
         const { key, children } = record;
         const isLastRecord = index === records.length - 1;

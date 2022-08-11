@@ -450,6 +450,24 @@ class Geometry<
     return records;
   }
 
+  getClip() {
+    const { coord, viewPort } = this.props;
+    const { width: contentWidth, height: contentHeight, left, top } = coord;
+    if (viewPort) {
+      return {
+        type: 'rect',
+        attrs: {
+          x: left,
+          y: top,
+          width: contentWidth,
+          height: contentHeight,
+          ...viewPort,
+        },
+      };
+    }
+    return null;
+  }
+
   getAttr(attrName: string) {
     return this.attrController.getAttr(attrName);
   }

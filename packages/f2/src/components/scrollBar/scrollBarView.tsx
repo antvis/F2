@@ -3,7 +3,15 @@ import Horizontal from './horizontal';
 import Vertical from './vertical';
 
 export default (props) => {
-  const { position } = props;
+  const { position, mode } = props;
+  if (mode.length > 1) {
+    return (
+      <group>
+        <Vertical {...props} />
+        <Horizontal {...props} />
+      </group>
+    );
+  }
   if (position === 'left' || position === 'right') {
     return <Vertical {...props} />;
   }

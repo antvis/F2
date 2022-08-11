@@ -4,7 +4,7 @@ export default (props, context) => {
   const { coord, range, position, layout } = props;
   const { left, width } = coord;
   const { top, height } = layout;
-  const [start, end] = range;
+  const [start, end] = range?.x || range?.y;
   const barLeft = width * start;
   const barWidth = width * (end - start);
 

@@ -112,6 +112,7 @@ export default (Views) => {
 
       const records = this.mapping();
       const pointY0 = this.getPointY0();
+      const clip = this.getClip();
       return (
         <View
           coord={coord}
@@ -123,6 +124,7 @@ export default (Views) => {
           labelCfg={labelCfg}
           LabelView={LabelView}
           y0={pointY0}
+          clip={clip}
         />
       );
     }
