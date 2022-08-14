@@ -3,8 +3,8 @@ import { Canvas, Chart } from '../../../src';
 import { Axis, Point, ScrollBar } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
-describe('平移和缩放', () => {
-  describe('平移和缩放-linear 类型', () => {
+describe('全局漫游模式', () => {
+  describe('斜移和缩放-linear 类型', () => {
     const context = createContext('折线', {
       width: '350px',
       height: '300px',
@@ -22,14 +22,7 @@ describe('平移和缩放', () => {
           <Chart data={data}>
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
-            <Point
-              x="release"
-              y="count"
-              size={20}
-              viewPort={{
-                type: 'rect',
-              }}
-            />
+            <Point x="release" y="count" size={20} viewClip />
             <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" />
           </Chart>
         </Canvas>
@@ -46,13 +39,47 @@ describe('平移和缩放', () => {
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', { x: 210, y: 169 });
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchmove', { x: 180, y: 169 });
+      await gestureSimulator(context.canvas, 'touchmove', { x: 180, y: 189 });
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchmove', { x: 150, y: 209 });
+      await gestureSimulator(context.canvas, 'touchmove', { x: 150, y: 219 });
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', { x: 130, y: 249 });
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 269 });
+      await delay(300);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('多次缩小', async () => {
+      // 缩小
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchstart', [
+        { x: 10, y: 10 },
+        { x: 300, y: 300 },
+      ]);
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchmove', [
+        { x: 100, y: 100 },
+        { x: 200, y: 200 },
+      ]);
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
+      await delay(300);
+      expect(context).toMatchImageSnapshot();
+
+      // 缩小
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchstart', [
+        { x: 10, y: 10 },
+        { x: 310, y: 310 },
+      ]);
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchmove', [
+        { x: 160, y: 160 },
+        { x: 160, y: 160 },
+      ]);
+      await delay(20);
+      await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });

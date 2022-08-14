@@ -13,6 +13,7 @@ export interface LineViewProps {
   coord: Coord;
   animation?: any;
   endView?: (origin: any) => JSX.Element;
+  clip?: boolean;
 }
 
 export interface LineProps extends GeometryProps {

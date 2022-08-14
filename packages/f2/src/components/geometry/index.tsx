@@ -451,9 +451,9 @@ class Geometry<
   }
 
   getClip() {
-    const { coord, viewPort } = this.props;
+    const { coord, viewClip } = this.props;
     const { width: contentWidth, height: contentHeight, left, top } = coord;
-    if (viewPort) {
+    if (viewClip) {
       return {
         type: 'rect',
         attrs: {
@@ -461,7 +461,6 @@ class Geometry<
           y: top,
           width: contentWidth,
           height: contentHeight,
-          ...viewPort,
         },
       };
     }

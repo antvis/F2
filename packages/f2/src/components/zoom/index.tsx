@@ -59,8 +59,6 @@ export interface ZoomState {
   };
 }
 
-const MIN_COUNT = 10;
-
 function cloneScale(scale: Scale, scaleConfig?: ScaleConfig) {
   // @ts-ignore
   return new scale.constructor({
@@ -93,17 +91,17 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       onPinch: () => {},
       onPanEnd: () => {},
       onPinchEnd: () => {},
+      minCount: 10,
     };
     super({ ...defaultProps, ...props });
     const { range = [0, 1], mode } = props;
 
     this.dims = mode instanceof Array ? mode : [mode];
-    let cacheRange = {};
+    const cacheRange = {};
     each(this.dims, (dim) => {
       cacheRange[dim] = range;
     });
 
-    // cacheRange['y'] = [0, 1];
     this.state = {
       range: cacheRange,
     } as S;
@@ -115,10 +113,13 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   willMount(): void {
     const { props, dims, state } = this;
-    // const { minCount } = props;
+    const { minCount } = props;
     const { range } = state;
+    let valueLength = Number.MIN_VALUE;
     each(dims, (dim) => {
       const scale = this._getScale(dim);
+      const { values } = scale;
+      valueLength = values.length > valueLength ? values.length : valueLength;
       this.scale[dim] = scale;
       this.originScale[dim] = cloneScale(scale);
 
@@ -126,6 +127,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     });
 
     // 图表上最少显示 MIN_COUNT 个数据
+    this.minScale = minCount / valueLength;
   }
 
   didUnmount(): void {
@@ -140,17 +142,20 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   onPan = (ev) => {
     const { dims } = this;
+    const range = {};
     each(dims, (dim) => {
       if (dim === 'x') {
-        this._doXPan(ev);
+        range['x'] = this._doXPan(ev);
         return;
       }
       if (dim === 'y') {
-        this._doYPan(ev);
+        range['y'] = this._doYPan(ev);
         return;
       }
     });
-    console.log('end', this.state.range);
+    this.setState({
+      range,
+    } as S);
   };
 
   onSwipe = (ev) => {
@@ -159,16 +164,20 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   onPinch = (ev) => {
     const { dims } = this;
+    const range = {};
     each(dims, (dim) => {
       if (dim === 'x') {
-        this._doXPinch(ev);
+        range['x'] = this._doXPinch(ev);
         return;
       }
       if (dim === 'y') {
-        this._doYPinch(ev);
+        range['y'] = this._doYPinch(ev);
         return;
       }
     });
+    this.setState({
+      range,
+    } as S);
   };
 
   onEnd = () => {
@@ -187,7 +196,8 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { width: coordWidth } = coord;
     const ratio = (deltaX / coordWidth) * sensitive;
 
-    this._doPan(ratio, ['x']);
+    const newRange = this._doPan(ratio, 'x');
+    return newRange;
   }
 
   _doYPan(ev) {
@@ -201,19 +211,19 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { coord, sensitive = 1 } = props;
     const { height: coordHeight } = coord;
     const ratio = (-deltaY / coordHeight) * sensitive;
-    this._doPan(ratio, ['y']);
+    const newRange = this._doPan(ratio, 'y');
+    return newRange;
   }
 
-  _doPan(ratio: number, dims: string[]) {
+  _doPan(ratio: number, dim: string) {
     const { startRange } = this;
-    each(dims, (dim) => {
-      const [start, end] = startRange[dim];
-      const rangeLen = end - start;
-      const rangeOffset = rangeLen * ratio;
-      const newStart = start - rangeOffset;
-      const newEnd = end - rangeOffset;
-      this.updateRange([newStart, newEnd], dim);
-    });
+    const [start, end] = startRange[dim];
+    const rangeLen = end - start;
+    const rangeOffset = rangeLen * ratio;
+    const newStart = start - rangeOffset;
+    const newEnd = end - rangeOffset;
+    const newRange = this.updateRange([newStart, newEnd], dim);
+    return newRange;
   }
 
   _doXPinch(ev) {
@@ -229,7 +239,8 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     // 计算左右缩放的比例
     const leftZoom = leftLen / coordWidth;
     const rightZoom = rightLen / coordWidth;
-    this._doPinch(leftZoom, rightZoom, zoom, ['x']);
+    const newRange = this._doPinch(leftZoom, rightZoom, zoom, 'x');
+    return newRange;
   }
 
   _doYPinch(ev) {
@@ -245,31 +256,30 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     // 计算左右缩放的比例
     const topZoom = topLen / coordHeight;
     const bottomZoom = bottomLen / coordHeight;
-    this._doPinch(topZoom, bottomZoom, zoom, ['y']);
+    const newRange = this._doPinch(topZoom, bottomZoom, zoom, 'y');
+    return newRange;
   }
 
-  _doPinch(startRatio: number, endRatio: number, zoom: number, dims: string[]) {
+  _doPinch(startRatio: number, endRatio: number, zoom: number, dim: string) {
     const { startRange, minScale } = this;
-    each(dims, (dim) => {
-      const [start, end] = startRange[dim];
+    const [start, end] = startRange[dim];
 
-      const zoomOffset = 1 - zoom;
-      const rangeLen = end - start;
-      const rangeOffset = rangeLen * zoomOffset;
+    const zoomOffset = 1 - zoom;
+    const rangeLen = end - start;
+    const rangeOffset = rangeLen * zoomOffset;
 
-      const startOffset = rangeOffset * startRatio;
-      const endOffset = rangeOffset * endRatio;
+    const startOffset = rangeOffset * startRatio;
+    const endOffset = rangeOffset * endRatio;
 
-      const newStart = Math.max(0, start - startOffset);
-      const newEnd = Math.min(1, end + endOffset);
+    const newStart = Math.max(0, start - startOffset);
+    const newEnd = Math.min(1, end + endOffset);
 
-      const newRange: ZoomRange = [newStart, newEnd];
-      // 如果已经到了最小比例，则不能再继续再放大
-      if (newEnd - newStart < minScale) {
-        return;
-      }
-      this.updateRange(newRange, dim);
-    });
+    const newRange: ZoomRange = [newStart, newEnd];
+    // 如果已经到了最小比例，则不能再继续再放大
+    if (newEnd - newStart < minScale) {
+      return this.state.range[dim];
+    }
+    return this.updateRange(newRange, dim);
   }
 
   updateRange(originalRange: ZoomRange, dim) {
@@ -292,23 +302,19 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     // 更新主 scale
 
     updateRange(scale[dim], originScale[dim], newRange);
-    range[dim] = newRange;
+
     if (autoFit) {
       const followScale = this._getFollowScales(dim);
 
       this.updateFollow(followScale, scale[dim], data);
     }
-
-    this.setState({
-      range,
-    } as S);
-
     // 手势变化不执行动画
     const { animate } = chart;
     chart.setAnimate(false);
     chart.forceUpdate(() => {
       chart.setAnimate(animate);
     });
+    return newRange;
   }
 
   updateFollow(scales: Scale[], mainScale: Scale, data: any[]) {
@@ -359,7 +365,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         this.onPan(ev);
       });
       canvas.on('panend', () => {
-        console.log(this.state.range);
         onPanEnd();
         this.onEnd();
       });

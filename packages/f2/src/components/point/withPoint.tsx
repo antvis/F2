@@ -10,7 +10,7 @@ export default (View) => {
     }
 
     render() {
-      const { props } = this;
+      const { props, container } = this;
       const { coord } = props;
       const records = this.mapping();
       const clip = this.getClip();

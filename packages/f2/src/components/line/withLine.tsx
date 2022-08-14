@@ -116,7 +116,8 @@ export default (View) => {
       const { props } = this;
       const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} />;
+      const clip = this.getClip();
+      return <View {...props} coord={coord} records={records} clip={clip} />;
     }
   };
 };

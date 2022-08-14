@@ -94,7 +94,7 @@ export default (Views) => {
     }
 
     render() {
-      const { props, state } = this;
+      const { props, state, container } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
