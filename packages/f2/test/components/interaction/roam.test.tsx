@@ -4,7 +4,11 @@ import { Axis, Point, ScrollBar } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 describe('全局漫游模式', () => {
+<<<<<<< HEAD
   describe.skip('斜移和缩放-linear 类型', () => {
+=======
+  describe('斜移和缩放-linear 类型', () => {
+>>>>>>> fix bug
     const context = createContext('折线', {
       width: '350px',
       height: '300px',
@@ -83,6 +87,7 @@ describe('全局漫游模式', () => {
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });
+<<<<<<< HEAD
   });
 
   describe.skip('斜移和缩放-sensitive 灵明度', () => {
@@ -211,5 +216,7 @@ describe('全局漫游模式', () => {
     //   await delay(300);
     //   expect(context).toMatchImageSnapshot();
     // });
+=======
+>>>>>>> fix bug
   });
 });

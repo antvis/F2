@@ -95,12 +95,12 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   constructor(props: P) {
     const defaultProps = {
-      onPanStart: () => {},
-      onPinchStart: () => {},
-      onPan: () => {},
-      onPinch: () => {},
-      onPanEnd: () => {},
-      onPinchEnd: () => {},
+      onPanStart: () => { },
+      onPinchStart: () => { },
+      onPan: () => { },
+      onPinch: () => { },
+      onPanEnd: () => { },
+      onPinchEnd: () => { },
       minCount: 10,
     };
     super({ ...defaultProps, ...props });
@@ -254,7 +254,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         return;
       }
     });
-
     if (isEqual(range, this.state.range)) return;
     this.setState({
       range,
@@ -342,6 +341,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _doPinch(startRatio: number, endRatio: number, zoom: number, dim: string) {
+
     const { startRange, minScale, props } = this;
     const { sensitive = 1 } = props;
     const [start, end] = startRange[dim];
