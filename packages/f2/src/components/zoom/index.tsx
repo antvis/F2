@@ -7,6 +7,10 @@ import { each } from '@antv/util';
 export type ZoomRange = [number, number];
 export type ScaleValues = number[] | string[];
 
+function lerp(min, max, fraction) {
+  return (max - min) * fraction + min;
+}
+
 export interface ZoomProps extends ChartChildProps {
   sensitive?: number;
   /**
@@ -46,10 +50,6 @@ export interface ZoomProps extends ChartChildProps {
    * 最少展示数据量，用于控制最小缩放比例, 默认是10
    */
   minCount?: number;
-  /**
-   * 漫游模式
-   */
-  roam?: boolean;
 }
 
 export interface ZoomState {
@@ -82,6 +82,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   // 最小的缩放比例
   minScale: number;
   dims: Array<String>;
+  //swipe end x y
+  swipeEnd = {
+    startX: 0,
+    startY: 0,
+    endX: 0,
+    endY: 0,
+  };
+
+  loop;
 
   constructor(props: P) {
     const defaultProps = {
@@ -138,6 +147,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { state } = this;
     const { range } = state;
     this.startRange = range;
+    this.loop && cancelAnimationFrame(this.loop);
   };
 
   onPan = (ev) => {
@@ -158,8 +168,59 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     } as S);
   };
 
+  update() {
+    const { startX, startY, endX, endY } = this.swipeEnd;
+    const x = lerp(startX, endX, 0.1);
+    const y = lerp(startY, endY, 0.1);
+    this.swipeEnd = {
+      startX: x,
+      startY: y,
+      endX,
+      endY,
+    };
+
+    const { props } = this;
+    const { coord } = props;
+    const { width: coordWidth, height: coordHeight } = coord;
+    const range = {};
+    range['x'] = this._doPan((x - startX) / coordWidth, 'x');
+    range['y'] = this._doPan((y - startY) / coordHeight, 'y');
+
+    this.setState({
+      range,
+    } as S);
+
+    this.loop = requestAnimationFrame(() => this.update());
+    if (Math.abs(x - endX) < 0.0005 && Math.abs(y - endY) < 0.0005) {
+      this.onEnd();
+      cancelAnimationFrame(this.loop);
+    }
+  }
+
   onSwipe = (ev) => {
-    // TODO: 定义
+    // 只有x+y模式才开启
+    if (this.props.mode.length < 2) return;
+    // console.log('swipe');
+    const { velocityX, velocityY, points } = ev;
+    const { range } = this.state;
+
+    const { x, y } = points[0];
+
+    // 边界处理
+    if (Math.abs(range?.x[0] - 0) < 0.0005 && velocityX > 0) return;
+    if (Math.abs(range?.x[1] - 1) < 0.0005 && velocityX < 0) return;
+
+    if (Math.abs(range?.y[0] - 0) < 0.0005 && velocityY < 0) return;
+    if (Math.abs(range?.x[1] - 1) < 0.0005 && velocityY > 0) return;
+
+    this.swipeEnd = {
+      startX: x,
+      startY: y,
+      endX: x - velocityX * 600,
+      endY: y + velocityY * 600,
+    };
+    this.onStart();
+    this.update();
   };
 
   onPinch = (ev) => {
@@ -261,10 +322,11 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _doPinch(startRatio: number, endRatio: number, zoom: number, dim: string) {
-    const { startRange, minScale } = this;
+    const { startRange, minScale, props } = this;
+    const { sensitive = 1 } = props;
     const [start, end] = startRange[dim];
 
-    const zoomOffset = 1 - zoom;
+    const zoomOffset = (1 - zoom) * sensitive;
     const rangeLen = end - start;
     const rangeOffset = rangeLen * zoomOffset;
 
