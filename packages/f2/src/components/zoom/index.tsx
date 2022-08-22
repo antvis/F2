@@ -3,6 +3,7 @@ import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '@antv/scale';
 import { each } from '@antv/util';
+import equal from '../../base/equal';
 
 export type ZoomRange = [number, number];
 export type ScaleValues = number[] | string[];
@@ -118,6 +119,22 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   didMount(): void {
     this._bindEvents();
+  }
+
+  willReceiveProps(nextProps: P): void {
+    const { range: nextRange } = nextProps;
+    const { range: lastRange } = this.props;
+
+    if (!equal(nextRange, lastRange)) {
+      const cacheRange = {};
+      each(this.dims, (dim) => {
+        cacheRange[dim] = nextRange;
+      });
+
+      this.state = {
+        range: cacheRange,
+      } as S;
+    }
   }
 
   willMount(): void {
