@@ -2,7 +2,7 @@ import Component from '../../base/component';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '@antv/scale';
-import { each } from '@antv/util';
+import { each, isEqual } from '@antv/util';
 import equal from '../../base/equal';
 
 export type ZoomRange = [number, number];
@@ -180,6 +180,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         return;
       }
     });
+    if (isEqual(range, this.state.range)) return;
     this.setState({
       range,
     } as S);
@@ -253,6 +254,8 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         return;
       }
     });
+
+    if (isEqual(range, this.state.range)) return;
     this.setState({
       range,
     } as S);
@@ -378,8 +381,10 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { props, scale, originScale, state } = this;
     const { chart, data, autoFit } = props;
     const { range } = state;
-    // 更新主 scale
 
+    if (isEqual(newRange, this.state.range)) return newRange;
+
+    // 更新主 scale
     updateRange(scale[dim], originScale[dim], newRange);
 
     if (autoFit) {
