@@ -96,12 +96,12 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   constructor(props: P) {
     const defaultProps = {
-      onPanStart: () => {},
-      onPinchStart: () => {},
-      onPan: () => {},
-      onPinch: () => {},
-      onPanEnd: () => {},
-      onPinchEnd: () => {},
+      onPanStart: () => { },
+      onPinchStart: () => { },
+      onPan: () => { },
+      onPinch: () => { },
+      onPanEnd: () => { },
+      onPinchEnd: () => { },
       minCount: 10,
     };
     super({ ...defaultProps, ...props })
@@ -264,30 +264,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   onEnd = () => {
     this.startRange = null;
   };
-
-  onPanStart = () => {
-    const { props, scale } = this;
-    this.onStart();
-    props.onPanStart({ scale });
-  }
-
-  onPanEnd = () => {
-    const { props, scale } = this;
-    this.onEnd();
-    props.onPanEnd({ scale });
-  }
-
-  onPinchStart = () => {
-    const { props } = this;
-    this.onStart();
-    props?.onPinchStart();
-  }
-
-  onPinchEnd = () => {
-    const { props, scale } = this;
-    this.onEnd();
-    props.onPanEnd({ scale });
-  }
 
   _doXPan(ev) {
     const { direction, deltaX } = ev;
@@ -462,21 +438,33 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     } = props;
     // 统一绑定事件
     if (pan !== false) {
-      canvas.on('panstart', this.onPanStart);
+      canvas.on('panstart', () => {
+        this.onStart();
+        props.onPanStart({ scale });
+      });
       canvas.on('pan', ev => {
         this.onPan(ev);
         onPan(ev);
       });
-      canvas.on('panend', this.onPanEnd);
+      canvas.on('panend', () => {
+        this.onEnd();
+        props.onPanEnd({ scale });
+      });
     }
 
     if (pinch !== false) {
-      canvas.on('pinchstart', this.onPinchStart);
+      canvas.on('pinchstart', () => {
+        this.onStart();
+        props?.onPinchStart();
+      });
       canvas.on('pinch', (ev) => {
         this.onPinch(ev);
         onPinch(ev);
       });
-      canvas.on('pinchend', this.onPinchEnd);
+      canvas.on('pinchend', () => {
+        this.onEnd();
+        props.onPanEnd({ scale });
+      });
     }
 
     if (swipe !== false) {
@@ -487,7 +475,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _clearEvents() {
-    const { context, props } = this;
+    const { context, props, scale } = this;
     const { canvas } = context;
     const {
       pan,
@@ -498,20 +486,32 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     } = props;
     // 统一解绑事件
     if (pan !== false) {
-      canvas.off('panstart', this.onPanStart);
+      canvas.off('panstart', () => {
+        this.onStart();
+        props?.onPinchStart();
+      });
       canvas.off('pan', ev => {
         this.onPan(ev);
         onPan(ev);
       });
-      canvas.off('panend', this.onEnd);
+      canvas.off('panend', () => {
+        this.onEnd();
+        props.onPanEnd({ scale });
+      });
     }
     if (pinch !== false) {
-      canvas.off('pinchstart', this.onPinchStart);
+      canvas.off('pinchstart', () => {
+        this.onStart();
+        props?.onPinchStart();
+      });
       canvas.off('pinch', (ev) => {
         this.onPinch(ev);
         onPinch(ev);
       });
-      canvas.off('pinchend', this.onPinchEnd);
+      canvas.off('pinchend', () => {
+        this.onEnd();
+        props.onPinchEnd({ scale });
+      });
     }
     if (swipe !== false) {
       canvas.off('swipe', this.onSwipe);
