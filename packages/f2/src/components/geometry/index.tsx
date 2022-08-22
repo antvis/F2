@@ -394,7 +394,9 @@ class Geometry<
         ...defaultAttrValues,
       };
       const firstChild = children[0];
-
+      if (children.length === 0) {
+        continue;
+      }
       // 非线性映射
       for (let k = 0, len = nonlinearAttrs.length; k < len; k++) {
         const attrName = nonlinearAttrs[k];
