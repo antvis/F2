@@ -43,6 +43,7 @@ export interface ZoomProps extends ChartChildProps {
   onPinch?: Function;
   onPanEnd?: Function;
   onPinchEnd?: Function;
+  onInit?: Function;
   /**
    * 自动同步 x/y 的坐标值
    */
@@ -95,15 +96,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   constructor(props: P) {
     const defaultProps = {
-      onPanStart: () => { },
-      onPinchStart: () => { },
-      onPan: () => { },
-      onPinch: () => { },
-      onPanEnd: () => { },
-      onPinchEnd: () => { },
+      onPanStart: () => {},
+      onPinchStart: () => {},
+      onPan: () => {},
+      onPinch: () => {},
+      onPanEnd: () => {},
+      onPinchEnd: () => {},
       minCount: 10,
     };
-    super({ ...defaultProps, ...props });
+    super({ ...defaultProps, ...props })
     const { range = [0, 1], mode } = props;
 
     this.dims = mode instanceof Array ? mode : [mode];
@@ -263,6 +264,30 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   onEnd = () => {
     this.startRange = null;
   };
+
+  onPanStart = () => {
+    const { props, scale } = this;
+    this.onStart();
+    props.onPanStart({ scale });
+  }
+
+  onPanEnd = () => {
+    const { props, scale } = this;
+    this.onEnd();
+    props.onPanEnd({ scale });
+  }
+
+  onPinchStart = () => {
+    const { props } = this;
+    this.onStart();
+    props?.onPinchStart();
+  }
+
+  onPinchEnd = () => {
+    const { props, scale } = this;
+    this.onEnd();
+    props.onPanEnd({ scale });
+  }
 
   _doXPan(ev) {
     const { direction, deltaX } = ev;
@@ -425,53 +450,40 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   _bindEvents() {
-    const { context, props } = this;
+    const { context, props, scale } = this;
     const { canvas } = context;
     const {
       pan,
       pinch,
       swipe,
-      onPanStart,
+      onInit,
       onPan,
-      onPanEnd,
       onPinch,
-      onPinchStart,
-      onPinchEnd,
     } = props;
     // 统一绑定事件
     if (pan !== false) {
-      canvas.on('panstart', () => {
-        onPanStart();
-        this.onStart();
-      });
-      canvas.on('pan', (ev) => {
-        onPan();
+      canvas.on('panstart', this.onPanStart);
+      canvas.on('pan', ev => {
         this.onPan(ev);
+        onPan(ev);
       });
-      canvas.on('panend', () => {
-        onPanEnd();
-        this.onEnd();
-      });
+      canvas.on('panend', this.onPanEnd);
     }
 
     if (pinch !== false) {
-      canvas.on('pinchstart', () => {
-        onPinchStart();
-        this.onStart();
-      });
+      canvas.on('pinchstart', this.onPinchStart);
       canvas.on('pinch', (ev) => {
-        onPinch();
         this.onPinch(ev);
+        onPinch(ev);
       });
-      canvas.on('pinchend', () => {
-        onPinchEnd();
-        this.onEnd();
-      });
+      canvas.on('pinchend', this.onPinchEnd);
     }
 
     if (swipe !== false) {
       canvas.on('swipe', this.onSwipe);
     }
+
+    onInit({ scale })
   }
 
   _clearEvents() {
@@ -480,42 +492,26 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const {
       pan,
       pinch,
-      swipe,
-      onPanStart,
       onPan,
-      onPanEnd,
       onPinch,
-      onPinchEnd,
-      onPinchStart,
+      swipe,
     } = props;
     // 统一解绑事件
     if (pan !== false) {
-      canvas.off('panstart', () => {
-        onPanStart();
-        this.onStart();
-      });
-      canvas.off('pan', (ev) => {
-        onPan();
+      canvas.off('panstart', this.onPanStart);
+      canvas.off('pan', ev => {
         this.onPan(ev);
+        onPan(ev);
       });
-      canvas.off('panend', () => {
-        onPanEnd();
-        this.onEnd();
-      });
+      canvas.off('panend', this.onEnd);
     }
     if (pinch !== false) {
-      canvas.off('pinchstart', () => {
-        onPinchStart();
-        this.onStart();
-      });
+      canvas.off('pinchstart', this.onPinchStart);
       canvas.off('pinch', (ev) => {
-        onPinch();
         this.onPinch(ev);
+        onPinch(ev);
       });
-      canvas.off('pinchend', () => {
-        onPinchEnd();
-        this.onEnd();
-      });
+      canvas.off('pinchend', this.onPinchEnd);
     }
     if (swipe !== false) {
       canvas.off('swipe', this.onSwipe);
