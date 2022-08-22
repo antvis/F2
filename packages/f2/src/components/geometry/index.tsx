@@ -394,7 +394,7 @@ class Geometry<
         ...defaultAttrValues,
       };
       const firstChild = children[0];
-      if(!firstChild) {
+      if (children.length === 0) {
         continue;
       }
       // 非线性映射
