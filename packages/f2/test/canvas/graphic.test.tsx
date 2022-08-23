@@ -1,5 +1,6 @@
 import { jsx, Canvas, Fragment, Component } from '../../src';
 import { createContext, delay } from '../util';
+import { Smooth, BBox } from '@antv/f2-graphic';
 import imageBianzu from './images/bianzu';
 
 function View() {
@@ -281,6 +282,106 @@ describe('Canvas', () => {
 
       await delay(500);
       expect(context).toMatchImageSnapshot();
+    });
+  });
+
+  describe('clip', () => {
+    it('custom clip', () => {
+      const context = createContext('custom clip');
+      const points1 = [
+        { x: 10, y: 20 },
+        { x: 20, y: 40 },
+        { x: 50, y: 45 },
+        { x: 100, y: 80 },
+        { x: 200, y: 80 },
+      ];
+
+      const points2 = [
+        { x: 10, y: 40 },
+        { x: 20, y: 60 },
+        { x: 50, y: 20 },
+        { x: 100, y: 90 },
+        { x: 200, y: 70 },
+      ];
+
+      const clipPoints = [...points1];
+      clipPoints.push({ x: 200, y: 0 }, { x: 0, y: 0 });
+      const constraint = [
+        [0, 0],
+        [1, 1],
+      ];
+      const topSps = Smooth.smooth(points1, false, constraint);
+      const bottomPoints = [...points2].reverse();
+      const bottomSps = Smooth.smooth(bottomPoints, false, constraint);
+
+      const Shape = () => {
+        return (
+          <group>
+            <polyline
+              attrs={{
+                points: points1,
+                lineWidth: '4px',
+                stroke: 'red',
+                smooth: true,
+              }}
+            />
+            <polyline
+              attrs={{
+                points: points2,
+                lineWidth: '4px',
+                stroke: 'blue',
+                smooth: true,
+              }}
+            />
+            <custom
+              attrs={{
+                // @ts-ignore
+                points: [].concat(points1).concat([...points2].reverse()),
+                fill: 'red',
+                fillOpacity: 0.5,
+                clip: {
+                  type: 'custom',
+                  attrs: {
+                    points: clipPoints,
+                  },
+                  createPath: (context) => {
+                    context.beginPath();
+                    context.moveTo(points1[0].x, points1[0].y);
+                    for (const sp of topSps) {
+                      context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+                    }
+                    context.lineTo(200, 0);
+                    context.lineTo(0, 0);
+                    context.closePath();
+                  },
+                  calculateBox: () => BBox.getBBoxFromPoints(clipPoints),
+                },
+              }}
+              createPath={(context) => {
+                context.beginPath();
+                context.moveTo(points1[0].x, points1[0].y);
+                for (const sp of topSps) {
+                  context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+                }
+                context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
+                for (const sp of bottomSps) {
+                  context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
+                }
+                context.closePath();
+              }}
+            />
+          </group>
+        );
+      };
+
+      const { props } = (
+        <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+          <Shape />
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
     });
   });
 });
