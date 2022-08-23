@@ -153,7 +153,6 @@ class EventController {
     ev.points = points;
     this.emitEnd(ev);
     this.emitEvent('touchend', ev);
-    // console.log('tttttt');
     // swipe事件处理, 在touchend之后触发
     const lastMoveTime = this.lastMoveTime;
     const now = Date.now();

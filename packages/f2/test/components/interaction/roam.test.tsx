@@ -4,11 +4,7 @@ import { Axis, Point, ScrollBar } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 describe('全局漫游模式', () => {
-<<<<<<< HEAD
-  describe.skip('斜移和缩放-linear 类型', () => {
-=======
   describe('斜移和缩放-linear 类型', () => {
->>>>>>> fix bug
     const context = createContext('折线', {
       width: '350px',
       height: '300px',
@@ -87,10 +83,9 @@ describe('全局漫游模式', () => {
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });
-<<<<<<< HEAD
   });
 
-  describe.skip('斜移和缩放-sensitive 灵明度', () => {
+  describe('斜移和缩放-sensitive 灵明度', () => {
     const context = createContext('折线', {
       width: '350px',
       height: '300px',
@@ -171,7 +166,7 @@ describe('全局漫游模式', () => {
     });
   });
 
-  describe.only('swip', () => {
+  describe('swip', () => {
     const context = createContext('折线', {
       width: '350px',
       height: '300px',
@@ -190,7 +185,7 @@ describe('全局漫游模式', () => {
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
             <Point x="release" y="count" size={20} viewClip />
-            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" />
+            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" swipe />
           </Chart>
         </Canvas>
       );
@@ -201,22 +196,5 @@ describe('全局漫游模式', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
-
-    // it('斜移', async () => {
-    //   await delay(20);
-    //   await gestureSimulator(context.canvas, 'touchstart', { x: 210, y: 169 });
-    //   await delay(20);
-    //   await gestureSimulator(context.canvas, 'touchmove', { x: 180, y: 189 });
-    //   await delay(20);
-    //   await gestureSimulator(context.canvas, 'touchmove', { x: 150, y: 219 });
-    //   await delay(20);
-    //   await gestureSimulator(context.canvas, 'touchmove', { x: 130, y: 249 });
-    //   await delay(20);
-    //   await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 269 });
-    //   await delay(300);
-    //   expect(context).toMatchImageSnapshot();
-    // });
-=======
->>>>>>> fix bug
   });
 });
