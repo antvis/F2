@@ -109,14 +109,14 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { range = [0, 1], mode } = props;
 
     this.dims = mode instanceof Array ? mode : [mode];
-    const cacheRange = {};
-    each(this.dims, (dim) => {
-      cacheRange[dim] = range;
-    });
+    // const cacheRange = {};
+    // each(this.dims, (dim) => {
+    //   cacheRange[dim] = range;
+    // });
 
-    this.state = {
-      range: cacheRange,
-    } as S;
+    // this.state = {
+    //   range: cacheRange,
+    // } as S;
   }
 
   didMount(): void {
@@ -141,9 +141,11 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   willMount(): void {
     const { props, dims, state } = this;
-    const { minCount } = props;
-    const { range } = state;
+    const { minCount, range } = props;
+    // const { range } = state;
     let valueLength = Number.MIN_VALUE;
+    const cacheRange = {};
+
     each(dims, (dim) => {
       const scale = this._getScale(dim);
       const { values } = scale;
@@ -151,11 +153,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       this.scale[dim] = scale;
       this.originScale[dim] = cloneScale(scale);
 
-      this.updateRange(range[dim], dim);
+      this.updateRange(range, dim);
+      cacheRange[dim] = range;
     });
 
     // 图表上最少显示 MIN_COUNT 个数据
     this.minScale = minCount / valueLength;
+    this.state = {
+      range: cacheRange,
+    } as S;
   }
 
   didUnmount(): void {
@@ -183,6 +189,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       }
     });
     if (isEqual(range, this.state.range)) return;
+
     this.setState({
       range,
     } as S);
@@ -383,7 +390,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { chart, data, autoFit } = props;
     const { range } = state;
 
-    if (isEqual(newRange, this.state.range)) return newRange;
+    if (range && isEqual(newRange, range[dim])) return newRange;
 
     // 更新主 scale
     updateRange(scale[dim], originScale[dim], newRange);
