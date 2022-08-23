@@ -375,7 +375,7 @@ describe('Canvas', () => {
       };
 
       const { props } = (
-        <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+        <Canvas context={context} pixelRatio={1}>
           <Shape />
         </Canvas>
       );
