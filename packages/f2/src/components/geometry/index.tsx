@@ -472,7 +472,7 @@ class Geometry<
 
     // linear 类型
     const invertValue = xScale.invert(invertPointX);
-    const values = xScale.values;
+    const values = xScale.values.sort((a, b) => a - b);
     const len = values.length;
     // 如果只有1个点直接返回第1个点
     if (len === 1) {
@@ -558,6 +558,7 @@ class Geometry<
 
     const rst = [];
     const value = this._getXSnap(invertPoint.x);
+    console.log('value', value);
     if (!value) {
       return rst;
     }
