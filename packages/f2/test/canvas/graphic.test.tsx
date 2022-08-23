@@ -286,7 +286,7 @@ describe('Canvas', () => {
   });
 
   describe('clip', () => {
-    it('custom clip', () => {
+    it('custom clip', async () => {
       const context = createContext('custom clip');
       const points1 = [
         { x: 10, y: 20 },
@@ -382,6 +382,9 @@ describe('Canvas', () => {
 
       const canvas = new Canvas(props);
       canvas.render();
+
+      await delay(100);
+      expect(context).toMatchImageSnapshot();
     });
   });
 });
