@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2",
-  "version": "4.0.27",
+  "version": "4.0.28",
   "description": "Charts for mobile visualization.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@antv/adjust": "~0.2.5",
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f2-graphic": "^0.0.6",
+    "@antv/f2-graphic": "^0.0.7",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5",
