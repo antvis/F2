@@ -367,7 +367,39 @@ describe('Geometry - Attr', () => {
 
     expect(geometryRef.current.records[0].children[0].color).toBe('blue');
   });
+  it('color = {{ field, valuesMap }}', () => {
+    const context = createContext('color = {{ field, valuesMap }} 回调函数设置值域', {
+      width: '380px',
+    });
 
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={12}
+            color={{
+              field: 'sales',
+              valuesMap: {
+                'value > 70': 'red',
+                DEFAULT: 'blue',
+              },
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].color).toBe('blue');
+  });
   it('color = {{ type, field }}', () => {
     const context = createContext('color = {{ type, field }} linear 到 categroy 映射', {
       width: '380px',
@@ -607,6 +639,40 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[0].children[1].size).toBe(50);
   });
 
+  it('size = {{ type, field, valuesMap }} 数值越大，size越大', () => {
+    const context = createContext('size = {{ type, field, valuesMap }} 数值越大，size越大', {
+      width: '380px',
+    });
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={{
+              // 数值越大，size越大
+              type: 'linear',
+              field: 'sales',
+              valuesMap: {
+                'value > 50': 50,
+                DEFAULT: 10,
+              },
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].size).toBe(10);
+    expect(geometryRef.current.records[0].children[1].size).toBe(50);
+  });
   /**
    * Shape Attr
    * 只支持接收一个参数，指定几何图像对象绘制的形状。
@@ -794,6 +860,49 @@ describe('Geometry - Attr', () => {
                   return 'dash';
                 }
                 return 'line';
+              },
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    expect(geometryRef.current.records[0].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 2,
+    });
+    expect(geometryRef.current.records[1].children[0].shape).toEqual({
+      lineCap: 'round',
+      lineJoin: 'round',
+      lineWidth: 2,
+      lineDash: [4, 4],
+    });
+  });
+  it('shape = {{ type, field, valuesMap }}', () => {
+    const context = createContext('shape = {{ type, field, valuesMap }} 根据数据判断shape', {
+      width: '380px',
+    });
+    const geometryRef = { current: null };
+
+    const { type, props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Line
+            ref={geometryRef}
+            x="year"
+            y="sales"
+            size={'2px'}
+            shape={{
+              type: 'linear',
+              field: 'type',
+              valuesMap: {
+                'value == "companyB"': 'dash',
+                DEFAULT: 'line'
               },
             }}
           />

@@ -1,5 +1,6 @@
 import { Scale, ScaleConfig } from '@antv/scale';
-import { mix, isFunction, isNil, isArray, valuesOfKey } from '@antv/util';
+import { mix, isFunction, isNil, isArray, valuesOfKey, isObject } from '@antv/util';
+import evaluate from 'simple-evaluate';
 
 class Base {
   // eslint-disable-next-line
@@ -9,6 +10,8 @@ class Base {
   // string[] => [#000, #fff], 颜色之类的范围
   range: number[] | string[];
   callback: Function;
+  // eslint-disable-next-line
+  valuesMap: any;
 
   constructor(options) {
     mix(this, options);
@@ -56,7 +59,21 @@ class Base {
 
   // 等于 normalize + convert， 参数是原始数据，返回是定义域的值
   mapping(value, child = null) {
-    const rst = isFunction(this.callback) ? this.callback(value, child) : null;
+    let rst = null;
+    if (isFunction(this.callback)) {
+      rst = this.callback(value, child);
+    } else if (isObject(this.valuesMap)) {
+      if (this.valuesMap[value]) {
+        rst = this.valuesMap[value];
+      } else {
+        rst = Object.keys(this.valuesMap).reduce((prev, curr) => {
+          if (evaluate({ value }, curr)) {
+            return this.valuesMap[curr];
+          }
+          return prev;
+        }, this.valuesMap.DEFAULT);
+      }
+    }
     if (!isNil(rst)) {
       return rst;
     }
