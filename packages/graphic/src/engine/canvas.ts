@@ -170,7 +170,6 @@ class Canvas extends EventEmit {
       this.beforeDraw();
       try {
         const context = this._attrs.context;
-        this.sort();
         this.drawChildren(context);
         // 支付宝，微信小程序，需要调context.draw才能完成绘制， 所以这里直接判断是否有.draw方法
         if (context.draw) {

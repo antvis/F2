@@ -59,6 +59,7 @@ export default {
   },
 
   drawChildren(context) {
+    this.sort();
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];

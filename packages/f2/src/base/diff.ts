@@ -261,6 +261,8 @@ function diff(parent: Component, nextChildren, lastChildren) {
       if (component.willReceiveProps) {
         component.willReceiveProps(props, parent.context);
       }
+      const { zIndex } = props;
+      component.container.set('zIndex', zIndex);
       component.props = props;
       component.context = parent.context;
     }

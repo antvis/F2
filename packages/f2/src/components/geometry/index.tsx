@@ -2,7 +2,7 @@ import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from
 import Selection, { SelectionState } from './selection';
 import { Adjust, getAdjust } from '@antv/adjust';
 import { toTimeStamp } from '../../util/index';
-import { GeomType, GeometryProps, GeometryAdjust } from './interface';
+import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
@@ -143,16 +143,12 @@ class Geometry<
       chart.scale.adjustStartZero(y.scale);
     }
     // 饼图的scale调整，关闭nice
-    if (
-      isPolar &&
-      transposed &&
-      (adjust === 'stack' || (adjust as GeometryAdjust)?.type === 'stack')
-    ) {
+    if (isPolar && transposed && adjust === 'stack') {
       const { y } = attrs;
       chart.scale.adjustPieScale(y.scale);
     }
 
-    if (adjust === 'stack' || (adjust as GeometryAdjust)?.type === 'stack') {
+    if (adjust === 'stack') {
       this._updateStackRange(yField, y.scale, this.dataArray);
     }
   }

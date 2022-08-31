@@ -55,6 +55,16 @@ describe('Guide ', () => {
 
     await delay(50);
     expect(context).toMatchImageSnapshot();
+
+    const newChartProps = (
+      <Chart data={data}>
+        <Line x="genre" y="sold" visible={false} />
+        <Guide records={[data[2], data[3]]} fill="red" />
+        <Guide records={[data[3], data[4]]} fill="black" />
+      </Chart>
+    );
+    chart.update({ children: newChartProps });
+    expect(context).toMatchImageSnapshot();
   });
 
   it('image & text', async () => {
