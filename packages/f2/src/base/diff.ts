@@ -137,8 +137,9 @@ function createComponent(parent: Component, element: JSX.Element): Component {
     component.transformFrom = transformFromComponent;
   }
 
+  const { zIndex } = props;
   // 每个组件都新建一个独立容器
-  component.container = container.addGroup();
+  component.container = container.addGroup({ zIndex });
   component.context = context;
   component.updater = updater;
 
@@ -307,6 +308,7 @@ function renderChildren(parent: Component, nextChildren, lastChildren) {
   } else {
     renderShape(parent, nextChildren);
   }
+
   return nextChildren;
 }
 

@@ -97,6 +97,7 @@ class Group extends Rect {
 
   drawInner(context) {
     super.drawInner(context);
+    this.sort();
     this.drawChildren(context);
   }
 
