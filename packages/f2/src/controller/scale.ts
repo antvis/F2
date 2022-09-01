@@ -1,5 +1,5 @@
-import { each, mix, isNil, isFunction, isNumber, valuesOfKey, getRange } from '@antv/util';
-import { registerTickMethod, Scale, getScale, ScaleConfig } from '@antv/scale';
+import { getScale, registerTickMethod, Scale, ScaleConfig } from '@antv/scale';
+import { each, getRange, isFunction, isNil, isNumber, mix, valuesOfKey } from '@antv/util';
 import CatTick from './scale/cat-tick';
 import LinearTick from './scale/linear-tick';
 
@@ -65,6 +65,7 @@ class ScaleController {
       if (isNil(option.max)) {
         option.max = max;
       }
+      option.values = values.sort((a, b) => a - b);
       return option;
     }
     // 分类类型和 timeCat 类型，调整 range
