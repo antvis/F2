@@ -17,6 +17,7 @@ interface Point {
 }
 
 export interface Props {
+  zIndex?: number;
   data: any;
   scale?: any;
   coord?: any;

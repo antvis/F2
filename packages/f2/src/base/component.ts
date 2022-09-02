@@ -6,12 +6,17 @@ export interface ComponentContext {
   [key: string]: any;
 }
 
+export interface IProps {
+  zIndex?: number;
+  [key: string]: any;
+}
+
 export interface Updater<S = any> {
   enqueueSetState: (component: Component, partialState: S, callback?: () => void) => void;
   enqueueForceUpdate: (component: Component, partialState: S, callback?: () => void) => void;
 }
 
-class Component<P = any, S = any> {
+class Component<P extends IProps = any, S = any> {
   props: P;
   state: S;
   context: ComponentContext;
