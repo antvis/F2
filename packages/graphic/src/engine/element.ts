@@ -30,7 +30,7 @@ const SHAPE_ATTRS = [
   'shadow', // 兼容支付宝小程序
 ];
 
-const CLIP_SHAPES = ['circle', 'sector', 'polygon', 'rect', 'polyline'];
+const CLIP_SHAPES = ['circle', 'sector', 'polygon', 'rect', 'polyline', 'custom'];
 
 // 内部属性存储结构
 export interface ElementProp {

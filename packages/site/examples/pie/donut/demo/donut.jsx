@@ -20,7 +20,10 @@ const data = [
 ];
 
 const context = document.getElementById('container').getContext('2d');
-
+const map = {};
+data.forEach(function(obj) {
+  map[obj.name] = obj.percent + '%';
+});
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio} theme={{ padding: [20, 'auto'] }}>
     <Chart
@@ -50,8 +53,8 @@ const { props } = (
       />
       <Legend
         position="right"
-        itemFormatter={(val) => {
-          return val + '    ' + map[val];
+        itemFormatter={(val,name) => {
+          return map[name];
         }}
       />
     </Chart>

@@ -77,7 +77,13 @@ export default {
   },
 
   add(items) {
-    const children = this.get('children');
+    let children = this.get('children');
+
+    if (!children) {
+      children = [];
+      this.set('children', children);
+    }
+
     if (!isArray(items)) {
       items = [items];
     }

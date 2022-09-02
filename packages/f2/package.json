@@ -1,12 +1,7 @@
 {
   "name": "@antv/f2",
-  "version": "4.0.26",
+  "version": "4.0.28",
   "description": "Charts for mobile visualization.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "unpkg": "dist/index.min.js",
-  "types": "es/index.d.ts",
-  "miniprogram": "dist",
   "keywords": [
     "antv",
     "f2",
@@ -20,24 +15,29 @@
     "mobile visualization",
     "interactive"
   ],
+  "homepage": "https://f2.antv.vision/",
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2"
+  },
+  "license": "MIT",
+  "author": "https://github.com/orgs/antvis/people",
   "sideEffects": false,
+  "main": "lib/index.js",
+  "unpkg": "dist/index.min.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
   "dependencies": {
     "@antv/adjust": "~0.2.5",
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f2-graphic": "^0.0.6",
+    "@antv/f2-graphic": "~0.0.7",
     "@antv/scale": "~0.3.3",
     "@antv/util": "~2.0.6",
     "@babel/runtime": "^7.12.5",
     "d3-cloud": "~1.2.5"
   },
-  "homepage": "https://f2.antv.vision/",
-  "author": "https://github.com/orgs/antvis/people",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/f2"
-  },
-  "bugs": {
-    "url": "https://github.com/antvis/f2/issues"
-  }
+  "miniprogram": "dist"
 }
