@@ -26,7 +26,7 @@
     "packages/*"
   ],
   "scripts": {
-    "beta": "npm run build && npm run test && lerna publish",
+    "beta": "npm run build && npm run test && lerna publish --canary --preid beta",
     "bootstrap": "lerna bootstrap",
     "build": "father build",
     "build-ci": "CI=true npm run build",
