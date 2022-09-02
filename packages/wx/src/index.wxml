@@ -1,9 +1,0 @@
-<canvas
-  type="2d"
-  class="f2-canvas"
-  bindtap="click"
-  bindtouchstart="touchStart"
-  bindtouchmove="touchMove"
-  bindtouchend="touchEnd"
->
-</canvas>

@@ -8,8 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@antv/f2": "^4.0.0",
-    "@antv/f2-vue": "^4.0.0",
+    "@antv/f2": "*",
+    "@antv/f-vue": "*",
     "vue": "^3.2.25"
   },
   "devDependencies": {

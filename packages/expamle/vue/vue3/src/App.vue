@@ -1,6 +1,6 @@
 <script>
 import { toRaw } from 'vue';
-import Canvas from '@antv/f2-vue';
+import Canvas from '@antv/f-vue';
 import { Chart, Interval, Axis } from '@antv/f2';
 import Grahpic from './graphic';
 
@@ -26,7 +26,7 @@ export default {
     return {
       year: '2021',
       chartData: data1,
-    }
+    };
   },
   mounted() {
     setTimeout(() => {
@@ -38,11 +38,11 @@ export default {
     const { year, chartData } = this;
     return (
       <div className="container">
-        <Canvas pixelRatio={ window.devicePixelRatio }>
-          <Chart data={ toRaw(chartData) }>
-            <Grahpic year={ year } />
-            <Axis field="genre"/>
-            <Axis field="sold"/>
+        <Canvas pixelRatio={window.devicePixelRatio}>
+          <Chart data={toRaw(chartData)}>
+            <Grahpic year={year} />
+            <Axis field="genre" />
+            <Axis field="sold" />
             <Interval x="genre" y="sold" color="genre" />
           </Chart>
         </Canvas>
@@ -58,4 +58,3 @@ export default {
   height: 300px;
 }
 </style>
-

@@ -1,6 +1,6 @@
-<script lang='jsx'>
+<script lang="jsx">
 import { toRaw } from 'vue';
-import Canvas from '@antv/f2-vue';
+import Canvas from '@antv/f-vue';
 import { Chart, Interval, Axis } from '@antv/f2';
 import Grahpic from './graphic';
 
@@ -58,4 +58,3 @@ export default {
   height: 300px;
 }
 </style>
-
