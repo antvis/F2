@@ -94,7 +94,7 @@ export default (Views) => {
     }
 
     render() {
-      const { props, state } = this;
+      const { props, state, container } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
@@ -112,6 +112,7 @@ export default (Views) => {
 
       const records = this.mapping();
       const pointY0 = this.getPointY0();
+      const clip = this.getClip();
       return (
         <View
           coord={coord}
@@ -123,6 +124,7 @@ export default (Views) => {
           labelCfg={labelCfg}
           LabelView={LabelView}
           y0={pointY0}
+          clip={clip}
         />
       );
     }

@@ -2,9 +2,13 @@ import { deepMix, isNil } from '@antv/util';
 import { jsx } from '../../jsx';
 
 export default (props) => {
-  const { records, animation } = props;
+  const { records, animation, clip } = props;
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (

@@ -70,7 +70,7 @@ function AnimationEndView(props) {
 }
 
 export default (props: LineViewProps) => {
-  const { records, coord, animation, endView: EndView } = props;
+  const { records, coord, animation, endView: EndView, clip } = props;
 
   const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;
 
@@ -115,7 +115,11 @@ export default (props: LineViewProps) => {
         },
       };
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (

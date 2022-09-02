@@ -456,6 +456,23 @@ class Geometry<
     return records;
   }
 
+  getClip() {
+    const { coord, viewClip } = this.props;
+    const { width: contentWidth, height: contentHeight, left, top } = coord;
+    if (viewClip) {
+      return {
+        type: 'rect',
+        attrs: {
+          x: left,
+          y: top,
+          width: contentWidth,
+          height: contentHeight,
+        },
+      };
+    }
+    return null;
+  }
+
   getAttr(attrName: string) {
     return this.attrController.getAttr(attrName);
   }
