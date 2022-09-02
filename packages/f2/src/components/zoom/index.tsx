@@ -2,7 +2,7 @@ import Component from '../../base/component';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '@antv/scale';
-import { each, isEqual } from '@antv/util';
+import { each, isNumberEqual } from '@antv/util';
 import equal from '../../base/equal';
 
 export type ZoomRange = [number, number];
@@ -12,8 +12,15 @@ function lerp(min, max, fraction) {
   return (max - min) * fraction + min;
 }
 
+function isEqual(aRange, bRange) {
+  for (const i in aRange) {
+    if (!isNumberEqual(aRange[i], bRange[i])) return false;
+  }
+  return true;
+}
 export interface ZoomProps extends ChartChildProps {
-  sensitive?: number;
+  panSensitive?: number;
+  pinchSensitive?: number;
   /**
    * 缩放和平移模式
    */
@@ -109,14 +116,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { range = [0, 1], mode } = props;
 
     this.dims = mode instanceof Array ? mode : [mode];
-    const cacheRange = {};
-    each(this.dims, (dim) => {
-      cacheRange[dim] = range;
-    });
-
-    this.state = {
-      range: cacheRange,
-    } as S;
   }
 
   didMount(): void {
@@ -141,9 +140,11 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   willMount(): void {
     const { props, dims, state } = this;
-    const { minCount } = props;
-    const { range } = state;
+    const { minCount, range } = props;
+    // const { range } = state;
     let valueLength = Number.MIN_VALUE;
+    const cacheRange = {};
+
     each(dims, (dim) => {
       const scale = this._getScale(dim);
       const { values } = scale;
@@ -151,11 +152,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       this.scale[dim] = scale;
       this.originScale[dim] = cloneScale(scale);
 
-      this.updateRange(range[dim], dim);
+      this.updateRange(range, dim);
+      cacheRange[dim] = range;
     });
 
     // 图表上最少显示 MIN_COUNT 个数据
     this.minScale = minCount / valueLength;
+    this.state = {
+      range: cacheRange,
+    } as S;
   }
 
   didUnmount(): void {
@@ -171,6 +176,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   onPan = (ev) => {
     const { dims } = this;
+
     const range = {};
     each(dims, (dim) => {
       if (dim === 'x') {
@@ -183,15 +189,18 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       }
     });
     if (isEqual(range, this.state.range)) return;
+
     this.setState({
       range,
     } as S);
+
+    // console.log('pan range', range);
   };
 
   update() {
     const { startX, startY, endX, endY } = this.swipeEnd;
-    const x = lerp(startX, endX, 0.1);
-    const y = lerp(startY, endY, 0.1);
+    const x = lerp(startX, endX, 0.05);
+    const y = lerp(startY, endY, 0.05);
     this.swipeEnd = {
       startX: x,
       startY: y,
@@ -203,12 +212,15 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { coord } = props;
     const { width: coordWidth, height: coordHeight } = coord;
     const range = {};
+
     range['x'] = this._doPan((x - startX) / coordWidth, 'x');
     range['y'] = this._doPan((y - startY) / coordHeight, 'y');
 
     this.setState({
       range,
     } as S);
+
+    this.startRange = range;
 
     this.loop = requestAnimationFrame(() => this.update());
     if (Math.abs(x - endX) < 0.0005 && Math.abs(y - endY) < 0.0005) {
@@ -221,7 +233,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { swipe } = this.props;
     if (this.props.mode.length < 2 || !swipe) return;
 
-    const { velocityX, velocityY, points } = ev;
+    const { velocityX = 0, velocityY = 0, points } = ev;
     const { range } = this.state;
 
     const { x, y } = points[0];
@@ -236,9 +248,10 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     this.swipeEnd = {
       startX: x,
       startY: y,
-      endX: x - velocityX * 600,
-      endY: y + velocityY * 600,
+      endX: x + velocityX * 50,
+      endY: y - velocityY * 50,
     };
+
     this.onStart();
     this.update();
   };
@@ -274,9 +287,10 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     ev.preventDefault && ev.preventDefault();
 
     const { props } = this;
-    const { coord, sensitive = 1 } = props;
+    const { coord, panSensitive = 1 } = props;
     const { width: coordWidth } = coord;
-    const ratio = (deltaX / coordWidth) * sensitive;
+
+    const ratio = (deltaX / coordWidth) * panSensitive;
 
     const newRange = this._doPan(ratio, 'x');
     return newRange;
@@ -290,9 +304,9 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     ev.preventDefault && ev.preventDefault();
 
     const { props } = this;
-    const { coord, sensitive = 1 } = props;
+    const { coord, panSensitive = 1 } = props;
     const { height: coordHeight } = coord;
-    const ratio = (-deltaY / coordHeight) * sensitive;
+    const ratio = (-deltaY / coordHeight) * panSensitive;
     const newRange = this._doPan(ratio, 'y');
     return newRange;
   }
@@ -344,10 +358,10 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   _doPinch(startRatio: number, endRatio: number, zoom: number, dim: string) {
     const { startRange, minScale, props } = this;
-    const { sensitive = 1 } = props;
+    const { pinchSensitive = 1 } = props;
     const [start, end] = startRange[dim];
 
-    const zoomOffset = (1 - zoom) * sensitive;
+    const zoomOffset = (1 - zoom) * pinchSensitive;
     const rangeLen = end - start;
     const rangeOffset = rangeLen * zoomOffset;
 
@@ -383,7 +397,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { chart, data, autoFit } = props;
     const { range } = state;
 
-    if (isEqual(newRange, this.state.range)) return newRange;
+    if (range && isEqual(newRange, range[dim])) return newRange;
 
     // 更新主 scale
     updateRange(scale[dim], originScale[dim], newRange);

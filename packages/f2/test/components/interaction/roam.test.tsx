@@ -104,7 +104,13 @@ describe('全局漫游模式', () => {
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
             <Point x="release" y="count" size={20} viewClip />
-            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" sensitive={0.5} />
+            <ScrollBar
+              mode={['x', 'y']}
+              range={[0, 0.3]}
+              position="left"
+              panSensitive={0.5}
+              pinchSensitive={0.5}
+            />
           </Chart>
         </Canvas>
       );
@@ -185,7 +191,7 @@ describe('全局漫游模式', () => {
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
             <Point x="release" y="count" size={20} viewClip />
-            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" swipe />
+            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" swipe={true} />
           </Chart>
         </Canvas>
       );
