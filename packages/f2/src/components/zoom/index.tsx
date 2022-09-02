@@ -233,7 +233,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { swipe } = this.props;
     if (this.props.mode.length < 2 || !swipe) return;
 
-    const { velocityX, velocityY, points } = ev;
+    const { velocityX = 0, velocityY = 0, points } = ev;
     const { range } = this.state;
 
     const { x, y } = points[0];
@@ -251,6 +251,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       endX: x + velocityX * 50,
       endY: y - velocityY * 50,
     };
+
     this.onStart();
     this.update();
   };
