@@ -398,7 +398,9 @@ class Geometry<
         ...defaultAttrValues,
       };
       const firstChild = children[0];
-
+      if (children.length === 0) {
+        continue;
+      }
       // 非线性映射
       for (let k = 0, len = nonlinearAttrs.length; k < len; k++) {
         const attrName = nonlinearAttrs[k];
@@ -416,7 +418,7 @@ class Geometry<
           const attr = attrs[attrName];
           // 分类属性的线性映射
           if (attrController.isGroupAttr(attrName)) {
-            attrValues[attrName] = attr.mapping(child[attr.field]);
+            attrValues[attrName] = attr.mapping(child[attr.field], child);
           } else {
             normalized[attrName] = attr.normalize(child[attr.field]);
           }
@@ -452,6 +454,23 @@ class Geometry<
     this._mapping(records);
 
     return records;
+  }
+
+  getClip() {
+    const { coord, viewClip } = this.props;
+    const { width: contentWidth, height: contentHeight, left, top } = coord;
+    if (viewClip) {
+      return {
+        type: 'rect',
+        attrs: {
+          x: left,
+          y: top,
+          width: contentWidth,
+          height: contentHeight,
+        },
+      };
+    }
+    return null;
   }
 
   getAttr(attrName: string) {

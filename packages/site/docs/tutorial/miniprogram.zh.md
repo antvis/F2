@@ -27,7 +27,7 @@ npm i @antv/f2-wx --save
 
 ### 3. 添加 jsx 编译
 
-package.js
+package.json
 
 ```json
 {

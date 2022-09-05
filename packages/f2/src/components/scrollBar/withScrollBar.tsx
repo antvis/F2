@@ -35,6 +35,7 @@ export default (View) => {
         height: position === 'bottom' || position === 'top' ? marginNumber : 0,
       });
     }
+
     render() {
       const { props, state } = this;
       const { visible } = props;

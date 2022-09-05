@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Axis, Line, Interval, Tooltip, Legend } from '../../../src';
+import { Axis, Canvas, Chart, Interval, jsx, Legend, Tooltip } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -334,6 +334,41 @@ describe('tooltip', () => {
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
 
     await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('Tooltip 自定义文本内容', async () => {
+    const context = createContext('Tooltip 自定义文本内容');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip
+            alwaysShow={true}
+            showTooltipMarker={true}
+            defaultItem={data[0]}
+            customText={(record) => {
+              const { origin } = record;
+              return (
+                <text
+                  attrs={{
+                    fill: '#fff',
+                    text: `名称：${origin.genre}`,
+                  }}
+                />
+              );
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 });

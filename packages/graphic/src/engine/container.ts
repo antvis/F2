@@ -6,7 +6,7 @@ const SHAPE_MAP = {};
 const INDEX = '_INDEX';
 
 function getComparer(compare) {
-  return function (left, right) {
+  return function(left, right) {
     const result = compare(left, right);
     return result === 0 ? left[INDEX] - right[INDEX] : result;
   };
@@ -50,7 +50,7 @@ export default {
     }
 
     children.sort(
-      getComparer(function (obj1, obj2) {
+      getComparer(function(obj1, obj2) {
         return obj1.get('zIndex') - obj2.get('zIndex');
       })
     );
@@ -59,6 +59,7 @@ export default {
   },
 
   drawChildren(context) {
+    this.sort();
     const children = this.get('children');
     for (let i = 0, len = children.length; i < len; i++) {
       const child = children[i];
@@ -77,7 +78,13 @@ export default {
   },
 
   add(items) {
-    const children = this.get('children');
+    let children = this.get('children');
+
+    if (!children) {
+      children = [];
+      this.set('children', children);
+    }
+
     if (!isArray(items)) {
       items = [items];
     }

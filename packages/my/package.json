@@ -1,10 +1,7 @@
 {
   "name": "@antv/f2-my",
-  "version": "4.0.26",
+  "version": "4.0.28",
   "description": "F2 for alipay mini-program",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "types": "es/index.d.ts",
   "keywords": [
     "antv",
     "f2",
@@ -16,22 +13,25 @@
     "my",
     "alipay"
   ],
-  "dependencies": {
-    "@antv/f2": "^4.0.26",
-    "@antv/f2-context": "^0.0.1",
-    "@babel/runtime": "^7.12.5"
-  },
-  "devDependencies": {
-    "mini-types": "^0.1.7"
-  },
   "homepage": "https://f2.antv.vision/zh/docs/tutorial/miniprogram",
-  "author": "https://github.com/orgs/antvis/people",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/f2"
   },
-  "bugs": {
-    "url": "https://github.com/antvis/f2/issues"
+  "license": "MIT",
+  "author": "https://github.com/orgs/antvis/people",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "dependencies": {
+    "@antv/f2": "^4.0.28",
+    "@antv/f2-context": "~0.0.1",
+    "@babel/runtime": "^7.12.5"
+  },
+  "devDependencies": {
+    "mini-types": "^0.1.7"
   }
 }

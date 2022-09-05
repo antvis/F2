@@ -153,7 +153,6 @@ class EventController {
     ev.points = points;
     this.emitEnd(ev);
     this.emitEvent('touchend', ev);
-
     // swipe事件处理, 在touchend之后触发
     const lastMoveTime = this.lastMoveTime;
     const now = Date.now();
@@ -172,6 +171,8 @@ class EventController {
         if (velocity > 0.3) {
           ev.velocity = velocity;
           ev.direction = calcDirection(prevMovePoints[0], lastMovePoints[0]);
+          ev.velocityX = (lastMovePoints[0].x - prevMovePoints[0].x) / intervalTime;
+          ev.velocityY = (lastMovePoints[0].y - prevMovePoints[0].y) / intervalTime;
           this.emitEvent('swipe', ev);
         }
       }
