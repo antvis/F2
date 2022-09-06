@@ -3,7 +3,7 @@
     "beforeCompile": "babel pages --out-dir pages --only **/*.jsx"
   },
   "dependencies": {
-    "@antv/f2": "*",
+    "@antv/f2": "^5.0.0-alpha.1",
     "@antv/f-my": "*",
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
