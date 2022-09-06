@@ -3,6 +3,7 @@ import { toRaw } from 'vue';
 import Canvas from '@antv/f2-vue';
 import { Chart, Interval, Axis } from '@antv/f2';
 import Grahpic from './graphic';
+import Legend from './legend';
 
 const data1 = [
   { genre: 'Sports', sold: 275 },
@@ -41,6 +42,7 @@ export default {
         <Canvas pixelRatio={ window.devicePixelRatio }>
           <Chart data={ toRaw(chartData) }>
             <Grahpic year={ year } />
+            <Legend />
             <Axis field="genre"/>
             <Axis field="sold"/>
             <Interval x="genre" y="sold" color="genre" />
