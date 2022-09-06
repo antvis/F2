@@ -1,5 +1,5 @@
+import { deepMix, isFunction, isNil, mix } from '@antv/util';
 import { jsx } from '../../jsx';
-import { mix, isNil, deepMix } from '@antv/util';
 import Geometry from '../geometry';
 import * as LabelViews from './label';
 
@@ -96,7 +96,7 @@ export default (Views) => {
     render() {
       const { props, state, container } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
-      const View = Views[shape];
+      const View = isFunction(Views) ? Views : Views[shape];
       const LabelView = LabelViews[shape];
       const labelCfg = deepMix(
         {
