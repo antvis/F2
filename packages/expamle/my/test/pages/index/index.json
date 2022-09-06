@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "f2": "@antv/f2-my"
+    "f2": "@antv/f-my"
   }
-}
+} 
