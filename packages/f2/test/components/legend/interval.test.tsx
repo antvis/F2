@@ -26,7 +26,7 @@ describe('Interval', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(800);
     expect(context).toMatchImageSnapshot();
@@ -40,7 +40,7 @@ describe('Interval', () => {
     expect(context).toMatchImageSnapshot();
 
     await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 });

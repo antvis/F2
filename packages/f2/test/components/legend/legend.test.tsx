@@ -379,7 +379,7 @@ describe('图例', () => {
     expect(context).toMatchImageSnapshot();
 
     const updateProps = getProps(data1);
-    canvas.update(updateProps);
+    await canvas.update(updateProps);
     expect(context).toMatchImageSnapshot();
   });
 

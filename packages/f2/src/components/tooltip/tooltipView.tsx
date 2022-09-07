@@ -193,9 +193,12 @@ export default class TooltipView extends Component {
     this.arrowRef = createRef();
   }
   // 调整 显示的位置
-  _position() {
+  async _position() {
     const { props, context, rootRef, arrowRef } = this;
+    const { canvas } = context;
+    await canvas.ready;
     const rect = rootRef.current?.childNodes[0];
+
     if (!rect) {
       return;
     }

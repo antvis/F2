@@ -38,7 +38,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -80,7 +80,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -130,7 +130,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -172,7 +172,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -215,7 +215,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    await canvas.render();
+    await await canvas.render();
     await delay(200);
 
     // 模拟 press 事件
@@ -260,7 +260,7 @@ describe('数据选中', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -310,7 +310,7 @@ describe('cancelable = false', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(200);
 
@@ -360,7 +360,7 @@ describe('改变默认值', () => {
 
     const props = getProps(data, [{ a: '1', genre: 'Sports', sold: 275 }]);
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(200);
     expect(context).toMatchImageSnapshot();

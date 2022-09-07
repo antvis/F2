@@ -31,7 +31,7 @@ describe('alias', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
