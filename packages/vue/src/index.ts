@@ -1,34 +1,6 @@
-import { h, toRaw, isVNode } from 'vue';
-import { Canvas, Children } from '@antv/f2';
-
-const toRawChildren = (slots) => {
-  return Children.map(slots, (slot) => {
-    if (!slot) return slot;
-    const element = toRaw(slot);
-
-    // vnode
-    if (isVNode(element)) {
-      const { key, ref, type, props, children } = element;
-      if (children) {
-        props.children = toRawChildren(children);
-      }
-      return {
-        key,
-        ref,
-        type,
-        props,
-      };
-    }
-
-    // slot
-    if (element.default) {
-      const children = element.default();
-      return toRawChildren(children);
-    }
-
-    return null;
-  });
-};
+import { h, toRaw } from 'vue';
+import { Canvas } from '@antv/f2';
+import { toRawChildren } from './util';
 
 export default {
   props: {
@@ -105,3 +77,5 @@ export default {
     canvas.destroy();
   },
 };
+
+export * from './components';
