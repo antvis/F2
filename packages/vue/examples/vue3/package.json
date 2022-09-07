@@ -13,10 +13,8 @@
     "vue": "^3.2.25"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "~7.17.3",
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0-0"
+    "@vue/cli-service": "~4.5.0"
   },
   "browserslist": [
     "> 1%",
