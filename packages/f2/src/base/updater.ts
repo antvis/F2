@@ -9,6 +9,10 @@ function createUpdater(canvas) {
     while ((item = setStateQueue.shift())) {
       const { state, component, callback } = item;
 
+      if (component.destroyed) {
+        continue;
+      }
+
       // 如果没有prevState，则将当前的state作为初始的prevState
       if (!component.prevState) {
         component.prevState = Object.assign({}, component.state);
