@@ -42,9 +42,9 @@ export type { AxisTypes }
 type SupportPx<T> = {
   [k in keyof T]:
     k extends PX_FIELD_NAME ?
-      T[k] extends number ? number | pxstr :
-      T[k] extends number[] ? number[] | pxstr[] :
-      T[k] extends Types.Point[] ? PxPoint[] : T[k]
+      NonNullable<T[k]> extends number ? number | pxstr :
+      NonNullable<T[k]> extends number[] ? number[] | pxstr[] :
+      NonNullable<T[k]> extends Types.Point[] ? PxPoint[] : T[k]
     :T[k];
 }
 

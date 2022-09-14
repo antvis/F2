@@ -2,15 +2,22 @@ import { deepMix } from '@antv/util';
 import { jsx } from '../../../jsx';
 
 export default (props) => {
-  const { records, animation, y0 } = props;
+  const { records, animation, y0, clip } = props;
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
             {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color, shape } = item;
+              if (isNaN(xMin) || isNaN(xMax) || isNaN(yMin) || isNaN(yMax)) {
+                return null;
+              }
               return (
                 <rect
                   key={key}

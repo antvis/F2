@@ -3,8 +3,50 @@ import { deepMix } from '@antv/util';
 import { Smooth } from '@antv/f-engine';
 
 export default (props) => {
-  const { records, shape, animation } = props;
+  const { coord, records, shape, animation } = props;
   const isSmooth = shape === 'smooth';
+  const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;
+
+  const appear = coord.isPolar
+    ? {
+        easing: 'quadraticOut',
+        duration: 450,
+        clip: {
+          type: 'sector',
+          property: ['endAngle'],
+          attrs: {
+            x: center.x,
+            y: center.y,
+            startAngle,
+            r: radius,
+          },
+          start: {
+            endAngle: startAngle,
+          },
+          end: {
+            endAngle,
+          },
+        },
+      }
+    : {
+        easing: 'quadraticOut',
+        duration: 450,
+        clip: {
+          type: 'rect',
+          property: ['width'],
+          attrs: {
+            x: left,
+            y: top,
+            height: height,
+          },
+          start: {
+            width: 0,
+          },
+          end: {
+            width: width,
+          },
+        },
+      };
   return (
     <group>
       {records.map((record) => {
@@ -62,6 +104,7 @@ export default (props) => {
                   }}
                   animation={deepMix(
                     {
+                      appear,
                       update: {
                         easing: 'linear',
                         duration: 450,

@@ -70,31 +70,56 @@ function AnimationEndView(props) {
 }
 
 export default (props: LineViewProps) => {
-  const { records, coord, animation, endView: EndView } = props;
-  const { left, top, width, height } = coord;
+  const { records, coord, animation, endView: EndView, clip } = props;
 
-  const appear = {
-    easing: 'linear',
-    duration: 450,
-    clip: {
-      type: 'rect',
-      property: ['width'],
-      attrs: {
-        x: left,
-        y: top,
-        height: height,
-      },
-      start: {
-        width: 0,
-      },
-      end: {
-        width: width,
-      },
-    },
-  };
+  const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;
 
+  const appear = coord.isPolar
+    ? {
+        easing: 'quadraticOut',
+        duration: 450,
+        clip: {
+          type: 'sector',
+          property: ['endAngle'],
+          attrs: {
+            x: center.x,
+            y: center.y,
+            startAngle,
+            r: radius,
+          },
+          start: {
+            endAngle: startAngle,
+          },
+          end: {
+            endAngle,
+          },
+        },
+      }
+    : {
+        easing: 'quadraticOut',
+        duration: 450,
+        clip: {
+          type: 'rect',
+          property: ['width'],
+          attrs: {
+            x: left,
+            y: top,
+            height: height,
+          },
+          start: {
+            width: 0,
+          },
+          end: {
+            width: width,
+          },
+        },
+      };
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (

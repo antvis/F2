@@ -1,9 +1,6 @@
 {
   "name": "f2",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "description": "Charts for mobile visualization.",
   "keywords": [
     "f2",
@@ -17,13 +14,56 @@
     "interactive"
   ],
   "homepage": "https://github.com/antvis/f2",
-  "author": "https://github.com/orgs/antvis/people",
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/f2"
   },
-  "bugs": {
-    "url": "https://github.com/antvis/f2/issues"
+  "author": "https://github.com/orgs/antvis/people",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "beta": "npm run build && npm run test && lerna publish --canary --preid beta",
+    "bootstrap": "lerna bootstrap",
+    "build": "father build",
+    "build-ci": "CI=true npm run build",
+    "build-watch": "CI=true father build -w",
+    "changelog": "generate-changelog",
+    "ci": "npm run lint && npm run build && npm run test",
+    "clean": "lerna clean",
+    "coverage": "jest --coverage",
+    "dev": "npm run test-watch",
+    "lint": "eslint ./",
+    "lint-fix": "eslint --fix ./",
+    "prettier": "prettier --write './packages/**/*.{ts,tsx}'",
+    "publish": "npm run build && npm run test && lerna publish",
+    "refresh": "lerna clean && yarn && lerna bootstrap",
+    "site:build": "cd ./packages/site && npm run site:build",
+    "site:clean": "cd ./packages/site && npm run site:clean",
+    "site:deploy": "cd ./packages/site && npm run site:deploy",
+    "site:develop": "cd ./packages/site && npm run site:develop",
+    "site:start": "cd ./packages/site && npm run site:start",
+    "snapshot": "jest --updateSnapshot",
+    "test": "jest",
+    "test-cov": "jest --coverage",
+    "test-live": "npm run test-watch packages",
+    "test-watch": "DEBUG_MODE=1 jest --watch"
+  },
+  "pre-commit": {
+    "run": [
+      "lint",
+      "test"
+    ],
+    "silent": false
+  },
+  "resolutions": {
+    "monaco-editor": "0.20.0",
+    "monaco-editor-webpack-plugin": "1.9.1",
+    "react-monaco-editor": "0.34.0",
+    "signal-exit": "3.0.3"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
@@ -41,44 +81,5 @@
     "pre-commit": "^1.2.2",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
-  },
-  "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "clean": "lerna clean",
-    "dev": "npm run test-watch",
-    "build": "father build",
-    "build-watch": "CI=true father build -w",
-    "build-ci": "CI=true npm run build",
-    "test": "jest",
-    "test-cov": "jest --coverage",
-    "test-live": "npm run test-watch packages",
-    "test-watch": "DEBUG_MODE=1 jest --watch",
-    "coverage": "jest --coverage",
-    "snapshot": "jest --updateSnapshot",
-    "lint": "eslint ./",
-    "lint-fix": "eslint --fix ./",
-    "changelog": "generate-changelog",
-    "publish": "npm run build && npm run test && lerna publish --dist-tag next",
-    "ci": "npm run lint && npm run build && npm run test",
-    "refresh": "lerna clean && yarn && lerna bootstrap",
-    "site:start": "cd ./packages/site && npm run site:start",
-    "site:develop": "cd ./packages/site && npm run site:develop",
-    "site:build": "cd ./packages/site && npm run site:build",
-    "site:deploy": "cd ./packages/site && npm run site:deploy",
-    "site:clean": "cd ./packages/site && npm run site:clean",
-    "prettier": "prettier --write './packages/**/*.{ts,tsx}'"
-  },
-  "pre-commit": {
-    "run": [
-      "lint",
-      "test"
-    ],
-    "silent": false
-  },
-  "resolutions": {
-    "signal-exit": "3.0.3",
-    "react-monaco-editor": "0.34.0",
-    "monaco-editor": "0.20.0",
-    "monaco-editor-webpack-plugin": "1.9.1"
   }
 }

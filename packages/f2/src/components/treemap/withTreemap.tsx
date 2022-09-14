@@ -1,9 +1,9 @@
 import { jsx } from '../../jsx';
 import { Component } from '@antv/f-engine';
 import { Category } from '../../attr';
-import { hierarchy, treemap, treemapBinary } from 'd3-hierarchy';
 import CoordController from '../../controller/coord';
 import Coord from '../../coord';
+import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 import { Ref } from '../../types';
 
 export default (View) => {
@@ -40,6 +40,7 @@ export default (View) => {
         // 默认treemapSquarify
         .tile(treemapBinary)
         // .size([1, 1])
+        // @ts-ignore
         .round(false);
       // .padding(space)
       // .paddingInner(space);

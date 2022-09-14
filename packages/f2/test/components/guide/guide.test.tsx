@@ -20,7 +20,53 @@ const data = [
   { genre: 'Other', sold: 150, type: 'a' },
 ];
 
+const Guide = withGuide((props) => {
+  const { fill } = props;
+  return (
+    <group>
+      <rect
+        attrs={{
+          x: '60px',
+          y: '100px',
+          width: '80px',
+          height: '80px',
+          fill,
+        }}
+      />
+    </group>
+  );
+});
+
 describe('Guide ', () => {
+  it('自定义 guide & zIndex', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" visible={false} />
+          <Guide records={[data[2], data[3]]} zIndex={100} fill="red" />
+          <Guide records={[data[3], data[4]]} fill="black" />
+        </Chart>
+      </Canvas>
+    );
+
+    const chart = new Canvas(props);
+    chart.render();
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
+
+    const newChartProps = (
+      <Chart data={data}>
+        <Line x="genre" y="sold" visible={false} />
+        <Guide records={[data[2], data[3]]} fill="red" />
+        <Guide records={[data[3], data[4]]} fill="black" />
+      </Chart>
+    );
+    chart.update({ children: newChartProps });
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('image & text', async () => {
     const context = createContext();
     const { props } = (

@@ -72,82 +72,102 @@ describe('Axis 轴', () => {
       {
         Year: '1987',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '1989',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '1995',
         NumberNewMicroBrewery: 2,
+        goal: 10,
       },
       {
         Year: '1996',
         NumberNewMicroBrewery: 2,
+        goal: 10,
       },
       {
         Year: '1997',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '1998',
         NumberNewMicroBrewery: 3,
+        goal: 10,
       },
       {
         Year: '1999',
         NumberNewMicroBrewery: 2,
+        goal: 10,
       },
       {
         Year: '2006',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '2007',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '2008',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
       {
         Year: '2009',
         NumberNewMicroBrewery: 2,
+        goal: 10,
       },
       {
         Year: '2010',
         NumberNewMicroBrewery: 3,
+        goal: 10,
       },
       {
         Year: '2011',
         NumberNewMicroBrewery: 4,
+        goal: 3,
       },
       {
         Year: '2012',
         NumberNewMicroBrewery: 5,
+        goal: 10,
       },
       {
         Year: '2013',
         NumberNewMicroBrewery: 11,
+        goal: 10,
       },
       {
         Year: '2014',
         NumberNewMicroBrewery: 20,
+        goal: 21,
       },
       {
         Year: '2015',
         NumberNewMicroBrewery: 16,
+        goal: 15,
       },
       {
         Year: '2016',
         NumberNewMicroBrewery: 13,
+        goal: 10,
       },
       {
         Year: '2017',
         NumberNewMicroBrewery: 6,
+        goal: 10,
       },
       {
         Year: '2018',
         NumberNewMicroBrewery: 1,
+        goal: 10,
       },
     ];
     const { props } = (
@@ -171,8 +191,8 @@ describe('Axis 轴', () => {
             y="NumberNewMicroBrewery"
             color={{
               field: 'NumberNewMicroBrewery',
-              callback: function(val) {
-                if (val === 20) {
+              callback: function(val, child) {
+                if (val > child.goal) {
                   return '#1890ff';
                 }
                 return '#66B5FF';

@@ -1,16 +1,23 @@
+import { deepMix, isNil } from '@antv/util';
 import { jsx } from '../../jsx';
-import { isNil, deepMix } from '@antv/util';
 
 export default (props) => {
-  const { records, animation } = props;
+  const { records, animation, clip } = props;
   return (
-    <group>
+    <group
+      attrs={{
+        clip,
+      }}
+    >
       {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
             {children.map((item) => {
-              const { key, x, y, size, color, shapeName, shape } = item;
+              const { x, y, size, color, shapeName, shape } = item;
+              if (isNaN(x) || isNaN(y)) {
+                return null;
+              }
               if (shapeName === 'rect') {
                 const rectSize = isNil(size) ? shape.size : size;
                 return (

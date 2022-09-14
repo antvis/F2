@@ -47,6 +47,10 @@ export interface TooltipProps extends ChartChildProps {
    * 背景样式
    */
   background?: RectAttrs;
+  /**
+   * 是否显示
+   */
+  showItemMarker?: boolean;
 }
 
 export interface TooltipState {

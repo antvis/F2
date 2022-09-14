@@ -17,6 +17,7 @@ interface Point {
 }
 
 export interface Props {
+  zIndex?: number;
   data: any;
   scale?: any;
   coord?: any;
@@ -98,14 +99,14 @@ class Chart extends Component implements IChart {
   }
 
   // props 更新
-  willReceiveProps(nextProps) {
+  willReceiveProps(nextProps, context) {
     const { layoutController, coordController, scaleController, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
 
     // 布局
-    if (!equal(nextStyle, lastStyle)) {
-      const style = this.getStyle(nextProps, this.context);
+    if (!equal(nextStyle, lastStyle) || context !== this.context) {
+      const style = this.getStyle(nextProps, context);
       this.layout = layoutController.create(style);
       coordController.updateLayout(this.layout);
     }

@@ -88,9 +88,7 @@ export default (View) => {
         // children 有可能为空
         const { size, color, shape, y } = children[0] || {};
         // 极坐标时，需加入起点，从而闭合所绘图形
-        const points = coord.isPolar 
-        ? [...children, children[0]]
-        : children;
+        const points = coord.isPolar ? [...children, children[0]] : children;
 
         const splitPoints = this.splitNulls(points, connectNulls);
 
@@ -118,7 +116,8 @@ export default (View) => {
       const { props } = this;
       const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} />;
+      const clip = this.getClip();
+      return <View {...props} coord={coord} records={records} clip={clip} />;
     }
   };
 };
