@@ -28,9 +28,9 @@ const img = new Image();
 img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
 
 img.onload = function () {
+  const context = document.getElementById('container').getContext('2d');
   const pattern = context.createPattern(img, 'repeat');
 
-  const context = document.getElementById('container').getContext('2d');
   const { props } = (
     <Canvas context={context}>
       <Chart data={data}>
