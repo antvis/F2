@@ -1,10 +1,10 @@
+import { isArray, isBoolean, isUndefined, pick } from '@antv/util';
+import Children from '../children';
+import { compareRenderTree, renderJSXElement } from '../jsx';
 import { JSX } from '../jsx/jsx-namespace';
-import { renderJSXElement, compareRenderTree } from '../jsx';
 import { render } from '../jsx/render';
-import { isArray, isUndefined, isBoolean, pick } from '@antv/util';
 import Component from './component';
 import equal from './equal';
-import Children from '../children';
 
 function pickElement(element) {
   if (!element) return element;
@@ -112,7 +112,7 @@ function createComponent(parent: Component, element: JSX.Element): Component {
     component = new type(receiveProps, context, updater);
   } else {
     component = new Component(receiveProps, context, updater);
-    component.render = function() {
+    component.render = function () {
       // @ts-ignore
       return type(this.props, context, updater);
     };
@@ -186,6 +186,7 @@ function destroyElement(elements: JSX.Element) {
     if (component.didUnmount) {
       component.didUnmount();
     }
+    component.destroy();
   });
 }
 
