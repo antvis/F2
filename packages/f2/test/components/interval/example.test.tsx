@@ -1,7 +1,5 @@
-import { jsx } from '../../../src';
-import { Polar, Rect } from '../../../src/coord';
-import { Canvas, Chart } from '../../../src';
-import { Interval, Axis, Legend, Tooltip } from '../../../src/components';
+import { Canvas, Chart, jsx } from '../../../src';
+import { Axis, Interval } from '../../../src/components';
 import { createContext, delay } from '../../util';
 
 describe('柱图示例', () => {
@@ -181,7 +179,7 @@ describe('柱图示例', () => {
     const pattern = await new Promise((resolve) => {
       const img = new Image();
       img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
-      img.onload = function() {
+      img.onload = function () {
         const pattern = context.createPattern(img, 'repeat');
         resolve(pattern);
       };
@@ -192,7 +190,7 @@ describe('柱图示例', () => {
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Interval x="year" y="sales" color={pattern} />
+          <Interval x="year" y="sales" color={{ range: [pattern] }} />
         </Chart>
       </Canvas>
     );
