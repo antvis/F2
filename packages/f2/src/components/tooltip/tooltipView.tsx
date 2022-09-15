@@ -126,7 +126,7 @@ const RenderItemMarker = (props) => {
         y,
         width,
         height,
-        ...markerBackgroundStyle
+        ...markerBackgroundStyle,
       }}
     />
   );
@@ -202,7 +202,7 @@ export default class TooltipView extends Component {
     const { canvas } = context;
     await canvas.ready;
     const rect = rootRef.current?.childNodes[0];
-
+    console.log(rect);
     if (!rect) {
       return;
     }
@@ -293,10 +293,10 @@ export default class TooltipView extends Component {
             <group>
               <group
                 ref={this.rootRef}
-                style={{
-                  x: coordLeft,
-                  y: coordTop
-                }}
+                // style={{
+                //   x: coordLeft,
+                //   y: coordTop
+                // }}
               >
                 {/* {showTitle ? (
                 <text
@@ -318,7 +318,7 @@ export default class TooltipView extends Component {
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     padding: [0, 0, 0, '6px'],
-                    ...background,
+                    // ...background,
                   }}
                 >
                   {records.map((record) => {
@@ -388,7 +388,12 @@ export default class TooltipView extends Component {
             </group>
           )}
           {showTooltipMarker ? (
-            <RenderItemMarker coord={coord} context={context} records={records} markerBackgroundStyle={markerBackgroundStyle} />
+            <RenderItemMarker
+              coord={coord}
+              context={context}
+              records={records}
+              markerBackgroundStyle={markerBackgroundStyle}
+            />
           ) : null}
           {/* 辅助线 */}
           {showCrosshairs ? (

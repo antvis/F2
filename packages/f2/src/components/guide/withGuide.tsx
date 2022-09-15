@@ -47,7 +47,7 @@ export default (View) => {
     didUpdate() {
       super.didUpdate();
       const shape = this.triggerRef.current;
-      if (!shape || shape.isDestroyed()) return;
+      if (!shape || shape.destroyed) return;
       const { x, y, width, height } = shape.get('attrs');
       const bbox = {
         minX: x,
@@ -65,10 +65,7 @@ export default (View) => {
     getGuideBBox() {
       //@ts-ignore
       const shape = renderShape(this, this.render(), false);
-      const x = shape.getAttribute('x');
-      const y = shape.getAttribute('y');
-      const width = shape.getAttribute('width');
-      const height = shape.getAttribute('height');
+      const { x, y, width, height } = shape.getBBox();
       // getBBox 没有包含 padding 所以这里手动计算 bbox
       const bbox = {
         minX: x,

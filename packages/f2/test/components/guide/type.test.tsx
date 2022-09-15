@@ -297,7 +297,7 @@ describe('Guide', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('TagGuide update', async () => {
+  it.skip('TagGuide update', async () => {
     const context = createContext('TagGuide update');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
@@ -317,9 +317,9 @@ describe('Guide', () => {
       (
         <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
-          <Line x="genre" y="sold" />
-          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tl" content="short" />
-        </Chart>
+            <Line x="genre" y="sold" />
+            <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tl" content="short" />
+          </Chart>
         </Canvas>
       ).props
     );

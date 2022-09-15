@@ -47,7 +47,7 @@ const defaultStyle = {
   container: {
     fill: '#1677FF',
     radius: 2,
-    padding: [3, 5],
+    padding: [1, 5],
   },
   text: {
     fontSize: '22px' as `${number}px`,
@@ -116,69 +116,70 @@ export default (props: TagGuideProps, context) => {
 
   const _getArrowPoints = (direct) => {
     let arrowPoints = [];
-    // const { minX, minY } = guideBBox || {};
+
     if (direct === 'tl') {
       arrowPoints = [
         { x: posX, y: posY - side - 1 },
         { x: posX, y: posY },
         { x: posX - side, y: posY - side - 1 },
       ];
-      posX -= (guideWidth || 0);
-      posY = posY - (guideHeight || 0) - side;
+
+      posX -= (guideWidth / 2 || 0);
+      posY = posY - side;
     } else if (direct === 'cl') {
       arrowPoints = [
         { x: posX - side - 1, y: posY - side },
         { x: posX - side - 1, y: posY + side },
         { x: posX, y: posY },
       ];
-      posX = posX - (guideWidth || 0) - side;
-      posY -= (guideHeight / 2 || 0);
+      posX = posX - (guideWidth / 2  || 0) - side;
+      posY += (guideHeight / 2 || 0) - 1;
     } else if (direct === 'bl') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX, y: posY + side + 1 },
         { x: posX - side, y: posY + side + 1 },
       ];
-      posX = posX - (guideWidth || 0);
-      posY += side;
+      posX = posX - (guideWidth / 2 || 0);
+      posY += (guideHeight|| 0)  + side - 1;
     } else if (direct === 'bc') { // 有问题
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX - side, y: posY + side + 1 },
         { x: posX + side, y: posY + side + 1 },
       ];
-      posX = posX - (guideWidth / 2 || 0);
-      posY = posY + side;
+      posY += (guideHeight|| 0) + side - 1;
     } else if (direct === 'br') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX, y: posY + side + 1 },
         { x: posX + side, y: posY + side + 1 },
       ];
-      posY += side;
+      posX += (guideWidth / 2 || 0);
+      posY += (guideHeight|| 0) + side - 1;
     } else if (direct === 'cr') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX + side, y: posY - side },
         { x: posX + side, y: posY + side },
       ];
-      posX += side;
-      posY -= (guideHeight / 2 || 0);
+      posX += (guideWidth / 2 || 0) + side;
+      posY += (guideHeight / 2 || 0);
     } else if (direct === 'tr') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX, y: posY - side - 1 },
         { x: posX + side, y: posY - side - 1 },
       ];
-      posY = posY - (guideHeight || 0) - side;
+      posX += (guideWidth / 2 || 0);
+      posY = posY - side;
     } else if (direct === 'tc') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX - side, y: posY - side - 1 },
         { x: posX + side, y: posY - side - 1 },
       ];
-      posX -= (guideWidth / 2 || 0);
-      posY = posY - (guideHeight || 0) - side;
+      posY = posY - side;
     }
 
     return arrowPoints;
@@ -210,8 +211,8 @@ export default (props: TagGuideProps, context) => {
         ...background,
       }}
       style={{
-        left: posX,
-        top: posY,
+        // left: posX,
+        // top: posY,
         padding: defaultStyle.container.padding,
         ...background,
       }}
@@ -223,7 +224,7 @@ export default (props: TagGuideProps, context) => {
           fill: defaultStyle.container.fill,
           padding: defaultStyle.container.padding,
           radius: defaultStyle.container.radius,
-          transform: `translate(${textWrapper.x}, ${textWrapper.y})`,
+          transform: `translate(${posX + textWrapper.x}, ${posY + textWrapper.y})`,
           ...background
         }}
       >
