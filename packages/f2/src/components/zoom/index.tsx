@@ -270,6 +270,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       }
     });
     if (isEqual(range, this.state.range)) return;
+
     this.setState({
       range,
     } as S);
@@ -282,7 +283,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   _doXPan(ev) {
     const { direction, deltaX } = ev;
     if (this.props.mode.length === 1 && (direction === 'up' || direction === 'down')) {
-      return;
+      return this.state.range['x'];
     }
     ev.preventDefault && ev.preventDefault();
 
@@ -299,7 +300,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   _doYPan(ev) {
     const { direction, deltaY } = ev;
     if (this.props.mode.length === 1 && (direction === 'left' || direction === 'right')) {
-      return;
+      return this.state.range['y'];
     }
     ev.preventDefault && ev.preventDefault();
 
@@ -361,7 +362,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { pinchSensitive = 1 } = props;
     const [start, end] = startRange[dim];
 
-    const zoomOffset = (1 - zoom) * pinchSensitive;
+    const zoomOffset = zoom < 1 ? (1 / zoom - 1) * pinchSensitive : (1 - zoom) * pinchSensitive;
     const rangeLen = end - start;
     const rangeOffset = rangeLen * zoomOffset;
 
