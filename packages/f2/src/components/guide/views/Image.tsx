@@ -1,7 +1,6 @@
 import { jsx } from '../../../jsx';
 import { Style } from '../../../types';
 import { deepMix } from '@antv/util';
-import { px2hd } from '../../../util';
 
 type ImageGuideProps = {
   src: string;
@@ -28,8 +27,8 @@ export default (props: ImageGuideProps, context) => {
   const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = attrs;
-  const heightNum = px2hd(height + 'px');
-  const widthNum = px2hd(width + 'px');
+  const heightNum = context.px2hd(height + 'px');
+  const widthNum = context.px2hd(width + 'px');
 
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
