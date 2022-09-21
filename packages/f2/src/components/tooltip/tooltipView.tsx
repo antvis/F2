@@ -293,10 +293,10 @@ export default class TooltipView extends Component {
             <group>
               <group
                 ref={this.rootRef}
-                // style={{
-                //   x: coordLeft,
-                //   y: coordTop
-                // }}
+                style={{
+                  x: coordLeft,
+                  y: coordTop,
+                }}
               >
                 {/* {showTitle ? (
                 <text
@@ -318,7 +318,7 @@ export default class TooltipView extends Component {
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     padding: [0, 0, 0, '6px'],
-                    // ...background,
+                    ...background,
                   }}
                 >
                   {records.map((record) => {

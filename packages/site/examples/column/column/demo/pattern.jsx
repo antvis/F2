@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Canvas, Chart, Interval, Axis } from '@antv/f2';
+import { Axis, Canvas, Chart, Interval, jsx } from '@antv/f2';
 
 const data = [
   {
@@ -27,16 +27,16 @@ const data = [
 const img = new Image();
 img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
 
-img.onload = function() {
+img.onload = function () {
+  const context = document.getElementById('container').getContext('2d');
   const pattern = context.createPattern(img, 'repeat');
 
-  const context = document.getElementById('container').getContext('2d');
   const { props } = (
     <Canvas context={context}>
       <Chart data={data}>
         <Axis field="year" />
         <Axis field="sales" />
-        <Interval x="year" y="sales" color={pattern} />
+        <Interval x="year" y="sales" color={{ range: [pattern] }} />
       </Chart>
     </Canvas>
   );

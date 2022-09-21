@@ -93,6 +93,40 @@ x 轴偏移量
 
 y 轴偏移量
 
+## TagGuide
+
+标签标注
+
+### content: string
+
+文本内容
+
+### offsetX: number
+
+x 轴偏移量
+
+### offsetY: number
+
+y 轴偏移量
+
+### direct: string
+
+可选值为:
+
+```
+  'tl' | 'tc' | 'tr'
+  'cl' |      | 'cr'
+  'bl' | 'bc' | 'br'
+```
+
+### background: Attrs
+
+> 类型为绘图属性：[图形属性](/zh/docs/tutorial/shape-attrs#通用属性) 
+
+### textStyle: TextAttr
+
+> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性) 文本样式文本样式
+
 ## ImageGuide
 
 图片标注

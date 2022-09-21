@@ -4,6 +4,7 @@ import Vertical from './vertical';
 
 export default (props) => {
   const { position, mode } = props;
+
   if (mode.length > 1) {
     return (
       <group>

@@ -12,6 +12,7 @@ export default (props, context) => {
   return (
     <group
       style={{
+        display: 'flex',
         top,
         left: position === 'left' ? left - context.px2hd('8px') : left + width,
       }}

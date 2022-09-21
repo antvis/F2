@@ -30,6 +30,7 @@ class Component<P extends IProps = any, S = any> {
   // 对应 G 的group, 每个组件渲染的父接节点
   container: any;
   animate: boolean;
+  destroyed = false;
   constructor(props: P, context?: ComponentContext, updater?: Updater<S>) {
     this.props = props;
     this.state = {} as S;
@@ -53,6 +54,9 @@ class Component<P extends IProps = any, S = any> {
   }
   setAnimate(animate: boolean) {
     this.animate = animate;
+  }
+  destroy() {
+    this.destroyed = true;
   }
 }
 

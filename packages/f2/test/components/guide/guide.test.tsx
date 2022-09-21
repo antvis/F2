@@ -38,7 +38,7 @@ const Guide = withGuide((props) => {
 });
 
 describe('Guide ', () => {
-  it('自定义 guide & zIndex', async () => {
+  it.only('自定义 guide & zIndex', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -64,6 +64,7 @@ describe('Guide ', () => {
       </Chart>
     );
     chart.update({ children: newChartProps });
+    await delay(50);
     expect(context).toMatchImageSnapshot();
   });
 
