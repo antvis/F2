@@ -75,8 +75,8 @@ export default (View) => {
       let height = 0;
       ticks.forEach((tick: Tick) => {
         if (!label) return;
-        const { labelStyle, text } = tick;
-        const bbox = measureText(text, { ...label, ...labelStyle });
+        const { labelStyle={}, text } = tick;
+        const bbox = measureText(labelStyle.text || text, { ...label, ...labelStyle });
         width = Math.max(width, bbox.width);
         height = Math.max(height, bbox.height);
       });
