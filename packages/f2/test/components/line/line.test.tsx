@@ -1132,5 +1132,51 @@ describe('折线图', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
+    it('Y轴数据格式转换（刻度值较大的情形）', async () => {
+      const BASE = 'Y轴数据格式转换（刻度值较大的情形）';
+      const context = createContext(BASE);
+            const data = [
+              {
+                time: '2016-08-01',
+                tem: 3*10**9,
+              },
+              {
+                time: '2016-08-02',
+                tem: 222,
+              },
+              {
+                time: '2016-08-03',
+                tem: 20,
+              },
+              {
+                time: '2016-08-04',
+                tem: 26,
+              },
+            ];
+      const { type, props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Axis field="time" tickCount={2} />
+            <Axis
+              field="tem"
+              tickCount={5}
+              style={{
+                label: (text, index, ticks) => {
+                  const textConfig: any = {};
+                  textConfig.text = ticks[index].tickValue / (10 ** 8) + '亿';
+                  return textConfig;
+                },
+              }}
+            />
+            <Line size="6px" x="time" y="tem" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
   });
 });
