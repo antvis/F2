@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-vue",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "F2 for Vue.js",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -15,7 +15,7 @@
     "vue"
   ],
   "dependencies": {
-    "@antv/f2": "^4.0.31",
+    "@antv/f2": "^4.0.32",
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {
