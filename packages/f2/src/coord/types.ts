@@ -1,4 +1,4 @@
-import { LayoutProps } from '../base/layout';
+import { LayoutProps } from '../index';
 interface Point {
   x: number;
   y: number;

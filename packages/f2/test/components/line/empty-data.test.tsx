@@ -59,7 +59,7 @@ describe('空数据', () => {
     let chartProps = (
       <Chart data={data}>
         <Axis field="value" tickCount={5} />
-        <Line ref={ref}  x="time" y="value" color={['name', ['#0b7ff7']]} />
+        <Line ref={ref} x="time" y="value" color={['name', ['#0b7ff7']]} />
       </Chart>
     );
     canvasProps.children = chartProps;
@@ -74,13 +74,13 @@ describe('空数据', () => {
     );
     newChartProps.props.children = chartProps.props.children;
     await delay(100);
-    canvas.update({ children: newChartProps });
+    await canvas.update({ children: newChartProps });
     expect(
       ref.current.container
-        .get('children')[0]
-        .get('children')[0]
-        .get('children')[0]
-        .get('children').length
+        .getChildren()[0]
+        .getChildren()[0]
+        .getChildren()[0]
+        .getChildren().length
     ).toBe(0);
   });
 });

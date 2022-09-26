@@ -1,4 +1,4 @@
-import Layout from '../base/layout';
+import { Layout } from '../index';
 import { Range, Point, Option } from './types';
 import { isArray } from '@antv/util';
 

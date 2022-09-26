@@ -69,6 +69,7 @@ const Interval = withInterval((props, context) => {
                       fill: '#fff',
                       text: origin.percent * 100 + '%',
                       textAlign: 'center',
+                      textBaseline: 'middle',
                     }}
                   />
                 </group>
@@ -79,8 +80,7 @@ const Interval = withInterval((props, context) => {
       })}
       <group
         style={{
-          top: '160px',
-          left: '30px',
+          display: 'flex',
         }}
       >
         {records.map((record, index) => {
@@ -98,14 +98,16 @@ const Interval = withInterval((props, context) => {
                         fill: color,
                         text: origin.name,
                         fontSize: '26px',
+                        top: '160px',
+                        left: '30px',
                       }}
                     />
                     {index === 0 ? (
                       <polyline
                         attrs={{
                           points: [
-                            { x: xCenter, y: px2hd('170px') + px2hd('36px') * index },
-                            { x: xCenter, y: '140px' },
+                            [xCenter, px2hd('170px') + px2hd('36px') * index],
+                            [xCenter, '140px'],
                           ],
                           stroke: color,
                         }}
@@ -114,9 +116,9 @@ const Interval = withInterval((props, context) => {
                       <polyline
                         attrs={{
                           points: [
-                            { x: '200px', y: px2hd('170px') + px2hd('36px') * index },
-                            { x: xCenter, y: px2hd('170px') + px2hd('36px') * index },
-                            { x: xCenter, y: '140px' },
+                            ['200px', px2hd('176px')],
+                            [xCenter, px2hd('176px')],
+                            [xCenter, px2hd('140px') - px2hd('45px') * index],
                           ],
                           stroke: color,
                         }}

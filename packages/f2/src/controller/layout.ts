@@ -1,4 +1,4 @@
-import Layout from '../base/layout';
+import { Layout } from '../index';
 
 interface Style {
   left: number;

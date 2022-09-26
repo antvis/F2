@@ -22,7 +22,7 @@ describe('Canvas', () => {
                 clip: {
                   type: 'rect',
                   property: ['width'],
-                  duration: 100,
+                  duration: 1000,
                   attrs: {
                     x: 0,
                     y: 0,
@@ -54,10 +54,12 @@ describe('Canvas', () => {
                   return {
                     type: 'rect',
                     property: ['width'],
-                    duration: 100,
+                    duration: 1000,
                     attrs: {
-                      x: attrs.x,
-                      y: attrs.y,
+                      x: 0,
+                      y: 0,
+                      // x: attrs.x,
+                      // y: attrs.y,
                       height: attrs.height,
                     },
                     start: {
@@ -76,7 +78,7 @@ describe('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     expect(clipFn.mock.calls[0][0]).toMatchObject({
       x: 60,
