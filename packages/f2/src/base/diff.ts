@@ -315,4 +315,4 @@ function renderChildren(parent: Component, nextChildren, lastChildren) {
   return nextChildren;
 }
 
-export { renderChildren, diff, renderComponent, renderShape };
+export { renderChildren, diff, renderComponent, renderShape, destroyElement };

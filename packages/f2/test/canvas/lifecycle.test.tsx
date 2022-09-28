@@ -1,4 +1,4 @@
-import { jsx, Canvas, Component } from '../../src';
+import { Canvas, Component, jsx } from '../../src';
 import { createContext, delay } from '../util';
 const context = createContext();
 
@@ -226,6 +226,87 @@ describe('Canvas', () => {
 
     await delay(50);
     expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+    ]);
+
+    await delay(50);
+    // 销毁 canvas
+    canvas.destroy();
+
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['containerWillUnmount'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['containerDidUnmount'],
+    ]);
   });
 
   it('第1个子组件为空', async () => {
