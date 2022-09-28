@@ -115,11 +115,11 @@ export default {
       item._attrs.aria = aria;
     }
 
-    if (type === 'text' && canvas && canvas.get('fontFamily') && !item._attrs.attrs.fontFamily) {
+    if (type === 'text' && canvas && canvas.get('fontFamily') && !item._attrs.attrs?.fontFamily) {
       item.attr('fontFamily', canvas.get('fontFamily'));
     }
 
-    const clip = item._attrs.attrs.clip;
+    const clip = item._attrs.attrs?.clip;
     if (clip) {
       clip._attrs.parent = this;
       clip._attrs.context = context;
