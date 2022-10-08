@@ -42,7 +42,7 @@ export default (View) => {
     }
 
     getScaleOption(props: AxisProps) {
-      const { type, tickCount, range, mask, formatter, min, max, nice } = props;
+      const { type, tickCount, range, mask, formatter, ticks, min, max, nice } = props;
 
       return {
         type,
@@ -53,6 +53,7 @@ export default (View) => {
         min,
         max,
         nice,
+        ticks
       };
     }
 
