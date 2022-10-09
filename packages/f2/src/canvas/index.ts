@@ -1,14 +1,14 @@
-import { createCanvas, Canvas as GCanvas } from '@antv/f2-graphic';
+import EE from '@antv/event-emitter';
+import { Canvas as GCanvas, createCanvas } from '@antv/f2-graphic';
 import { deepMix, isFunction } from '@antv/util';
 import Component from '../base/component';
-import Layout from '../base/layout';
+import { destroyElement, renderChildren, renderComponent } from '../base/diff';
 import equal from '../base/equal';
-import Animation from './animation';
-import { px2hd as defaultPx2hd, batch2hd } from '../util';
+import Layout from '../base/layout';
 import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';
-import { renderChildren, renderComponent } from '../base/diff';
-import EE from '@antv/event-emitter';
+import { batch2hd, px2hd as defaultPx2hd } from '../util';
+import Animation from './animation';
 
 export interface ChartProps {
   context?: CanvasRenderingContext2D;
@@ -194,7 +194,8 @@ class Canvas extends Component<ChartProps> {
   }
 
   destroy() {
-    const { canvas } = this;
+    const { canvas, children } = this;
+    destroyElement(children);
     canvas.destroy();
   }
 

@@ -164,6 +164,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   didUnmount(): void {
+    this.loop && cancelAnimationFrame(this.loop);
     this._clearEvents();
   }
 
@@ -443,7 +444,18 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   _bindEvents() {
     const { context, props, scale } = this;
     const { canvas } = context;
-    const { onPinchStart, onPanStart, onPanEnd, pan, pinch, swipe, onInit, onPan, onPinch, onPinchEnd } = props;
+    const {
+      onPinchStart,
+      onPanStart,
+      onPanEnd,
+      pan,
+      pinch,
+      swipe,
+      onInit,
+      onPan,
+      onPinch,
+      onPinchEnd,
+    } = props;
     // 统一绑定事件
     if (pan !== false) {
       canvas.on('panstart', () => {
