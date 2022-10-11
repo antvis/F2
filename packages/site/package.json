@@ -23,9 +23,8 @@
     "react-monaco-editor": "0.34.0"
   },
   "dependencies": {
-    "@antv/f2": "^5.0.0-alpha.1",
-    "@antv/f2-graphic": "^5.0.0-alpha.1",
-    "@antv/f2-react": "^5.0.0-alpha.1",
+    "@antv/f2": "*",
+    "@antv/f-react": "~0.0.2",
     "@antv/gatsby-theme-antv": "~1.1.15",
     "f2-touchemulator": "~0.0.1",
     "gatsby": "^2.17.7",

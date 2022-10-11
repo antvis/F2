@@ -176,27 +176,29 @@ describe('柱图示例', () => {
       },
     ];
 
-    const pattern = await new Promise((resolve) => {
-      const img = new Image();
-      img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
-      img.onload = function () {
-        const pattern = context.createPattern(img, 'repeat');
-        resolve(pattern);
-      };
-    });
-
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
-          <Interval x="year" y="sales" color={{ range: [pattern] }} />
+          <Interval
+            x="year"
+            y="sales"
+            color={{
+              range: [
+                {
+                  image: 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg',
+                  repetition: 'repeat',
+                },
+              ],
+            }}
+          />
         </Chart>
       </Canvas>
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();

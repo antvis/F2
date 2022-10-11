@@ -71,10 +71,10 @@ describe('base/component', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     const newChildren = <StatedComponent />;
-    canvas.update({ children: newChildren });
+    await canvas.update({ children: newChildren });
 
     await delay(500);
     expect(mockCallback.mock.calls.length).toBe(1);

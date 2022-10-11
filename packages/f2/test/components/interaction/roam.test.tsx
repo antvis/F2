@@ -29,7 +29,7 @@ describe('全局漫游模式', () => {
       );
 
       canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();

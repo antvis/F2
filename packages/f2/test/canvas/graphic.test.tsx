@@ -1,6 +1,6 @@
 import { jsx, Canvas, Fragment, Component } from '../../src';
 import { createContext, delay } from '../util';
-import { Smooth, BBox } from '@antv/f2-graphic';
+import { Smooth } from '@antv/f-engine';
 import imageBianzu from './images/bianzu';
 
 function View() {
@@ -286,33 +286,59 @@ describe('Canvas', () => {
   });
 
   describe('clip', () => {
-    it('custom clip', async () => {
+    it.skip('custom clip', async () => {
       const context = createContext('custom clip');
       const points1 = [
-        { x: 10, y: 20 },
-        { x: 20, y: 40 },
-        { x: 50, y: 45 },
-        { x: 100, y: 80 },
-        { x: 200, y: 80 },
+        [10, 20],
+        [20, 40],
+        [50, 45],
+        [100, 80],
+        [200, 80],
       ];
 
       const points2 = [
-        { x: 10, y: 40 },
-        { x: 20, y: 60 },
-        { x: 50, y: 20 },
-        { x: 100, y: 90 },
-        { x: 200, y: 70 },
+        [10, 40],
+        [20, 60],
+        [50, 20],
+        [100, 90],
+        [200, 70],
       ];
 
       const clipPoints = [...points1];
-      clipPoints.push({ x: 200, y: 0 }, { x: 0, y: 0 });
+      clipPoints.push([200, 0], [0, 0]);
       const constraint = [
         [0, 0],
         [1, 1],
       ];
-      const topSps = Smooth.smooth(points1, false, constraint);
+      const topSps = Smooth.smooth(
+        points1.map((d) => {
+          return {
+            x: d[0],
+            y: d[1],
+          };
+        }),
+        false,
+        constraint
+      );
       const bottomPoints = [...points2].reverse();
-      const bottomSps = Smooth.smooth(bottomPoints, false, constraint);
+      const bottomSps = Smooth.smooth(
+        bottomPoints.map((d) => {
+          return {
+            x: d[0],
+            y: d[1],
+          };
+        }),
+        false,
+        constraint
+      );
+      const bezierTopPoints = [];
+      for (const sp of topSps) {
+        bezierTopPoints.push(['C', sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]]);
+      }
+      const bezierBottomPoints = [];
+      for (const sp of bottomSps) {
+        bezierBottomPoints.push(['C', sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]]);
+      }
 
       const Shape = () => {
         return (
@@ -333,43 +359,41 @@ describe('Canvas', () => {
                 smooth: true,
               }}
             />
-            <custom
+            <path
               attrs={{
-                // @ts-ignore
-                points: [].concat(points1).concat([...points2].reverse()),
                 fill: 'red',
                 fillOpacity: 0.5,
+                path: [
+                  ['M', points1[0][0], points1[0][1]],
+                  ...bezierTopPoints,
+                  ['L', bottomPoints[0][0], bottomPoints[0][1]],
+                  ...bezierBottomPoints,
+                ],
                 clip: {
-                  type: 'custom',
-                  attrs: {
-                    points: clipPoints,
+                  type: 'path',
+                  style: {
+                    path: [
+                      ['M', points1[0][0], points1[0][1]],
+                      ...bezierTopPoints,
+                      ['L', 200, 0],
+                      ['L', 0, 0],
+                    ],
                   },
-                  createPath: (context) => {
-                    context.beginPath();
-                    context.moveTo(points1[0].x, points1[0].y);
-                    for (const sp of topSps) {
-                      context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
-                    }
-                    context.lineTo(200, 0);
-                    context.lineTo(0, 0);
-                    context.closePath();
-                  },
-                  calculateBox: () => BBox.getBBoxFromPoints(clipPoints),
                 },
               }}
-              createPath={(context) => {
-                context.beginPath();
-                context.moveTo(points1[0].x, points1[0].y);
-                for (const sp of topSps) {
-                  context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
-                }
-                context.lineTo(bottomPoints[0].x, bottomPoints[0].y);
-                for (const sp of bottomSps) {
-                  context.bezierCurveTo(sp[1], sp[2], sp[3], sp[4], sp[5], sp[6]);
-                }
-                context.closePath();
-              }}
             />
+            {/* <path
+              attrs={{
+                fill: 'yellow',
+                fillOpacity: 0.5,
+                path: [
+                  ['M', points1[0][0], points1[0][1]],
+                  ...bezierTopPoints,
+                  ['L', 200, 0],
+                  ['L', 0, 0],
+                ],
+              }}
+            /> */}
           </group>
         );
       };
