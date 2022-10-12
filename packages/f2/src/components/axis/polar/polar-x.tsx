@@ -1,4 +1,4 @@
-import { jsx } from '../../../jsx';
+import { jsx } from '../../../index';
 import { length as vec2Length } from 'gl-matrix/vec2';
 import type { vec2 } from 'gl-matrix';
 import { PolarProps } from '../types';

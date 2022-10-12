@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { isArray, isFunction, find } from '@antv/util';
 import { Component } from '@antv/f-engine';
 import equal from '../../base/equal';

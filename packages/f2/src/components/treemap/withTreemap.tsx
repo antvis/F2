@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';

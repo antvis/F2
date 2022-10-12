@@ -1,4 +1,4 @@
-import { jsx } from '../../../jsx';
+import { jsx } from '../../../index';
 import { Style } from '../../../types';
 import { deepMix } from '@antv/util';
 

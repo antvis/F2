@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { Component } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';

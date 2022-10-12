@@ -1,100 +1,4 @@
-import { isDate, isPlainObject, isNumber, isString, isArray } from '@antv/util';
-
-// 默认设置50
-let ONE_REM: number;
-try {
-  // xgraph下这段会抛错
-  ONE_REM = parseInt(document.documentElement.style.fontSize, 10) || 50;
-} catch (e) {
-  ONE_REM = 50;
-}
-const SCALE = ONE_REM / 100;
-
-/**
- * 像素转换
- * @param {Number} px - 750视觉稿像素
- * @return {Number} 屏幕上实际像素
- */
-function defaultPx2hd(px: number): number {
-  if (!px) {
-    return 0;
-  }
-  return Number((px * SCALE).toFixed(1));
-}
-
-function parsePadding(padding: number | number[]) {
-  if (isNumber(padding)) {
-    return [padding, padding, padding, padding];
-  }
-  const top = padding[0];
-  const right = isNumber(padding[1]) ? padding[1] : padding[0];
-  const bottom = isNumber(padding[2]) ? padding[2] : top;
-  const left = isNumber(padding[3]) ? padding[3] : right;
-  return [top, right, bottom, left];
-}
-
-type pxstr = `${number}px`;
-
-function batch2hd(px2hd) {
-  const batchPx2hd = (value: pxstr | pxstr[] | number | number[] | string | string[] | any) => {
-    // 处理带px的数据
-    if (isString(value) && /^-?\d+px$/.test(value)) {
-      const num = value.substr(0, value.length - 2);
-      return px2hd(Number(num));
-    }
-    if (isArray(value)) {
-      return value.map((v) => {
-        return batchPx2hd(v);
-      });
-    }
-    if (isPlainObject(value)) {
-      const result = {};
-      for (const key in value) {
-        if (value.hasOwnProperty(key)) {
-          const rst = batchPx2hd(value[key]);
-          if (!rst) {
-            result[key] = rst;
-            continue;
-          }
-          if (key === 'padding' || key === 'margin') {
-            const paddingArray = parsePadding(rst);
-            result[key] = paddingArray;
-            result[`${key}Top`] = paddingArray[0];
-            result[`${key}Right`] = paddingArray[1];
-            result[`${key}Bottom`] = paddingArray[2];
-            result[`${key}Left`] = paddingArray[3];
-            continue;
-          }
-          result[key] = rst;
-        }
-      }
-      return result;
-    }
-    // 默认直接返回
-    return value;
-  }
-  return batchPx2hd;
-}
-
-// 展开数组
-function extendMap(arr, fn: Function) {
-  if (!arr) {
-    return arr;
-  }
-  if (!isArray(arr)) {
-    return [fn(arr)];
-  }
-  let newArray = [];
-  for (let i = 0; i < arr.length; i++) {
-    const element = arr[i];
-    if (isArray(element)) {
-      newArray = newArray.concat(extendMap(element, fn));
-    } else if (element) {
-      newArray.push(fn(element));
-    }
-  }
-  return newArray;
-}
+import { isDate, isString } from '@antv/util';
 
 function toTimeStamp(value) {
   if (isString(value)) {
@@ -116,14 +20,12 @@ function toTimeStamp(value) {
 function isInBBox(bbox, point) {
   // const { minX, maxX, minY, maxY } = bbox;
   const { left, top, width, height } = bbox;
-  const minX = left
-  const maxX = left + width
-  const minY = top
-  const maxY = top + height
+  const minX = left;
+  const maxX = left + width;
+  const minY = top;
+  const maxY = top + height;
   const { x, y } = point;
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-const px2hd = batch2hd(defaultPx2hd);
-
-export { px2hd, batch2hd, extendMap, parsePadding, toTimeStamp, isInBBox };
+export { toTimeStamp, isInBBox };

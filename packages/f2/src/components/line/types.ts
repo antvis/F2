@@ -1,4 +1,4 @@
-import { JSX } from '../../jsx/jsx-namespace';
+import { JSX } from '../../index';
 import { GeometryProps, AdjustConfig } from '../geometry/interface';
 import Coord from '../../coord';
 

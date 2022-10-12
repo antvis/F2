@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { px } from '../../types';
 import Zoom, { ZoomProps } from '../zoom';
 

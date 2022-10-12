@@ -1,4 +1,4 @@
-import { jsx } from '../../../jsx';
+import { jsx } from '../../../index';
 import Rect from './rect';
 import Polar from './polar';
 

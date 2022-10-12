@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import PolarX from './polar/polar-x';
 import PolarY from './polar/polar-y';
 import Top from './rect/top';

@@ -1,5 +1,5 @@
 import { deepMix, isArray } from '@antv/util';
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { LineViewProps } from './types';
 
 function concatPoints(children) {

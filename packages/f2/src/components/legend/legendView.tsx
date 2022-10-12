@@ -1,5 +1,5 @@
 import { isFunction } from '@antv/util';
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 
 const Marker = ({ type, color }) => {
   if (type === 'square') {

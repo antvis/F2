@@ -1,6 +1,5 @@
 import { isFunction, find } from '@antv/util';
-import createRef from '../../createRef';
-import { Component, jsx } from '@antv/f-engine';
+import { Component, jsx, createRef } from '../../index';
 import { Ref } from '../../types';
 
 // view 的默认配置

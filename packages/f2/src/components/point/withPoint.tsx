@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import Geometry from '../geometry';
 
 export default (View) => {
