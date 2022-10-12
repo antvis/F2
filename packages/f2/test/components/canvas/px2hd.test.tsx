@@ -45,7 +45,7 @@ describe('Canvas', () => {
 
     expect(testComponent).toBe(Test);
 
-    const rect = canvas.children.component.container.getChildren()[0];
+    const rect = canvas.children.component.container.children[0];
     expect(rect.config.type).toBe('rect');
     expect(rect.getAttribute('fill')).toBe('red');
   });

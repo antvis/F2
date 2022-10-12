@@ -45,8 +45,8 @@ describe('empty data', () => {
 
     await delay(100);
 
-    expect(canvas.container.getChildren().length).toBe(1);
-    expect(canvas.container.getChildren()[0].getChildren().length).toBe(0);
+    expect(canvas.container.children.length).toBe(1);
+    expect(canvas.container.children[0].children.length).toBe(0);
 
     canvas.destroy();
   });

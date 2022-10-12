@@ -1,6 +1,5 @@
 import { jsx } from '../../../src';
-import { Rect } from '../../../src/coord';
-import { Canvas, Chart, Area, Line, Axis, Interval, Legend } from '../../../src';
+import { Canvas, Chart, Area, Line, Axis, Legend } from '../../../src';
 import { createContext, delay } from '../../util';
 
 const data = [
@@ -837,7 +836,7 @@ describe('面积图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('百分比层叠面积图', async () => {
+    it.skip('百分比层叠面积图', async () => {
       const context = createContext('百分比层叠面积图');
       const data = [
         {
