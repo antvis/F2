@@ -1,5 +1,5 @@
 import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import equal from '../../base/equal';
 import { PositionLayout } from '../../chart/index';
 import { Component } from '@antv/f-engine';

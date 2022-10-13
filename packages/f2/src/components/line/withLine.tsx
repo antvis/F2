@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { isArray } from '@antv/util';
 import Geometry from '../geometry';
 import { LineProps } from './types';

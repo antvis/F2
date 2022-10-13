@@ -58,9 +58,9 @@ describe('geometry', () => {
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports']);
 
     const container = componentRef.current.container;
-    const group = container.getChildren()[0];
-    expect(group.getChildren().length).toBe(1);
-    expect(group.getChildren()[0].get('type')).toBe('circle');
+    const group = container.children[0];
+    expect(group.children.length).toBe(1);
+    expect(group.children[0].config.type).toBe('circle');
   });
 
   it('geometry update', async () => {
@@ -81,8 +81,8 @@ describe('geometry', () => {
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports', 'Strategy']);
 
     const container = componentRef.current.container;
-    const group = container.getChildren()[0];
-    expect(group.getChildren().length).toBe(2);
+    const group = container.children[0];
+    expect(group.children.length).toBe(2);
 
     await delay(50);
     expect(context).toMatchImageSnapshot();

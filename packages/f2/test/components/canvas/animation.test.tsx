@@ -50,7 +50,7 @@ describe('Canvas', () => {
     await delay(100);
     canvas.render();
     await delay(0);
-    const rect = canvas.children.component.container.getChildren()[0];
+    const rect = canvas.children.component.container.children[0];
 
     expect(rect.getAttribute('width')).toBe(10);
 

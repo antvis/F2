@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { Component, renderShape } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
@@ -119,7 +119,7 @@ export default (View) => {
     getMaxItemBox(legendShape) {
       let maxItemWidth = 0;
       let maxItemHeight = 0;
-      (legendShape.getChildren() || []).forEach((child) => {
+      (legendShape.children || []).forEach((child) => {
         const width = child.getAttribute('width');
         const height = child.getAttribute('height');
 
@@ -264,7 +264,7 @@ export default (View) => {
           return;
         }
         // @ts-ignore
-        const dataItem = clickItem.get('data-item');
+        const dataItem = clickItem.config['data-item'];
         if (!dataItem) {
           return;
         }

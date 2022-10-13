@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import Horizontal from './horizontal';
 import Vertical from './vertical';
 

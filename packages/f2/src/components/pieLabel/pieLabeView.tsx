@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 
 export default (props) => {
   const { lineStyle, anchorStyle, labels, label1OffsetY, label2OffsetY, triggerRef } = props;

@@ -41,13 +41,7 @@ describe('空数据', () => {
 
     await delay(100);
 
-    expect(
-      ref.current.container
-        .getChildren()[0]
-        .getChildren()[0]
-        .getChildren()[0]
-        .getChildren().length
-    ).toBe(0);
+    expect(ref.current.container.children[0].children[0].children[0].children.length).toBe(0);
   });
 
   it('数据更新为空数组', async () => {
@@ -75,12 +69,6 @@ describe('空数据', () => {
     newChartProps.props.children = chartProps.props.children;
     await delay(100);
     await canvas.update({ children: newChartProps });
-    expect(
-      ref.current.container
-        .getChildren()[0]
-        .getChildren()[0]
-        .getChildren()[0]
-        .getChildren().length
-    ).toBe(0);
+    expect(ref.current.container.children[0].children[0].children[0].children.length).toBe(0);
   });
 });

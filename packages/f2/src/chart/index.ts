@@ -1,10 +1,10 @@
-import { JSX } from '../jsx/jsx-namespace';
+import { JSX } from '../index';
 import { ScaleConfig } from '@antv/scale';
 import { each, findIndex, isArray } from '@antv/util';
 import equal from '../base/equal';
 import { Layout, Component } from '../index';
 import Coord from '../coord';
-import Children from '../children';
+import { Children } from '../index';
 // types
 import LayoutController from '../controller/layout';
 import CoordController from '../controller/coord';

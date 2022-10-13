@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import SunburstView from './sunburstView';
 import IcicleView from './icicleView';
 

@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { Component } from '@antv/f-engine';
 import { partition, hierarchy } from '../../deps/d3-hierarchy/src';
 import { Category } from '../../attr';

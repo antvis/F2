@@ -1,4 +1,4 @@
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { Component } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
@@ -48,7 +48,7 @@ export default (View) => {
       super.didUpdate();
       const shape = this.triggerRef.current;
       if (!shape || shape.destroyed) return;
-      const { x, y, width, height } = shape.get('attrs');
+      const { x, y, width, height } = shape.getBBox();
       const bbox = {
         minX: x,
         minY: y,

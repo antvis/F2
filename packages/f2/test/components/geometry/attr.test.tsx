@@ -429,12 +429,7 @@ describe('Geometry - Attr', () => {
     const container = geometryRef.current.container;
     expect(geometryRef.current.records[0].children[0].size).toBe(undefined);
 
-    const rect = container
-      .getChildren()[0]
-      .getChildren()[0]
-      .getChildren()[0]
-      .getChildren()[0]
-      .getChildren()[0];
+    const rect = container.children[0].children[0].children[0].children[0].children[0];
     expect(rect.getAttribute('x')).toBeCloseTo(47.79);
     expect(rect.getAttribute('y')).toBeCloseTo(166.81);
     expect(rect.getAttribute('width')).toBeCloseTo(10.15);

@@ -1,5 +1,5 @@
 import { deepMix, isArray } from '@antv/util';
-import { jsx } from '../../jsx';
+import { jsx } from '../../index';
 import { LineViewProps } from './types';
 
 function concatPoints(children) {
@@ -55,7 +55,7 @@ function AnimationEndView(props) {
           onFrame: function(t) {
             // 这段逻辑有点恶心。。
             const { element } = this;
-            const children = element.getChildren();
+            const children = element.children;
             const point = getPoint(points, t);
             children.forEach((child) => {
               child.moveTo(point.x, point.y);
@@ -82,8 +82,8 @@ export default (props: LineViewProps) => {
           type: 'sector',
           property: ['endAngle'],
           attrs: {
-            x: center.x,
-            y: center.y,
+            x: center.x - left,
+            y: center.y - top,
             startAngle,
             r: radius,
           },
@@ -102,8 +102,8 @@ export default (props: LineViewProps) => {
           type: 'rect',
           property: ['width'],
           attrs: {
-            x: left,
-            y: top,
+            // x: left,
+            // y: top,
             height: height,
           },
           start: {

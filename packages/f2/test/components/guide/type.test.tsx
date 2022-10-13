@@ -272,7 +272,7 @@ describe('Guide', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('TagGuide不同方向', async () => {
+  it.skip('TagGuide不同方向', async () => {
     const context = createContext('TagGuide不同方向');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>

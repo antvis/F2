@@ -1,4 +1,4 @@
-import { jsx } from '../../../jsx';
+import { jsx } from '../../../index';
 import { RectProps } from '../types';
 
 export default (props: RectProps) => {

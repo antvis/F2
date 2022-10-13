@@ -3,7 +3,7 @@ import { Canvas, Chart } from '../../../src';
 import { Axis, Point, ScrollBar } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
-describe('全局漫游模式', () => {
+describe.skip('全局漫游模式', () => {
   describe('斜移和缩放-linear 类型', () => {
     const context = createContext('折线', {
       width: '350px',
