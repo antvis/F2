@@ -1,6 +1,6 @@
 const requestAnimationFrame =
-  typeof window === 'object' && window.requestAnimationFrame
-    ? window.requestAnimationFrame
+  typeof window === 'object' && (window as Window).requestAnimationFrame
+    ? (window as Window).requestAnimationFrame
     : function (fn) {
         return setTimeout(fn, 16);
       };

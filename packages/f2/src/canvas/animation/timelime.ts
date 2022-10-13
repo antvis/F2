@@ -1,18 +1,19 @@
 const requestAnimationFrame =
-  typeof window === 'object' && window.requestAnimationFrame
-    ? window.requestAnimationFrame
+  typeof window === 'object' && (window as Window).requestAnimationFrame
+    ? (window as Window).requestAnimationFrame
     : function (fn) {
         return setTimeout(fn, 16);
       };
 
 const cancelAnimationFrame =
-  typeof window === 'object' && window.cancelAnimationFrame
-    ? window.cancelAnimationFrame
+  typeof window === 'object' && (window as Window).cancelAnimationFrame
+    ? (window as Window).cancelAnimationFrame
     : function (number) {
         return clearTimeout(number);
       };
 
-const clock = typeof performance === 'object' && performance.now ? performance : Date;
+const clock =
+  typeof performance === 'object' && (performance as Performance).now ? performance : Date;
 
 type UpdateCallback = (time: number) => void;
 type EndCallback = () => void;
