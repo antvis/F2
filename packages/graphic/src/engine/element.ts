@@ -1,9 +1,9 @@
-import { mix, isObject, isArray } from '@antv/util';
-import MatrixUtil from '../util/matrix';
-import Vector2 from '../util/vector2';
-import { parseStyle } from '../util/style-parse';
-import { remove as arrayRemove } from '../util/array';
+import { isArray, isObject, mix } from '@antv/util';
 import { ElementAttrs } from '../types';
+import { remove as arrayRemove } from '../util/array';
+import MatrixUtil from '../util/matrix';
+import { parseStyle } from '../util/style-parse';
+import Vector2 from '../util/vector2';
 
 const ALIAS_ATTRS_MAP = {
   stroke: 'strokeStyle',
@@ -283,7 +283,9 @@ class Element<T extends ElementProp = ElementProp> {
 
     this._removeFromParent();
 
-    this._attrs = {} as T;
+    // 保留 attrs
+    const { attrs } = this._attrs;
+    this._attrs = { attrs } as T;
     this.set('destroyed', true);
   }
 
