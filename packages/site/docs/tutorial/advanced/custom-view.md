@@ -77,6 +77,7 @@ const CustomLegendView = (props) => {
   );
 };
 
+
 // 使用自定义 view 的组件
 const Legend = withLegend(CustomLegendView);
 
@@ -88,6 +89,8 @@ const Legend = withLegend(CustomLegendView);
   </Chart>
 </Canvas>;
 ```
+
+在 CustomLegendView 中，用户可以拿到计算逻辑后的结果 props，也可以使用 Legend 组件的 public function
 
 ## 完整示例
 

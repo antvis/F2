@@ -111,6 +111,8 @@ size 的数据映射字段， 使用方式同 [color](#color)
   range: [2, 10],
 }} ... />
 ```
+### viewClip
+只显示图表区域内（两轴之间）的，默认 false
 
 ### adjust: string
 

@@ -116,3 +116,13 @@ item 点击的回调
   }}
 />
 ```
+
+## 方法
+
+### getOriginItems()
+
+获取图表中原始分类数据
+
+### getMaxItemBox(legendShape) 
+获取 legendShape 包围盒
+
