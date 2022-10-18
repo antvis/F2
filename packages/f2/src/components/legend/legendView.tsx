@@ -16,6 +16,21 @@ const Marker = ({ type, color }) => {
       />
     );
   }
+  if (type === 'line') {
+    return (
+      <rect
+        style={{
+          width: '21px',
+          height: '5px',
+          marginRight: '10px',
+        }}
+        attrs={{
+          fill: color,
+          radius: '4px',
+        }}
+      />
+    );
+  }
   return (
     <circle
       style={{
@@ -39,10 +54,10 @@ export default (props) => {
     marker = 'circle', // 图例标记默认为 circle
     nameStyle,
     valueStyle,
-    valuePrefix
+    valuePrefix,
   } = props;
 
-  const formatValue = (value, valuePrefix = ": ") => {
+  const formatValue = (value, valuePrefix = ': ') => {
     return `${valuePrefix}${value}`;
   };
 
@@ -72,7 +87,7 @@ export default (props) => {
                 ...nameStyle,
               }}
             />
-            { valueText ? (
+            {valueText ? (
               <text
                 attrs={{
                   fill: '#808080',
