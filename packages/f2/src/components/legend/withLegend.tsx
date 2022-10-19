@@ -60,7 +60,7 @@ export interface LegendProps {
   /**
    * 图例标记。
    */
-  marker?: 'circle' | 'square';
+  marker?: 'circle' | 'square' | 'line';
   /**
    * 用于设置图例项的文本样式
    */

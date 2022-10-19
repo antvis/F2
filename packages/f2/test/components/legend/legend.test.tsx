@@ -82,6 +82,30 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
+    it('marker=line', async () => {
+      const context = createContext('marker=line', {
+        height: '70px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend
+              style={{
+                justifyContent: 'flex-start',
+              }}
+              marker="line"
+            />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
     it('position = bottom', async () => {
       const data = [
         { genre: 'Sports', sold: 275 },
