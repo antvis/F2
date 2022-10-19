@@ -18,15 +18,15 @@ const Marker = ({ type, color }) => {
   }
   if (type === 'line') {
     return (
-      <rect
+      <line
         style={{
-          width: '21px',
-          height: '5px',
+          width: '19px',
           marginRight: '10px',
         }}
         attrs={{
-          fill: color,
-          radius: '4px',
+          strokeStyle: color,
+          lineCap: 'round',
+          lineWidth: 3,
         }}
       />
     );
