@@ -1,7 +1,7 @@
 {
   "name": "@antv/f2-adjust",
   "version": "0.2.5",
-  "description": "The adjust module for G2, F2.",
+  "description": "The adjust module for F2.",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
@@ -26,7 +26,6 @@
   "keywords": [
     "antv",
     "adjust",
-    "g2",
     "f2"
   ],
   "author": "https://github.com/orgs/antvis/people",

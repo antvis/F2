@@ -1,6 +1,4 @@
-# `@antv/scale`
-
-> 0.3 版本不兼容之前 0.1.X，大体上兼容 0.2.x 版本，一些差异在最下面列出
+# `@antv/f2-scale`
 
 ## Description
 
@@ -17,7 +15,7 @@ scale 有很多中文名，标度、度量、比例尺等等。它是数据空�
 ## Usage
 
 ```ts
-import { getScale } from '@antv/scale';
+import { getScale } from '@antv/f2-scale';
 
 const Linear = getScale('linear');
 
@@ -48,8 +46,7 @@ Scale 度量模块提供了下面 3 大类的度量
   - quantize：分段度量，用户可以指定不均匀的分段
   - quantile: 等分度量，根据数据的分布自动计算分段
 - 常量度量
-  - identity: 常量度量
-    这些度量的使用通过 getScale 方法来获取
+  - identity: 常量度量这些度量的使用通过 getScale 方法来获取
 
 ```js
 import { getScale } from '@antv/scale';
@@ -108,13 +105,11 @@ const TimeCat = getScale('timeCat');
 
 #### pow
 
-| 名称 | 类型 | 说明 |
-| exponent | number | 指数 |
+| 名称 | 类型 | 说明 | | exponent | number | 指数 |
 
 #### log
 
-| 名称 | 类型 | 说明 |
-| base | number | 对数底数 |
+| 名称 | 类型 | 说明 | | base | number | 对数底数 |
 
 #### quantize
 
