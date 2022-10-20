@@ -26,7 +26,7 @@ const Marker = ({ type, color }) => {
         attrs={{
           strokeStyle: color,
           lineCap: 'round',
-          lineWidth: 3,
+          lineWidth: '4px',
         }}
       />
     );
