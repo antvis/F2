@@ -36,7 +36,7 @@ export interface DataRecord {
   [k: string]: any;
 }
 
-// export * from '@antv/scale'
+// export * from '@antv/f2-scale'
 export type { AxisTypes }
 
 type SupportPx<T> = {

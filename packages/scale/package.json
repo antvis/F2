@@ -1,0 +1,26 @@
+{
+  "name": "@antv/f2-scale",
+  "version": "0.0.0",
+  "description": "The scale module for F2",
+  "author": "https://github.com/orgs/antvis/people",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "esm",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:antvis/scale.git"
+  },
+  "dependencies": {
+    "@antv/util": "~3.3.0",
+    "fecha": "~4.2.0",
+    "@babel/runtime": "^7.12.5"
+  }
+}

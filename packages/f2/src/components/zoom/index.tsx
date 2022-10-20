@@ -1,7 +1,7 @@
 import { Component } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
-import { Scale, ScaleConfig } from '@antv/scale';
+import { Scale, ScaleConfig } from '@antv/f2-scale';
 import { each, isNumberEqual } from '@antv/util';
 import equal from '../../base/equal';
 

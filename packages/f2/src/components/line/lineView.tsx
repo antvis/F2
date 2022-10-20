@@ -82,8 +82,8 @@ export default (props: LineViewProps) => {
           type: 'sector',
           property: ['endAngle'],
           attrs: {
-            x: center.x - left,
-            y: center.y - top,
+            x: center.x,
+            y: center.y,
             startAngle,
             r: radius,
           },
@@ -102,8 +102,8 @@ export default (props: LineViewProps) => {
           type: 'rect',
           property: ['width'],
           attrs: {
-            // x: left,
-            // y: top,
+            x: left,
+            y: top,
             height: height,
           },
           start: {

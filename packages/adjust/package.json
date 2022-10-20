@@ -1,0 +1,34 @@
+{
+  "name": "@antv/f2-adjust",
+  "version": "0.2.5",
+  "description": "The adjust module for G2, F2.",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "esm",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@antv/util": "~3.3.0",
+    "@babel/runtime": "^7.12.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:antvis/adjust.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/adjust/issues"
+  },
+  "keywords": [
+    "antv",
+    "adjust",
+    "g2",
+    "f2"
+  ],
+  "author": "https://github.com/orgs/antvis/people",
+  "license": "MIT"
+}

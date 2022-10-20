@@ -1,4 +1,4 @@
-import { Scale, ScaleConfig } from '@antv/scale';
+import { Scale, ScaleConfig } from '@antv/f2-scale';
 import { mix, isFunction, isNil, isArray, valuesOfKey } from '@antv/util';
 
 class Base {
