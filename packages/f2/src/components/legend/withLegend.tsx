@@ -62,6 +62,10 @@ export interface LegendProps {
    */
   marker?: 'circle' | 'square' | 'line';
   /**
+   * 用于设置图例项的样式
+   */
+  itemStyle?: Style;
+  /**
    * 用于设置图例项的文本样式
    */
   nameStyle?: TextAttrs;
