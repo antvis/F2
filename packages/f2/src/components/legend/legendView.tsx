@@ -52,6 +52,7 @@ export default (props) => {
     itemFormatter,
     style,
     marker = 'circle', // 图例标记默认为 circle
+    itemStyle,
     nameStyle,
     valueStyle,
     valuePrefix,
@@ -76,6 +77,7 @@ export default (props) => {
               alignItems: 'center',
               justifyContent: 'flex-start',
               padding: ['6px', '6px', '6px', 0],
+              ...itemStyle,
             }}
             data-item={item}
           >

@@ -48,7 +48,7 @@ const data = [
 
 ### marker: string
 
-图例标记, 可选值为： `'circle' | 'square'`, 默认为 `'circle'`
+图例标记, 可选值为： `'circle' | 'square' | 'line'`, 默认为 `'circle'`
 
 ### style
 
@@ -67,6 +67,18 @@ const data = [
   style={{
     justifyContent: 'flex-start',
     flexDirection: 'column',
+  }}
+/>
+```
+
+### itemStyle
+
+定义每个图例项的布局方式，支持的属性同上文的 style
+
+```jsx
+<Legend
+  itemStyle={{
+    justifyContent: 'center',
   }}
 />
 ```
