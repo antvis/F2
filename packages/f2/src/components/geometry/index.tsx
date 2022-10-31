@@ -1,11 +1,11 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
 import Selection, { SelectionState } from './selection';
-import { Adjust, getAdjust } from '@antv/adjust';
+import { Adjust, getAdjust } from '@antv/f2-adjust';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps, GeometryAdjust } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
-import { Scale } from '@antv/scale';
+import { Scale } from '@antv/f2-scale';
 import { Types } from '@antv/f-engine';
 
 // 保留原始数据的字段

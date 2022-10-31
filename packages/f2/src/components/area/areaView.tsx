@@ -15,8 +15,8 @@ export default (props) => {
           type: 'sector',
           property: ['endAngle'],
           attrs: {
-            x: center.x - left,
-            y: center.y - top,
+            x: center.x,
+            y: center.y,
             startAngle,
             r: radius,
           },
@@ -35,6 +35,8 @@ export default (props) => {
           type: 'rect',
           property: ['width'],
           attrs: {
+            x: left,
+            y: top,
             height: height,
           },
           start: {

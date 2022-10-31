@@ -1,5 +1,5 @@
 import { ScaleValues, ZoomRange } from './index';
-import { Scale, getTickMethod } from '@antv/scale';
+import { Scale, getTickMethod } from '@antv/f2-scale';
 import { getRange } from '@antv/util';
 import { toTimeStamp } from '../../util';
 

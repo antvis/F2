@@ -1,5 +1,5 @@
 export default {
-  pkgs: ['graphic', 'f2', 'react', 'vue', 'my', 'wx'],
+  pkgs: ['adjust','scale', 'f2'],
   cjs: {
     type: 'babel',
   },

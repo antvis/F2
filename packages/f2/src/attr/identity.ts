@@ -1,4 +1,4 @@
-import { Identity as IdentityScale, ScaleConfig } from '@antv/scale';
+import { Identity as IdentityScale, ScaleConfig } from '@antv/f2-scale';
 import Base from './base';
 
 class Identity extends Base {
