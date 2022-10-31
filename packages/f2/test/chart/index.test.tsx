@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Axis, Interval } from '../../src';
+import { jsx, Canvas, Chart, Axis, Interval, Line, Point } from '../../src';
 import { createContext, delay } from '../util';
 const context = createContext();
 

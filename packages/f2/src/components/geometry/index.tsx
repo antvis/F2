@@ -62,15 +62,16 @@ class Geometry<
   }
 
   willReceiveProps(nextProps) {
-    super.willReceiveProps(nextProps);
     const { props: lastProps, attrController, justifyContent } = this;
     const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange, coord } = nextProps;
     const { data: lastData, adjust: lastAdjust, zoomRange: lastZoomRange } = lastProps;
 
     const justifyContentCenter = !coord.isCyclic() || justifyContent;
 
-    const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
     const lastAttrOptions = attrController.getAttrOptions(lastProps, justifyContentCenter);
+
+    attrController.attrsRange = this._getThemeAttrsRange();
+    const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
     if (!equal(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
       this.records = null;

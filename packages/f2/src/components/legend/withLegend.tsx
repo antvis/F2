@@ -1,5 +1,5 @@
 import { jsx } from '../../index';
-import { Component, renderShape } from '@antv/f-engine';
+import { Component, computeLayout } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
@@ -81,7 +81,7 @@ export interface LegendProps {
 
 export default (View) => {
   return class Legend extends Component<LegendProps> {
-    style: Style;
+    legendStyle: Style;
     itemWidth: Number;
     constructor(props) {
       super(props);
@@ -116,16 +116,17 @@ export default (View) => {
       });
     }
 
-    getMaxItemBox(legendShape) {
+    getMaxItemBox(node) {
       let maxItemWidth = 0;
       let maxItemHeight = 0;
-      (legendShape.children || []).forEach((child) => {
-        const width = child.getAttribute('width');
-        const height = child.getAttribute('height');
+      (node.children || []).forEach((child) => {
+        const { layout } = child;
+        const { width, height } = layout;
 
         maxItemWidth = Math.max(maxItemWidth, width);
         maxItemHeight = Math.max(maxItemHeight, height);
       });
+
       return {
         width: maxItemWidth,
         height: maxItemHeight,
@@ -142,22 +143,19 @@ export default (View) => {
         height: customHeight,
         position = 'top',
       } = props;
-
       const items = this.getItems();
       if (!items || !items.length) return;
       const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
-      // @ts-ignore
-      const shape = renderShape(this, this.render(), false);
-      const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(shape);
+      const node = computeLayout(this, this.render());
+      const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(node);
       // 每行最多的个数
-      const lineMaxCount = Math.floor(width / itemMaxWidth);
+      const lineMaxCount = Math.max(1, Math.floor(width / itemMaxWidth));
       const itemCount = items.length;
       // legend item 的行数
       const lineCount = Math.ceil(itemCount / lineMaxCount);
       const itemWidth = width / lineMaxCount;
       const autoHeight = itemMaxHeight * lineCount;
-
       const style: Style = {
         left,
         top,
@@ -169,23 +167,19 @@ export default (View) => {
         alignItems: 'center',
         justifyContent: 'flex-start',
       };
-
       // 如果只有一行，2端对齐
       if (lineCount === 1) {
         style.justifyContent = 'space-between';
       }
-
       if (position === 'top') {
         style.height = customHeight ? customHeight : autoHeight;
       }
-
       if (position === 'left') {
         style.flexDirection = 'column';
         style.justifyContent = 'center';
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
       }
-
       if (position === 'right') {
         style.flexDirection = 'column';
         style.alignItems = 'flex-start';
@@ -194,22 +188,18 @@ export default (View) => {
         style.height = customHeight ? customHeight : layoutHeight;
         style.left = right - itemMaxWidth;
       }
-
       if (position === 'bottom') {
         style.top = bottom - autoHeight;
         style.height = customHeight ? customHeight : autoHeight;
       }
-
       this.itemWidth = itemWidth;
-      this.style = style;
-
-      shape.remove();
+      this.legendStyle = style;
     }
 
     updateCoord() {
-      const { context, props, style } = this;
+      const { context, props, legendStyle } = this;
       const { position = 'top', margin = '30px', chart } = props;
-      const { width, height } = style;
+      const { width, height } = legendStyle;
       const marginNumber = context.px2hd(margin);
 
       chart.updateCoordFor(this, {
@@ -288,7 +278,7 @@ export default (View) => {
     }
 
     render() {
-      const { props, itemWidth, style } = this;
+      const { props, itemWidth, legendStyle } = this;
       const items = this.getItems();
       if (!items || !items.length) {
         return null;
@@ -300,7 +290,7 @@ export default (View) => {
           items={items}
           itemWidth={itemWidth}
           style={{
-            ...style,
+            ...legendStyle,
             ...props.style,
           }}
         />

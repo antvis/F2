@@ -77,14 +77,10 @@ class Chart extends Component implements IChart {
     this.scaleController = new ScaleController(data);
     this.scale = this.scaleController;
 
-    const { layoutController, coordController, scaleController } = this;
-
-    // 布局
-    const style = this.getStyle(props, context);
-    this.layout = layoutController.create(style);
+    const { coordController, scaleController } = this;
 
     // 坐标系
-    this.coord = coordController.create(coordOption, this.layout);
+    this.coord = coordController.create(coordOption, {});
 
     // scale
     scaleController.create(scale);
@@ -97,15 +93,24 @@ class Chart extends Component implements IChart {
     };
   }
 
+  willMount() {
+    const { props, layoutController, coordController } = this;
+    const style = this.getStyle(props);
+    const layout = layoutController.create(style);
+    coordController.updateLayout(layout);
+
+    this.layout = layout;
+  }
+
   // props 更新
-  willReceiveProps(nextProps, context) {
+  willReceiveProps(nextProps) {
     const { layoutController, coordController, scaleController, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
 
     // 布局
-    if (!equal(nextStyle, lastStyle) || context !== this.context) {
-      const style = this.getStyle(nextProps, context);
+    if (!equal(nextStyle, lastStyle)) {
+      const style = this.getStyle(nextProps);
       this.layout = layoutController.create(style);
       coordController.updateLayout(this.layout);
     }
@@ -127,16 +132,18 @@ class Chart extends Component implements IChart {
     this.coord = coordController.create(props.coord, this.layout);
   }
 
-  private getStyle(props, context) {
-    const { theme, px2hd, left, top, width, height } = context;
-    const { style } = props;
+  private getStyle(props) {
+    const { context, style } = this;
+    const { theme, px2hd } = context;
+    const { left, top, width, height } = style;
+    const { style: customStyle } = props;
     return px2hd({
       left,
       top,
       width,
       height,
       ...theme.chart,
-      ...style,
+      ...customStyle,
     });
   }
 

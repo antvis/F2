@@ -7,9 +7,9 @@ class Rect extends Base {
   update(option: Option) {
     super.update(option);
 
-    const { left, top, right, bottom } = this;
-    const x: Range = [left, right];
-    const y: Range = [bottom, top];
+    const { left, top, width, height } = this;
+    const x: Range = [left, left + width];
+    const y: Range = [top + height, top];
 
     this.x = x;
     this.y = y;
