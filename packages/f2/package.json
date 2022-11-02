@@ -33,7 +33,7 @@
   "dependencies": {
     "@antv/f2-adjust": "*",
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f-engine": "~0.0.2",
+    "@antv/f-engine": "~0.0.3",
     "@antv/f2-scale": "*",
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",

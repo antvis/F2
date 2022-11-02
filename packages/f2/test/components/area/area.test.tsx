@@ -846,7 +846,7 @@ describe('面积图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('百分比层叠面积图', async () => {
+    it('百分比层叠面积图', async () => {
       const context = createContext('百分比层叠面积图');
       const data = [
         {
