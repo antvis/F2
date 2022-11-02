@@ -60,9 +60,6 @@
     "silent": false
   },
   "resolutions": {
-    "monaco-editor": "0.20.0",
-    "monaco-editor-webpack-plugin": "1.9.1",
-    "react-monaco-editor": "0.34.0",
     "signal-exit": "3.0.3"
   },
   "devDependencies": {
