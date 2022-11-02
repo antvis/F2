@@ -260,8 +260,18 @@ describe('面积图', () => {
           >
             <Axis field="time" />
             <Axis field="tem" />
-            <Area x="time" y="tem" color="l(90) 0:#1890FF 1:#f7f7f7" shape="smooth" />
-            <Line x="time" y="tem" color="l(90) 0:#1890FF 1:#f7f7f7" shape="smooth" />
+            <Area
+              x="time"
+              y="tem"
+              color="linear-gradient(90deg, #1890FF, #f7f7f7)"
+              shape="smooth"
+            />
+            <Line
+              x="time"
+              y="tem"
+              color="linear-gradient(90deg, #1890FF, #f7f7f7)"
+              shape="smooth"
+            />
           </Chart>
         </Canvas>
       );
@@ -830,13 +840,13 @@ describe('面积图', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('百分比层叠面积图', async () => {
+    it('百分比层叠面积图', async () => {
       const context = createContext('百分比层叠面积图');
       const data = [
         {

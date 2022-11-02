@@ -3,7 +3,7 @@ import { Component } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
-import { renderShape } from '@antv/f-engine';
+import { computeLayout } from '@antv/f-engine';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -15,6 +15,7 @@ export default (View) => {
   return class Guide extends Component {
     chart: Chart;
     triggerRef: Ref;
+    guideBBox: any;
 
     constructor(props) {
       super(props);
@@ -24,8 +25,7 @@ export default (View) => {
     }
 
     willMount() {
-      super.willMount();
-      this.getGuideBBox();
+      this.guideBBox = this.getGuideBBox();
     }
 
     didMount() {
@@ -45,40 +45,22 @@ export default (View) => {
     }
 
     didUpdate() {
-      super.didUpdate();
-      const shape = this.triggerRef.current;
-      if (!shape || shape.destroyed) return;
-      const { x, y, width, height } = shape.getBBox();
-      const bbox = {
-        minX: x,
-        minY: y,
-        maxX: x + width,
-        maxY: y + height,
-        width,
-        height,
-      };
-      this.setState({
-        guideBBox: bbox,
-      });
+      this.guideBBox = this.getGuideBBox();
     }
 
     getGuideBBox() {
-      //@ts-ignore
-      const shape = renderShape(this, this.render(), false);
-      const { x, y, width, height } = shape.getBBox();
+      const node = computeLayout(this, this.render());
+      const { layout } = node;
+      if (!layout) return;
+
+      const { width, height } = layout;
       // getBBox 没有包含 padding 所以这里手动计算 bbox
-      const bbox = {
-        minX: x,
-        minY: y,
-        maxX: x + width,
-        maxY: y + height,
+      const box = {
         width,
         height,
       };
-      this.setState({
-        guideBBox: bbox,
-      });
-      shape.destroy();
+
+      return box;
     }
 
     // 解析record里的模板字符串，如min、max、50%...
@@ -129,12 +111,11 @@ export default (View) => {
     }
 
     render() {
-      const { props, context } = this;
+      const { props, context, guideBBox } = this;
       const { coord, records = [], animation, chart } = props;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
-      const { guideBBox } = this.state;
 
       let animationCfg = animation;
       if (isFunction(animation)) {

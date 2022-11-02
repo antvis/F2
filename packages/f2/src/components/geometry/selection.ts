@@ -54,7 +54,7 @@ class Selection<
     // 默认为 click
     const { triggerOn = 'click' } = selection;
     context.gesture.on(triggerOn, (ev) => {
-      const { points, x, y } = ev;
+      const { points, canvasX: x, canvasY: y } = ev;
       const point = triggerOn === 'click' ? { x, y } : points[0];
       const records = this.getSnapRecords(point);
       const { type = 'single', cancelable = true } = selection;

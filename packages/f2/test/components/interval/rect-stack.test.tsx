@@ -116,7 +116,7 @@ const Interval = withInterval((props, context) => {
                       <polyline
                         attrs={{
                           points: [
-                            ['200px', px2hd('176px')],
+                            [px2hd('200px'), px2hd('176px')],
                             [xCenter, px2hd('176px')],
                             [xCenter, px2hd('140px') - px2hd('45px') * index],
                           ],

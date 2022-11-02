@@ -201,7 +201,6 @@ export default class TooltipView extends Component {
     const { canvas } = context;
     await canvas.ready;
     const rect = rootRef.current?.childNodes[0];
-    console.log(rect);
     if (!rect) {
       return;
     }

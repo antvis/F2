@@ -216,7 +216,7 @@ describe('Canvas', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(500);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -246,7 +246,7 @@ describe('Canvas', () => {
       const canvas = new Canvas(props);
       canvas.render();
 
-      await delay(100);
+      await delay(500);
       expect(context).toMatchImageSnapshot();
       expect(createImageCallback.mock.calls.length).toBe(1);
     });
@@ -286,7 +286,7 @@ describe('Canvas', () => {
   });
 
   describe('clip', () => {
-    it.skip('custom clip', async () => {
+    it('custom clip', async () => {
       const context = createContext('custom clip');
       const points1 = [
         [10, 20],

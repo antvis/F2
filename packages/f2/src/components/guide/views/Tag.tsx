@@ -1,10 +1,11 @@
 import { jsx } from '../../../index';
-import type { Types } from '@antv/f-engine';
+import { px } from '../../../types';
+
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
   canvasWidth?: number;
   canvasHeight?: number;
-  guideBBox?: Types.BBox;
+  guideBBox?: any;
   offsetX?: number;
   offsetY?: number;
   autoAdjust?: boolean;
@@ -15,7 +16,7 @@ interface TagGuideProps {
   /**
    * 箭头的边长
    */
-  side?: number;
+  side?: px;
   /**
    * 文字内容
    */
@@ -39,18 +40,18 @@ const defaultProps: TagGuideProps = {
   offsetY: 0,
   points: [],
   direct: 'tl',
-  side: 6,
+  side: '8px',
   autoAdjust: true,
 };
 
 const defaultStyle = {
   container: {
     fill: '#1677FF',
-    radius: 2,
-    padding: [1, 5],
+    radius: '4px',
+    padding: ['4px', '8px'],
   },
   text: {
-    fontSize: '22px' as `${number}px`,
+    fontSize: '22px',
     fill: '#fff',
   },
   arrow: {
@@ -59,6 +60,7 @@ const defaultStyle = {
 };
 
 export default (props: TagGuideProps, context) => {
+  const { px2hd } = context;
   const cfg = { ...defaultProps, ...props };
   const {
     points,
@@ -74,7 +76,7 @@ export default (props: TagGuideProps, context) => {
     background,
     textStyle,
     triggerRef,
-  } = cfg;
+  } = px2hd(cfg);
   const { x, y } = points[0] || {};
   const { width: guideWidth, height: guideHeight } = guideBBox || {};
 
@@ -124,7 +126,7 @@ export default (props: TagGuideProps, context) => {
         { x: posX - side, y: posY - side - 1 },
       ];
 
-      posX -= (guideWidth / 2 || 0);
+      posX -= guideWidth / 2 || 0;
       posY = posY - side;
     } else if (direct === 'cl') {
       arrowPoints = [
@@ -132,7 +134,7 @@ export default (props: TagGuideProps, context) => {
         { x: posX - side - 1, y: posY + side },
         { x: posX, y: posY },
       ];
-      posX = posX - (guideWidth / 2  || 0) - side;
+      posX = posX - (guideWidth / 2 || 0) - side;
       posY += (guideHeight / 2 || 0) - 1;
     } else if (direct === 'bl') {
       arrowPoints = [
@@ -141,22 +143,23 @@ export default (props: TagGuideProps, context) => {
         { x: posX - side, y: posY + side + 1 },
       ];
       posX = posX - (guideWidth / 2 || 0);
-      posY += (guideHeight|| 0)  + side - 1;
-    } else if (direct === 'bc') { // 有问题
+      posY += (guideHeight || 0) + side - 1;
+    } else if (direct === 'bc') {
+      // 有问题
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX - side, y: posY + side + 1 },
         { x: posX + side, y: posY + side + 1 },
       ];
-      posY += (guideHeight|| 0) + side - 1;
+      posY += (guideHeight || 0) + side - 1;
     } else if (direct === 'br') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX, y: posY + side + 1 },
         { x: posX + side, y: posY + side + 1 },
       ];
-      posX += (guideWidth / 2 || 0);
-      posY += (guideHeight|| 0) + side - 1;
+      posX += guideWidth / 2 || 0;
+      posY += (guideHeight || 0) + side - 1;
     } else if (direct === 'cr') {
       arrowPoints = [
         { x: posX, y: posY },
@@ -164,84 +167,64 @@ export default (props: TagGuideProps, context) => {
         { x: posX + side, y: posY + side },
       ];
       posX += (guideWidth / 2 || 0) + side;
-      posY += (guideHeight / 2 || 0);
+      posY += guideHeight / 2 || 0;
     } else if (direct === 'tr') {
       arrowPoints = [
         { x: posX, y: posY },
         { x: posX, y: posY - side - 1 },
         { x: posX + side, y: posY - side - 1 },
       ];
-      posX += (guideWidth / 2 || 0);
+      posX += guideWidth / 2 || 0;
       posY = posY - side;
     } else if (direct === 'tc') {
       arrowPoints = [
-        { x: posX, y: posY },
-        { x: posX - side, y: posY - side - 1 },
-        { x: posX + side, y: posY - side - 1 },
+        { x: guideWidth / 2, y: guideHeight + side },
+        { x: guideWidth / 2 - side, y: guideHeight - 1 },
+        { x: guideWidth / 2 + side, y: guideHeight - 1 },
       ];
-      posY = posY - side;
+      posY = posY - guideHeight - side;
     }
 
     return arrowPoints;
   };
-
-  const _getTextWrapper = () => {
-    const { width, height } = context.measureText(content, {
-      fontSize: defaultStyle.text.fontSize,
-      fill: defaultStyle.text.fill,
-      ...textStyle
-    })
-
-    const x = - width / 2 - defaultStyle.container.padding[1];
-    const y= - height - defaultStyle.container.padding[0]
-    return {
-      x,
-      y
-    }
-  }
   const dr = autoAdjust ? _getDirect(points[0]) : direct;
   const arrowPoints = _getArrowPoints(dr);
-  const textWrapper = _getTextWrapper();
 
   return (
     <group
-      attrs={{
+      style={{
+        x: posX,
+        y: posY,
         fill: defaultStyle.container.fill,
         radius: defaultStyle.container.radius,
-        ...background,
-      }}
-      style={{
-        // left: posX,
-        // top: posY,
         padding: defaultStyle.container.padding,
         ...background,
       }}
       ref={triggerRef}
     >
-      <rect 
+      <rect
         style={{
           display: 'flex',
           fill: defaultStyle.container.fill,
           padding: defaultStyle.container.padding,
           radius: defaultStyle.container.radius,
-          transform: `translate(${posX + textWrapper.x}, ${posY + textWrapper.y})`,
-          ...background
+          ...background,
         }}
       >
-      <text
-        attrs={{
-          text: content,
-          fontSize: defaultStyle.text.fontSize,
-          fill: defaultStyle.text.fill,
-          ...textStyle
-        }}
-      />
+        <text
+          style={{
+            text: content,
+            fontSize: defaultStyle.text.fontSize,
+            fill: defaultStyle.text.fill,
+            ...textStyle,
+          }}
+        />
       </rect>
       {guideBBox && (
         <polygon
-          attrs={{
-            points: arrowPoints.map(d=>[d.x,d.y]),
-            fill: background?.fill ||  defaultStyle.arrow.fill,
+          style={{
+            points: arrowPoints.map((d) => [d.x, d.y]),
+            fill: background?.fill || defaultStyle.arrow.fill,
           }}
         />
       )}
