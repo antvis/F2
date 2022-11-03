@@ -1,4 +1,5 @@
 import { JSX } from '../../index';
+import { ShapeProps } from '@antv/f-engine';
 import { GeometryProps, AdjustConfig } from '../geometry/interface';
 import Coord from '../../coord';
 
@@ -13,7 +14,7 @@ export interface LineViewProps {
   coord: Coord;
   animation?: any;
   endView?: (origin: any) => JSX.Element;
-  clip?: boolean;
+  clip?: ((style) => ShapeProps) | ShapeProps;
 }
 
 export interface LineProps extends GeometryProps {

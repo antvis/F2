@@ -1,11 +1,11 @@
 import { jsx } from '../../../index';
 import { deepMix } from '@antv/util';
-import { Style } from '../../../types';
+import { TextStyleProps } from '@antv/f-engine';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;
   content: string | number;
-  style?: Style;
+  style?: TextStyleProps;
   offsetX?: number;
   offsetY?: number;
   theme?: any;

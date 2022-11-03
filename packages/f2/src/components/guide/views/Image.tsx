@@ -1,12 +1,12 @@
 import { jsx } from '../../../index';
-import { Style } from '../../../types';
+import { ImageStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 
 type ImageGuideProps = {
   src: string;
   points?: { x: number; y: number }[] | null;
-  attrs?: any;
-  style?: Style;
+  attrs?: ImageStyleProps;
+  style?: ImageStyleProps;
   offsetX?: number;
   offsetY?: number;
 };

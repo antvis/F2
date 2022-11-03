@@ -1,8 +1,12 @@
 import { jsx } from '../../index';
-import { Component } from '@antv/f-engine';
+import { Component, Ref } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
-import { Ref, Point } from '../../types';
+
+interface Point {
+  x: number;
+  y: number;
+}
 
 const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量

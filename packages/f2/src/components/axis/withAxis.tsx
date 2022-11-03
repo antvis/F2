@@ -1,6 +1,6 @@
 import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
 import { jsx } from '../../index';
-import equal from '../../base/equal';
+import { isEqual } from '@antv/f-engine';
 import { PositionLayout } from '../../chart/index';
 import { Component } from '@antv/f-engine';
 import { Style, Tick, AxisProps } from './types';
@@ -12,7 +12,7 @@ type BBox = {
 
 export default (View) => {
   return class Axis extends Component<AxisProps, {}> {
-    style: Style = {};
+    axisStyle: Style = {};
 
     constructor(props: AxisProps) {
       super(props);
@@ -28,7 +28,7 @@ export default (View) => {
 
       const nextScaleOption = this.getScaleOption(nextProps);
       const lastScaleOption = this.getScaleOption(lastProps);
-      if (!equal(nextScaleOption, lastScaleOption)) {
+      if (!isEqual(nextScaleOption, lastScaleOption)) {
         chart.setScale(field, nextScaleOption);
       }
     }
@@ -165,9 +165,9 @@ export default (View) => {
         const styleValue = isFunction(style[key]) ? undefined : style[key];
 
         if (isString(value) || isNumber(value)) {
-          this.style[key] = px2hd(styleValue) || value;
+          this.axisStyle[key] = px2hd(styleValue) || value;
         } else {
-          this.style[key] = px2hd(deepMix(clone(value), styleValue));
+          this.axisStyle[key] = px2hd(deepMix(clone(value), styleValue));
         }
       });
 
@@ -214,7 +214,7 @@ export default (View) => {
       }
 
       const ticks = this.getTicks();
-      const bbox = this.getMaxBBox(ticks, this.style);
+      const bbox = this.getMaxBBox(ticks, this.axisStyle);
 
       const { isPolar } = coord;
       const dimType = this._getDimType();
@@ -254,7 +254,7 @@ export default (View) => {
     }
 
     render() {
-      const { props, style } = this;
+      const { props, axisStyle } = this;
       const { visible, coord } = props;
       if (visible === false) {
         return null;
@@ -267,7 +267,7 @@ export default (View) => {
       return (
         <View
           {...props}
-          style={style}
+          style={axisStyle}
           ticks={this.convertTicks(ticks)}
           coord={coord}
           position={position}

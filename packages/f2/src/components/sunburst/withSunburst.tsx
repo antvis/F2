@@ -1,12 +1,11 @@
 import { jsx } from '../../index';
-import { Component } from '@antv/f-engine';
+import { Ref, Component } from '@antv/f-engine';
 import { partition, hierarchy } from '../../deps/d3-hierarchy/src';
 import { Category } from '../../attr';
 import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
 import Coord from '../../coord';
-import { Ref } from '../../types';
 
 function rootParent(data) {
   let d = data;

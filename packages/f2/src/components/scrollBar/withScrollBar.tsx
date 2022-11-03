@@ -1,5 +1,4 @@
 import { jsx } from '../../index';
-import { px } from '../../types';
 import Zoom, { ZoomProps } from '../zoom';
 
 export interface ScrollBarProps extends ZoomProps {
@@ -14,7 +13,7 @@ export interface ScrollBarProps extends ZoomProps {
   /**
    * 间距
    */
-  margin?: px;
+  margin?: string;
 }
 
 export default (View) => {

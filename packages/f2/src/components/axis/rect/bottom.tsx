@@ -1,6 +1,6 @@
 import { jsx } from '../../../index';
 import { RectProps } from '../types';
-import { TextAttrs } from '../../../types';
+import { TextStyleProps } from '@antv/f-engine';
 
 export default (props: RectProps<'bottom'>, context) => {
   const { ticks, coord, style, animation } = props;
@@ -65,7 +65,7 @@ export default (props: RectProps<'bottom'>, context) => {
             const { points, text, tickValue, labelStyle } = tick;
             const start = points[0];
             const { align = 'center' } = labelStyle || label || {};
-            const textAttrs: TextAttrs = {
+            const textAttrs: TextStyleProps = {
               x: start.x,
               y: start.y + labelOffset,
               textBaseline: 'top',

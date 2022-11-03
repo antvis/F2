@@ -1,6 +1,6 @@
 import { isFunction, find } from '@antv/util';
 import { Component, jsx, createRef } from '../../index';
-import { Ref } from '../../types';
+import { Ref } from '@antv/f-engine';
 
 // view 的默认配置
 const defaultStyle = {

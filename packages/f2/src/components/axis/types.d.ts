@@ -1,12 +1,12 @@
-import { LineAttrs, TextAttrs } from '../../types';
+import { LineStyleProps, TextStyleProps } from '@antv/f-engine';
 import Coord from '../../coord';
 import { ChartChildProps } from '../../chart';
 
-interface TickLine extends LineAttrs {
+interface TickLine extends LineStyleProps {
   length?: number; // tick line 的长度
 }
 
-interface Text extends TextAttrs {
+interface Text extends TextStyleProps {
   align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between';
 }
 
@@ -18,19 +18,19 @@ type LabelCallback<Type = void> = (
   index: number,
   total: number
 ) => StyleText<Type>;
-type GridCallBack = (text: Tick['text'], index: number, total: number) => LineAttrs;
+type GridCallBack = (text: Tick['text'], index: number, total: number) => LineStyleProps;
 
 export interface Style<Type = void> {
-  grid?: LineAttrs;
+  grid?: LineStyleProps;
   tickLine?: TickLine;
-  line?: LineAttrs;
+  line?: LineStyleProps;
   labelOffset?: number;
   label?: StyleText<Type>;
 }
 
 export interface StyleProps<Type = void> extends Omit<Style, 'label' | 'grid' | 'labelOffset'> {
   label?: StyleText<Type> | LabelCallback<Type>;
-  grid?: LineAttrs | GridCallBack;
+  grid?: LineStyleProps | GridCallBack;
   labelOffset?: number | string;
 }
 
@@ -45,7 +45,7 @@ export interface Tick {
   text: string;
   tickValue: string | number;
   labelStyle?: Text;
-  gridStyle?: LineAttrs;
+  gridStyle?: LineStyleProps;
   gridPoints?: Point[];
 }
 

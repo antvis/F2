@@ -1,7 +1,5 @@
 import { isFunction } from '@antv/util';
-import { Component } from '@antv/f-engine';
-import { ShapeAttrs, Point } from '../../types';
-import equal from '../../base/equal';
+import { Component, isEqual as equal, ShapeStyleProps } from '@antv/f-engine';
 
 function isEqual(origin1, origin2, fields: string[]) {
   if (origin1 === origin2) {
@@ -16,15 +14,15 @@ function isEqual(origin1, origin2, fields: string[]) {
   return true;
 }
 
-type StyleType = (record: any) => ShapeAttrs;
+type StyleType = (record: any) => ShapeStyleProps;
 
 export interface SelectionProps {
   selection?: {
     triggerOn?: 'click' | 'press' | string;
     type?: 'single' | 'multiple';
     defaultSelected?: any[];
-    selectedStyle?: ShapeAttrs | StyleType;
-    unSelectedStyle?: ShapeAttrs | StyleType;
+    selectedStyle?: ShapeStyleProps | StyleType;
+    unSelectedStyle?: ShapeStyleProps | StyleType;
     cancelable?: boolean;
   };
   [k: string]: any;
@@ -131,7 +129,7 @@ class Selection<
     }
   }
 
-  getSnapRecords(_point: Point) {
+  getSnapRecords(_point) {
     return null;
   }
 

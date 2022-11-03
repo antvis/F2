@@ -1,7 +1,6 @@
 import { jsx } from '../../index';
-import { Component } from '@antv/f-engine';
+import { Component, Ref } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
-import { Ref } from '../../types';
 import Chart from '../../chart';
 import { computeLayout } from '@antv/f-engine';
 

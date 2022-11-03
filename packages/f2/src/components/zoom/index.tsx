@@ -1,9 +1,8 @@
-import { Component } from '@antv/f-engine';
+import { Component, isEqual } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '@antv/f2-scale';
 import { each, isNumberEqual } from '@antv/util';
-import equal from '../../base/equal';
 
 export type ZoomRange = [number, number];
 export type ScaleValues = number[] | string[];
@@ -12,7 +11,7 @@ function lerp(min, max, fraction) {
   return (max - min) * fraction + min;
 }
 
-function isEqual(aRange, bRange) {
+function isEqualRange(aRange, bRange) {
   for (const i in aRange) {
     if (!isNumberEqual(aRange[i], bRange[i])) return false;
   }
@@ -126,7 +125,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { range: nextRange } = nextProps;
     const { range: lastRange } = this.props;
 
-    if (!equal(nextRange, lastRange)) {
+    if (!isEqual(nextRange, lastRange)) {
       const cacheRange = {};
       each(this.dims, (dim) => {
         cacheRange[dim] = nextRange;
@@ -188,7 +187,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         return;
       }
     });
-    if (isEqual(range, this.state.range)) return;
+    if (isEqualRange(range, this.state.range)) return;
 
     this.setState({
       range,
@@ -269,7 +268,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
         return;
       }
     });
-    if (isEqual(range, this.state.range)) return;
+    if (isEqualRange(range, this.state.range)) return;
     this.setState({
       range,
     } as S);
@@ -397,7 +396,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { chart, data, autoFit } = props;
     const { range } = state;
 
-    if (range && isEqual(newRange, range[dim])) return newRange;
+    if (range && isEqualRange(newRange, range[dim])) return newRange;
 
     // 更新主 scale
     updateRange(scale[dim], originScale[dim], newRange);

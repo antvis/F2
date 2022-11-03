@@ -1,6 +1,6 @@
 import { each, isString, isNil, isFunction, isNumber, isArray, upperFirst } from '@antv/util';
 import * as Attrs from '../attr';
-import equal from '../base/equal';
+import { isEqual } from '@antv/f-engine';
 import ScaleController from './scale';
 import { Scale, ScaleConfig } from '@antv/f2-scale';
 
@@ -172,7 +172,7 @@ class AttrController {
     const nextAttrs = {};
     each(nextOptions, (nextOption, attrName: string) => {
       const lastOption = lastOptions[attrName];
-      if (equal(nextOption, lastOption)) {
+      if (isEqual(nextOption, lastOption)) {
         nextAttrs[attrName] = lastAttrs[attrName];
       }
       const { field, justifyContent } = nextOption;
