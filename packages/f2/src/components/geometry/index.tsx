@@ -62,8 +62,19 @@ class Geometry<
 
   willReceiveProps(nextProps) {
     const { props: lastProps, attrController, justifyContent } = this;
-    const { data: nextData, adjust: nextAdjust, zoomRange: nextZoomRange, coord } = nextProps;
-    const { data: lastData, adjust: lastAdjust, zoomRange: lastZoomRange } = lastProps;
+    const {
+      data: nextData,
+      adjust: nextAdjust,
+      zoomRange: nextZoomRange,
+      coord,
+      selection,
+    } = nextProps;
+    const {
+      data: lastData,
+      adjust: lastAdjust,
+      zoomRange: lastZoomRange,
+      selection: lastSelection,
+    } = lastProps;
 
     const justifyContentCenter = !coord.isCyclic() || justifyContent;
 
@@ -89,6 +100,11 @@ class Geometry<
     // zoomRange发生变化,records也需要重新计算
     if (!isEqual(nextZoomRange, lastZoomRange)) {
       this.records = null;
+    }
+
+    // selection 发生变化
+    if (!equal(selection, lastSelection)) {
+      super.willReceiveProps(nextProps);
     }
   }
 

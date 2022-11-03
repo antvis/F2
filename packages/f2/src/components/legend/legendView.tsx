@@ -54,6 +54,7 @@ export default (props) => {
       {items.map((item) => {
         const { color, name, value, filtered, tickValue } = item;
         const valueText = isFunction(itemFormatter) ? itemFormatter(value, tickValue) : value;
+
         return (
           <group
             className="legend-item"
