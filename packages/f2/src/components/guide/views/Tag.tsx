@@ -1,5 +1,4 @@
 import { jsx } from '../../../index';
-import { px } from '../../../types';
 
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
@@ -16,7 +15,7 @@ interface TagGuideProps {
   /**
    * 箭头的边长
    */
-  side?: px;
+  side?: string | number;
   /**
    * 文字内容
    */

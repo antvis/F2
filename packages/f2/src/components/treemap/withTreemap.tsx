@@ -1,10 +1,9 @@
 import { jsx } from '../../index';
-import { Component } from '@antv/f-engine';
+import { Ref, Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import Coord from '../../coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
-import { Ref } from '../../types';
 
 export default (View) => {
   return class Treemap extends Component {

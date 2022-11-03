@@ -1,15 +1,18 @@
 import { jsx } from '../../index';
 import { isArray, isFunction, find } from '@antv/util';
-import { Component } from '@antv/f-engine';
-import equal from '../../base/equal';
-import { DataRecord, px, TextAttrs, LineAttrs, RectAttrs } from '../../types';
+import { Component, isEqual, TextStyleProps, RectStyleProps, LineStyleProps } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
+
+export interface DataRecord {
+  origin: any;
+  [k: string]: any;
+}
 
 export interface TooltipProps extends ChartChildProps {
   /**
    * 顶部边距
    */
-  padding?: px;
+  padding?: string;
   /**
    * 显示事件名，默认为 press, 可以为 touchstart 等
    */
@@ -33,20 +36,20 @@ export interface TooltipProps extends ChartChildProps {
   /**
    * 十字线样式
    */
-  crosshairsStyle?: LineAttrs;
+  crosshairsStyle?: LineStyleProps;
   snap?: boolean;
   /**
    * 名称样式
    */
-  nameStyle?: TextAttrs;
+  nameStyle?: TextStyleProps;
   /**
    * 值样式
    */
-  valueStyle?: TextAttrs;
+  valueStyle?: TextStyleProps;
   /**
    * 背景样式
    */
-  background?: RectAttrs;
+  background?: RectStyleProps;
   /**
    * 是否显示
    */
@@ -86,7 +89,7 @@ export default (View) => {
       const { defaultItem: nextDefaultItem, coord: nextCoord } = nextProps;
       const { defaultItem: lastDefaultItem, coord: lastCoord } = this.props;
       // 默认元素或坐标有变动，均需重新渲染
-      if (!equal(nextDefaultItem, lastDefaultItem) || !equal(nextCoord, lastCoord)) {
+      if (!isEqual(nextDefaultItem, lastDefaultItem) || !isEqual(nextCoord, lastCoord)) {
         this._showByData(nextDefaultItem);
       }
     }

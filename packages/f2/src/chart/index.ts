@@ -1,7 +1,7 @@
 import { JSX } from '../index';
 import { ScaleConfig } from '@antv/f2-scale';
 import { each, findIndex, isArray } from '@antv/util';
-import equal from '../base/equal';
+import { isEqual } from '@antv/f-engine';
 import { Layout, Component } from '../index';
 import Coord from '../coord';
 import { Children } from '../index';
@@ -37,10 +37,6 @@ export interface ChartChildProps {
 //   [field: string]: Scale;
 // };
 
-interface IChart {
-  props: Props;
-}
-
 export interface PositionLayout {
   position: 'top' | 'right' | 'bottom' | 'left';
   width: number;
@@ -53,7 +49,7 @@ export interface ComponentPosition {
 }
 
 // 统计图表
-class Chart extends Component implements IChart {
+class Chart extends Component {
   data: any;
 
   private layout: Layout;
@@ -109,7 +105,7 @@ class Chart extends Component implements IChart {
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
 
     // 布局
-    if (!equal(nextStyle, lastStyle)) {
+    if (!isEqual(nextStyle, lastStyle)) {
       const style = this.getStyle(nextProps);
       this.layout = layoutController.create(style);
       coordController.updateLayout(this.layout);
@@ -120,7 +116,7 @@ class Chart extends Component implements IChart {
     }
 
     // scale
-    if (!equal(nextScale, lastScale)) {
+    if (!isEqual(nextScale, lastScale)) {
       scaleController.update(nextScale);
     }
   }

@@ -1,9 +1,8 @@
 import { jsx } from '../../index';
-import { Component, computeLayout } from '@antv/f-engine';
+import { Component, computeLayout, GroupStyleProps, TextStyleProps } from '@antv/f-engine';
 import Chart from '../../chart';
 import { find, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
-import { Style, TextAttrs } from '../../types';
 
 interface LegendItem {
   /**
@@ -55,7 +54,7 @@ export interface LegendProps {
   /**
    * 图例样式。
    */
-  style?: Style;
+  style?: GroupStyleProps;
   /**
    * 图例标记。
    */
@@ -63,11 +62,11 @@ export interface LegendProps {
   /**
    * 用于设置图例项的文本样式
    */
-  nameStyle?: TextAttrs;
+  nameStyle?: TextStyleProps;
   /**
    * 用于设置图例项的文本样式
    */
-  valueStyle?: TextAttrs;
+  valueStyle?: TextStyleProps;
   /**
    * value展示文案的前缀
    */
@@ -81,7 +80,7 @@ export interface LegendProps {
 
 export default (View) => {
   return class Legend extends Component<LegendProps> {
-    legendStyle: Style;
+    legendStyle: GroupStyleProps;
     itemWidth: Number;
     constructor(props) {
       super(props);
@@ -156,7 +155,7 @@ export default (View) => {
       const lineCount = Math.ceil(itemCount / lineMaxCount);
       const itemWidth = width / lineMaxCount;
       const autoHeight = itemMaxHeight * lineCount;
-      const style: Style = {
+      const style: GroupStyleProps = {
         left,
         top,
         width,

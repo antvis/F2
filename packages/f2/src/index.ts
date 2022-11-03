@@ -1,31 +1,36 @@
 import {
+  JSX,
+  jsx,
+  createElement,
+  Canvas,
   CanvasRenderer,
-  jsx as createElement,
   Timeline,
   Fragment,
   createRef,
   Component,
   Children,
-  jsx,
   Layout,
   LayoutProps,
   computeLayout,
-  JSX,
-  Canvas,
 } from '@antv/f-engine';
+
 import Chart from './chart';
 
-export * from './components';
-export { Fragment, createRef, jsx, JSX };
 export {
-  Children,
+  JSX,
+  jsx,
   createElement,
+  createRef,
+  Fragment,
+  Canvas,
+  Children,
   Component,
   Timeline,
-  Canvas,
   Chart,
   Layout,
   LayoutProps,
   computeLayout,
   CanvasRenderer,
 };
+
+export * from './components';

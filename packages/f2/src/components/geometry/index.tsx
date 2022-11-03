@@ -4,9 +4,8 @@ import { Adjust, getAdjust } from '@antv/f2-adjust';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps, GeometryAdjust } from './interface';
 import AttrController from '../../controller/attr';
-import equal from '../../base/equal';
 import { Scale } from '@antv/f2-scale';
-import { Types } from '@antv/f-engine';
+import { AnimationProps, isEqual } from '@antv/f-engine';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -41,7 +40,7 @@ class Geometry<
   attrController: AttrController;
 
   // 动画配置
-  animation: Types.AnimationCycle;
+  animation: AnimationProps;
 
   getDefaultCfg() {
     return {};
@@ -72,7 +71,7 @@ class Geometry<
 
     attrController.attrsRange = this._getThemeAttrsRange();
     const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
-    if (!equal(nextAttrOptions, lastAttrOptions)) {
+    if (!isEqual(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
       this.records = null;
     }
@@ -88,7 +87,7 @@ class Geometry<
     }
 
     // zoomRange发生变化,records也需要重新计算
-    if (!equal(nextZoomRange, lastZoomRange)) {
+    if (!isEqual(nextZoomRange, lastZoomRange)) {
       this.records = null;
     }
   }

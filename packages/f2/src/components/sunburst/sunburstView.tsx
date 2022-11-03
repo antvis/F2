@@ -22,7 +22,6 @@ export default (props) => {
                   endAngle: `${xMax} rad`,
                   r0: yMin,
                   r: yMax,
-                  anticlockwise: false,
                   fill: color,
                 }}
               />

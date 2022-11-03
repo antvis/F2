@@ -1,10 +1,10 @@
 import { jsx } from '../../../index';
 import { deepMix } from '@antv/util';
-import { Style } from '../../../types';
+import { RectStyleProps } from '@antv/f-engine';
 
 type RectGuideProps = {
   points?: { x: number; y: number }[] | null;
-  style?: Style;
+  style?: RectStyleProps;
   theme?: any;
 };
 

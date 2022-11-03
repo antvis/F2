@@ -22,8 +22,6 @@ const Marker = ({ type, color }) => {
         width: '12px',
         height: '12px',
         marginRight: '10px',
-      }}
-      attrs={{
         fill: color,
       }}
     />

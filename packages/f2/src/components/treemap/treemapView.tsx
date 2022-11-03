@@ -20,7 +20,6 @@ export default (props) => {
                 endAngle: xMax,
                 r0: yMin,
                 r: yMax,
-                anticlockwise: false,
                 fill: color,
               }}
             />

@@ -1,6 +1,6 @@
 import Chart from '../../chart';
 import Coord from '../../coord';
-import { Types } from '@antv/f-engine';
+import { AnimationProps } from '@antv/f-engine';
 import { SelectionProps } from './selection';
 
 export interface AttrRange {
@@ -40,6 +40,6 @@ export interface GeometryProps extends SelectionProps {
   coord?: Coord;
   startOnZero?: boolean;
   style?: Style;
-  animation?: Types.AnimationCycle;
+  animation?: AnimationProps;
   [k: string]: any; // TODO
 }
