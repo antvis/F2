@@ -1,5 +1,5 @@
 import React, { RefObject, forwardRef } from 'react';
-import { Canvas } from '@antv/f2';
+import { Canvas, Children } from '@antv/f2';
 
 type ReactErrorBoundaryProps = {
   fallback: React.Component;
@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component<ReactErrorBoundaryProps, { hasError:
 
   componentDidCatch(error, _errorInfo) {
     const { onError } = this.props;
-    
+
     console.error('图表渲染失败: ', error);
 
     if (typeof onError === 'function') {
@@ -33,6 +33,25 @@ class ErrorBoundary extends React.Component<ReactErrorBoundaryProps, { hasError:
     // @ts-ignore
     return this.props.children || null;
   }
+}
+
+function pickElement(children) {
+  if (!children) return children;
+  const result = Children.map(children, (item) => {
+    if (!item) return item;
+
+    const { key, ref, type, props } = item;
+    return {
+      key,
+      ref,
+      type,
+      props: {
+        ...props,
+        children: pickElement(props.children),
+      },
+    };
+  });
+  return result;
 }
 
 export interface CanvasProps {
@@ -59,24 +78,35 @@ class ReactCanvas extends React.Component<CanvasProps> {
     this.canvasRef = canvasRef || React.createRef();
   }
 
-  componentDidMount() {
+  getProps = () => {
     const { canvasRef, props } = this;
     const canvasEl = canvasRef.current;
     const context = canvasEl.getContext('2d');
-    const canvas = new Canvas({
+
+    //  去掉 react 生成的 element 中无用属性
+    const children = pickElement(props.children);
+
+    return {
       // 已经有高清方案，这里默认用1
       pixelRatio: 1,
       ...props,
+      children,
       // context 内部创建，不能被覆盖
       context,
-    });
+    };
+  };
+
+  componentDidMount() {
+    const pickProps = this.getProps();
+    const canvas = new Canvas(pickProps);
     this.canvas = canvas;
     canvas.render();
   }
 
   componentDidUpdate() {
-    const { canvas, props } = this;
-    canvas.update(props);
+    const { canvas } = this;
+    const pickProps = this.getProps();
+    canvas.update(pickProps);
   }
 
   render() {
