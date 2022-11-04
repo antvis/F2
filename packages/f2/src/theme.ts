@@ -81,7 +81,8 @@ const chart = {
   padding: ['30px', '30px', '30px', '30px'],
 };
 
-const Theme = {
+export default {
+  fontSize: '24px',
   fontFamily:
     '"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif',
   pixelRatio: 1,
@@ -129,5 +130,3 @@ const Theme = {
   axis,
   guide,
 };
-
-export default Theme;
