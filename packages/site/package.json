@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-site",
-  "version": "4.0.36",
+  "version": "4.0.37",
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
@@ -23,9 +23,9 @@
     "react-monaco-editor": "0.34.0"
   },
   "dependencies": {
-    "@antv/f2": "^4.0.36",
+    "@antv/f2": "^4.0.37",
     "@antv/f2-graphic": "^0.0.11",
-    "@antv/f2-react": "^4.0.36",
+    "@antv/f2-react": "^4.0.37",
     "@antv/gatsby-theme-antv": "~1.1.15",
     "f2-touchemulator": "~0.0.1",
     "gatsby": "^2.17.7",
