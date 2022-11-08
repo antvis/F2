@@ -52,7 +52,7 @@ export default (props) => {
               return (
                 <circle
                   key={key}
-                  attrs={{
+                  style={{
                     cx: x,
                     cy: y,
                     fill: shapeName === 'circle' ? color : null,
@@ -69,7 +69,7 @@ export default (props) => {
                       update: {
                         easing: 'linear',
                         duration: 450,
-                        property: ['x', 'y', 'r', 'fill'],
+                        property: ['cx', 'cy', 'r', 'fill'],
                       },
                     },
                     animation

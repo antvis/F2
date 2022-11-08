@@ -103,7 +103,7 @@ class Geometry<
     }
 
     // selection 发生变化
-    if (!equal(selection, lastSelection)) {
+    if (!isEqual(selection, lastSelection)) {
       super.willReceiveProps(nextProps);
     }
   }

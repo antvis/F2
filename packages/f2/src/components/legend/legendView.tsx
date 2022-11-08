@@ -38,6 +38,7 @@ export default (props) => {
     nameStyle,
     valueStyle,
     valuePrefix,
+    onClick,
   } = props;
 
   const formatValue = (value, valuePrefix = ': ') => {
@@ -68,6 +69,7 @@ export default (props) => {
               padding: ['6px', '6px', '6px', 0],
             }}
             data-item={item}
+            onClick={onClick}
           >
             <Marker color={filtered ? '#bfbfbf' : color} type={marker} />
             <text

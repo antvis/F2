@@ -24,7 +24,7 @@ export default (props: TextGuideProps, context) => {
   return (
     <text
       attrs={{
-        text: content,
+        text: `${content}`,
         x: posX,
         y: posY,
         ...style,

@@ -81,7 +81,7 @@ export default (props: LineViewProps) => {
         clip: {
           type: 'sector',
           property: ['endAngle'],
-          attrs: {
+          style: {
             x: center.x,
             y: center.y,
             startAngle,
@@ -101,7 +101,7 @@ export default (props: LineViewProps) => {
         clip: {
           type: 'rect',
           property: ['width'],
-          attrs: {
+          style: {
             x: left,
             y: top,
             height: height,
@@ -132,7 +132,7 @@ export default (props: LineViewProps) => {
               return (
                 <polyline
                   key={key}
-                  attrs={{
+                  style={{
                     points: fliterPoints.map((point) => {
                       return [point.x, point.y];
                     }),

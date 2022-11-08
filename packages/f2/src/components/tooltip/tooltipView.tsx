@@ -219,10 +219,11 @@ export default class TooltipView extends Component {
       Math.max(x - coordLeft - halfWidth, -arrowWidth - radius),
       coordWidth - width + arrowWidth + radius
     );
-
     // 因为默认是从 coord 的范围内显示的，所以要往上移，移出 coord，避免挡住 geometry
     const offset = Math.min(y, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
-    rect.translate(offsetX, -offset);
+
+    rect.setLocalPosition(offsetX, -offset);
+
     arrowRef.current.translate(0, height - offset);
   }
   didMount() {
