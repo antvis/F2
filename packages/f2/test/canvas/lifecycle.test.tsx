@@ -210,6 +210,7 @@ describe('Canvas', () => {
       ['componentRender'],
       ['componentDidUpdate'],
       ['containerDidUpdate'],
+      ['componentShouldUpdate'],
       ['componentWillUpdate'],
       ['componentRender'],
       ['componentDidUpdate'],

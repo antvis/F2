@@ -1004,7 +1004,7 @@ describe('折线图', () => {
                   align: 'center',
                   textAlign: 'start',
                   textBaseline: 'middle',
-                  rotate: Math.PI / 2,
+                  transform: 'rotate(90deg)',
                 },
               }}
             />

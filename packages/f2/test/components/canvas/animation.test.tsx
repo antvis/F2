@@ -46,10 +46,11 @@ describe('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
-    const testComponent = canvas.children;
     await delay(100);
-    canvas.render();
+    await canvas.render();
     await delay(0);
+
+    // @ts-ignore
     const rect = canvas.children.component.container.children[0];
 
     expect(rect.getAttribute('width')).toBe(10);

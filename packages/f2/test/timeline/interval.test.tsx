@@ -38,16 +38,6 @@ describe('Chart', () => {
     const intervalRef = { current: null };
     const { type, props } = (
       <Canvas context={context} pixelRatio={1}>
-        {/* <Chart
-          data={sort(data[1])}
-          coord={{
-            transposed: true,
-          }}
-        >
-          <Axis field="genre" />
-          <Axis field="sold" />
-          <Interval x="genre" y="sold" color="genre" />
-        </Chart> */}
         <Timeline delay={0}>
           {data.map((item) => {
             return (

@@ -1,8 +1,7 @@
 import { jsx } from '../../index';
 import { Component, computeLayout, GroupStyleProps, TextStyleProps } from '@antv/f-engine';
 import Chart from '../../chart';
-import { find, isFunction } from '@antv/util';
-import { isInBBox } from '../../util';
+import { isFunction } from '@antv/util';
 
 interface LegendItem {
   /**
@@ -216,7 +215,7 @@ export default (View) => {
     }
 
     didMount() {
-      this._initEvent();
+      // this._initEvent();
     }
 
     willUpdate(): void {
@@ -225,56 +224,36 @@ export default (View) => {
       this.updateCoord();
     }
 
-    _initEvent() {
-      const { context, props, container } = this;
+    _onclick = (item) => {
+      const { props } = this;
       const { chart, clickable = true, onClick } = props;
-
       if (!clickable) return;
+      const clickItem = item.currentTarget;
+      if (!clickItem) {
+        return;
+      }
+      // @ts-ignore
+      const dataItem = clickItem.config['data-item'];
+      if (!dataItem) {
+        return;
+      }
+      if (isFunction(onClick)) {
+        onClick(dataItem);
+      }
+      const { field, tickValue } = dataItem;
 
-      // item 点击事件
-      context.gesture.on('click', (ev) => {
-        const { x, y } = ev;
-
-        const point = { x, y };
-        const bbox = container.getBBox();
-        if (!isInBBox(bbox, point)) {
-          return;
-        }
-
-        const legendItems = container.getElementsByClassName('legend-item');
-        if (!legendItems.length) {
-          return;
-        }
-        const clickItem = find(legendItems, (item) => {
-          const itemBBox = item.getBBox();
-          return isInBBox(itemBBox, point);
-        });
-        if (!clickItem) {
-          return;
-        }
-        // @ts-ignore
-        const dataItem = clickItem.config['data-item'];
-        if (!dataItem) {
-          return;
-        }
-        if (isFunction(onClick)) {
-          onClick(dataItem);
-        }
-        const { field, tickValue } = dataItem;
-
-        const { filtered: prevFiltered } = this.state;
-        const filtered = {
-          ...prevFiltered,
-          [tickValue]: !prevFiltered[tickValue],
-        };
-        this.setState({
-          filtered,
-        });
-        chart.filter(field, (value) => {
-          return !filtered[value];
-        });
+      const { filtered: prevFiltered } = this.state;
+      const filtered = {
+        ...prevFiltered,
+        [tickValue]: !prevFiltered[tickValue],
+      };
+      this.setState({
+        filtered,
       });
-    }
+      chart.filter(field, (value) => {
+        return !filtered[value];
+      });
+    };
 
     render() {
       const { props, itemWidth, legendStyle } = this;
@@ -292,6 +271,7 @@ export default (View) => {
             ...legendStyle,
             ...props.style,
           }}
+          onClick={this._onclick}
         />
       );
     }

@@ -38,6 +38,7 @@ export default (props) => {
     nameStyle,
     valueStyle,
     valuePrefix,
+    onClick,
   } = props;
 
   const formatValue = (value, valuePrefix = ': ') => {
@@ -54,6 +55,7 @@ export default (props) => {
       {items.map((item) => {
         const { color, name, value, filtered, tickValue } = item;
         const valueText = isFunction(itemFormatter) ? itemFormatter(value, tickValue) : value;
+
         return (
           <group
             className="legend-item"
@@ -67,6 +69,7 @@ export default (props) => {
               padding: ['6px', '6px', '6px', 0],
             }}
             data-item={item}
+            onClick={onClick}
           >
             <Marker color={filtered ? '#bfbfbf' : color} type={marker} />
             <text

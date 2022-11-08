@@ -14,7 +14,7 @@ export default (props) => {
         clip: {
           type: 'sector',
           property: ['endAngle'],
-          attrs: {
+          style: {
             x: center.x,
             y: center.y,
             startAngle,
@@ -34,7 +34,7 @@ export default (props) => {
         clip: {
           type: 'rect',
           property: ['width'],
-          attrs: {
+          style: {
             x: left,
             y: top,
             height: height,

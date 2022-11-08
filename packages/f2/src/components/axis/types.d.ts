@@ -8,6 +8,7 @@ interface TickLine extends LineStyleProps {
 
 interface Text extends TextStyleProps {
   align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between';
+  text?: string;
 }
 
 // 仅在 bottom 下新增了 align 支持 `between`
