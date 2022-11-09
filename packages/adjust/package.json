@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-adjust",
-  "version": "0.2.5",
+  "version": "0.2.6-beta.0",
   "description": "The adjust module for F2.",
   "main": "lib/index.js",
   "module": "es/index.js",

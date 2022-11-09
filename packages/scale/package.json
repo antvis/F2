@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-scale",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "description": "The scale module for F2",
   "author": "https://github.com/orgs/antvis/people",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@antv/util": "~3.3.0",
-    "fecha": "~4.2.0",
-    "@babel/runtime": "^7.12.5"
+    "@babel/runtime": "^7.12.5",
+    "fecha": "~4.2.0"
   }
 }
