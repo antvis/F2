@@ -7,6 +7,7 @@ import {
   PointGuide,
   TextGuide,
   LineGuide,
+  LottieGuide,
 } from '../../../src/components';
 import { Canvas, Chart, Interval } from '../../../src';
 import { createContext, delay } from '../../util';
@@ -38,7 +39,7 @@ const Guide = withGuide((props) => {
 });
 
 describe('Guide ', () => {
-  it.only('自定义 guide & zIndex', async () => {
+  it('自定义 guide & zIndex', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -270,7 +271,7 @@ describe('Guide ', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('TextGuide 动画 - 支持callback配置', async () => {
+  it.skip('TextGuide 动画 - 支持callback配置', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -288,7 +289,7 @@ describe('Guide ', () => {
               appear: {
                 duration: 1000,
                 easing: 'quinticIn',
-                property: ['width'],
+                property: ['x', 'width'],
               },
             }}
           />
@@ -329,5 +330,61 @@ describe('Guide ', () => {
 
     await delay(1100);
     expect(context).toMatchImageSnapshot();
+  });
+
+  it('lottie guide', async () => {
+    const context = createContext();
+    const url = await (
+      await fetch(
+        'https://gw.alipayobjects.com/os/OasisHub/3ccdf4d8-78e6-48c9-b06e-9e518057d144/data.json'
+      )
+    ).json();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Interval
+            x="genre"
+            y="sold"
+            color="genre"
+            animation={{
+              appear: {
+                duration: 500,
+                easing: 'linear',
+              },
+            }}
+          />
+          {data.map((item) => {
+            return (
+              <LottieGuide
+                offsetX="0px"
+                offsetY="0px"
+                records={[item]}
+                lottieJson={url}
+                style={{
+                  height: 35,
+                  width: 35,
+                }}
+                animation={(points, props) => {
+                  return {
+                    appear: {
+                      easing: 'linear',
+                      duration: 500,
+                      property: ['y'],
+                      start: {
+                        y: props.coord.bottom,
+                        height: 0,
+                      },
+                    },
+                  };
+                }}
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
+    );
+
+    const chart = new Canvas(props);
+    await chart.render();
   });
 });

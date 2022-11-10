@@ -15,6 +15,7 @@ export {
   RectGuide,
   ImageGuide,
   TagGuide,
+  LottieGuide,
 } from './guide';
 export { default as Tooltip, withTooltip, TooltipView, TooltipProps } from './tooltip';
 export { default as Treemap, withTreemap, TreemapView } from './treemap';
