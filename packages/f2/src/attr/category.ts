@@ -1,4 +1,4 @@
-import { Category as CategoryScale, ScaleConfig } from '@antv/f2-scale';
+import { Category as CategoryScale, ScaleConfig } from '../deps/f2-scale/src';
 import Base from './base';
 
 class Category extends Base {

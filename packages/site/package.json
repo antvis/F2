@@ -1,5 +1,6 @@
 {
   "name": "@antv/f2-site",
+  "private": true,
   "version": "5.0.1-beta.0",
   "homepage": "https://github.com/antvis/f2",
   "bugs": {

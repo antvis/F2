@@ -1,4 +1,4 @@
-import { Linear as LinearScale, ScaleConfig } from '@antv/f2-scale';
+import { Linear as LinearScale, ScaleConfig } from '../deps/f2-scale/src';
 import { isArray } from '@antv/util';
 import { interpolate } from '../deps/d3-interpolate/src';
 import Base from './base';

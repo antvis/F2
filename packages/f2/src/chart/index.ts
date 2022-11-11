@@ -1,5 +1,5 @@
 import { JSX } from '../index';
-import { ScaleConfig } from '@antv/f2-scale';
+import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray } from '@antv/util';
 import { isEqual } from '@antv/f-engine';
 import { Layout, Component } from '../index';

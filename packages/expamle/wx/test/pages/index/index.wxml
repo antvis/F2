@@ -1,4 +1,0 @@
-<!--index.wxml-->
-<view class="container">
-  <f2 onRender="{{onRenderChart}}" />
-</view>
