@@ -1,7 +1,7 @@
 import { Component, isEqual } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
-import { Scale, ScaleConfig } from '@antv/f2-scale';
+import { Scale, ScaleConfig } from '../../deps/f2-scale/src';
 import { each, isNumberEqual } from '@antv/util';
 
 export type ZoomRange = [number, number];

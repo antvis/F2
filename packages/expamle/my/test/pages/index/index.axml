@@ -1,3 +1,0 @@
-<view class="container">
-  <f2 onRender="onRenderChart" data="{{chartData}}"></f2>
-</view>

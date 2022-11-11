@@ -33,8 +33,6 @@
   "dependencies": {
     "@antv/event-emitter": "^0.1.2",
     "@antv/f-engine": "~0.0.3",
-    "@antv/f2-adjust": "^0.2.6-beta.0",
-    "@antv/f2-scale": "^0.0.1-beta.0",
     "@antv/f-lottie": "~0.0.2",
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",

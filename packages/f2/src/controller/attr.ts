@@ -2,7 +2,7 @@ import { each, isString, isNil, isFunction, isNumber, isArray, upperFirst } from
 import * as Attrs from '../attr';
 import { isEqual } from '@antv/f-engine';
 import ScaleController from './scale';
-import { Scale, ScaleConfig } from '@antv/f2-scale';
+import { Scale, ScaleConfig } from '../deps/f2-scale/src';
 
 type AttrOption = {
   field?: string | Record<any, any>;

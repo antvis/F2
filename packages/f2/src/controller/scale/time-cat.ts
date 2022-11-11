@@ -1,4 +1,4 @@
-import { getScale, registerTickMethod } from '@antv/f2-scale';
+import { getScale, registerTickMethod } from '../../deps/f2-scale/src';
 import CatTick from './cat-tick';
 
 registerTickMethod('time-cat', CatTick);
