@@ -6,6 +6,7 @@ import ArcGuideView from './views/Arc';
 import RectGuideView from './views/Rect';
 import ImageGuideView from './views/Image';
 import TagGuideView from './views/Tag';
+import LottieGuideView from './views/Lottie';
 
 const DefaultGuideView = () => null;
 const TextGuide = withGuide(TextGuideView);
@@ -14,8 +15,19 @@ const LineGuide = withGuide(LineGuideView);
 const ArcGuide = withGuide(ArcGuideView);
 const RectGuide = withGuide(RectGuideView);
 const ImageGuide = withGuide(ImageGuideView);
-const TagGuide = withGuide(TagGuideView)
+const TagGuide = withGuide(TagGuideView);
+const LottieGuide = withGuide(LottieGuideView);
 
 export default withGuide(DefaultGuideView);
 
-export { withGuide, TextGuide, PointGuide, ArcGuide, LineGuide, RectGuide, ImageGuide, TagGuide };
+export {
+  withGuide,
+  TextGuide,
+  PointGuide,
+  ArcGuide,
+  LineGuide,
+  RectGuide,
+  ImageGuide,
+  TagGuide,
+  LottieGuide,
+};
