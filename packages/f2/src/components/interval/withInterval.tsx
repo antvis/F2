@@ -1,9 +1,9 @@
-import { jsx } from '../../index';
+import { jsx, ClassComponent } from '@antv/f-engine';
 import { deepMix, isFunction, isNil, mix } from '@antv/util';
 import Geometry from '../geometry';
 import * as LabelViews from './label';
 
-export default (Views) => {
+export default (Views): ClassComponent<any> => {
   return class Interval extends Geometry {
     getDefaultCfg() {
       return {

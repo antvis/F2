@@ -1,4 +1,4 @@
-import { jsx } from '../../index';
+import { jsx, ClassComponent } from '@antv/f-engine';
 import Zoom, { ZoomProps } from '../zoom';
 
 export interface ScrollBarProps extends ZoomProps {
@@ -16,7 +16,7 @@ export interface ScrollBarProps extends ZoomProps {
   margin?: string;
 }
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class ScrollBar extends Zoom<ScrollBarProps> {
     willMount() {
       super.willMount();

@@ -1,5 +1,4 @@
-import { jsx } from '../../index';
-import { Component } from '@antv/f-engine';
+import { jsx, Component, ComponentType, ClassComponent } from '@antv/f-engine';
 
 const getPoint = (cener, angle, r) => {
   const x = cener.x + Math.cos(angle) * r;
@@ -31,8 +30,18 @@ const getTicks = (
   return ticks;
 };
 
-export default (View) => {
-  return class Guage extends Component {
+export interface GuageProps {
+  startAngle?: number;
+  endAngle?: number;
+  tickCount?: number;
+  tickOffset?: number;
+  tickLength?: number;
+  r?: number;
+  center?: { x: number; y: number };
+}
+
+export default (View: ComponentType): ClassComponent<GuageProps> => {
+  return class Guage extends Component<GuageProps> {
     render() {
       const { props, context } = this;
       const { startAngle, endAngle, tickCount, center, r, tickOffset, tickLength } = props;

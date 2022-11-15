@@ -1,5 +1,4 @@
-import { jsx } from '../../index';
-import { Component, Ref } from '@antv/f-engine';
+import { jsx, ClassComponent, Component, Ref } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
 
@@ -76,7 +75,7 @@ function findShapeByClassName(shape, point, className) {
   }
 }
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class PieLabel extends Component {
     triggerRef: Ref;
     labels: [];

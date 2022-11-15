@@ -1,41 +1,38 @@
-import { JSX } from '../index';
+import { JSX, isEqual, GroupStyleProps } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray } from '@antv/util';
-import { isEqual } from '@antv/f-engine';
-import { Layout, Component } from '../index';
-import Coord from '../coord';
+import { Component } from '../index';
 import { Children } from '../index';
-// types
-import LayoutController from '../controller/layout';
 import CoordController from '../controller/coord';
 import ScaleController from '../controller/scale';
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
 
-export interface Props {
-  zIndex?: number;
+export interface ChartProps {
   data: any;
   scale?: any;
   coord?: any;
   start?: Point;
   end?: Point;
-  children: any;
+  children?: any;
+  style?: GroupStyleProps;
+  theme?: any;
+}
+
+export interface ChartState {
+  filters: any;
 }
 
 export interface ChartChildProps {
   data?: any;
   chart?: Chart;
-  coord?: Coord;
-  layout?: Layout;
+  coord?: any;
+  layout?: any;
   [k: string]: any;
 }
-
-// type Scales = {
-//   [field: string]: Scale;
-// };
 
 export interface PositionLayout {
   position: 'top' | 'right' | 'bottom' | 'left';
@@ -49,39 +46,21 @@ export interface ComponentPosition {
 }
 
 // 统计图表
-class Chart extends Component {
-  data: any;
-
-  private layout: Layout;
+class Chart extends Component<ChartProps, ChartState> {
   // 坐标系
-  private coord: Coord;
   private componentsPosition: ComponentPosition[] = [];
 
   // controller
-  private layoutController: LayoutController;
-  private coordController: CoordController;
-  private scaleController: ScaleController;
-  scale: ScaleController;
+  public coord: CoordController;
+  public scale: ScaleController;
 
-  constructor(props, context?, updater?) {
-    super(props, context, updater);
+  constructor(props: ChartProps) {
+    super(props);
 
-    const { data, coord: coordOption, scale = [] } = props;
+    const { data } = props;
 
-    this.layoutController = new LayoutController();
-    this.coordController = new CoordController();
-    this.scaleController = new ScaleController(data);
-    this.scale = this.scaleController;
-
-    const { coordController, scaleController } = this;
-
-    // 坐标系
-    this.coord = coordController.create(coordOption, {});
-
-    // scale
-    scaleController.create(scale);
-
-    this.data = data;
+    this.coord = new CoordController();
+    this.scale = new ScaleController(data);
 
     // state
     this.state = {
@@ -89,46 +68,7 @@ class Chart extends Component {
     };
   }
 
-  willMount() {
-    const { props, layoutController, coordController } = this;
-    const style = this.getStyle(props);
-    const layout = layoutController.create(style);
-    coordController.updateLayout(layout);
-
-    this.layout = layout;
-  }
-
-  // props 更新
-  willReceiveProps(nextProps) {
-    const { layoutController, coordController, scaleController, props: lastProps } = this;
-    const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
-    const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
-
-    // 布局
-    if (!isEqual(nextStyle, lastStyle)) {
-      const style = this.getStyle(nextProps);
-      this.layout = layoutController.create(style);
-      coordController.updateLayout(this.layout);
-    }
-
-    if (nextData !== lastData) {
-      scaleController.changeData(nextData);
-    }
-
-    // scale
-    if (!isEqual(nextScale, lastScale)) {
-      scaleController.update(nextScale);
-    }
-  }
-
-  willUpdate() {
-    const { coordController, props } = this;
-    // render 时要重置 coord 范围，重置后需要让所有子组件都重新render
-    // 所以这里不比较是否有差异，每次都新建，让所有子组件重新render
-    this.coord = coordController.create(props.coord, this.layout);
-  }
-
-  private getStyle(props) {
+  private getStyle(props: ChartProps) {
     const { context, style } = this;
     const { theme, px2hd } = context;
     const { left, top, width, height } = style;
@@ -143,33 +83,51 @@ class Chart extends Component {
     });
   }
 
+  willMount() {
+    const { props, coord, scale } = this;
+
+    const { scale: scaleOptions, coord: coordOption } = props;
+
+    const style = this.getStyle(props);
+    coord.updateLayout(style);
+
+    // 初始化 scale
+    scale.create(scaleOptions);
+    // 初始化 coord
+    coord.create(coordOption);
+  }
+
+  // props 更新
+  willReceiveProps(nextProps: ChartProps) {
+    const { scale, coord, props: lastProps } = this;
+    const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
+    const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
+
+    // style 更新
+    if (!isEqual(nextStyle, lastStyle)) {
+      const style = this.getStyle(nextProps);
+      coord.updateLayout(style);
+    }
+
+    if (nextData !== lastData) {
+      scale.changeData(nextData);
+    }
+
+    // scale
+    if (!isEqual(nextScale, lastScale)) {
+      scale.update(nextScale);
+    }
+  }
+
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
-    const { coord } = this;
-    const { position, width: boxWidth, height: boxHeight } = layout;
-    let { left, top, width, height } = coord;
-    switch (position) {
-      case 'left':
-        left += boxWidth;
-        width = Math.max(0, width - boxWidth);
-        break;
-      case 'right':
-        width = Math.max(0, width - boxWidth);
-        break;
-      case 'top':
-        top += boxHeight;
-        height = Math.max(0, height - boxHeight);
-        break;
-      case 'bottom':
-        height = Math.max(0, height - boxHeight);
-        break;
-    }
-    coord.update({ left, top, width, height });
+    this.coord.useLayout(layout);
   }
 
   resetCoordLayout() {
-    const { coord, layout } = this;
-    coord.update(layout);
+    const { coord, props } = this;
+    const style = this.getStyle(props);
+    coord.updateLayout(style);
   }
 
   updateCoordLayout(layout: PositionLayout | PositionLayout[]) {
@@ -264,15 +222,15 @@ class Chart extends Component {
   }
 
   setScale(field: string, option: ScaleConfig) {
-    this.scaleController.setScale(field, option);
+    this.scale.setScale(field, option);
   }
 
   getScale(field: string) {
-    return this.scaleController.getScale(field);
+    return this.scale.getScale(field);
   }
 
   getScales() {
-    return this.scaleController.getScales();
+    return this.scale.getScales();
   }
 
   getXScales() {
@@ -291,8 +249,12 @@ class Chart extends Component {
     });
   }
 
+  getLayout() {
+    return this.coord.layout;
+  }
+
   getCoord() {
-    return this.coord;
+    return this.coord.coord;
   }
 
   filter(field: string, condition) {
@@ -323,17 +285,19 @@ class Chart extends Component {
   }
 
   render(): JSX.Element {
-    const { props, layout, coord } = this;
+    const { props } = this;
     const { children, data: originData } = props;
     if (!originData) return null;
     const data = this._getRenderData();
+    const layout = this.getLayout();
+    const coord = this.getCoord();
 
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         chart: this,
+        layout,
         coord,
         data,
-        layout,
       });
     });
   }

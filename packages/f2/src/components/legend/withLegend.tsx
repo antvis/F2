@@ -1,5 +1,11 @@
-import { jsx } from '../../index';
-import { Component, computeLayout, GroupStyleProps, TextStyleProps } from '@antv/f-engine';
+import {
+  jsx,
+  ClassComponent,
+  Component,
+  computeLayout,
+  GroupStyleProps,
+  TextStyleProps,
+} from '@antv/f-engine';
 import Chart from '../../chart';
 import { isFunction } from '@antv/util';
 
@@ -77,7 +83,7 @@ export interface LegendProps {
   onClick?: (item: LegendItem) => void;
 }
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class Legend extends Component<LegendProps> {
     legendStyle: GroupStyleProps;
     itemWidth: Number;
@@ -143,7 +149,7 @@ export default (View) => {
       } = props;
       const items = this.getItems();
       if (!items || !items.length) return;
-      const { left, top, right, bottom, width: layoutWidth, height: layoutHeight } = parentLayout;
+      const { left, top, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
       const node = computeLayout(this, this.render());
       const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(node);
@@ -184,10 +190,10 @@ export default (View) => {
         style.justifyContent = 'center';
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
-        style.left = right - itemMaxWidth;
+        style.left = left + (width - itemMaxWidth);
       }
       if (position === 'bottom') {
-        style.top = bottom - autoHeight;
+        style.top = top + (layoutHeight - autoHeight);
         style.height = customHeight ? customHeight : autoHeight;
       }
       this.itemWidth = itemWidth;

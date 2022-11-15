@@ -1,7 +1,33 @@
-import { getScale, registerTickMethod, Scale, ScaleConfig } from '../deps/f2-scale/src';
 import { each, getRange, isFunction, isNil, isNumber, mix, valuesOfKey } from '@antv/util';
-import CatTick from './scale/cat-tick';
-import LinearTick from './scale/linear-tick';
+import {
+  getScale,
+  registerTickMethod,
+  Scale,
+  ScaleConfig,
+  registerScale,
+  Category,
+  Identity,
+  Linear,
+  Log,
+  Pow,
+  Time,
+  TimeCat,
+  Quantize,
+  Quantile,
+} from '../deps/f2-scale/src';
+import CatTick from './tick/cat-tick';
+import LinearTick from './tick/linear-tick';
+
+registerScale('cat', Category);
+registerScale('category', Category);
+registerScale('identity', Identity);
+registerScale('linear', Linear);
+registerScale('log', Log);
+registerScale('pow', Pow);
+registerScale('time', Time);
+registerScale('timeCat', TimeCat);
+registerScale('quantize', Quantize);
+registerScale('quantile', Quantile);
 
 // 覆盖0.3.x的 cat 方法
 registerTickMethod('cat', CatTick);

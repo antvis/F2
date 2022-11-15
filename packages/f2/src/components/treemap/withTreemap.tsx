@@ -1,30 +1,34 @@
-import { jsx } from '../../index';
-import { Ref, Component } from '@antv/f-engine';
+import { jsx, ClassComponent, Ref, Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
-import Coord from '../../coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class Treemap extends Component {
-    coordController: CoordController;
-    coord: Coord;
+    coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
-    constructor(props, context, updater?) {
-      super(props, context, updater);
-      const { coord, color, data } = props;
-      const { width, height, theme } = context;
-      this.coordController = new CoordController();
-      const { coordController } = this;
-      this.coord = coordController.create(coord, { width, height });
+    constructor(props, context) {
+      super(props, context);
+      const { color, data } = props;
+      const { theme } = context;
+      this.coord = new CoordController();
       this.color = new Category({
         range: theme.colors,
         ...color,
         data,
       });
     }
+
+    willMount() {
+      const { props, coord, style } = this;
+      const { coord: coordOption } = props;
+      coord.updateLayout(style);
+
+      coord.create(coordOption);
+    }
+
     treemapLayout() {
       const { props, coord, color: colorAttr } = this;
       const { data, value /* space = 0 */ } = props;
@@ -52,7 +56,7 @@ export default (View) => {
       return nodes.children.map((item) => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
-        const rect = coord.convertRect({
+        const rect = coord.getCoord().convertRect({
           x: [x0, x1],
           y: [y0, y1],
         });
@@ -68,7 +72,7 @@ export default (View) => {
     render() {
       const nodes = this.treemapLayout();
       const { props, coord } = this;
-      return <View nodes={nodes} {...props} coord={coord} />;
+      return <View nodes={nodes} {...props} coord={coord.getCoord()} />;
     }
   };
 };

@@ -1,7 +1,7 @@
-import { jsx } from '../../index';
+import { jsx, ClassComponent } from '@antv/f-engine';
 import Geometry from '../geometry';
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class Point extends Geometry {
     getDefaultCfg() {
       return {

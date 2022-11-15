@@ -1,5 +1,5 @@
 import { jsx } from '../../index';
-import { Component, Ref } from '@antv/f-engine';
+import { Component, Ref, ComponentType, ClassComponent } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import Chart from '../../chart';
 import { computeLayout } from '@antv/f-engine';
@@ -10,7 +10,7 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default (View) => {
+export default (View: ComponentType): ClassComponent<any> => {
   return class Guide extends Component {
     chart: Chart;
     triggerRef: Ref;

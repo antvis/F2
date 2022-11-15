@@ -17,7 +17,6 @@ import {
 
 import Chart from './chart';
 import theme from './theme';
-
 Theme.setTheme(theme);
 
 export {
@@ -26,6 +25,7 @@ export {
   createElement,
   createRef,
   Fragment,
+  Theme,
   Canvas,
   Children,
   Component,
