@@ -3,7 +3,7 @@ import { isArray } from '@antv/util';
 import Geometry from '../geometry';
 import { LineProps } from './types';
 
-export default (View) => {
+export default (View): any => {
   return class Line extends Geometry<LineProps> {
     getDefaultCfg() {
       return {

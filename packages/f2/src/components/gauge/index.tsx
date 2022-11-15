@@ -1,5 +1,5 @@
-import withGauge from './withGauge';
+import withGauge, { GuageProps } from './withGauge';
 import GaugeView from './gaugeView';
 
-export { withGauge, GaugeView };
+export { GuageProps, withGauge, GaugeView };
 export default withGauge(GaugeView);

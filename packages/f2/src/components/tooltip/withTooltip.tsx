@@ -1,6 +1,13 @@
-import { jsx } from '../../index';
+import {
+  jsx,
+  ClassComponent,
+  Component,
+  isEqual,
+  TextStyleProps,
+  RectStyleProps,
+  LineStyleProps,
+} from '@antv/f-engine';
 import { isArray, isFunction, find } from '@antv/util';
-import { Component, isEqual, TextStyleProps, RectStyleProps, LineStyleProps } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 
 export interface DataRecord {
@@ -54,13 +61,16 @@ export interface TooltipProps extends ChartChildProps {
    * 是否显示
    */
   showItemMarker?: boolean;
+  defaultItem?: any;
+  custom?: boolean;
+  tooltipMarkerStyle?: any;
 }
 
 export interface TooltipState {
   records: DataRecord[];
 }
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class Tooltip extends Component<TooltipProps, TooltipState> {
     constructor(props: TooltipProps) {
       super(props);

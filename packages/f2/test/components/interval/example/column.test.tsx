@@ -673,19 +673,5 @@ describe('柱状图示例', () => {
 
     const canvas = new Canvas(props);
     await canvas.render();
-
-    await delay(1000);
-    const { x, y } = chartRef.current.coord.center;
-
-    const animation = ref.current.container.animate(
-      [
-        { transform: 'rotate(0)', transformOrigin: `${x}px ${y}px` },
-        { transform: 'rotate(360deg)', transformOrigin: `${x}px ${y}px` },
-      ],
-      {
-        duration: 3000,
-        iterations: Infinity,
-      }
-    );
   });
 });

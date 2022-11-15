@@ -1,6 +1,5 @@
 import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
-import { jsx } from '../../index';
-import { isEqual } from '@antv/f-engine';
+import { jsx, isEqual, ComponentType, ClassComponent } from '@antv/f-engine';
 import { PositionLayout } from '../../chart/index';
 import { Component } from '@antv/f-engine';
 import { Style, Tick, AxisProps } from './types';
@@ -10,7 +9,7 @@ type BBox = {
   width: number;
 };
 
-export default (View) => {
+export default (View: ComponentType<any>): ClassComponent<AxisProps> => {
   return class Axis extends Component<AxisProps, {}> {
     axisStyle: Style = {};
 

@@ -1,4 +1,3 @@
-import { LayoutProps } from '../index';
 interface Point {
   x: number;
   y: number;
@@ -6,7 +5,11 @@ interface Point {
 
 type Range = [number, number];
 
-interface Option extends LayoutProps {
+interface Option {
+  left?: number;
+  top?: number;
+  width?: number;
+  height?: number;
   transposed?: boolean;
 }
 

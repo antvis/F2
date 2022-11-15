@@ -1,11 +1,9 @@
-import { jsx } from '../../index';
-import { Ref, Component } from '@antv/f-engine';
+import { jsx, ClassComponent, Ref, Component } from '@antv/f-engine';
 import { partition, hierarchy } from '../../deps/d3-hierarchy/src';
 import { Category } from '../../attr';
 import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
-import Coord from '../../coord';
 
 function rootParent(data) {
   let d = data;
@@ -15,27 +13,32 @@ function rootParent(data) {
   return d;
 }
 
-export default (View) => {
+export default (View): ClassComponent<any> => {
   return class Sunburst extends Component {
-    coordController: CoordController;
-    coord: Coord;
+    coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
     constructor(props, context) {
       super(props, context);
-      const { coord, color, data } = props;
-      const { width, height, theme } = context;
+      const { color, data } = props;
+      const { theme } = context;
 
-      this.coordController = new CoordController();
+      this.coord = new CoordController();
 
-      const { coordController } = this;
-      this.coord = coordController.create(coord, { width, height });
       this.color = new Category({
         range: theme.colors,
         ...color,
         data,
       });
+    }
+
+    willMount() {
+      const { props, coord, style } = this;
+      const { coord: coordOption } = props;
+      coord.updateLayout(style);
+
+      coord.create(coordOption);
     }
 
     didMount() {
@@ -66,7 +69,7 @@ export default (View) => {
         const color = colorAttr.mapping(root.data[colorAttr.field]);
         node.color = color;
         const { x0, x1, y0, y1 } = node;
-        const rect = coord.convertRect({
+        const rect = coord.getCoord().convertRect({
           x: [x0, x1],
           y: [y0, y1],
         });
@@ -101,7 +104,7 @@ export default (View) => {
     render() {
       const node = this.sunburst();
       const { coord, props } = this;
-      return <View {...props} coord={coord} node={node} triggerRef={this.triggerRef} />;
+      return <View {...props} coord={coord.getCoord()} node={node} triggerRef={this.triggerRef} />;
     }
   };
 };
