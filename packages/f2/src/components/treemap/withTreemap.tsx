@@ -22,9 +22,9 @@ export default (View): ClassComponent<any> => {
     }
 
     willMount() {
-      const { props, coord, style } = this;
+      const { props, coord, layout } = this;
       const { coord: coordOption } = props;
-      coord.updateLayout(style);
+      coord.updateLayout(layout);
 
       coord.create(coordOption);
     }

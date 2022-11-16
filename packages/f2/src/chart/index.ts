@@ -69,9 +69,9 @@ class Chart extends Component<ChartProps, ChartState> {
   }
 
   private getStyle(props: ChartProps) {
-    const { context, style } = this;
+    const { context, layout } = this;
     const { theme, px2hd } = context;
-    const { left, top, width, height } = style;
+    const { left, top, width, height } = layout;
     const { style: customStyle } = props;
     return px2hd({
       left,

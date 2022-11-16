@@ -12,17 +12,6 @@ import Identity from './identity/index';
 import { getTickMethod, registerTickMethod } from './tick-method/index';
 import { ScaleConfig, Tick } from './types';
 
-registerScale('cat', Category);
-registerScale('category', Category);
-registerScale('identity', Identity);
-registerScale('linear', Linear);
-registerScale('log', Log);
-registerScale('pow', Pow);
-registerScale('time', Time);
-registerScale('timeCat', TimeCat);
-registerScale('quantize', Quantize);
-registerScale('quantile', Quantile);
-
 export {
   Category,
   Identity,

@@ -1,6 +1,5 @@
-import { Layout } from '../index';
 import { Range, Point, Option } from './types';
-import { isArray } from '@antv/util';
+import { isArray, mix } from '@antv/util';
 
 function transposedRect({ xMin, xMax, yMin, yMax }) {
   return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
@@ -55,7 +54,14 @@ interface Rect {
  * convert相关的方法，涉及将标准坐标系映射到实际坐标系内
  * transform相关的方法，是仅将某一种关键点转换成另一种关键点 (比如将x/y/size/y0转换成yMin/yMax/..)
  */
-class Base extends Layout {
+class Base {
+  left = 0;
+  top = 0;
+  width = 0;
+  height = 0;
+  right: number;
+  bottom: number;
+
   type: string;
   // 用来特殊标识是否是极坐标
   isPolar: boolean;
@@ -70,14 +76,15 @@ class Base extends Layout {
   y: Range = [0, 1];
 
   constructor(option: Option) {
-    super(option);
     this.update(option);
   }
 
   update(option: Option) {
-    super.update(option);
-
+    mix(this, option);
     const { left, top, width, height } = this;
+
+    this.right = left + width;
+    this.bottom = top + height;
     this.center = {
       x: left + width / 2,
       y: top + height / 2,

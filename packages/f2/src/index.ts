@@ -9,8 +9,6 @@ import {
   createRef,
   Component,
   Children,
-  Layout,
-  LayoutProps,
   computeLayout,
   Theme,
 } from '@antv/f-engine';
@@ -31,8 +29,6 @@ export {
   Component,
   Timeline,
   Chart,
-  Layout,
-  LayoutProps,
   computeLayout,
   CanvasRenderer,
 };
