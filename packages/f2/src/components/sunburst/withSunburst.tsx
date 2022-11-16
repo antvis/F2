@@ -34,17 +34,16 @@ export default (View): ClassComponent<any> => {
     }
 
     willMount() {
-      const { props, coord, style } = this;
+      const { props, coord, layout } = this;
       const { coord: coordOption } = props;
-      coord.updateLayout(style);
+      coord.updateLayout(layout);
 
       coord.create(coordOption);
     }
 
     didMount() {
-      const { props, container, context } = this;
+      const { props, context } = this;
       const { onClick } = props;
-      const { canvas } = context;
       this.triggerRef = [];
 
       context.gesture.on('click', (ev) => {

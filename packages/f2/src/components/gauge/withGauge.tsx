@@ -34,10 +34,12 @@ export interface GuageProps {
   startAngle?: number;
   endAngle?: number;
   tickCount?: number;
-  tickOffset?: number;
-  tickLength?: number;
-  r?: number;
+  tickOffset?: number | string;
+  tickLength?: number | string;
+  r?: number | string;
+  r0?: number | string;
   center?: { x: number; y: number };
+  percent?: number;
 }
 
 export default (View: ComponentType): ClassComponent<GuageProps> => {

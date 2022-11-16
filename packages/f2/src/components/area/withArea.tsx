@@ -1,6 +1,6 @@
 import withLine from '../line/withLine';
 
-export default (View) => {
+export default (View): any => {
   return class Area extends withLine(View) {
     getDefaultCfg() {
       return {
