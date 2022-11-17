@@ -1,7 +1,6 @@
 require('../site/global.less');
 
 if (window) {
-  window.graphic = require('../src/f2-graphic').default;
   window.f2 = require('../src/f2').default;
   window.f2React = require('../src/f2-react').default;
   window.React = require('react');
