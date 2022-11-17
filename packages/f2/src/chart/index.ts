@@ -1,10 +1,11 @@
-import { JSX, isEqual, GroupStyleProps } from '@antv/f-engine';
+import { JSX, isEqual, GroupStyleProps, IContext } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
-import { each, findIndex, isArray } from '@antv/util';
+import { each, findIndex, isArray, deepMix } from '@antv/util';
 import { Component } from '../index';
 import { Children } from '../index';
 import CoordController from '../controller/coord';
 import ScaleController from '../controller/scale';
+import Theme from '../theme';
 
 export interface Point {
   x: number;
@@ -54,8 +55,13 @@ class Chart extends Component<ChartProps, ChartState> {
   public coord: CoordController;
   public scale: ScaleController;
 
-  constructor(props: ChartProps) {
+  constructor(props: ChartProps, context: IContext) {
     super(props);
+
+    const { theme, px2hd } = context;
+    // hack 处理，设置默认的主题样式
+    // 目前没想到其他更合适的方式，只能先这样处理
+    deepMix(theme, px2hd(Theme));
 
     const { data } = props;
 
