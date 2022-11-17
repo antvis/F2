@@ -26,7 +26,7 @@
     "packages/*"
   ],
   "scripts": {
-    "beta": "npm run build && npm run test && lerna publish --canary --preid beta",
+    "beta": "npm run build && npm run test && lerna publish --preid beta",
     "bootstrap": "lerna bootstrap",
     "build": "father build",
     "build-ci": "CI=true npm run build",
@@ -92,5 +92,6 @@
       "path": "packages/f2/dist/index.min.js",
       "limit": "180 Kb",
       "gzip": true
-    }]
+    }
+  ]
 }
