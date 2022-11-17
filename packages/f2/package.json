@@ -36,7 +36,8 @@
     "@antv/f-lottie": "~0.0.2",
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",
-    "d3-cloud": "~1.2.5"
+    "d3-cloud": "~1.2.5",
+    "fecha": "~4.2.0"
   },
   "miniprogram": "dist"
 }
