@@ -2,6 +2,7 @@ import { jsx, ClassComponent, Ref, Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
+import Theme from '../../theme';
 
 export default (View): ClassComponent<any> => {
   return class Treemap extends Component {
@@ -12,10 +13,9 @@ export default (View): ClassComponent<any> => {
     constructor(props, context) {
       super(props, context);
       const { color, data } = props;
-      const { theme } = context;
       this.coord = new CoordController();
       this.color = new Category({
-        range: theme.colors,
+        range: Theme.colors,
         ...color,
         data,
       });

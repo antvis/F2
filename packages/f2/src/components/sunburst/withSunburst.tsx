@@ -4,6 +4,7 @@ import { Category } from '../../attr';
 import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
+import Theme from '../../theme';
 
 function rootParent(data) {
   let d = data;
@@ -22,12 +23,11 @@ export default (View): ClassComponent<any> => {
     constructor(props, context) {
       super(props, context);
       const { color, data } = props;
-      const { theme } = context;
 
       this.coord = new CoordController();
 
       this.color = new Category({
-        range: theme.colors,
+        range: Theme.colors,
         ...color,
         data,
       });

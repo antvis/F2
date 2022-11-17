@@ -82,11 +82,6 @@ const chart = {
 };
 
 export default {
-  fontSize: '24px',
-  fontFamily:
-    '"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif',
-  pixelRatio: 1,
-  padding: [0, 0, 0, 0],
   chart,
   colors: ['#1890FF', '#2FC25B', '#FACC14', '#223273', '#8543E0', '#13C2C2', '#3436C7', '#F04864'],
   shapes: {
