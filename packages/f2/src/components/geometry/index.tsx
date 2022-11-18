@@ -1,12 +1,18 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
 import Selection, { SelectionState } from './selection';
-import { Adjust, getAdjust } from '../../deps/f2-adjust/src';
+import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
 import { toTimeStamp } from '../../util/index';
 import { GeomType, GeometryProps, GeometryAdjust } from './interface';
 import AttrController from '../../controller/attr';
 import { Scale } from '../../deps/f2-scale/src';
 import { AnimationProps, isEqual } from '@antv/f-engine';
 
+const AdjustMap = {
+  'Stack': Stack,
+  'Dodge': Dodge,
+  'Jitter': Jitter,
+  'Symmetric': Symmetric
+}
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
 
@@ -243,7 +249,7 @@ class Geometry<
           }
         : adjust;
     const adjustType = upperFirst(adjustCfg.type);
-    const AdjustConstructor = getAdjust(adjustType);
+    const AdjustConstructor = AdjustMap[adjustType];
     if (!AdjustConstructor) {
       throw new Error('not support such adjust : ' + adjust);
     }

@@ -35,6 +35,7 @@ export default (props: LottieGuideProps, context) => {
   const posY = y + (offsetYNum || 0) - width / 2;
 
   return (
+    // @ts-ignore
     <Lottie
       data={lottieJson}
       options={option}
