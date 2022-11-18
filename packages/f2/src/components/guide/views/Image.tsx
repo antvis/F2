@@ -32,8 +32,8 @@ export default (props: ImageGuideProps, context) => {
 
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
-  const posX = x + (offsetXNum || 0) - heightNum / 2;
-  const posY = y + (offsetYNum || 0) - widthNum / 2;
+  const posX = x + (offsetXNum || 0) - widthNum / 2;
+  const posY = y + (offsetYNum || 0) - heightNum / 2;
 
   return (
     <group style={style}>
