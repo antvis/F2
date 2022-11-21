@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Canvas, Chart, Interval, TextGuide } from '@antv/f2';
+import { Canvas, Chart, Interval, jsx, TextGuide } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');
 
@@ -24,7 +24,7 @@ const { props } = (
               console.log('ev: ', ev.points);
             }}
             content={`${sold}`}
-            attrs={{
+            style={{
               fill: '#000',
               fontSize: '24px',
             }}
