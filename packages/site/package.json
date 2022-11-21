@@ -1,7 +1,7 @@
 {
   "name": "@antv/f2-site",
   "private": true,
-  "version": "5.0.3-beta.0",
+  "version": "5.0.3",
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
@@ -19,9 +19,9 @@
     "site:start": "npm run site:develop"
   },
   "dependencies": {
-    "@antv/f-react": "~0.0.7",
-    "@antv/f2": "^5.0.4-beta.0",
     "@antv/dumi-theme-antv": "^0.3.0-beta.4",
+    "@antv/f-react": "~0.0.7",
+    "@antv/f2": "^5.0.4",
     "dumi": "^2.0.0-beta.15",
     "f2-touchemulator": "~0.0.1",
     "gh-pages": "^2.1.1"
