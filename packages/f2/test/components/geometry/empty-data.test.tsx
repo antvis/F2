@@ -16,8 +16,8 @@ class Custom extends Geometry {
             return (
               <circle
                 attrs={{
-                  x,
-                  y,
+                  cx: x,
+                  cy: y,
                   r: '20px',
                   fill: '#000',
                 }}

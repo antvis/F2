@@ -23,7 +23,7 @@ describe('Canvas', () => {
                   type: 'rect',
                   property: ['width'],
                   duration: 1000,
-                  attrs: {
+                  style: {
                     x: 0,
                     y: 0,
                     height: 50,
@@ -55,7 +55,7 @@ describe('Canvas', () => {
                     type: 'rect',
                     property: ['width'],
                     duration: 1000,
-                    attrs: {
+                    style: {
                       x: 0,
                       y: 0,
                       // x: attrs.x,
