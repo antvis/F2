@@ -294,7 +294,7 @@ describe('Canvas', () => {
         [50, 45],
         [100, 80],
         [200, 80],
-      ];
+      ] as [number, number][];
 
       const points2 = [
         [10, 40],
@@ -302,7 +302,7 @@ describe('Canvas', () => {
         [50, 20],
         [100, 90],
         [200, 70],
-      ];
+      ] as [number, number][];
 
       const clipPoints = [...points1];
       clipPoints.push([200, 0], [0, 0]);
