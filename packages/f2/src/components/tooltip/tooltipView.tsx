@@ -285,7 +285,7 @@ export default class TooltipView extends Component {
     const arrowWidth = context.px2hd('6px');
 
     return (
-      <group>
+      <group style={{ display: 'flex', flexDirection: 'row' }}>
         <group>
           {/* 非自定义模式时显示的文本信息 */}
           {!custom && (

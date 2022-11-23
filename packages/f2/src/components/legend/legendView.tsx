@@ -6,6 +6,7 @@ const Marker = ({ type, color }) => {
     return (
       <rect
         style={{
+          display: 'flex',
           width: '12px',
           height: '12px',
           marginRight: '10px',
@@ -19,6 +20,7 @@ const Marker = ({ type, color }) => {
   return (
     <circle
       style={{
+        display: 'flex',
         width: '12px',
         height: '12px',
         marginRight: '10px',
