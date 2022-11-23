@@ -1,5 +1,5 @@
 import { Canvas, Chart, withInterval } from '../../../src';
-import { jsx } from '../../../src';
+import { jsx, Fragment } from '../../../src';
 import { createContext, delay } from '../../util';
 
 const data = [
@@ -39,45 +39,47 @@ const Interval = withInterval((props, context) => {
   const { records } = props;
   const { px2hd } = context;
   return (
-    <group>
-      {records.map((record) => {
-        const { key, children } = record;
-        return (
-          <group key={key}>
-            {children.map((item) => {
-              const { key, xMin, xMax, yMin, yMax, color, shape, origin } = item;
-              if (isNaN(xMin) || isNaN(xMax) || isNaN(yMin) || isNaN(yMax)) {
-                return null;
-              }
-              return (
-                <group>
-                  <rect
-                    key={key}
-                    attrs={{
-                      x: xMin,
-                      y: yMin,
-                      width: xMax - xMin,
-                      height: yMax - yMin,
-                      fill: color,
-                      ...shape,
-                    }}
-                  />
-                  <text
-                    attrs={{
-                      x: xMin + (xMax - xMin) / 2,
-                      y: yMin + (yMax - yMin) / 2,
-                      fill: '#fff',
-                      text: origin.percent * 100 + '%',
-                      textAlign: 'center',
-                      textBaseline: 'middle',
-                    }}
-                  />
-                </group>
-              );
-            })}
-          </group>
-        );
-      })}
+    <Fragment>
+      <group>
+        {records.map((record) => {
+          const { key, children } = record;
+          return (
+            <group key={key}>
+              {children.map((item) => {
+                const { key, xMin, xMax, yMin, yMax, color, shape, origin } = item;
+                if (isNaN(xMin) || isNaN(xMax) || isNaN(yMin) || isNaN(yMax)) {
+                  return null;
+                }
+                return (
+                  <group>
+                    <rect
+                      key={key}
+                      attrs={{
+                        x: xMin,
+                        y: yMin,
+                        width: xMax - xMin,
+                        height: yMax - yMin,
+                        fill: color,
+                        ...shape,
+                      }}
+                    />
+                    <text
+                      attrs={{
+                        x: xMin + (xMax - xMin) / 2,
+                        y: yMin + (yMax - yMin) / 2,
+                        fill: '#fff',
+                        text: origin.percent * 100 + '%',
+                        textAlign: 'center',
+                        textBaseline: 'middle',
+                      }}
+                    />
+                  </group>
+                );
+              })}
+            </group>
+          );
+        })}
+      </group>
       <group
         style={{
           display: 'flex',
@@ -131,7 +133,7 @@ const Interval = withInterval((props, context) => {
           );
         })}
       </group>
-    </group>
+    </Fragment>
   );
 });
 

@@ -192,8 +192,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     this.setState({
       range,
     } as S);
-
-    // console.log('pan range', range);
   };
 
   update() {
