@@ -1,6 +1,7 @@
-import { jsx, Component, ComponentType, ClassComponent } from '@antv/f-engine';
+import { jsx, Component, ComponentType } from '@antv/f-engine';
+import { Point, Tick } from './gaugeView';
 
-const getPoint = (cener, angle, r) => {
+const getPoint = (cener: Point, angle: number, r: number): Point => {
   const x = cener.x + Math.cos(angle) * r;
   const y = cener.y + Math.sin(angle) * r;
   return { x, y };
@@ -10,12 +11,12 @@ const getTicks = (
   start: number,
   end: number,
   tickCount: number,
-  center,
+  center: Point,
   r: number,
   tickOffset: number,
   tickLength: number
 ) => {
-  const ticks = [];
+  const ticks = [] as Tick[];
   const diff = end - start;
   for (let i = 0; i <= tickCount; i++) {
     const tickValue = start + (diff * i) / tickCount;
@@ -38,11 +39,11 @@ export interface GuageProps {
   tickLength?: number | string;
   r?: number | string;
   r0?: number | string;
-  center?: { x: number; y: number };
+  center?: Point;
   percent?: number;
 }
 
-export default (View: ComponentType): ClassComponent<GuageProps> => {
+export default (View: ComponentType) => {
   return class Guage extends Component<GuageProps> {
     render() {
       const { props, context } = this;

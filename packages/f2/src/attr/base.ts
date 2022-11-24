@@ -2,7 +2,6 @@ import { Scale, ScaleConfig } from '../deps/f2-scale/src';
 import { mix, isFunction, isNil, isArray, valuesOfKey } from '@antv/util';
 
 class Base {
-  // eslint-disable-next-line
   data: any;
   field: string;
   scale: Scale;

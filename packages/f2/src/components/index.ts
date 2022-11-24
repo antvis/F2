@@ -21,6 +21,6 @@ export { default as Tooltip, withTooltip, TooltipView, TooltipProps } from './to
 export { default as Treemap, withTreemap, TreemapView } from './treemap';
 export { default as Sunburst, withSunburst, SunburstView } from './sunburst';
 export { default as PieLabel, withPieLabel, PieLabelView } from './pieLabel';
-export { default as Gauge, withGauge, GaugeView } from './gauge';
+export { default as Gauge, GuageProps, withGauge, GaugeView } from './gauge';
 export { default as Zoom } from './zoom';
 export { default as ScrollBar, withScrollBar, ScrollBarView } from './scrollBar';
