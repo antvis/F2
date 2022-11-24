@@ -10,8 +10,7 @@
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "experimentalDecorators": true,
-    "allowJs": true
+    "experimentalDecorators": true
   },
   "exclude": [
     "scripts",
