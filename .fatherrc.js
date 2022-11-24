@@ -1,5 +1,5 @@
 export default {
-  pkgs: ['adjust','scale', 'f2'],
+  pkgs: ['f2'],
   cjs: {
     type: 'babel',
   },
