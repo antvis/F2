@@ -1,38 +1,39 @@
-import { JSX, isEqual, GroupStyleProps, IContext } from '@antv/f-engine';
+import { isEqual, GroupStyleProps, IContext, LayoutProps } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
 import { Component } from '../index';
 import { Children } from '../index';
-import CoordController from '../controller/coord';
+import CoordController, { Coord } from '../controller/coord';
 import ScaleController from '../controller/scale';
 import Theme from '../theme';
+import { Data, DataRecord, DataRecordScale } from './Data';
+import { CoordType, CoordProps } from './Coord';
 
 export interface Point {
   x: number;
   y: number;
 }
 
-export interface ChartProps {
-  data: any;
-  scale?: any;
-  coord?: any;
+export interface ChartProps<TRecord extends DataRecord = DataRecord> {
+  data: Data<TRecord>;
+  scale?: DataRecordScale<TRecord>;
+  coord?: CoordType | CoordProps;
   start?: Point;
   end?: Point;
-  children?: any;
   style?: GroupStyleProps;
-  theme?: any;
+  theme?: Record<string, any>;
+  children?: any;
 }
 
 export interface ChartState {
   filters: any;
 }
 
-export interface ChartChildProps {
-  data?: any;
-  chart?: Chart;
-  coord?: any;
-  layout?: any;
-  [k: string]: any;
+export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
+  data?: Data<TRecord>;
+  chart?: Chart<TRecord>;
+  coord?: Coord;
+  layout?: LayoutProps;
 }
 
 export interface PositionLayout {
@@ -47,7 +48,10 @@ export interface ComponentPosition {
 }
 
 // 统计图表
-class Chart extends Component<ChartProps, ChartState> {
+class Chart<TRecord extends DataRecord = DataRecord> extends Component<
+  ChartProps<TRecord>,
+  ChartState
+> {
   // 坐标系
   private componentsPosition: ComponentPosition[] = [];
 
@@ -55,7 +59,7 @@ class Chart extends Component<ChartProps, ChartState> {
   public coord: CoordController;
   public scale: ScaleController;
 
-  constructor(props: ChartProps, context: IContext) {
+  constructor(props: ChartProps<TRecord>, context: IContext) {
     super(props);
 
     const { theme, px2hd } = context;
@@ -65,8 +69,8 @@ class Chart extends Component<ChartProps, ChartState> {
 
     const { data } = props;
 
-    this.coord = new CoordController();
     this.scale = new ScaleController(data);
+    this.coord = new CoordController();
 
     // state
     this.state = {
@@ -74,7 +78,7 @@ class Chart extends Component<ChartProps, ChartState> {
     };
   }
 
-  private getStyle(props: ChartProps) {
+  private getStyle(props: ChartProps<TRecord>) {
     const { context, layout } = this;
     const { theme, px2hd } = context;
     const { left, top, width, height } = layout;
@@ -104,7 +108,7 @@ class Chart extends Component<ChartProps, ChartState> {
   }
 
   // props 更新
-  willReceiveProps(nextProps: ChartProps) {
+  willReceiveProps(nextProps: ChartProps<TRecord>) {
     const { scale, coord, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
@@ -290,7 +294,7 @@ class Chart extends Component<ChartProps, ChartState> {
     return filteredData;
   }
 
-  render(): JSX.Element {
+  render() {
     const { props } = this;
     const { children, data: originData } = props;
     if (!originData) return null;

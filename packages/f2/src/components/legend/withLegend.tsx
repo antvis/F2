@@ -1,23 +1,16 @@
-import {
-  jsx,
-  ClassComponent,
-  Component,
-  computeLayout,
-  GroupStyleProps,
-  TextStyleProps,
-} from '@antv/f-engine';
-import Chart from '../../chart';
+import { jsx, Component, computeLayout, GroupStyleProps, TextStyleProps } from '@antv/f-engine';
+import { ChartChildProps } from '../../chart';
 import { isFunction } from '@antv/util';
 
 interface LegendItem {
   /**
    * 标记颜色。
    */
-  color: string;
+  color?: string;
   /**
    * 名称。
    */
-  name: string;
+  name?: string;
   /**
    * 值。
    */
@@ -26,12 +19,9 @@ interface LegendItem {
    * 图例标记。
    */
   marker?: string;
+  [key: string]: any;
 }
 export interface LegendProps {
-  /**
-   * 图表。
-   */
-  readonly chart?: Chart;
   /**
    * 图例的显示位置。默认为 top。
    */
@@ -51,7 +41,7 @@ export interface LegendProps {
   /**
    * 回调函数，用于格式化图例每项的文本显示。
    */
-  itemFormatter?: (value: string, name: string) => string;
+  itemFormatter?: (value, name) => string;
   /**
    * 图例项列表。
    */
@@ -67,11 +57,11 @@ export interface LegendProps {
   /**
    * 用于设置图例项的文本样式
    */
-  nameStyle?: TextStyleProps;
+  nameStyle?: Omit<TextStyleProps, 'text'>;
   /**
    * 用于设置图例项的文本样式
    */
-  valueStyle?: TextStyleProps;
+  valueStyle?: Omit<TextStyleProps, 'text'>;
   /**
    * value展示文案的前缀
    */
@@ -83,8 +73,8 @@ export interface LegendProps {
   onClick?: (item: LegendItem) => void;
 }
 
-export default (View): ClassComponent<any> => {
-  return class Legend extends Component<LegendProps> {
+export default (View) => {
+  return class Legend extends Component<LegendProps & ChartChildProps> {
     legendStyle: GroupStyleProps;
     itemWidth: Number;
     constructor(props) {

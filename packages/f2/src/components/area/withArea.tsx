@@ -1,7 +1,10 @@
-import withLine from '../line/withLine';
+import withLine, { LineProps } from '../line/withLine';
+import { DataRecord } from '../../chart/Data';
 
-export default (View): any => {
-  return class Area extends withLine(View) {
+export type AreaProps<TRecord extends DataRecord = DataRecord> = LineProps<TRecord>;
+
+export default (View) => {
+  return class Area<TRecord extends DataRecord = DataRecord> extends withLine(View)<TRecord> {
     getDefaultCfg() {
       return {
         geomType: 'area',

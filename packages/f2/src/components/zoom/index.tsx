@@ -17,7 +17,7 @@ function isEqualRange(aRange, bRange) {
   }
   return true;
 }
-export interface ZoomProps extends ChartChildProps {
+export interface ZoomProps {
   panSensitive?: number;
   pinchSensitive?: number;
   /**
@@ -78,7 +78,7 @@ function cloneScale(scale: Scale, scaleConfig?: ScaleConfig) {
 
 // 缩放
 class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> extends Component<
-  P,
+  P & ChartChildProps,
   S
 > {
   startRange: {

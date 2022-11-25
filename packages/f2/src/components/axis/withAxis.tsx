@@ -1,34 +1,39 @@
+import { jsx, isEqual, Component } from '@antv/f-engine';
 import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
-import { jsx, isEqual, ComponentType, ClassComponent } from '@antv/f-engine';
-import { PositionLayout } from '../../chart/index';
-import { Component } from '@antv/f-engine';
+import { ChartChildProps, PositionLayout } from '../../chart';
 import { Style, Tick, AxisProps } from './types';
+import { DataRecord } from '../../chart/Data';
 
 type BBox = {
   height: number;
   width: number;
 };
 
-export default (View: ComponentType<any>): ClassComponent<AxisProps> => {
-  return class Axis extends Component<AxisProps, {}> {
+export { AxisProps };
+
+export default (View) => {
+  return class Axis<TRecord extends DataRecord = DataRecord> extends Component<
+    AxisProps<TRecord> & ChartChildProps,
+    {}
+  > {
     axisStyle: Style = {};
 
-    constructor(props: AxisProps) {
+    constructor(props: AxisProps<TRecord> & ChartChildProps) {
       super(props);
-      const { chart, field } = this.props;
+      const { chart, field } = props;
 
       const scaleOption = this.getScaleOption(props);
-      chart.setScale(field, scaleOption);
+      chart.setScale(field as string, scaleOption);
     }
 
-    willReceiveProps(nextProps: AxisProps) {
+    willReceiveProps(nextProps: AxisProps<TRecord> & ChartChildProps) {
       const { props: lastProps } = this;
       const { chart, field } = nextProps;
 
       const nextScaleOption = this.getScaleOption(nextProps);
       const lastScaleOption = this.getScaleOption(lastProps);
       if (!isEqual(nextScaleOption, lastScaleOption)) {
-        chart.setScale(field, nextScaleOption);
+        chart.setScale(field as string, nextScaleOption);
       }
     }
 
@@ -40,7 +45,7 @@ export default (View: ComponentType<any>): ClassComponent<AxisProps> => {
       this.updateCoord();
     }
 
-    getScaleOption(props: AxisProps) {
+    getScaleOption(props: AxisProps<TRecord>) {
       const { type, tickCount, range, mask, formatter, min, max, nice } = props;
 
       return {
@@ -106,7 +111,7 @@ export default (View: ComponentType<any>): ClassComponent<AxisProps> => {
     getTicks() {
       const { props } = this;
       const { field, chart } = props;
-      const scale = chart.getScale(field);
+      const scale = chart.getScale(field as string);
       let ticks = scale.getTicks();
 
       // 设置tick的样式

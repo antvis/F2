@@ -1,5 +1,5 @@
-import withLegend from './withLegend';
+import withLegend, { LegendProps } from './withLegend';
 import LegendView from './legendView';
 
-export { withLegend, LegendView };
+export { LegendProps, withLegend, LegendView };
 export default withLegend(LegendView);

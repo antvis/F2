@@ -1,6 +1,5 @@
 import { deepMix, isArray } from '@antv/util';
 import { jsx } from '../../index';
-import { LineViewProps } from './types';
 
 function concatPoints(children) {
   let result = [];
@@ -69,7 +68,7 @@ function AnimationEndView(props) {
   );
 }
 
-export default (props: LineViewProps) => {
+export default (props) => {
   const { records, coord, animation, endView: EndView, clip } = props;
 
   const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;

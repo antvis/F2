@@ -1,5 +1,4 @@
 import { jsx } from '../../../src';
-import { Polar } from '../../../src/coord';
 import { Canvas, Chart } from '../../../src';
 import { Interval, PieLabel } from '../../../src/components';
 import { createContext, delay } from '../../util';
@@ -34,7 +33,7 @@ describe('PieLabel', () => {
         <Chart
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.3,
             radius: 0.5,
@@ -107,7 +106,7 @@ describe('PieLabel', () => {
         <Chart
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.3,
             radius: 0.5,
@@ -180,7 +179,7 @@ describe('PieLabel', () => {
         <Chart
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.3,
             radius: 0.5,
@@ -253,7 +252,7 @@ describe('PieLabel', () => {
         <Chart
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.3,
             radius: 0.5,
@@ -327,7 +326,7 @@ describe('PieLabel', () => {
         <Chart
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.3,
             radius: 0.5,

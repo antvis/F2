@@ -1,8 +1,8 @@
 import { jsx } from '../../index';
-import { Component, Ref, ComponentType, ClassComponent } from '@antv/f-engine';
+import { Component, Ref, ComponentType } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
-import Chart from '../../chart';
-import { computeLayout } from '@antv/f-engine';
+import Chart, { ChartChildProps, Point } from '../../chart';
+import { computeLayout, AnimationProps } from '@antv/f-engine';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -10,13 +10,20 @@ function isInBBox(bbox, point) {
   return minX <= x && maxX >= x && minY <= y && maxY >= y;
 }
 
-export default (View: ComponentType): ClassComponent<any> => {
-  return class Guide extends Component {
+export interface GuideProps {
+  records: any;
+  onClick?: (ev) => void;
+  animation?: ((points: Point[], chart: Chart) => AnimationProps) | AnimationProps;
+  [key: string]: any;
+}
+
+export default (View: ComponentType) => {
+  return class Guide extends Component<GuideProps & ChartChildProps> {
     chart: Chart;
     triggerRef: Ref;
     guideBBox: any;
 
-    constructor(props) {
+    constructor(props: GuideProps & ChartChildProps) {
       super(props);
       // 创建ref
       this.triggerRef = {};
@@ -116,12 +123,6 @@ export default (View: ComponentType): ClassComponent<any> => {
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
-      let animationCfg = animation;
-      if (isFunction(animation)) {
-        // 透传绘制关键点和chart实例
-        animationCfg = animation(points, chart);
-      }
-
       return (
         <View
           triggerRef={this.triggerRef}
@@ -132,7 +133,7 @@ export default (View: ComponentType): ClassComponent<any> => {
           canvasWidth={width}
           canvasHeight={height}
           guideBBox={guideBBox}
-          animation={animationCfg}
+          animation={isFunction(animation) ? animation(points, chart) : animation}
         />
       );
     }

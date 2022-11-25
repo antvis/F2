@@ -1,5 +1,5 @@
-import withPieLabel from './withPieLabel';
+import withPieLabel, { PieLabelProps } from './withPieLabel';
 import PieLabelView from './pieLabeView';
 
-export { PieLabelView, withPieLabel };
+export { PieLabelProps, PieLabelView, withPieLabel };
 export default withPieLabel(PieLabelView);

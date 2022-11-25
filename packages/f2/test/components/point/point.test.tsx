@@ -19,7 +19,7 @@ describe('Point Chart', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Rect,
+            type: 'rect',
           }}
           scale={{}}
         >
@@ -47,7 +47,7 @@ describe('Point Chart', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
           }}
           scale={{}}
         >
@@ -74,7 +74,7 @@ describe('Point Chart', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Rect,
+            type: 'rect',
           }}
           scale={{}}
         >

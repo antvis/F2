@@ -41,14 +41,14 @@ describe('getSnapRecords', () => {
           data={formatData}
           scale={{
             date: {
-              ticks,
               type: 'linear',
+              ticks,
             },
           }}
         >
           <Axis field="date" formatter={(v) => new Date(v).getFullYear()} />
           <Axis field="Money" />
-          <Line x="date" y="Money" color="probability" mainKey="超额金额折线" />
+          <Line x="date" y="Money" color="probability" />
           <Tooltip />
         </Chart>
       </Canvas>

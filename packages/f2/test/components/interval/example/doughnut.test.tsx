@@ -37,7 +37,7 @@ describe('环形图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.7,
             radius: 0.85,
@@ -111,7 +111,7 @@ describe('环形图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.5,
           }}
@@ -144,7 +144,7 @@ describe('环形图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.8,
           }}
@@ -208,7 +208,7 @@ describe('环形图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.7,
             radius: 0.85,

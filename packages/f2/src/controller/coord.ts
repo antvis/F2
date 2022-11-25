@@ -103,4 +103,5 @@ class coordController {
   }
 }
 
+export { Coord };
 export default coordController;

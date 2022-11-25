@@ -44,7 +44,7 @@ describe('Guide ', () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart data={data}>
-          <Line x="genre" y="sold" visible={false} />
+          <Line x="genre" y="sold" />
           <Guide records={[data[2], data[3]]} zIndex={100} fill="red" />
           <Guide records={[data[3], data[4]]} fill="black" />
         </Chart>
@@ -59,7 +59,7 @@ describe('Guide ', () => {
 
     const newChartProps = (
       <Chart data={data}>
-        <Line x="genre" y="sold" visible={false} />
+        <Line x="genre" y="sold" />
         <Guide records={[data[2], data[3]]} fill="red" />
         <Guide records={[data[3], data[4]]} fill="black" />
       </Chart>
@@ -307,14 +307,14 @@ describe('Guide ', () => {
                   fill: '#000',
                   fontSize: '24px',
                 }}
-                animation={(points, props) => {
+                animation={(points, chart) => {
                   return {
                     appear: {
                       easing: 'quinticIn',
                       duration: 1000,
                       property: ['x'],
                       start: {
-                        x: props.coord.left,
+                        x: chart.layout.left,
                       },
                     },
                   };
@@ -364,14 +364,14 @@ describe('Guide ', () => {
                   height: 35,
                   width: 35,
                 }}
-                animation={(points, props) => {
+                animation={(points, chart) => {
                   return {
                     appear: {
                       easing: 'linear',
                       duration: 500,
                       property: ['y'],
                       start: {
-                        y: props.coord.bottom,
+                        y: chart.layout.bottom,
                         height: 0,
                       },
                     },

@@ -1,16 +1,33 @@
-import { jsx, ClassComponent, Ref, Component } from '@antv/f-engine';
+import { jsx, Ref, Component } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 import Theme from '../../theme';
+import { Data, DataRecord } from '../../chart/Data';
+import { CoordProps } from '../../chart/Coord';
 
-export default (View): ClassComponent<any> => {
-  return class Treemap extends Component {
+export interface ColorAttrObject {
+  field: string;
+  range?: any[];
+  callback?: (value) => any;
+}
+
+export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
+  data: Data<TRecord>;
+  value: string;
+  coord?: CoordProps;
+  color?: any[] | ColorAttrObject;
+}
+
+export default (View) => {
+  return class Treemap<TRecord extends DataRecord = DataRecord> extends Component<
+    TreemapProps<TRecord>
+  > {
     coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
-    constructor(props, context) {
+    constructor(props: TreemapProps<TRecord>, context) {
       super(props, context);
       const { color, data } = props;
       this.coord = new CoordController();

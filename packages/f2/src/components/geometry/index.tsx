@@ -1,35 +1,76 @@
 import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
-import Selection, { SelectionState } from './selection';
+import { ChartChildProps } from '../../chart';
+import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
 import { toTimeStamp } from '../../util/index';
-import { GeomType, GeometryProps, GeometryAdjust } from './interface';
 import AttrController from '../../controller/attr';
 import { Scale } from '../../deps/f2-scale/src';
 import { AnimationProps, isEqual } from '@antv/f-engine';
+import { AdjustType, AdjustProps } from './Adjust';
+import { DataRecord, DataField } from '../../chart/Data';
 
 const AdjustMap = {
-  'Stack': Stack,
-  'Dodge': Dodge,
-  'Jitter': Jitter,
-  'Symmetric': Symmetric
-}
+  Stack: Stack,
+  Dodge: Dodge,
+  Jitter: Jitter,
+  Symmetric: Symmetric,
+};
+
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
 
-export interface AdjustProp {
-  type: string;
-  adjust: Adjust;
+export type GeometryType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
+
+export interface ColorAttrObject {
+  type?: string;
+  field?: string;
+  range?: any[];
+  callback?: (...args) => any;
+  scale?: any;
+}
+
+export interface SizeAttrObject {
+  type?: string;
+  field?: string;
+  range?: any[];
+  callback?: (...args) => any;
+  scale?: any;
+}
+
+export interface ShapeAttrObject {
+  type?: string;
+  field?: string;
+  range?: any[];
+  callback?: (...args) => any;
+  scale?: any;
+}
+
+export interface GeometryProps<TRecord extends DataRecord = DataRecord> extends SelectionProps {
+  x: DataField<TRecord>;
+  y: DataField<TRecord>;
+  color?: DataField<TRecord> | string | [string, any[]] | ColorAttrObject;
+  size?: DataField<TRecord> | number | string | [string, any[]] | SizeAttrObject;
+  shape?: DataField<TRecord> | number | string | [string, any[]] | ShapeAttrObject;
+  adjust?: AdjustType | AdjustProps;
+  startOnZero?: boolean;
+  style?: any;
+  animation?: AnimationProps;
+  /**
+   * 是否裁剪显示区
+   */
+  viewClip?: boolean;
 }
 
 class Geometry<
-  P extends GeometryProps = GeometryProps,
+  TRecord extends DataRecord = DataRecord,
+  P extends GeometryProps<TRecord> = GeometryProps<TRecord>,
   S extends SelectionState = SelectionState
-> extends Selection<P, S> {
+> extends Selection<P & ChartChildProps, S> {
   isGeometry = true;
-  geomType: GeomType;
+  geomType: GeometryType;
 
   attrs: any;
-  adjust: AdjustProp;
+  adjust: AdjustProps & { adjust: Adjust };
 
   // 预处理后的数据
   dataArray: any;
@@ -52,7 +93,7 @@ class Geometry<
     return {};
   }
 
-  constructor(props: P, context?) {
+  constructor(props: P & ChartChildProps, context?) {
     super(props, context);
     mix(this, this.getDefaultCfg());
 
@@ -68,19 +109,8 @@ class Geometry<
 
   willReceiveProps(nextProps) {
     const { props: lastProps, attrController, justifyContent } = this;
-    const {
-      data: nextData,
-      adjust: nextAdjust,
-      zoomRange: nextZoomRange,
-      coord,
-      selection,
-    } = nextProps;
-    const {
-      data: lastData,
-      adjust: lastAdjust,
-      zoomRange: lastZoomRange,
-      selection: lastSelection,
-    } = lastProps;
+    const { data: nextData, adjust: nextAdjust, coord, selection } = nextProps;
+    const { data: lastData, adjust: lastAdjust, selection: lastSelection } = lastProps;
 
     const justifyContentCenter = !coord.isCyclic() || justifyContent;
 
@@ -100,11 +130,6 @@ class Geometry<
 
     // 重新处理数据
     if (nextAdjust !== lastAdjust) {
-      this.records = null;
-    }
-
-    // zoomRange发生变化,records也需要重新计算
-    if (!isEqual(nextZoomRange, lastZoomRange)) {
       this.records = null;
     }
 
@@ -168,13 +193,13 @@ class Geometry<
     if (
       isPolar &&
       transposed &&
-      (adjust === 'stack' || (adjust as GeometryAdjust)?.type === 'stack')
+      (adjust === 'stack' || (adjust as AdjustProps)?.type === 'stack')
     ) {
       const { y } = attrs;
       chart.scale.adjustPieScale(y.scale);
     }
 
-    if (adjust === 'stack' || (adjust as GeometryAdjust)?.type === 'stack') {
+    if (adjust === 'stack' || (adjust as AdjustProps)?.type === 'stack') {
       this._updateStackRange(yField, y.scale, this.dataArray);
     }
   }
@@ -242,7 +267,7 @@ class Geometry<
     if (!adjust) {
       return groupedArray;
     }
-    const adjustCfg =
+    const adjustCfg: AdjustProps =
       typeof adjust === 'string'
         ? {
             type: adjust,
@@ -259,11 +284,14 @@ class Geometry<
         // 如果是dodge, 需要处理数字再处理
         this._numberic(groupedArray[i]);
       }
+      // @ts-ignore
       adjustCfg.adjustNames = ['x'];
     }
 
     const { x, y } = attrs;
+    // @ts-ignore
     adjustCfg.xField = x.field;
+    // @ts-ignore
     adjustCfg.yField = y.field;
 
     const adjustInstance = new AdjustConstructor(adjustCfg);
@@ -350,7 +378,6 @@ class Geometry<
 
   _initEvent() {
     const { context, props } = this;
-    const { canvas } = context;
     ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
       (eventName) => {
         if (props[eventName]) {

@@ -1,5 +1,5 @@
-import withPoint from './withPoint';
+import withPoint, { PointProps } from './withPoint';
 import PointView from './pointView';
 
-export { PointView, withPoint };
+export { PointProps, PointView, withPoint };
 export default withPoint(PointView);

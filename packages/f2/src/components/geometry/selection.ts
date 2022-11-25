@@ -1,5 +1,6 @@
 import { isFunction } from '@antv/util';
 import { Component, isEqual as equal, ShapeStyleProps } from '@antv/f-engine';
+import { ChartChildProps } from '../../chart';
 
 function isEqual(origin1, origin2, fields: string[]) {
   if (origin1 === origin2) {
@@ -25,7 +26,6 @@ export interface SelectionProps {
     unSelectedStyle?: ShapeStyleProps | StyleType;
     cancelable?: boolean;
   };
-  [k: string]: any;
 }
 
 export interface SelectionState {
@@ -35,7 +35,7 @@ export interface SelectionState {
 class Selection<
   P extends SelectionProps = SelectionProps,
   S extends SelectionState = SelectionState
-> extends Component<P, S> {
+> extends Component<P & ChartChildProps, S> {
   constructor(props: P, context) {
     super(props, context);
 

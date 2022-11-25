@@ -1,4 +1,4 @@
-import withGuide from './withGuide';
+import withGuide, { GuideProps } from './withGuide';
 import TextGuideView from './views/Text';
 import PointGuideView from './views/Point';
 import LineGuideView from './views/Line';
@@ -17,6 +17,8 @@ const RectGuide = withGuide(RectGuideView);
 const ImageGuide = withGuide(ImageGuideView);
 const TagGuide = withGuide(TagGuideView);
 const LottieGuide = withGuide(LottieGuideView);
+
+export { GuideProps };
 
 export default withGuide(DefaultGuideView);
 

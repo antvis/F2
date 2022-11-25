@@ -217,7 +217,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
               // transposed: true,
               // left: 10,
               // top: 10,
@@ -264,7 +264,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
           >
             <Axis
@@ -328,7 +328,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
           >
             <Axis
@@ -400,7 +400,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{
               time: {
@@ -447,7 +447,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{
               type: {
@@ -464,7 +464,7 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" tickCount={5} />
-            <Line ref={lineRef} x="date" y="value" lineWidth="4px" color="type" shape="type" />
+            <Line ref={lineRef} x="date" y="value" color="type" shape="type" />
             <Legend position="top" />
           </Chart>
         </Canvas>
@@ -491,7 +491,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{}}
           >
@@ -507,7 +507,6 @@ describe('折线图', () => {
               ref={lineRef}
               x="date"
               y="value"
-              lineWidth="4px"
               color={{
                 field: 'type',
                 callback: (type) => {
@@ -647,7 +646,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{
               time: {
@@ -675,7 +674,6 @@ describe('折线图', () => {
               ref={lineRef}
               x="time"
               y="value"
-              lineWidth="4px"
               shape={{
                 field: 'type',
                 callback: (type) => {
@@ -842,7 +840,7 @@ describe('折线图', () => {
             ref={chartRef}
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{
               date: {
@@ -866,7 +864,7 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" />
-            <Line ref={lineRef} x="date" y="value" lineWidth="4px" />
+            <Line ref={lineRef} x="date" y="value" />
             <Point
               x="date"
               y="value"
@@ -985,7 +983,7 @@ describe('折线图', () => {
           <Chart
             data={data}
             coord={{
-              type: Rect,
+              type: 'rect',
             }}
             scale={{
               count: {
@@ -1015,7 +1013,7 @@ describe('折线图', () => {
               y="count"
               color={{
                 field: 'medalType',
-                map: (val) => {
+                callback: (val) => {
                   if (val === 'Gold Medals') {
                     return '#f3ac32';
                   } else if (val === 'Silver Medals') {

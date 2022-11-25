@@ -1,10 +1,12 @@
-import { jsx, ClassComponent, Ref, Component } from '@antv/f-engine';
+import { jsx, Ref, Component } from '@antv/f-engine';
 import { partition, hierarchy } from '../../deps/d3-hierarchy/src';
 import { Category } from '../../attr';
 import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
 import Theme from '../../theme';
+import { Data, DataRecord } from '../../chart/Data';
+import { CoordProps } from '../../chart/Coord';
 
 function rootParent(data) {
   let d = data;
@@ -13,14 +15,30 @@ function rootParent(data) {
   }
   return d;
 }
+export interface ColorAttrObject {
+  field: string;
+  range?: any[];
+  callback?: (value) => any;
+}
 
-export default (View): ClassComponent<any> => {
-  return class Sunburst extends Component {
+export interface SunburstProps<TRecord extends DataRecord = DataRecord> {
+  data: Data<TRecord>;
+  coord?: CoordProps;
+  color?: any[] | ColorAttrObject;
+  value?: string;
+  sort?: boolean;
+  onClick?: (ev) => void;
+}
+
+export default (View) => {
+  return class Sunburst<TRecord extends DataRecord = DataRecord> extends Component<
+    SunburstProps<TRecord>
+  > {
     coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
-    constructor(props, context) {
+    constructor(props: SunburstProps<TRecord>, context) {
       super(props, context);
       const { color, data } = props;
 

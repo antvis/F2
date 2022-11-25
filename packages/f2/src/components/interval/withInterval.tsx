@@ -1,10 +1,24 @@
-import { jsx, ClassComponent } from '@antv/f-engine';
+import { jsx } from '@antv/f-engine';
 import { deepMix, isFunction, isNil, mix } from '@antv/util';
-import Geometry from '../geometry';
+import Geometry, { GeometryProps } from '../geometry';
 import * as LabelViews from './label';
+import { DataRecord } from '../../chart/Data';
 
-export default (Views): ClassComponent<any> => {
-  return class Interval extends Geometry {
+export interface IntervalProps<TRecord extends DataRecord = DataRecord>
+  extends GeometryProps<TRecord> {
+  /**
+   * 柱子的显示比例
+   */
+  sizeRatio?: number;
+  showLabel?: boolean;
+  labelCfg?: any;
+}
+
+export default (Views) => {
+  return class Interval<TRecord extends DataRecord = DataRecord> extends Geometry<
+    TRecord,
+    IntervalProps<TRecord>
+  > {
     getDefaultCfg() {
       return {
         geomType: 'interval',
@@ -94,10 +108,10 @@ export default (Views): ClassComponent<any> => {
     }
 
     render() {
-      const { props, state, container } = this;
+      const { props, state } = this;
       const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
-      const View = isFunction(Views) ? Views : Views[shape];
-      const LabelView = LabelViews[shape];
+      const View = isFunction(Views) ? Views : Views[shape as string];
+      const LabelView = LabelViews[shape as string];
       const labelCfg = deepMix(
         {
           label: null,
