@@ -1,4 +1,4 @@
-import { jsx, Canvas, Chart, Axis, Interval, Line, Point } from '../../src';
+import { jsx, Canvas, Chart, Axis, Interval, Line, Point, Geometry, Area } from '../../src';
 import { createContext, delay } from '../util';
 const context = createContext();
 
@@ -15,15 +15,23 @@ const data = [
   { type: 'b', genre: 'Other', sold: 40 },
 ];
 
+type TRecord = typeof data[0];
+
 describe('Chart', () => {
   it('Chart render', async () => {
     const chartRef = { current: null };
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
-        <Chart data={data} ref={chartRef}>
+        <Chart<TRecord>
+          data={data}
+          ref={chartRef}
+          coord={{
+            type: 'rect',
+          }}
+        >
           <Axis field="genre" />
-          <Axis field="sold" />
-          <Interval x="genre" y="sold" color="genre" />
+          <Axis<TRecord> field="sold" />
+          <Interval<TRecord> x="genre" y="sold" color="genre" />
         </Chart>
       </Canvas>
     );

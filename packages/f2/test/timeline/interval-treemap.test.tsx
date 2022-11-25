@@ -64,7 +64,7 @@ describe('Chart', () => {
     const treemapRef = {};
     const pointRef = {};
     const lineRef = {};
-    const pieRef = { name: 'pieRef' };
+    const pieRef = {};
     const roseRef = {};
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
@@ -104,7 +104,6 @@ describe('Chart', () => {
               field: 'genre',
             }}
             value="sold"
-            space={4}
           />
           <Chart
             data={data}
@@ -174,7 +173,6 @@ describe('Chart', () => {
               field: 'genre',
             }}
             value="sold"
-            space={4}
           />
           <Chart data={data}>
             <Axis field="genre" />
@@ -221,7 +219,6 @@ describe('Chart', () => {
               field: 'genre',
             }}
             value="sold"
-            space={4}
           />
         </Timeline>
       </Canvas>

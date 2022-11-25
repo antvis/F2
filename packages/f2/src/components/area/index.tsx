@@ -1,5 +1,5 @@
-import withArea from './withArea';
+import withArea, { AreaProps } from './withArea';
 import AreaView from './areaView';
 
-export { withArea, AreaView };
+export { AreaProps, withArea, AreaView };
 export default withArea(AreaView);

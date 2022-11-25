@@ -37,7 +37,8 @@
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",
     "d3-cloud": "~1.2.5",
-    "fecha": "~4.2.0"
+    "fecha": "~4.2.0",
+    "type-fest": "^0.15.1"
   },
   "miniprogram": "dist"
 }

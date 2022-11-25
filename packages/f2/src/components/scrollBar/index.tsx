@@ -1,5 +1,5 @@
-import withScrollBar from './withScrollBar';
+import withScrollBar, { ScrollBarProps } from './withScrollBar';
 import ScrollBarView from './scrollBarView';
 
-export { withScrollBar, ScrollBarView };
+export { ScrollBarProps, withScrollBar, ScrollBarView };
 export default withScrollBar(ScrollBarView);

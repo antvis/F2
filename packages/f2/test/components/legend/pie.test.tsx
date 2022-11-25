@@ -47,7 +47,7 @@ describe('图例 - position', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
           }}
           scale={{}}
@@ -84,7 +84,7 @@ describe('图例 - position', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
           }}
         >
@@ -110,7 +110,7 @@ describe('图例 - position', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
           }}
         >

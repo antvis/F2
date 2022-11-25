@@ -63,7 +63,7 @@ describe('Treemap', () => {
           data={data}
           coord={
             {
-              // type: Polar
+              // type: 'polar'
               // transposed: true,
               // left: 100,
               // top: 100,
@@ -75,7 +75,6 @@ describe('Treemap', () => {
             field: 'name',
           }}
           value="value"
-          space={4}
         />
       </Canvas>
     );

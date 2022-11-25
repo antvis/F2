@@ -143,7 +143,6 @@ describe('Chart', () => {
           <Interval
             x="月份"
             y="月均降雨量"
-            barwidth={100}
             color={[
               'name',
               [

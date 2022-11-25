@@ -57,14 +57,7 @@ describe('Chart', () => {
           <Chart data={lineData}>
             {/* <Axis field="genre" /> */}
             {/* <Axis field="sold" /> */}
-            <Line
-              x="date"
-              y="sold"
-              lineWidth="4px"
-              color="genre"
-              keys={['genre']}
-              ref={intervalRef}
-            />
+            <Line x="date" y="sold" color="genre" ref={intervalRef} />
           </Chart>
           <Chart data={data}>
             {/* <Axis field="genre" /> */}

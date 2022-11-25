@@ -1,10 +1,18 @@
 import { jsx } from '../../index';
 import { isArray } from '@antv/util';
-import Geometry from '../geometry';
-import { LineProps } from './types';
+import Geometry, { GeometryProps } from '../geometry';
+import { DataRecord } from '../../chart/Data';
 
-export default (View): any => {
-  return class Line extends Geometry<LineProps> {
+export interface LineProps<TRecord extends DataRecord = DataRecord> extends GeometryProps<TRecord> {
+  connectNulls?: boolean;
+  endView?: any;
+}
+
+export default (View) => {
+  return class Line<TRecord extends DataRecord = DataRecord> extends Geometry<
+    TRecord,
+    LineProps<TRecord>
+  > {
     getDefaultCfg() {
       return {
         geomType: 'line',

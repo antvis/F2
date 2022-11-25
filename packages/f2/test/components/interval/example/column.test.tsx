@@ -592,7 +592,7 @@ describe('柱状图示例', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
           }}
           scale={{
             population: {
@@ -649,7 +649,7 @@ describe('柱状图示例', () => {
           data={data}
           ref={chartRef}
           coord={{
-            type: Polar,
+            type: 'polar',
           }}
           scale={{
             population: {

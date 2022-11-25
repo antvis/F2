@@ -1,6 +1,5 @@
 import {
   jsx,
-  ClassComponent,
   Component,
   isEqual,
   TextStyleProps,
@@ -15,7 +14,11 @@ export interface DataRecord {
   [k: string]: any;
 }
 
-export interface TooltipProps extends ChartChildProps {
+export interface TooltipProps {
+  /**
+   * 是否显示
+   */
+  visible?: boolean;
   /**
    * 顶部边距
    */
@@ -64,15 +67,21 @@ export interface TooltipProps extends ChartChildProps {
   defaultItem?: any;
   custom?: boolean;
   tooltipMarkerStyle?: any;
+  onChange?: any;
+  showXTip?: boolean;
+  showYTip?: boolean;
+  showTooltipMarker?: boolean;
+  customText?: any;
+  markerBackgroundStyle?: any;
 }
 
 export interface TooltipState {
   records: DataRecord[];
 }
 
-export default (View): ClassComponent<any> => {
-  return class Tooltip extends Component<TooltipProps, TooltipState> {
-    constructor(props: TooltipProps) {
+export default (View) => {
+  return class Tooltip extends Component<TooltipProps & ChartChildProps, TooltipState> {
+    constructor(props: TooltipProps & ChartChildProps) {
       super(props);
       this.state = {
         records: null,

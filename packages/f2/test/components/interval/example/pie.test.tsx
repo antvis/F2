@@ -102,7 +102,7 @@ describe('饼图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
           }}
         >
@@ -135,7 +135,7 @@ describe('饼图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.5,
           }}
@@ -172,7 +172,7 @@ describe('饼图', () => {
           ref={chartRef}
           data={data}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
           }}
         >

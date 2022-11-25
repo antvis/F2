@@ -1,8 +1,14 @@
-import { jsx, ClassComponent } from '@antv/f-engine';
-import Geometry from '../geometry';
+import { jsx } from '@antv/f-engine';
+import Geometry, { GeometryProps } from '../geometry';
+import { DataRecord } from '../../chart/Data';
 
-export default (View): ClassComponent<any> => {
-  return class Point extends Geometry {
+export type PointProps<TRecord extends DataRecord = DataRecord> = GeometryProps<TRecord>;
+
+export default (View) => {
+  return class Point<TRecord extends DataRecord = DataRecord> extends Geometry<
+    TRecord,
+    PointProps
+  > {
     getDefaultCfg() {
       return {
         geomType: 'point',
@@ -10,7 +16,7 @@ export default (View): ClassComponent<any> => {
     }
 
     render() {
-      const { props, container } = this;
+      const { props } = this;
       const { coord } = props;
       const records = this.mapping();
       const clip = this.getClip();

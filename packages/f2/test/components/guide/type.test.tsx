@@ -138,7 +138,7 @@ describe('Guide', () => {
             },
           ]}
           coord={{
-            type: Polar,
+            type: 'polar',
             transposed: true,
             innerRadius: 0.8,
           }}

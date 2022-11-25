@@ -1,6 +1,6 @@
 import { LineStyleProps, TextStyleProps } from '@antv/f-engine';
 import Coord from '../../coord';
-import { ChartChildProps } from '../../chart';
+import { DataRecord, DataField, DataValue } from '../../chart/Data';
 
 interface TickLine extends LineStyleProps {
   length?: number; // tick line 的长度
@@ -89,25 +89,38 @@ export interface PolarAxisProps {
   animation?: any;
 }
 
-export interface AxisProps extends ChartChildProps {
-  /**
-   * 映射的字段名称
-   */
-  field: string;
-  position?: 'right' | 'left' | 'top' | 'bottom';
+export interface AxisProps<
+  TRecord extends DataRecord = DataRecord,
+  TField extends DataField<TRecord> = DataField<TRecord>
+> {
   /**
    * 是否显示该坐标轴
    */
   visible?: boolean;
+  /**
+   * 映射的字段名称
+   */
+  field: TField;
+  /**
+   * 坐标轴显示位置
+   */
+  position?: 'right' | 'left' | 'top' | 'bottom';
+  /**
+   * 回调函数，用于格式化坐标轴刻度点的文本显示，
+   * 会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。
+   */
+  formatter?: (value: DataValue<TRecord, TField>) => string | number;
+  type?: string;
+  tickCount?: number;
+  range?: any;
+  mask?: string;
+  min?: number;
+  max?: number;
+  nice?: boolean;
   /**
    * 坐标轴样式定制
    */
   style?: StyleProps;
   // 网格线类型
   grid?: 'arc' | 'line';
-  [key: string]: any; // TODO
-}
-
-export namespace AxisTypes {
-  export type Props = AxisProps;
 }

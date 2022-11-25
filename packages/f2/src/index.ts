@@ -12,5 +12,5 @@ export {
   computeLayout,
 } from '@antv/f-engine';
 
-export { default as Chart } from './chart';
+export { default as Chart, ChartProps } from './chart';
 export * from './components';

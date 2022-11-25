@@ -1,11 +1,7 @@
-import { jsx, ClassComponent, Component, Ref } from '@antv/f-engine';
+import { jsx, Component, Ref } from '@antv/f-engine';
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { isInBBox } from '../../util';
-
-interface Point {
-  x: number;
-  y: number;
-}
+import { ChartChildProps, Point } from '../../chart';
 
 const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量
@@ -75,8 +71,21 @@ function findShapeByClassName(shape, point, className) {
   }
 }
 
-export default (View): ClassComponent<any> => {
-  return class PieLabel extends Component {
+export interface PieLabelProps {
+  anchorOffset?: string | number;
+  inflectionOffset?: string | number;
+  label1?: any;
+  label2?: any;
+  sidePadding?: string | number;
+  /**
+   * 触发的事件类型
+   */
+  triggerOn?: 'click' | 'press';
+  onClick?: (ev) => void;
+}
+
+export default (View) => {
+  return class PieLabel extends Component<PieLabelProps & ChartChildProps> {
     triggerRef: Ref;
     labels: [];
     constructor(props) {
@@ -320,7 +329,6 @@ export default (View): ClassComponent<any> => {
 
     _initEvent() {
       const { context, props } = this;
-      const { canvas } = context;
       const { triggerOn = DEFAULT_CONFIG.triggerOn } = props;
       context.gesture.on(triggerOn, this._handleEvent);
     }

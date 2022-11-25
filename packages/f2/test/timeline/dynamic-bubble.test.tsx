@@ -124,7 +124,7 @@ describe('Chart', () => {
                   scale={{
                     population: {
                       type: 'pow',
-                      base: 2,
+                      exponent: 2,
                     },
                     life: {
                       min: 0,

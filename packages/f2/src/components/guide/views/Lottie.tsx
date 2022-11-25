@@ -1,5 +1,5 @@
-import { jsx, Component } from '../../../index';
-import { isArray, deepMix } from '@antv/util';
+import { jsx, AnimationProps } from '@antv/f-engine';
+import { deepMix } from '@antv/util';
 import Lottie from '@antv/f-lottie';
 
 type LottieGuideProps = {
@@ -7,7 +7,7 @@ type LottieGuideProps = {
   data?: string;
   offsetX?: number | number[];
   offsetY?: number | number[];
-  animation: Animation;
+  animation: AnimationProps;
   options: {
     loop: boolean | number;
     autoplay: boolean;
@@ -35,7 +35,6 @@ export default (props: LottieGuideProps, context) => {
   const posY = y + (offsetYNum || 0) - width / 2;
 
   return (
-    // @ts-ignore
     <Lottie
       data={lottieJson}
       options={option}
