@@ -186,7 +186,7 @@ describe('数据选中', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('press 事件', async () => {
+  it('press 事件', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>

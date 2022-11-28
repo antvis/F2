@@ -25,6 +25,7 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> {
 
 export interface ChartState {
   filters: any;
+  // coord: any;
 }
 
 export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
@@ -73,6 +74,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     // state
     this.state = {
       filters: {},
+      // coord: this.coord
     };
   }
 
@@ -125,6 +127,10 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     if (!isEqual(nextScale, lastScale)) {
       scale.update(nextScale);
     }
+  }
+
+  willUpdate(): void {
+    this.coord.create(this.props.coord);
   }
 
   // 给需要显示的组件留空
@@ -266,8 +272,9 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   filter(field: string, condition) {
-    const { filters } = this.state;
+    const { filters, coord } = this.state;
     this.setState({
+      // coord,
       filters: {
         ...filters,
         [field]: condition,

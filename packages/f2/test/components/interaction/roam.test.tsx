@@ -3,7 +3,7 @@ import { Canvas, Chart } from '../../../src';
 import { Axis, Point, ScrollBar } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
-describe.skip('全局漫游模式', () => {
+describe('全局漫游模式', () => {
   describe('斜移和缩放-linear 类型', () => {
     const context = createContext('折线', {
       width: '350px',
@@ -22,7 +22,7 @@ describe.skip('全局漫游模式', () => {
           <Chart data={data}>
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
-            <Point x="release" y="count" size={20} viewClip />
+            <Point x="release" y="count" size={20} viewClip/>
             <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" />
           </Chart>
         </Canvas>
