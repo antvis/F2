@@ -48,7 +48,7 @@ const data = [
 ];
 
 describe('Chart', () => {
-  it('Chart render', () => {
+  it.skip('Chart render', () => {
     const treemapRef = {};
     const intervalRef = { current: null };
     const { type, props } = (
