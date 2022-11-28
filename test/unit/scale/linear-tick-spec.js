@@ -27,6 +27,15 @@ describe('linear-tick', function() {
     expect(tick).toEqual([ -600, -450, -300, -150, 0 ]);
   });
 
+  it('一正一负且tickcount = 2, [-10, 110]', function() {
+    const tick = linearTick({
+      min: -10,
+      max: 110,
+      tickCount: 2
+    });
+    expect(tick).toEqual([ -120, 120 ]);
+  });
+
   it('小数, 默认tickcount, [0, 0.0000035]', function() {
     const tick = linearTick({
       min: 0,

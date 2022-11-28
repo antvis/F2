@@ -12,6 +12,7 @@ export default cfg => {
 
   // 计算interval， 优先取tickInterval
   const interval = tickInterval || getBestInterval({ tickCount: count, max, min });
+
   // 通过interval计算最小tick
   const minTick = Math.floor(min / interval) * interval;
 
@@ -25,6 +26,13 @@ export default cfg => {
   const ticks = [];
   let tickLength = 0;
   const fixedLength = getFixedLength(interval);
+  if (min < 0 && max > 0 && count === 2) {
+    return [
+      toFixed(minTick, fixedLength),
+      toFixed(Math.ceil(max / interval) * interval, fixedLength)
+    ];
+  }
+
   while (tickLength < count) {
     ticks.push(toFixed(minTick + tickLength * interval, fixedLength));
     tickLength++;
@@ -88,7 +96,9 @@ function getBestInterval({ tickCount, min, max }) {
       break;
     }
   }
-  const similarityInterval = getInterval(similarityIndex, tickCount, calMin, calMax);
+
+  // 特殊情况找不到满足条件的，直接取最逼近刻度
+  const similarityInterval = min < 0 && max > 0 && tickCount === 2 ? SNAP_COUNT_ARRAY[similarityIndex] : getInterval(similarityIndex, tickCount, calMin, calMax);
 
   // 小数点位数还原到数据的位数, 因为similarityIndex有可能是小数，所以需要保留similarityIndex自己的小数位数
   const fixedLength = getFixedLength(similarityInterval) + getFixedLength(factor);
