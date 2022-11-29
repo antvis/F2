@@ -1,6 +1,16 @@
 import { Rect } from '../../../src/coord';
 import { jsx, Component, Canvas, Chart, Line, Point, Axis, Legend } from '../../../src';
 import { createContext, delay } from '../../util';
+const data1 = [
+  {
+    date: '2017-06-05',
+    value: 0.8,
+  },
+  {
+    date: '2017-06-06',
+    value: -1.1,
+  },
+];
 
 const data = [
   {
@@ -242,6 +252,27 @@ describe('折线图', () => {
               }}
             />
             <Axis field="value" tickCount={5} />
+            <Line ref={lineRef} x="date" y="value" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('特殊数据折线图', async () => {
+      const context = createContext('基础折线图');
+      const chartRef = { current: null };
+      const lineRef = { current: null };
+      const { type, props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart ref={chartRef} data={data1}>
+            <Axis field="date" tickCount={3} />
+            <Axis field="value" tickCount={2} />
             <Line ref={lineRef} x="date" y="value" />
           </Chart>
         </Canvas>
@@ -1135,24 +1166,24 @@ describe('折线图', () => {
     it('Y轴数据格式转换（刻度值较大的情形）', async () => {
       const BASE = 'Y轴数据格式转换（刻度值较大的情形）';
       const context = createContext(BASE);
-            const data = [
-              {
-                time: '2016-08-01',
-                tem: 3*10**9,
-              },
-              {
-                time: '2016-08-02',
-                tem: 222,
-              },
-              {
-                time: '2016-08-03',
-                tem: 20,
-              },
-              {
-                time: '2016-08-04',
-                tem: 26,
-              },
-            ];
+      const data = [
+        {
+          time: '2016-08-01',
+          tem: 3 * 10 ** 9,
+        },
+        {
+          time: '2016-08-02',
+          tem: 222,
+        },
+        {
+          time: '2016-08-03',
+          tem: 20,
+        },
+        {
+          time: '2016-08-04',
+          tem: 26,
+        },
+      ];
       const { type, props } = (
         <Canvas context={context} pixelRatio={1}>
           <Chart data={data}>
@@ -1163,7 +1194,7 @@ describe('折线图', () => {
               style={{
                 label: (text, index, ticks) => {
                   const textConfig: any = {};
-                  textConfig.text = ticks[index].tickValue / (10 ** 8) + '亿';
+                  textConfig.text = ticks[index].tickValue / 10 ** 8 + '亿';
                   return textConfig;
                 },
               }}
