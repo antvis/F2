@@ -113,11 +113,11 @@ class Geometry<
     const { data: lastData, adjust: lastAdjust, selection: lastSelection } = lastProps;
 
     const justifyContentCenter = !coord.isCyclic() || justifyContent;
-    // attrController.attrsRange = this._getThemeAttrsRange();
     const lastAttrOptions = attrController.getAttrOptions(lastProps, justifyContentCenter);
 
     attrController.attrsRange = this._getThemeAttrsRange();
     const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
+
     if (!isEqual(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
       this.records = null;
@@ -140,14 +140,12 @@ class Geometry<
   }
 
   willMount() {
-    debugger
     this._createAttrs();
     if (!this.records) {
       this._processData();
     }
   }
   willUpdate() {
-    debugger
     this._createAttrs();
     if (!this.records) {
       this._processData();
@@ -156,6 +154,8 @@ class Geometry<
 
   didMount() {
     super.didMount();
+    // 更新 attrController
+    this.attrController.attrsRange = this._getThemeAttrsRange();
     this._initEvent();
   }
 
