@@ -272,9 +272,8 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   filter(field: string, condition) {
-    const { filters, coord } = this.state;
+    const { filters } = this.state;
     this.setState({
-      // coord,
       filters: {
         ...filters,
         [field]: condition,

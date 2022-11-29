@@ -290,7 +290,7 @@ describe('Guide ', () => {
               appear: {
                 duration: 1000,
                 easing: 'quinticIn',
-                property: ['width','y', 'height'],
+                property: ['width', 'y', 'height'],
               },
             }}
           />
@@ -337,11 +337,11 @@ describe('Guide ', () => {
     const context = createContext();
     const Legend = withLegend((props) => {
       const { items, itemWidth } = props;
-    
+
       return (
         <group
           style={{
-            display:'flex',
+            display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
@@ -381,14 +381,14 @@ describe('Guide ', () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
-          <Legend/>
+          <Legend />
           <Interval
             x="genre"
             y="sold"
             color="genre"
             animation={{
               appear: {
-                duration: 1000,
+                duration: 500,
                 easing: 'linear',
               },
             }}
@@ -408,7 +408,7 @@ describe('Guide ', () => {
                   return {
                     appear: {
                       easing: 'linear',
-                      duration: 1000,
+                      duration: 500,
                       property: ['y'],
                       start: {
                         y: chart.layout.bottom,

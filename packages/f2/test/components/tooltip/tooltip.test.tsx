@@ -114,7 +114,7 @@ describe('tooltip', () => {
             alwaysShow={true}
             // showTitle={true}
             // showItemMarker={true}
-            showCrosshairs 
+            showCrosshairs
             onChange={onChangeMockCallback}
             crosshairsType="xy"
             snap
@@ -217,16 +217,13 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.only('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
+  it('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
     const context = createContext('Tooltip 默认展示更新（新增图形元素导致的坐标变动）');
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={[...data]}>
           <Interval x="genre" y="sold" color="genre" />
           <Tooltip alwaysShow={true} defaultItem={data[0]} showCrosshairs />
-          {/* <Axis field="genre" /> */}
-          {/* <Axis field="sold" /> */}
-          {/* <Axis field="genre" /> */}
         </Chart>
       </Canvas>
     );
