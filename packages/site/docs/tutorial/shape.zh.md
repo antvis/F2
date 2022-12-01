@@ -164,15 +164,15 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 | **属性名** | **类型** | **描述**      |
 | ---------- | -------- | ------------- |
-| `x0`       | Number   | 起始点 x 坐标 |
-| `y0`       | Number   | 起始点 y 坐标 |
-| `x1`       | Number   | 结束点 x 坐标 |
-| `y1`       | Number   | 结束点 y 坐标 |
+| `x1`       | Number   | 起始点 x 坐标 |
+| `y1`       | Number   | 起始点 y 坐标 |
+| `x2`       | Number   | 结束点 x 坐标 |
+| `y2`       | Number   | 结束点 y 坐标 |
 
 ### 示例
 
 ```jsx
-<line attrs={{ x0: 10, y0: 10, x1: 100, y1: 100, lineWidth: '2px', stroke: '#000' }} />
+<line attrs={{ x1: 10, y1: 10, x2: 100, y2: 100, lineWidth: '2px', stroke: '#000' }} />
 ```
 
 ## arc
