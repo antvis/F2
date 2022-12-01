@@ -132,9 +132,9 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   willUpdate(): void {
-    this.coord.create(this.props.coord);
+    this.coord.create(this.props.coord)
   }
-
+  
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
     this.coord.useLayout(layout);
@@ -166,7 +166,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
 
     // 说明是已经存在的组件
     if (existIndex > -1) {
-      // componentsPosition.splice(existIndex, 1, componentPosition);
+      componentsPosition.splice(existIndex, 1, componentPosition);
 
       // 先重置，然后整体重新算一次
       this.resetCoordLayout();
@@ -274,8 +274,9 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   filter(field: string, condition) {
-    const { filters } = this.state;
+    const { filters, coord } = this.state;
     this.setState({
+      // coord,
       filters: {
         ...filters,
         [field]: condition,
@@ -307,7 +308,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     const data = this._getRenderData();
     const layout = this.getLayout();
     const coord = this.getCoord();
-
+    debugger
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         chart: this,
