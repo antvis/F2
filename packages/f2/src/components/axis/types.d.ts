@@ -1,4 +1,4 @@
-import { LineStyleProps, TextStyleProps } from '@antv/f-engine';
+import { LineStyleProps, TextStyleProps, MarkerStyleProps } from '@antv/f-engine';
 import Coord from '../../coord';
 import { DataRecord, DataField, DataValue } from '../../chart/Data';
 
@@ -21,10 +21,16 @@ type LabelCallback<Type = void> = (
 ) => StyleText<Type>;
 type GridCallBack = (text: Tick['text'], index: number, total: number) => LineStyleProps;
 
+interface Line extends LineStyleProps {
+  // 坐标轴两端箭头 上下 或者 左右
+  symbol?: ['none' | MarkerStyleProps.symbol, 'none' | MarkerStyleProps.symbol];
+  symbolSize?: number | string;
+  symbolColor?: string;
+}
 export interface Style<Type = void> {
   grid?: LineStyleProps;
   tickLine?: TickLine;
-  line?: LineStyleProps;
+  line?: Line;
   labelOffset?: number;
   label?: StyleText<Type>;
 }

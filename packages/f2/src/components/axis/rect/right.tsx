@@ -6,6 +6,7 @@ export default (props: RectProps) => {
   const { top, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
+  const { symbol = ['none', 'none'], symbolSize, symbolColor } = line;
 
   return (
     <group>
@@ -45,6 +46,18 @@ export default (props: RectProps) => {
             );
           })
         : null}
+      {symbol[0] !== 'none' ? (
+        <marker
+          style={{
+            x: right,
+            y: top,
+            radius: symbolSize || '10px',
+            ...line,
+            symbol: symbol[0],
+            fill: symbolColor,
+          }}
+        />
+      ) : null}
       {line ? (
         <line
           attrs={{
@@ -53,6 +66,20 @@ export default (props: RectProps) => {
             x2: right,
             y2: bottom,
             ...line,
+          }}
+        />
+      ) : null}
+      {symbol[1] !== 'none' ? (
+        <marker
+          style={{
+            x: right,
+            y: bottom,
+            radius: symbolSize || '10px',
+            transform: 'rotate(180deg)',
+            transformOrigin: '50% 50%',
+            ...line,
+            symbol: symbol[1],
+            fill: symbolColor,
           }}
         />
       ) : null}
