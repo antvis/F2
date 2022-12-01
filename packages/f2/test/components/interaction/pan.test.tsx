@@ -4,7 +4,7 @@ import { Canvas, Chart } from '../../../src';
 import { Axis, Line, ScrollBar } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
-describe('平移和缩放', () => {
+describe.skip('平移和缩放', () => {
   describe('平移和缩放-linear 类型', () => {
     const context = createContext('折线', {
       width: '350px',

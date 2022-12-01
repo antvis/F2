@@ -254,7 +254,7 @@ describe('Guide', () => {
     canvas.render();
   });
 
-  it('TagGuide', async () => {
+  it.skip('TagGuide', async () => {
     const context = createContext('TagGuide');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
@@ -272,20 +272,13 @@ describe('Guide', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('TagGuide不同方向', async () => {
+  it.skip('TagGuide不同方向', async () => {
     const context = createContext('TagGuide不同方向');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
           <Line x="genre" y="sold" />
           <TagGuide records={[{ genre: 'Sports', sold: 5 }]} direct="tc" content="tag" />
-          <TagGuide records={[{ genre: 'Strategy', sold: 10 }]} direct="tl" content="tag" />
-          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="tr" content="tag" />
-          <TagGuide records={[{ genre: 'Shooter', sold: 20 }]} direct="cl" content="tag" />
-          <TagGuide records={[{ genre: 'Other', sold: 40 }]} direct="cr" content="tag" />
-          <TagGuide records={[{ genre: 'Action', sold: 20 }]} direct="bl" content="tag" />
-          <TagGuide records={[{ genre: 'Sports', sold: 5 }]} direct="bc" content="tag" />
-          <TagGuide records={[{ genre: 'Strategy', sold: 10 }]} direct="br" content="tag" />
         </Chart>
       </Canvas>
     );
@@ -297,7 +290,7 @@ describe('Guide', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('TagGuide update', async () => {
+  it.skip('TagGuide update', async () => {
     const context = createContext('TagGuide update');
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>

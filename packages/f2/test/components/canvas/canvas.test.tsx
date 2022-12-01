@@ -69,11 +69,10 @@ describe('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
-    await canvas.render();
+    canvas.render();
 
     await delay(1000);
     canvas.resize(200, 200);
-    await delay(200);
     expect(context).toMatchImageSnapshot();
   });
 });

@@ -27,7 +27,6 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> {
 
 export interface ChartState {
   filters: any;
-  // coord: any;
 }
 
 export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
@@ -76,7 +75,6 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     // state
     this.state = {
       filters: {},
-      // coord: this.coord
     };
   }
 
@@ -131,10 +129,6 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     }
   }
 
-  willUpdate(): void {
-    this.coord.create(this.props.coord)
-  }
-  
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
     this.coord.useLayout(layout);
@@ -274,9 +268,8 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   filter(field: string, condition) {
-    const { filters, coord } = this.state;
+    const { filters } = this.state;
     this.setState({
-      // coord,
       filters: {
         ...filters,
         [field]: condition,
@@ -308,7 +301,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     const data = this._getRenderData();
     const layout = this.getLayout();
     const coord = this.getCoord();
-    debugger
+
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
         chart: this,

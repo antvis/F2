@@ -50,7 +50,7 @@ export default (View: ComponentType) => {
       });
     }
 
-    willUpdate() {
+    didUpdate() {
       this.guideBBox = this.getGuideBBox();
     }
 
