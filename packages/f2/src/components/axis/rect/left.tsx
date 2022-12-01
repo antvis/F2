@@ -4,9 +4,9 @@ import { RectProps } from '../types';
 export default (props: RectProps) => {
   const { ticks: originTicks, coord, style, animation } = props;
   const { left, top, bottom } = coord;
-  const { grid, tickLine, line, labelOffset, label } = style;
+  const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
-  const { symbol = ['none', 'none'], symbolSize, symbolColor } = line;
+  const { type } = symbol;
 
   return (
     <group>
@@ -48,21 +48,19 @@ export default (props: RectProps) => {
             );
           })
         : null}
-      {symbol[0] !== 'none' ? (
+      {type && type[0] ? (
         <marker
           style={{
             x: left,
             y: top,
-            radius: symbolSize || '10px',
-            ...line,
-            symbol: symbol[0],
-            fill: symbolColor,
+            ...symbol,
+            symbol: type[0],
           }}
         />
       ) : null}
       {line ? (
         <line
-          attrs={{
+          style={{
             x1: left,
             y1: top,
             x2: left,
@@ -71,17 +69,15 @@ export default (props: RectProps) => {
           }}
         />
       ) : null}
-      {symbol[1] !== 'none' ? (
+      {type && type[2] ? (
         <marker
           style={{
             x: left,
             y: bottom,
-            radius: symbolSize || '10px',
             transform: 'rotate(180deg)',
             transformOrigin: '50% 50%',
-            ...line,
-            symbol: symbol[1],
-            fill: symbolColor,
+            ...symbol,
+            symbol: type[2],
           }}
         />
       ) : null}

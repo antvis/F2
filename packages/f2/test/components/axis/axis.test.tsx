@@ -554,8 +554,9 @@ describe('Axis 轴', () => {
           <Axis
             field="index"
             style={{
-              line: {
-                symbol: ['arrow', 'arrow'],
+              line: {},
+              symbol: {
+                type: [null, 'arrow', null, 'arrow'],
               },
             }}
           />
@@ -565,8 +566,9 @@ describe('Axis 轴', () => {
               return v.toFixed(2) + '%';
             }}
             style={{
-              line: {
-                symbol: ['arrow', 'arrow'],
+              line: {},
+              symbol: {
+                type: ['arrow', null, 'arrow', null],
               },
             }}
           />

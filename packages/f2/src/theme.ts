@@ -3,7 +3,10 @@ const axis = {
   line: {
     stroke: '#E8E8E8',
     lineWidth: '1px',
-    symbolColor: '#E8E8E8',
+  },
+  symbol: {
+    fill: '#E8E8E8',
+    radius: '10px',
   },
   label: {
     fill: '#808080',
