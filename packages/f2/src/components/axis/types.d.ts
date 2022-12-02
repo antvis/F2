@@ -22,30 +22,13 @@ type LabelCallback<Type = void> = (
 type GridCallBack = (text: Tick['text'], index: number, total: number) => LineStyleProps;
 
 interface symbolStyleProps extends MarkerStyleProps {
-  // 对应上-右-下-左
-  type?:
-    | [null | MarkerStyleProps.symbol]
-    | [null | MarkerStyleProps.symbol, null | MarkerStyleProps.symbol]
-    | [
-        null | MarkerStyleProps.symbol,
-        null | MarkerStyleProps.symbol,
-        null | MarkerStyleProps.symbol
-      ]
-    | [
-        null | MarkerStyleProps.symbol,
-        null | MarkerStyleProps.symbol,
-        null | MarkerStyleProps.symbol,
-        null | MarkerStyleProps.symbol
-      ];
-}
-interface Line extends LineStyleProps {
-  symbol?: symbolStyle;
+  type?: MarkerStyleProps.symbol;
 }
 export interface Style<Type = void> {
   grid?: LineStyleProps;
   tickLine?: TickLine;
   line?: LineStyleProps;
-  symbol?: symbolStyleProps;
+  symbol?: symbolStyleProps | symbolStyleProps[];
   labelOffset?: number;
   label?: StyleText<Type>;
 }

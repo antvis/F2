@@ -555,9 +555,7 @@ describe('Axis 轴', () => {
             field="index"
             style={{
               line: {},
-              symbol: {
-                type: [null, 'arrow', null, 'arrow'],
-              },
+              symbol: { type: 'arrow' },
             }}
           />
           <Axis
@@ -567,9 +565,14 @@ describe('Axis 轴', () => {
             }}
             style={{
               line: {},
-              symbol: {
-                type: ['arrow', null, 'arrow', null],
-              },
+              symbol: [
+                {
+                  type: 'circle',
+                },
+                {
+                  type: 'arrow',
+                },
+              ],
             }}
           />
           <Line x="index" y="value" color="#2FC25B" />
