@@ -134,7 +134,8 @@ class ScaleController {
     options[field] = mix({}, options[field], option);
     // 如果scale有更新，scale 也需要重新创建
     if (scales[field]) {
-      delete scales[field];
+      scales[field].change(options[field]);
+      // delete scales[field];
     }
   }
 
@@ -147,10 +148,6 @@ class ScaleController {
     each(options, (option: ScaleOption, field: string) => {
       this.setScale(field, option);
     });
-    // 为了让外部感知到scale有变化
-    this.scales = {
-      ...this.scales,
-    };
   }
 
   changeData(data) {
@@ -190,6 +187,17 @@ class ScaleController {
       this.getScale(field);
     });
     return scales;
+  }
+
+  getOptions() {
+    const { scales } = this;
+
+    const options = {};
+    each(scales, (scale, field: string) => {
+      options[field] = { ...scale.__cfg__ };
+    });
+
+    return options;
   }
 
   adjustStartZero(scale: Scale) {

@@ -18,8 +18,6 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> {
   data: Data<TRecord>;
   scale?: DataRecordScale<TRecord>;
   coord?: CoordType | CoordProps;
-  start?: Point;
-  end?: Point;
   style?: GroupStyleProps;
   theme?: Record<string, any>;
   children?: any;
@@ -295,19 +293,22 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   render() {
-    const { props } = this;
+    const { props, scale } = this;
     const { children, data: originData } = props;
     if (!originData) return null;
     const data = this._getRenderData();
     const layout = this.getLayout();
     const coord = this.getCoord();
+    const scaleOptions = scale.getOptions();
 
     return Children.map(children, (child) => {
       return Children.cloneElement(child, {
+        data,
         chart: this,
         layout,
         coord,
-        data,
+        // 传 scaleOptions 是为了让 child 感知到 props 的的变化，合理的做法的应该是传递 scale，但是现在无法感知到 scale 的变化, 所以暂时只能先这么处理，scaleOptions 子组件目前是使用不到的。
+        scaleOptions,
       });
     });
   }
