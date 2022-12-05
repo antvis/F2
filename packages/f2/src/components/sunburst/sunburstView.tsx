@@ -14,8 +14,8 @@ export default (props) => {
             <group>
               <sector
                 attrs={{
-                  x,
-                  y,
+                  cx: x,
+                  cy: y,
                   lineWidth: '1px',
                   stroke: '#fff',
                   startAngle: `${xMin} rad`,

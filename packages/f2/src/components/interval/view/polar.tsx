@@ -42,8 +42,8 @@ export default (props) => {
                 <sector
                   key={key}
                   attrs={{
-                    x: center.x,
-                    y: center.y,
+                    cx: center.x,
+                    cy: center.y,
                     fill: color,
                     lineWidth: 1,
                     startAngle: `${xMin}rad`,
