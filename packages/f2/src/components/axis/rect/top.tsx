@@ -7,7 +7,7 @@ export default (props: RectProps) => {
   const { left, top, right } = coord;
   const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
-  const symbolList = isArray(symbol) ? symbol : [symbol];
+  const symbols = isArray(symbol) ? symbol : [symbol];
 
   return (
     <group>
@@ -47,15 +47,15 @@ export default (props: RectProps) => {
             );
           })
         : null}
-      {symbolList[0] ? (
+      {symbols[0] ? (
         <marker
           style={{
             x: right,
             y: top,
             transform: 'rotate(90deg)',
             transformOrigin: '50% 50%',
-            ...symbolList[0],
-            symbol: symbolList[0].type,
+            ...symbols[0],
+            symbol: symbols[0].type,
           }}
         />
       ) : null}
@@ -70,15 +70,15 @@ export default (props: RectProps) => {
           }}
         />
       ) : null}
-      {symbolList[1] ? (
+      {symbols[1] ? (
         <marker
           style={{
             x: left,
             y: top,
             transform: 'rotate(-90deg)',
             transformOrigin: '50% 50%',
-            ...symbolList[0],
-            symbol: symbolList[1].type,
+            ...symbols[0],
+            symbol: symbols[1].type,
           }}
         />
       ) : null}
