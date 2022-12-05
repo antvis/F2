@@ -2,7 +2,7 @@ import { Component, isEqual } from '@antv/f-engine';
 import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '../../deps/f2-scale/src';
-import { each, isNumberEqual } from '@antv/util';
+import { each, isNumberEqual, isArray } from '@antv/util';
 
 export type ZoomRange = [number, number];
 export type ScaleValues = number[] | string[];
@@ -98,7 +98,7 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     endY: 0,
   };
 
-  loop;
+  loop: number;
 
   constructor(props: P) {
     const defaultProps = {
@@ -112,9 +112,9 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
       minCount: 10,
     };
     super({ ...defaultProps, ...props });
-    const { range = [0, 1], mode } = props;
+    const { mode } = props;
 
-    this.dims = mode instanceof Array ? mode : [mode];
+    this.dims = isArray(mode) ? mode : [mode];
   }
 
   didMount(): void {
@@ -138,9 +138,8 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
   }
 
   willMount(): void {
-    const { props, dims, state } = this;
+    const { props, dims } = this;
     const { minCount, range } = props;
-    // const { range } = state;
     let valueLength = Number.MIN_VALUE;
     const cacheRange = {};
 

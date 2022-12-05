@@ -18,8 +18,8 @@ export default (props: PolarProps) => {
               return (
                 <arc
                   attrs={{
-                    x: center.x,
-                    y: center.y,
+                    cx: center.x,
+                    cy: center.y,
                     r: vec2Length([end.x - center.x, end.y - center.y]),
                     ...grid,
                     ...gridStyle,

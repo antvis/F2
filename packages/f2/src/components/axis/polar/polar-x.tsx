@@ -57,8 +57,8 @@ const Line = (props) => {
     return (
       <arc
         attrs={{
-          x: center.x,
-          y: center.y,
+          cx: center.x,
+          cy: center.y,
           r: radius,
           ...line,
         }}

@@ -28,8 +28,8 @@ export default (props: ArcGuideProps) => {
     <group>
       <arc
         attrs={{
-          x: coordCenter.x,
-          y: coordCenter.y,
+          cx: coordCenter.x,
+          cy: coordCenter.y,
           r: radius,
           startAngle,
           endAngle,
