@@ -127,6 +127,10 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     }
   }
 
+  willUpdate(): void {
+    this.coord.create(this.props.coord);
+  }
+
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
     this.coord.useLayout(layout);

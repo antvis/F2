@@ -8,6 +8,7 @@ import {
   TextGuide,
   LineGuide,
   LottieGuide,
+  withLegend,
 } from '../../../src/components';
 import { Canvas, Chart, Interval } from '../../../src';
 import { createContext, delay } from '../../util';
@@ -117,7 +118,7 @@ describe('Guide ', () => {
       </Canvas>
     );
     const chart = new Canvas(props);
-    chart.render();
+    await chart.render();
     await delay(0);
 
     const container = chart.container;
@@ -271,7 +272,7 @@ describe('Guide ', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('TextGuide 动画 - 支持callback配置', async () => {
+  it('TextGuide 动画 - 支持callback配置', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -289,7 +290,7 @@ describe('Guide ', () => {
               appear: {
                 duration: 1000,
                 easing: 'quinticIn',
-                property: ['x', 'width'],
+                property: ['width', 'y', 'height'],
               },
             }}
           />
@@ -334,6 +335,44 @@ describe('Guide ', () => {
 
   it('lottie guide', async () => {
     const context = createContext();
+    const Legend = withLegend((props) => {
+      const { items, itemWidth } = props;
+
+      return (
+        <group
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {items.map((item) => {
+            const { color, name } = item;
+            return (
+              <group
+                className="legend-item"
+                style={{
+                  width: itemWidth,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                data-item={item}
+              >
+                <text
+                  attrs={{
+                    fill: color,
+                    text: name,
+                  }}
+                />
+              </group>
+            );
+          })}
+        </group>
+      );
+    });
     const url = await (
       await fetch(
         'https://gw.alipayobjects.com/os/OasisHub/3ccdf4d8-78e6-48c9-b06e-9e518057d144/data.json'
@@ -342,6 +381,7 @@ describe('Guide ', () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
+          <Legend />
           <Interval
             x="genre"
             y="sold"

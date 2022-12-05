@@ -12,8 +12,8 @@ const Gauge = withGauge((props) => {
     <group>
       <arc
         attrs={{
-          x,
-          y,
+          cx: x,
+          cy: y,
           r,
           startAngle,
           endAngle: startAngle,
@@ -37,8 +37,8 @@ const Gauge = withGauge((props) => {
       />
       <sector
         attrs={{
-          x,
-          y,
+          cx: x,
+          cy: y,
           r0,
           r,
           startAngle,

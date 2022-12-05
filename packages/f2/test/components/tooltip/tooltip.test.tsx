@@ -100,7 +100,7 @@ const data1 = [
 ];
 
 describe('tooltip', () => {
-  it.skip('Tooltip render', async () => {
+  it('Tooltip render', async () => {
     const context = createContext('Tooltip render');
     const onChangeMockCallback = jest.fn();
     const { props } = (
@@ -129,7 +129,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     await canvas.render();
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { x: 170, y: 21 });
+    await gestureSimulator(context.canvas, 'press', { x: 170, y: 41 });
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
 
@@ -217,7 +217,7 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
+  it('Tooltip 默认展示更新（新增图形元素导致的坐标变动）', async () => {
     const context = createContext('Tooltip 默认展示更新（新增图形元素导致的坐标变动）');
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -235,8 +235,8 @@ describe('tooltip', () => {
       <Chart data={data}>
         <Interval x="genre" y="sold" color="genre" />
         <Tooltip alwaysShow={true} defaultItem={data[0]} showCrosshairs />
-        <Axis field="genre" />
         <Axis field="sold" />
+        <Axis field="genre" />
       </Chart>
     );
     await canvas.update({ children: newChart });
@@ -244,7 +244,7 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('Tooltip 超出边界会展示边界值', async () => {
+  it('Tooltip 超出边界会展示边界值', async () => {
     const context = createContext('Tooltip 超出边界会展示边界值');
     const onChangeMockCallback = jest.fn();
     const { props } = (
@@ -274,7 +274,7 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('分组柱状图-tooltip', async () => {
+  it('分组柱状图-tooltip', async () => {
     const context = createContext('分组柱图');
 
     const { props } = (
@@ -300,11 +300,10 @@ describe('tooltip', () => {
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
 
-    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 
-  it.skip('分组柱状图-tooltip', async () => {
+  it('分组柱状图-tooltip', async () => {
     const context = createContext('分组柱图');
 
     const { props } = (
@@ -335,7 +334,6 @@ describe('tooltip', () => {
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
 
-    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 

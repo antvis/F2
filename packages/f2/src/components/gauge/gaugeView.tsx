@@ -28,8 +28,8 @@ export default (props: GaugeViewProps) => {
     <group>
       <arc
         attrs={{
-          x,
-          y,
+          cx: x,
+          cy: y,
           r,
           startAngle: `${startAngle} rad`,
           endAngle: `${endAngle} rad`,
@@ -40,8 +40,8 @@ export default (props: GaugeViewProps) => {
       />
       <arc
         attrs={{
-          x,
-          y,
+          cx: x,
+          cy: y,
           r,
           startAngle: `${startAngle} rad`,
           endAngle: `${startAngle} rad`,

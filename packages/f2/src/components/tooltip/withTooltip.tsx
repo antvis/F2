@@ -107,6 +107,7 @@ export default (View) => {
     willReceiveProps(nextProps) {
       const { defaultItem: nextDefaultItem, coord: nextCoord } = nextProps;
       const { defaultItem: lastDefaultItem, coord: lastCoord } = this.props;
+
       // 默认元素或坐标有变动，均需重新渲染
       if (!isEqual(nextDefaultItem, lastDefaultItem) || !isEqual(nextCoord, lastCoord)) {
         this._showByData(nextDefaultItem);
