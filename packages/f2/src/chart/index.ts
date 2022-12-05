@@ -25,7 +25,6 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> {
 
 export interface ChartState {
   filters: any;
-  // coord: any;
 }
 
 export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
@@ -74,7 +73,6 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     // state
     this.state = {
       filters: {},
-      // coord: this.coord
     };
   }
 
