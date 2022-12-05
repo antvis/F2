@@ -1,5 +1,5 @@
 import { jsx, isEqual, Component } from '@antv/f-engine';
-import { deepMix, isFunction, mix, each, clone, isString, isNumber } from '@antv/util';
+import { deepMix, isFunction, mix, each, clone, isString, isNumber, isArray } from '@antv/util';
 import { ChartChildProps, PositionLayout } from '../../chart';
 import { Style, Tick, AxisProps } from './types';
 import { DataRecord } from '../../chart/Data';
@@ -170,6 +170,8 @@ export default (View) => {
 
         if (isString(value) || isNumber(value)) {
           this.axisStyle[key] = px2hd(styleValue) || value;
+        } else if (isArray(styleValue)) {
+          this.axisStyle[key] = styleValue.map((d) => px2hd(deepMix(clone(value), d)));
         } else {
           this.axisStyle[key] = px2hd(deepMix(clone(value), styleValue));
         }

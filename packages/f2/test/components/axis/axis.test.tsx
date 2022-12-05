@@ -546,6 +546,47 @@ describe('Axis 轴', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('箭头样式', async () => {
+    const context = createContext('带箭头的坐标轴');
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis
+            field="index"
+            style={{
+              line: {},
+              symbol: { type: 'arrow' },
+            }}
+          />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              line: {},
+              symbol: [
+                {
+                  type: 'circle',
+                },
+                {
+                  type: 'arrow',
+                },
+              ],
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('弧形网格线', async () => {
     const context = createContext('弧形网格线');
     const data = [

@@ -1,13 +1,15 @@
 import { jsx } from '../../../index';
 import { RectProps } from '../types';
 import { TextStyleProps } from '@antv/f-engine';
+import { isArray } from '@antv/util';
 
 export default (props: RectProps<'bottom'>, context) => {
   const { ticks, coord, style, animation } = props;
   const { px2hd } = context;
   const { left, right, bottom } = coord;
-  const { grid, tickLine, line, labelOffset, label } = style;
+  const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const filterTicks = ticks.filter((d) => !isNaN(d.value));
+  const symbolList = isArray(symbol) ? symbol : [symbol];
 
   return (
     <group>
@@ -49,6 +51,18 @@ export default (props: RectProps<'bottom'>, context) => {
             );
           })
         : null}
+      {symbolList[0] ? (
+        <marker
+          style={{
+            x: right,
+            y: bottom,
+            transform: 'rotate(90deg)',
+            transformOrigin: '50% 50%',
+            ...symbolList[0],
+            symbol: symbolList[0].type,
+          }}
+        />
+      ) : null}
       {line ? (
         <line
           attrs={{
@@ -57,6 +71,18 @@ export default (props: RectProps<'bottom'>, context) => {
             x2: right,
             y2: bottom,
             ...line,
+          }}
+        />
+      ) : null}
+      {symbolList[1] ? (
+        <marker
+          style={{
+            x: left,
+            y: bottom,
+            transform: 'rotate(-90deg)',
+            transformOrigin: '50% 50%',
+            ...symbolList[0],
+            symbol: symbolList[1].type,
           }}
         />
       ) : null}

@@ -1,11 +1,14 @@
 import { jsx } from '../../../index';
 import { RectProps } from '../types';
+import { isArray } from '@antv/util';
 
 export default (props: RectProps) => {
   const { ticks: originTicks, coord, style, animation } = props;
   const { left, top, bottom } = coord;
-  const { grid, tickLine, line, labelOffset, label } = style;
+  const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
+  const symbolList = isArray(symbol) ? symbol : [symbol];
+
   return (
     <group>
       {grid
@@ -46,14 +49,36 @@ export default (props: RectProps) => {
             );
           })
         : null}
+      {symbolList[0] ? (
+        <marker
+          style={{
+            x: left,
+            y: top,
+            ...symbolList[0],
+            symbol: symbolList[0].type,
+          }}
+        />
+      ) : null}
       {line ? (
         <line
-          attrs={{
+          style={{
             x1: left,
             y1: top,
             x2: left,
             y2: bottom,
             ...line,
+          }}
+        />
+      ) : null}
+      {symbolList[1] ? (
+        <marker
+          style={{
+            x: left,
+            y: bottom,
+            transform: 'rotate(180deg)',
+            transformOrigin: '50% 50%',
+            ...symbolList[1],
+            symbol: symbolList[1].type,
           }}
         />
       ) : null}
