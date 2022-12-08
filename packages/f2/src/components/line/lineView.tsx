@@ -81,16 +81,16 @@ export default (props) => {
           type: 'sector',
           property: ['endAngle'],
           style: {
-            x: center.x,
-            y: center.y,
-            startAngle,
+            cx: center.x,
+            cy: center.y,
+            startAngle: `${startAngle}rad`,
             r: radius,
           },
           start: {
-            endAngle: startAngle,
+            endAngle: `${startAngle}rad`,
           },
           end: {
-            endAngle,
+            endAngle: `${endAngle}rad`,
           },
         },
       }

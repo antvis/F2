@@ -120,6 +120,7 @@ describe('饼图', () => {
     );
 
     const canvas = new Canvas(props);
+    await delay(1000);
     await canvas.render();
 
     await delay(1000);
@@ -157,7 +158,8 @@ describe('饼图', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await delay(500);
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
