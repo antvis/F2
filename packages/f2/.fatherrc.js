@@ -10,9 +10,9 @@ export default process.env.CI
         minFile: true,
       },
       // entry: ['src/index.ts', 'src/jsx/jsx-runtime.ts'],
-      entry: ['src/index.ts'],
+      entry: ['src/index.umd.ts'],
       overridesByEntry: {
-        'src/index.ts': {
+        'src/index.umd.ts': {
           umd: { name: 'F2', file: 'index' },
         },
         // for weixin miniapp
@@ -22,5 +22,3 @@ export default process.env.CI
       },
       extraRollupPlugins: [...(isBundleVis ? [visualizer()] : [])],
     };
-
-
