@@ -10,9 +10,9 @@ export default process.env.CI
         minFile: true,
       },
       // entry: ['src/index.ts', 'src/jsx/jsx-runtime.ts'],
-      entry: ['src/index.umd.ts'],
+      entry: ['src/index.ts'],
       overridesByEntry: {
-        'src/index.umd.ts': {
+        'src/index.ts': {
           umd: { name: 'F2', file: 'index' },
         },
         // for weixin miniapp
