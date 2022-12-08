@@ -14,3 +14,4 @@ export {
 
 export { default as Chart, ChartProps } from './chart';
 export * from './components';
+export * as FEngine from '@antv/f-engine'
