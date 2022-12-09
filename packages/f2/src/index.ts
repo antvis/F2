@@ -1,16 +1,5 @@
-export {
-  JSX,
-  jsx,
-  createElement,
-  Canvas,
-  CanvasRenderer,
-  Timeline,
-  Fragment,
-  createRef,
-  Component,
-  Children,
-  computeLayout,
-} from '@antv/f-engine';
+// 把 FEngine 全部透出
+export * from '@antv/f-engine';
 
 export { default as Chart, ChartProps } from './chart';
 export * from './components';
