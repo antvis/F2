@@ -15,9 +15,12 @@ export interface IntervalProps<TRecord extends DataRecord = DataRecord>
 }
 
 export default (Views) => {
-  return class Interval<TRecord extends DataRecord = DataRecord> extends Geometry<
-    TRecord,
-    IntervalProps<TRecord>
+  return class Interval<
+    Record extends DataRecord = DataRecord, 
+    Props extends IntervalProps = IntervalProps
+  > extends Geometry<
+    Record,
+    Props<TRecord>
   > {
     getDefaultCfg() {
       return {
