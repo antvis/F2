@@ -14,7 +14,8 @@ if (!isWx && !isMy) {
 const TOUCH_EVENTS = [
   'touchstart',
   'touchmove',
-  'touchend'
+  'touchend',
+  'click'
 ];
 
 class Interaction {
