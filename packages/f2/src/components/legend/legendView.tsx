@@ -16,6 +16,21 @@ const Marker = ({ type, color }) => {
       />
     );
   }
+  if (type === 'line') {
+    return (
+      <line
+        style={{
+          width: '19px',
+          marginRight: '10px',
+        }}
+        attrs={{
+          stroke: color,
+          lineCap: 'round',
+          lineWidth: '4px',
+        }}
+      />
+    );
+  }
   return (
     <circle
       style={{
@@ -35,6 +50,7 @@ export default (props) => {
     itemFormatter,
     style,
     marker = 'circle', // 图例标记默认为 circle
+    itemStyle,
     nameStyle,
     valueStyle,
     valuePrefix,
@@ -67,11 +83,12 @@ export default (props) => {
               justifyContent: 'flex-start',
               //TODO: padding改为’12px‘ 就和原来一致了
               padding: ['6px', '6px', '6px', 0],
+              ...itemStyle,
             }}
             data-item={item}
             onClick={onClick}
           >
-            { Marker({color: filtered ? '#bfbfbf' : color,  type:marker})}
+            {Marker({ color: filtered ? '#bfbfbf' : color, type: marker })}
             {/* <Marker color={filtered ? '#bfbfbf' : color} type={marker} /> */}
             <text
               attrs={{

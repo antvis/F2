@@ -3,7 +3,7 @@ title: 标注 - Guide
 order: 9
 ---
 
-提示和标注， 主要用于在图表上标识额外的标记注解
+提示和标注， 主要用于在图表上标识额外的标记注解。目前内置PointGuide点标注、TextGuide文本标注、TagGuide标注、ImageGuide图片标注和LineGuide线标注，也可以自定义标注。
 
 ## Usage
 
@@ -122,6 +122,10 @@ y 轴偏移量
 ### background: Attrs
 
 > 类型为绘图属性：[图形属性](/zh/docs/tutorial/shape-attrs#通用属性) 
+
+### triggerRef: any
+
+tagGuide 实例
 
 ### textStyle: TextAttr
 

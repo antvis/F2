@@ -82,6 +82,30 @@ describe('图例', () => {
       expect(context).toMatchImageSnapshot();
     });
 
+    it('marker=line', async () => {
+      const context = createContext('marker=line', {
+        height: '70px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend
+              style={{
+                justifyContent: 'flex-start',
+              }}
+              marker="line"
+            />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
     it('position = bottom', async () => {
       const data = [
         { genre: 'Sports', sold: 275 },
@@ -144,6 +168,66 @@ describe('图例', () => {
           <Chart data={data}>
             <Legend position="right" />
             <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('设置 itemStyle', async () => {
+      const data = [
+        {
+          date: '2010-01-10',
+          type: '金属',
+          value: 96.6,
+        },
+        {
+          date: '2010-01-10',
+          type: '农副产品',
+          value: 96.2,
+        },
+        {
+          date: '2010-02-10',
+          type: '金属',
+          value: 91.1,
+        },
+        {
+          date: '2010-02-10',
+          type: '农副产品',
+          value: 93.4,
+        },
+      ];
+      const context = createContext('设置 itemStyle', {
+        height: '200px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Axis
+              field="date"
+              tickCount={3}
+              style={{
+                label: { align: 'between' },
+              }}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line x="date" y="value" color="type" />
+            <Legend
+              position="bottom"
+              marker="line"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              itemStyle={{
+                justifyContent: 'center',
+              }}
+            />
           </Chart>
         </Canvas>
       );

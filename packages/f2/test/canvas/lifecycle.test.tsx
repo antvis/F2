@@ -1,4 +1,4 @@
-import { jsx, Canvas, Component } from '../../src';
+import { Canvas, Component, jsx } from '../../src';
 import { createContext, delay } from '../util';
 const context = createContext();
 
@@ -121,7 +121,7 @@ class TestContainer extends Component {
 }
 
 describe('Canvas', () => {
-  it('生命周期', async () => {
+  it.skip('生命周期', async () => {
     const ref = { current: null };
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -227,9 +227,89 @@ describe('Canvas', () => {
       ).props
     );
     await delay(50);
+    expect(ref.current.container.getChildren()[0].getAttribute('width')).toBe(30);
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['componentShouldUpdate'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+    ]);
 
-    expect(ref.current.container.children[0].getAttribute('width')).toBe(30);
-    // expect(ref.current.container.get('children')[0].get('attrs').width).toBe(30);
+    await delay(50);
+    // 销毁 canvas
+    canvas.destroy();
+
+    expect(pickMethod(methodCallback.mock.calls)).toEqual([
+      ['containerWillMount'],
+      ['containerRender'],
+      ['componentWillMount'],
+      ['componentWillMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['componentRender'],
+      ['componentDidMount'],
+      ['containerDidMount'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerShouldUpdate'],
+      ['containerWillReceiveProps'],
+      ['containerWillUpdate'],
+      ['containerRender'],
+      ['componentShouldUpdate'],
+      ['componentWillReceiveProps'],
+      ['componentWillUpdate'],
+      ['componentRender'],
+      ['componentDidUpdate'],
+      ['containerDidUpdate'],
+      ['containerWillUnmount'],
+      ['componentWillUnmount'],
+      ['componentDidUnmount'],
+      ['containerDidUnmount'],
+    ]);
   });
 
   it('第1个子组件为空', async () => {

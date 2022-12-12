@@ -1,16 +1,15 @@
-import { jsx } from '../../../src';
+import { jsx, Canvas, Chart } from '../../../src';
 import {
-  Axis,
-  Line,
-  withGuide,
   ImageGuide,
+  Line,
+  LineGuide,
   PointGuide,
   TextGuide,
-  LineGuide,
+  withGuide,
   LottieGuide,
   withLegend,
+  Interval,
 } from '../../../src/components';
-import { Canvas, Chart, Interval } from '../../../src';
 import { createContext, delay } from '../../util';
 import imageBianzu from './images/bianzu';
 
@@ -86,7 +85,7 @@ describe('Guide ', () => {
                   console.log('ev: ', ev.points);
                 }}
                 content={`${sold}`}
-                attrs={{
+                style={{
                   fill: '#000',
                   fontSize: '24px',
                 }}
