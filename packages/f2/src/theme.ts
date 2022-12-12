@@ -8,6 +8,9 @@ const axis = {
     fill: '#E8E8E8',
     radius: '10px',
   },
+  tickLine: {
+    stroke: '#E8E8E8',
+  },
   label: {
     fill: '#808080',
     fontSize: '20px',

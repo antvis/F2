@@ -126,7 +126,7 @@ describe('Guide ', () => {
     // 10个图例 和1条线
     expect(container.children[0].children.length).toBe(11);
 
-    await delay(250);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 
