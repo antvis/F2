@@ -45,7 +45,7 @@ export default (View) => {
       this.updateCoord();
     }
 
-    getScaleOption(props: AxisProps) {
+    getScaleOption(props: AxisProps<TRecord>) {
       const { type, tickCount, range, mask, formatter, ticks, min, max, nice } = props;
 
       return {
