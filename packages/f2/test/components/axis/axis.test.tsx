@@ -259,6 +259,36 @@ describe('Axis 轴', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('刻度线', async () => {
+    const context = createContext('tickLine');
+
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={valuationData}>
+          <Axis field="index" />
+          <Axis
+            field="value"
+            formatter={(v) => {
+              return v.toFixed(2) + '%';
+            }}
+            style={{
+              tickLine: {
+                length: 3,
+              },
+            }}
+          />
+          <Line x="index" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('label 回调参数', async () => {
     const context = createContext('label 回调参数');
     const labelMockCallback = jest.fn();

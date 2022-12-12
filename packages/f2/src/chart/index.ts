@@ -61,9 +61,10 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     super(props);
 
     const { theme, px2hd } = context;
+
     // hack 处理，设置默认的主题样式
     // 目前没想到其他更合适的方式，只能先这样处理
-    deepMix(theme, px2hd(Theme));
+    context.theme = deepMix(px2hd(Theme), theme);
 
     const { data } = props;
 
