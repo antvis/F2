@@ -25,7 +25,7 @@ const defaultProps: LottieGuideProps = {
 
 export default (props: LottieGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
-  const { points, style, offsetX, offsetY, lottieJson, animation, option } = cfg;
+  const { points, style, offsetX, offsetY, lottieJson, animation, options } = cfg;
   const { x, y } = points[0] || {};
   const { height = 0, width = 0 } = style;
 
@@ -37,7 +37,7 @@ export default (props: LottieGuideProps, context) => {
   return (
     <Lottie
       data={lottieJson}
-      options={option}
+      options={options}
       style={{ x: posX, y: posY, width, height }}
       animation={deepMix(
         {
