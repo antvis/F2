@@ -72,6 +72,7 @@ const { props } = (
         innerRadius: 0.7,
         radius: 0.85,
       }}
+      style={{ width: 200 }}
     >
       <Interval
         x="a"
@@ -83,7 +84,41 @@ const { props } = (
         }}
       />
       <Legend
-        position="right"
+        position="bottom"
+        itemFormatter={(val, name) => {
+          return map[name];
+        }}
+      />
+      <Text />
+    </Chart>
+    <Chart
+      scale={{
+        percent: {
+          formatter: function formatter(val) {
+            return val + '%';
+          },
+        },
+      }}
+      data={data}
+      coord={{
+        type: 'polar',
+        transposed: true,
+        innerRadius: 0.7,
+        radius: 0.85,
+      }}
+      style={{ left: 200, width: 200 }}
+    >
+      <Interval
+        x="a"
+        y="percent"
+        adjust="stack"
+        color={{
+          field: 'name',
+          range: ['#FE5D4D', '#3BA4FF', '#737DDE'],
+        }}
+      />
+      <Legend
+        position="bottom"
         itemFormatter={(val, name) => {
           return map[name];
         }}

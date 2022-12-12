@@ -38,19 +38,25 @@ const data = [
 <Chart
   data={data}
   scale={{
+    // 声明 sold 字段配置
     sold: {
       min: 0,
       max: 100,
     },
+    genre: {
+
+    }
   }}
 >
   ...
 </Chart>
 ```
+图表的度量，度量详细介绍可见：[度量](../../tutorial/scale.zh.md)
+
 
 ### coord
 
-图表的坐标系，坐标系详细介绍可见：[坐标系](../../../tutorial/coordinate)
+图表的坐标系，坐标系详细介绍可见：[坐标系](../../tutorial/coordinate.zh.md)
 
 ```jsx
 <Chart

@@ -121,6 +121,7 @@ export interface AxisProps<
   min?: number;
   max?: number;
   nice?: boolean;
+  ticks?: Array;
   /**
    * 坐标轴样式定制
    */

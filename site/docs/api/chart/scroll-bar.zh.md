@@ -30,7 +30,7 @@ const data = [
 
 ### mode: string
 
-滚动模式，默认为： `'x'`, 可选值： `'x' | 'y'`
+滚动模式，默认为： `'x'`, 可选值： `'x' | 'y' | '['x', 'y']'  `
 
 ### range: [0, 1]
 
@@ -64,3 +64,4 @@ const data = [
 
 - [折线图平移](/zh/examples/line/line#pan)
 - [柱状图平移](/zh/examples/column/column#pan)
+- [散点图缩放平移](/zh/examples)

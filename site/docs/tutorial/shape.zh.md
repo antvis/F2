@@ -20,6 +20,7 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
   - [arc](#arc) 圆弧
   - [polyline](#polyline) 多点线段
   - [text](#text) 文本
+  - [image](#image) 图片
 
 ## 图形属性
 
@@ -163,15 +164,15 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 | **属性名** | **类型** | **描述**      |
 | ---------- | -------- | ------------- |
-| `x0`       | Number   | 起始点 x 坐标 |
-| `y0`       | Number   | 起始点 y 坐标 |
-| `x1`       | Number   | 结束点 x 坐标 |
-| `y1`       | Number   | 结束点 y 坐标 |
+| `x1`       | Number   | 起始点 x 坐标 |
+| `y1`       | Number   | 起始点 y 坐标 |
+| `x2`       | Number   | 结束点 x 坐标 |
+| `y2`       | Number   | 结束点 y 坐标 |
 
 ### 示例
 
 ```jsx
-<line attrs={{ x0: 10, y0: 10, x1: 100, y1: 100, lineWidth: '2px', stroke: '#000' }} />
+<line attrs={{ x1: 10, y1: 10, x2: 100, y2: 100, lineWidth: '2px', stroke: '#000' }} />
 ```
 
 ## arc
@@ -251,6 +252,36 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
     text: '文本',
     fontSize: 20,
     fill: '#000',
+  }}
+/>
+```
+
+## image
+
+图片
+
+### Attrs
+
+| **属性名** | **类型**           | **描述**      |
+| ---------- | ------------------ | ------------- |
+| `x`        | Number             | 左上角 x 坐标 |
+| `y`        | Number             | 左上角 y 坐标 |
+| `width`    | Number             | 宽度          |
+| `height`   | Number             | 高度          |
+| `src`      | string             | 图片url         |
+| `cacheImage` | boolean             | 是否需要缓存(如果图片有闪动，可以添加缓存)         |
+
+
+### 示例
+
+```jsx
+<image
+  attrs={{
+    src: 'https://f2.antv.vision/favicon-32x32.png?v=9772447a8d07a8fe19894b5176c6cb0d',
+    x: 10,
+    y: 10,
+    width: 32,
+    height: 32,
   }}
 />
 ```

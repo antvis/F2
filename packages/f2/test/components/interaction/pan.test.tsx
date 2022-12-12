@@ -83,7 +83,7 @@ describe('平移和缩放', () => {
       expect(context).toMatchImageSnapshot();
     });
 
-    it('放大', async () => {
+    it.skip('放大', async () => {
       // 放大
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
