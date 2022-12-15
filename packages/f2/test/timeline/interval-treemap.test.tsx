@@ -58,7 +58,7 @@ const data2 = [
 ];
 
 describe('Chart', () => {
-  it.only('图形变化', () => {
+  it('图形变化', () => {
     const context = createContext('柱图-treemap 转换');
     const intervalRef = { current: null };
     const treemapRef = {};
