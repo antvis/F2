@@ -31,14 +31,15 @@ export interface SunburstProps<TRecord extends DataRecord = DataRecord> {
 }
 
 export default (View) => {
-  return class Sunburst<TRecord extends DataRecord = DataRecord> extends Component<
-    SunburstProps<TRecord>
-  > {
+  return class Sunburst<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends SunburstProps<TRecord> = SunburstProps<TRecord>
+  > extends Component<IProps> {
     coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
-    constructor(props: SunburstProps<TRecord>, context) {
+    constructor(props: IProps, context) {
       super(props, context);
       const { color, data } = props;
 

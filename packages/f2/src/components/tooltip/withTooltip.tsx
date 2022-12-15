@@ -80,8 +80,11 @@ export interface TooltipState {
 }
 
 export default (View) => {
-  return class Tooltip extends Component<TooltipProps & ChartChildProps, TooltipState> {
-    constructor(props: TooltipProps & ChartChildProps) {
+  return class Tooltip<IProps extends TooltipProps = TooltipProps> extends Component<
+    IProps & ChartChildProps,
+    TooltipState
+  > {
+    constructor(props: IProps & ChartChildProps) {
       super(props);
       this.state = {
         records: null,

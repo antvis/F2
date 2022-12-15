@@ -44,7 +44,7 @@ export interface GuageProps {
 }
 
 export default (View: ComponentType) => {
-  return class Guage extends Component<GuageProps> {
+  return class Guage<IProps extends GuageProps = GuageProps> extends Component<IProps> {
     render() {
       const { props, context } = this;
       const { startAngle, endAngle, tickCount, center, r, tickOffset, tickLength } = props;

@@ -78,7 +78,9 @@ export interface LegendProps {
 }
 
 export default (View) => {
-  return class Legend extends Component<LegendProps & ChartChildProps> {
+  return class Legend<IProps extends LegendProps = LegendProps> extends Component<
+    IProps & ChartChildProps
+  > {
     legendStyle: GroupStyleProps;
     itemWidth: Number;
     constructor(props) {

@@ -15,10 +15,10 @@ export interface IntervalProps<TRecord extends DataRecord = DataRecord>
 }
 
 export default (Views) => {
-  return class Interval<TRecord extends DataRecord = DataRecord> extends Geometry<
-    TRecord,
-    IntervalProps<TRecord>
-  > {
+  return class Interval<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends IntervalProps<TRecord> = IntervalProps<TRecord>
+  > extends Geometry<TRecord, IProps> {
     getDefaultCfg() {
       return {
         geomType: 'interval',

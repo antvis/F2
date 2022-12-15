@@ -85,7 +85,9 @@ export interface PieLabelProps {
 }
 
 export default (View) => {
-  return class PieLabel extends Component<PieLabelProps & ChartChildProps> {
+  return class PieLabel<IProps extends PieLabelProps = PieLabelProps> extends Component<
+    IProps & ChartChildProps
+  > {
     triggerRef: Ref;
     labels: [];
     constructor(props) {
