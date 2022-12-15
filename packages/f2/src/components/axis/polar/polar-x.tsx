@@ -60,6 +60,8 @@ const Line = (props) => {
           cx: center.x,
           cy: center.y,
           r: radius,
+          startAngle: 0,
+          endAngle: 360,
           ...line,
         }}
       />

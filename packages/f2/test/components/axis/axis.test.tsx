@@ -191,7 +191,7 @@ describe('Axis 轴', () => {
             y="NumberNewMicroBrewery"
             color={{
               field: 'NumberNewMicroBrewery',
-              callback: function (val, child) {
+              callback: function(val, child) {
                 if (val > child.goal) {
                   return '#1890ff';
                 }
@@ -744,5 +744,4 @@ describe('Axis 轴', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
-
 });

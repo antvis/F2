@@ -20,6 +20,8 @@ export default (props: PolarProps) => {
                   attrs={{
                     cx: center.x,
                     cy: center.y,
+                    startAngle: 0,
+                    endAngle: 360,
                     r: vec2Length([end.x - center.x, end.y - center.y]),
                     ...grid,
                     ...gridStyle,
