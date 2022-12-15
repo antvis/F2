@@ -137,6 +137,47 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('Tooltip interaction', async () => {
+    const context = createContext('Tooltip interaction');
+    const onChangeMockCallback = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Legend />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip
+            alwaysShow={false}
+            showCrosshairs
+            onChange={onChangeMockCallback}
+            crosshairsType="xy"
+            snap
+            showXTip
+            showYTip
+            triggerOn={['click', 'press']}
+            triggerOff={['pressend']}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+    await delay(500);
+    await gestureSimulator(context.canvas, 'press', { x: 160, y: 150 });
+    expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
+    expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效    
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 120, y: 150 });
+    expect(onChangeMockCallback.mock.calls.length).toBe(3); // 验证 onChange 有被调用
+    expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  }); 
+
   it('Tooltip 默认展示', async () => {
     const context = createContext('Tooltip 默认展示');
     const { props } = (
