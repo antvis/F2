@@ -31,8 +31,8 @@ export default (props: ArcGuideProps) => {
           cx: coordCenter.x,
           cy: coordCenter.y,
           r: radius,
-          startAngle,
-          endAngle,
+          startAngle: `${startAngle}rad`,
+          endAngle: `${endAngle}rad`,
           ...style,
         }}
         animation={animation}

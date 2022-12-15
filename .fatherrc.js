@@ -1,5 +1,4 @@
 export default {
-  pkgs: ['f2'],
   cjs: {
     type: 'babel',
   },
@@ -9,4 +8,5 @@ export default {
   runtimeHelpers: true,
   lessInBabelMode: true,
   cssModules: true,
+  pkgs: ['f2', 'f2-react'],
 };
