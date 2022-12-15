@@ -46,10 +46,10 @@ export interface ComponentPosition {
 }
 
 // 统计图表
-class Chart<TRecord extends DataRecord = DataRecord> extends Component<
-  ChartProps<TRecord>,
-  ChartState
-> {
+class Chart<
+  TRecord extends DataRecord = DataRecord,
+  IProps extends ChartProps<TRecord> = ChartProps<TRecord>
+> extends Component<IProps, ChartState> {
   // 坐标系
   private componentsPosition: ComponentPosition[] = [];
 
@@ -57,7 +57,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   public coord: CoordController;
   public scale: ScaleController;
 
-  constructor(props: ChartProps<TRecord>, context: IContext) {
+  constructor(props: IProps, context: IContext) {
     super(props);
 
     const { theme, px2hd } = context;
@@ -77,7 +77,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
     };
   }
 
-  private getStyle(props: ChartProps<TRecord>) {
+  private getStyle(props: IProps) {
     const { context, layout } = this;
     const { theme, px2hd } = context;
     const { left, top, width, height } = layout;
@@ -107,7 +107,7 @@ class Chart<TRecord extends DataRecord = DataRecord> extends Component<
   }
 
   // props 更新
-  willReceiveProps(nextProps: ChartProps<TRecord>) {
+  willReceiveProps(nextProps: IProps) {
     const { scale, coord, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;

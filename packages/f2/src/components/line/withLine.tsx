@@ -9,10 +9,10 @@ export interface LineProps<TRecord extends DataRecord = DataRecord> extends Geom
 }
 
 export default (View) => {
-  return class Line<TRecord extends DataRecord = DataRecord> extends Geometry<
-    TRecord,
-    LineProps<TRecord>
-  > {
+  return class Line<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends LineProps<TRecord> = LineProps<TRecord>
+  > extends Geometry<TRecord, IProps> {
     getDefaultCfg() {
       return {
         geomType: 'line',

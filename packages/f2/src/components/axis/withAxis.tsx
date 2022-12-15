@@ -12,13 +12,13 @@ type BBox = {
 export { AxisProps };
 
 export default (View) => {
-  return class Axis<TRecord extends DataRecord = DataRecord> extends Component<
-    AxisProps<TRecord> & ChartChildProps,
-    {}
-  > {
+  return class Axis<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends AxisProps<TRecord> = AxisProps<TRecord>
+  > extends Component<IProps & ChartChildProps, {}> {
     axisStyle: Style = {};
 
-    constructor(props: AxisProps<TRecord> & ChartChildProps) {
+    constructor(props: IProps & ChartChildProps) {
       super(props);
       const { chart, field } = props;
 
@@ -26,7 +26,7 @@ export default (View) => {
       chart.setScale(field as string, scaleOption);
     }
 
-    willReceiveProps(nextProps: AxisProps<TRecord> & ChartChildProps) {
+    willReceiveProps(nextProps: IProps & ChartChildProps) {
       const { props: lastProps } = this;
       const { chart, field } = nextProps;
 
@@ -45,7 +45,7 @@ export default (View) => {
       this.updateCoord();
     }
 
-    getScaleOption(props: AxisProps<TRecord>) {
+    getScaleOption(props: IProps) {
       const { type, tickCount, range, mask, formatter, ticks, min, max, nice } = props;
 
       return {

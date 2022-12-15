@@ -5,10 +5,10 @@ import { DataRecord } from '../../chart/Data';
 export type PointProps<TRecord extends DataRecord = DataRecord> = GeometryProps<TRecord>;
 
 export default (View) => {
-  return class Point<TRecord extends DataRecord = DataRecord> extends Geometry<
-    TRecord,
-    PointProps
-  > {
+  return class Point<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends PointProps<TRecord> = PointProps<TRecord>
+  > extends Geometry<TRecord, IProps> {
     getDefaultCfg() {
       return {
         geomType: 'point',

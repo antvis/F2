@@ -20,14 +20,15 @@ export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
 }
 
 export default (View) => {
-  return class Treemap<TRecord extends DataRecord = DataRecord> extends Component<
-    TreemapProps<TRecord>
-  > {
+  return class Treemap<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends TreemapProps<TRecord> = TreemapProps<TRecord>
+  > extends Component<IProps> {
     coord: CoordController;
     color: Category;
     triggerRef: Ref[];
 
-    constructor(props: TreemapProps<TRecord>, context) {
+    constructor(props: IProps, context) {
       super(props, context);
       const { color, data } = props;
       this.coord = new CoordController();

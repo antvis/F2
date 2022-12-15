@@ -18,12 +18,14 @@ export interface GuideProps {
 }
 
 export default (View: ComponentType) => {
-  return class Guide extends Component<GuideProps & ChartChildProps> {
+  return class Guide<IProps extends GuideProps = GuideProps> extends Component<
+    IProps & ChartChildProps
+  > {
     chart: Chart;
     triggerRef: Ref;
     guideBBox: any;
 
-    constructor(props: GuideProps & ChartChildProps) {
+    constructor(props: IProps & ChartChildProps) {
       super(props);
       // 创建ref
       this.triggerRef = {};

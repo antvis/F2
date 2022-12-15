@@ -4,7 +4,10 @@ import { DataRecord } from '../../chart/Data';
 export type AreaProps<TRecord extends DataRecord = DataRecord> = LineProps<TRecord>;
 
 export default (View) => {
-  return class Area<TRecord extends DataRecord = DataRecord> extends withLine(View)<TRecord> {
+  return class Area<
+    TRecord extends DataRecord = DataRecord,
+    IProps extends AreaProps<TRecord> = AreaProps<TRecord>
+  > extends withLine(View)<TRecord, IProps> {
     getDefaultCfg() {
       return {
         geomType: 'area',
