@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-react",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "F2 for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "@antv/f-react": "~0.0.17",
-    "@antv/f2": "^5.0.9",
+    "@antv/f2": "^5.0.10",
     "@babel/runtime": "^7.12.5",
     "tslib": "^2.3.1"
   },
