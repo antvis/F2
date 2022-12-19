@@ -1,4 +1,14 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
+import {
+  isFunction,
+  each,
+  upperFirst,
+  mix,
+  groupToMap,
+  isObject,
+  flatten,
+  hasKey,
+  isEmpty,
+} from '@antv/util';
 import { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
@@ -136,6 +146,14 @@ class Geometry<
     // selection 发生变化
     if (!isEqual(selection, lastSelection)) {
       super.willReceiveProps(nextProps);
+    }
+
+    // 原始数据中有 x,y 时，会被位置 x,y 覆盖，因此需要重新生成数据
+    if (
+      !isEmpty(nextProps.data) &&
+      (hasKey(nextProps.data[0], 'x') || hasKey(nextProps.data[0], 'y'))
+    ) {
+      this.records = null;
     }
   }
 
