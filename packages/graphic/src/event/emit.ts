@@ -4,8 +4,6 @@ import { isObject } from '@antv/util';
 // 多个事件分隔符
 const TYPE_SEP = ' ';
 
-console.log('EventEmit modified');
-
 class EventEmit {
   // eslint-disable-next-line
   __events: any;
