@@ -155,8 +155,8 @@ describe('tooltip', () => {
             snap
             showXTip
             showYTip
-            triggerOn={['click', 'press']}
-            triggerOff={['pressend']}
+            triggerOn={'click press'}
+            triggerOff={'pressend'}
           />
         </Chart>
       </Canvas>

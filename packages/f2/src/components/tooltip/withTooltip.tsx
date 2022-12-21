@@ -13,11 +13,11 @@ export interface TooltipProps extends ChartChildProps {
   /**
    * 显示事件名，默认为 press, 可以为 touchstart 等
    */
-  triggerOn?: string | string[];
+  triggerOn?: string;
   /**
    * 消失的事件名，默认为 pressend, 可以为 touchend 等
    */
-  triggerOff?: string | string[];
+  triggerOff?: string;
   /**
    * 是否一直显示
    */
@@ -58,9 +58,8 @@ export interface TooltipState {
 }
 
 export default (View) => {
-  return class Tooltip extends Component<TooltipProps & ChartChildProps, TooltipState> {
-
-    constructor(props: TooltipProps & ChartChildProps) {
+  return class Tooltip extends Component<TooltipProps, TooltipState> {
+    constructor(props: TooltipProps) {
       super(props);
       this.state = {
         records: null,
@@ -109,9 +108,8 @@ export default (View) => {
       }, 0);
     }
     _triggerOn = (ev) => {
-      const { points, x, y } = ev;
-      const pos = points?.length > 0 ? points[0] : { x, y };
-      this.show(pos, ev);
+      const { points } = ev;
+      this.show(points[0], ev);
     };
     _triggerOff = () => {
       const {
@@ -126,15 +124,8 @@ export default (View) => {
       const { canvas } = context;
       const { triggerOn = 'press', triggerOff = 'pressend' } = props;
 
-      const listOn = isArray(triggerOn) ? triggerOn : [ triggerOn ];
-      const listOff = isArray(triggerOff) ? triggerOff : [ triggerOff ];
-      // 绑定事件
-      listOn.forEach((eventOn) => {
-        canvas.on(eventOn, this._triggerOn);
-      });
-      listOff.forEach((eventOff) => {
-        canvas.on(eventOff, this._triggerOff);
-      });            
+      canvas.on(triggerOn, this._triggerOn);
+      canvas.on(triggerOff, this._triggerOff);
     }
 
     didUnmount(): void {
@@ -145,16 +136,9 @@ export default (View) => {
       const { context, props } = this;
       const { canvas } = context;
       const { triggerOn = 'press', triggerOff = 'pressend' } = props;
-
-      const listOn = isArray(triggerOn) ? triggerOn : [ triggerOn ];
-      const listOff = isArray(triggerOff) ? triggerOff : [ triggerOff ];
       // 解绑事件
-      listOn.forEach((eventOn) => {
-        canvas.off(eventOn, this._triggerOn);
-      });
-      listOff.forEach((eventOff) => {
-        canvas.off(eventOff, this._triggerOff);
-      });  
+      canvas.off(triggerOn, this._triggerOn);
+      canvas.off(triggerOff, this._triggerOff);
     }
 
     show(point, _ev?) {
