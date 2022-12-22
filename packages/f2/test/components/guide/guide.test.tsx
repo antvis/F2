@@ -122,7 +122,9 @@ describe('Guide ', () => {
     expect(container._attrs.children[0]._attrs.children.length).toBe(11);
 
     await delay(500);
-    expect(context).toMatchImageSnapshot();
+    expect(context).toMatchImageSnapshot({
+      failureThreshold: 0.01,
+    });
   });
 
   it('point', async () => {
