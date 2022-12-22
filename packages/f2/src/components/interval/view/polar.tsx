@@ -10,8 +10,6 @@ export default (props) => {
         appear: {
           easing: 'quadraticOut',
           duration: 450,
-          // 特殊处理，appear 的动画设置在整体上
-          ...(animation && animation.appear),
           clip: {
             type: 'sector',
             property: ['endAngle'],
@@ -28,6 +26,8 @@ export default (props) => {
               endAngle: `${endAngle}rad`,
             },
           },
+          // 特殊处理，appear 的动画设置在整体上
+          ...(animation && animation.appear),
         },
       }}
     >
