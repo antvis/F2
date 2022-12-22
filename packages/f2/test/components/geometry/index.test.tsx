@@ -1,4 +1,4 @@
-import { jsx } from '../../../src';
+import { jsx, Line } from '../../../src';
 import Geometry from '../../../src/components/geometry';
 import { createContext, delay } from '../../util';
 import { Canvas, Chart, Interval, Axis } from '../../../src';
@@ -83,6 +83,46 @@ describe('geometry', () => {
     const container = componentRef.current.container;
     const group = container.children[0];
     expect(group.children.length).toBe(2);
+
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('原始数据中有绘图属性', async () => {
+    const data = [
+      { type: 'FULFILLMENT', y: 171, x: '守约记录' },
+      { type: 'BEHAVIOR', y: 180, x: '行为积累' },
+      { type: 'CHARACTERISTICS', y: 179, x: '身份证明' },
+      { type: 'CAPITAL', y: 160, x: '资产证明' },
+      { type: 'RELATIONSHIP', y: 146, x: '人脉关系' },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="x" y="y" />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    const newChart = (
+      <Chart data={data}>
+        <Line x="x" y="y" />
+        <circle
+          style={{
+            cx: 100,
+            cy: 100,
+            r: 20,
+            fill: 'red',
+          }}
+        />
+      </Chart>
+    );
+
+    await canvas.update({
+      children: newChart,
+    });
 
     await delay(50);
     expect(context).toMatchImageSnapshot();

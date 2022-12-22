@@ -121,7 +121,7 @@ class TestContainer extends Component {
 }
 
 describe('Canvas', () => {
-  it.skip('生命周期', async () => {
+  it('生命周期', async () => {
     const ref = { current: null };
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
@@ -292,6 +292,7 @@ describe('Canvas', () => {
       ['componentRender'],
       ['componentDidUpdate'],
       ['containerDidUpdate'],
+      ['componentShouldUpdate'],
       ['componentWillUpdate'],
       ['componentRender'],
       ['componentDidUpdate'],
