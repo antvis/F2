@@ -182,10 +182,10 @@ class Chart<
   getGeometrys() {
     const { children } = this;
     const geometrys: Component[] = [];
-    // @ts-ignore
     Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
+      // @ts-ignore
       if (component && component.isGeometry) {
         geometrys.push(component);
       }
