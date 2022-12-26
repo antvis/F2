@@ -31,8 +31,8 @@ export default (props: LottieGuideProps, context) => {
 
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
-  const posX = x + (offsetXNum || 0) - height / 2;
-  const posY = y + (offsetYNum || 0) - width / 2;
+  const posX = x + (offsetXNum || 0) - width / 2;
+  const posY = y + (offsetYNum || 0) - height / 2;
 
   return (
     <Lottie
