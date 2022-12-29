@@ -120,7 +120,7 @@ export default (View: ComponentType) => {
 
     render() {
       const { props, context, guideBBox } = this;
-      const { coord, records = [], animation, chart } = props;
+      const { coord, records = [], animation, chart, style } = props;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
@@ -135,6 +135,7 @@ export default (View: ComponentType) => {
           canvasWidth={width}
           canvasHeight={height}
           guideBBox={guideBBox}
+          style={isFunction(style) ? style(points, chart) : style}
           animation={isFunction(animation) ? animation(points, chart) : animation}
         />
       );

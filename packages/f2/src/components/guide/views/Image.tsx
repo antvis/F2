@@ -38,7 +38,7 @@ export default (props: ImageGuideProps, context) => {
   return (
     <group style={style}>
       <image
-        attrs={{
+        style={{
           ...baseAttrs,
           ...attrs,
           height: heightNum,
