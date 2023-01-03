@@ -7,7 +7,7 @@ const Shape = () => {
   return (
     <group>
       <rect
-        attrs={{
+        style={{
           x: 10,
           y: 10,
           width: 40,
@@ -17,9 +17,9 @@ const Shape = () => {
           fill: 'red',
         }}
       />
-      <circle attrs={{ x: 80, y: 30, r: 20, lineWidth: '2px', stroke: '#000', fill: 'red' }} />
+      <circle style={{ cx: 80, cy: 30, r: 20, lineWidth: '2px', stroke: '#000', fill: 'red' }} />
       <text
-        attrs={{
+        style={{
           x: 120,
           y: 30,
           text: '文本',

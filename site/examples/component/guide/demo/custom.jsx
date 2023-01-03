@@ -23,7 +23,7 @@ const Guide = withGuide((props) => {
   return (
     <group>
       <text
-        attrs={{
+        style={{
           x,
           y,
           text: '文本',
@@ -32,7 +32,7 @@ const Guide = withGuide((props) => {
         }}
       />
       <rect
-        attrs={{
+        style={{
           x,
           y,
           width: Math.abs(end.x - start.x),

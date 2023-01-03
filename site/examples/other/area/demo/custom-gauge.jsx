@@ -10,24 +10,24 @@ const Gauge = withGauge((props) => {
   return (
     <group>
       <arc
-        attrs={{
-          x,
-          y,
+        style={{
+          cx:x,
+          cy:y,
           r,
-          startAngle,
-          endAngle,
+          startAngle: `${startAngle} rad`,
+          endAngle: `${endAngle} rad`,
           lineWidth: '20px',
           lineCap: 'round',
           stroke: '#e7e7e7',
         }}
       />
       <arc
-        attrs={{
-          x,
-          y,
+        style={{
+          cx:x,
+          cy:y,
           r,
-          startAngle,
-          endAngle: startAngle,
+          startAngle: `${startAngle} rad`,
+          endAngle: `${startAngle} rad `,
           lineWidth: '60px',
           lineCap: 'round',
           stroke: '#0075ff',
@@ -38,10 +38,10 @@ const Gauge = withGauge((props) => {
             duration: 500,
             property: ['endAngle'],
             start: {
-              endAngle: startAngle,
+              endAngle: `${startAngle} rad`,
             },
             end: {
-              endAngle: startAngle + diff * percent,
+              endAngle: `${startAngle + diff * percent} rad `,
             },
           },
         }}
@@ -50,7 +50,7 @@ const Gauge = withGauge((props) => {
         const { start, end } = tick;
         return (
           <line
-            attrs={{
+            style={{
               x1: start.x,
               y1: start.y,
               x2: end.x,

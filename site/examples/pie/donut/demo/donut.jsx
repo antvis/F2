@@ -31,21 +31,22 @@ const Text = (props, context) => {
   return (
     <group
       style={{
+        display: 'flex',
         left: center.x,
         top: center.y - context.px2hd('30px'),
         width: '100px',
       }}
     >
       <text
-        attrs={{
+        style={{
           text: '总资产',
           fill: '#000',
           textAlign: 'center',
         }}
       />
       <text
-        style={{ marginTop: '10px' }}
-        attrs={{
+        style={{
+          marginTop: '10px',
           text: '100.33亿元',
           fill: '#000',
           textAlign: 'center',

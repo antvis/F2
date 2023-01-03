@@ -22,6 +22,7 @@ export default defineConfig({
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
     versions: {
+      [version]: 'https://f2.antv.antgroup.com',
       '4.x': 'https://f2.antv.vision',
       '3.x': 'https://f2-v3.antv.vision',
     },
@@ -307,27 +308,11 @@ export default defineConfig({
         },
       },
       {
-        slug: 'candlestick',
-        icon: 'candlestick',
-        title: {
-          zh: '蜡烛图',
-          en: 'Candlestick Charts',
-        },
-      },
-      {
         slug: 'relation',
         icon: 'relation',
         title: {
           zh: '关系图',
           en: 'Relation Charts',
-        },
-      },
-      {
-        slug: 'heatmap',
-        icon: 'heatmap',
-        title: {
-          zh: '热力图',
-          en: 'Heatmap Charts',
         },
       },
       {

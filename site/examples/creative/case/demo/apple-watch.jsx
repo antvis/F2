@@ -82,7 +82,7 @@ const Shell = (props, context) => {
 
 // 背景组件
 const ArcGuideGroup = (props) => {
-  const { attrs } = props;
+  const { style } = props;
   const { data, centerX, centerY, rUnit } = props;
   return (
     <group>
@@ -90,8 +90,8 @@ const ArcGuideGroup = (props) => {
         return (
           <arc
             key={'arc_' + index}
-            attrs={{
-              ...attrs,
+            style={{
+              ...style,
               x: centerX,
               y: centerY,
               r: rUnit * (1 * index + 1),
@@ -106,15 +106,15 @@ const ArcGuideGroup = (props) => {
 
 // 弧线组件
 const RoundArcGroup = (props) => {
-  const { data, centerX, centerY, rUnit, attrs, animation } = props;
+  const { data, centerX, centerY, rUnit, style, animation } = props;
   return (
     <group>
       {data.map((record, index) => {
         return (
           <arc
             key={'record_' + index}
-            attrs={{
-              ...attrs,
+            style={{
+              ...style,
               x: centerX,
               y: centerY,
               r: (1 * index + 1) * rUnit,
@@ -132,8 +132,8 @@ const RoundArcGroup = (props) => {
 
 // icon组件
 const ImgGuideGroup = (props) => {
-  const { data, centerX, centerY, rUnit, attrs } = props;
-  const { width, height } = attrs;
+  const { data, centerX, centerY, rUnit, style } = props;
+  const { width, height } = style;
   return (
     <group>
       {data.map((record, index) => {
@@ -141,8 +141,8 @@ const ImgGuideGroup = (props) => {
           <image
             cacheImage
             key={'img_' + index}
-            attrs={{
-              ...attrs,
+            style={{
+              ...style,
               width,
               height,
               x: centerX - width / 2,
@@ -165,13 +165,13 @@ const { props } = (
         return (
           <Shell key={'shell_' + iter} context={context} data={records}>
             <ArcGuideGroup
-              attrs={{
+              style={{
                 lineWidth: bgArcWidth,
                 opacity: 0.9,
               }}
             />
             <RoundArcGroup
-              attrs={{
+              style={{
                 lineWidth: arcWidth,
                 lineCap: 'round',
                 shadowColor: 'rgba(0,0,0,0.8)',
@@ -193,7 +193,7 @@ const { props } = (
               }}
             />
             <ImgGuideGroup
-              attrs={{
+              style={{
                 width: 16,
                 height: 16,
               }}
