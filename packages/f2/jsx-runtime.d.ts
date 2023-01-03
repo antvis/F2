@@ -1,1 +1,1 @@
-export * from './es/jsx/jsx-runtime';
+export * from '@antv/f-engine/jsx-runtime';
