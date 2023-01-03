@@ -36,11 +36,12 @@ export default (props: ImageGuideProps, context) => {
   const posY = y + (offsetYNum || 0) - heightNum / 2;
 
   return (
-    <group style={style}>
+    <group>
       <image
-        attrs={{
+        style={{
           ...baseAttrs,
           ...attrs,
+          ...style,
           height: heightNum,
           width: widthNum,
           x: posX,
