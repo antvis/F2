@@ -17,16 +17,12 @@ const defaultProps: ImageGuideProps = {
   points: [],
   src: '',
 };
-const baseAttrs = {
-  height: '20px',
-  width: '20px',
-};
 
 export default (props: ImageGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
   const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
-  const { height = 0, width = 0 } = attrs;
+  const { height = 0, width = 0 } = { ...attrs, ...style };
   const heightNum = context.px2hd(height + 'px');
   const widthNum = context.px2hd(width + 'px');
 
@@ -39,7 +35,6 @@ export default (props: ImageGuideProps, context) => {
     <group>
       <image
         style={{
-          ...baseAttrs,
           ...attrs,
           ...style,
           height: heightNum,

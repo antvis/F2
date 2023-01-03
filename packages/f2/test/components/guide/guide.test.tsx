@@ -104,9 +104,11 @@ describe('Guide ', () => {
                   console.log('ev: ', ev.points);
                 }}
                 src={imageBianzu}
-                attrs={{
-                  height: 24,
-                  width: 24,
+                style={() => {
+                  return {
+                    height: 24,
+                    width: 24,
+                  };
                 }}
                 offsetX="0px"
                 offsetY="-8px"
