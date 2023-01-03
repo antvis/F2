@@ -1,7 +1,8 @@
 import { jsx } from '../../index';
 
 export default (props) => {
-  const { nodes, coord } = props;
+  const { nodes, coord, onClick } = props;
+
   if (coord.isPolar) {
     const { center } = coord;
     const { x, y } = center;
@@ -11,7 +12,7 @@ export default (props) => {
           const { xMin, xMax, yMin, yMax, color } = node;
           return (
             <sector
-              attrs={{
+              style={{
                 cx: x,
                 cy: y,
                 lineWidth: '1px',
@@ -22,6 +23,7 @@ export default (props) => {
                 r: yMax,
                 fill: color,
               }}
+              onClick={onClick ? () => onClick(node) : null}
             />
           );
         })}
@@ -35,7 +37,7 @@ export default (props) => {
         return (
           <rect
             key={key}
-            attrs={{
+            style={{
               x: xMin,
               y: yMin,
               width: xMax - xMin,
@@ -65,6 +67,7 @@ export default (props) => {
                 property: ['x', 'y', 'width', 'height', 'radius', 'lineWidth'],
               },
             }}
+            onClick={onClick ? () => onClick(node) : null}
           />
         );
       })}
