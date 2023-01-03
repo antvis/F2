@@ -24,19 +24,22 @@ const data = [
   },
 ];
 
-const img = new Image();
-img.src = 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg';
-
-img.onload = function () {
   const context = document.getElementById('container').getContext('2d');
-  const pattern = context.createPattern(img, 'repeat');
 
   const { props } = (
     <Canvas context={context}>
       <Chart data={data}>
         <Axis field="year" />
         <Axis field="sales" />
-        <Interval x="year" y="sales" color={{ range: [pattern] }} />
+        <Interval x="year" y="sales"  
+        color={{
+              range: [
+                {
+                  image: 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg',
+                  repetition: 'repeat',
+                },
+              ],
+            }}/>
       </Chart>
     </Canvas>
   );
@@ -44,4 +47,4 @@ img.onload = function () {
   const canvas = new Canvas(props);
 
   canvas.render();
-};
+

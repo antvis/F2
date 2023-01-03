@@ -23,7 +23,7 @@ function EndView(props) {
       }}
     >
       <text
-        attrs={{
+        style={{
           fill: '#808080',
           fontSize: '24px',
           text: `${origin.emoji}${origin.country}`,

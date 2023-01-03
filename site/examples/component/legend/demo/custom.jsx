@@ -8,6 +8,7 @@ const Legend = withLegend((props) => {
   return (
     <group
       style={{
+        display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -28,7 +29,7 @@ const Legend = withLegend((props) => {
             data-item={item}
           >
             <text
-              attrs={{
+              style={{
                 fill: color,
                 text: name,
               }}

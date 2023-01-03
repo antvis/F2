@@ -15,7 +15,7 @@ function Year(props) {
   return (
     <group>
       <text
-        attrs={{
+        style={{
           x: right,
           y: bottom,
           text: year,

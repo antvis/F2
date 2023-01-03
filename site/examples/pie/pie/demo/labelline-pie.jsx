@@ -51,10 +51,10 @@ const { props } = (
       />
       <PieLabel
         sidePadding={40}
-        label1={(data, color) => {
+        label1={(data, record) => {
           return {
             text: data.name,
-            fill: color,
+            fill: record.color,
           };
         }}
         label2={(data) => {
