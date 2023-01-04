@@ -8,15 +8,25 @@ import { CoordProps } from '../../chart/Coord';
 
 export interface ColorAttrObject {
   field: string;
-  range?: any[];
-  callback?: (value) => any;
+  range?: string[] | number[];
+  callback?: (value) => string | number;
+}
+
+export interface RecordNode<TRecord extends DataRecord = DataRecord> {
+  color: string | number;
+  origin: TRecord;
+  xMax: number;
+  xMin: number;
+  yMax: number;
+  yMin: number;
 }
 
 export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
   data: Data<TRecord>;
   value: string;
   coord?: CoordProps;
-  color?: any[] | ColorAttrObject;
+  color?: ColorAttrObject;
+  onClick?: (record: RecordNode<TRecord>) => void;
 }
 
 export default (View) => {
