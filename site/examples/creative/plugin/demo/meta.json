@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "rough.jsx",
+      "title": "手绘风格",
+      "screenshot": "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*RwR6SYsUOGQAAAAAAAAAAAAADq2NAQ/original"
+    }
+  ]
+}
