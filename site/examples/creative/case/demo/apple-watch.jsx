@@ -92,8 +92,10 @@ const ArcGuideGroup = (props) => {
             key={'arc_' + index}
             style={{
               ...style,
-              x: centerX,
-              y: centerY,
+              cx: centerX,
+              cy: centerY,
+              startAngle: `${0} rad`,
+              endAngle:  `${ 2 * Math.PI } rad`,
               r: rUnit * (1 * index + 1),
               stroke: record.bgColor,
             }}
@@ -115,12 +117,12 @@ const RoundArcGroup = (props) => {
             key={'record_' + index}
             style={{
               ...style,
-              x: centerX,
-              y: centerY,
+              cx: centerX,
+              cy: centerY,
               r: (1 * index + 1) * rUnit,
               stroke: record.color,
-              startAngle: Math.PI / -2,
-              endAngle: record.time * 2 * Math.PI - Math.PI / 2,
+              startAngle: `${Math.PI / -2} rad`,
+              endAngle:  `${record.time * 2 * Math.PI - Math.PI / 2} rad`,
             }}
             animation={{ ...animation }}
           />
@@ -182,12 +184,12 @@ const { props } = (
               animation={{
                 appear: {
                   duration: 1500,
-                  easing: 'elasticOut',
+                  easing: 'out-elastic',
                   property: ['endAngle'],
                 },
                 update: {
                   duration: 1500,
-                  easing: 'elasticOut',
+                  easing: 'out-elastic',
                   property: ['endAngle'],
                 },
               }}

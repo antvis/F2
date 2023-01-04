@@ -5,6 +5,7 @@ if (window) {
   window.f2React = require('../src/f2-react').default;
   window.React = require('react');
   window.ReactDOM = require('react-dom');
+  window.gPluginRoughCanvasRenderer = require('@antv/g-plugin-rough-canvas-renderer');
   // window.f2 = require('./src/index-all.js');
   // window.DataSet = require('@antv/data-set');
   window.lodash = require('lodash');

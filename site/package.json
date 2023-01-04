@@ -19,9 +19,10 @@
     "site:start": "npm run site:develop"
   },
   "dependencies": {
-    "@antv/dumi-theme-antv": "^0.3.0-beta.4",
+    "@antv/dumi-theme-antv": "^0.3.5",
     "@antv/f-react": "~0.0.7",
     "@antv/f2": "^5.0.4",
+    "@antv/g-plugin-rough-canvas-renderer": "^1.7.36",
     "dumi": "^2.0.0-beta.15",
     "f2-touchemulator": "~0.0.1",
     "gh-pages": "^2.1.1"
