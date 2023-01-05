@@ -50,7 +50,7 @@ describe('柱图示例', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -101,7 +101,7 @@ describe('柱图示例', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -136,7 +136,7 @@ describe('柱图示例', () => {
       },
     ];
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart data={data}>
           <Axis field="year" />
           <Axis field="sales" />
@@ -145,7 +145,7 @@ describe('柱图示例', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -175,7 +175,6 @@ describe('柱图示例', () => {
         sales: 48,
       },
     ];
-
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
@@ -187,11 +186,13 @@ describe('柱图示例', () => {
             color={{
               range: [
                 {
-                  image: 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg',
+                  // image: 'https://gw.alipayobjects.com/zos/rmsportal/cNOctfQVgZmwaXeBITuD.jpg',
+                  image: (await import('./images/pattern')).default,
                   repetition: 'repeat',
                 },
               ],
             }}
+            animate={false}
           />
         </Chart>
       </Canvas>

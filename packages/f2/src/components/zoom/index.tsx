@@ -288,7 +288,6 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
     const { width: coordWidth } = coord;
 
     const ratio = (deltaX / coordWidth) * panSensitive;
-
     const newRange = this._doPan(ratio, 'x');
     return newRange;
   }
@@ -490,39 +489,39 @@ class Zoom<P extends ZoomProps = ZoomProps, S extends ZoomState = ZoomState> ext
 
   _clearEvents() {
     const { context, props, scale } = this;
-    const { canvas } = context;
+    const { gesture } = context;
     const { onPinchEnd, onPanEnd, onPinchStart, pan, pinch, onPan, onPinch, swipe } = props;
     // 统一解绑事件
     if (pan !== false) {
-      canvas.off('panstart', () => {
+      gesture.off('panstart', () => {
         this.onStart();
         onPinchStart();
       });
-      canvas.off('pan', (ev) => {
+      gesture.off('pan', (ev) => {
         this.onPan(ev);
         onPan(ev);
       });
-      canvas.off('panend', () => {
+      gesture.off('panend', () => {
         this.onEnd();
         onPanEnd({ scale });
       });
     }
     if (pinch !== false) {
-      canvas.off('pinchstart', () => {
+      gesture.off('pinchstart', () => {
         this.onStart();
         onPinchStart();
       });
-      canvas.off('pinch', (ev) => {
+      gesture.off('pinch', (ev) => {
         this.onPinch(ev);
         onPinch(ev);
       });
-      canvas.off('pinchend', () => {
+      gesture.off('pinchend', () => {
         this.onEnd();
         onPinchEnd({ scale });
       });
     }
     if (swipe !== false) {
-      canvas.off('swipe', this.onSwipe);
+      gesture.off('swipe', this.onSwipe);
     }
   }
 }

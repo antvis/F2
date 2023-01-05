@@ -43,7 +43,7 @@ function EndView(props) {
 }
 
 describe('Chart', () => {
-  it('Chart render', () => {
+  it('Chart render', async () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <Chart
@@ -70,6 +70,6 @@ describe('Chart', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

@@ -45,7 +45,7 @@ describe('shape 类型', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
     expect(context).toMatchImageSnapshot();
@@ -61,7 +61,7 @@ describe('shape 类型', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
     expect(context).toMatchImageSnapshot();
@@ -78,7 +78,7 @@ describe('shape 类型', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
     expect(context).toMatchImageSnapshot();

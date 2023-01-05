@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-18
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "ci"
+  ci:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node_version: ['18']
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: install
+        run: |
+          yarn install
+
+      - name: lint
+        run: |
+          npm run lint
+        env:
+          CI: true
+
+      - name: build
+        run: |
+          npm run build
+        env:
+          CI: true
+
+      - name: test
+        run: |
+          npm run test
+        env:
+          CI: true
+
+      - name: save diff snapshot
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: diff snapshot
+          path: |
+            packages/**/__image_snapshots__/__diff_output__/*.png
+            !**/node_modules/**

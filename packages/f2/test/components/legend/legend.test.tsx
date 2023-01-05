@@ -26,7 +26,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -49,7 +49,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -76,7 +76,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -100,7 +100,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -124,7 +124,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -148,7 +148,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -172,7 +172,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -232,7 +232,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -262,7 +262,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -312,7 +312,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -339,7 +339,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(200);
       expect(context).toMatchImageSnapshot();
 
@@ -367,7 +367,7 @@ describe('图例', () => {
         </Canvas>
       );
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(200);
       expect(context).toMatchImageSnapshot();
 
@@ -465,7 +465,7 @@ describe('图例', () => {
 
     const props = getProps(data);
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(200);
     expect(context).toMatchImageSnapshot();
 
@@ -533,7 +533,7 @@ describe('图例', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -598,7 +598,7 @@ describe('图例', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -670,7 +670,7 @@ describe('图例', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -743,7 +743,7 @@ describe('图例', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();

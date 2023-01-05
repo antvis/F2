@@ -33,7 +33,7 @@ describe('base/component', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(50);
 

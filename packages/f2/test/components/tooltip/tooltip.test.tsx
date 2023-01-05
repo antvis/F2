@@ -130,6 +130,7 @@ describe('tooltip', () => {
     await canvas.render();
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 170, y: 41 });
+    await delay(100);
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
 
@@ -158,7 +159,7 @@ describe('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -178,7 +179,7 @@ describe('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -266,7 +267,7 @@ describe('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 0, y: 21 }); // 超出 coord 边界
 
@@ -278,7 +279,7 @@ describe('tooltip', () => {
     const context = createContext('分组柱图');
 
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart data={data1}>
           <Axis field="月份" />
           <Axis field="月均降雨量" />
@@ -295,19 +296,19 @@ describe('tooltip', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
-
+    await delay(200);
     expect(context).toMatchImageSnapshot();
   });
 
-  it('分组柱状图-tooltip', async () => {
+  it('分组柱状图-tooltip-transposed', async () => {
     const context = createContext('分组柱图');
 
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart
           data={data1}
           coord={{
@@ -333,6 +334,7 @@ describe('tooltip', () => {
 
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 21 });
+    await delay(200);
 
     expect(context).toMatchImageSnapshot();
   });
@@ -340,7 +342,7 @@ describe('tooltip', () => {
   it('Tooltip 自定义文本内容', async () => {
     const context = createContext('Tooltip 自定义文本内容');
     const { props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart data={data}>
           <Axis field="genre" />
           <Axis field="sold" />
@@ -366,9 +368,9 @@ describe('tooltip', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
-    await delay(1000);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 });

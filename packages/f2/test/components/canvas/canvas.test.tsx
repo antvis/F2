@@ -38,7 +38,7 @@ describe('Canvas', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(0);
 
     const testComponent = canvas.props.children.type;

@@ -35,7 +35,7 @@ function Year(props) {
 }
 
 describe('Chart', () => {
-  it('Chart render', () => {
+  it('Chart render', async () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <Timeline delay={10}>
@@ -74,6 +74,6 @@ describe('Chart', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

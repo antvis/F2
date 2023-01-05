@@ -58,7 +58,7 @@ describe('PieLabel', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(300);
     expect(context).toMatchImageSnapshot();
@@ -131,7 +131,7 @@ describe('PieLabel', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(300);
     expect(context).toMatchImageSnapshot();
@@ -204,7 +204,7 @@ describe('PieLabel', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(300);
     expect(context).toMatchImageSnapshot();
@@ -277,7 +277,7 @@ describe('PieLabel', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(300);
     expect(context).toMatchImageSnapshot();
@@ -351,7 +351,7 @@ describe('PieLabel', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(300);
     expect(context).toMatchImageSnapshot();

@@ -52,7 +52,7 @@ describe('geometry', () => {
       </Canvas>
     );
     canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(0);
 
     expect(chartRef.current.scale.scales.genre.values).toEqual(['Sports']);

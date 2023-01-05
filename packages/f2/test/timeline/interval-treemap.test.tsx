@@ -58,7 +58,7 @@ const data2 = [
 ];
 
 describe('Chart', () => {
-  it('图形变化', () => {
+  it('图形变化', async () => {
     const context = createContext('柱图-treemap 转换');
     const intervalRef = { current: null };
     const treemapRef = {};
@@ -155,10 +155,10 @@ describe('Chart', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
-  it('图形变化', () => {
+  it('图形变化', async () => {
     const context = createContext('柱图-treemap 转换');
     const intervalRef = { current: null };
     const treemapRef = {};
@@ -190,7 +190,7 @@ describe('Chart', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
   it('图形变化', async () => {
@@ -227,6 +227,6 @@ describe('Chart', () => {
     await delay(1000);
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

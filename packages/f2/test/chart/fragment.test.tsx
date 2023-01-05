@@ -8,8 +8,7 @@ const data = [
   { type: 'a', genre: 'Action', sold: 20 },
   { type: 'a', genre: 'Shooter', sold: 20 },
   { type: 'a', genre: 'Other', sold: 40 },
-]
-
+];
 
 describe('Fragment', () => {
   it('Fragment', async () => {

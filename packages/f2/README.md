@@ -78,7 +78,7 @@ const { props } = (
 );
 
 const canvas = new Canvas(props);
-canvas.render();
+await canvas.render();
 ```
 
 更多示例：[demos](https://f2.antv.vision/zh/examples)。

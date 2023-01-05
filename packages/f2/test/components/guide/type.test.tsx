@@ -29,7 +29,7 @@ const data = [
 ];
 
 describe('Guide', () => {
-  it('TextGuide', () => {
+  it('TextGuide', async () => {
     const context = createContext('TextGuide');
     const { type, props } = (
       <Canvas context={context}>
@@ -58,7 +58,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
   it('LineGuide', async () => {
@@ -92,10 +92,10 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
-  it('PointGuide', () => {
+  it('PointGuide', async () => {
     const context = createContext('PointGuide');
     const { props } = (
       <Canvas context={context}>
@@ -123,10 +123,10 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
-  it('ArcGuide', () => {
+  it('ArcGuide', async () => {
     const context = createContext('ArcGuide');
     const { type, props } = (
       <Canvas context={context}>
@@ -171,10 +171,10 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
-  it('RectGuide', () => {
+  it('RectGuide', async () => {
     const context = createContext('RectGuide');
     const data = [
       {
@@ -251,7 +251,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 
   it('TagGuide', async () => {
@@ -266,7 +266,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
@@ -291,7 +291,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
@@ -309,7 +309,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -358,7 +358,7 @@ describe('Guide', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
