@@ -28,6 +28,6 @@ describe('自定义', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

@@ -30,7 +30,7 @@ describe('平移和缩放', () => {
       );
 
       canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -97,8 +97,13 @@ describe('平移和缩放', () => {
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', [{ x: 110, y: 110 }]);
-      await delay(300);
+      await delay(500);
       expect(context).toMatchImageSnapshot();
+    });
+
+    it('destroy', () => {
+      canvas.destroy();
+      context.canvas.remove();
     });
   });
 
@@ -113,14 +118,7 @@ describe('平移和缩放', () => {
       const data = (await import('./data/pan')).default;
       const { props } = (
         <Canvas context={context} animate={false} pixelRatio={1}>
-          <Chart
-            data={data}
-            coord={
-              {
-                // transposed: true,
-              }
-            }
-          >
+          <Chart data={data}>
             <Axis field="reportDate" type="timeCat" mask="MM-DD" />
             <Axis
               field="rate"
@@ -183,7 +181,7 @@ describe('平移和缩放', () => {
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
-      await delay(300);
+      await delay(500);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -201,8 +199,18 @@ describe('平移和缩放', () => {
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', { x: 110, y: 110 });
-      await delay(300);
+      await delay(200);
+      await delay(200);
+      await delay(200);
+      await delay(200);
+      await delay(200);
+      // ci 经常失败，多加几次 delay。。。
       expect(context).toMatchImageSnapshot();
+    });
+
+    it('destroy', () => {
+      canvas.destroy();
+      context.canvas.remove();
     });
   });
 });

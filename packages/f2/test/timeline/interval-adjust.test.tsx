@@ -17,7 +17,7 @@ const data = [
 ];
 
 describe('Interval', () => {
-  it('adjust change', () => {
+  it('adjust change', async () => {
     const { type, props } = (
       <Canvas context={context} pixelRatio={2}>
         <Timeline delay={200}>
@@ -36,6 +36,6 @@ describe('Interval', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

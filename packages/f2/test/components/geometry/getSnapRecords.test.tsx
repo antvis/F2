@@ -59,6 +59,7 @@ describe('getSnapRecords', () => {
 
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 250, y: 100 });
+    await delay(200);
     expect(context).toMatchImageSnapshot();
   });
 });

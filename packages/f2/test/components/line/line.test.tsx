@@ -258,7 +258,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -279,13 +279,13 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
-    it('开启无障碍', () => {
+    it('开启无障碍', async () => {
       const context = createContext('开启无障碍');
       const chartRef = { current: null };
       const lineRef = { current: null };
@@ -315,7 +315,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
     });
 
     it('带点', async () => {
@@ -377,7 +377,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -456,7 +456,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -502,7 +502,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(0);
       const line = lineRef.current;
       expect(line.attrs.color.scale.values).toEqual(['金属', '农副产品', '能源']);
@@ -570,7 +570,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
@@ -723,7 +723,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -913,7 +913,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -985,17 +985,14 @@ describe('折线图', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
-    await delay(0);
+    await canvas.render();
 
     const container = lineRef.current.container;
     const polyline = container.children[0].children[0].children[0].children[0];
 
     expect(polyline.getAttribute('points').length).toBe(3);
 
-    await delay(100);
-    await delay(100);
-
+    await delay(200);
     const newPolyline = container.children[0].children[0].children[0].children[0];
 
     expect(newPolyline.getAttribute('points').length > 3).toBe(true);
@@ -1061,7 +1058,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
@@ -1110,7 +1107,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
 
       await delay(1000);
       expect(context).toMatchImageSnapshot();
@@ -1130,7 +1127,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
@@ -1150,7 +1147,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
@@ -1196,7 +1193,7 @@ describe('折线图', () => {
       );
 
       const canvas = new Canvas(props);
-      canvas.render();
+      await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });

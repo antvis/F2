@@ -87,6 +87,6 @@ describe('Gauge', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
   });
 });

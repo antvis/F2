@@ -37,7 +37,7 @@ describe('Interval', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -55,7 +55,7 @@ describe('Interval', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
@@ -111,7 +111,7 @@ describe('Interval', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
     await delay(0);
     const timeScale = chartRef.current.scale.getScale('time');
     const { range } = timeScale;

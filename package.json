@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
-    "@types/jest-image-snapshot": "^4.3.1",
+    "@types/jest-image-snapshot": "^6.1.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "canvas-to-buffer": "^1.1.1",
@@ -75,7 +75,7 @@
     "generate-changelog": "^1.8.0",
     "jest": "^26.6.3",
     "jest-electron": "^0.1.12",
-    "jest-image-snapshot": "^4.5.1",
+    "jest-image-snapshot": "^6.1.0",
     "lerna": "^3.22.1",
     "limit-size": "^0.1.4",
     "pre-commit": "^1.2.2",

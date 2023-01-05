@@ -99,7 +99,7 @@ const { props } = (
 );
 
 const canvas = new Canvas(props);
-canvas.render();
+await canvas.render();
 ```
 
 ## Development

@@ -193,7 +193,7 @@ describe('饼图', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(200);
     await gestureSimulator(context.canvas, 'click', { x: 205, y: 76 });

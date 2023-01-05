@@ -41,7 +41,7 @@ describe('empty data', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
 
@@ -63,7 +63,7 @@ describe('empty data', () => {
       </Canvas>
     );
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
     expect(context).toMatchImageSnapshot();

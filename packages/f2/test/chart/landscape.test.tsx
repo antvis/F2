@@ -30,13 +30,17 @@ describe.skip('横屏', () => {
           <Axis field="genre" />
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
-          <Tooltip snap showTooltipMarker markerBackgroundStyle={{ fill: 'l(90) 0:#ffffff 0.5:#7ec2f3 1:#1890ff', opacity: .3 }} />
+          <Tooltip
+            snap
+            showTooltipMarker
+            markerBackgroundStyle={{ fill: 'l(90) 0:#ffffff 0.5:#7ec2f3 1:#1890ff', opacity: 0.3 }}
+          />
         </Chart>
       </Canvas>
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 270, y: 70 });

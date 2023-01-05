@@ -37,7 +37,7 @@ describe('空数据', () => {
     );
 
     const canvas = new Canvas(props);
-    canvas.render();
+    await canvas.render();
 
     await delay(100);
 
@@ -59,7 +59,7 @@ describe('空数据', () => {
     canvasProps.children = chartProps;
     const canvas = new Canvas(canvasProps);
     await delay(100);
-    canvas.render();
+    await canvas.render();
     const newChartProps = (
       <Chart data={[]}>
         <Axis field="value" tickCount={5} />;
