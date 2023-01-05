@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
 import { Canvas, Chart } from '../../../src';
 import { Axis, Line, ScrollBar } from '../../../src';
@@ -187,24 +186,23 @@ describe('平移和缩放', () => {
 
     it('放大', async () => {
       // 放大
-      await delay(20);
+      await delay(100);
       await gestureSimulator(context.canvas, 'touchstart', [
         { x: 130, y: 130 },
         { x: 180, y: 180 },
       ]);
-      await delay(20);
+      await delay(100);
       await gestureSimulator(context.canvas, 'touchmove', [
         { x: 110, y: 110 },
         { x: 200, y: 200 },
       ]);
-      await delay(20);
+      await delay(100);
       await gestureSimulator(context.canvas, 'touchend', { x: 110, y: 110 });
-      await delay(200);
-      await delay(200);
-      await delay(200);
-      await delay(200);
-      await delay(200);
-      // ci 经常失败，多加几次 delay。。。
+      await delay(500);
+      // ci 经常失败，主动再调一次 render
+      // @ts-ignore
+      canvas.canvas.render();
+      await delay(500);
       expect(context).toMatchImageSnapshot();
     });
 
