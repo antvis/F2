@@ -102,9 +102,10 @@ export default (Views) => {
     getPointY0() {
       const { props } = this;
       const { coord } = props;
+      const { transposed } = coord;
       const y0 = this.getY0Value();
       const y0Point = coord.convertPoint({ y: y0, x: 0 });
-      return y0Point?.y;
+      return transposed ? y0Point?.x : y0Point?.y;
     }
 
     render() {
