@@ -1,20 +1,14 @@
 module.exports = {
   chainWebpack: (config) => {
     config.module
-      .rule('F2')
-      .test(/\.jsx$/)
-      .use('babel')
-      .loader('babel-loader')
-      .options({
-        plugins: [
-          [
-            '@babel/plugin-transform-react-jsx',
-            {
-              runtime: 'automatic',
-              importSource: '@antv/f2',
-            },
-          ],
-        ],
+      .rule('vue')
+      .use('vue-loader')
+      .tap((options) => {
+        options.compilerOptions = {
+          // Clear [Vue warn]: Failed to resolve component: group.
+          isCustomElement: (tagName) => ['group'].includes(tagName),
+        };
+        return options;
       })
       .end();
   },
