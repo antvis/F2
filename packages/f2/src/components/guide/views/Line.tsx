@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, LineStyleProps } from '@antv/f-engine';
 import { isArray, deepMix } from '@antv/util';
-import { LineStyleProps } from '@antv/f-engine';
 
 type LineGuideProps = {
   points?: { x: number; y: number }[] | null;

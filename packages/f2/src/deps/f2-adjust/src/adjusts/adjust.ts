@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import { each, groupBy, valuesOfKey, assign } from '@antv/util';
 import { DEFAULT_Y } from '../constant';
 import { AdjustCfg, Data, Range } from '../interface';
 
@@ -119,10 +119,10 @@ export default abstract class Adjust {
     const dimValuesMap = this.getDimValues(mergedData);
 
     // 按照每一个分组来进行调整
-    _.each(groupedDataArray, (dataArray, index) => {
+    each(groupedDataArray, (dataArray, index) => {
       // 遍历所有数据集合
       // 每个分组中，分别按照不同的 dim 进行调整
-      _.each(dimValuesMap, (values: number[], dim: string) => {
+      each(dimValuesMap, (values: number[], dim: string) => {
         // 根据不同的度量分别调整位置
         this.adjustDim(dim, values, dataArray, index);
       });
@@ -137,14 +137,14 @@ export default abstract class Adjust {
    */
   protected groupData(data: Data[], dim: string): { [dim: string]: Data[] } {
     // 补齐数据空数据为默认值
-    _.each(data, (record: Data) => {
+    each(data, (record: Data) => {
       if (record[dim] === undefined) {
         record[dim] = DEFAULT_Y;
       }
     });
 
     // 按照 dim 维度分组
-    return _.groupBy(data, dim);
+    return groupBy(data, dim);
   }
 
   /** @override */
@@ -158,7 +158,7 @@ export default abstract class Adjust {
   private getDimValues(mergedData: Data[]): DimValuesMapType {
     const { xField, yField } = this;
 
-    const dimValuesMap: DimValuesMapType = _.assign({}, this.dimValuesMap);
+    const dimValuesMap: DimValuesMapType = assign({}, this.dimValuesMap);
 
     // 所有的维度
     const dims = [];
@@ -174,7 +174,7 @@ export default abstract class Adjust {
         return;
       }
       // 在每个维度上，所有的值
-      dimValuesMap[dim] = _.valuesOfKey(mergedData, dim).sort((v1, v2) => v1 - v2) as number[];
+      dimValuesMap[dim] = valuesOfKey(mergedData, dim).sort((v1, v2) => v1 - v2) as number[];
     });
 
     // 只有一维的情况下，同时调整 y，赋予默认值

@@ -1,5 +1,5 @@
 import { ScaleConfig } from '../types';
-import { DAY, getTickInterval, HOUR, MINUTE, MONTH, SECOND, YEAR } from '../util/time';
+import { DAY, HOUR, MINUTE, MONTH, SECOND, YEAR } from '../util/time';
 
 function getYear(date: number) {
   return new Date(date).getFullYear();
@@ -118,7 +118,9 @@ export default function timePretty(cfg: ScaleConfig): number[] {
   // 最好是能从算法能解决这个问题，但是如果指定了 tickInterval，计算 ticks，也只能这么算，所以
   // 打印警告提示
   if (ticks.length >= 512) {
-    console.warn(`Notice: current ticks length(${ticks.length}) >= 512, may cause performance issues, even out of memory. Because of the configure "tickInterval"(in milliseconds, current is ${tickInterval}) is too small, increase the value to solve the problem!`);
+    console.warn(
+      `Notice: current ticks length(${ticks.length}) >= 512, may cause performance issues, even out of memory. Because of the configure "tickInterval"(in milliseconds, current is ${tickInterval}) is too small, increase the value to solve the problem!`
+    );
   }
 
   return ticks;

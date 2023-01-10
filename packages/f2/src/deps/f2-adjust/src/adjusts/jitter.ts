@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import { clone, flatten, each } from '@antv/util';
 import { GAP } from '../constant';
 import { Data, Range } from '../interface';
 import Adjust from './adjust';
@@ -9,10 +9,10 @@ function randomNumber(min: number, max: number): number {
 
 export default class Jitter extends Adjust {
   public process(groupDataArray: Data[][]): Data[][] {
-    const groupedDataArray = _.clone(groupDataArray);
+    const groupedDataArray = clone(groupDataArray);
 
     // 之前分组之后的数据，然后有合并回去（和分组前可以理解成是一样的）
-    const mergeData = _.flatten(groupedDataArray) as Data[];
+    const mergeData = flatten(groupedDataArray) as Data[];
 
     // 返回值
     this.adjustData(groupedDataArray, mergeData);
@@ -29,7 +29,7 @@ export default class Jitter extends Adjust {
   protected adjustDim(dim: string, values: number[], dataArray: Data[]) {
     // 在每一个分组中，将数据再按照 dim 分组，用于散列
     const groupDataArray = this.groupData(dataArray, dim);
-    return _.each(groupDataArray, (data: Data[], dimValue: string) => {
+    return each(groupDataArray, (data: Data[], dimValue: string) => {
       return this.adjustGroup(data, dim, parseFloat(dimValue), values);
     });
   }
@@ -47,7 +47,7 @@ export default class Jitter extends Adjust {
     // 调整范围
     const range = this.getAdjustRange(dim, dimValue, values);
 
-    _.each(group, (data: Data) => {
+    each(group, (data: Data) => {
       data[dim] = this.getAdjustOffset(range); // 获取调整的位置
     });
     return group;

@@ -1,4 +1,4 @@
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 import { getMiddlePoint } from '../../../util/coord';
 import { convertToPoints } from '../util';
 

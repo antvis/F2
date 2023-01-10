@@ -1,4 +1,4 @@
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 
 interface TagGuideProps {
   points?: { x: number; y: number }[] | null;
@@ -58,7 +58,7 @@ const defaultStyle = {
   },
 };
 
-const Label = ({content, background, textStyle}) =>{
+const Label = ({ content, background, textStyle }) => {
   return (
     <rect
       style={{
@@ -67,19 +67,19 @@ const Label = ({content, background, textStyle}) =>{
         padding: defaultStyle.container.padding,
         radius: defaultStyle.container.radius,
         ...background,
-    }}
-  >
-    <text
-      style={{
-        text: content,
-        fontSize: defaultStyle.text.fontSize,
-        fill: defaultStyle.text.fill,
-        ...textStyle,
       }}
-    />
-  </rect>
-  )
-}
+    >
+      <text
+        style={{
+          text: content,
+          fontSize: defaultStyle.text.fontSize,
+          fill: defaultStyle.text.fill,
+          ...textStyle,
+        }}
+      />
+    </rect>
+  );
+};
 export default (props: TagGuideProps, context) => {
   const { px2hd } = context;
   const cfg = { ...defaultProps, ...props };
@@ -142,24 +142,24 @@ export default (props: TagGuideProps, context) => {
 
     if (direct === 'tl') {
       arrowPoints = [
-        { x: guideWidth, y:  guideHeight - 1 },
+        { x: guideWidth, y: guideHeight - 1 },
         { x: guideWidth, y: guideHeight + side },
         { x: guideWidth - side, y: guideHeight - 1 },
       ];
 
-      posX -= (guideWidth || 0);
+      posX -= guideWidth || 0;
       posY = posY - (guideHeight || 0) - side;
     } else if (direct === 'cl') {
       arrowPoints = [
         { x: guideWidth, y: guideHeight / 2 - side },
         { x: guideWidth, y: guideHeight / 2 + side },
-        { x: guideWidth + side, y: guideHeight / 2},
+        { x: guideWidth + side, y: guideHeight / 2 },
       ];
       posX = posX - (guideWidth || 0) - side;
-      posY -= (guideHeight / 2 || 0);
+      posY -= guideHeight / 2 || 0;
     } else if (direct === 'bl') {
       arrowPoints = [
-        { x: guideWidth, y: - side },
+        { x: guideWidth, y: -side },
         { x: guideWidth, y: 1 },
         { x: guideWidth - side, y: 1 },
       ];
@@ -168,32 +168,32 @@ export default (props: TagGuideProps, context) => {
     } else if (direct === 'bc') {
       // 有问题
       arrowPoints = [
-        { x: guideWidth / 2, y: - side },
-        { x: guideWidth / 2 - side, y:  1 },
+        { x: guideWidth / 2, y: -side },
+        { x: guideWidth / 2 - side, y: 1 },
         { x: guideWidth / 2 + side, y: 1 },
       ];
       posX = posX - (guideWidth / 2 || 0);
       posY = posY + side;
     } else if (direct === 'br') {
       arrowPoints = [
-        { x: 0, y: - side },
-        { x: 0, y: 1},
-        { x:  + side, y: 1 },
+        { x: 0, y: -side },
+        { x: 0, y: 1 },
+        { x: +side, y: 1 },
       ];
       posY += side;
     } else if (direct === 'cr') {
       arrowPoints = [
-        { x: - side, y: guideHeight / 2 },
+        { x: -side, y: guideHeight / 2 },
         { x: 0, y: guideHeight / 2 - side },
         { x: 0, y: guideHeight / 2 + side },
       ];
       posX += side;
-      posY -= (guideHeight / 2 || 0);
+      posY -= guideHeight / 2 || 0;
     } else if (direct === 'tr') {
       arrowPoints = [
-        { x: 0, y: guideHeight + side},
+        { x: 0, y: guideHeight + side },
         { x: 0, y: guideHeight - 1 },
-        { x: side, y:  guideHeight - 1 },
+        { x: side, y: guideHeight - 1 },
       ];
       posY = posY - (guideHeight || 0) - side;
     } else if (direct === 'tc') {
@@ -202,7 +202,7 @@ export default (props: TagGuideProps, context) => {
         { x: guideWidth / 2 - side, y: guideHeight - 1 },
         { x: guideWidth / 2 + side, y: guideHeight - 1 },
       ];
-      posX -= (guideWidth / 2 || 0);
+      posX -= guideWidth / 2 || 0;
       posY = posY - guideHeight - side;
     }
 
@@ -219,7 +219,7 @@ export default (props: TagGuideProps, context) => {
       }}
       ref={triggerRef}
     >
-      <Label content={content} background={background} textStyle={textStyle}/>
+      <Label content={content} background={background} textStyle={textStyle} />
       {guideBBox && (
         <polygon
           style={{

@@ -1,4 +1,4 @@
-import { jsx } from '../../index';
+import { jsx } from '@antv/f-engine';
 import { isArray } from '@antv/util';
 import Geometry, { GeometryProps } from '../geometry';
 import { DataRecord } from '../../chart/Data';

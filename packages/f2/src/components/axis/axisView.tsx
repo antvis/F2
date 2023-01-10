@@ -1,4 +1,4 @@
-import { jsx } from '../../index';
+import { jsx } from '@antv/f-engine';
 import PolarX from './polar/polar-x';
 import PolarY from './polar/polar-y';
 import Top from './rect/top';

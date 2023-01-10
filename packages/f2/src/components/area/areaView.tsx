@@ -1,6 +1,5 @@
-import { jsx } from '../../index';
+import { jsx, Smooth } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
-import { Smooth } from '@antv/f-engine';
 
 export default (props) => {
   const { coord, records, shape, animation } = props;
