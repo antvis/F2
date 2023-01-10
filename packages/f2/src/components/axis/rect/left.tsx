@@ -1,4 +1,4 @@
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 import { RectProps } from '../types';
 import { isArray } from '@antv/util';
 

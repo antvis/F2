@@ -1,4 +1,4 @@
-import { jsx } from '../../index';
+import { jsx } from '@antv/f-engine';
 
 export default (props) => {
   const { coord, node } = props;

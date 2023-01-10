@@ -1,6 +1,5 @@
+import { Ref, Component, jsx, createRef } from '@antv/f-engine';
 import { isFunction, find } from '@antv/util';
-import { Component, jsx, createRef } from '../../index';
-import { Ref } from '@antv/f-engine';
 
 // view 的默认配置
 const defaultStyle = {
@@ -367,7 +366,7 @@ export default class TooltipView extends Component {
     // 中心点
     const { x } = record;
     const { left: coordLeft, top: coordTop, width: coordWidth } = coord;
-    const { y, width, height } = rect.getBBox();
+    const { width, height } = rect.getBBox();
     const radius = rect.getAttribute('radius');
 
     const halfWidth = width / 2;

@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, ArcStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
-import { ArcStyleProps } from '@antv/f-engine';
 
 type ArcGuideProps = {
   points?: { x: number; y: number }[] | null;

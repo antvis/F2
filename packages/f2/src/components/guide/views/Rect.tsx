@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, RectStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
-import { RectStyleProps } from '@antv/f-engine';
 
 type RectGuideProps = {
   points?: { x: number; y: number }[] | null;

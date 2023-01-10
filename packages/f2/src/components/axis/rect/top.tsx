@@ -1,5 +1,5 @@
 import { isArray } from '@antv/util';
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 import { RectProps } from '../types';
 
 export default (props: RectProps) => {

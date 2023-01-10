@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, CircleStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
-import { CircleStyleProps } from '@antv/f-engine';
 
 type PointGuideProps = {
   style?: CircleStyleProps;

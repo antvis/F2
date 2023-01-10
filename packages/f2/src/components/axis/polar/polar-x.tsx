@@ -1,4 +1,4 @@
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 import { length as vec2Length } from 'gl-matrix/vec2';
 import type { vec2 } from 'gl-matrix';
 import { PolarProps } from '../types';

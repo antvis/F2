@@ -1,5 +1,4 @@
-import { jsx } from '../../../index';
-import { ImageStyleProps } from '@antv/f-engine';
+import { jsx, ImageStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 
 type ImageGuideProps = {

@@ -1,4 +1,3 @@
-import { isEmpty } from '@antv/util';
 import { ScaleConfig } from '../types';
 import { getLogPositiveMin, log } from '../util/math';
 

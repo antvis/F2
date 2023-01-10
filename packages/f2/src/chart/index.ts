@@ -1,8 +1,13 @@
-import { isEqual, GroupStyleProps, IContext, LayoutProps } from '@antv/f-engine';
+import {
+  isEqual,
+  GroupStyleProps,
+  IContext,
+  LayoutProps,
+  Component,
+  Children,
+} from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
-import { Component } from '../index';
-import { Children } from '../index';
 import CoordController, { Coord } from '../controller/coord';
 import ScaleController from '../controller/scale';
 import Theme from '../theme';

@@ -1,5 +1,5 @@
 import { deepMix } from '@antv/util';
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 
 export default (props) => {
   const { records, animation, y0, clip } = props;

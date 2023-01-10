@@ -1,4 +1,4 @@
-import { jsx } from '../../../index';
+import { jsx } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 
 export default (props) => {

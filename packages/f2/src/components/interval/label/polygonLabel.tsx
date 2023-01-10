@@ -1,5 +1,5 @@
+import { jsx } from '@antv/f-engine';
 import { isFunction, mix } from '@antv/util';
-import { jsx } from '../../../index';
 import { getMiddlePoint } from '../../../util/coord';
 
 const DEFAULT_LABEL_CFG = {

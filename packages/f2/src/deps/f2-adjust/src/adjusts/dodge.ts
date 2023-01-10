@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import { clone, flatten, group, each, isNil, isFunction, valuesOfKey } from '@antv/util';
 import { DODGE_RATIO, MARGIN_RATIO } from '../constant';
 import { Data, DodgeCfg, Range } from '../interface';
 import Adjust from './adjust';
@@ -22,7 +22,7 @@ export default class Dodge extends Adjust {
       maxColumnWidth,
       minColumnWidth,
       columnWidthRatio,
-      customOffset
+      customOffset,
     } = cfg;
     this.marginRatio = marginRatio;
     this.dodgeRatio = dodgeRatio;
@@ -39,14 +39,14 @@ export default class Dodge extends Adjust {
   }
 
   public process(groupDataArray: Data[][]): Data[][] {
-    const groupedDataArray = _.clone(groupDataArray);
+    const groupedDataArray = clone(groupDataArray);
     // 将数据数组展开一层
-    const mergeData = _.flatten(groupedDataArray);
+    const mergeData = flatten(groupedDataArray);
 
     const { dodgeBy } = this;
 
     // 如果指定了分组 dim 的字段
-    const adjustDataArray = dodgeBy ? _.group(mergeData, dodgeBy) : groupedDataArray;
+    const adjustDataArray = dodgeBy ? group(mergeData, dodgeBy) : groupedDataArray;
 
     this.cacheMap = {};
     this.adjustDataArray = adjustDataArray;
@@ -64,8 +64,8 @@ export default class Dodge extends Adjust {
     const { customOffset } = this;
     const map = this.getDistribution(dim);
     const groupData = this.groupData(data, dim); // 根据值分组
-    
-    _.each(groupData, (group, key) => {
+
+    each(groupData, (group, key) => {
       let range: Range;
 
       // xField 中只有一个值，不需要做 dodge
@@ -78,13 +78,15 @@ export default class Dodge extends Adjust {
         // 如果有多个，则需要获取调整的范围
         range = this.getAdjustRange(dim, parseFloat(key), values);
       }
-      _.each(group, (d) => {
+      each(group, (d) => {
         const value = d[dim];
         const valueArr = map[value];
         const valIndex = valueArr.indexOf(frameIndex);
-        if (!_.isNil(customOffset)) {
+        if (!isNil(customOffset)) {
           const { pre, next } = range;
-          d[dim] = _.isFunction(customOffset) ? customOffset(d, range) : (pre + next) / 2 + customOffset;
+          d[dim] = isFunction(customOffset)
+            ? customOffset(d, range)
+            : (pre + next) / 2 + customOffset;
         } else {
           d[dim] = this.getDodgeOffset(range, valIndex, valueArr.length);
         }
@@ -94,28 +96,23 @@ export default class Dodge extends Adjust {
   }
 
   private getDodgeOffset(range: Range, idx: number, len: number): number {
-    const {
-      dodgeRatio,
-      marginRatio,
-      intervalPadding,
-      dodgePadding,
-    } = this;
+    const { dodgeRatio, marginRatio, intervalPadding, dodgePadding } = this;
     const { pre, next } = range;
 
     const tickLength = next - pre;
     let position;
     // 分多种输入情况
-    if (!_.isNil(intervalPadding) && _.isNil(dodgePadding) && intervalPadding >= 0) {
+    if (!isNil(intervalPadding) && isNil(dodgePadding) && intervalPadding >= 0) {
       // 仅配置intervalPadding
       const offset = this.getIntervalOnlyOffset(len, idx);
       position = pre + offset;
-    } else if (!_.isNil(dodgePadding) && _.isNil(intervalPadding) && dodgePadding >= 0) {
+    } else if (!isNil(dodgePadding) && isNil(intervalPadding) && dodgePadding >= 0) {
       // 仅配置dodgePadding
       const offset = this.getDodgeOnlyOffset(len, idx);
       position = pre + offset;
     } else if (
-      !_.isNil(intervalPadding) &&
-      !_.isNil(dodgePadding) &&
+      !isNil(intervalPadding) &&
+      !isNil(dodgePadding) &&
       intervalPadding >= 0 &&
       dodgePadding >= 0
     ) {
@@ -127,10 +124,10 @@ export default class Dodge extends Adjust {
       const width = (tickLength * dodgeRatio) / len;
       const margin = marginRatio * width;
       const offset =
-      (1 / 2) * (tickLength - len * width - (len - 1) * margin) +
-      ((idx + 1) * width + idx * margin) -
-      (1 / 2) * width -
-      (1 / 2) * tickLength;
+        (1 / 2) * (tickLength - len * width - (len - 1) * margin) +
+        ((idx + 1) * width + idx * margin) -
+        (1 / 2) * width -
+        (1 / 2) * tickLength;
       position = (pre + next) / 2 + offset;
     }
     return position;
@@ -148,24 +145,31 @@ export default class Dodge extends Adjust {
       columnWidthRatio,
     } = this;
     const normalizedIntervalPadding = intervalPadding / xDimensionLegenth;
-    let normalizedDodgePadding = (1 - (groupNum - 1) * normalizedIntervalPadding) / groupNum * dodgeRatio / (len - 1);
-    let geomWidth = ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum - normalizedDodgePadding * (len - 1)) / len;
+    let normalizedDodgePadding =
+      (((1 - (groupNum - 1) * normalizedIntervalPadding) / groupNum) * dodgeRatio) / (len - 1);
+    let geomWidth =
+      ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum -
+        normalizedDodgePadding * (len - 1)) /
+      len;
     // 根据columnWidthRatio/defaultSize/maxColumnWidth/minColumnWidth调整宽度
-    geomWidth = (!_.isNil(columnWidthRatio)) ? 1 / groupNum / len * columnWidthRatio : geomWidth;
-    if (!_.isNil(maxColumnWidth)) {
+    geomWidth = !isNil(columnWidthRatio) ? (1 / groupNum / len) * columnWidthRatio : geomWidth;
+    if (!isNil(maxColumnWidth)) {
       const normalizedMaxWidht = maxColumnWidth / xDimensionLegenth;
       geomWidth = Math.min(geomWidth, normalizedMaxWidht);
     }
-    if (!_.isNil(minColumnWidth)) {
+    if (!isNil(minColumnWidth)) {
       const normalizedMinWidht = minColumnWidth / xDimensionLegenth;
       geomWidth = Math.max(geomWidth, normalizedMinWidht);
     }
-    geomWidth = defaultSize ? (defaultSize / xDimensionLegenth) : geomWidth;
+    geomWidth = defaultSize ? defaultSize / xDimensionLegenth : geomWidth;
     // 调整组内间隔
-    normalizedDodgePadding = ((1 - (groupNum - 1) * normalizedIntervalPadding) / groupNum - len * geomWidth) / (len - 1);
+    normalizedDodgePadding =
+      ((1 - (groupNum - 1) * normalizedIntervalPadding) / groupNum - len * geomWidth) / (len - 1);
     const offset =
-      ((1 / 2 + idx) * geomWidth + idx * normalizedDodgePadding +
-      (1 / 2) * normalizedIntervalPadding) * groupNum -
+      ((1 / 2 + idx) * geomWidth +
+        idx * normalizedDodgePadding +
+        (1 / 2) * normalizedIntervalPadding) *
+        groupNum -
       normalizedIntervalPadding / 2;
     return offset;
   }
@@ -182,41 +186,47 @@ export default class Dodge extends Adjust {
       columnWidthRatio,
     } = this;
     const normalizedDodgePadding = dodgePadding / xDimensionLegenth;
-    let normalizedIntervalPadding = 1 * marginRatio / (groupNum - 1);
-    let geomWidth = ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum - normalizedDodgePadding * (len - 1)) / len;
+    let normalizedIntervalPadding = (1 * marginRatio) / (groupNum - 1);
+    let geomWidth =
+      ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum -
+        normalizedDodgePadding * (len - 1)) /
+      len;
     // 根据columnWidthRatio/defaultSize/maxColumnWidth/minColumnWidth调整宽度
-    geomWidth = columnWidthRatio ? 1 / groupNum / len * columnWidthRatio : geomWidth;
-    if (!_.isNil(maxColumnWidth)) {
+    geomWidth = columnWidthRatio ? (1 / groupNum / len) * columnWidthRatio : geomWidth;
+    if (!isNil(maxColumnWidth)) {
       const normalizedMaxWidht = maxColumnWidth / xDimensionLegenth;
       geomWidth = Math.min(geomWidth, normalizedMaxWidht);
     }
-    if (!_.isNil(minColumnWidth)) {
+    if (!isNil(minColumnWidth)) {
       const normalizedMinWidht = minColumnWidth / xDimensionLegenth;
       geomWidth = Math.max(geomWidth, normalizedMinWidht);
     }
-    geomWidth = defaultSize ? (defaultSize / xDimensionLegenth) : geomWidth;
+    geomWidth = defaultSize ? defaultSize / xDimensionLegenth : geomWidth;
     // 调整组间距
-    normalizedIntervalPadding = (1 - (geomWidth * len + normalizedDodgePadding * (len - 1)) * groupNum) / (groupNum - 1);
+    normalizedIntervalPadding =
+      (1 - (geomWidth * len + normalizedDodgePadding * (len - 1)) * groupNum) / (groupNum - 1);
     const offset =
-      ((1 / 2 + idx) * geomWidth + idx * normalizedDodgePadding +
-      (1 / 2) * normalizedIntervalPadding) * groupNum -
+      ((1 / 2 + idx) * geomWidth +
+        idx * normalizedDodgePadding +
+        (1 / 2) * normalizedIntervalPadding) *
+        groupNum -
       normalizedIntervalPadding / 2;
     return offset;
   }
 
   private getIntervalAndDodgeOffset(len: number, idx: number): number {
-    const {
-      intervalPadding,
-      dodgePadding,
-      xDimensionLegenth,
-      groupNum,
-    } = this;
+    const { intervalPadding, dodgePadding, xDimensionLegenth, groupNum } = this;
     const normalizedIntervalPadding = intervalPadding / xDimensionLegenth;
     const normalizedDodgePadding = dodgePadding / xDimensionLegenth;
-    const geomWidth = ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum - normalizedDodgePadding * (len - 1)) / len;
+    const geomWidth =
+      ((1 - normalizedIntervalPadding * (groupNum - 1)) / groupNum -
+        normalizedDodgePadding * (len - 1)) /
+      len;
     const offset =
-      ((1 / 2 + idx) * geomWidth + idx * normalizedDodgePadding +
-      (1 / 2) * normalizedIntervalPadding) * groupNum -
+      ((1 / 2 + idx) * geomWidth +
+        idx * normalizedDodgePadding +
+        (1 / 2) * normalizedIntervalPadding) *
+        groupNum -
       normalizedIntervalPadding / 2;
     return offset;
   }
@@ -228,12 +238,12 @@ export default class Dodge extends Adjust {
 
     if (!map) {
       map = {};
-      _.each(groupedDataArray, (data, index) => {
-        const values = _.valuesOfKey(data, dim) as number[];
+      each(groupedDataArray, (data, index) => {
+        const values = valuesOfKey(data, dim) as number[];
         if (!values.length) {
           values.push(0);
         }
-        _.each(values, (val: number) => {
+        each(values, (val: number) => {
           if (!map[val]) {
             map[val] = [];
           }

@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, TextStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
-import { TextStyleProps } from '@antv/f-engine';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;

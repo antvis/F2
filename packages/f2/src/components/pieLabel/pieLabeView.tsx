@@ -1,4 +1,4 @@
-import { jsx } from '../../index';
+import { jsx } from '@antv/f-engine';
 
 export default (props) => {
   const { lineStyle, anchorStyle, labels, label1OffsetY, label2OffsetY, triggerRef } = props;

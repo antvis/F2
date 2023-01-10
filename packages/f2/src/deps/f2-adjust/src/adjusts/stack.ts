@@ -1,8 +1,6 @@
-import * as _ from '@antv/util';
+import { Cache, get, isArray, isNil } from '@antv/util';
 import { Data, StackCfg } from '../interface';
 import Adjust from './adjust';
-
-const Cache = _.Cache;
 
 export default class Stack extends Adjust {
   constructor(cfg: StackCfg) {
@@ -45,15 +43,15 @@ export default class Stack extends Adjust {
 
     return groupedDataArray.map((dataArray) => {
       return dataArray.map((data) => {
-        const x: number = _.get(data, xField, 0);
-        let y: number = _.get(data, [yField]);
+        const x: number = get(data, xField, 0);
+        let y: number = get(data, [yField]);
 
         const xKey = x.toString();
 
         // todo 是否应该取 _origin？因为 y 可能取到的值不正确，比如先 symmetric，再 stack！
-        y = _.isArray(y) ? y[1] : y;
+        y = isArray(y) ? y[1] : y;
 
-        if (!_.isNil(y)) {
+        if (!isNil(y)) {
           const cache = y >= 0 ? positive : negative;
 
           if (!cache.has(xKey)) {

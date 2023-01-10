@@ -1,5 +1,4 @@
-import { jsx } from '../../index';
-import { Component, Ref, ComponentType } from '@antv/f-engine';
+import { jsx, Component, Ref, ComponentType } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import Chart, { ChartChildProps, Point } from '../../chart';
 import { computeLayout, AnimationProps } from '@antv/f-engine';

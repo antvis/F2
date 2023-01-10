@@ -1,6 +1,5 @@
-import { jsx } from '../../../index';
+import { jsx, TextStyleProps } from '@antv/f-engine';
 import { RectProps } from '../types';
-import { TextStyleProps } from '@antv/f-engine';
 import { isArray } from '@antv/util';
 
 export default (props: RectProps<'bottom'>, context) => {
