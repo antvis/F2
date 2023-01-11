@@ -36,7 +36,7 @@ const CustomLegendView = (props) => {
         const { name, color } = item;
         return (
           <text
-            attrs={{
+            style={{
               text: name,
               fill: color,
             }}
@@ -66,7 +66,7 @@ const CustomLegendView = (props) => {
         const { name, color } = item;
         return (
           <text
-            attrs={{
+            style={{
               text: name,
               fill: color,
             }}
@@ -76,7 +76,6 @@ const CustomLegendView = (props) => {
     </group>
   );
 };
-
 
 // 使用自定义 view 的组件
 const Legend = withLegend(CustomLegendView);
