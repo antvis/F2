@@ -23,7 +23,7 @@
     "@antv/f-react": "~0.0.7",
     "@antv/f2": "^5.0.4",
     "@antv/g-plugin-rough-canvas-renderer": "^1.7.36",
-    "dumi": "^2.0.0-beta.15",
+    "dumi": "^2.0.0",
     "f2-touchemulator": "~0.0.1",
     "gh-pages": "^2.1.1"
   },

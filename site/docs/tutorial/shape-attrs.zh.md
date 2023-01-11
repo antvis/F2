@@ -3,25 +3,43 @@ title: 绘图属性 - ShapeAttrs
 order: 7
 ---
 
-F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引擎。本篇列出了常见的绘图属性，更多关于绘图以及绘图属性的使用请至 [G](https://g.antv.vision/zh/) 中查看。
+F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引擎。本篇列出了常见的绘图属性，更多关于绘图以及绘图属性的使用请至 [G](https://g.antv.antgroup.com/) 中查看。
 
 在 F2 中组件样式的定义全部直接使用 ShapeAttrs 统一的结构，例如 axis 的 label 样式、legend marker 样式、和其他自定义 shape 样式等等。
 
 ## 属性列表
 
+### 位置属性
+
+对于不同的图形，位置的几何意义也不同，例如：
+
+- [Circle](/zh/tutorial/shape#circle) [Arc](/zh/tutorial/shape#arc) [Sector](/zh/tutorial/shape#sector)为圆心位置，使用 [cx/cy](/zh/tutorial/shape#circle)
+- [Group](/zh/tutorial//group) [Rect](/zh/tutorial/rect)，[Image](/zh/tutorial/image) 为左上角顶点位置，使用 [x/y](/zh/tutorial/rect)
+- [Text](/zh/tutorial/text) 为文本锚点位置
+- [Line](/zh/tutorial/line)，[Polyline](/zh/tutorial/polyline)，[Polygon](/zh/tutorial/polygon)，[Path](/zh/tutorial/path) 为包围盒左上角顶点位置
+
+| 属性名   | 描述                |
+| -------- | ------------------- |
+| `anchor` | 锚点，默认为 [0, 0] |
+
 ### 通用属性
 
 | 属性名 | 描述 |
 | --- | --- |
+| `zIndex` | 控制图行显示层级。默认 0 |
+| `visibility` | 控制图形的可见性。参见 [MDN]（https://developer.mozilla.org/en-US/docs/Web/CSS/visibility） |
+| `opacity` | 设置图形和图片透明度的属性，默认值是 1。 数值的范围从 0.0 （完全透明）到 1.0 （完全不透明）。 |
 | `fill` | 填充色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空。 |
 | `fillOpacity` | 用于设置图形填充颜色的透明度，默认值是 1。 |
 | `stroke` | 描边色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空； |
 | `strokeOpacity` | 用于设置边颜色的透明度，默认值是 1。 |
-| `shadowColor` | 描述阴影颜色的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor)。 |
+| `shadowType` | 描述阴影类型，目前支持 'outer' 外阴影和 'inner' 内阴影 |
+| `shadowColor` | 描述阴影颜色的属性，支持 String，暂不支持渐变或纹理，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor)。 |
 | `shadowBlur` | 描述模糊效果程度的属性； 它既不对应像素值也不受当前转换矩阵的影响。 默认值是 0，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowBlur)。 |
 | `shadowOffsetX` | 描述阴影水平偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX)。 |
 | `shadowOffsetY` | 描述阴影垂直偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY)。 |
-| `opacity` | 设置图形和图片透明度的属性，默认值是 1。 数值的范围从 0.0 （完全透明）到 1.0 （完全不透明）。 |
+| `filter` | 滤镜，目前支持单个或多个滤镜叠加,支持 blur、brightness、drop-shadow、contrast、grayscale、saturate、sepia、hue-rotate、invert 几种滤镜效果。参见 [MDN]（https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/filter） |
+| `cursor` | 鼠标样式。参见 [MDN]（https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor） |
 
 ### 线条属性
 
@@ -48,45 +66,62 @@ F2 底层使用了 [G](https://g.antv.vision/zh/docs/api/shape/attrs) 绘图引�
 
 ## 渐变色
 
-为了方便用户使用，F2 中默认提供对线性渐变、放射状/环形渐变两种渐变色的支持，定义方式如下：
+为了方便用户使用，F2 中提供与 css 中用法一致的渐变色使用方法，参见[MDN]（https://developer.mozilla.org/zh-CN/docs/Web/CSS/gradient），定义方式如下：
+
+在 css 中，渐变通过函数创建，在下面例子中展示了目前支持的渐变效果，包括线性和径向渐变、多个渐变叠加等：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*sXoJTKPWg70AAAAAAAAAAAAAARQnAQ" width="400" alt="gradient">
 
 ### 线性渐变
 
-![](https://gw.alipayobjects.com/zos/rmsportal/ElBYXdsTZKFflacOBNtp.png#align=left&display=inline&height=142&originHeight=328&originWidth=1384&status=done&style=none&width=600)
-
-> 说明：`l` 表示使用线性渐变，绿色的字体为可变量，由用户自己填写，由一个空格进行间隔。
+线性渐变指创建一个表示两种或多种颜色延某一方向线性变化。渐变方向在 CSS 中默认为从下到上，而我们为了和 Canvas / SVG 保持一致，使用从左到右，且可以多个渐变叠加。示例：
 
 ```javascript
 // example
-// 使用渐变色描边，渐变角度为 0，渐变的起始点颜色 #ffffff，中点的渐变色为 #7ec2f3，结束的渐变色为 #1890ff
-stroke: 'l(0) 0:#ffffff 0.5:#7ec2f3 1:#1890ff';
+fill: 'linear-gradient(0deg, blue, green 40%, red)';
 ```
 
-### 放射状/环形渐变
+<img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*aU84RIJaH6AAAAAAAAAAAAAAARQnAQ" width="300" alt="linear gradient">
 
-![](https://gw.alipayobjects.com/zos/rmsportal/fBFocveoeRaeaCCPTaFo.png#align=left&display=inline&height=144&originHeight=408&originWidth=1702&status=done&style=none&width=600)
+### 径向渐变
 
-> 说明：`r` 表示使用放射状渐变，绿色的字体为可变量，由用户自己填写，开始圆的 x y r 值均为相对值，0 至 1 范围，'r(x,y,r)' 内不可留有空格，颜色之间由一个空格进行间隔。
+径向渐变指从图形中心发出的两种或者多种颜色之间的逐步过渡变化。
 
 ```javascript
 // example
-// 使用渐变色填充，渐变起始圆的圆心坐标为被填充物体的包围盒中心点，半径为(包围盒对角线长度 / 2) 的 0.1 倍，渐变的起始点颜色 #ffffff，中点的渐变色为 #7ec2f3，结束的渐变色为 #1890ff
-fill: 'r(0.5,0.5,0.1) 0:#ffffff 1:#1890ff';
+fill: 'radial-gradient(circle at center, red, blue, green 100%)';
 ```
+
+<img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*Z4QLTr3lC80AAAAAAAAAAAAAARQnAQ" width="300" alt="radial gradient">
 
 ## 纹理
 
-![](https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*8FjsSoqE1mYAAAAAAAAAAABkARQnAQ)
+使用相同的图案填充图形，目前支持的 Pattern 可以是图片 URL，`HTMLImageElement`，`HTMLCanvasElement`，`HTMLVideoElement` 和 `Rect` 等，还可以指定重复方向：
 
-- `p`: 表示使用纹理，绿色的字体为可变量，由用户自己填写。
-- `a`: 该模式在水平和垂直方向重复；
-- `x`: 该模式只在水平方向重复；
-- `y`: 该模式只在垂直方向重复；
-- `n`: 该模式只显示一次（不重复）。
-- 纹理的内容可以直接是图片或者 [Data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)。
+<img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*cRmFTItZOtYAAAAAAAAAAAAAARQnAQ" width="400" alt="pattern">
+
+支持参数如下：
+
+```ts
+interface Pattern {
+  image: string | CanvasImageSource | Rect;
+  repetition?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
+  transform?: string;
+}
+```
+
+使用方法：
 
 ```js
 // example
 // 使用纹理填充，在水平和垂直方向重复图片
-fill: 'p(a)https://gw.alipayobjects.com/zos/rmsportal/ibtwzHXSxomqbZCPMLqS.png';
+fill: {
+    image:'https://gw.alipayobjects.com/zos/rmsportal/ibtwzHXSxomqbZCPMLqS.png',
+    repetition: 'repeat',
+    transform: 'rotate(30deg)',
+}
 ```
+
+## 历史用法
+
+历史用法见 https://f2-v4.antv.vision/zh/docs/tutorial/shape-attrs#渐变色

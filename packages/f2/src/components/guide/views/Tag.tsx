@@ -166,7 +166,6 @@ export default (props: TagGuideProps, context) => {
       posX = posX - (guideWidth || 0);
       posY += side;
     } else if (direct === 'bc') {
-      // 有问题
       arrowPoints = [
         { x: guideWidth / 2, y: -side },
         { x: guideWidth / 2 - side, y: 1 },
