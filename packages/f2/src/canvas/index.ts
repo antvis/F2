@@ -26,6 +26,10 @@ export interface ChartProps {
    * 是否横屏
    */
   landscape?: boolean;
+  /**
+   * @title 每次绘制完成后的回调
+   */
+  onAfterDraw?: () => void;
 }
 
 function measureText(canvas, px2hd) {
@@ -105,6 +109,11 @@ class Canvas extends Component<ChartProps> {
 
     // 动画模块
     const animation = new Animation(canvas);
+
+    canvas.on('afterdraw', () => {
+      const { onAfterDraw } = this.props;
+      onAfterDraw && onAfterDraw();
+    });
 
     this.canvas = canvas;
     this.container = canvas;

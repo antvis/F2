@@ -154,6 +154,7 @@ class Canvas extends EventEmit {
   }
   _endDraw() {
     this._attrs.toDraw = false;
+    this.emit('afterdraw', {});
   }
 
   draw() {
