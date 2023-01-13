@@ -26,29 +26,26 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 
 ### Props
 
-| **属性名**  | **类型** | **描述**                       |
-| ----------- | -------- | ------------------------------ |
-| `className` | String   | 对象标记，由用户指定           |
-| `visible`   | Boolean  | 显示还是隐藏。                 |
-| `zIndex`    | Number   | z-index 值，用于调整绘制顺序。 |
-| `style`     | Style    | 图形样式                       |
+| **属性名**  | **类型**  | **描述**                       |
+| ----------- | --------- | ------------------------------ |
+| `className` | String    | 对象标记，由用户指定           |
+| `visible`   | Boolean   | 显示还是隐藏。                 |
+| `zIndex`    | Number    | z-index 值，用于调整绘制顺序。 |
+| `style`     | Style     | 图形样式                       |
+| `animation` | Animation | 图形动画                       |
+| `onPan` 等  | Event     | 图形事件                       |
 
 ### Style [绘图属性](/zh/docs/tutorial/shape-attrs)
 
 更多详情可见：[绘图属性](/zh/docs/tutorial/shape-attrs)
 
-| **属性名** | **类型** | **描述** |
-| --- | --- | --- |
-| `fill` | String | 填充色、[渐变](/zh/docs/tutorial/shape-attrs#渐变色)或[纹理](/zh/docs/tutorial/shape-attrs#纹理)，默认值为空。 |
-| `fillOpacity` | Number | 用于设置图形填充颜色的透明度，默认值是 1。 |
-| `stroke` | String | 描边色、[渐变](/zh/docs/tutorial/shape-attrs#渐变色)或[纹理](/zh/docs/tutorial/shape-attrs#纹理)，默认值为空； |
-| `strokeOpacity` | Number | 用于设置边颜色的透明度，默认值是 1。 |
-| `lineWidth` | px | 描边的大小 |
-| `shadowColor` | String | 描述阴影颜色的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor)。 |
-| `shadowBlur` | Number | 描述模糊效果程度的属性； 它既不对应像素值也不受当前转换矩阵的影响。 默认值是 0，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowBlur)。 |
-| `shadowOffsetX` | Number | 描述阴影水平偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX)。 |
-| `shadowOffsetY` | Number | 描述阴影垂直偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY)。 |
-| `opacity` | Number | 设置图形和图片透明度的属性，默认值是 1。 数值的范围从 0.0 （完全透明）到 1.0 （完全不透明）。 |
+### Animation [图形动画属性](/zh/docs/tutorial/animation)
+
+更多详情可见：[图形动画属性](/zh/docs/tutorial/animation)
+
+### Event [图形事件属性](/zh/docs/tutorial/event)
+
+更多详情可见：[图形事件属性](/zh/docs/tutorial/event)
 
 ### 演示
 

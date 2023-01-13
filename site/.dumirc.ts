@@ -23,14 +23,14 @@ export default defineConfig({
     showAPIDoc: true, // 是否在 demo 页展示API文档
     versions: {
       [version]: 'https://f2.antv.antgroup.com',
-      '4.x': 'https://f2.antv.vision',
+      '4.x': 'https://f2-v4.antv.vision',
       '3.x': 'https://f2-v3.antv.vision',
     },
     navs: [
       {
         slug: 'docs/tutorial/getting-started',
         title: {
-          zh: '使用文档',
+          zh: '教程',
           en: 'Manual',
         },
       },

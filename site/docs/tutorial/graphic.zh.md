@@ -1,6 +1,6 @@
 ---
 title: 图形使用 - JSX
-order: 8
+order: 9
 ---
 
 在 F2 里，可以利用 JSX 和[图形标签 Shape](./shape.zh.md)更方便构造自定义图形。
