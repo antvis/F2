@@ -33,6 +33,10 @@ export default {
       this.year = '2022';
       this.chartData = data2;
     }, 1000);
+    setTimeout(() => {
+      this.year = '2021';
+      this.chartData = data1;
+    }, 3000);
   },
   render() {
     const { year, chartData } = this;

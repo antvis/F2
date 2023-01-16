@@ -67,19 +67,19 @@ export default {
     getProps() {
       const { $props, $slots } = this;
       const props = toRaw($props);
-      props.children = toRawChildren($slots);
-      return props;
+      const canvasEl = this.$el;
+      const context = canvasEl.getContext('2d');
+      return {
+        ...props,
+        // context 内部创建，不能被覆盖
+        context,
+        children: toRawChildren($slots),
+      };
     },
   },
   mounted() {
-    const canvasEl = this.$el;
-    const context = canvasEl.getContext('2d');
     const props = this.getProps();
-    const canvas = new Canvas({
-      ...props,
-      // context 内部创建，不能被覆盖
-      context,
-    });
+    const canvas = new Canvas(props);
     canvas.render();
     this.canvas = canvas;
   },
