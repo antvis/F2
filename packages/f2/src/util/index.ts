@@ -38,7 +38,7 @@ type pxstr = `${number}px`;
 function batch2hd(px2hd) {
   const batchPx2hd = (value: pxstr | pxstr[] | number | number[] | string | string[] | any) => {
     // 处理带px的数据
-    if (isString(value) && /^-?\d+px$/.test(value)) {
+    if (isString(value) && /^-?\d+(\.\d+)?px$/.test(value)) {
       const num = value.substr(0, value.length - 2);
       return px2hd(Number(num));
     }
