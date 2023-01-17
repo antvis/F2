@@ -1,14 +1,12 @@
 import { jsx } from '@antv/f-engine';
-import { length as vec2Length } from 'gl-matrix/vec2';
-import type { vec2 } from 'gl-matrix';
+import { vec2 } from 'gl-matrix';
 import { PolarProps } from '../types';
 
 // 相对圆心偏移量的点
 function getOffsetPoint(center, point, offset) {
   const vectorX = point.x - center.x;
   const vectorY = point.y - center.y;
-  const vector = [vectorX, vectorY];
-  const vectorLength = vec2Length((vector as unknown) as vec2);
+  const vectorLength = vec2.length([vectorX, vectorY]);
   const offsetLength = vectorLength + offset;
 
   const x = (vectorX / vectorLength) * offsetLength;
@@ -92,7 +90,7 @@ export default (props: PolarProps) => {
   const firstTicks = ticks[0];
   const { points } = firstTicks;
   const end = points[points.length - 1];
-  const radius = vec2Length([end.x - center.x, end.y - center.y]);
+  const radius = vec2.length([end.x - center.x, end.y - center.y]);
 
   return (
     <group>

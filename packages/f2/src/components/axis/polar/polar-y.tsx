@@ -1,5 +1,5 @@
 import { jsx } from '@antv/f-engine';
-import { length as vec2Length } from 'gl-matrix/vec2';
+import { vec2 } from 'gl-matrix';
 import { PolarProps } from '../types';
 
 export default (props: PolarProps) => {
@@ -22,7 +22,7 @@ export default (props: PolarProps) => {
                     cy: center.y,
                     startAngle: 0,
                     endAngle: 360,
-                    r: vec2Length([end.x - center.x, end.y - center.y]),
+                    r: vec2.length([end.x - center.x, end.y - center.y]),
                     ...grid,
                     ...gridStyle,
                   }}
