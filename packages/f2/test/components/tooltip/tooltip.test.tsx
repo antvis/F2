@@ -167,7 +167,7 @@ describe('tooltip', () => {
     await delay(500);
     await gestureSimulator(context.canvas, 'press', { x: 160, y: 150 });
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
-    expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效    
+    expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
     await delay(500);
     expect(context).toMatchImageSnapshot();
 
@@ -176,7 +176,7 @@ describe('tooltip', () => {
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
     await delay(500);
     expect(context).toMatchImageSnapshot();
-  }); 
+  });
 
   it('Tooltip 默认展示', async () => {
     const context = createContext('Tooltip 默认展示');
