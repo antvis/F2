@@ -26,6 +26,10 @@
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
+  "peerDependencies": {
+    "react": ">=16.8.6",
+    "react-dom": ">=16.8.6"
+  },
   "homepage": "https://f2.antv.vision/zh/docs/tutorial/react",
   "author": "https://github.com/orgs/antvis/people",
   "license": "MIT",
