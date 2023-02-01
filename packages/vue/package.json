@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-vue",
-  "version": "4.0.22",
+  "version": "4.0.23",
   "description": "F2 for Vue.js",
   "main": "lib/index.js",
   "module": "es/index.js",
