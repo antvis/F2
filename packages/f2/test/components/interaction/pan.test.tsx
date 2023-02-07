@@ -62,7 +62,10 @@ describe('平移和缩放', () => {
         { x: 200, y: 200 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 100, y: 100 },
+        { x: 100, y: 100 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
 
@@ -78,12 +81,15 @@ describe('平移和缩放', () => {
         { x: 160, y: 160 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 160, y: 160 },
+        { x: 160, y: 160 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });
 
-    it.skip('放大', async () => {
+    it('放大', async () => {
       // 放大
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
@@ -167,7 +173,6 @@ describe('平移和缩放', () => {
       await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
       await delay(300);
       expect(context).toMatchImageSnapshot();
-
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
@@ -180,7 +185,10 @@ describe('平移和缩放', () => {
         { x: 160, y: 160 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 160, y: 160 },
+        { x: 160, y: 160 },
+      ]);
       await delay(500);
       expect(context).toMatchImageSnapshot();
     });
