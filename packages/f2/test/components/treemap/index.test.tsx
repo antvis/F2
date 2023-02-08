@@ -93,4 +93,28 @@ describe('Treemap', () => {
     // expect(view.get('children')[1].get('attrs').x).toBe(132);
     // expect(view.get('children')[1].get('attrs').y).toBe(0);
   });
+
+  it('label', async () => {
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={4}
+          label={{
+            fill: 'white',
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

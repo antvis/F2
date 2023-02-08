@@ -64,6 +64,9 @@ const { props } = (
       }}
       value="value"
       space={4}
+      label={{
+        fill: 'white',
+      }}
     />
   </Canvas>
 );
