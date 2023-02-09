@@ -1,15 +1,3 @@
----
-title: 如何在 Node.js 中使用
-order: 14
----
-
-## 配置 jsx transform
-
-详见：[配置 jsx transform](./jsx-transform)
-
-## Usage
-
-```jsx
 import { Canvas, Chart, Interval, Axis } from '@antv/f2';
 import { createCanvas } from 'canvas';
 import fs from 'fs';
@@ -40,8 +28,3 @@ const fcanvas = new Canvas(props);
 fcanvas.render();
 
 canvas.createPNGStream().pipe(fs.createWriteStream(path.join(__dirname, 'chart.png'))); // 导出图片
-```
-
-**完整示例可参考**
-
-- https://github.com/antvis/F2/tree/master/packages/node/examples

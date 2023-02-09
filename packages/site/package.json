@@ -1,6 +1,7 @@
 {
   "name": "@antv/f2-site",
   "version": "4.0.42",
+  "private": true,
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
