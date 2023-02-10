@@ -53,18 +53,18 @@ describe('平移和缩放', () => {
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 300, y: 300 },
+        { x: 50, y: 50 },
+        { x: 260, y: 260 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
-        { x: 100, y: 100 },
-        { x: 200, y: 200 },
+        { x: 114, y: 114 },
+        { x: 186, y: 186 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', [
-        { x: 100, y: 100 },
-        { x: 100, y: 100 },
+        { x: 114, y: 114 },
+        { x: 114, y: 114 },
       ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
@@ -72,8 +72,8 @@ describe('平移和缩放', () => {
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 310, y: 310 },
+        { x: 50, y: 50 },
+        { x: 270, y: 270 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
@@ -159,25 +159,27 @@ describe('平移和缩放', () => {
 
     it('多次缩小', async () => {
       // 缩小
-      await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 300, y: 300 },
+        { x: 50, y: 50 },
+        { x: 260, y: 260 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
-        { x: 100, y: 100 },
-        { x: 200, y: 200 },
+        { x: 114, y: 114 },
+        { x: 186, y: 186 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 114, y: 114 },
+        { x: 114, y: 114 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 310, y: 310 },
+        { x: 50, y: 50 },
+        { x: 270, y: 270 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [

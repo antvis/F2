@@ -210,18 +210,17 @@ export default (View) => {
         return null;
       }
       const { records } = state;
-      const { x, y, left, top } = coord;
+      const { width, height, left, top } = coord;
 
       return (
         <group>
           <rect
-            // ref={this.triggerRef}
             style={{
               zIndex: 10,
               x: left,
               y: top,
-              width: x[1] - x[0],
-              height: y[0] - y[1],
+              width,
+              height,
               fill: 'transparent',
             }}
             onPress={(ev) => {
