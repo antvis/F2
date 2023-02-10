@@ -129,7 +129,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     await canvas.render();
     await delay(500);
-    await gestureSimulator(context.canvas, 'press', { x: 170, y: 41 });
+    await gestureSimulator(context.canvas, 'press', { x: 170, y: 100 });
     await delay(100);
     expect(onChangeMockCallback.mock.calls.length).toBe(1); // 验证 onChange 有被调用
     expect(onChangeMockCallback.mock.calls[0][0].length).toBe(1); // 验证 onChange 参数有效
@@ -245,7 +245,7 @@ describe('tooltip', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('Tooltip 超出边界会展示边界值', async () => {
+  it('Tooltip 超出边界不响应', async () => {
     const context = createContext('Tooltip 超出边界会展示边界值');
     const onChangeMockCallback = jest.fn();
     const { props } = (

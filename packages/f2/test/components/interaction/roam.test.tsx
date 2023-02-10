@@ -54,24 +54,27 @@ describe('全局漫游模式', () => {
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 300, y: 300 },
+        { x: 50, y: 50 },
+        { x: 260, y: 260 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
-        { x: 100, y: 100 },
-        { x: 200, y: 200 },
+        { x: 114, y: 114 },
+        { x: 186, y: 186 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 114, y: 114 },
+        { x: 114, y: 114 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
 
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 310, y: 310 },
+        { x: 50, y: 50 },
+        { x: 270, y: 270 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
@@ -79,7 +82,10 @@ describe('全局漫游模式', () => {
         { x: 160, y: 160 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 160, y: 160 },
+        { x: 160, y: 160 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });
@@ -141,24 +147,27 @@ describe('全局漫游模式', () => {
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 300, y: 300 },
+        { x: 50, y: 50 },
+        { x: 260, y: 260 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
-        { x: 100, y: 100 },
-        { x: 200, y: 200 },
+        { x: 114, y: 114 },
+        { x: 186, y: 186 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 100 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 114, y: 114 },
+        { x: 114, y: 114 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
 
       // 缩小
       await delay(20);
       await gestureSimulator(context.canvas, 'touchstart', [
-        { x: 10, y: 10 },
-        { x: 310, y: 310 },
+        { x: 50, y: 50 },
+        { x: 270, y: 270 },
       ]);
       await delay(20);
       await gestureSimulator(context.canvas, 'touchmove', [
@@ -166,7 +175,10 @@ describe('全局漫游模式', () => {
         { x: 160, y: 160 },
       ]);
       await delay(20);
-      await gestureSimulator(context.canvas, 'touchend', { x: 160, y: 160 });
+      await gestureSimulator(context.canvas, 'touchend', [
+        { x: 160, y: 160 },
+        { x: 160, y: 160 },
+      ]);
       await delay(300);
       expect(context).toMatchImageSnapshot();
     });

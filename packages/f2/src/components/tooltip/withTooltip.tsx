@@ -104,7 +104,6 @@ export default (View) => {
 
     didMount() {
       this._initShow();
-      this._initEvent();
     }
 
     willReceiveProps(nextProps) {
@@ -117,17 +116,6 @@ export default (View) => {
       }
     }
 
-    didUnmount(): void {
-      this._clearEvents();
-    }
-
-    _clearEvents() {
-      const { props, context } = this;
-      const { triggerOn = 'press', triggerOff = 'pressend' } = props;
-      // 解绑事件
-      context.gesture.off(triggerOn, this._triggerOn);
-      context.gesture.off(triggerOff, this._triggerOff);
-    }
     _initShow() {
       const { props } = this;
       const { defaultItem } = props;
@@ -156,20 +144,6 @@ export default (View) => {
         this.hide();
       }
     };
-    _initEvent() {
-      const { context, props } = this;
-      const { triggerOn = 'press', triggerOff = 'pressend', alwaysShow = false } = props;
-      context.gesture.on(triggerOn, (ev) => {
-        const { points } = ev;
-        this.show(points[0], ev);
-      });
-
-      context.gesture.on(triggerOff, (_ev) => {
-        if (!alwaysShow) {
-          this.hide();
-        }
-      });
-    }
 
     show(point, _ev?) {
       const { props } = this;
@@ -225,14 +199,48 @@ export default (View) => {
 
     render() {
       const { props, state } = this;
-      const { visible } = props;
+      const {
+        visible,
+        coord,
+        triggerOn = 'press',
+        triggerOff = 'pressend',
+        alwaysShow = false,
+      } = props;
       if (visible === false) {
         return null;
       }
       const { records } = state;
-      if (!records || !records.length) return null;
+      const { width, height, left, top } = coord;
 
-      return <View {...props} records={records} />;
+      return (
+        <group>
+          <rect
+            style={{
+              zIndex: 10,
+              x: left,
+              y: top,
+              width,
+              height,
+              fill: 'transparent',
+            }}
+            onPress={(ev) => {
+              if (triggerOn !== 'press') return;
+              const { points } = ev;
+              this.show(points[0], ev);
+            }}
+            onPressEnd={() => {
+              if (alwaysShow || triggerOff !== 'pressend') this.hide();
+            }}
+            onClick={(ev) => {
+              if (triggerOn !== 'click') return;
+              const { points } = ev;
+              this.show(points[0], ev);
+            }}
+          ></rect>
+
+          {records && records.length && <View {...props} records={records} />}
+        </group>
+      );
     }
   };
 };

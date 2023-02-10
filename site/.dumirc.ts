@@ -146,7 +146,7 @@ export default defineConfig({
             zh: '开始使用',
             en: 'Getting Started',
           },
-          link: `/docs/tutorial/getting-started`,
+          link: `/tutorial/getting-started`,
           type: 'primary',
         },
       ],
