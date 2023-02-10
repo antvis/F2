@@ -1,9 +1,7 @@
 import Base from './base';
 import { Range, Option } from './types';
-import { rotate as mat2dRotate } from 'gl-matrix/mat2d'
-import { length as vec2Length, transformMat2d as vec2TransformMat2d  } from 'gl-matrix/vec2';
+import { mat2d, vec2 } from 'gl-matrix';
 import { vec2Zero, vec2AngleTo } from '../util/vector';
-import type { mat2d, vec2 } from 'gl-matrix';
 
 interface PolarOption extends Option {
   radius: number; // 内半径比例
@@ -81,10 +79,10 @@ class Polar extends Base {
 
     const m = ([1, 0, 0, 1, 0, 0] as unknown) as mat2d;
 
-    mat2dRotate(m, m, xStart);
+    mat2d.rotate(m, m, xStart);
 
     let startV = ([1, 0] as unknown) as vec2;
-    vec2TransformMat2d(startV, startV, m);
+    vec2.transformMat2d(startV, startV, m);
     startV = [startV[0], startV[1]];
 
     const pointV = ([point.x - center.x, point.y - center.y] as unknown) as vec2;
@@ -99,7 +97,7 @@ class Polar extends Base {
     if (Math.abs(theta - Math.PI * 2) < 0.001) {
       theta = 0;
     }
-    const l = vec2Length(pointV);
+    const l = vec2.length(pointV);
     let percentX = theta / (xEnd - xStart);
     percentX = xEnd - xStart > 0 ? percentX : -percentX;
     const percentY = (l - yStart) / (yEnd - yStart);
