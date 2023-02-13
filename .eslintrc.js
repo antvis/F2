@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-namespace': 0,
+    '@typescript-eslint/no-explicit-any': 0,
   },
   settings: {
     'import/parsers': {
