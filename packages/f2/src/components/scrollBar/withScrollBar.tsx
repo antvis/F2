@@ -1,5 +1,5 @@
 import { Component, jsx } from '@antv/f-engine';
-import Zoom, { ZoomProps } from '../zoom';
+import { ZoomProps } from '../zoom';
 import { ChartChildProps } from '../../chart';
 
 export interface ScrollBarProps extends ZoomProps {

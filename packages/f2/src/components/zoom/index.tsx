@@ -472,7 +472,7 @@ export default (View) => {
               this.onPan(ev);
               onPan(ev);
             }}
-            onPanEnd={(ev) => {
+            onPanEnd={() => {
               if (pan === false) return;
               this.onEnd();
               onPanEnd({ scale });

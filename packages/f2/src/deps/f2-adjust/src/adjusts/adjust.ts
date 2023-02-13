@@ -148,7 +148,7 @@ export default abstract class Adjust {
   }
 
   /** @override */
-  protected adjustDim(dim: string, values: number[], data: Data[], index?: number): void {}
+  protected adjustDim(_dim: string, _values: number[], _data: Data[], _index?: number): void {}
 
   /**
    * 获取可调整度量对应的值
