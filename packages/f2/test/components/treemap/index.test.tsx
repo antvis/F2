@@ -2,6 +2,7 @@ import { Polar } from '../../../src/coord';
 import { Canvas, Treemap, jsx } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 const context = createContext();
+
 const data = [
   {
     name: '贵州茅台',
@@ -54,7 +55,6 @@ const data = [
     rate: 0,
   },
 ];
-
 describe('Treemap', () => {
   it('render', async () => {
     const onClick = jest.fn();
@@ -62,16 +62,6 @@ describe('Treemap', () => {
       <Canvas context={context} pixelRatio={1}>
         <Treemap
           data={data}
-          coord={
-            {
-              // type: 'polar'
-              // transposed: true,
-              // left: 100,
-              // top: 100,
-              // right: 100,
-              // bottom: 100,
-            }
-          }
           color={{
             field: 'name',
           }}
@@ -91,6 +81,29 @@ describe('Treemap', () => {
 
     await delay(100);
     expect(onClick.mock.calls.length).toBe(1);
-    expect(onClick.mock.calls[0][0].origin).toEqual({ name: '五粮液', value: 0.13, rate: -0.1 });
+    expect(onClick.mock.calls[0][0].origin).toEqual({ name: '中国平安', value: 0.06, rate: 0.1 });
+  });
+  it('space ', async () => {
+    const onClick = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={2}
+          onClick={onClick}
+          label={true}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 });

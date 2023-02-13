@@ -24,13 +24,13 @@ export interface TooltipProps {
    */
   padding?: string;
   /**
-   * 显示事件名，默认为 press, 可以为 touchstart 等
+   * 显示事件名，默认为 press
    */
-  triggerOn?: string;
+  triggerOn?: 'press' | 'click';
   /**
-   * 消失的事件名，默认为 pressend, 可以为 touchend 等
+   * 消失的事件名，默认为 pressend
    */
-  triggerOff?: string;
+  triggerOff?: 'pressend';
   /**
    * 是否一直显示
    */
