@@ -5,6 +5,7 @@ import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 import Theme from '../../theme';
 import { Data, DataRecord } from '../../chart/Data';
 import { CoordProps } from '../../chart/Coord';
+import { deepMix } from '@antv/util';
 
 export interface ColorAttrObject {
   field: string;
@@ -26,7 +27,17 @@ export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
   value: string;
   coord?: CoordProps;
   color?: ColorAttrObject;
+  space?: number;
+  theme?: Record<string, any>;
   onClick?: (record: RecordNode<TRecord>) => void;
+}
+
+interface TreeLayout {
+  (arg: any): any;
+  tile?: (arg: any) => this;
+  round?: (arg: boolean) => this;
+  size?: (arg: [number, number]) => this;
+  paddingInner?: (arg: number) => this;
 }
 
 export default (View) => {
@@ -40,10 +51,14 @@ export default (View) => {
 
     constructor(props: IProps, context) {
       super(props, context);
-      const { color, data } = props;
+      const { color, data, theme } = props;
+
+      const { px2hd } = context;
+      context.theme = deepMix(px2hd(Theme), theme);
+
       this.coord = new CoordController();
       this.color = new Category({
-        range: Theme.colors,
+        range: context.theme.colors,
         ...color,
         data,
       });
@@ -59,7 +74,8 @@ export default (View) => {
 
     treemapLayout() {
       const { props, coord, color: colorAttr } = this;
-      const { data, value /* space = 0 */ } = props;
+      const { width, height } = coord.getCoord();
+      const { data, value, space = 0 } = props;
 
       const root = hierarchy({ children: data })
         .sum(function(d) {
@@ -67,14 +83,13 @@ export default (View) => {
         })
         .sort((a, b) => b[value] - a[value]);
 
-      const treemapLayout = treemap()
+      const treemapLayout = (treemap as () => TreeLayout)()
         // 默认treemapSquarify
         .tile(treemapBinary)
-        // .size([1, 1])
-        // @ts-ignore
-        .round(false);
-      // .padding(space)
-      // .paddingInner(space);
+        .round(false)
+        .size([width, height])
+        // .padding(1);
+        .paddingInner(space);
       // .paddingOuter(options.paddingOuter)
       // .paddingTop(options.paddingTop)
       // .paddingRight(options.paddingRight)
@@ -84,10 +99,12 @@ export default (View) => {
       return nodes.children.map((item) => {
         const { data, x0, y0, x1, y1 } = item;
         const color = colorAttr.mapping(data[colorAttr.field]);
-        const rect = coord.getCoord().convertRect({
-          x: [x0, x1],
-          y: [y0, y1],
-        });
+        const rect = {
+          xMin: x0,
+          xMax: x1,
+          yMin: y0,
+          yMax: y1,
+        };
         return {
           key: data.key,
           origin: data,
