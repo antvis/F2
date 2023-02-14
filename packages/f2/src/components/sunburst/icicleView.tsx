@@ -1,7 +1,7 @@
 import { jsx } from '@antv/f-engine';
 
 export default (props) => {
-  const { node } = props;
+  const { node, onClick } = props;
   const { children } = node;
 
   const renderNodes = (nodes) => {
@@ -10,7 +10,7 @@ export default (props) => {
         {nodes.map((node) => {
           const { xMin, xMax, yMin, yMax, color, children } = node;
           return (
-            <group>
+            <group onClick={onClick}>
               <rect
                 attrs={{
                   x: xMin,

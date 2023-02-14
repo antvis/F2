@@ -158,7 +158,6 @@ class Geometry<
     super.didMount();
     // 更新 attrController
     this.attrController.attrsRange = this._getThemeAttrsRange();
-    this._initEvent();
   }
 
   _createAttrs() {
@@ -378,20 +377,6 @@ class Geometry<
         });
       });
     }
-  }
-
-  _initEvent() {
-    const { context, props } = this;
-    ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
-      (eventName) => {
-        if (props[eventName]) {
-          context.gesture.on(eventName.substr(2).toLowerCase(), (ev) => {
-            ev.geometry = this;
-            props[eventName](ev);
-          });
-        }
-      }
-    );
   }
 
   getY0Value() {

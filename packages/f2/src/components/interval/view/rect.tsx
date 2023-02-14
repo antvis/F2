@@ -2,7 +2,7 @@ import { deepMix } from '@antv/util';
 import { jsx } from '@antv/f-engine';
 
 export default (props) => {
-  const { records, animation, y0, clip } = props;
+  const { records, animation, y0, clip, onClick } = props;
   return (
     <group
       attrs={{
@@ -29,6 +29,7 @@ export default (props) => {
                     fill: color,
                     ...shape,
                   }}
+                  onClick={onClick}
                   animation={deepMix(
                     {
                       appear: {

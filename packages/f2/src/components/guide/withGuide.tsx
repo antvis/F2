@@ -35,21 +35,7 @@ export default (View: ComponentType) => {
       this.guideBBox = this.getGuideBBox();
     }
 
-    didMount() {
-      const { context, props } = this;
-      const { onClick } = props;
-
-      context.gesture.on('click', (ev) => {
-        const { x, y } = ev;
-        const shape = this.triggerRef.current;
-        if (!shape || shape.isDestroyed()) return;
-        const bbox = shape.getBBox();
-        if (isInBBox(bbox, { x, y })) {
-          ev.shape = shape;
-          onClick && onClick(ev);
-        }
-      });
-    }
+    didMount() {}
 
     willUpdate() {
       this.guideBBox = this.getGuideBBox();
@@ -119,24 +105,30 @@ export default (View: ComponentType) => {
 
     render() {
       const { props, context, guideBBox } = this;
-      const { coord, records = [], animation, chart, style } = props;
+      const { coord, records = [], animation, chart, style, onClick } = props;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
 
       return (
-        <View
-          triggerRef={this.triggerRef}
-          points={points}
-          theme={theme}
-          coord={coord}
-          {...props}
-          canvasWidth={width}
-          canvasHeight={height}
-          guideBBox={guideBBox}
-          style={isFunction(style) ? style(points, chart) : style}
-          animation={isFunction(animation) ? animation(points, chart) : animation}
-        />
+        <group
+          onClick={(ev) => {
+            onClick && onClick(ev);
+          }}
+        >
+          <View
+            triggerRef={this.triggerRef}
+            points={points}
+            theme={theme}
+            coord={coord}
+            {...props}
+            canvasWidth={width}
+            canvasHeight={height}
+            guideBBox={guideBBox}
+            style={isFunction(style) ? style(points, chart) : style}
+            animation={isFunction(animation) ? animation(points, chart) : animation}
+          />
+        </group>
       );
     }
   };
