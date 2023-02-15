@@ -31,7 +31,7 @@ const getTicks = (
   return ticks;
 };
 
-export interface GuageProps {
+export interface GaugeProps {
   startAngle?: number;
   endAngle?: number;
   tickCount?: number;
@@ -40,11 +40,12 @@ export interface GuageProps {
   r?: number | string;
   r0?: number | string;
   center?: Point;
-  percent?: number;
+  ticks?: Tick[];
+  percent: number;
 }
 
-export default (View: ComponentType) => {
-  return class Guage<IProps extends GuageProps = GuageProps> extends Component<IProps> {
+const withGauge = <IProps extends GaugeProps = GaugeProps>(View: ComponentType<IProps>) => {
+  return class Gauge<P extends IProps = IProps> extends Component<P> {
     render() {
       const { props, context } = this;
       const { startAngle, endAngle, tickCount, center, r, tickOffset, tickLength } = props;
@@ -62,3 +63,5 @@ export default (View: ComponentType) => {
     }
   };
 };
+
+export default withGauge;
