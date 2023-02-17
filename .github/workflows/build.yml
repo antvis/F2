@@ -1,0 +1,37 @@
+name: master build
+
+on:
+  push:
+    branches:
+      - v5.0.x
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: install
+        run: yarn install
+
+      - name: build
+        run: npm run build
+        env:
+          CI: false
+
+      - name: save build
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: |
+            packages/*/dist/*.js
+            !**/node_modules/**
