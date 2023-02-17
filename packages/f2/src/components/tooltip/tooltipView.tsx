@@ -327,17 +327,24 @@ const RenderLabel = (props) => {
           })}
         </rect>
       </group>
-      <polygon
-        ref={arrowRef}
-        attrs={{
-          points: [
-            [x - arrowWidth, coordTop],
-            [x + arrowWidth, coordTop],
-            [x, arrowWidth + coordTop],
-          ],
-          fill: background.fill,
+      <group
+        style={{
+          x: coordLeft,
+          y: coordTop,
         }}
-      />
+      >
+        <polygon
+          ref={arrowRef}
+          style={{
+            points: [
+              [x - arrowWidth, 0],
+              [x + arrowWidth, 0],
+              [x, arrowWidth],
+            ],
+            fill: background.fill,
+          }}
+        />
+      </group>
     </group>
   );
 };
@@ -379,7 +386,7 @@ export default class TooltipView extends Component {
     const offset = Math.min(coordTop, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
 
     rect.setLocalPosition(offsetX, -offset);
-    arrowRef.current.translate(0, height - offset);
+    arrowRef.current.setLocalPosition(offsetX + halfWidth, arrowWidth);
   }
   didMount() {
     this._position();

@@ -121,6 +121,7 @@ export default (View) => {
       const { scale } = this;
       const { onInit } = this.props;
       onInit({ scale });
+      this._bindEvents();
     }
 
     willReceiveProps(nextProps: P): void {
@@ -143,7 +144,6 @@ export default (View) => {
       const { minCount, range } = props;
       let valueLength = Number.MIN_VALUE;
       const cacheRange = {};
-
       each(dims, (dim) => {
         const scale = this._getScale(dim);
         const { values } = scale;
@@ -164,6 +164,57 @@ export default (View) => {
 
     didUnmount(): void {
       this.loop && cancelAnimationFrame(this.loop);
+    }
+
+    _bindEvents() {
+      const { scale } = this;
+      const {
+        chart,
+        onPinchStart,
+        onPanStart,
+        onPanEnd,
+        pan,
+        pinch,
+        swipe,
+        onPan,
+        onPinch,
+        onPinchEnd,
+      } = this.props;
+
+      // 统一绑定事件
+      if (pan !== false) {
+        chart.on('panstart', () => {
+          this.onStart();
+          onPanStart({ scale });
+        });
+        chart.on('pan', (ev) => {
+          this.onPan(ev);
+          onPan(ev);
+        });
+        chart.on('panend', () => {
+          this.onEnd();
+          onPanEnd({ scale });
+        });
+      }
+
+      if (pinch !== false) {
+        chart.on('pinchstart', () => {
+          this.onStart();
+          onPinchStart();
+        });
+        chart.on('pinch', (ev) => {
+          this.onPinch(ev);
+          onPinch(ev);
+        });
+        chart.on('pinchend', () => {
+          this.onEnd();
+          onPinchEnd({ scale });
+        });
+      }
+
+      if (swipe !== false) {
+        chart.on('swipe', this.onSwipe);
+      }
     }
 
     onStart = () => {
@@ -436,70 +487,7 @@ export default (View) => {
     }
 
     render() {
-      const { scale } = this;
-      const {
-        coord,
-        onPinchStart,
-        onPanStart,
-        onPanEnd,
-        pan,
-        pinch,
-        swipe,
-        onPan,
-        onPinch,
-        onPinchEnd,
-      } = this.props;
-      const { width, height, left, top } = coord;
-
-      return (
-        <group>
-          <rect
-            style={{
-              zIndex: 10,
-              x: left,
-              y: top,
-              width,
-              height,
-              fill: 'transparent',
-            }}
-            onPanStart={() => {
-              if (pan === false) return;
-              this.onStart();
-              onPanStart({ scale });
-            }}
-            onPan={(ev) => {
-              if (pan === false) return;
-              this.onPan(ev);
-              onPan(ev);
-            }}
-            onPanEnd={() => {
-              if (pan === false) return;
-              this.onEnd();
-              onPanEnd({ scale });
-            }}
-            onPinchStart={() => {
-              if (pinch === false) return;
-              this.onStart();
-              onPinchStart();
-            }}
-            onPinch={(ev) => {
-              if (pinch === false) return;
-              this.onPinch(ev);
-              onPinch(ev);
-            }}
-            onPinchEnd={() => {
-              if (pinch === false) return;
-              this.onEnd();
-              onPinchEnd({ scale });
-            }}
-            onSwipe={(ev) => {
-              if (swipe === false) return;
-              this.onSwipe(ev);
-            }}
-          />
-          <View {...this.props} {...this.state} />
-        </group>
-      );
+      return <View {...this.props} {...this.state} />;
     }
   };
 };

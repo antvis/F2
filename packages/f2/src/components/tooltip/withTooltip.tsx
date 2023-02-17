@@ -104,6 +104,14 @@ export default (View) => {
 
     didMount() {
       this._initShow();
+      this._initEvent();
+    }
+
+    _initEvent() {
+      const { chart, triggerOn = 'press', triggerOff = 'pressend' } = this.props;
+
+      chart.on(triggerOn, this._triggerOn);
+      chart.on(triggerOff, this._triggerOff);
     }
 
     willReceiveProps(nextProps) {
@@ -133,8 +141,8 @@ export default (View) => {
       }, 0);
     }
     _triggerOn = (ev) => {
-      const { points } = ev;
-      this.show(points[0], ev);
+      const { x, y } = ev;
+      this.show({ x, y }, ev);
     };
     _triggerOff = () => {
       const {
@@ -199,48 +207,13 @@ export default (View) => {
 
     render() {
       const { props, state } = this;
-      const {
-        visible,
-        coord,
-        triggerOn = 'press',
-        triggerOff = 'pressend',
-        alwaysShow = false,
-      } = props;
+      const { visible } = props;
       if (visible === false) {
         return null;
       }
       const { records } = state;
-      const { width, height, left, top } = coord;
 
-      return (
-        <group>
-          <rect
-            style={{
-              zIndex: 10,
-              x: left,
-              y: top,
-              width,
-              height,
-              fill: 'transparent',
-            }}
-            onPress={(ev) => {
-              if (triggerOn !== 'press') return;
-              const { points } = ev;
-              this.show(points[0], ev);
-            }}
-            onPressEnd={() => {
-              if (alwaysShow || triggerOff !== 'pressend') this.hide();
-            }}
-            onClick={(ev) => {
-              if (triggerOn !== 'click') return;
-              const { points } = ev;
-              this.show(points[0], ev);
-            }}
-          ></rect>
-
-          {records && records.length && <View {...props} records={records} />}
-        </group>
-      );
+      return records && records.length && <View {...props} records={records} />;
     }
   };
 };

@@ -5,6 +5,7 @@ module.exports = {
   collectCoverage: false,
   collectCoverageFrom: ['packages/*/src/**/*.{ts,tsx,js}', '!**/node_modules/**'],
   modulePathIgnorePatterns: ['packages/*/dist'],
+  moduleFileExtensions: ['tsx','ts', 'js', 'jsx', 'json'],
   testPathIgnorePatterns: [],
   testRegex: '/test/.*\\.test\\.tsx?$',
   setupFilesAfterEnv: ['<rootDir>/jest-setup.js'],

@@ -5,6 +5,10 @@ import {
   LayoutProps,
   Component,
   Children,
+  jsx,
+  Gesture,
+  Ref,
+  createRef,
 } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
@@ -13,6 +17,7 @@ import ScaleController from '../controller/scale';
 import Theme from '../theme';
 import { Data, DataRecord, DataRecordScale } from './Data';
 import { CoordType, CoordProps } from './Coord';
+import { isInBBox } from '../util';
 
 export interface Point {
   x: number;
@@ -62,6 +67,8 @@ class Chart<
   public coord: CoordController;
   public scale: ScaleController;
 
+  public gesture: Gesture;
+  public coordRef: Ref;
   constructor(props: IProps, context: IContext) {
     super(props);
 
@@ -75,7 +82,7 @@ class Chart<
 
     this.scale = new ScaleController(data);
     this.coord = new CoordController();
-
+    this.coordRef = createRef();
     // state
     this.state = {
       filters: {},
@@ -137,6 +144,18 @@ class Chart<
     this.coord.create(this.props.coord);
   }
 
+  on(eventName: string, listener: (...args: any[]) => void) {
+    this.gesture = this.gesture ? this.gesture : new Gesture(this.coordRef.current);
+    this.gesture.on(eventName, (ev) => {
+      const { x, y } = ev;
+      isInBBox(this.getCoord(), { x, y }) && listener(ev);
+    });
+  }
+
+  off(eventName: string, listener: (...args: any[]) => void) {
+    this.gesture.off(eventName, listener);
+  }
+
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
     this.coord.useLayout(layout);
@@ -185,7 +204,8 @@ class Chart<
   }
 
   getGeometrys() {
-    const { children } = this;
+    // @ts-ignore
+    const { children } = this.children;
     const geometrys: Component[] = [];
     Children.toArray(children).forEach((element) => {
       if (!element) return false;
@@ -310,17 +330,29 @@ class Chart<
     const layout = this.getLayout();
     const coord = this.getCoord();
     const scaleOptions = scale.getOptions();
+    const { width, height } = layout;
 
-    return Children.map(children, (child) => {
-      return Children.cloneElement(child, {
-        data,
-        chart: this,
-        layout,
-        coord,
-        // 传 scaleOptions 是为了让 child 感知到 props 的的变化，合理的做法的应该是传递 scale，但是现在无法感知到 scale 的变化, 所以暂时只能先这么处理，scaleOptions 子组件目前是使用不到的。
-        scaleOptions,
-      });
-    });
+    return (
+      <group
+        ref={this.coordRef}
+        style={{
+          width: width,
+          height: height,
+          fill: 'transparent',
+        }}
+      >
+        {Children.map(children, (child) => {
+          return Children.cloneElement(child, {
+            data,
+            chart: this,
+            layout,
+            coord,
+            // 传 scaleOptions 是为了让 child 感知到 props 的的变化，合理的做法的应该是传递 scale，但是现在无法感知到 scale 的变化, 所以暂时只能先这么处理，scaleOptions 子组件目前是使用不到的。
+            scaleOptions,
+          });
+        })}
+      </group>
+    );
   }
 }
 
