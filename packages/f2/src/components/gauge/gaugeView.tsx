@@ -1,4 +1,5 @@
 import { jsx } from '@antv/f-engine';
+import { GaugeProps } from './withGauge';
 
 export interface Point {
   x: number;
@@ -11,16 +12,9 @@ export interface Tick {
   end: Point;
 }
 
-export interface GaugeViewProps {
-  center: Point;
-  startAngle: number;
-  endAngle: number;
-  r: number | string;
-  percent: number;
-  ticks: Tick[];
-}
+export { GaugeProps };
 
-export default (props: GaugeViewProps) => {
+export default (props: GaugeProps) => {
   const { center, startAngle, endAngle, r, percent, ticks } = props;
   const { x, y } = center;
   const diff = endAngle - startAngle;
