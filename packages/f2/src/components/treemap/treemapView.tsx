@@ -1,6 +1,17 @@
-import { jsx } from '@antv/f-engine';
+import { jsx, TextStyleProps } from '@antv/f-engine';
+import Coord from '../../coord/base';
+import { DataRecord } from '../../chart/Data';
+import { TreemapProps as TreemapBaseProps, RecordNode } from './withTreemap';
 
-export default (props) => {
+export interface TreemapProps<TRecord extends DataRecord = DataRecord>
+  extends TreemapBaseProps<TRecord> {
+  label?: boolean | TextStyleProps;
+  onClick?: (record: RecordNode<TRecord>) => void;
+}
+
+export default (
+  props: TreemapProps & { coord: Coord } // Coord 在 withTreemap 被转成 Coord 类型了，所以这里需要重新定义
+) => {
   const { nodes, coord, onClick, label = false } = props;
 
   if (coord.isPolar) {
@@ -79,7 +90,7 @@ export default (props) => {
                   fill: 'white',
                   textAlign: 'center',
                   textBaseline: 'middle',
-                  ...label,
+                  ...(label as TextStyleProps),
                 }}
               />
             )}

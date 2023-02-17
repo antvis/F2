@@ -1,9 +1,9 @@
-import { jsx, Ref, Component } from '@antv/f-engine';
+import { jsx, Component, ComponentType } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 import Theme from '../../theme';
-import { Data, DataRecord } from '../../chart/Data';
+import { Data, DataRecord, DataField } from '../../chart/Data';
 import { CoordProps } from '../../chart/Coord';
 import { deepMix } from '@antv/util';
 
@@ -14,7 +14,8 @@ export interface ColorAttrObject {
 }
 
 export interface RecordNode<TRecord extends DataRecord = DataRecord> {
-  color: string | number;
+  key: string | number | null | undefined;
+  color: DataField<TRecord> | string;
   origin: TRecord;
   xMax: number;
   xMin: number;
@@ -24,12 +25,12 @@ export interface RecordNode<TRecord extends DataRecord = DataRecord> {
 
 export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
   data: Data<TRecord>;
-  value: string;
+  value: DataField<TRecord> | string;
   coord?: CoordProps;
   color?: ColorAttrObject;
   space?: number;
   theme?: Record<string, any>;
-  onClick?: (record: RecordNode<TRecord>) => void;
+  nodes?: RecordNode<TRecord>[];
 }
 
 interface TreeLayout {
@@ -40,16 +41,15 @@ interface TreeLayout {
   paddingInner?: (arg: number) => this;
 }
 
-export default (View) => {
+const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: ComponentType<IProps>) => {
   return class Treemap<
     TRecord extends DataRecord = DataRecord,
-    IProps extends TreemapProps<TRecord> = TreemapProps<TRecord>
-  > extends Component<IProps> {
+    P extends TreemapProps<TRecord> = TreemapProps<TRecord>
+  > extends Component<P & IProps> {
     coord: CoordController;
     color: Category;
-    triggerRef: Ref[];
 
-    constructor(props: IProps, context) {
+    constructor(props: P & IProps, context) {
       super(props, context);
       const { color, data, theme } = props;
 
@@ -72,7 +72,7 @@ export default (View) => {
       coord.create(coordOption);
     }
 
-    treemapLayout() {
+    treemapLayout(): RecordNode[] {
       const { props, coord, color: colorAttr } = this;
       const { width, height } = coord.getCoord();
       const { data, value, space = 0 } = props;
@@ -121,3 +121,5 @@ export default (View) => {
     }
   };
 };
+
+export default withTreemap;

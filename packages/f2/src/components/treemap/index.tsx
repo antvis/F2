@@ -1,5 +1,6 @@
-import withTreemap, { TreemapProps } from './withTreemap';
-import TreemapView from './treemapView';
+import withTreemap from './withTreemap';
+import TreemapView, { TreemapProps } from './treemapView';
 
 export { TreemapProps, withTreemap, TreemapView };
-export default withTreemap(TreemapView);
+
+export default withTreemap<TreemapProps>(TreemapView);
