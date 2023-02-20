@@ -12,10 +12,10 @@ order: 13
 npm i @antv/f2 --save
 
 # 安装小程序组件
-npm i @antv/f2-my --save
+npm i @antv/f-my --save
 
 # 微信小程序
-npm i @antv/f2-wx --save
+npm i @antv/f-wx --save
 
 ```
 
@@ -56,7 +56,7 @@ page.json
 ```json
 {
   "usingComponents": {
-    "f2": "@antv/f2-my"
+    "f2": "@antv/f-my"
   }
 }
 ```
@@ -145,7 +145,7 @@ Page({
 
 ### demo
 
-- 参考示例：https://github.com/antvis/F2/tree/master/packages/my/examples
+- 参考示例：https://github.com/antvis/FEngine/tree/master/packages/f-my/examples
 
 ## 微信小程序
 
@@ -156,7 +156,7 @@ page.json
 ```json
 {
   "usingComponents": {
-    "f2": "@antv/f2-wx"
+    "f2": "@antv/f-wx"
   }
 }
 ```
@@ -245,12 +245,4 @@ Page({
 
 ### demo
 
-- 参考示例：https://github.com/antvis/F2/tree/master/packages/wx/examples
-
-## 更多
-
-F2 是基于 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) 的标准接口绘制的，所以只要能提供标准 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) 接口的实现对象，F2 就能进行图表绘制
-
-### 封装思路
-
-因为在小程序中给的 `context` 对象不是标准的 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) , 所以封装的核心思路是将 `context` 和 [CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D) 对齐，所以 F2 针对支付宝和微信这 2 个常见的场景做了一层 `context` 的对齐，详情可见: https://github.com/antvis/f2-context, 其他小程序也可以按同样的思路封装
+- 参考示例：https://github.com/antvis/FEngine/tree/master/packages/f-wx/examples

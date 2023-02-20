@@ -59,6 +59,14 @@ export default defineConfig({
         order: 4,
       },
       {
+        slug: 'tutorial/framework',
+        title: {
+          zh: '多端/框架 - Framework',
+          en: 'Framework',
+        },
+        order: 70,
+      },
+      {
         slug: 'tutorial/advanced',
         title: {
           zh: '进阶 - Advanced',
@@ -67,7 +75,7 @@ export default defineConfig({
         order: 80,
       },
       {
-        slug: 'docstutorial/question',
+        slug: 'tutorial/question',
         title: {
           zh: '常见问题 - Question',
           en: 'Question',

@@ -9,7 +9,7 @@ order: 11
 
 ```bash
 npm install @antv/f2 --save
-npm install @antv/f2-react --save
+npm install @antv/f-react --save
 ```
 
 2. **完整示例**
@@ -17,7 +17,7 @@ npm install @antv/f2-react --save
 ```jsx
 import React from 'react';
 import ReactDOM from 'react';
-import Canvas from '@antv/f2-react';
+import Canvas from '@antv/f-react';
 import { Chart, Interval } from '@antv/f2';
 
 const data = [
@@ -42,5 +42,5 @@ ReactDOM.render(
 
 **完整示例可参考**
 
-- codesandbox: https://codesandbox.io/s/f2-react-gd3e84
-- https://github.com/antvis/F2/tree/master/packages/react/examples
+- codesandbox: https://codesandbox.io/s/f-react-forked-lcrxqf
+- https://github.com/antvis/FEngine/tree/master/packages/f-react/examples

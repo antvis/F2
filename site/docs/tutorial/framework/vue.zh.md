@@ -3,7 +3,7 @@ title: 如何在 Vue 中使用
 order: 12
 ---
 
-为了方便 Vue 项目的使用，F2 也封装了一个 vue 的组件
+为了方便 Vue 项目的使用，Fengine 也封装了一个 vue 的组件
 
 ## Usage
 
@@ -11,7 +11,7 @@ order: 12
 
 ```bash
 npm install @antv/f2 --save
-npm install @antv/f2-vue --save
+npm install @antv/f-vue --save
 ```
 
 ### 2. 配置 F2 的 JSX 编译
@@ -84,7 +84,7 @@ export default defineConfig({
 ```vue
 <script>
 import { toRaw } from 'vue';
-import Canvas from '@antv/f2-vue';
+import Canvas from '@antv/f-vue';
 import { Chart, Interval, Axis } from '@antv/f2';
 
 const data1 = [
@@ -142,5 +142,5 @@ export default {
 
 **完整示例可参考**
 
-- codesandbox: https://codesandbox.io/s/f2-vue-9yywsh?file=/src/App.vue
-- https://github.com/antvis/F2/tree/master/packages/vue/examples
+- codesandbox: https://codesandbox.io/s/f-vue-wlwtkb?file=/src/App.vue
+- https://github.com/antvis/FEngine/tree/master/packages/f-vue/examples
