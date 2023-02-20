@@ -1,7 +1,15 @@
 import { jsx } from '@antv/f-engine';
 
 export default (props) => {
-  const { lineStyle, anchorStyle, labels, label1OffsetY, label2OffsetY, triggerRef } = props;
+  const {
+    lineStyle,
+    anchorStyle,
+    labels,
+    label1OffsetY,
+    label2OffsetY,
+    triggerRef,
+    onClick,
+  } = props;
 
   return (
     <group ref={triggerRef}>
@@ -10,7 +18,7 @@ export default (props) => {
         const end = points[points.length - 1];
 
         return (
-          <group>
+          <group onClick={onClick}>
             {/* 锚点 */}
             <circle
               attrs={{

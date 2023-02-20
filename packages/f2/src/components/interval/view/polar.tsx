@@ -2,7 +2,7 @@ import { jsx } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 
 export default (props) => {
-  const { coord, records, animation } = props;
+  const { coord, records, animation, onClick } = props;
   const { center, startAngle, endAngle, radius } = coord;
   return (
     <group
@@ -51,6 +51,7 @@ export default (props) => {
                     r: yMax,
                     ...shape,
                   }}
+                  onClick={onClick}
                   animation={deepMix(
                     {
                       update: {

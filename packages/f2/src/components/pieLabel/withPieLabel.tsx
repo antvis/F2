@@ -1,6 +1,5 @@
-import { jsx, Component, Ref } from '@antv/f-engine';
-import { deepMix, isArray, isFunction } from '@antv/util';
-import { isInBBox } from '../../util';
+import { jsx, Component } from '@antv/f-engine';
+import { deepMix, isFunction } from '@antv/util';
 import { ChartChildProps, Point } from '../../chart';
 
 const DEFAULT_CONFIG = {
@@ -61,16 +60,6 @@ function isFourthQuadrant(angle: number) {
   return angle >= Math.PI && angle < (Math.PI * 3) / 2;
 }
 
-function findShapeByClassName(shape, point, className) {
-  const targetShapes = shape.getElementsByClassName(className);
-  for (let i = 0, len = targetShapes.length; i < len; i++) {
-    const shape = targetShapes[i];
-    if (isInBBox(shape.getBBox(), point)) {
-      return shape;
-    }
-  }
-}
-
 export interface PieLabelProps {
   anchorOffset?: string | number;
   inflectionOffset?: string | number;
@@ -88,11 +77,9 @@ export default (View) => {
   return class PieLabel<IProps extends PieLabelProps = PieLabelProps> extends Component<
     IProps & ChartChildProps
   > {
-    triggerRef: Ref;
     labels: [];
     constructor(props) {
       super(props);
-      this.triggerRef = {};
     }
 
     willMount() {}
@@ -100,9 +87,7 @@ export default (View) => {
     /**
      * 绑定事件
      */
-    didMount() {
-      this._initEvent();
-    }
+    didMount() {}
 
     getLabels(props) {
       const {
@@ -308,38 +293,11 @@ export default (View) => {
       return labels;
     }
 
-    _handleEvent = (ev) => {
-      const { chart, onClick } = this.props;
-      const ele = this.triggerRef.current;
-      const { points, x, y } = ev;
-      const point = points ? points[0] : { x, y };
-
-      const shape = findShapeByClassName(ele, point, 'click');
-      const pieData = chart.getSnapRecords(point);
-
-      if (typeof onClick === 'function') {
-        // 点击label
-        if (shape) {
-          onClick(shape.get('data'));
-        }
-        // 点击饼图
-        else if (isArray(pieData) && pieData.length > 0) {
-          onClick(pieData);
-        }
-      }
-    };
-
-    _initEvent() {
-      const { context, props } = this;
-      const { triggerOn = DEFAULT_CONFIG.triggerOn } = props;
-      context.gesture.on(triggerOn, this._handleEvent);
-    }
-
     render() {
       const { context } = this;
       const props = context.px2hd(deepMix({}, DEFAULT_CONFIG, this.props));
       const labels = this.getLabels(props);
-      return <View labels={labels} {...props} triggerRef={this.triggerRef} />;
+      return <View labels={labels} {...props} />;
     }
   };
 };

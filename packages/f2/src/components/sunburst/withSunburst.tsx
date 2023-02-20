@@ -60,24 +60,7 @@ export default (View) => {
       coord.create(coordOption);
     }
 
-    didMount() {
-      const { props, context } = this;
-      const { onClick } = props;
-      this.triggerRef = [];
-
-      context.gesture.on('click', (ev) => {
-        const { x, y } = ev;
-        const shape = this.triggerRef.find((ref) => {
-          return isInBBox(ref.current.getBBox(), { x, y });
-        });
-        if (shape) {
-          ev.shape = shape;
-          // @ts-ignore
-          ev.payload = shape.payload;
-          onClick && onClick(ev);
-        }
-      });
-    }
+    didMount() {}
 
     _mapping(children) {
       const { color: colorAttr, coord } = this;
