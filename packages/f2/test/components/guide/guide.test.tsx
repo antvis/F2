@@ -125,7 +125,7 @@ describe('Guide ', () => {
     const container = chart.container;
 
     // 10个图例 和1条线
-    expect(container.children[0].children.length).toBe(11);
+    expect(container.children[0].children[0].children.length).toBe(11);
 
     await delay(500);
     expect(context).toMatchImageSnapshot();
@@ -150,7 +150,7 @@ describe('Guide ', () => {
     await delay(0);
 
     const container = chart.container;
-    expect(container.children[0].children.length).toBe(6);
+    expect(container.children[0].children[0].children.length).toBe(6);
 
     await delay(50);
     expect(context).toMatchImageSnapshot();
@@ -182,7 +182,7 @@ describe('Guide ', () => {
     await delay(0);
 
     const container = chart.container;
-    expect(container.children[0].children.length).toBe(6);
+    expect(container.children[0].children[0].children.length).toBe(6);
 
     await delay(50);
     expect(context).toMatchImageSnapshot();
