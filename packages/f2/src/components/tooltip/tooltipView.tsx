@@ -386,7 +386,7 @@ export default class TooltipView extends Component {
     const offset = Math.min(coordTop, height + arrowWidth); // 因为不能超出 canvas 画布区域，所以最大只能是 y
 
     rect.setLocalPosition(offsetX, -offset);
-    arrowRef.current.setLocalPosition(offsetX + halfWidth, arrowWidth);
+    arrowRef.current.setLocalPosition(offsetX + halfWidth, height - offset);
   }
   didMount() {
     this._position();
