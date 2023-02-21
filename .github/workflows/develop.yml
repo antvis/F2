@@ -1,0 +1,28 @@
+name: 🤖 Sync to gh-pages
+
+on:
+  push:
+    branches:
+      - v5.0.x
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn install
+      - run: cd site && yarn install
+      - run: cd site && npm run site:build
+      - run: |
+          cd site/dist
+          git init
+          git config --local user.name antv
+          git config --local user.email antv@antfin.com
+          git add .
+          git commit -m "update site"
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          directory: site/dist
+          branch: gh-pages
+          force: true
