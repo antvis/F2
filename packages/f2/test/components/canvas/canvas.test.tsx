@@ -55,13 +55,13 @@ describe('Canvas', () => {
     expect(rect.getAttribute('fill')).toBe('red');
   });
 
-  it.skip('chart update', async () => {
+  it('chart update', async () => {
     const chartRef = { current: null };
     const context = createContext('基础条形图');
     const width = 300;
     const height = 300;
     const { type, props } = (
-      <Canvas context={context} pixelRatio={1} animate={false} width={300} height={300}>
+      <Canvas context={context} pixelRatio={1} animate={false} width={width} height={height}>
         <Chart ref={chartRef} data={data} coord={{ transposed: true }}>
           <Interval x="genre" y="sold" color="type" />
         </Chart>
