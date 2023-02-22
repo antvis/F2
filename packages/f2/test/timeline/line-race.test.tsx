@@ -18,7 +18,7 @@ const chartData = data.filter((item) => {
 });
 
 const context = createContext('排名折线图', {
-  width: '350px',
+  width: '600px',
   height: '400px',
 });
 

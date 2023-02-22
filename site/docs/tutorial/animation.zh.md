@@ -26,7 +26,7 @@ F2 动画定义与 [Web Animations API](https://developer.mozilla.org/zh-CN/docs
 | `property` | [] | 声明需要变换的属性 |
 | `start` | Keyframe | 开始帧状态 |
 | `end` | Keyframe | 结束帧状态 |
-| `clip` | Clip | 裁剪区域动画，可参见[clip](/zh/docs/tutorial/shape-attrs##裁剪) |
+| `clip` | Clip | 裁剪区域动画，可参见[clip](/docs/tutorial/shape-attrs##裁剪) |
 
 #### easing
 
@@ -115,3 +115,44 @@ F2 动画定义与 [Web Animations API](https://developer.mozilla.org/zh-CN/docs
   }}
 />
 ```
+
+### 其他动画
+
+#### 路径动画
+
+让图形沿着某个路径移动，在 css 中可通过[MotionPath](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Motion_Path)实现，F2 可通过图形标签上设置 offset 属性实现，目前支持 <line/> 和 <polyline>。
+
+```js
+<circle
+  style={{
+    fill: '#808080',
+    r: 10,
+    offset: {
+      type: 'polyline',
+      style: {
+        points: [
+          [0, 3],
+          [50, 10],
+          [130, 80],
+          [250, 40],
+        ],
+      },
+    },
+  }}
+  animation={{
+    appear: {
+      easing: 'quadraticOut',
+      duration: 1000,
+      property: ['offsetDistance'],
+      start: {
+        offsetDistance: 0,
+      },
+      end: {
+        offsetDistance: 1,
+      },
+    },
+  }}
+/>
+```
+
+F2 在组件 Line 中内置了该功能，提供 endView 接口，可设置沿着线段移动的元素，具体可见 [demo](/examples/creative/case/#line-race)
