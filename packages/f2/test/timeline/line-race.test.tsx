@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Timeline, Axis, Line, Interval, TextGuide } from '../../src';
-import { createContext } from '../util';
+import { createContext, delay } from '../util';
 import data from './data/line-race.json';
 
 const countries = [
@@ -18,7 +18,7 @@ const chartData = data.filter((item) => {
 });
 
 const context = createContext('排名折线图', {
-  width: '350px',
+  width: '600px',
   height: '400px',
 });
 
@@ -31,7 +31,7 @@ function EndView(props) {
       }}
     >
       <text
-        attrs={{
+        style={{
           fill: '#808080',
           fontSize: '24px',
           text: `${origin.emoji}${origin.country}`,
@@ -71,5 +71,8 @@ describe('Chart', () => {
 
     const canvas = new Canvas(props);
     await canvas.render();
+
+    await delay(6000);
+    expect(context).toMatchImageSnapshot();
   });
 });

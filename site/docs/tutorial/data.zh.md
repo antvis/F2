@@ -36,7 +36,7 @@ const data = [
 ];
 ```
 
-详见饼图[示例](/zh/examples/pie/basic)。
+详见饼图[示例](/examples#pie-pie)。
 
 ### 区间柱状图
 
@@ -55,4 +55,4 @@ const data = [
 ];
 ```
 
-详见区间柱状图[示例](/zh/examples/column/basic#ranged)。
+详见区间柱状图[示例](/examples#column-column)。

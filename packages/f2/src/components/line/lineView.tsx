@@ -1,14 +1,14 @@
-import { jsx } from '@antv/f-engine';
+import { createRef, jsx } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 
-// function concatPoints(children) {
-//   let result = [];
-//   for (let i = 0; i < children.length; i++) {
-//     const child = children[i];
-//     result = result.concat(child.points);
-//   }
-//   return result;
-// }
+function concatPoints(children) {
+  let result = [];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    result = result.concat(child.points);
+  }
+  return result;
+}
 
 // function formatPoint(point) {
 //   const { y } = point;
@@ -69,13 +69,7 @@ import { deepMix } from '@antv/util';
 // }
 
 export default (props) => {
-  const {
-    records,
-    coord,
-    animation,
-    // endView: EndView,
-    clip,
-  } = props;
+  const { records, coord, animation, endView: EndView, clip } = props;
 
   const { left, top, width, height, center, startAngle, endAngle, radius } = coord as any;
 
@@ -127,6 +121,9 @@ export default (props) => {
     >
       {records.map((record) => {
         const { key, children } = record;
+        const points = concatPoints(children);
+
+        const ref = createRef();
         return (
           <group key={key}>
             {children.map((child) => {
@@ -137,6 +134,7 @@ export default (props) => {
               return (
                 <polyline
                   key={key}
+                  ref={ref}
                   style={{
                     points: fliterPoints.map((point) => {
                       return [point.x, point.y];
@@ -159,9 +157,32 @@ export default (props) => {
                 />
               );
             })}
-            {/* {EndView ? (
-              <AnimationEndView record={record} EndView={EndView} appear={appear} />
-            ) : null} */}
+
+            {EndView ? (
+              <group
+                style={{
+                  offset: ref,
+                }}
+                animation={deepMix(
+                  {
+                    appear: {
+                      easing: 'quadraticOut',
+                      duration: 450,
+                      property: ['offsetDistance'],
+                      start: {
+                        offsetDistance: 0,
+                      },
+                      end: {
+                        offsetDistance: 1,
+                      },
+                    },
+                  },
+                  animation
+                )}
+              >
+                <EndView origin={points[0]?.origin} />
+              </group>
+            ) : null}
           </group>
         );
       })}
