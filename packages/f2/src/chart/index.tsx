@@ -119,13 +119,13 @@ class Chart<
   }
 
   // props 更新
-  willReceiveProps(nextProps: IProps) {
+  willReceiveProps(nextProps: IProps, context) {
     const { scale, coord, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
 
     // style 更新
-    if (!isEqual(nextStyle, lastStyle)) {
+    if (!isEqual(nextStyle, lastStyle) || context !== this.context) {
       const style = this.getStyle(nextProps);
       coord.updateLayout(style);
     }
