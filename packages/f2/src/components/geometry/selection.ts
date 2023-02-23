@@ -46,16 +46,17 @@ class Selection<
   }
 
   didMount() {
-    const { props, state, context } = this;
+    const { props, state } = this;
     const { selection, chart } = props;
     if (!selection) return;
     // 默认为 click
     const { triggerOn = 'click' } = selection;
-    context.gesture.on(triggerOn, (ev) => {
+    chart.on(triggerOn, (ev) => {
       const { points, canvasX: x, canvasY: y } = ev;
       const point = triggerOn === 'click' ? { x, y } : points[0];
       const records = this.getSnapRecords(point);
       const { type = 'single', cancelable = true } = selection;
+
       if (!records || !records.length) {
         if (cancelable) {
           this.setState({
