@@ -146,10 +146,7 @@ class Chart<
 
   on(eventName: string, listener: (...args: any[]) => void) {
     this.gesture = this.gesture ? this.gesture : new Gesture(this.coordRef.current);
-    this.gesture.on(eventName, (ev) => {
-      const { x, y } = ev;
-      isInBBox(this.getCoord(), { x, y }) && listener(ev);
-    });
+    this.gesture.on(eventName, listener);
   }
 
   off(eventName: string, listener: (...args: any[]) => void) {
