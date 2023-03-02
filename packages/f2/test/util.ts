@@ -51,19 +51,13 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
     const clientX = left + x;
     const clientY = top + y;
     // @ts-ignore
-    const event = isTouch(eventType)
-      ? new Touch({
-          clientX,
-          clientY,
-          target: dom,
-          identifier: i,
-        })
-      : {
-          clientX,
-          clientY,
-          target: dom,
-          identifier: i,
-        };
+    const event = new Touch({
+      clientX,
+      clientY,
+      target: dom,
+      identifier: i,
+    });
+
     return event;
   });
 
@@ -93,9 +87,9 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
   }
 
   if (eventType === 'click') {
-    dispatchEvent(dom, 'mousedown', events[0]);
+    dispatchEvent(dom, 'touchstart', touchEvent);
     await delay(50);
-    dispatchEvent(dom, 'mouseup', events[0]);
+    dispatchEvent(dom, 'touchend', touchEvent);
     return;
   }
 };
