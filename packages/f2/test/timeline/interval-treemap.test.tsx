@@ -208,7 +208,7 @@ describe('Chart', () => {
               ref={intervalRef}
               x="genre"
               y="sold"
-              // color="genre"
+              color="genre"
             />
           </Chart>
           <Treemap
