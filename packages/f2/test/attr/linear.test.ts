@@ -22,3 +22,20 @@ describe('attr/category', () => {
     expect(singleMappingResult2).toBe(100);
   });
 });
+
+describe('color', () => {
+  it('color range', () => {
+    const domain = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }]; // 定义域
+    const range = ['#000', '#fff']; // 值域
+
+    const linear = new Linear({
+      field: 'value',
+      data: domain,
+      range,
+    });
+
+    expect(linear.mapping(1)).toBe('rgb(0, 0, 0)');
+    expect(linear.mapping(3)).toBe('rgb(128, 128, 128)');
+    expect(linear.mapping(6)).toBe('rgb(255, 255, 255)');
+  });
+});

@@ -1,7 +1,15 @@
 import { Linear as LinearScale, ScaleConfig } from '../deps/f2-scale/src';
-import { isArray } from '@antv/util';
-import { interpolate } from '../deps/d3-interpolate/src';
+import { isArray, isNumber } from '@antv/util';
+import { interpolateNumber, interpolateRgb } from '../deps/d3-interpolate/src';
 import Base from './base';
+
+// 只处理 number 和 color
+const interpolate = (a, b) => {
+  if (isNumber(b)) {
+    return interpolateNumber(a, b);
+  }
+  return interpolateRgb(a, b);
+};
 
 class Linear extends Base {
   // eslint-disable-next-line
