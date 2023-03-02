@@ -40,6 +40,7 @@
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
     "prettier": "prettier --write './packages/**/*.{ts,tsx}'",
+    "canary": "npm run build && npm run test && lerna publish --canary --dist-tag next",
     "publish": "npm run build && npm run test && lerna publish --dist-tag next",
     "refresh": "lerna clean && yarn && lerna bootstrap",
     "site:build": "cd ./site && npm run site:build",
