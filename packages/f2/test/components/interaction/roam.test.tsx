@@ -46,7 +46,7 @@ describe('全局漫游模式', () => {
       await gestureSimulator(context.canvas, 'touchmove', { x: 130, y: 249 });
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 269 });
-      await delay(300);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -67,7 +67,7 @@ describe('全局漫游模式', () => {
         { x: 114, y: 114 },
         { x: 114, y: 114 },
       ]);
-      await delay(300);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
       await delay(50);
 
@@ -87,7 +87,7 @@ describe('全局漫游模式', () => {
         { x: 160, y: 160 },
         { x: 160, y: 160 },
       ]);
-      await delay(300);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
   });
@@ -140,10 +140,7 @@ describe('全局漫游模式', () => {
       await gestureSimulator(context.canvas, 'touchmove', { x: 130, y: 249 });
       await delay(20);
       await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 269 });
-      await delay(300);
-      await delay(200);
-      await delay(200);
-      await delay(200);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
 
@@ -164,10 +161,7 @@ describe('全局漫游模式', () => {
         { x: 114, y: 114 },
         { x: 114, y: 114 },
       ]);
-      await delay(300);
-      await delay(200);
-      await delay(200);
-      await delay(200);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
 
       // 缩小
@@ -186,7 +180,7 @@ describe('全局漫游模式', () => {
         { x: 160, y: 160 },
         { x: 160, y: 160 },
       ]);
-      await delay(300);
+      await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
   });

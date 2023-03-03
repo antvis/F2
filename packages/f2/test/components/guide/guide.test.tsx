@@ -289,7 +289,7 @@ describe('Guide ', () => {
             color="type"
             animation={{
               appear: {
-                duration: 1000,
+                duration: 100,
                 easing: 'quinticIn',
                 property: ['width', 'y', 'height'],
               },
@@ -313,7 +313,7 @@ describe('Guide ', () => {
                   return {
                     appear: {
                       easing: 'quinticIn',
-                      duration: 1000,
+                      duration: 100,
                       property: ['x'],
                       start: {
                         x: chart.layout.left,
@@ -328,7 +328,7 @@ describe('Guide ', () => {
       </Canvas>
     );
     const chart = new Canvas(props);
-    chart.render();
+    await chart.render();
 
     await delay(1100);
     expect(context).toMatchImageSnapshot();

@@ -4,12 +4,17 @@ const isTouch = (eventType) => {
   return false;
 };
 
-function delay(time) {
+let timeoutId = null;
+function delay(time: number) {
+  clearTimeout(timeoutId);
   const half = Math.round(time / 2);
   return new Promise((resolve) => {
     // 用 2 个 setTimeout 是为了提升 ci 的成功率
-    setTimeout(() => {
-      setTimeout(resolve, half);
+    timeoutId = setTimeout(() => {
+      timeoutId = setTimeout(() => {
+        requestAnimationFrame(resolve);
+        timeoutId = null;
+      }, half);
     }, half);
   });
 }
