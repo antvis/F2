@@ -22,7 +22,7 @@ if (window) {
     if (!document.createTouch) {
       document.createTouch = function(view, target, identifier, pageX, pageY, screenX, screenY) {
         // auto set
-        return new Touch(
+        return CreatTouch(
           target,
           identifier,
           {
@@ -61,18 +61,16 @@ if (window) {
      * @returns {Object} touchPoint
      */
 
-    var Touch = function Touch(target, identifier, pos, deltaX, deltaY) {
+    var CreatTouch = function creatTouch(target, identifier, pos, deltaX, deltaY) {
       deltaX = deltaX || 0;
       deltaY = deltaY || 0;
 
-      this.identifier = identifier;
-      this.target = target;
-      this.clientX = pos.clientX + deltaX;
-      this.clientY = pos.clientY + deltaY;
-      this.screenX = pos.screenX + deltaX;
-      this.screenY = pos.screenY + deltaY;
-      this.pageX = pos.pageX + deltaX;
-      this.pageY = pos.pageY + deltaY;
+      return new Touch({
+        clientX: pos.clientX + deltaX,
+        clientY: pos.clientY + deltaY,
+        target,
+        identifier,
+      });
     };
 
     /**
@@ -159,11 +157,10 @@ if (window) {
       touchEvent.metaKey = mouseEv.metaKey;
       touchEvent.shiftKey = mouseEv.shiftKey;
 
-      touchEvent.touches = getActiveTouches(mouseEv);
       touchEvent.targetTouches = getActiveTouches(mouseEv);
+      touchEvent.touches = getActiveTouches(mouseEv);
       touchEvent.changedTouches = createTouchList(mouseEv);
-
-      eventTarget.dispatchEvent(touchEvent);
+      eventTarget.dispatchEvent(new TouchEvent(eventName, touchEvent));
     }
 
     /**
@@ -173,7 +170,7 @@ if (window) {
      */
     function createTouchList(mouseEv) {
       var touchList = TouchList();
-      touchList.push(new Touch(eventTarget, 1, mouseEv, 0, 0));
+      touchList.push(CreatTouch(eventTarget, 1, mouseEv, 0, 0));
       return touchList;
     }
 
