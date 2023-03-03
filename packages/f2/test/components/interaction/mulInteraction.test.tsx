@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { jsx } from '../../../src';
 import { Canvas, Chart, Interval, Axis, Line, ScrollBar, Tooltip } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
@@ -42,7 +41,7 @@ describe('多交互', () => {
           <Line x="release" y="count" />
           <ScrollBar mode="x" range={[0.1, 0.3]} />
           {/* pan 和 press同时监听不触发 press */}
-          <Tooltip triggerOn="click"></Tooltip>
+          <Tooltip triggerOn="click" />
         </Chart>
       </Canvas>
     );
@@ -50,7 +49,6 @@ describe('多交互', () => {
     canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(1000);
     await delay(20);
     await gestureSimulator(context.canvas, 'touchstart', { x: 210, y: 169 });
     await delay(20);
@@ -58,6 +56,7 @@ describe('多交互', () => {
     await gestureSimulator(context.canvas, 'touchmove', { x: 100, y: 169 });
     await delay(20);
     await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 169 });
+    await gestureSimulator(context.canvas, 'click', { x: 100, y: 169 });
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });

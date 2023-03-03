@@ -17,7 +17,6 @@ import ScaleController from '../controller/scale';
 import Theme from '../theme';
 import { Data, DataRecord, DataRecordScale } from './Data';
 import { CoordType, CoordProps } from './Coord';
-import { isInBBox } from '../util';
 
 export interface Point {
   x: number;

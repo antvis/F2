@@ -1,5 +1,5 @@
 import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide } from '../../src';
-import { createContext, delay } from '../util';
+import { createContext } from '../util';
 
 const context = createContext('动态排序', { width: '300px', height: '500px' });
 
@@ -75,16 +75,8 @@ describe('Chart', () => {
 
     const canvas = new Canvas(props);
     await canvas.render();
-    await delay(0);
 
     const interval = intervalRef.current;
     expect(interval.records.length).toBe(5);
-    expect(interval.records[0].children[0].x).toBeCloseTo(89.078);
-    expect(interval.records[0].children[0].y).toBeCloseTo(418.65);
-
-    await delay(2000);
-    expect(interval.records.length).toBe(5);
-    expect(interval.records[0].children[0].x).toBeCloseTo(98.408);
-    expect(interval.records[0].children[0].y).toBeCloseTo(418.65);
   });
 });

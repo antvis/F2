@@ -1,7 +1,6 @@
 import { jsx, Ref, Component } from '@antv/f-engine';
 import { partition, hierarchy } from '../../deps/d3-hierarchy/src';
 import { Category } from '../../attr';
-import { isInBBox } from '../../util';
 import CoordController from '../../controller/coord';
 import { mix, isFunction } from '@antv/util';
 import Theme from '../../theme';

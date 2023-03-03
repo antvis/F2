@@ -3,12 +3,6 @@ import { isString, isNil, isFunction } from '@antv/util';
 import Chart, { ChartChildProps, Point } from '../../chart';
 import { computeLayout, AnimationProps } from '@antv/f-engine';
 
-function isInBBox(bbox, point) {
-  const { minX, maxX, minY, maxY } = bbox;
-  const { x, y } = point;
-  return minX <= x && maxX >= x && minY <= y && maxY >= y;
-}
-
 export interface GuideProps {
   records: any;
   onClick?: (ev) => void;

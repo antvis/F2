@@ -72,8 +72,8 @@ describe('Canvas', () => {
     await canvas.render();
 
     await delay(1000);
-    canvas.resize(200, 200);
-    await delay(200);
+    await canvas.resize(200, 200);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 });
