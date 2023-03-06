@@ -97,7 +97,8 @@ export default defineConfig({
             'It has been widely used in various financial business scenarios such as funds, fixed-term, gold, and stocks, and supports many visualization scenarios on the Ant Fortune app. At the same time, through in-depth analysis of users visualization demands, a number of financial-oriented visualization solutions have been developed',
         },
         link: 'https://www.yuque.com/mo-college/f2-fund-course',
-        image: 'https://antv.alipay.com/assets/image/home/f2/usecase-caifu.png',
+        image:
+          'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/b2d3eebe-f3c0-45b7-a608-161d38f8c432.png',
       },
       {
         logo: 'https://antv.alipay.com/assets/image/home/f2/alipay-logo.png',
