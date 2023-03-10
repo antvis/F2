@@ -1,4 +1,4 @@
-import { Axis, Canvas, Chart, Interval, jsx, Legend, Tooltip } from '../../../src';
+import { Axis, Canvas, Chart, Interval, jsx, Legend, Line, Tooltip } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -272,6 +272,34 @@ describe('tooltip', () => {
     await gestureSimulator(context.canvas, 'press', { x: 0, y: 21 }); // 超出 coord 边界
 
     await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('Tooltip 右边届', async () => {
+    const context = createContext('Tooltip 超出边界会展示边界值');
+    const onChangeMockCallback = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          data={data}
+          style={
+            {
+              // left: 50,
+            }
+          }
+        >
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Line x="genre" y="sold" />
+          <Tooltip alwaysShow={true} defaultItem={data[4]} showCrosshairs />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(500);
+
     expect(context).toMatchImageSnapshot();
   });
 
