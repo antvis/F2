@@ -345,8 +345,14 @@ class RenderLabel extends Component {
     // 让 tooltip 限制在 coord 的显示范围内
     const advanceLeft = x - halfWidth;
     const advanceTop = coordTop - height;
+
     const left =
-      advanceLeft < coordLeft ? coordLeft : advanceLeft > coordRight ? coordRight : advanceLeft;
+      advanceLeft < coordLeft
+        ? coordLeft
+        : advanceLeft > coordRight - width
+        ? coordRight - width
+        : advanceLeft;
+
     const top = advanceTop < 0 ? 0 : advanceTop;
 
     return labelView(left, top);
