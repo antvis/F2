@@ -36,7 +36,13 @@ class ImageShape extends Rect<ImageProp> {
     }
 
     const attrs = this.get('attrs');
-    const { src } = attrs;
+    const { src, img } = attrs;
+
+    if (img) {
+      this.set('image', img);
+      super.draw(context);
+      return;
+    }
 
     if (src) {
       const cacheImage = this.get('cacheImage');
