@@ -319,14 +319,14 @@ class Chart<
   }
 
   render() {
-    const { props, scale } = this;
+    const { props, scale, layout: chartLayout } = this;
     const { children, data: originData } = props;
     if (!originData) return null;
     const data = this._getRenderData();
     const layout = this.getLayout();
     const coord = this.getCoord();
     const scaleOptions = scale.getOptions();
-    const { width, height } = layout;
+    const { width, height } = chartLayout;
 
     return (
       <group
