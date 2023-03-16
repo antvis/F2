@@ -1,4 +1,4 @@
-import { jsx, Component, Ref, ComponentType } from '@antv/f-engine';
+import { jsx, Component, ComponentType } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import Chart, { ChartChildProps, Point } from '../../chart';
 import { computeLayout, AnimationProps } from '@antv/f-engine';
@@ -15,39 +15,16 @@ export default (View: ComponentType) => {
     IProps & ChartChildProps
   > {
     chart: Chart;
-    triggerRef: Ref;
-    guideBBox: any;
 
     constructor(props: IProps & ChartChildProps) {
       super(props);
-      // 创建ref
-      this.triggerRef = {};
-      this.state = {};
-    }
-
-    willMount() {
-      this.guideBBox = this.getGuideBBox();
-    }
-
-    didMount() {}
-
-    willUpdate() {
-      this.guideBBox = this.getGuideBBox();
     }
 
     getGuideBBox() {
       const node = computeLayout(this, this.render());
       const { layout } = node;
       if (!layout) return;
-
-      const { width, height } = layout;
-      // getBBox 没有包含 padding 所以这里手动计算 bbox
-      const box = {
-        width,
-        height,
-      };
-
-      return box;
+      return layout;
     }
 
     // 解析record里的模板字符串，如min、max、50%...
@@ -98,7 +75,7 @@ export default (View: ComponentType) => {
     }
 
     render() {
-      const { props, context, guideBBox } = this;
+      const { props, context } = this;
       const { coord, records = [], animation, chart, style, onClick } = props;
       const { width, height } = context;
       const points = this.convertPoints(records);
@@ -111,14 +88,12 @@ export default (View: ComponentType) => {
           }}
         >
           <View
-            triggerRef={this.triggerRef}
             points={points}
             theme={theme}
             coord={coord}
             {...props}
             canvasWidth={width}
             canvasHeight={height}
-            guideBBox={guideBBox}
             style={isFunction(style) ? style(points, chart) : style}
             animation={isFunction(animation) ? animation(points, chart) : animation}
           />

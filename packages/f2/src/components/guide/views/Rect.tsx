@@ -17,7 +17,7 @@ export default (props: RectGuideProps) => {
   return (
     <group>
       <rect
-        attrs={{
+        style={{
           x: Math.min(start.x, end.x),
           y: Math.min(start.y, end.y),
           width: Math.abs(end.x - start.x),

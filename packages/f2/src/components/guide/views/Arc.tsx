@@ -26,7 +26,7 @@ export default (props: ArcGuideProps) => {
   return (
     <group>
       <arc
-        attrs={{
+        style={{
           cx: coordCenter.x,
           cy: coordCenter.y,
           r: radius,

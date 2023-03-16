@@ -27,7 +27,7 @@ export default (props: LineGuideProps, context) => {
   return (
     <group>
       <line
-        attrs={{
+        style={{
           x1: posX1,
           y1: posY1,
           x2: posX2,
