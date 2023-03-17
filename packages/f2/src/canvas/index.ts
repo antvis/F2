@@ -101,6 +101,7 @@ class Canvas extends Component<ChartProps> {
     // 供全局使用的一些变量
     const componentContext = {
       root: this,
+      ctx: context,
       canvas,
       theme,
       px2hd,

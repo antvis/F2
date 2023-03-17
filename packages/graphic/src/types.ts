@@ -139,6 +139,7 @@ export interface SectorAttrs extends ShapeAttrs {
 
 export interface ImageAttrs extends RectAttrs {
   src: string;
+  img?: HTMLImageElement;
   sx?: number;
   sy?: number;
   swidth?: number;
