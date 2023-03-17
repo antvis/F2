@@ -42,7 +42,6 @@ export default (props: ImageGuideProps, context) => {
           y: posY,
           src,
         }}
-        cacheImage
         animation={deepMix(
           {
             update: {

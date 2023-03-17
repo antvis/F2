@@ -22,7 +22,7 @@ export default (props: PointGuideProps, context) => {
   return (
     <group>
       <circle
-        attrs={{
+        style={{
           cx: posX,
           cy: posY,
           ...style,
