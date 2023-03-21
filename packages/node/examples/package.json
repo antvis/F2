@@ -5,7 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "@antv/f2": "^4.x",
-    "canvas": "^2.8.0"
+    "canvas": "^2.8.0",
+    "f2-canvas2svg": "^1.0.19",
+    "jsdom": "^17.0.0",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -14,8 +17,9 @@
     "@babel/plugin-transform-react-jsx": "^7.16.0"
   },
   "scripts": {
-    "beforeCompile": "babel src --out-dir dist --only **/*.jsx",
-    "start": "npm run beforeCompile && node dist/index.js"
+    "beforeCompile": "babel src --out-dir dist",
+    "start": "npm run beforeCompile && node dist/index.js",
+    "svg": "npm run beforeCompile && node dist/svg.js"
   },
   "author": "",
   "license": "ISC"
