@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-wordcloud",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "F2 wordcloud extension",
   "main": "lib/index.js",
   "module": "es/index.js",
