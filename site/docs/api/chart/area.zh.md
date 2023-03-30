@@ -1,14 +1,25 @@
 ---
 title: 面积 - Area
+description: 本文档介绍如何使用和配置面积图组件
+keywords: ['面积图', 'Area', '前端', '可视化']
 order: 5
 ---
 
-用于绘制区域图（面积图）、层叠区域图、区间区域图等, 继承自 [几何标记 Geometry](geometry)
+面积图组件
 
-## Usage
+面积图组件用于绘制区域图（面积图）、层叠区域图、区间区域图等。它继承自 [几何标记 Geometry](geometry)。
+
+## 使用方法 (Usage)
+
+首先引入必要的组件库：
 
 ```jsx
 import { Canvas, Chart, Area } from '@antv/f2';
+```
+
+然后创建一个简单的面积图：
+
+```jsx
 const data = [
   { genre: 'Sports', sold: 5 },
   { genre: 'Strategy', sold: 10 },
@@ -24,14 +35,14 @@ const data = [
 </Canvas>;
 ```
 
-## Props
+## 属性 (Props)
 
-几何标记统一 Props 详见：[几何标记](geometry#props)
+几何标记的通用属性，请参阅：[几何标记](geometry#props)
 
-### connectNulls
+### connectNulls: boolean
 
-是否连接空值， 默认为 `false`，不连接
+是否连接空值，默认为 `false`，表示不连接。
 
-## 方法
+## 方法 (Methods)
 
-几何标记统一方法 详见：[几何标记](geometry#方法)
+几何标记的通用方法，请参阅：[几何标记](geometry#方法)

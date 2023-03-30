@@ -1,7 +1,11 @@
 ---
 title: 几何标记 - Geometry
+description: 本文档介绍如何使用和配置几何标记组件
+keywords: ['几何标记', 'Geometry', '前端', '可视化']
 order: 1
 ---
+
+几何标记组件
 
 F2 基本组成部分如下图所示：
 
@@ -14,19 +18,19 @@ F2 基本组成部分如下图所示：
 - [Point](point)：点
 - [Area](area)：面积
 
-## Props
+## 属性 (Props)
 
 ### x: string
 
-x 轴的数据映射字段名
+x 轴的数据映射字段名。
 
 ### y: string
 
-y 轴的数据映射字段名
+y 轴的数据映射字段名。
 
 ### color
 
-color 的数据映射字段，可使用如下几种方式
+color 的数据映射字段，可使用如下几种方式：
 
 #### 固定值
 
@@ -40,7 +44,7 @@ color 的数据映射字段，可使用如下几种方式
 <Geometry color={ field } ... />
 ```
 
-F2 会根据数据类型自动选择适应的映射方式
+F2 会根据数据类型自动选择适应的映射方式。
 
 #### Array 形式
 
@@ -48,7 +52,7 @@ F2 会根据数据类型自动选择适应的映射方式
 <Geometry color={ [field, ['red', 'green', 'blue']] } ... />
 ```
 
-F2 会根据数据以此映射 `['red', 'green', 'blue']` 这 3 种颜色
+F2 会根据数据依次映射 `['red', 'green', 'blue']` 这 3 种颜色。
 
 #### Object 形式
 
@@ -63,7 +67,7 @@ F2 会根据数据以此映射 `['red', 'green', 'blue']` 这 3 种颜色
 
 #### 指定映射类型
 
-F2 支持 **线性** 和 **分类** 2 种形式进行数据映射
+F2 支持 **线性** 和 **分类** 两种形式进行数据映射。
 
 ```jsx
 <Geometry color={{
@@ -74,7 +78,7 @@ F2 支持 **线性** 和 **分类** 2 种形式进行数据映射
 }} ... />
 
 <Geometry color={{
-  type: 'category'
+  type: 'category',
   field,
   // 不会渐变，只会映射这 3 种颜色
   range: ['red', 'green', 'blue'],
@@ -83,7 +87,7 @@ F2 支持 **线性** 和 **分类** 2 种形式进行数据映射
 
 ### size
 
-size 的数据映射字段， 使用方式同 [color](#color)
+size 的数据映射字段，使用方式同 [color](#color)。
 
 ```jsx
 // 固定值
@@ -111,12 +115,14 @@ size 的数据映射字段， 使用方式同 [color](#color)
   range: [2, 10],
 }} ... />
 ```
+
 ### viewClip
-只显示图表区域内（两轴之间）的，默认 false
+
+只显示图表区域内（两轴之间）的，默认为 `false`。
 
 ### adjust: string
 
-设置数据调整方式, F2 支持如下几种数据调整方式
+设置数据调整方式, F2 支持如下几种数据调整方式：
 
 ```jsx
 <Geometry adjust={ adjustType } ... />
@@ -136,11 +142,11 @@ size 的数据映射字段， 使用方式同 [color](#color)
 
 ### startOnZero: boolean
 
-y 轴是否需要从 0 开始，默认为 `false`
+y 轴是否需要从 0 开始，默认为 `false`。
 
 ### animation
 
-动画配置， F2 支持对动画进行 `appear`, `update`, `leave` 这 3 个阶段的动画配置
+动画配置，F2 支持对动画进行 `appear`, `update`, `leave` 这 3 个阶段的动画配置。
 
 ```jsx
 <Geometry
@@ -180,17 +186,3 @@ y 轴是否需要从 0 开始，默认为 `false`
 ```
 
 更多缓动函数可见：[easing 函数](https://github.com/antvis/F2/blob/master/packages/f2/src/canvas/animation/easing.ts)， 也可直接传入缓动 `function`
-
-## 方法
-
-### getXScale()
-
-获取 x 轴的 scale
-
-### getYScale()
-
-获取 y 轴的 scale
-
-### getSnapRecords(point)
-
-根据 canvas 坐标点获取对应图形的数据, point 为 `{ x: number, y: number }` 这种结构

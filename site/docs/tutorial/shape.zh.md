@@ -1,6 +1,6 @@
 ---
 title: 图形标签 - Shape
-order: 6
+order: 7
 ---
 
 F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引擎。本篇列出了常见的图形标签

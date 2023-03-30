@@ -1,5 +1,7 @@
 ---
 title: 画布 - Canvas
+description: 本文档介绍 F2 提供的顶层组件 Canvas，该组件可理解为画布对象。
+keywords: ['画布', 'Canvas', '前端', '可视化', '图表']
 order: 2
 redirect_from:
   - /zh/docs/api
@@ -39,6 +41,8 @@ _可选_
 ### height: number
 
 _可选_
+
+画布高度
 
 ### animate: boolean
 

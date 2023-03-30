@@ -1,6 +1,6 @@
 ---
 title: 动画属性 - Animation
-order: 8
+order: 9
 ---
 
 F2 动画定义与 [Web Animations API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Animations_API) 靠齐，除了组件层面，每个图形标签也都可以添加自定义动画。目前只支持基于 Keyframe 的动画，可定义动画执行阶段，以及变化效果 KeyframeEffect。

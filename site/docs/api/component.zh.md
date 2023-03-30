@@ -1,5 +1,7 @@
 ---
 title: 组件 - Component
+description: 本文档介绍了 F2 提供的组件定义和组件的生命周期方法。
+keywords: ['组件', 'Component', '生命周期', '前端', '可视化', '图表']
 order: 1
 redirect_from:
   - /zh/docs/api

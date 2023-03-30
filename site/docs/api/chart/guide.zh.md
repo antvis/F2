@@ -1,9 +1,23 @@
 ---
 title: 标注 - Guide
+description: 本文档介绍如何使用和配置标注组件，包括点标注、文本标注、标签标注、图片标注和线标注，以及自定义标注。
+keywords:
+  [
+    '标注',
+    'Guide',
+    '前端',
+    '可视化',
+    '点标注',
+    '文本标注',
+    '标签标注',
+    '图片标注',
+    '线标注',
+    '自定义标注',
+  ]
 order: 9
 ---
 
-提示和标注， 主要用于在图表上标识额外的标记注解。目前内置PointGuide点标注、TextGuide文本标注、TagGuide标注、ImageGuide图片标注和LineGuide线标注，也可以自定义标注。
+提示和标注， 主要用于在图表上标识额外的标记注解。目前内置 PointGuide 点标注、TextGuide 文本标注、TagGuide 标注、ImageGuide 图片标注和 LineGuide 线标注，也可以自定义标注。
 
 ## Usage
 
@@ -121,7 +135,7 @@ y 轴偏移量
 
 ### background: Attrs
 
-> 类型为绘图属性：[图形属性](/zh/docs/tutorial/shape-attrs#通用属性) 
+> 类型为绘图属性：[图形属性](/zh/docs/tutorial/shape-attrs#通用属性)
 
 ### triggerRef: any
 

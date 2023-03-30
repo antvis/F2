@@ -1,5 +1,7 @@
 ---
 title: 图例 - Legend
+description: 本文档介绍如何使用和配置图例组件，自动生成不同类型的图例，包括离散图例。
+keywords: ['图例', 'Legend', '前端', '可视化', '图表']
 order: 7
 ---
 
@@ -135,6 +137,6 @@ item 点击的回调
 
 获取图表中原始分类数据
 
-### getMaxItemBox(legendShape) 
-获取 legendShape 包围盒
+### getMaxItemBox(legendShape)
 
+获取 legendShape 包围盒

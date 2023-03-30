@@ -1,48 +1,47 @@
 ---
 title: 快速上手
+description: 本文档演示了如何快速上手使用 F2，包括安装、引入组件库和创建一个简单的柱状图。
+keywords: ['快速上手', 'F2', 'React', '组件库', '柱状图', '前端', '可视化', '图表']
 order: 0
 ---
 
-## 声明式
+## 一分钟上手
 
-F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代码更直观和简介，避免了复杂的 API 调用，而且我们也采用了 JSX 语法，不仅方便使用，还可以很方便地和 React、Vue 这些框架结合
+> 我们会以 React 为例，演示最基本的用法
 
-## 组件化
+### 安装
 
-为了构建复杂的可视化图表，组件是一种不可或缺的能力，在 F2 里，我们也参考 React 的设计模式，内置了一套完善的组件能力，能简单方便地分装自己的组件
-
-## 快速开始
-
-> 下面示例是以非 React 为演示的，如果项目已经是 React， 可以参考 [如何在 React 中使用](./framework/react)
-
-### 配置 jsx transform
-
-可见详细介绍：[配置 jsx transform](./framework/jsx-transform)
-
-## 安装
-
-### 通过 npm 安装
+#### 通过 npm 安装
 
 [![](https://img.shields.io/npm/v/@antv/f2.svg)](https://npmjs.com/package/@antv/f2) [![](https://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
 
 ```bash
-npm install @antv/f2 --save
+npm install @antv/f2@next --save
+# 引入 React 工程包
+npm install @antv/f-react@next --save
 ```
 
-## 一分钟上手
+#### CDN
 
-### 1. 创建 canvas 标签
-
-在页面上创建一个 `<canvas>`
+我们也提供了 cdn 版本，可以通过 `<script>` 引入
 
 ```html
-<canvas id="myChart" width="400" height="260"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/@antv/f2@5.0.20/dist/index.min.js"></script>
 ```
 
-### 2. 编写代码
+### 引入组件库
 
 ```jsx
-// F2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
+import React from 'react';
+import ReactDOM from 'react';
+import Canvas from '@antv/f-react';
+import { Chart, Interval, Axis, Tooltip } from '@antv/f2';
+```
+
+### 创建一个简单的柱状图：
+
+```jsx
+// 绘制图表的数据
 const data = [
   { genre: 'Sports', sold: 275 },
   { genre: 'Strategy', sold: 115 },
@@ -51,21 +50,21 @@ const data = [
   { genre: 'Other', sold: 150 },
 ];
 
-// 获取 canvas context
-const context = document.getElementById('myChart').getContext('2d');
-const { props } = (
+ReactDOM.render(
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    {/* 声明一个图表 */}
     <Chart data={data}>
+      {/* 声明 genre 和 sold 这两个字段为坐标轴 */}
       <Axis field="genre" />
       <Axis field="sold" />
+      {/* 声明一个柱状图，x 轴为 genre， y 轴为sold， 同时根据 genre 进行颜色分类 */}
       <Interval x="genre" y="sold" color="genre" />
+      {/* 声明一个按压的提示信息 */}
       <Tooltip />
     </Chart>
-  </Canvas>
+  </Canvas>,
+  document.getElementById('root')
 );
-
-const canvas = new Canvas(props);
-canvas.render();
 ```
 
 完成上述两步之后，保存文件并用浏览器打开，一张柱状图就绘制成功了：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/54ad3af8-c30d-43ca-b0e8-e21c4ea3d438.png)

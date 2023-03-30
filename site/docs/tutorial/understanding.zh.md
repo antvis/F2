@@ -1,19 +1,22 @@
 ---
-title: 图表组成
+title: 理解图表
+description: 本文档介绍了 F2 图表的组成部分，以及与图表相关的术语，帮助您更好地使用 F2 进行可视化。
+keywords: ['F2', '图表', '几何标记', '坐标轴', '图例', '提示信息', '辅助标记', '图形属性', '坐标系']
 order: 1
 ---
 
-为了更好得使用 F2 进行数据可视化，我们需要了解 F2 图表的组成以及相关术语。
+为了更好地使用 F2 ，我们需要了解 F2 图表的组成以及相关术语。
 
-## 图表部件
+## 图表部件 (Chart Components)
 
-一般情况下，F2 的图表包含坐标轴（Axis）、几何标记（Geometry）、提示信息（Tooltip）、图例（Legend）等，另外还可以包括辅助标记（Guide）、数据标签（dataLabels）等。
+一般情况下，F2 的图表包含坐标轴（Axis）、几何标记（Geometry， 当前包含 Line、Interval、Point、Area 等）、提示信息（Tooltip）、图例（Legend）等，另外还可以包括辅助标记（Guide）、数据标签（dataLabels）等。
 
 F2 基本组成部分如下图所示：
 
 ![](https://gw.alipayobjects.com/zos/rmsportal/tpfdzWDYmxzHkquTihJe.png#width=600) ![](https://gw.alipayobjects.com/zos/rmsportal/lUqXwLjgRWhugemcNsqc.png#width=600)
 
-## 术语
+## 术语 (Terminology)
+
 | **术语** | **英文** | **描述** |
 | --- | --- | --- |
 | 坐标轴 | Axis | 每个图表通常包含两个坐标轴，在直角坐标系（笛卡尔坐标系）下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径 2 个维度构成。每个坐标轴由坐标轴线（line）、刻度线（tickLine）、刻度文本（label）以及网格线（grid）组成。 |
@@ -23,4 +26,3 @@ F2 基本组成部分如下图所示：
 | 坐标系 | Coordinate | 坐标系是将两种位置标度结合在一起组成的 2 维定位系统，描述了数据是如何映射到图形所在的平面。 |
 | 提示信息 | Tooltip | 当鼠标悬停在某个点上时，会以提示框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等，帮助用户从图表中获取具体的数据信息。 |
 | 辅助标记 | Guide | 当需要在图表上绘制一些辅助线、辅助框或者文本时，比如增加预警线、最高值线或者标示明显的范围区域时，辅助标记 Guide 是非常有用的工具。 |
-

@@ -1,5 +1,7 @@
 ---
-title: 提示 - tooltip
+title: 提示 - Tooltip
+description: 本文档介绍如何使用和配置提示 (Tooltip) 组件，为图表添加交互性。
+keywords: ['提示', 'Tooltip', '前端', '可视化', '图表']
 order: 8
 ---
 

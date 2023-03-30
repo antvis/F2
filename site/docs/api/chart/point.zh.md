@@ -1,5 +1,7 @@
 ---
 title: 点 - Point
+description: 本文档介绍如何使用和配置点组件，用于绘制点图、折线图中的点等。
+keywords: ['点', 'Point', '前端', '可视化', '图表']
 order: 4
 ---
 

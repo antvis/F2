@@ -1,5 +1,7 @@
 ---
 title: 滚动条 - ScrollBar
+description: 本文档介绍如何使用和配置滚动条组件，用于数据滚动和缩放。
+keywords: ['滚动条', 'ScrollBar', '前端', '可视化', '图表']
 order: 10
 ---
 
@@ -30,7 +32,7 @@ const data = [
 
 ### mode: string
 
-滚动模式，默认为： `'x'`, 可选值： `'x' | 'y' | '['x', 'y']'  `
+滚动模式，默认为： `'x'`, 可选值： `'x' | 'y' | '['x', 'y']'`
 
 ### range: [0, 1]
 
