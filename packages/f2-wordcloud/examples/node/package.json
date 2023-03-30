@@ -1,0 +1,23 @@
+{
+  "name": "node-f2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@antv/f2": "^5.x",
+    "canvas": "^2.8.0",
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/plugin-transform-react-jsx": "^7.16.0"
+  },
+  "scripts": {
+    "beforeCompile": "babel src --out-dir dist --only **/*.jsx",
+    "start": "npm run beforeCompile && node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
