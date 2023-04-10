@@ -134,10 +134,11 @@ export default (View) => {
       if (!dataItem) return;
       const { props } = this;
       const { chart } = props;
+
       // 因为 tooltip 有可能在 geometry 之前，所以需要等 geometry render 完后再执行
       setTimeout(() => {
-        const point = chart.getPosition(dataItem);
-        this.show(point);
+        const snapRecords = chart.getRecords(dataItem, 'xfield');
+        this.showSnapRecords(snapRecords);
       }, 0);
     }
     _triggerOn = (ev) => {
@@ -155,9 +156,14 @@ export default (View) => {
 
     show(point, _ev?) {
       const { props } = this;
-      const { chart, onChange } = props;
+      const { chart } = props;
       const snapRecords = chart.getSnapRecords(point, true); // 超出边界会自动调整
       if (!snapRecords || !snapRecords.length) return;
+      this.showSnapRecords(snapRecords);
+    }
+
+    showSnapRecords(snapRecords) {
+      const { chart, onChange } = this.props;
       const legendItems = chart.getLegendItems();
       const { xField, yField } = snapRecords[0];
       const xScale = chart.getScale(xField);

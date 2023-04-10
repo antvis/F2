@@ -597,6 +597,7 @@ class Geometry<
   getSnapRecords(point, inCoordRange?): any[] {
     const { props } = this;
     const { coord, adjust } = props;
+
     const invertPoint = coord.invertPoint(point);
     const xScale = this.getXScale();
     const yScale = this.getYScale();
@@ -643,6 +644,30 @@ class Geometry<
       if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
         rst.push(record);
       } else if (originValue === value) {
+        rst.push(record);
+      }
+    }
+
+    return rst;
+  }
+
+  getRecords(data, field = 'xfield') {
+    const records = this.flatRecords();
+    const xScale = this.getXScale();
+    const yScale = this.getYScale();
+    const { field: xField } = xScale;
+    const { field: yField } = yScale;
+    const value = data[xField];
+    const rst = [];
+
+    for (let i = 0, len = records.length; i < len; i++) {
+      const record = {
+        ...records[i],
+        xField,
+        yField,
+      };
+      const originValue = record[FIELD_ORIGIN][(field = 'xfield' ? xField : yField)];
+      if (originValue === value) {
         rst.push(record);
       }
     }
