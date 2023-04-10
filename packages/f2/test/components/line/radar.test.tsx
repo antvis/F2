@@ -1,6 +1,7 @@
 import { jsx, Canvas, Chart, Area } from '../../../src';
 import { Line, Point, Tooltip, Axis } from '../../../src/components';
 import { createContext, delay } from '../../util';
+import { clone } from '@antv/util';
 
 const data = [
   {
@@ -205,6 +206,36 @@ describe('雷达图', () => {
       expect(context).toMatchImageSnapshot();
     });
 
+    it('雷达图展示 数据为0 时', async () => {
+      const context = createContext('雷达图展示 数据为0 时');
+      let data = clone(data1);
+      data[1].value = 0;
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data} coord="polar">
+            <Axis field="time" grid="line" />
+            <Axis field="value" grid="line" style={{ label: null }} />
+            <Line x="time" y="value" color="name" />
+            <Tooltip
+              custom={true}
+              defaultItem={data[1]}
+              snap
+              showCrosshairs
+              crosshairsStyle={{
+                stroke: '#999',
+                lineWidth: '4px',
+              }}
+            />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
     it('雷达图展示辅助线', async () => {
       const context = createContext();
       const { props } = (

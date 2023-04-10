@@ -248,6 +248,13 @@ class Chart<
     return geometrys[0].getSnapRecords(point, inCoordRange);
   }
 
+  getRecords(data, field) {
+    const geometrys = this.getGeometrys();
+    if (!geometrys.length) return;
+    // @ts-ignore
+    return geometrys[0].getRecords(data, field);
+  }
+
   getLegendItems(point?) {
     const geometrys = this.getGeometrys();
     if (!geometrys.length) return;
