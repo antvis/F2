@@ -666,7 +666,7 @@ class Geometry<
         xField,
         yField,
       };
-      const originValue = record[FIELD_ORIGIN][(field = 'xfield' ? xField : yField)];
+      const originValue = record[FIELD_ORIGIN][field === 'xfield' ? xField : yField];
       if (originValue === value) {
         rst.push(record);
       }

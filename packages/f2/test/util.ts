@@ -91,10 +91,18 @@ const gestureSimulator = async (dom, eventType: string, option: Option | Option[
     return;
   }
 
+  // click 事件监听原生
   if (eventType === 'click') {
-    dispatchEvent(dom, 'touchstart', touchEvent);
-    await delay(50);
-    dispatchEvent(dom, 'touchend', touchEvent);
+    const { x, y } = options[0];
+    const clientX = left + x;
+    const clientY = top + y;
+    const event = {
+      x,
+      y,
+      clientX,
+      clientY,
+    };
+    dispatchEvent(dom, 'click', event);
     return;
   }
 };
