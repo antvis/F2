@@ -1,4 +1,13 @@
-import { isFunction, each, upperFirst, mix, groupToMap, isObject, flatten } from '@antv/util';
+import {
+  isFunction,
+  each,
+  upperFirst,
+  mix,
+  groupToMap,
+  isObject,
+  flatten,
+  isNull,
+} from '@antv/util';
 import { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
@@ -629,7 +638,7 @@ class Geometry<
 
     const rst = [];
     const value = this._getXSnap(invertPoint.x);
-    if (!value) {
+    if (isNull(value)) {
       return rst;
     }
     const { field: xField } = xScale;
