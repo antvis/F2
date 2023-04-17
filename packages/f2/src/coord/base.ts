@@ -1,6 +1,6 @@
 import Layout from '../base/layout';
 import { Range, Point, Option } from './types';
-import { isArray } from '@antv/util';
+import { isArray, isFunction } from '@antv/util';
 
 function transposedRect({ xMin, xMax, yMin, yMax }) {
   return { xMin: yMin, xMax: yMax, yMin: xMin, yMax: xMax };
@@ -78,10 +78,19 @@ class Base extends Layout {
     super.update(option);
 
     const { left, top, width, height } = this;
+    const { center } = option;
+
+    const coordCenter = center
+      ? isFunction(center)
+        ? center(width, height)
+        : center
+      : [width / 2, height / 2];
+
     this.center = {
-      x: left + width / 2,
-      y: top + height / 2,
+      x: left + coordCenter[0],
+      y: top + coordCenter[1],
     };
+
     return this;
   }
 

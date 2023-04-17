@@ -143,7 +143,7 @@ class Chart extends Component implements IChart {
 
   // 给需要显示的组件留空
   layoutCoord(layout: PositionLayout) {
-    const { coord } = this;
+    const { coord, props } = this;
     const { position, width: boxWidth, height: boxHeight } = layout;
     let { left, top, width, height } = coord;
     switch (position) {
@@ -162,7 +162,7 @@ class Chart extends Component implements IChart {
         height = Math.max(0, height - boxHeight);
         break;
     }
-    coord.update({ left, top, width, height });
+    coord.update({ ...props.coord, left, top, width, height });
   }
 
   resetCoordLayout() {
