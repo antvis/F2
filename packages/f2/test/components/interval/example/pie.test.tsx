@@ -1,8 +1,7 @@
 import { jsx } from '../../../../src';
 import { Polar, Rect } from '../../../../src/coord';
 import { isArray } from '@antv/util';
-import { Canvas, Chart, Component } from '../../../../src';
-import { Interval } from '../../../../src/components';
+import { Canvas, Chart, Component, Interval, Legend } from '../../../../src';
 import { createContext, delay, gestureSimulator } from '../../../util';
 
 // @ts-ignore
@@ -155,6 +154,76 @@ describe('饼图', () => {
     canvas.render();
 
     await gestureSimulator(context.canvas, 'click', { x: 205, y: 76 });
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('饼图-指定 center', async () => {
+    const context = createContext();
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            center: [100, 100],
+          }}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('饼图-指定 center callback', async () => {
+    const context = createContext();
+    const chartRef = { current: null };
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart
+          ref={chartRef}
+          data={data}
+          coord={{
+            type: Polar,
+            transposed: true,
+            center: (width: number, height: number) => {
+              // 最左
+              return [Math.min(width, height) / 2, height / 2];
+            },
+          }}
+        >
+          <Interval
+            x="a"
+            y="percent"
+            adjust="stack"
+            color={{
+              field: 'name',
+            }}
+          />
+          <Legend position="right" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    canvas.render();
+
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
