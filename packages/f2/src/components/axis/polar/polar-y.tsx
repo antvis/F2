@@ -17,7 +17,7 @@ export default (props: PolarProps) => {
             if (gridType !== 'line') {
               return (
                 <arc
-                  attrs={{
+                  style={{
                     cx: center.x,
                     cy: center.y,
                     startAngle: 0,

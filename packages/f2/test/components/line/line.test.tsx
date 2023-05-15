@@ -1198,4 +1198,123 @@ describe('折线图', () => {
       expect(context).toMatchImageSnapshot();
     });
   });
+
+  describe('y 是 array', () => {
+    it('堆叠折线', async () => {
+      const context = createContext('堆叠折线');
+      const data = [
+        {
+          date: '2017-06-05',
+          type: 'a',
+          value: 100,
+        },
+        {
+          date: '2017-06-05',
+          type: 'b',
+          value: 116,
+        },
+        {
+          date: '2017-06-06',
+          type: 'a',
+          value: 110,
+        },
+        {
+          date: '2017-06-06',
+          type: 'b',
+          value: 129,
+        },
+        {
+          date: '2017-06-07',
+          type: 'a',
+          value: 123,
+        },
+        {
+          date: '2017-06-07',
+          type: 'b',
+          value: 135,
+        },
+        {
+          date: '2017-06-08',
+          type: 'a',
+          value: 70,
+        },
+        {
+          date: '2017-06-08',
+          type: 'b',
+          value: 86,
+        },
+      ];
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} animate={false}>
+          <Chart data={data}>
+            <Axis
+              field="date"
+              tickCount={3}
+              range={[0, 1]}
+              style={{
+                label: {
+                  // align 默认值为 center，可能会导致首尾 tick label 超出画布范围
+                  align: 'between',
+                },
+              }}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line x="date" y="value" color="type" adjust="stack" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      await canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('y 轴为数组', async () => {
+      const data = [
+        {
+          date: '2017-06-05',
+          value: [100, 116],
+        },
+        {
+          date: '2017-06-06',
+          value: [110, 129],
+        },
+        {
+          date: '2017-06-07',
+          value: [123, 135],
+        },
+        {
+          date: '2017-06-08',
+          value: [70, 86],
+        },
+      ];
+      const context = createContext('基础折线图');
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} animate={false}>
+          <Chart data={data}>
+            <Axis
+              field="date"
+              tickCount={3}
+              range={[0, 1]}
+              style={{
+                label: {
+                  // align 默认值为 center，可能会导致首尾 tick label 超出画布范围
+                  align: 'between',
+                },
+              }}
+            />
+            <Axis field="value" tickCount={5} />
+            <Line x="date" y="value" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      await canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+  });
 });

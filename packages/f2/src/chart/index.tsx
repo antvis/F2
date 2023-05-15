@@ -18,10 +18,7 @@ import Theme from '../theme';
 import { Data, DataRecord, DataRecordScale } from './Data';
 import { CoordType, CoordProps } from './Coord';
 
-export interface Point {
-  x: number;
-  y: number;
-}
+export { Point } from './types';
 
 export interface ChartProps<TRecord extends DataRecord = DataRecord> {
   data: Data<TRecord>;
