@@ -1,10 +1,16 @@
 import { jsx } from '@antv/f-engine';
-import { isArray } from '@antv/util';
+import { isArray, isFunction } from '@antv/util';
 import Geometry, { GeometryProps } from '../geometry';
 import { DataRecord } from '../../chart/Data';
 
+type ZoomRatioCallback<TRecord> = (record: TRecord) => number | null | undefined;
+
 export interface LineProps<TRecord extends DataRecord = DataRecord> extends GeometryProps<TRecord> {
   connectNulls?: boolean;
+  /**
+   * 柱子放大缩小的比例
+   */
+  sizeZoom?: number | ZoomRatioCallback<TRecord>;
   endView?: any;
 }
 
@@ -88,15 +94,17 @@ export default (View) => {
 
     mapping() {
       const records = super.mapping();
-      const { props, connectNulls: defaultConnectNulls } = this;
-      const { coord, connectNulls = defaultConnectNulls } = props;
+      const { props, connectNulls: defaultConnectNulls, context } = this;
+      const { coord, connectNulls = defaultConnectNulls, sizeZoom } = props;
 
       return records.map((record) => {
         const { children } = record;
         // children 有可能为空
-        const { size, color, shape, y } = children[0] || {};
+        const { size, color, shape, y, origin } = children[0] || {};
         // 极坐标时，需加入起点，从而闭合所绘图形
         const points = coord.isPolar ? [...children, children[0]] : children;
+
+        const sizeZoomRatio = (isFunction(sizeZoom) ? sizeZoom(origin) : sizeZoom) ?? 1;
 
         const splitPoints = this.splitNulls(points, connectNulls);
 
@@ -105,7 +113,7 @@ export default (View) => {
             ? this.splitPoints(points)
             : [points, undefined];
           return {
-            size,
+            size: context.px2hd(size || shape.lineWidth) * sizeZoomRatio,
             color,
             shape,
             points: topPoints,
