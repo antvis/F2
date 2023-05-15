@@ -4,12 +4,18 @@ import Geometry, { GeometryProps } from '../geometry';
 import * as LabelViews from './label';
 import { DataRecord } from '../../chart/Data';
 
+type ZoomRatioCallback<TRecord> = (record: TRecord) => number | null | undefined;
+
 export interface IntervalProps<TRecord extends DataRecord = DataRecord>
   extends GeometryProps<TRecord> {
   /**
    * 柱子的显示比例
    */
   sizeRatio?: number;
+  /**
+   * 柱子放大缩小的比例
+   */
+  sizeZoom?: number | ZoomRatioCallback<TRecord>;
   showLabel?: boolean;
   labelCfg?: any;
 }
@@ -71,7 +77,7 @@ export default (Views) => {
       const records = super.mapping();
 
       const { props } = this;
-      const { coord } = props;
+      const { coord, sizeZoom } = props;
       const y0 = this.getY0Value();
       const defaultSize = this.getDefaultSize();
 
@@ -80,12 +86,13 @@ export default (Views) => {
         const { children } = record;
         for (let j = 0, len = children.length; j < len; j++) {
           const child = children[j];
-          const { normalized, size: mappedSize } = child;
+          const { normalized, size: mappedSize, origin } = child;
 
           // 没有指定size，则根据数据来计算默认size
           if (isNil(mappedSize)) {
             const { x, y, size = defaultSize } = normalized;
-            mix(child, coord.convertRect({ x, y, y0, size }));
+            const zoomRatio = (isFunction(sizeZoom) ? sizeZoom(origin) : sizeZoom) ?? 1;
+            mix(child, coord.convertRect({ x, y, y0, size: size * zoomRatio }));
           } else {
             const { x, y } = child;
             const rect = { size: mappedSize, x, y, y0 };
