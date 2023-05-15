@@ -57,7 +57,7 @@ export default (props) => {
       };
   return (
     <group
-      attrs={{
+      style={{
         clip,
       }}
     >

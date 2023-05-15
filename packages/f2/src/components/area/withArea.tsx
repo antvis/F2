@@ -1,3 +1,4 @@
+import { jsx } from '@antv/f-engine';
 import withLine, { LineProps } from '../line/withLine';
 import { DataRecord } from '../../chart/Data';
 
@@ -48,6 +49,15 @@ export default (View) => {
         }
       }
       return records;
+    }
+
+    render() {
+      const { props } = this;
+      const { coord } = props;
+      const records = this.mapping();
+      const clip = this.getClip();
+
+      return <View {...props} coord={coord} records={records} clip={clip} />;
     }
   };
 };

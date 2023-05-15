@@ -2,6 +2,7 @@ import { jsx } from '@antv/f-engine';
 import { isArray } from '@antv/util';
 import Geometry, { GeometryProps } from '../geometry';
 import { DataRecord } from '../../chart/Data';
+import { Point } from '../../chart/types';
 
 export interface LineProps<TRecord extends DataRecord = DataRecord> extends GeometryProps<TRecord> {
   connectNulls?: boolean;
@@ -120,11 +121,40 @@ export default (View) => {
       });
     }
 
+    concatPoints(topPoints: Point[], bottomPoints: Point[]) {
+      if (!bottomPoints || !bottomPoints.length) {
+        return topPoints;
+      }
+      const { adjust } = this;
+      // 堆叠产生的 bottomPoints 不绘制
+      if (adjust && adjust.type === 'stack') {
+        return topPoints;
+      }
+
+      // 说明是 y 轴对应字段为数组， 这种情况下首尾默认相连，如果想画 2 根线，在数据里对数组分拆
+      const points = topPoints.concat(bottomPoints.reverse());
+      points.push(topPoints[0]);
+
+      return points;
+    }
+
     render() {
       const { props } = this;
       const { coord } = props;
       const records = this.mapping();
       const clip = this.getClip();
+
+      for (let i = 0, len = records.length; i < len; i++) {
+        const record = records[i];
+        const { children } = record;
+        for (let j = 0, len = children.length; j < len; j++) {
+          const child = children[j];
+          const { points, bottomPoints } = child;
+
+          child.points = this.concatPoints(points, bottomPoints);
+        }
+      }
+
       return <View {...props} coord={coord} records={records} clip={clip} />;
     }
   };
