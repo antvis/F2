@@ -7,6 +7,7 @@ import {
   isObject,
   flatten,
   isNull,
+  find,
 } from '@antv/util';
 import { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
@@ -417,10 +418,14 @@ class Geometry<
     const value = field ? origin[field] : origin;
     each(styles, (attr, key) => {
       if (isFunction(attr)) {
-        shapeStyle[key] = attr(value);
-      } else {
-        shapeStyle[key] = attr;
+        const attrValue = attr(value);
+        if (!attrValue) {
+          return;
+        }
+        shapeStyle[key] = attrValue;
+        return;
       }
+      shapeStyle[key] = attr;
     });
     return shapeStyle;
   }
@@ -685,15 +690,25 @@ class Geometry<
   }
 
   getLegendItems() {
-    const { attrController } = this;
+    const { attrController, records } = this;
     const colorAttr = attrController.getAttr('color');
     if (!colorAttr) return null;
     const { scale } = colorAttr;
-    if (!scale.isCategory) return null;
+    const { isCategory, field } = scale;
+    if (!isCategory) return null;
+
+    const flatRecords = records ? this.flatRecords() : [];
     const ticks = scale.getTicks();
     const items = ticks.map((tick) => {
       const { text, tickValue } = tick;
-      const color = colorAttr.mapping(tickValue);
+      const record = find(flatRecords, (item) => {
+        if (!item) return false;
+        const { origin } = item;
+        return origin[field] === tickValue;
+      });
+
+      // @ts-ignore
+      const color = record ? record.color : colorAttr.mapping(tickValue);
       return {
         field: scale.field,
         color,

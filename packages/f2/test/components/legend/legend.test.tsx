@@ -748,4 +748,39 @@ describe('图例', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  describe('图例 marker 颜色取实际渲染颜色', () => {
+    const data = [
+      { genre: 'Sports', sold: 275 },
+      { genre: 'Strategy', sold: 115 },
+      { genre: 'Action', sold: 120 },
+    ];
+    it('默认', async () => {
+      const context = createContext('默认', {
+        height: '100px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Interval
+              x="genre"
+              y="sold"
+              color={{
+                field: 'genre',
+                callback: (genre, record) => {
+                  if (record?.genre === 'Sports') return 'red';
+                },
+              }}
+            />
+            <Legend />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      await canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+  });
 });
