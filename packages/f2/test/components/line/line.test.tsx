@@ -510,6 +510,7 @@ describe('折线图', () => {
 
     it('style支持传入函数', async () => {
       const context = createContext('style支持传入函数');
+      const colorCallback = jest.fn();
       const chartRef = { current: null };
       const lineRef = { current: null };
       const res = await fetch(
@@ -540,7 +541,8 @@ describe('折线图', () => {
               y="value"
               color={{
                 field: 'type',
-                callback: (type) => {
+                callback: (type, origin) => {
+                  colorCallback(origin);
                   if (type === '金属') {
                     return '#666';
                   }
@@ -573,6 +575,9 @@ describe('折线图', () => {
       await canvas.render();
       await delay(1000);
       expect(context).toMatchImageSnapshot();
+
+      expect(colorCallback.mock.calls.length).toBe(3);
+      expect(colorCallback.mock.calls[0][0]).toEqual(data[0]);
     });
 
     it('虚实线对比', async () => {
