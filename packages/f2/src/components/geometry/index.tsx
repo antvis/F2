@@ -456,7 +456,7 @@ class Geometry<
         const attrName = nonlinearAttrs[k];
         const attr = attrs[attrName];
         // 非线性映射只用映射第一项就可以了
-        attrValues[attrName] = attr.mapping(firstChild[attr.field]);
+        attrValues[attrName] = attr.mapping(firstChild[attr.field], firstChild.origin);
       }
 
       // 线性属性映射
