@@ -146,11 +146,12 @@ export default (View) => {
       const { props } = this;
       const { chart } = props;
       const snapRecords = chart.getSnapRecords(point, true); // 超出边界会自动调整
-      if (!snapRecords || !snapRecords.length) return;
+
       this.showSnapRecords(snapRecords);
     }
 
     showSnapRecords(snapRecords) {
+      if (!snapRecords || !snapRecords.length) return;
       const { chart, onChange } = this.props;
       const legendItems = chart.getLegendItems();
       const { xField, yField } = snapRecords[0];
