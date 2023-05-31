@@ -5,7 +5,7 @@ import { isFunction, isNumber } from '@antv/util';
  * https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
  * @private
  */
-const supportsEventListenerOptions = (function () {
+const supportsEventListenerOptions = (function() {
   let supports = false;
   try {
     const options = Object.defineProperty({}, 'passive', {
@@ -57,7 +57,7 @@ function getPixelRatio() {
 function getStyle(el, property) {
   return el.currentStyle
     ? el.currentStyle[property]
-    : document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+    : document.defaultView?.getComputedStyle(el, null)?.getPropertyValue(property);
 }
 
 function getWidth(el) {
@@ -88,8 +88,8 @@ function getRelativePosition(point, canvas) {
   if (!canvasDom) return point;
   const { top, left } = canvasDom.getBoundingClientRect();
 
-  const paddingLeft = parseFloat(getStyle(canvasDom, 'padding-left'));
-  const paddingTop = parseFloat(getStyle(canvasDom, 'padding-top'));
+  const paddingLeft = parseFloat(getStyle(canvasDom, 'padding-left')) || 0;
+  const paddingTop = parseFloat(getStyle(canvasDom, 'padding-top')) || 0;
 
   const mouseX = point.x - left - paddingLeft;
   const mouseY = point.y - top - paddingTop;
