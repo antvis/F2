@@ -106,4 +106,226 @@ describe('Treemap', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+  it('select ', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={2}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            defaultSelected: [
+              {
+                name: '贵州茅台',
+                value: 0.16,
+                rate: 0.1,
+              },
+            ],
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+
+    const { props: nextProps } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={2}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            defaultSelected: [
+              {
+                name: '五粮液',
+                value: 0.13,
+                rate: -0.1,
+              },
+            ],
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+          }}
+        />
+      </Canvas>
+    );
+
+    canvas.update(nextProps);
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('select triggerOn', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={20}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(800);
+
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await delay(800);
+    gestureSimulator(context.canvas, 'click', { x: 250, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('反选', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={20}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(800);
+
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await delay(800);
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('取消反选', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={20}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+            cancelable: false,
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(800);
+
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await delay(800);
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('多选', async () => {
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Treemap
+          data={data}
+          color={{
+            field: 'name',
+          }}
+          value="value"
+          space={20}
+          label={true}
+          selection={{
+            triggerOn: 'click',
+            selectedStyle: {
+              fillOpacity: 1,
+            },
+            unSelectedStyle: {
+              fillOpacity: 0.4,
+            },
+            cancelable: false,
+            type: 'multiple',
+          }}
+        />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(800);
+
+    gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await delay(800);
+    gestureSimulator(context.canvas, 'click', { x: 230, y: 170 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+  });
 });

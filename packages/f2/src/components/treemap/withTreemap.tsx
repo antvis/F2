@@ -1,11 +1,19 @@
-import { jsx, Component, ComponentType } from '@antv/f-engine';
+import {
+  jsx,
+  Component,
+  ComponentType,
+  isEqual as equal,
+  Ref,
+  createRef,
+  Gesture,
+} from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';
 import Theme from '../../theme';
 import { Data, DataRecord, DataField } from '../../chart/Data';
 import { CoordProps } from '../../chart/Coord';
-import { deepMix } from '@antv/util';
+import { deepMix, each, isFunction } from '@antv/util';
 
 export interface ColorAttrObject {
   field: string;
@@ -21,6 +29,7 @@ export interface RecordNode<TRecord extends DataRecord = DataRecord> {
   xMin: number;
   yMax: number;
   yMin: number;
+  style: any;
 }
 
 export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
@@ -31,6 +40,7 @@ export interface TreemapProps<TRecord extends DataRecord = DataRecord> {
   space?: number;
   theme?: Record<string, any>;
   nodes?: RecordNode<TRecord>[];
+  selection?: any;
 }
 
 interface TreeLayout {
@@ -48,10 +58,12 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
   > extends Component<P & IProps> {
     coord: CoordController;
     color: Category;
+    coordRef: Ref;
+    records: RecordNode<DataRecord>[];
 
     constructor(props: P & IProps, context) {
       super(props, context);
-      const { color, data, theme } = props;
+      const { color, data, theme, selection = {} } = props;
 
       const { px2hd } = context;
       context.theme = deepMix(px2hd(Theme), theme);
@@ -62,6 +74,44 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
         ...color,
         data,
       });
+
+      const { defaultSelected = null } = selection;
+      this.state.selected = defaultSelected;
+      this.coordRef = createRef();
+      this.records = [];
+    }
+
+    isSelected(record) {
+      const { state } = this;
+      const { selected } = state;
+      if (!selected || !selected.length) {
+        return false;
+      }
+
+      for (let i = 0, len = selected.length; i < len; i++) {
+        const item = selected[i];
+        if (equal(record, item)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    getSelectionStyle(record) {
+      const { state, props } = this;
+      const { selected } = state;
+      if (!selected || !selected.length) {
+        return null;
+      }
+      const { selection } = props;
+      const { selectedStyle, unSelectedStyle } = selection;
+
+      const isSelected = this.isSelected(record);
+
+      if (isSelected) {
+        return isFunction(selectedStyle) ? selectedStyle(record) : selectedStyle;
+      }
+      return isFunction(unSelectedStyle) ? unSelectedStyle(record) : unSelectedStyle;
     }
 
     willMount() {
@@ -70,6 +120,20 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
       coord.updateLayout(layout);
 
       coord.create(coordOption);
+    }
+
+    willReceiveProps(nextProps: P): void {
+      const { selection: nextSelection } = nextProps;
+      const { selection: lastSelection } = this.props;
+      if (!nextSelection || !lastSelection) {
+        return;
+      }
+      const { defaultSelected: nextDefaultSelected } = nextSelection;
+      const { defaultSelected: lastDefaultSelected } = lastSelection;
+
+      if (!equal(nextDefaultSelected, lastDefaultSelected)) {
+        this.state.selected = nextDefaultSelected;
+      }
     }
 
     treemapLayout(): RecordNode[] {
@@ -105,19 +169,94 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
           yMin: y0,
           yMax: y1,
         };
+
+        const style = this.getSelectionStyle(data);
+
         return {
           key: data.key,
           origin: data,
           color,
           ...rect,
+          style,
         };
       });
     }
 
+    select(ev, trigger) {
+      const { points, canvasX: x, canvasY: y } = ev;
+      const { selection = {} } = this.props;
+      const { triggerOn, type = 'single', cancelable = true } = selection;
+
+      if (!triggerOn || trigger !== triggerOn) return;
+
+      const point = triggerOn === 'click' ? { x, y } : points[0];
+
+      const { selected } = this.state;
+      const origin = [];
+      each(this.records, (record) => {
+        if (
+          point.x >= record.xMin &&
+          point.x <= record.xMax &&
+          point.y >= record.yMin &&
+          point.y <= record.yMax
+        ) {
+          origin.push(record?.origin);
+        }
+      });
+
+      // 没选中元素
+      if (!origin) {
+        this.setState({
+          selected: null,
+        });
+        return;
+      }
+
+      if (!selected) {
+        this.setState({
+          selected: origin,
+        });
+        return;
+      }
+
+      // 单选
+      const newSelected = [];
+      origin.forEach((record) => {
+        if (!this.isSelected(record)) {
+          newSelected.push(record);
+        }
+      });
+
+      if (type === 'single') {
+        this.setState({
+          selected: cancelable ? newSelected : origin,
+        });
+        return;
+      }
+
+      this.setState({
+        selected: [...newSelected, ...selected],
+      });
+    }
     render() {
       const nodes = this.treemapLayout();
+      this.records = nodes;
       const { props, coord } = this;
-      return <View nodes={nodes} {...props} coord={coord.getCoord()} />;
+      const { width, height } = coord.getCoord();
+
+      return (
+        <group
+          style={{
+            width,
+            height,
+            fill: 'transparent',
+          }}
+          onClick={(ev) => this.select(ev, 'click')}
+          onPress={(ev) => this.select(ev, 'press')}
+        >
+          <View nodes={nodes} {...props} coord={coord.getCoord()} />
+        </group>
+      );
     }
   };
 };
