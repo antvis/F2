@@ -20,7 +20,7 @@ export default (
     return (
       <group>
         {nodes.map((node) => {
-          const { xMin, xMax, yMin, yMax, color } = node;
+          const { xMin, xMax, yMin, yMax, color, style } = node;
           return (
             <sector
               style={{
@@ -33,6 +33,7 @@ export default (
                 r0: yMin,
                 r: yMax,
                 fill: color,
+                ...style,
               }}
               onClick={onClick ? () => onClick(node) : null}
             />
@@ -44,7 +45,7 @@ export default (
   return (
     <group>
       {nodes.map((node) => {
-        const { key, xMin, xMax, yMin, yMax, color } = node;
+        const { key, xMin, xMax, yMin, yMax, color, style } = node;
         return (
           <group>
             <rect
@@ -58,6 +59,7 @@ export default (
                 lineWidth: '4px',
                 stroke: '#fff',
                 radius: '8px',
+                ...style,
               }}
               animation={{
                 appear: {
@@ -68,15 +70,20 @@ export default (
                     fillOpacity: 0,
                     strokeOpacity: 0,
                   },
-                  end: {
-                    fillOpacity: 1,
-                    strokeOpacity: 1,
-                  },
                 },
                 update: {
                   easing: 'linear',
                   duration: 450,
-                  property: ['x', 'y', 'width', 'height', 'radius', 'lineWidth'],
+                  property: [
+                    'x',
+                    'y',
+                    'width',
+                    'height',
+                    'radius',
+                    'lineWidth',
+                    'fillOpacity',
+                    'strokeOpacity',
+                  ],
                 },
               }}
               onClick={onClick ? () => onClick(node) : null}
