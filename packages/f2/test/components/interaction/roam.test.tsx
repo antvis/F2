@@ -23,7 +23,8 @@ describe('全局漫游模式', () => {
             <Axis field="release" tickCount={5} nice={false} />
             <Axis field="count" />
             <Point x="release" y="count" size={20} viewClip />
-            <ScrollBar mode={['x', 'y']} range={[0, 0.3]} position="left" />
+            <ScrollBar mode="x" range={[0, 0.3]} />
+            <ScrollBar mode="y" range={[0, 0.3]} position="left" />
           </Chart>
         </Canvas>
       );

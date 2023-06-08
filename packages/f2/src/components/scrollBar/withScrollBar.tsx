@@ -1,5 +1,5 @@
-import { Component, jsx } from '@antv/f-engine';
-import { ZoomProps } from '../zoom';
+import { jsx } from '@antv/f-engine';
+import withZoom, { ZoomProps } from '../zoom';
 import { ChartChildProps } from '../../chart';
 
 export interface ScrollBarProps extends ZoomProps {
@@ -18,7 +18,7 @@ export interface ScrollBarProps extends ZoomProps {
 }
 
 export default (View) => {
-  return class ScrollBar extends Component<ScrollBarProps & ChartChildProps> {
+  return class ScrollBar extends withZoom(View)<ScrollBarProps & ChartChildProps> {
     willMount() {
       super.willMount();
       const { context, props } = this;

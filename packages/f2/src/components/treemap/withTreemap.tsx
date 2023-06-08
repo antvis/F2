@@ -1,12 +1,4 @@
-import {
-  jsx,
-  Component,
-  ComponentType,
-  isEqual as equal,
-  Ref,
-  createRef,
-  Gesture,
-} from '@antv/f-engine';
+import { jsx, Component, ComponentType, isEqual as equal, Ref, createRef } from '@antv/f-engine';
 import { Category } from '../../attr';
 import CoordController from '../../controller/coord';
 import { hierarchy, treemap, treemapBinary } from '../../deps/d3-hierarchy/src';

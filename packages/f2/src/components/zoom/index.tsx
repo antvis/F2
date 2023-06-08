@@ -11,12 +11,24 @@ function lerp(min, max, fraction) {
   return (max - min) * fraction + min;
 }
 
-function isEqualRange(aRange, bRange) {
-  for (const i in aRange) {
+function isNumberEqualRange(aRange: number[], bRange: number[]) {
+  for (let i = 0, len = aRange.length; i < len; i++) {
     if (!isNumberEqual(aRange[i], bRange[i])) return false;
   }
   return true;
 }
+
+function isEqualRange(aRange, bRange) {
+  if (isArray(aRange)) {
+    return isNumberEqualRange(aRange, bRange);
+  }
+  // object
+  for (const i in aRange) {
+    if (!isNumberEqualRange(aRange[i], bRange[i])) return false;
+  }
+  return true;
+}
+
 export interface ZoomProps {
   panSensitive?: number;
   pinchSensitive?: number;
@@ -238,11 +250,8 @@ export default (View) => {
           return;
         }
       });
-      if (isEqualRange(range, this.state.range)) return;
 
-      this.setState({
-        range,
-      } as S);
+      this.renderRange(range);
     };
 
     update() {
@@ -264,9 +273,7 @@ export default (View) => {
       range['x'] = this._doPan((x - startX) / coordWidth, 'x');
       range['y'] = this._doPan((y - startY) / coordHeight, 'y');
 
-      this.setState({
-        range,
-      } as S);
+      this.renderRange(range);
 
       this.startRange = range;
 
@@ -317,10 +324,7 @@ export default (View) => {
           return;
         }
       });
-      if (isEqualRange(range, this.state.range)) return;
-      this.setState({
-        range,
-      } as S);
+      this.renderRange(range);
     };
 
     onEnd = () => {
@@ -441,7 +445,7 @@ export default (View) => {
       }
 
       const { props, scale, originScale, state } = this;
-      const { chart, data, autoFit } = props;
+      const { data, autoFit } = props;
       const { range } = state;
 
       if (range && isEqualRange(newRange, range[dim])) return newRange;
@@ -454,12 +458,7 @@ export default (View) => {
 
         this.updateFollow(followScale, scale[dim], data);
       }
-      // 手势变化不执行动画
-      const { animate } = chart;
-      chart.setAnimate(false);
-      chart.forceUpdate(() => {
-        chart.setAnimate(animate);
-      });
+
       return newRange;
     }
 
@@ -484,6 +483,21 @@ export default (View) => {
       if (dim === 'y') {
         return coord.transposed ? chart.getYScales() : chart.getXScales();
       }
+    }
+
+    renderRange(range) {
+      const { state, props } = this;
+      if (isEqualRange(range, state.range)) return;
+      const { chart } = props;
+      // 手势变化不执行动画
+      const { animate } = chart;
+      chart.setAnimate(false);
+
+      // 后面的 forceUpdate 会强制更新，所以不用 setState，直接更新
+      state.range = range;
+      chart.forceUpdate(() => {
+        chart.setAnimate(animate);
+      });
     }
 
     render() {
