@@ -1,7 +1,7 @@
 {
   "name": "@antv/f2-site",
-  "private": true,
   "version": "5.0.3",
+  "private": true,
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
@@ -14,7 +14,7 @@
   "scripts": {
     "site:build": "dumi build",
     "site:clean": "",
-    "site:deploy": "gh-pages -d dist",
+    "site:deploy": "npm run site:build && gh-pages -d dist",
     "site:develop": "dumi dev",
     "site:start": "npm run site:develop"
   },
@@ -25,7 +25,8 @@
     "@antv/g-plugin-rough-canvas-renderer": "^1.7.36",
     "dumi": "^2.0.0",
     "f2-touchemulator": "~0.0.1",
-    "gh-pages": "^2.1.1"
+    "gh-pages": "^2.1.1",
+    "stats.js": "^0.17.0"
   },
   "devDependencies": {
     "lodash": "^4.17.21"
