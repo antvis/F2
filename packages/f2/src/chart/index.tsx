@@ -65,7 +65,7 @@ class Chart<
 
   public gesture: Gesture;
   public coordRef: Ref;
-  constructor(props: IProps, context: IContext) {
+  constructor(props: IProps, context?: IContext) {
     super(props);
 
     const { theme, px2hd } = context;
