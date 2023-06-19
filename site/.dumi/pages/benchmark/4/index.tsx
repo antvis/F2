@@ -42,12 +42,11 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   // @ts-ignore
   const gcanvas = canvas.canvas;
 
-  const len = data.data.length;
-  let i = 0;
+  let flag = true;
   gcanvas.on('afterdraw', () => {
     stats.update();
-    if (i > len) return;
-    canvas.update(getProps(data.data.slice(++i)));
+    flag = !flag;
+    canvas.update(getProps(data.data.slice(flag ? 0 : 1)));
   });
 
   canvas.render();
@@ -69,7 +68,7 @@ export default () => {
     <div style={{ paddingTop: '50px' }}>
       <h2>F2 4.x</h2>
       <canvas ref={canvasRef} style={{ width: '100%', height: '260px' }} />
-      <button onClick={onRender}>start</button>
+      <button onClick={onRender}>render</button>
     </div>
   );
 };
