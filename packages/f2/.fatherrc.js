@@ -1,7 +1,7 @@
 import { visualizer } from 'rollup-plugin-visualizer';
 const isBundleVis = !!process.env.BUNDLE_VIS;
 
-export default process.env.CI && process.env.CI !== 'false'
+export default process.env.CI && process.env.CI === 'true'
   ? {}
   : {
       umd: {

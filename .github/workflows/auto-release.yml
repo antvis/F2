@@ -1,0 +1,95 @@
+name: 🚀 Auto Release
+on:
+  push:
+    branches:
+      - v5.0.x
+
+jobs:
+  release:
+    runs-on: macos-latest
+    if: startsWith(github.event.head_commit.message , 'chore(release):')
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 发布开始通知
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - name: Release start notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🚀 F2 开始发布",
+                "text": "🔗 查看详情",
+                "messageUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                "picUrl": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ea88c724-38fb-42aa-8055-0e08155368b9.png"
+              }
+            }
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: lint
+        run: |
+          npm run lint
+
+      - name: build
+        run: |
+          npm run build
+        env:
+          CI: false
+
+      - name: test
+        run: |
+          npm run test
+
+      - name: Prepare
+        # https://github.com/lerna/lerna/issues/2404
+        # https://github.com/lerna/lerna/issues/2788
+        run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.SUOQIU_GITHUB_TOKEN }}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: npm run release
+
+      # 发布失败通知内部开发群
+      - name: Release failed notify
+        if: ${{ failure() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "😳😳😳 F2 发布失败",
+                "text": "🔗 请点击链接查看具体原因, 及时修复, 尝试点击右上角 [Re-run all jobs] 重试, 或手动发布",
+                "messageUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                "picUrl": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ea88c724-38fb-42aa-8055-0e08155368b9.png"
+              }
+            }
+
+      - name: Release success notify
+        if: ${{ success() }}
+        uses: visiky/dingtalk-release-notify@main
+        with:
+          DING_TALK_TOKEN: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          notify_title: '🎉 F2 新版本发布啦 🎉'
+          notify_body: '## { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c833f8c9-c629-4943-a09b-ce1bf17ca937.png) <hr /> { body } <hr />'
+          notify_footer: '> 前往 [**AntV/F2 Releases**]({ release_url })查看完整更新日志.'
+          at_all: false
+          enable_prerelease: false

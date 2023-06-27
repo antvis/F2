@@ -81,3 +81,4 @@ gatsby-browser.js
 gatsby-config.js
 .cache
 public
+.npmrc

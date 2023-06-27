@@ -8,7 +8,10 @@
       "npmClientArgs": ["--no-package-lock"]
     },
     "publish": {
-      "commitHooks": false
+      "commitHooks": false,
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "message": "🤖 publish"
     }
   }
 }
