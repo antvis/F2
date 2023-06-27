@@ -76,6 +76,7 @@ es/
 demos/index.html
 demos/assets/screenshots
 demos/debug.html
+.npmrc
 
 *.sw*
 *.un~

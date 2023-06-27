@@ -17,13 +17,13 @@
     "wordcloud"
   ],
   "dependencies": {
-    "@antv/f2": "^5.0.26",
+    "@antv/f2": "~5.0.26",
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@antv/f-test-utils": "~0.0.1",
+    "@antv/f-test-utils": "^1.0.1",
     "jest-mock-random": "~1.1.1"
   },
   "homepage": "https://f2.antv.vision/zh/",

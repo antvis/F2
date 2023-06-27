@@ -32,9 +32,9 @@
   "types": "es/index.d.ts",
   "dependencies": {
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f-engine": "~0.0.3",
-    "@antv/f-lottie": "~0.0.2",
-    "@antv/util": "~3.3.0",
+    "@antv/f-engine": "^1.0.1",
+    "@antv/f-lottie": "^1.0.1",
+    "@antv/util": "^3.0.6",
     "@babel/runtime": "^7.12.5",
     "d3-cloud": "~1.2.5",
     "fecha": "~4.2.0",

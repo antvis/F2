@@ -16,8 +16,8 @@
     "react"
   ],
   "dependencies": {
-    "@antv/f-react": "~0.0.17",
-    "@antv/f2": "^5.0.26",
+    "@antv/f-react": "^1.0.1",
+    "@antv/f2": "~5.0.26",
     "@babel/runtime": "^7.12.5",
     "tslib": "^2.3.1"
   },
