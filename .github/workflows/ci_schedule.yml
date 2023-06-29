@@ -1,0 +1,60 @@
+# 定时巡检
+name: CI_Schedule
+
+on:
+  schedule:
+    # 北京时间 09:00
+    - cron: '0 1 * * *'
+
+jobs:
+  ci:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: v5.0.x
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: install
+        run: |
+          yarn install
+
+      - name: lint
+        run: |
+          npm run lint
+        env:
+          CI: true
+
+      - name: build
+        run: |
+          npm run build
+        env:
+          CI: true
+
+      - name: test
+        run: |
+          npm run test
+        env:
+          CI: true
+
+      # 发布失败通知内部开发群
+      - name: CI failure notify
+        if: ${{ failure() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "😳 CI 巡检失败",
+                "text": "🔗 请点击链接查看具体原因",
+                "messageUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                "picUrl": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ea88c724-38fb-42aa-8055-0e08155368b9.png"
+              }
+            }
