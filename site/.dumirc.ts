@@ -303,6 +303,14 @@ export default defineConfig({
         },
       },
       {
+        slug: 'candlestick',
+        icon: 'candlestick',
+        title: {
+          zh: 'K 线图',
+          en: 'Candlestick Charts',
+        },
+      },
+      {
         slug: 'component',
         icon: 'component',
         title: {
