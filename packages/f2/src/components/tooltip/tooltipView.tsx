@@ -448,8 +448,8 @@ export default class TooltipView extends Component {
             records={records}
             coord={coord}
             xTip={xTip}
-            xTipTextStyle={{ ...defaultStyle.xTipTextStyle, xTipTextStyle }}
-            xTipBackground={{ ...defaultStyle.xTipBackground, xTipBackground }}
+            xTipTextStyle={{ ...defaultStyle.xTipTextStyle, ...xTipTextStyle }}
+            xTipBackground={{ ...defaultStyle.xTipBackground, ...xTipBackground }}
           />
         )}
         {/* Y 轴辅助信息 */}
@@ -458,8 +458,8 @@ export default class TooltipView extends Component {
             records={records}
             coord={coord}
             yTip={yTip}
-            yTipTextStyle={{ ...defaultStyle.yTipTextStyle, yTipTextStyle }}
-            yTipBackground={{ ...defaultStyle.yTipBackground, yTipBackground }}
+            yTipTextStyle={{ ...defaultStyle.yTipTextStyle, ...yTipTextStyle }}
+            yTipBackground={{ ...defaultStyle.yTipBackground, ...yTipBackground }}
           />
         )}
         {/* 非自定义模式时显示的文本信息 */}
@@ -473,8 +473,8 @@ export default class TooltipView extends Component {
             x={x}
             arrowWidth={arrowWidth}
             background={background}
-            nameStyle={{ ...defaultStyle.nameStyle, nameStyle }}
-            valueStyle={{ ...defaultStyle.valueStyle, valueStyle }}
+            nameStyle={{ ...defaultStyle.nameStyle, ...nameStyle }}
+            valueStyle={{ ...defaultStyle.valueStyle, ...valueStyle }}
             joinString={joinString}
           />
         )}
