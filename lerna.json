@@ -1,11 +1,13 @@
 {
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "5.0.27",
+  "version": "5.0.28",
   "command": {
     "bootstrap": {
       "ci": false,
-      "npmClientArgs": ["--no-package-lock"]
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     },
     "publish": {
       "commitHooks": false,
