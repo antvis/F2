@@ -61,8 +61,8 @@ jobs:
 
       - name: Release
         env:
-          GH_TOKEN: ${{ secrets.SUOQIU_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run release
 
       # 发布失败通知内部开发群
