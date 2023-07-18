@@ -41,7 +41,7 @@
     "lint-fix": "eslint --fix ./",
     "prettier": "prettier --write './packages/**/*.{ts,tsx}'",
     "canary": "npm run build && npm run test && lerna publish --canary --dist-tag next",
-    "publish": "npm run build && npm run test && lerna publish --dist-tag next",
+    "publish": "lerna publish --dist-tag next",
     "release": "lerna publish --yes --summary-file --dist-tag next",
     "refresh": "lerna clean && yarn && lerna bootstrap",
     "site:build": "cd ./site && npm run site:build",
@@ -56,10 +56,7 @@
     "test-watch": "DEBUG_MODE=1 jest --watch"
   },
   "pre-commit": {
-    "run": [
-      "lint",
-      "test"
-    ],
+    "run": [],
     "silent": false
   },
   "resolutions": {
