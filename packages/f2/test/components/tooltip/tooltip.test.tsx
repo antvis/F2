@@ -401,4 +401,64 @@ describe('tooltip', () => {
     await delay(500);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('Tooltip-xTip-yTip相关配置', async () => {
+    const context = createContext('Tooltip xTip yTip相关配置');
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip
+          alwaysShow={true}
+            showCrosshairs
+            crosshairsType="xy"
+            snap
+            showXTip
+            showYTip
+            showTooltipMarker={true}
+            crosshairsStyle={{
+              lineDash: [2, 2],
+              stroke: '#326BFB',
+            }}
+            xTipTextStyle={{
+              fill: 'red',
+            }}
+            xTipBackground={{
+              radius: '4px',
+              fill: '#326BFB',
+            }}
+            yTipTextStyle={{
+              fill: 'red',
+              fontSize: '24px',
+            }}
+            yTipBackground={{
+              radius: '4px',
+              fill: '#326BFB',
+            }}
+            nameStyle={{
+              fontSize: '24px',
+              fill: 'red',
+              textAlign: 'start',
+              textBaseline: 'middle',
+              text: ''
+            }}
+            valueStyle={{
+              fill: 'red',
+              text: ''
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(500);
+    await gestureSimulator(context.canvas, 'press', { x: 170, y: 100 });
+
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
+  });
 });
