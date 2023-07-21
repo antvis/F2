@@ -131,10 +131,18 @@ const RenderItemMarker = (props) => {
 };
 
 const RenderCrosshairs = (props) => {
-  const { records, coord, chart, crosshairsType, crosshairsStyle } = props;
+  const {
+    records,
+    coord,
+    chart,
+    crosshairsType,
+    crosshairsStyle,
+    xPositionType,
+    yPositionType,
+  } = props;
   const { left: coordLeft, top: coordTop, right: coordRight, bottom: coordBottom, center } = coord;
   const firstRecord = records[0];
-  const { x, y, origin, xField } = firstRecord;
+  const { x, y, origin, xField, coord: coordData } = firstRecord;
   if (coord.isPolar) {
     // 极坐标下的辅助线
     const xScale = chart.getScale(xField);
@@ -163,9 +171,9 @@ const RenderCrosshairs = (props) => {
         <line
           style={{
             x1: coordLeft,
-            y1: y,
+            y1: yPositionType === 'coord' ? coordData.y : y,
             x2: coordRight,
-            y2: y,
+            y2: yPositionType === 'coord' ? coordData.y : y,
             ...crosshairsStyle,
           }}
         />
@@ -173,9 +181,9 @@ const RenderCrosshairs = (props) => {
       {directionEnabled(crosshairsType, 'y') ? (
         <line
           style={{
-            x1: x,
+            x1: xPositionType === 'coord' ? coordData.x : x,
             y1: coordTop,
-            x2: x,
+            x2: xPositionType === 'coord' ? coordData.x : x,
             y2: coordBottom,
             ...crosshairsStyle,
           }}
@@ -186,19 +194,19 @@ const RenderCrosshairs = (props) => {
 };
 
 const RenderXTip = (props) => {
-  const { records, coord, xTip, xTipTextStyle, xTipBackground } = props;
+  const { records, coord, xTip, xPositionType, xTipTextStyle, xTipBackground } = props;
 
   const { bottom: coordBottom } = coord;
 
   const firstRecord = records[0];
-  const { x } = firstRecord;
+  const { x, coord: coordData } = firstRecord;
   const { name: xFirstText } = firstRecord;
 
   return (
     <rect
       style={{
         display: 'flex',
-        left: x,
+        left: xPositionType === 'coord' ? coordData.x : x,
         top: coordBottom,
         ...xTipBackground,
       }}
@@ -206,7 +214,12 @@ const RenderXTip = (props) => {
       <text
         style={{
           ...xTipTextStyle,
-          text: isFunction(xTip) ? xTip(xFirstText) : xFirstText,
+          text:
+            xPositionType === 'coord'
+              ? coordData.xText
+              : isFunction(xTip)
+              ? xTip(xFirstText)
+              : xFirstText,
         }}
       />
     </rect>
@@ -214,26 +227,31 @@ const RenderXTip = (props) => {
 };
 
 const RenderYTip = (props) => {
-  const { records, coord, yTip, yTipTextStyle, yTipBackground } = props;
+  const { records, coord, yTip, yPositionType, yTipTextStyle, yTipBackground } = props;
 
   const { left: coordLeft } = coord;
 
   const firstRecord = records[0];
-  const { y } = firstRecord;
+  const { y, coord: coordData } = firstRecord;
   const { value: yFirstText } = firstRecord;
   return (
     <rect
       style={{
         display: 'flex',
         left: coordLeft,
-        top: y,
+        top: yPositionType === 'coord' ? coordData.y : y,
         ...yTipBackground,
       }}
     >
       <text
         style={{
           ...yTipTextStyle,
-          text: isFunction(yTip) ? yTip(yFirstText) : yFirstText,
+          text:
+            yPositionType === 'coord'
+              ? coordData.yText
+              : isFunction(yTip)
+              ? yTip(yFirstText)
+              : yFirstText,
         }}
       />
     </rect>
@@ -364,7 +382,7 @@ export default class TooltipView extends Component {
     const { props, context } = this;
     const { records, coord } = props;
     const firstRecord = records[0];
-    const { x } = firstRecord;
+    const { x, coord: coordData } = firstRecord;
     const {
       chart,
       background: customBackground,
@@ -381,7 +399,9 @@ export default class TooltipView extends Component {
       snap = defaultStyle.snap,
       tooltipMarkerStyle = defaultStyle.tooltipMarkerStyle,
       showXTip,
+      xPositionType,
       showYTip,
+      yPositionType,
       xTip,
       yTip,
       xTipTextStyle = defaultStyle.xTipTextStyle,
@@ -419,6 +439,8 @@ export default class TooltipView extends Component {
             chart={chart}
             coord={coord}
             records={records}
+            xPositionType={xPositionType}
+            yPositionType={yPositionType}
             crosshairsType={crosshairsType}
             crosshairsStyle={{ ...defaultStyle.crosshairsStyle, ...crosshairsStyle }}
           />
@@ -430,8 +452,8 @@ export default class TooltipView extends Component {
               return (
                 <circle
                   style={{
-                    cx: x,
-                    cy: y,
+                    cx: xPositionType === 'coord' ? coordData.x : x,
+                    cy: yPositionType === 'coord' ? coordData.y : y,
                     r: '6px',
                     stroke: color,
                     fill: color,
@@ -448,6 +470,7 @@ export default class TooltipView extends Component {
             records={records}
             coord={coord}
             xTip={xTip}
+            xPositionType={xPositionType}
             xTipTextStyle={{ ...defaultStyle.xTipTextStyle, ...xTipTextStyle }}
             xTipBackground={{ ...defaultStyle.xTipBackground, ...xTipBackground }}
           />
@@ -458,6 +481,7 @@ export default class TooltipView extends Component {
             records={records}
             coord={coord}
             yTip={yTip}
+            yPositionType={yPositionType}
             yTipTextStyle={{ ...defaultStyle.yTipTextStyle, ...yTipTextStyle }}
             yTipBackground={{ ...defaultStyle.yTipBackground, ...yTipBackground }}
           />

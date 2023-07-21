@@ -47,6 +47,9 @@ export interface TooltipProps {
    * 十字线样式
    */
   crosshairsStyle?: LineStyleProps;
+  /**
+   * 是否显示辅助点
+   */
   snap?: boolean;
   /**
    * 名称样式
@@ -69,7 +72,15 @@ export interface TooltipProps {
   tooltipMarkerStyle?: any;
   onChange?: any;
   showXTip?: boolean;
+  /**
+   * x 的位置点类型，record 表示按照数据取位置点，coord 表示按照坐标取位置点
+   */
+  xPositionType?: 'record' | 'coord';
   showYTip?: boolean;
+  /**
+   * x 的位置点类型，record 表示按照数据取位置点，coord 表示按照坐标取位置点
+   */
+  yPositionType?: 'record' | 'coord';
   showTooltipMarker?: boolean;
   customText?: any;
   markerBackgroundStyle?: any;
@@ -171,7 +182,9 @@ export default (View) => {
 
       const records = snapRecords.map((record) => {
         const { origin, xField, yField } = record;
-        const value = yScale.getText(origin[yField]);
+        const value = isArray(origin[yField])
+          ? origin[yField].map((v) => yScale.getText(v))
+          : yScale.getText(origin[yField]);
 
         // 默认取 alias 的配置
         let name = yScale.alias;
@@ -190,7 +203,7 @@ export default (View) => {
         return {
           ...record,
           name,
-          value,
+          value: `${value}`,
         };
       });
 
