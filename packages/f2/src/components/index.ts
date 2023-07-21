@@ -25,4 +25,9 @@ export { default as PieLabel, PieLabelProps, withPieLabel, PieLabelView } from '
 export { default as Gauge, GaugeProps, withGauge, GaugeView } from './gauge';
 export { default as Zoom, ZoomProps } from './zoom';
 export { default as ScrollBar, ScrollBarProps, withScrollBar, ScrollBarView } from './scrollBar';
-export { default as Candlestick } from './candlestick';
+export {
+  default as Candlestick,
+  CandlestickProps,
+  withCandlestick,
+  CandlestickView,
+} from './candlestick';

@@ -1,6 +1,6 @@
 import { jsx } from '../../../src';
-import { Canvas, Chart, Candlestick, Axis } from '../../../src';
-import { createContext, delay } from '../../util';
+import { Canvas, Chart, Candlestick, Axis, Tooltip } from '../../../src';
+import { createContext, delay, gestureSimulator } from '../../util';
 const context = createContext();
 
 const data = [
@@ -96,6 +96,34 @@ describe('candlestick', () => {
     await canvas.render();
 
     await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it.only('tooltip', async () => {
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="time" type="timeCat" tickCount={3} />
+          <Axis field="value" formatter={(v) => Number(v).toFixed(2)} />
+          <Candlestick x="time" y="value" />
+          <Tooltip
+            snap
+            showCrosshairs={true}
+            crosshairsType="xy"
+            showXTip
+            showYTip
+            yPositionType="coord"
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(500);
+    await gestureSimulator(context.canvas, 'press', { x: 160, y: 100 });
+    await delay(200);
     expect(context).toMatchImageSnapshot();
   });
 });

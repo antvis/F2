@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Axis, Candlestick, Canvas, Chart, jsx } from '@antv/f2';
+import { Axis, Candlestick, Canvas, Chart, jsx, Tooltip } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');
 
@@ -29,6 +29,7 @@ const { props } = (
       <Axis field="time" />
       <Axis field="value" />
       <Candlestick x="time" y="value" />
+      <Tooltip showCrosshairs={true} yPositionType="coord" crosshairsType="xy" showXTip showYTip />
     </Chart>
   </Canvas>
 );

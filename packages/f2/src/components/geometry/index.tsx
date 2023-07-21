@@ -632,6 +632,20 @@ class Geometry<
 
     const records = this.flatRecords();
 
+    const xValue = xScale.invert(invertPoint.x);
+    const yValue = yScale.invert(invertPoint.y);
+
+    const coordPoint = coord.convertPoint(invertPoint);
+    const coordRecord = {
+      // 坐标点
+      x: coordPoint.x,
+      y: coordPoint.y,
+      xValue,
+      yValue,
+      xText: xScale.getText(xValue),
+      yText: yScale.getText(yValue),
+    };
+
     // 处理饼图
     if (adjust === 'stack' && coord.isPolar && coord.transposed) {
       // 弧度在半径范围内
@@ -653,6 +667,7 @@ class Geometry<
         ...records[i],
         xField,
         yField,
+        coord: coordRecord,
       };
       const originValue = record[FIELD_ORIGIN][xField];
       if (xScale.type === 'timeCat' && toTimeStamp(originValue) === value) {
