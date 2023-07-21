@@ -1,7 +1,7 @@
 {
   "name": "@antv/f2-node",
   "private": true,
-  "version": "5.0.2",
+  "version": "5.0.29",
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
