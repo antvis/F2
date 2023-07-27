@@ -26,8 +26,8 @@ const data = [
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
     <Chart data={data}>
-      <Axis field="time" />
-      <Axis field="value" />
+      <Axis field="time" type="timeCat" />
+      <Axis field="value" formatter={(v) => Number(v).toFixed(0)} />
       <Candlestick x="time" y="value" />
       <Tooltip showCrosshairs={true} yPositionType="coord" crosshairsType="xy" showXTip showYTip />
     </Chart>

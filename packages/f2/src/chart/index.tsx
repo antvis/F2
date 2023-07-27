@@ -6,7 +6,6 @@ import {
   Component,
   Children,
   jsx,
-  Gesture,
   Ref,
   createRef,
 } from '@antv/f-engine';
@@ -63,7 +62,6 @@ class Chart<
   public coord: CoordController;
   public scale: ScaleController;
 
-  public gesture: Gesture;
   public coordRef: Ref;
   constructor(props: IProps, context?: IContext) {
     super(props);
@@ -141,12 +139,17 @@ class Chart<
   }
 
   on(eventName: string, listener: (...args: any[]) => void) {
-    this.gesture = this.gesture ? this.gesture : new Gesture(this.coordRef.current);
-    this.gesture.on(eventName, listener);
+    const roolEl = this.coordRef.current;
+    if (!roolEl || !roolEl.gesture) return;
+    const gesture = roolEl.gesture;
+    gesture.on(eventName, listener);
   }
 
   off(eventName: string, listener: (...args: any[]) => void) {
-    this.gesture.off(eventName, listener);
+    const roolEl = this.coordRef.current;
+    if (!roolEl || !roolEl.gesture) return;
+    const gesture = roolEl.gesture;
+    gesture.off(eventName, listener);
   }
 
   // 给需要显示的组件留空
