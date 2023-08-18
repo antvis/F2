@@ -21,6 +21,7 @@
   "dependencies": {
     "@antv/dumi-theme-antv": "^0.3.5",
     "@antv/f-react": "~0.0.7",
+    "@antv/f-test-utils": "1.0.3",
     "@antv/f2": "^5.0.4",
     "@antv/g-plugin-rough-canvas-renderer": "^1.7.36",
     "dumi": "^2.0.0",
