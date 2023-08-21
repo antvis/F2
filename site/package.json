@@ -16,6 +16,7 @@
     "site:clean": "",
     "site:deploy": "npm run site:build && gh-pages -d dist",
     "site:develop": "dumi dev",
+    "site:preview": "umi preview",
     "site:start": "npm run site:develop"
   },
   "dependencies": {
