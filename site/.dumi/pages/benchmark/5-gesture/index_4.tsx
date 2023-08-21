@@ -1,8 +1,9 @@
-import { delay, gestureSimulator } from '@antv/f-test-utils';
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
 import data from '../data.json';
+import { delay, gestureSimulator } from '../utils';
 import { Axis, Canvas, Chart, Line, Tooltip } from './f2_4';
+
 // import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
 
 // @ts-ignore
@@ -32,7 +33,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip></Tooltip>
+          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
         </Chart>
       </Canvas>
     );

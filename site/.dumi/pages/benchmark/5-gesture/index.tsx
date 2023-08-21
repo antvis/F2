@@ -1,9 +1,8 @@
-import { delay, gestureSimulator } from '@antv/f-test-utils';
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
 import data from '../data.json';
+import { delay, gestureSimulator, isTouchEvent } from '../utils';
 import { Axis, Canvas, Chart, Line, Tooltip } from './f2_opt';
-// import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
 
 // @ts-ignore
 const stats = new Stats();
@@ -12,6 +11,11 @@ stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 // $stats.style.position = 'relative';
 // $stats.style.left = '0px';
 // $stats.style.top = '0px';
+const isTouch = (eventType) => {
+  if (eventType.indexOf('touch') !== -1) return true;
+  if (eventType.indexOf('press') !== -1) return true;
+  return false;
+};
 
 document.body.insertBefore(stats.dom, document.body.firstChild);
 
@@ -32,7 +36,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip></Tooltip>
+          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
         </Chart>
       </Canvas>
     );
@@ -45,7 +49,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const canvas = new Canvas(props);
   // @ts-ignore
   const gcanvas = canvas.canvas;
-
+  gcanvas.isTouchEvent = isTouchEvent;
   canvas.render();
 
   gcanvas.addEventListener('afterrender', () => {
@@ -64,7 +68,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   };
 
   setTimeout(async () => {
-    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 170 });
+    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 35 });
     await delay(450);
     loopTouchmove();
   });

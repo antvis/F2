@@ -1,9 +1,9 @@
-import { delay, gestureSimulator } from '@antv/f-test-utils';
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
 import data from '../data.json';
 import { Axis, Canvas, Chart, Line, Tooltip } from './f2_prev';
 // import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
+import { delay, gestureSimulator, isTouchEvent } from '../utils';
 
 // @ts-ignore
 const stats = new Stats();
@@ -32,7 +32,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip></Tooltip>
+          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
         </Chart>
       </Canvas>
     );
@@ -45,7 +45,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const canvas = new Canvas(props);
   // @ts-ignore
   const gcanvas = canvas.canvas;
-
+  gcanvas.isTouchEvent = isTouchEvent;
   canvas.render();
 
   gcanvas.addEventListener('afterrender', () => {
