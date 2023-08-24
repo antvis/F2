@@ -42,8 +42,7 @@ describe('sample', () => {
       };
     });
     const context = createContext('lttb', { width: '300px', height: '200px' });
-    const sampleData = lttbDownSample({
-      data,
+    const sampleData = lttbDownSample(data, {
       rate: 7,
       dimension: 'value',
     });
@@ -72,8 +71,7 @@ describe('sample', () => {
       };
     });
     const context = createContext('nearest', { width: '300px', height: '200px' });
-    const sampleData = rateDownSample({
-      data,
+    const sampleData = rateDownSample(data, {
       sampling: 'nearest',
       rate: 7,
       dimension: 'value',

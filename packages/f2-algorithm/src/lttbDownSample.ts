@@ -8,15 +8,14 @@
  * * @param {number} dimension
  */
 
-export interface SampleProps {
-  data: any[];
+export interface OptionsProps {
   /*周期 */
   rate: number;
   dimension: string;
 }
 
-export default function lttbDownSample(props: SampleProps) {
-  const { data, rate, dimension } = props;
+export default function lttbDownSample(data, options?: OptionsProps) {
+  const { rate = 5, dimension = 'value' } = options;
   const len = data.length;
   const targetCount = len / rate;
   if (targetCount >= len || targetCount === 0) {

@@ -53,16 +53,15 @@ const samplers = {
   },
 };
 
-export interface SampleProps {
-  data: any[];
+export interface OptionsProps {
   sampling: 'nearest' | 'max' | 'min' | Function;
   /* 周期  */
   rate: number;
   dimension: string;
 }
 
-export default function rateDownSample(props: SampleProps) {
-  const { data, sampling, rate, dimension = 'value' } = props;
+export default function rateDownSample(data, options?: OptionsProps) {
+  const { sampling = 'nearest', rate = 5, dimension = 'value' } = options;
   let sampler;
   if (isFinite(rate) && rate > 1) {
     if (isString(sampling)) {
