@@ -1,0 +1,38 @@
+{
+  "name": "f2-algorithm",
+  "version": "5.0.0",
+  "description": "F2 algorithm extension",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "sideEffects": false,
+  "keywords": [
+    "antv",
+    "f2",
+    "chart",
+    "charts",
+    "mobile",
+    "visualization",
+    "react",
+    "sample"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.12.5",
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {
+    "@antv/f2": "^5.0.27",
+    "@antv/f-test-utils": "^1.0.1",
+    "jest-mock-random": "~1.1.1"
+  },
+  "homepage": "https://f2.antv.vision/zh/",
+  "author": "https://github.com/orgs/antvis/people",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/f2"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/f2/issues"
+  }
+}
