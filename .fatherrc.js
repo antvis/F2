@@ -8,5 +8,5 @@ export default {
   runtimeHelpers: true,
   lessInBabelMode: true,
   cssModules: true,
-  pkgs: ['f2', 'f2-react', 'f2-wordcloud'],
+  pkgs: ['f2', 'f2-react', 'f2-wordcloud', 'f2-algorithm'],
 };
