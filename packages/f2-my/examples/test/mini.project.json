@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "beforeCompile": "npm run beforeCompile"
+  },
+  "enableNodeModuleBabelTransform": true,
+  "component2": true,
+  "enableAppxNg": true
+}
