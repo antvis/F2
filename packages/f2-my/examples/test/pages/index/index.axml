@@ -1,0 +1,3 @@
+<view class="container">
+  <f-canvas onRender="onRenderChart" data="{{chartData}}"></f-canvas>
+</view>

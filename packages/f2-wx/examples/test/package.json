@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "beforeCompile": "babel pages --out-dir pages --only **/*.jsx"
+  },
+  "dependencies": {
+    "@antv/f2": "^5.0.0",
+    "@antv/f-wx": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-react-jsx": "^7.16.0"
+  }
+}
