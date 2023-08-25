@@ -20,7 +20,7 @@ if (window) {
 
     // polyfills
     if (!document.createTouch) {
-      document.createTouch = function(view, target, identifier, pageX, pageY, screenX, screenY) {
+      document.createTouch = function (view, target, identifier, pageX, pageY, screenX, screenY) {
         // auto set
         return CreatTouch(
           target,
@@ -40,7 +40,7 @@ if (window) {
     }
 
     if (!document.createTouchList) {
-      document.createTouchList = function() {
+      document.createTouchList = function () {
         var touchList = TouchList();
         for (var i = 0; i < arguments.length; i++) {
           touchList[i] = arguments[i];
@@ -81,12 +81,12 @@ if (window) {
     function TouchList() {
       var touchList = [];
 
-      touchList['item'] = function(index) {
+      touchList['item'] = function (index) {
         return this[index] || null;
       };
 
       // specified by Mozilla
-      touchList['identifiedTouch'] = function(id) {
+      touchList['identifiedTouch'] = function (id) {
         return this[id + 1] || null;
       };
 
@@ -116,7 +116,7 @@ if (window) {
      * @returns {Function}
      */
     function onMouse(touchType) {
-      return function(ev) {
+      return function (ev) {
         // prevent mouse events
 
         if (ev.which !== 1) {

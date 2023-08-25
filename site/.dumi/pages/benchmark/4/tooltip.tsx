@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
+import { delay, gestureSimulator } from '../../../utils';
 import data from '../data.json';
-import { Axis, Canvas, Chart, Line } from './f2';
+import { Axis, Canvas, Chart, Line, Tooltip } from './f2';
+
+// import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
 
 // @ts-ignore
 const stats = new Stats();
@@ -20,6 +23,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
 
   function getProps(data) {
     const vNode = (
+      // @ts-ignore
       <Canvas
         context={canvasEl.getContext('2d')}
         pixelRatio={window.devicePixelRatio}
@@ -29,6 +33,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
+          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
         </Chart>
       </Canvas>
     );
@@ -42,14 +47,31 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   // @ts-ignore
   const gcanvas = canvas.canvas;
 
-  let flag = true;
+  canvas.render();
+
+  // gcanvas.addEventListener('afterrender', () => {
+  //   stats.update();
+  // });
   gcanvas.on('afterdraw', () => {
     stats.update();
-    flag = !flag;
-    canvas.update(getProps(data.data.slice(flag ? 0 : 1)));
   });
 
-  canvas.render();
+  let i = 0;
+  const loopTouchmove = () => {
+    i++;
+    gestureSimulator(canvasEl, 'touchmove', {
+      x: i,
+      y: 35,
+    });
+    if (i >= canvasEl.width - 400) i = 0;
+    window.requestAnimationFrame(loopTouchmove);
+  };
+
+  setTimeout(async () => {
+    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 170 });
+    await delay(450);
+    loopTouchmove();
+  });
 
   return canvas;
 }

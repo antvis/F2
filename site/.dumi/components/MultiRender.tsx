@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
-import Stats from 'stats.js';
-import { Canvas, Chart, Axis, Line } from '@antv/f2';
 import { Renderer as CanvasRenderer } from '@antv/g-mobile-canvas';
 import { Renderer as SVGRenderer } from '@antv/g-mobile-svg';
 import { Renderer as WebGLRenderer } from '@antv/g-mobile-webgl';
-import data from '../data.json';
+import React, { useRef, useState } from 'react';
+import Stats from 'stats.js';
+import data from './data.json';
 
 // @ts-ignore
 const stats = new Stats();
@@ -16,7 +15,8 @@ stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 document.body.insertBefore(stats.dom, document.body.firstChild);
 
-function renderChart(options) {
+function renderChart(F2, options) {
+  const { Canvas, Chart, Axis, Line } = F2;
   function getProps(data) {
     const { props } = (
       // @ts-ignore
@@ -49,8 +49,10 @@ function renderChart(options) {
   return canvas;
 }
 
-export default () => {
-  const [canvasInstance, setCanvas] = useState<Canvas | null>(null);
+export default ({ F2 }) => {
+  if (!F2) return null;
+  const { Canvas } = F2;
+  const [canvasInstance, setCanvas] = useState<typeof Canvas | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -65,14 +67,17 @@ export default () => {
       canvasEl.style.height = '100%';
       container.appendChild(canvasEl);
       const canvasRenderer = new CanvasRenderer();
-      const canvas = renderChart({ renderer: canvasRenderer, context: canvasEl.getContext('2d') });
+      const canvas = renderChart(F2, {
+        renderer: canvasRenderer,
+        context: canvasEl.getContext('2d'),
+      });
       setCanvas(canvas);
       return;
     }
     if (value === 'svg') {
       const svgRenderer = new SVGRenderer();
       const { width, height } = container.getBoundingClientRect();
-      const canvas = renderChart({ renderer: svgRenderer, container, width, height });
+      const canvas = renderChart(F2, { renderer: svgRenderer, container, width, height });
       setCanvas(canvas);
       return;
     }
@@ -82,7 +87,7 @@ export default () => {
       canvasEl.style.width = '100%';
       canvasEl.style.height = '100%';
       container.appendChild(canvasEl);
-      const canvas = renderChart({
+      const canvas = renderChart(F2, {
         renderer: webglRenderer,
         context: canvasEl.getContext('webgl'),
       });
@@ -103,7 +108,7 @@ export default () => {
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <h2>F2 5.x</h2>
+      <h2>二次渲染</h2>
       <select ref={selectRef} onChange={onSelectChange}>
         <option value="canvas">canvas 2d</option>
         <option value="svg">svg</option>
@@ -113,7 +118,6 @@ export default () => {
       <button onClick={onRender} style={{ marginRight: '10px' }}>
         render
       </button>
-      <button style={{ marginRight: '10px' }}>pinch</button>
     </div>
   );
 };

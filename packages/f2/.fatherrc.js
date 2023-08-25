@@ -20,5 +20,12 @@ export default process.env.CI && process.env.CI === 'true'
         //   umd: { name: 'F2JSXRuntime', file: 'jsx-runtime' },
         // },
       },
+      typescriptOpts: {
+        tsconfigOverride: {
+          compilerOptions: {
+            target: 'es5',
+          },
+        },
+      },
       extraRollupPlugins: [...(isBundleVis ? [visualizer()] : [])],
     };
