@@ -1,10 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
-import data from '../data.json';
-import { delay, gestureSimulator } from '../utils';
-import { Axis, Canvas, Chart, Line, Tooltip } from './f2_4';
-
-// import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
+import { gestureSimulator, isTouchEvent } from '../utils';
+import data from './data.json';
 
 // @ts-ignore
 const stats = new Stats();
@@ -16,7 +13,9 @@ stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 document.body.insertBefore(stats.dom, document.body.firstChild);
 
-function renderChart(canvasEl: HTMLCanvasElement) {
+function renderChart(F2, canvasEl: HTMLCanvasElement) {
+  const { Axis, Canvas, Chart, Line, ScrollBar } = F2;
+
   // 清空画布
   canvasEl.width = 0;
   canvasEl.height = 0;
@@ -33,7 +32,8 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
+          <ScrollBar mode="x" range={[0, 0.7]} />
+          <ScrollBar mode="y" range={[0, 0.7]} />
         </Chart>
       </Canvas>
     );
@@ -46,49 +46,54 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const canvas = new Canvas(props);
   // @ts-ignore
   const gcanvas = canvas.canvas;
-
+  gcanvas.isTouchEvent = isTouchEvent;
   canvas.render();
 
-  // gcanvas.addEventListener('afterrender', () => {
-  //   stats.update();
-  // });
-  gcanvas.on('afterdraw', () => {
+  gcanvas.addEventListener('afterrender', () => {
     stats.update();
   });
 
-  let i = 0;
+  let flag = false;
   const loopTouchmove = () => {
-    i++;
-    gestureSimulator(canvasEl, 'touchmove', {
-      x: i,
-      y: 35,
-    });
-    if (i >= canvasEl.width - 400) i = 0;
+    if (flag) {
+      gestureSimulator(canvasEl, 'touchmove', [
+        { x: 114, y: 114 },
+        { x: 186, y: 186 },
+      ]);
+    } else {
+      gestureSimulator(canvasEl, 'touchmove', [
+        { x: 50, y: 50 },
+        { x: 260, y: 260 },
+      ]);
+    }
+    flag = !flag;
     window.requestAnimationFrame(loopTouchmove);
   };
 
   setTimeout(async () => {
-    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 170 });
-    await delay(450);
+    gestureSimulator(canvasEl, 'touchstart', [
+      { x: 50, y: 50 },
+      { x: 260, y: 260 },
+    ]);
     loopTouchmove();
   });
 
   return canvas;
 }
 
-export default () => {
+export default ({ F2 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
     if (!canvasEl) return;
 
-    renderChart(canvasEl);
+    renderChart(F2, canvasEl);
   }, []);
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <h2>F2 4.x</h2>
+      <h2>Pinch</h2>
       <canvas ref={canvasRef} style={{ width: '100%', height: '260px' }} />
     </div>
   );

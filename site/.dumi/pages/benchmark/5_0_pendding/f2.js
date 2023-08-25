@@ -14720,11 +14720,7 @@
             ev.points = points;
             _this.emitStart(eventType, ev, target);
             ev.type = eventType;
-            if (_this.movingTarget) {
-              _this.movingTarget.dispatchEvent(ev);
-            } else {
-              target.dispatchEvent(ev);
-            }
+            _this.refreshAndGetTarget(target).dispatchEvent(ev);
             return;
           }
           // 多指触控
@@ -14750,11 +14746,7 @@
             };
           });
           ev.points = points;
-          if (_this.movingTarget) {
-            _this.emitEnd(ev, _this.movingTarget);
-          } else {
-            _this.emitEnd(ev, target);
-          }
+          _this.emitEnd(ev, _this.refreshAndGetTarget(target));
           // 单指
           if (evCache.length === 1) {
             // swipe事件处理, 在end之后触发
@@ -14804,11 +14796,7 @@
             };
           });
           ev.points = points;
-          if (_this.movingTarget) {
-            _this.emitEnd(ev, _this.movingTarget);
-          } else {
-            _this.emitEnd(ev, target);
-          }
+          _this.emitEnd(ev, _this.refreshAndGetTarget(target));
           _this.evCache = [];
           _this.reset();
         };
@@ -14961,6 +14949,15 @@
           clearTimeout(this.pressTimeout);
           this.pressTimeout = null;
         }
+      };
+      GesturePlugin.prototype.refreshAndGetTarget = function (target) {
+        if (this.movingTarget) {
+          if (this.movingTarget && !this.movingTarget.isConnected) {
+            this.movingTarget = target;
+          }
+          return this.movingTarget;
+        }
+        return target;
       };
       GesturePlugin.prototype.reset = function () {
         this.clearPressTimeout();

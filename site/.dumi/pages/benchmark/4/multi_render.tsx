@@ -66,7 +66,7 @@ export default () => {
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <h2>F2 4.x</h2>
+      <h2>二次渲染</h2>
       <canvas ref={canvasRef} style={{ width: '100%', height: '260px' }} />
     </div>
   );

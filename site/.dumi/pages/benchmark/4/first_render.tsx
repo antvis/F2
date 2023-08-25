@@ -39,19 +39,12 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const props = getProps(data.data);
   // @ts-ignore
   const canvas = new Canvas(props);
-  // @ts-ignore
-  const gcanvas = canvas.canvas;
-
-  let flag = true;
-  gcanvas.on('afterdraw', () => {
-    stats.update();
-    flag = !flag;
-    canvas.update(getProps(data.data.slice(flag ? 0 : 1)));
-  });
 
   canvas.render();
 
-  return canvas;
+  stats.update();
+
+  window.requestAnimationFrame(() => renderChart(canvasEl));
 }
 
 export default () => {
@@ -61,7 +54,7 @@ export default () => {
     const canvasEl = canvasRef.current;
     if (!canvasEl) return;
 
-    renderChart(canvasEl);
+    window.requestAnimationFrame(() => renderChart(canvasEl));
   }, []);
 
   return (

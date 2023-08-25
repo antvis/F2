@@ -1,11 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
-import data from '../data.json';
-import { delay, gestureSimulator, isTouchEvent } from '../utils';
-import * as WCC from './wcc';
-
-const { F2 } = WCC;
-const { Axis, Canvas, Chart, Line, Tooltip } = F2;
+import data from './data.json';
 
 // @ts-ignore
 const stats = new Stats();
@@ -17,10 +12,11 @@ stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 document.body.insertBefore(stats.dom, document.body.firstChild);
 
-function renderChart(canvasEl: HTMLCanvasElement) {
+function renderChart(F2, canvasEl) {
+  const { Axis, Canvas, Chart, Line } = F2;
   // 清空画布
-  canvasEl.width = 0;
-  canvasEl.height = 0;
+  // canvasEl.width = 0;
+  // canvasEl.height = 0;
 
   function getProps(data) {
     const vNode = (
@@ -34,7 +30,6 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
         </Chart>
       </Canvas>
     );
@@ -45,48 +40,29 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const props = getProps(data.data);
   // @ts-ignore
   const canvas = new Canvas(props);
-  // @ts-ignore
-  const gcanvas = canvas.canvas;
-  gcanvas.isTouchEvent = isTouchEvent;
   canvas.render();
+  stats.update();
 
-  gcanvas.addEventListener('afterrender', () => {
-    stats.update();
-  });
-
-  let i = 0;
-  const loopTouchmove = () => {
-    i++;
-    gestureSimulator(canvasEl, 'touchmove', {
-      x: i,
-      y: 35,
-    });
-    if (i >= canvasEl.width - 400) i = 0;
-    window.requestAnimationFrame(loopTouchmove);
-  };
-
-  setTimeout(async () => {
-    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 170 });
-    await delay(450);
-    loopTouchmove();
-  });
-
-  return canvas;
+  window.requestAnimationFrame(() => renderChart(F2, canvasEl));
 }
 
-export default () => {
+export default (props) => {
+  const { F2 } = props;
+
+  if (!F2) return null;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
     if (!canvasEl) return;
 
-    renderChart(canvasEl);
+    renderChart(F2, canvasEl);
   }, []);
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <h2>F2 latest</h2>
+      <h2>首次渲染</h2>
       <canvas ref={canvasRef} style={{ width: '100%', height: '260px' }} />
     </div>
   );

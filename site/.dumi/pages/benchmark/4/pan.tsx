@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
+import { gestureSimulator } from '../../../utils';
 import data from '../data.json';
-import { Axis, Canvas, Chart, Line, Tooltip } from './f2_no_opt';
-// import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
-import { delay, gestureSimulator, isTouchEvent } from '../utils';
+
+import { Axis, Canvas, Chart, Line, ScrollBar } from './f2';
 
 // @ts-ignore
 const stats = new Stats();
@@ -22,7 +22,6 @@ function renderChart(canvasEl: HTMLCanvasElement) {
 
   function getProps(data) {
     const vNode = (
-      // @ts-ignore
       <Canvas
         context={canvasEl.getContext('2d')}
         pixelRatio={window.devicePixelRatio}
@@ -32,7 +31,7 @@ function renderChart(canvasEl: HTMLCanvasElement) {
           <Axis field="rate" />
           <Axis field="reportDate" type="timeCat" tickCount={5} />
           <Line x="reportDate" y="rate" color="codeType" />
-          <Tooltip showCrosshairs crosshairsType="xy"></Tooltip>
+          <ScrollBar mode="x" range={[0, 0.2]} />
         </Chart>
       </Canvas>
     );
@@ -45,12 +44,12 @@ function renderChart(canvasEl: HTMLCanvasElement) {
   const canvas = new Canvas(props);
   // @ts-ignore
   const gcanvas = canvas.canvas;
-  gcanvas.isTouchEvent = isTouchEvent;
-  canvas.render();
 
-  gcanvas.addEventListener('afterrender', () => {
+  gcanvas.on('afterdraw', () => {
     stats.update();
   });
+
+  canvas.render();
 
   let i = 0;
   const loopTouchmove = () => {
@@ -59,18 +58,18 @@ function renderChart(canvasEl: HTMLCanvasElement) {
       x: i,
       y: 35,
     });
-    if (i >= canvasEl.width - 400) i = 0;
+    if (i >= canvasEl.width / 2) i = 0;
     window.requestAnimationFrame(loopTouchmove);
   };
 
   setTimeout(async () => {
-    gestureSimulator(canvasEl, 'touchstart', { x: 60, y: 170 });
-    await delay(450);
+    gestureSimulator(canvasEl, 'touchstart', { x: 350, y: 35 });
     loopTouchmove();
   });
 
   return canvas;
 }
+
 export default () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -83,7 +82,7 @@ export default () => {
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <h2>每个元素绑定事件</h2>
+      <h2>Pan</h2>
       <canvas ref={canvasRef} style={{ width: '100%', height: '260px' }} />
     </div>
   );
