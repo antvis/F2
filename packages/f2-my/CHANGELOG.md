@@ -5,10 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 5.0.30 (2023-08-28)
 
-**Note:** Version bump only for package f2-algorithm
-
-
-
-
-
-# Change Log
+**Note:** Version bump only for package @antv/f2-my
