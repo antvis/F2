@@ -55,7 +55,6 @@ Page({
     }, 2000);
   },
   onRenderChart(props) {
-    console.log('isAppX2CanvasEnv', isAppX2CanvasEnv());
     const {
       data
     } = props;
