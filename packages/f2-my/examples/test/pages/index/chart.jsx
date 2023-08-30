@@ -1,9 +1,11 @@
-import { Chart, Interval } from '@antv/f2';
+import { Chart, Interval, Axis, Legend, Tooltip } from '@antv/f2';
 
 export default (props) => {
   const { data } = props;
   return (
     <Chart data={data}>
+      <Axis field="genre" />
+      <Axis field="sold" />
       <Interval
         x="genre"
         y="sold"
@@ -17,6 +19,8 @@ export default (props) => {
           },
         }}
       />
+      <Legend />
+      <Tooltip />
     </Chart>
   );
 };

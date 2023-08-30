@@ -1,12 +1,17 @@
-import { Chart, Interval } from '@antv/f2';
+import { Chart, Interval, Axis, Legend, Tooltip } from '@antv/f2';
 import { jsx as _jsx } from "@antv/f2/jsx-runtime";
+import { jsxs as _jsxs } from "@antv/f2/jsx-runtime";
 export default (props => {
   const {
     data
   } = props;
-  return _jsx(Chart, {
+  return _jsxs(Chart, {
     data: data,
-    children: _jsx(Interval, {
+    children: [_jsx(Axis, {
+      field: "genre"
+    }), _jsx(Axis, {
+      field: "sold"
+    }), _jsx(Interval, {
       x: "genre",
       y: "sold",
       color: "genre",
@@ -18,6 +23,6 @@ export default (props => {
           fillOpacity: 0.4
         }
       }
-    })
+    }), _jsx(Legend, {}), _jsx(Tooltip, {})]
   });
 });
