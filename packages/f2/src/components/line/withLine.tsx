@@ -117,7 +117,8 @@ export default (View) => {
             size: context.px2hd(size || shape.lineWidth) * sizeZoomRatio,
             color,
             shape,
-            points: topPoints,
+            points: [].concat(topPoints),
+            topPoints,
             bottomPoints,
           };
         });
