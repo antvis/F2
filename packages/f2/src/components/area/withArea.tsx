@@ -19,18 +19,22 @@ export default (View) => {
       };
     }
 
-    mapping() {
-      const records = super.mapping();
+    getBaseY() {
       // 坐标轴 y0
       const y0 = this.getY0Value();
       const { props, startOnZero: defaultStartOnZero } = this;
       const { coord, startOnZero = defaultStartOnZero } = props;
-      let baseY = coord.y[0];
       if (startOnZero) {
         // 零点映射到绝对坐标
         const originCoord = coord.convertPoint({ x: 0, y: y0 });
-        baseY = originCoord.y;
+        return originCoord.y;
       }
+      return coord.y[0];
+    }
+
+    mapping() {
+      const records = super.mapping();
+      const baseY = this.getBaseY();
 
       for (let i = 0, len = records.length; i < len; i++) {
         const record = records[i];
@@ -56,8 +60,9 @@ export default (View) => {
       const { coord } = props;
       const records = this.mapping();
       const clip = this.getClip();
+      const baseY = this.getBaseY();
 
-      return <View {...props} coord={coord} records={records} clip={clip} />;
+      return <View {...props} baseY={baseY} coord={coord} records={records} clip={clip} />;
     }
   };
 };
