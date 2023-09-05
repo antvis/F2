@@ -1,5 +1,5 @@
 {
-  "name": "f2-algorithm",
+  "name": "@antv/f2-algorithm",
   "version": "5.0.30",
   "description": "F2 algorithm extension",
   "main": "lib/index.js",
