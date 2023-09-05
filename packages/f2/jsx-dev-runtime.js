@@ -1,2 +1,1 @@
-'use strict';
-module.exports = require('@antv/f-engine/jsx-dev-runtime');
+export * from '@antv/f-engine/jsx-dev-runtime';
