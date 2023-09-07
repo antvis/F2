@@ -1,6 +1,6 @@
 import { jsx, Line } from '../../../src';
 import Geometry from '../../../src/components/geometry';
-import { createContext, delay } from '../../util';
+import { createContext, delay, gestureSimulator } from '../../util';
 import { Canvas, Chart, Interval, Axis } from '../../../src';
 const context = createContext();
 
@@ -126,5 +126,23 @@ describe('geometry', () => {
 
     await delay(50);
     expect(context).toMatchImageSnapshot();
+  });
+
+  it('geometry event', async () => {
+    const onPress = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart ref={chartRef} data={data}>
+          <GeometryTest ref={componentRef} x="genre" y="sold" onPress={onPress} />
+        </Chart>
+      </Canvas>
+    );
+    canvas = new Canvas(props);
+    await canvas.render();
+    await delay(100);
+
+    gestureSimulator(context.canvas, 'touchstart', { x: 60, y: 70 });
+    gestureSimulator(context.canvas, 'touchmove', { x: 93, y: 35 });
+    expect(onPress.mock.calls.length).toBe(1);
   });
 });
