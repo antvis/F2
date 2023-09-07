@@ -1,7 +1,7 @@
 {
   "name": "@antv/f2-vue",
   "private": true,
-  "version": "5.0.31",
+  "version": "5.0.32",
   "homepage": "https://github.com/antvis/f2",
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
