@@ -69,6 +69,13 @@ export interface GeometryProps<TRecord extends DataRecord = DataRecord> extends 
    * 是否裁剪显示区
    */
   viewClip?: boolean;
+
+  onPress?: Function;
+  onPan?: Function;
+  onPressStart?: Function;
+  onPressEnd?: Function;
+  onPanStart?: Function;
+  onPanEnd?: Function;
 }
 
 class Geometry<
@@ -165,9 +172,25 @@ class Geometry<
   }
 
   didMount() {
+    this._initEvent();
     super.didMount();
     // 更新 attrController
     this.attrController.attrsRange = this._getThemeAttrsRange();
+  }
+
+  _initEvent() {
+    const { props } = this;
+    const { chart } = props;
+    ['onPressStart', 'onPress', 'onPressEnd', 'onPan', 'onPanStart', 'onPanEnd'].forEach(
+      (eventName) => {
+        if (props[eventName]) {
+          chart.on(eventName.substr(2).toLowerCase(), (ev) => {
+            ev.geometry = this;
+            props[eventName](ev);
+          });
+        }
+      }
+    );
   }
 
   _createAttrs() {
