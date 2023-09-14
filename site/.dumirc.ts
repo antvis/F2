@@ -329,6 +329,9 @@ export default defineConfig({
     ],
     playground: {
       playgroundDidMount: 'window.initPlayground()',
+      dependencies: {
+        '@antv/f2': '5.x',
+      },
       devDependencies: {
         typescript: 'latest',
       },
