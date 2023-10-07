@@ -18,7 +18,15 @@ export default (props) => {
         const end = points[points.length - 1];
 
         return (
-          <group onClick={onClick}>
+          <group
+            onClick={
+              onClick
+                ? () => {
+                    onClick(label);
+                  }
+                : null
+            }
+          >
             {/* 锚点 */}
             <circle
               attrs={{
