@@ -136,6 +136,8 @@ class Chart<
 
   willUpdate(): void {
     this.coord.create(this.props.coord);
+    // 清除已经卸载的component对应的position缓存
+    this.removeComponentsPositionCache();
   }
 
   on(eventName: string, listener: (...args: any[]) => void) {
@@ -177,6 +179,7 @@ class Chart<
     if (!layout) return;
     const { componentsPosition } = this;
     const componentPosition = { component, layout };
+
     const existIndex = findIndex(componentsPosition, (item) => {
       return item.component === component;
     });
@@ -197,6 +200,17 @@ class Chart<
     // 是新组件，直接添加
     componentsPosition.push(componentPosition);
     this.updateCoordLayout(layout);
+  }
+
+  removeComponentsPositionCache() {
+    if (!this.componentsPosition?.length) return;
+    
+    for(let i = this.componentsPosition.length; i > -1; i--) {
+      const item = this.componentsPosition[i];
+      if (item && item.component && item.component.destroyed) {
+        this.componentsPosition.splice(i, 1)
+      }
+    }
   }
 
   getGeometrys() {
