@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -19,6 +19,8 @@ jobs:
       - run: yarn install
       - run: cd site && yarn install
       - run: cd site && npm run site:build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
       - run: |
           cd site/dist
           git init
