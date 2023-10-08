@@ -103,8 +103,7 @@ class Chart<
 
     const { scale: scaleOptions, coord: coordOption } = props;
 
-    const style = this.getStyle(props);
-    coord.updateLayout(style);
+    this.resetCoordLayout();
 
     // 初始化 scale
     scale.create(scaleOptions);
@@ -136,8 +135,6 @@ class Chart<
 
   willUpdate(): void {
     this.coord.create(this.props.coord);
-    // 清除已经卸载的component对应的position缓存
-    this.removeComponentsPositionCache();
   }
 
   on(eventName: string, listener: (...args: any[]) => void) {
@@ -190,6 +187,8 @@ class Chart<
 
       // 先重置，然后整体重新算一次
       this.resetCoordLayout();
+      // 再整体计算前，需要去掉已经销毁的组件
+      this.removeComponentsPositionCache();
       componentsPosition.forEach((componentPosition) => {
         const { layout } = componentPosition;
         this.updateCoordLayout(layout);
@@ -204,11 +203,11 @@ class Chart<
 
   removeComponentsPositionCache() {
     if (!this.componentsPosition?.length) return;
-    
-    for(let i = this.componentsPosition.length; i > -1; i--) {
+
+    for (let i = this.componentsPosition.length; i > -1; i--) {
       const item = this.componentsPosition[i];
       if (item && item.component && item.component.destroyed) {
-        this.componentsPosition.splice(i, 1)
+        this.componentsPosition.splice(i, 1);
       }
     }
   }

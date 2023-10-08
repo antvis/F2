@@ -21,9 +21,7 @@ describe('Chart', () => {
   it('Chart 切换data为undefined', async () => {
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
-        <Chart<TRecord>
-          data={data}
-        >
+        <Chart<TRecord> data={data}>
           <Axis field="genre" />
           <Axis<TRecord> field="sold" />
           <Interval<TRecord> x="genre" y="sold" color="genre" />
@@ -37,9 +35,7 @@ describe('Chart', () => {
     canvas.update(
       (
         <Canvas context={context} pixelRatio={1} animate={false}>
-          <Chart
-            data={undefined}
-          >
+          <Chart data={undefined}>
             <Axis field="genre" />
             <Axis field="sold" />
             <Interval x="genre" y="sold" color="genre" />
@@ -53,9 +49,7 @@ describe('Chart', () => {
     canvas.update(
       (
         <Canvas context={context} pixelRatio={1} animate={false}>
-          <Chart
-            data={data}
-          >
+          <Chart data={data}>
             <Axis field="genre" />
             <Axis field="sold" />
             <Interval x="genre" y="sold" color="genre" />
@@ -69,9 +63,7 @@ describe('Chart', () => {
     canvas.update(
       (
         <Canvas context={context} pixelRatio={1} animate={false}>
-          <Chart
-            data={data.slice(0, 5)}
-          >
+          <Chart data={data.slice(0, 5)}>
             <Axis field="genre" />
             <Axis field="sold" />
             <Interval x="genre" y="sold" color="genre" />
