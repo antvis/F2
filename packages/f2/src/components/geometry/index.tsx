@@ -28,6 +28,8 @@ class Geometry<
 
   // 预处理后的数据
   dataArray: any;
+  // data 预处理后，records mapping 前的数据
+  dataRecords: any[];
   records: any[];
   mappedArray: any;
   // x 轴居中
@@ -73,17 +75,17 @@ class Geometry<
     const lastAttrOptions = attrController.getAttrOptions(lastProps, justifyContentCenter);
     if (!equal(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
-      this.records = null;
+      this.dataRecords = null;
     }
 
     // 重新处理数据
     if (nextData !== lastData) {
-      this.records = null;
+      this.dataRecords = null;
     }
 
     // 重新处理数据
     if (nextAdjust !== lastAdjust) {
-      this.records = null;
+      this.dataRecords = null;
     }
 
     // zoomRange发生变化,records也需要重新计算
@@ -94,13 +96,13 @@ class Geometry<
 
   willMount() {
     this._createAttrs();
-    if (!this.records) {
+    if (!this.dataRecords) {
       this._processData();
     }
   }
   willUpdate() {
     this._createAttrs();
-    if (!this.records) {
+    if (!this.dataRecords) {
       this._processData();
     }
   }
@@ -302,7 +304,7 @@ class Geometry<
       this._sortData(records);
     }
 
-    this.records = records;
+    this.dataRecords = records;
   }
 
   _sortData(records) {
@@ -391,6 +393,7 @@ class Geometry<
     const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
     const defaultAttrValues = attrController.getDefaultAttrValues();
 
+    const mappedRecords = [];
     for (let i = 0, len = records.length; i < len; i++) {
       const record = records[i];
       const { children } = record;
@@ -399,6 +402,7 @@ class Geometry<
       };
       const firstChild = children[0];
       if (children.length === 0) {
+        mappedRecords.push({ ...record });
         continue;
       }
       // 非线性映射
@@ -410,6 +414,7 @@ class Geometry<
       }
 
       // 线性属性映射
+      const mappedChildren = [];
       for (let j = 0, childrenLen = children.length; j < childrenLen; j++) {
         const child = children[j];
         const normalized: any = {};
@@ -430,11 +435,14 @@ class Geometry<
         });
 
         // 获取 shape 的 style
+        const { origin } = child;
         const shapeName = attrValues.shape;
-        const shape = this._getShapeStyle(shapeName, child.origin);
+        const shape = this._getShapeStyle(shapeName, origin);
         const selected = this.isSelected(child);
 
-        mix(child, attrValues, {
+        mappedChildren.push({
+          ...child,
+          ...attrValues,
           normalized,
           x,
           y,
@@ -443,17 +451,21 @@ class Geometry<
           selected,
         });
       }
+      mappedRecords.push({
+        ...record,
+        children: mappedChildren,
+      });
     }
-    return records;
+    return mappedRecords;
   }
 
   // 数据映射
   mapping() {
-    const { records } = this;
+    const { dataRecords } = this;
     // 数据映射
-    this._mapping(records);
+    this.records = this._mapping(dataRecords);
 
-    return records;
+    return this.records;
   }
 
   getClip() {
