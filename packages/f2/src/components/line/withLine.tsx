@@ -29,7 +29,11 @@ export default (View) => {
         const tmpPoints = [];
         for (let i = 0, len = points.length; i < len; i++) {
           const point = points[i];
-          const { y } = point;
+          const { x, y } = point;
+          // 过滤 x 为 NaN 的点
+          if (isNaN(x)) {
+            continue;
+          }
           if (isArray(y)) {
             if (isNaN(y[0])) {
               continue;
@@ -51,7 +55,11 @@ export default (View) => {
       let tmpPoints = [];
       for (let i = 0, len = points.length; i < len; i++) {
         const point = points[i];
-        const { y } = point;
+        const { x, y } = point;
+        // 过滤 x 为 NaN 的点
+        if (isNaN(x)) {
+          continue;
+        }
         if (isArray(y)) {
           if (isNaN(y[0])) {
             if (tmpPoints.length) {
