@@ -1,7 +1,7 @@
 {
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "5.0.32",
+  "version": "5.0.33",
   "command": {
     "bootstrap": {
       "ci": false,

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.33](https://github.com/antvis/f2/compare/v5.0.32...v5.0.33) (2023-10-24)
+
+
+### Bug Fixes
+
+* **Area:** 修复面积图 x 为空时，图形不绘制 Closed [#1867](https://github.com/antvis/f2/issues/1867) ([#1868](https://github.com/antvis/f2/issues/1868)) ([5b8da58](https://github.com/antvis/f2/commit/5b8da58f416942b2c7d5e4032958ccb7cc7efa69))
+* pielabel event callback ([#1857](https://github.com/antvis/f2/issues/1857)) ([4b22fe5](https://github.com/antvis/f2/commit/4b22fe5cb6250a63dfd741edd6c8f369d4b01f6b))
+* 修复chart未清除缓存的组件的问题 ([#1856](https://github.com/antvis/f2/issues/1856)) ([9216d2b](https://github.com/antvis/f2/commit/9216d2b5900c49a0645a8bab097e8fc9ffa3f824))
+
+
+
+
+
 ## 5.0.32 (2023-09-07)
 
 **Note:** Version bump only for package @antv/f2
