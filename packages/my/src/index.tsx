@@ -21,6 +21,7 @@ Component({
     width: null,
     height: null,
     type: '2d', // canvas 2d, 基础库 2.7 以上支持
+    onError: (error) => {},
   },
   /**
    * 组件创建时触发
@@ -35,27 +36,33 @@ Component({
       return;
     }
     const { id } = this.data;
-    const query = my.createSelectorQuery({ page: this.$page });
-    query
-      .select(`#${id}`)
-      .boundingClientRect()
-      .exec((res) => {
-        // 获取画布实际宽高, 用props的宽高做失败兜底
-        const { width, height } = res && res[0] ? res[0] : this.props;
-        const pixelRatio = getPixelRatio();
-        // 高清解决方案
-        this.setData(
-          {
-            width: width * pixelRatio,
-            height: height * pixelRatio,
-          },
-          () => {
-            const myCtx = my.createCanvasContext(id);
-            const context = F2Context(myCtx);
-            this.canvasRender({ width, height, context, pixelRatio });
-          }
-        );
-      });
+    const { onError } = this.props;
+    try {
+      const query = my.createSelectorQuery({ page: this.$page });
+      query
+        .select(`#${id}`)
+        .boundingClientRect()
+        .exec((res) => {
+          // 获取画布实际宽高, 用props的宽高做失败兜底
+          const { width, height } = res && res[0] ? res[0] : this.props;
+          const pixelRatio = getPixelRatio();
+          // 高清解决方案
+          this.setData(
+            {
+              width: width * pixelRatio,
+              height: height * pixelRatio,
+            },
+            () => {
+              const myCtx = my.createCanvasContext(id);
+              const context = F2Context(myCtx);
+              this.canvasRender({ width, height, context, pixelRatio });
+            }
+          );
+        });
+    } catch (error) {
+      onError && onError(error);
+      throw error;
+    }
   },
   didUpdate() {
     const { canvas, props } = this;
@@ -78,23 +85,29 @@ Component({
     },
     onCanvasReady() {
       const { id } = this.data;
-      const query = my.createSelectorQuery();
-      query
-        .select(`#${id}`)
-        // @ts-ignore
-        .node()
-        .exec((res) => {
-          if (!res[0]) {
-            return;
-          }
-          const canvas = res[0].node;
-          const { width, height } = canvas;
-          const pixelRatio = getPixelRatio();
-          canvas.width = width * pixelRatio;
-          canvas.height = height * pixelRatio;
-          const context = canvas.getContext('2d');
-          this.canvasRender({ width, height, pixelRatio, context });
-        });
+      const { onError } = this.props;
+      try {
+        const query = my.createSelectorQuery();
+        query
+          .select(`#${id}`)
+          // @ts-ignore
+          .node()
+          .exec((res) => {
+            if (!res[0]) {
+              return;
+            }
+            const canvas = res[0].node;
+            const { width, height } = canvas;
+            const pixelRatio = getPixelRatio();
+            canvas.width = width * pixelRatio;
+            canvas.height = height * pixelRatio;
+            const context = canvas.getContext('2d');
+            this.canvasRender({ width, height, pixelRatio, context });
+          });
+      } catch (error) {
+        onError && onError(error);
+        throw error;
+      }
     },
     canvasRender({ width, height, pixelRatio, context }) {
       if (!width || !height) {
