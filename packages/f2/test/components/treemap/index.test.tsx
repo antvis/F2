@@ -82,6 +82,9 @@ describe('Treemap', () => {
     await delay(100);
     expect(onClick.mock.calls.length).toBe(1);
     expect(onClick.mock.calls[0][0].origin).toEqual({ name: '中国平安', value: 0.06, rate: 0.1 });
+
+    await delay(100);
+    canvas.destroy();
   });
   it('space ', async () => {
     const onClick = jest.fn();
@@ -105,6 +108,8 @@ describe('Treemap', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
   it('select ', async () => {
     const { props } = (
@@ -176,6 +181,8 @@ describe('Treemap', () => {
     canvas.update(nextProps);
     await delay(1000);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
   it('select triggerOn', async () => {
     const { props } = (
@@ -213,6 +220,8 @@ describe('Treemap', () => {
     gestureSimulator(context.canvas, 'click', { x: 250, y: 170 });
     await delay(800);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
   it('反选', async () => {
     const { props } = (
@@ -250,6 +259,8 @@ describe('Treemap', () => {
     gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
     await delay(800);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
   it('取消反选', async () => {
     const { props } = (
@@ -288,6 +299,8 @@ describe('Treemap', () => {
     gestureSimulator(context.canvas, 'click', { x: 260, y: 170 });
     await delay(800);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
   it('多选', async () => {
     const { props } = (
@@ -327,5 +340,7 @@ describe('Treemap', () => {
     gestureSimulator(context.canvas, 'click', { x: 230, y: 170 });
     await delay(800);
     expect(context).toMatchImageSnapshot();
+    await delay(100);
+    canvas.destroy();
   });
 });
