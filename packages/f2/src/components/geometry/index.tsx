@@ -318,10 +318,15 @@ class Geometry<
               toTimeStamp(record1[FIELD_ORIGIN][field]) - toTimeStamp(record2[FIELD_ORIGIN][field])
             );
           }
-          return (
-            xScale.translate(record1[FIELD_ORIGIN][field]) -
-            xScale.translate(record2[FIELD_ORIGIN][field])
-          );
+          const normalized1 = xScale.translate(record1[FIELD_ORIGIN][field]);
+          const normalized2 = xScale.translate(record2[FIELD_ORIGIN][field]);
+          if (isNaN(normalized1)) {
+            return 1;
+          }
+          if (isNaN(normalized2)) {
+            return -1;
+          }
+          return normalized1 - normalized2;
         });
       });
     }
