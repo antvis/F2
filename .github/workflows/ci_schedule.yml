@@ -52,9 +52,19 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "😳 CI 巡检失败",
+                "title": "😳 F2 CI 巡检失败",
                 "text": "🔗 请点击链接查看具体原因",
                 "messageUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                 "picUrl": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/ea88c724-38fb-42aa-8055-0e08155368b9.png"
               }
             }
+
+      # 保存巡检失败的 diff 图片
+      - name: save diff snapshot
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: diff snapshot
+          path: |
+            packages/**/__image_snapshots__/__diff_output__/*.png
+            !**/node_modules/**
