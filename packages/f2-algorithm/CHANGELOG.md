@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.34](https://github.com/antvis/f2/compare/v5.0.33...v5.0.34) (2023-11-02)
+
+
+### Bug Fixes
+
+* data数量小于rate ([#1880](https://github.com/antvis/f2/issues/1880)) ([64de0a7](https://github.com/antvis/f2/commit/64de0a7c2ba4a616f1cb14d82719bdadef282dae))
+
+
+
+
+
 ## [5.0.33](https://github.com/antvis/f2/compare/v5.0.32...v5.0.33) (2023-10-24)
 
 **Note:** Version bump only for package @antv/f2-algorithm

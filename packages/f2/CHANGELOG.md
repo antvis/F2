@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.34](https://github.com/antvis/f2/compare/v5.0.33...v5.0.34) (2023-11-02)
+
+
+### Bug Fixes
+
+* **geometry:** 修复 record 存在 NaN 时，sort 顺序不对 ([#1878](https://github.com/antvis/f2/issues/1878)) ([7b03b0c](https://github.com/antvis/f2/commit/7b03b0c8108d7e3c4a9dc3194d4f97c83975d3ac))
+
+
+
+
+
 ## [5.0.33](https://github.com/antvis/f2/compare/v5.0.32...v5.0.33) (2023-10-24)
 
 
