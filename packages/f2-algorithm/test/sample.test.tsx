@@ -61,6 +61,41 @@ describe('sample', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('rate 小于 data个数', async () => {
+    const res = await fetch(url);
+    const result = [
+      { value: { value: '0.516' }, updateTime: '2023-10-26T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.504' }, updateTime: '2023-10-27T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.488' }, updateTime: '2023-10-28T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.516' }, updateTime: '2023-10-29T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.472' }, updateTime: '2023-10-30T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.448' }, updateTime: '2023-10-31T16:00:00.000Z', extInfo: null },
+    ];
+    const data = result.map((d) => {
+      return {
+        date: d.updateTime,
+        value: Number(d.value.value),
+      };
+    });
+    const context = createContext('lttb', { width: '300px', height: '200px' });
+    const sampleData = lttbDownSample(data, {
+      rate: 7,
+      dimension: 'value',
+    });
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={sampleData}>
+          <Line x="date" y="value" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
   it('nearest sample', async () => {
     const res = await fetch(url);
     const result = await res.json();
