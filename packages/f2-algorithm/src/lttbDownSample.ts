@@ -18,7 +18,8 @@ export default function lttbDownSample(data, options?: OptionsProps) {
   const { rate = 5, dimension = 'value' } = options;
   const len = data.length;
   const targetCount = len / rate;
-  if (targetCount >= len || targetCount === 0) {
+
+  if (rate >= len || targetCount === 0) {
     return data;
   }
 
