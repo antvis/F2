@@ -41,7 +41,7 @@
     "lint-fix": "eslint --fix ./",
     "prettier": "prettier --write './packages/**/*.{ts,tsx}'",
     "canary": "npm run build && npm run test && lerna publish --canary --dist-tag next",
-    "release": "lerna publish --yes --summary-file --dist-tag next",
+    "release": "lerna publish --yes --summary-file",
     "site:build": "cd ./site && npm run site:build",
     "site:clean": "cd ./site && npm run site:clean",
     "site:deploy": "cd ./site && npm run site:deploy",
