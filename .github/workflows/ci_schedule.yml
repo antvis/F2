@@ -11,8 +11,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: v5.0.x
 
       - name: Use Node.js
         uses: actions/setup-node@v2

@@ -2,7 +2,7 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      - v5.0.x
+      - master
 
 jobs:
   release:
