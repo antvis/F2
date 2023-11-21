@@ -3,7 +3,7 @@ name: 🤖 Sync to gh-pages
 on:
   push:
     branches:
-      - v5.0.x
+      - master
 
 jobs:
   build-and-deploy:
