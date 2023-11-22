@@ -287,7 +287,7 @@ class Geometry<
         const scale = scales[i];
         if (scale.isCategory) {
           const field = scale.field;
-          obj[field] = scale.translate(obj[field]);
+          obj[field] = scale.translate(obj.origin[field]);
         }
       }
     }
@@ -466,7 +466,7 @@ class Geometry<
    *  如果是Category/Identity 则第一个元素走 mapping
    */
   _mapping(records) {
-    const { attrs, props, attrController } = this;
+    const { attrs, props, attrController, adjust } = this;
     const { coord } = props;
 
     const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
@@ -500,11 +500,21 @@ class Geometry<
         for (let k = 0; k < linearAttrs.length; k++) {
           const attrName = linearAttrs[k];
           const attr = attrs[attrName];
+
+          // TODO: 这块逻辑只是临时方案，需要整体考虑
+          let value = child[attr.field];
+          // 如果 scale变化，每组偏移需要重新计算
+          if (adjust?.type === 'dodge' && attr.field === adjust.adjust.xField) {
+            value =
+              attr.scale.translate(child.origin[attr.field]) -
+              (Math.round(child[attr.field]) - child[attr.field]);
+          }
+
           // 分类属性的线性映射
           if (attrController.isGroupAttr(attrName)) {
-            attrValues[attrName] = attr.mapping(child[attr.field], child);
+            attrValues[attrName] = attr.mapping(value, child);
           } else {
-            normalized[attrName] = attr.normalize(child[attr.field]);
+            normalized[attrName] = attr.normalize(value);
           }
         }
 
