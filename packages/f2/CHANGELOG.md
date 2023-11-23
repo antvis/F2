@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.36](https://github.com/antvis/f2/compare/v5.0.35...v5.0.36) (2023-11-23)
+
+
+### Bug Fixes
+
+* swipe 支撑单向快扫 ([#1891](https://github.com/antvis/f2/issues/1891)) ([95a2c50](https://github.com/antvis/f2/commit/95a2c50d6d5097e6d458f8b225fd4596aaac5480))
+
+
+
+
+
 ## [5.0.35](https://github.com/antvis/f2/compare/v5.0.34...v5.0.35) (2023-11-22)
 
 
