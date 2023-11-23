@@ -3,6 +3,7 @@ import { ChartChildProps } from '../../chart';
 import { updateRange, updateFollow } from './zoomUtil';
 import { Scale, ScaleConfig } from '../../deps/f2-scale/src';
 import { each, isNumberEqual, isArray } from '@antv/util';
+import { quadraticOut as easeing } from './easing';
 
 export type ZoomRange = [number, number];
 export type ScaleValues = number[] | string[];
@@ -52,6 +53,10 @@ export interface ZoomProps {
    * 横扫
    */
   swipe?: boolean;
+  /**
+   * 横扫动画时长
+   */
+  swipeDuration?: number;
   /**
    * 事件回调
    */
@@ -174,6 +179,40 @@ export default (View) => {
       } as S;
     }
 
+    willUpdate(): void {
+      const { props, state, dims } = this;
+      const { minCount, range } = props;
+      let valueLength = Number.MIN_VALUE;
+      const cacheRange = {};
+
+      each(dims, (dim) => {
+        const scale = this._getScale(dim);
+        // scale 没有变化, 不处理
+        if (scale === this.scale[dim]) {
+          return;
+        }
+        const { values } = scale;
+        valueLength = values.length > valueLength ? values.length : valueLength;
+        this.scale[dim] = scale;
+        this.originScale[dim] = cloneScale(scale);
+        // 让 range 触发更新
+        this.state.range[dim] = [0, 1];
+        this.updateRange(range, dim);
+        cacheRange[dim] = range;
+      });
+
+      // 有变化
+      if (Object.keys(cacheRange).length > 0) {
+        this.minScale = minCount / valueLength;
+        const newRange = {
+          ...state.range,
+          ...cacheRange,
+        };
+
+        this.renderRange(newRange);
+      }
+    }
+
     didUnmount(): void {
       this.loop && cancelAnimationFrame(this.loop);
     }
@@ -284,12 +323,64 @@ export default (View) => {
       }
     }
 
-    onSwipe = (ev) => {
-      const { swipe } = this.props;
-      if (this.props.mode.length < 2 || !swipe) return;
+    animateSwipe(dim: string, dimRange: ZoomRange, velocity: number) {
+      const { context, props } = this;
+      const { requestAnimationFrame } = context.canvas;
+      const { swipeDuration = 1000 } = props;
 
-      const { velocityX = 0, velocityY = 0, points } = ev;
-      const { range } = this.state;
+      const diff = (dimRange[1] - dimRange[0]) * velocity;
+
+      const startTime = Date.now();
+
+      const updateRange = (t: number) => {
+        const newDimRange: ZoomRange = [dimRange[0] + diff * t, dimRange[1] + diff * t];
+        const newRange = this.updateRange(newDimRange, dim);
+        this.renderRange({
+          x: newRange,
+        });
+      };
+
+      // 更新动画
+      const update = () => {
+        // 计算动画已经进行的时间
+        const currentTime = Date.now() - startTime;
+
+        // 如果动画已经结束，则清除定时器
+        if (currentTime >= swipeDuration) {
+          updateRange(1);
+          return;
+        }
+
+        // 计算缓动值
+        const progress = currentTime / swipeDuration;
+        const easedProgress = easeing(progress);
+        updateRange(easedProgress);
+
+        requestAnimationFrame(() => {
+          update();
+        });
+      };
+      update();
+    }
+
+    onSwipe = (ev) => {
+      const { props, state } = this;
+      // 滑动速率
+      const { velocity, direction, velocityX = 0, velocityY = 0, points } = ev;
+      const { mode, swipe } = props;
+      const { range } = state;
+
+      if (!swipe || !mode) {
+        return;
+      }
+      if (mode.length === 1) {
+        this.animateSwipe(
+          mode,
+          range[mode],
+          direction === 'right' || direction === 'down' ? -velocity : velocity
+        );
+        return;
+      }
 
       const { x, y } = points[0];
 
