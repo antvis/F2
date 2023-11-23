@@ -99,7 +99,7 @@ describe('candlestick', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it.only('tooltip', async () => {
+  it('tooltip', async () => {
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
