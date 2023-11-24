@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.37](https://github.com/antvis/f2/compare/v5.0.36...v5.0.37) (2023-11-24)
+
+
+### Bug Fixes
+
+* 修复 tickLine 位置不更新 ([#1893](https://github.com/antvis/f2/issues/1893)) ([d14d0bf](https://github.com/antvis/f2/commit/d14d0bf670982403779015aa80103171d0dfec52))
+
+
+
+
+
 ## [5.0.36](https://github.com/antvis/f2/compare/v5.0.35...v5.0.36) (2023-11-23)
 
 
