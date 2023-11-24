@@ -2,12 +2,14 @@ import { jsx } from '@antv/f-engine';
 import { RectProps } from '../types';
 import { isArray } from '@antv/util';
 
-export default (props: RectProps) => {
+export default (props: RectProps, context) => {
   const { ticks: originTicks, coord, style, animation } = props;
+  const { px2hd } = context;
   const { left, top, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
   const symbols = isArray(symbol) ? symbol : [symbol];
+  const { length: tickLineLength, ...tickLineStyle } = tickLine || {};
 
   return (
     <group>
@@ -18,8 +20,8 @@ export default (props: RectProps) => {
             const end = points[points.length - 1];
             return (
               <line
-                key={tickValue}
-                attrs={{
+                key={`grid-${tickValue}`}
+                style={{
                   x1: start.x,
                   y1: start.y,
                   x2: end.x,
@@ -31,19 +33,19 @@ export default (props: RectProps) => {
             );
           })
         : null}
-      {tickLine && tickLine.length
+      {tickLineLength
         ? ticks.map((tick) => {
             const { points, tickValue } = tick;
             const start = points[0];
             return (
               <line
-                key={tickValue}
-                attrs={{
+                key={`tickLine-${tickValue}`}
+                style={{
                   x1: start.x,
                   y1: start.y,
-                  x2: start.x - tickLine.length,
+                  x2: start.x - px2hd(tickLineLength),
                   y2: start.y,
-                  ...tickLine,
+                  ...tickLineStyle,
                 }}
               />
             );
@@ -88,8 +90,8 @@ export default (props: RectProps) => {
             const start = points[0];
             return (
               <text
-                key={tickValue}
-                attrs={{
+                key={`text-${tickValue}`}
+                style={{
                   x: start.x - labelOffset,
                   y: start.y,
                   textAlign: 'right',

@@ -257,7 +257,18 @@ describe('candlestick', () => {
     const { props } = (
       <Canvas context={context} animate={false} pixelRatio={1}>
         <Chart data={data}>
-          <Axis field="time" type="timeCat" tickCount={3} />
+          <Axis
+            field="time"
+            type="timeCat"
+            tickCount={3}
+            style={{
+              tickLine: {
+                length: 10,
+                lineWidth: '10px',
+                stroke: 'red',
+              },
+            }}
+          />
           <Axis field="value" />
           <Candlestick x="time" y="value" />
           <ScrollBar mode="x" range={[0.3, 0.6]} swipe={true} swipeDuration={100} autoFit={true} />
@@ -279,9 +290,20 @@ describe('candlestick', () => {
     expect(context).toMatchImageSnapshot();
 
     const { props: nextProps } = (
-      <Canvas context={context} animate={false} pixelRatio={1}>
+      <Canvas context={context} animate={false} pixelRatio={2}>
         <Chart data={[].concat(data).slice(0, 30)}>
-          <Axis field="time" type="timeCat" tickCount={3} />
+          <Axis
+            field="time"
+            type="timeCat"
+            tickCount={3}
+            style={{
+              tickLine: {
+                length: 10,
+                lineWidth: '10px',
+                stroke: 'red',
+              },
+            }}
+          />
           <Axis field="value" />
           <Candlestick x="time" y="value" />
           <ScrollBar mode="x" range={[0.3, 0.8]} swipe={true} swipeDuration={100} autoFit={true} />
