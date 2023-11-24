@@ -9,6 +9,7 @@ export default (props: RectProps<'bottom'>, context) => {
   const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const filterTicks = ticks.filter((d) => !isNaN(d.value));
   const symbols = isArray(symbol) ? symbol : [symbol];
+  const { length: tickLineLength, ...tickLineStyle } = tickLine || {};
 
   return (
     <group>
@@ -19,8 +20,8 @@ export default (props: RectProps<'bottom'>, context) => {
             const end = points[points.length - 1];
             return (
               <line
-                key={tickValue}
-                attrs={{
+                key={`grid-${tickValue}`}
+                style={{
                   x1: start.x,
                   y1: start.y,
                   x2: end.x,
@@ -32,19 +33,19 @@ export default (props: RectProps<'bottom'>, context) => {
             );
           })
         : null}
-      {tickLine && tickLine.length
+      {tickLineLength
         ? filterTicks.map((tick) => {
             const { points, tickValue } = tick;
             const start = points[0];
             return (
               <line
-                key={tickValue}
-                attrs={{
+                key={`tickLine-${tickValue}`}
+                style={{
                   x1: start.x,
                   y1: start.y,
                   x2: start.x,
-                  y2: start.y + px2hd(tickLine.length),
-                  ...tickLine,
+                  y2: start.y + px2hd(tickLineLength),
+                  ...tickLineStyle,
                 }}
               />
             );
@@ -64,7 +65,7 @@ export default (props: RectProps<'bottom'>, context) => {
       ) : null}
       {line ? (
         <line
-          attrs={{
+          style={{
             x1: left,
             y1: bottom,
             x2: right,
@@ -113,8 +114,8 @@ export default (props: RectProps<'bottom'>, context) => {
 
             return (
               <text
-                key={tickValue}
-                attrs={textAttrs}
+                key={`text-${tickValue}`}
+                style={textAttrs}
                 animation={
                   animation || {
                     appear: {

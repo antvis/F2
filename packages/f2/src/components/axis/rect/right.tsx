@@ -2,23 +2,26 @@ import { jsx } from '@antv/f-engine';
 import { isArray } from '@antv/util';
 import { RectProps } from '../types';
 
-export default (props: RectProps) => {
+export default (props: RectProps, context) => {
   const { ticks: originTicks, coord, style } = props;
+  const { px2hd } = context;
   const { top, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const ticks = originTicks.filter((d) => !isNaN(d.value));
   const symbols = isArray(symbol) ? symbol : [symbol];
+  const { length: tickLineLength, ...tickLineStyle } = tickLine || {};
 
   return (
     <group>
       {grid
         ? ticks.map((tick) => {
-            const { points, gridStyle } = tick;
+            const { points, tickValue, gridStyle } = tick;
             const start = points[0];
             const end = points[points.length - 1];
             return (
               <line
-                attrs={{
+                key={`grid-${tickValue}`}
+                style={{
                   x1: start.x,
                   y1: start.y,
                   x2: end.x,
@@ -30,18 +33,19 @@ export default (props: RectProps) => {
             );
           })
         : null}
-      {tickLine && tickLine.length
+      {tickLineLength
         ? ticks.map((tick) => {
-            const { points } = tick;
+            const { points, tickValue } = tick;
             const end = points[points.length - 1];
             return (
               <line
-                attrs={{
+                key={`tickLine-${tickValue}`}
+                style={{
                   x1: end.x,
                   y1: end.y,
-                  x2: end.x + tickLine.length,
+                  x2: end.x + px2hd(tickLineLength),
                   y2: end.y,
-                  ...tickLine,
+                  ...tickLineStyle,
                 }}
               />
             );
@@ -59,7 +63,7 @@ export default (props: RectProps) => {
       ) : null}
       {line ? (
         <line
-          attrs={{
+          style={{
             x1: right,
             y1: top,
             x2: right,
@@ -82,11 +86,12 @@ export default (props: RectProps) => {
       ) : null}
       {label
         ? ticks.map((tick, _index) => {
-            const { points, text, labelStyle } = tick;
+            const { tickValue, points, text, labelStyle } = tick;
             const end = points[points.length - 1];
             return (
               <text
-                attrs={{
+                key={`text-${tickValue}`}
+                style={{
                   x: end.x + labelOffset,
                   y: end.y,
                   textAlign: 'left',
