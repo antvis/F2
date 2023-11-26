@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.38](https://github.com/antvis/f2/compare/v5.0.37...v5.0.38) (2023-11-26)
+
+
+### Bug Fixes
+
+* 修复 dodge 平移显示问题 ([#1895](https://github.com/antvis/f2/issues/1895)) ([07ea4fe](https://github.com/antvis/f2/commit/07ea4fe2bb53f76cdea2db6bc7908f6a6c491f2e))
+
+
+
+
+
 ## [5.0.37](https://github.com/antvis/f2/compare/v5.0.36...v5.0.37) (2023-11-24)
 
 
