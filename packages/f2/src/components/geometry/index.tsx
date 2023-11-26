@@ -168,6 +168,8 @@ class Geometry<
     this._createAttrs();
     if (!this.dataRecords) {
       this._processData();
+    } else {
+      this._readjustData(this.dataRecords);
     }
   }
 
@@ -212,6 +214,46 @@ class Geometry<
       size: sizes,
       shape: shapes[geomType],
     };
+  }
+
+  _createAdjust() {
+    const { attrs, props } = this;
+    const { adjust } = props;
+
+    if (!adjust) {
+      return null;
+    }
+    const adjustCfg: AdjustProps =
+      typeof adjust === 'string'
+        ? {
+            type: adjust,
+          }
+        : adjust;
+    const adjustType = upperFirst(adjustCfg.type);
+    const AdjustConstructor = AdjustMap[adjustType];
+    if (!AdjustConstructor) {
+      throw new Error('not support such adjust : ' + adjust);
+    }
+
+    if (adjustType === 'Dodge') {
+      // @ts-ignore
+      adjustCfg.adjustNames = ['x'];
+    }
+
+    const { x, y } = attrs;
+    // @ts-ignore
+    adjustCfg.xField = x.field;
+    // @ts-ignore
+    adjustCfg.yField = y.field;
+
+    const adjustInstance = new AdjustConstructor(adjustCfg);
+
+    this.adjust = {
+      type: adjustCfg.type,
+      adjust: adjustInstance,
+    };
+
+    return this.adjust;
   }
 
   _adjustScales() {
@@ -287,56 +329,46 @@ class Geometry<
         const scale = scales[i];
         if (scale.isCategory) {
           const field = scale.field;
-          obj[field] = scale.translate(obj.origin[field]);
+          const value = scale.translate(obj.origin[field]);
+          obj[field] = isNaN(value) ? 0 : value;
         }
       }
     }
   }
 
   _adjustData(records) {
-    const { attrs, props } = this;
-    const { adjust } = props;
-
+    const { adjust } = this;
     // groupedArray 是二维数组
     const groupedArray = records.map((record) => record.children);
 
     if (!adjust) {
       return groupedArray;
     }
-    const adjustCfg: AdjustProps =
-      typeof adjust === 'string'
-        ? {
-            type: adjust,
-          }
-        : adjust;
-    const adjustType = upperFirst(adjustCfg.type);
-    const AdjustConstructor = AdjustMap[adjustType];
-    if (!AdjustConstructor) {
-      throw new Error('not support such adjust : ' + adjust);
+
+    const { attrs } = this;
+    const scales = [attrs.x.scale, attrs.y.scale];
+
+    for (let i = 0, len = groupedArray.length; i < len; i++) {
+      const records = groupedArray[i];
+      for (let j = 0, len = records.length; j < len; j++) {
+        const record = records[j];
+        const count = scales.length;
+        for (let i = 0; i < count; i++) {
+          const scale = scales[i];
+          const field = scale.field;
+          record[field] = record.origin[field];
+        }
+      }
     }
 
-    if (adjustType === 'Dodge') {
+    if (adjust.type === 'dodge') {
       for (let i = 0, len = groupedArray.length; i < len; i++) {
         // 如果是dodge, 需要处理数字再处理
         this._numberic(groupedArray[i]);
       }
-      // @ts-ignore
-      adjustCfg.adjustNames = ['x'];
     }
 
-    const { x, y } = attrs;
-    // @ts-ignore
-    adjustCfg.xField = x.field;
-    // @ts-ignore
-    adjustCfg.yField = y.field;
-
-    const adjustInstance = new AdjustConstructor(adjustCfg);
-    const adjustData = adjustInstance.process(groupedArray);
-
-    this.adjust = {
-      type: adjustCfg.type,
-      adjust: adjustInstance,
-    };
+    const adjustData = adjust.adjust.process(groupedArray);
 
     // process 返回的是新数组，所以要修改 records
     records.forEach((record, index: number) => {
@@ -376,6 +408,8 @@ class Geometry<
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
     const records = this._groupData(data);
+
+    this._createAdjust();
     // 根据adjust分组
     const dataArray = this._adjustData(records);
 
@@ -390,6 +424,15 @@ class Geometry<
     }
 
     this.dataRecords = records;
+  }
+
+  _readjustData(records) {
+    const { adjust } = this;
+    if (!adjust) return;
+    // 根据adjust分组
+    const dataArray = this._adjustData(records);
+
+    this.dataArray = dataArray;
   }
 
   _sortData(records) {
@@ -466,7 +509,7 @@ class Geometry<
    *  如果是Category/Identity 则第一个元素走 mapping
    */
   _mapping(records) {
-    const { attrs, props, attrController, adjust } = this;
+    const { attrs, props, attrController } = this;
     const { coord } = props;
 
     const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
@@ -501,14 +544,7 @@ class Geometry<
           const attrName = linearAttrs[k];
           const attr = attrs[attrName];
 
-          // TODO: 这块逻辑只是临时方案，需要整体考虑
-          let value = child[attr.field];
-          // 如果 scale变化，每组偏移需要重新计算
-          if (adjust?.type === 'dodge' && attr.field === adjust.adjust.xField) {
-            value =
-              attr.scale.translate(child.origin[attr.field]) -
-              (Math.round(child[attr.field]) - child[attr.field]);
-          }
+          const value = child[attr.field];
 
           // 分类属性的线性映射
           if (attrController.isGroupAttr(attrName)) {

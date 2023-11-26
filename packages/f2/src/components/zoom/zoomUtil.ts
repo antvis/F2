@@ -21,7 +21,7 @@ function updateCategoryRange(scale: Scale, originScale: Scale, range: ZoomRange)
   const valueEnd = end * len;
 
   // 保持滑动时个数的稳定
-  const count = Math.round(valueEnd - valueStart);
+  const count = Math.ceil(valueEnd - valueStart);
   const sliceSatrt = Math.round(valueStart);
 
   // 从原始数据里截取需要显示的数据
