@@ -21,8 +21,10 @@ function updateCategoryRange(scale: Scale, originScale: Scale, range: ZoomRange)
   const valueEnd = end * len;
 
   // 保持滑动时个数的稳定
-  const count = Math.ceil(valueEnd - valueStart);
-  const sliceSatrt = Math.round(valueStart);
+  const diff = valueEnd - valueStart;
+  const precision = parseFloat(diff.toFixed(3)); // js 计算精度问题
+  const count = Math.round(precision);
+  const sliceSatrt = Math.min(Math.round(valueStart), len - count);
 
   // 从原始数据里截取需要显示的数据
   const newValues = originValues.slice(sliceSatrt, sliceSatrt + count);
