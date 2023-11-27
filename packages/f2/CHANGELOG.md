@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.39](https://github.com/antvis/f2/compare/v5.0.38...v5.0.39) (2023-11-27)
+
+
+### Bug Fixes
+
+* dodge 平移 scale 不更新 ([#1897](https://github.com/antvis/f2/issues/1897)) ([49b3a72](https://github.com/antvis/f2/commit/49b3a72bb163da59072bf8d99cf44853021839c3))
+
+
+
+
+
 ## [5.0.38](https://github.com/antvis/f2/compare/v5.0.37...v5.0.38) (2023-11-26)
 
 
