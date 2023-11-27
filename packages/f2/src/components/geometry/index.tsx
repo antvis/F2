@@ -330,7 +330,7 @@ class Geometry<
         if (scale.isCategory) {
           const field = scale.field;
           const value = scale.translate(obj.origin[field]);
-          obj[field] = isNaN(value) ? 0 : value;
+          obj[field] = value;
         }
       }
     }

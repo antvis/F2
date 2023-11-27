@@ -174,7 +174,9 @@ export default abstract class Adjust {
         return;
       }
       // 在每个维度上，所有的值
-      dimValuesMap[dim] = valuesOfKey(mergedData, dim).sort((v1, v2) => v1 - v2) as number[];
+      dimValuesMap[dim] = valuesOfKey(mergedData, dim)
+        .sort((v1, v2) => v1 - v2)
+        .filter((v) => !isNaN(v)) as number[];
     });
 
     // 只有一维的情况下，同时调整 y，赋予默认值

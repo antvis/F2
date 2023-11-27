@@ -13,6 +13,7 @@ function lerp(min, max, fraction) {
 }
 
 function isNumberEqualRange(aRange: number[], bRange: number[]) {
+  if (!bRange) return false;
   for (let i = 0, len = aRange.length; i < len; i++) {
     if (!isNumberEqual(aRange[i], bRange[i])) return false;
   }
@@ -20,6 +21,7 @@ function isNumberEqualRange(aRange: number[], bRange: number[]) {
 }
 
 function isEqualRange(aRange, bRange) {
+  if (!bRange) return false;
   if (isArray(aRange)) {
     return isNumberEqualRange(aRange, bRange);
   }
@@ -174,9 +176,8 @@ export default (View) => {
 
       // 图表上最少显示 MIN_COUNT 个数据
       this.minScale = minCount / valueLength;
-      this.state = {
-        range: cacheRange,
-      } as S;
+
+      this.renderRange(cacheRange);
     }
 
     willUpdate(): void {

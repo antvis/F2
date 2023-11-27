@@ -164,6 +164,14 @@ class ScaleController {
 
     const scale = scales[field];
     if (scale) {
+      // for adjust=dodge, 需要更新 range
+      const option = this._getOption({
+        ...options[field],
+        values: scale.values,
+      });
+      if (option.range) {
+        scale.range = option.range;
+      }
       return scale;
     }
     const option = options[field];
