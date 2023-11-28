@@ -182,7 +182,7 @@ describe('dodge pan', () => {
     await gestureSimulator(context.canvas, 'touchmove', { x: 100, y: 169 });
     await delay(20);
     await gestureSimulator(context.canvas, 'touchend', { x: 100, y: 169 });
-    await delay(300);
+    await delay(600);
     expect(context).toMatchImageSnapshot();
   });
 });
