@@ -164,7 +164,22 @@ describe('dodge pan', () => {
             showCrosshairs
             crosshairsType="x"
           />
-          <ScrollBar pan pinch={false} mode="x" range={[0.5, 1]} visible />
+          <ScrollBar
+            pan
+            pinch={false}
+            mode="x"
+            range={[0.5, 1]}
+            visible
+            style={{
+              marginTop: '10px',
+            }}
+            background={{
+              stroke: '#000',
+            }}
+            barStyle={{
+              stroke: 'red',
+            }}
+          />
         </Chart>
       </Canvas>
     );
