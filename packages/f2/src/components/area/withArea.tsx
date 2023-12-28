@@ -47,8 +47,8 @@ export default (View) => {
             bottomPoints.reverse();
             child.points = points.concat(bottomPoints);
           } else {
-            points.push({ x: points[points.length - 1].x, y: baseY });
-            points.push({ x: points[0].x, y: baseY });
+            points.unshift({ x: points[0].x, y: baseY });
+            points.unshift({ x: points[points.length - 1].x, y: baseY });
           }
         }
       }
