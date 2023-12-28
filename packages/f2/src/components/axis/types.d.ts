@@ -120,6 +120,8 @@ export interface AxisProps<
   mask?: string;
   min?: number;
   max?: number;
+  width?: number | string;
+  height?: number | string;
   nice?: boolean;
   ticks?: Array;
   /**

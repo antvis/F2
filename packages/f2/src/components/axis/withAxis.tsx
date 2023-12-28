@@ -214,7 +214,8 @@ export default (View) => {
     }
 
     measureLayout(): PositionLayout | PositionLayout[] {
-      const { props } = this;
+      const { props, context } = this;
+      const { px2hd } = context;
       const { visible, coord } = props;
       if (visible === false) {
         return null;
@@ -225,7 +226,12 @@ export default (View) => {
 
       const { isPolar } = coord;
       const dimType = this._getDimType();
-      const { width, height } = bbox;
+
+      const { width, height } = deepMix(
+        bbox,
+        px2hd({ width: props?.width, height: props?.height })
+      );
+
       if (isPolar) {
         // 机坐标系的 y 不占位置
         if (dimType === 'y') {
