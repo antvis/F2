@@ -1,5 +1,15 @@
 import { jsx, isEqual, Component } from '@antv/f-engine';
-import { deepMix, isFunction, mix, each, clone, isString, isNumber, isArray } from '@antv/util';
+import {
+  deepMix,
+  isFunction,
+  mix,
+  each,
+  clone,
+  isString,
+  isNumber,
+  isArray,
+  isNil,
+} from '@antv/util';
 import { ChartChildProps, PositionLayout } from '../../chart';
 import { Style, Tick, AxisProps } from './types';
 import { DataRecord } from '../../chart/Data';
@@ -214,18 +224,21 @@ export default (View) => {
     }
 
     measureLayout(): PositionLayout | PositionLayout[] {
-      const { props } = this;
-      const { visible, coord } = props;
+      const { props, context } = this;
+      const { visible, coord, style } = props;
       if (visible === false) {
         return null;
       }
+      const { width: customWidth, height: customHeight } = style || {};
 
       const ticks = this.getTicks();
       const bbox = this.getMaxBBox(ticks, this.axisStyle);
 
       const { isPolar } = coord;
       const dimType = this._getDimType();
-      const { width, height } = bbox;
+      // const { width, height } = bbox;
+      const width = isNil(customWidth) ? bbox.width : context.px2hd(customWidth);
+      const height = isNil(customHeight) ? bbox.height : context.px2hd(customHeight);
       if (isPolar) {
         // 机坐标系的 y 不占位置
         if (dimType === 'y') {

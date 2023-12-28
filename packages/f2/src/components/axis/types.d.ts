@@ -34,6 +34,8 @@ export interface Style<Type = void> {
 }
 
 export interface StyleProps<Type = void> extends Omit<Style, 'label' | 'grid' | 'labelOffset'> {
+  width?: number | string;
+  height?: number | string;
   label?: StyleText<Type> | LabelCallback<Type>;
   grid?: LineStyleProps | GridCallBack;
   labelOffset?: number | string;

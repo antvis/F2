@@ -744,4 +744,57 @@ describe('Axis 轴', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  // 定义宽高
+  it('定义宽高', async () => {
+    const context = createContext('定义宽高');
+    const data = [
+      {
+        time: 'Jan',
+        value: 551990,
+      },
+      {
+        time: 'Feb',
+        value: 513513,
+      },
+      {
+        time: 'Mar',
+        value: 538780,
+      },
+      {
+        time: 'Apr',
+        value: 419562,
+      },
+      {
+        time: 'May',
+        value: 332167,
+      },
+      {
+        time: 'Jun',
+        value: 297956,
+      },
+      {
+        time: 'Jul',
+        value: 311760,
+      },
+      {
+        time: 'Aug',
+        value: 330824,
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="time" style={{ height: '100px' }} />
+          <Axis field="value" style={{ width: '100px' }} />
+          <Interval x="time" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });
