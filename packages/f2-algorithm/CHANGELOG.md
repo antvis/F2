@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/antvis/f2/compare/v5.0.39...v5.1.0) (2023-12-28)
+
+**Note:** Version bump only for package @antv/f2-algorithm
+
+
+
+
+
 ## [5.0.39](https://github.com/antvis/f2/compare/v5.0.38...v5.0.39) (2023-11-27)
 
 **Note:** Version bump only for package @antv/f2-algorithm

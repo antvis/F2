@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/antvis/f2/compare/v5.0.39...v5.1.0) (2023-12-28)
+
+
+### Bug Fixes
+
+* 修复 ci 报错 ([#1899](https://github.com/antvis/f2/issues/1899)) ([5f017cd](https://github.com/antvis/f2/commit/5f017cd5cc29894a5bd10ed6cc250cd0ab6888b1))
+
+
+### Features
+
+* 坐标轴支持自定义宽高 ([#1906](https://github.com/antvis/f2/issues/1906)) ([d20ca53](https://github.com/antvis/f2/commit/d20ca5329465a6f33db200864b46a8f739ccbe01))
+
+
+
+
+
 ## [5.0.39](https://github.com/antvis/f2/compare/v5.0.38...v5.0.39) (2023-11-27)
 
 
