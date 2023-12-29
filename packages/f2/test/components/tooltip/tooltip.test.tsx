@@ -411,7 +411,7 @@ describe('tooltip', () => {
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
           <Tooltip
-          alwaysShow={true}
+            alwaysShow={true}
             showCrosshairs
             crosshairsType="xy"
             snap
@@ -442,11 +442,11 @@ describe('tooltip', () => {
               fill: 'red',
               textAlign: 'start',
               textBaseline: 'middle',
-              text: ''
+              text: '',
             }}
             valueStyle={{
               fill: 'red',
-              text: ''
+              text: '',
             }}
           />
         </Chart>
@@ -459,6 +459,118 @@ describe('tooltip', () => {
     await gestureSimulator(context.canvas, 'press', { x: 170, y: 100 });
 
     await delay(100);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('Tooltip 自动换行', async () => {
+    const context = createContext('Tooltip 自动换行');
+    const data = [
+      {
+        date: '2017-06-05',
+        type: '测试a',
+        value: 100,
+      },
+      {
+        date: '2017-06-05',
+        type: '测试b',
+        value: 116,
+      },
+      {
+        date: '2017-06-05',
+        type: '测试c',
+        value: 156,
+      },
+      {
+        date: '2017-06-05',
+        type: '测试d',
+        value: 126,
+      },
+      {
+        date: '2017-06-05',
+        type: '测试e',
+        value: 196,
+      },
+      {
+        date: '2017-06-05',
+        type: '测试f',
+        value: 26,
+      },
+      {
+        date: '2017-06-06',
+        type: '测试a',
+        value: 110,
+      },
+      {
+        date: '2017-06-06',
+        type: '测试b',
+        value: 129,
+      },
+      {
+        date: '2017-06-06',
+        type: '测试c',
+        value: 156,
+      },
+      {
+        date: '2017-06-06',
+        type: '测试d',
+        value: 126,
+      },
+      {
+        date: '2017-06-07',
+        type: '测试a',
+        value: 123,
+      },
+      {
+        date: '2017-06-07',
+        type: '测试b',
+        value: 135,
+      },
+      {
+        date: '2017-06-07',
+        type: '测试c',
+        value: 156,
+      },
+      {
+        date: '2017-06-07',
+        type: '测试d',
+        value: 126,
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="date" />
+          <Axis field="value" />
+          <Interval x="date" y="value" color="type" />
+          <Tooltip alwaysShow={true} showTooltipMarker={true} defaultItem={data[0]} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+
+    const { props: updateProps } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="date" />
+          <Axis field="value" />
+          <Interval x="date" y="value" color="type" />
+          <Tooltip
+            alwaysShow={true}
+            showTooltipMarker={true}
+            defaultItem={data[0]}
+            itemWidth={200}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    await canvas.update(updateProps);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 });
