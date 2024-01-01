@@ -260,6 +260,50 @@ const RenderYTip = (props) => {
 
 // tooltip 内容框
 class RenderLabel extends Component {
+  style = {};
+
+  getMaxItemBox(node) {
+    let maxItemWidth = 0;
+    let maxItemHeight = 0;
+    (node.children || []).forEach((child) => {
+      const { layout } = child;
+      const { width, height } = layout;
+
+      maxItemWidth = Math.max(maxItemWidth, width);
+      maxItemHeight = Math.max(maxItemHeight, height);
+    });
+
+    return {
+      width: maxItemWidth,
+      height: maxItemHeight,
+    };
+  }
+
+  _getContainerLayout() {
+    const { records, coord } = this.props;
+
+    if (!records || !records.length) return;
+    const { width } = coord;
+
+    const node = computeLayout(this, this.render());
+    const { width: itemMaxWidth } = this.getMaxItemBox(node?.children[0]);
+
+    // 每行最多的个数
+    const lineMaxCount = Math.max(1, Math.floor(width / itemMaxWidth));
+    const itemCount = records.length;
+
+    // 是否需要换行
+    if (itemCount > lineMaxCount) {
+      this.style = {
+        width,
+      };
+    }
+  }
+
+  willMount(): void {
+    this._getContainerLayout();
+  }
+
   render() {
     const {
       records,
@@ -273,6 +317,7 @@ class RenderLabel extends Component {
       arrowWidth,
       x,
       coord,
+      itemWidth,
     } = this.props;
 
     // 显示内容
@@ -287,6 +332,7 @@ class RenderLabel extends Component {
               padding: [0, 0, 0, '6px'],
               left,
               top,
+              ...this.style,
               ...background,
             }}
           >
@@ -299,6 +345,7 @@ class RenderLabel extends Component {
                     flexDirection: 'row',
                     alignItems: 'center',
                     padding: [0, '6px', 0, 0],
+                    width: itemWidth,
                   }}
                 >
                   {showItemMarker ? (
@@ -410,6 +457,7 @@ export default class TooltipView extends Component {
       yTipBackground = defaultStyle.yTipBackground,
       custom = false,
       customText,
+      itemWidth,
     } = props;
     const itemMarkerStyle = {
       ...customItemMarkerStyle,
@@ -500,6 +548,7 @@ export default class TooltipView extends Component {
             nameStyle={{ ...defaultStyle.nameStyle, ...nameStyle }}
             valueStyle={{ ...defaultStyle.valueStyle, ...valueStyle }}
             joinString={joinString}
+            itemWidth={itemWidth}
           />
         )}
       </group>
