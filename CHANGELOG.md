@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/antvis/f2/compare/v5.1.0...v5.2.0) (2024-01-02)
+
+
+### Bug Fixes
+
+* legend resize ([#1912](https://github.com/antvis/f2/issues/1912)) ([8d57a2c](https://github.com/antvis/f2/commit/8d57a2ce8fb3ad67a9f6b5934021585d8ec6a85c))
+
+
+### Features
+
+* tooltip自动换行 ([#1911](https://github.com/antvis/f2/issues/1911)) ([2aaa51f](https://github.com/antvis/f2/commit/2aaa51f69594a79738806b0d2534abad327e935f))
+
+
+
+
+
 # [5.1.0](https://github.com/antvis/f2/compare/v5.0.39...v5.1.0) (2023-12-28)
 
 
