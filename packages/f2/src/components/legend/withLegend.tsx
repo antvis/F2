@@ -223,6 +223,7 @@ export default (View) => {
     willUpdate(): void {
       const items = this.getItems();
       if (!items || !items.length) return;
+      this._init();
       this.updateCoord();
     }
 
