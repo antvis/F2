@@ -144,8 +144,12 @@ export default (View) => {
     }
 
     willReceiveProps(nextProps: P): void {
-      const { range: nextRange } = nextProps;
-      const { range: lastRange } = this.props;
+      // @ts-ignore
+      const { range: nextRange, data: nextData } = nextProps;
+      const { range: lastRange, data: lastData } = this.props;
+      if (nextData !== lastData) {
+        this._cancelAnimationFrame();
+      }
       if (!isEqual(nextRange, lastRange)) {
         const cacheRange = {};
         each(this.dims, (dim) => {
@@ -215,7 +219,21 @@ export default (View) => {
     }
 
     didUnmount(): void {
-      this.loop && cancelAnimationFrame(this.loop);
+      this._cancelAnimationFrame();
+    }
+
+    _requestAnimationFrame(calllback: Function) {
+      const { context } = this;
+      const { requestAnimationFrame } = context.canvas;
+      this.loop = requestAnimationFrame(calllback);
+      return this.loop;
+    }
+
+    _cancelAnimationFrame() {
+      const { loop, context } = this;
+      if (loop) {
+        context.canvas.cancelAnimationFrame(loop);
+      }
     }
 
     _bindEvents() {
@@ -273,7 +291,7 @@ export default (View) => {
       const { state } = this;
       const { range } = state;
       this.startRange = range;
-      this.loop && cancelAnimationFrame(this.loop);
+      this._cancelAnimationFrame();
     };
 
     onPan = (ev) => {
@@ -317,16 +335,15 @@ export default (View) => {
 
       this.startRange = range;
 
-      this.loop = requestAnimationFrame(() => this.update());
+      this._requestAnimationFrame(() => this.update());
       if (Math.abs(x - endX) < 0.0005 && Math.abs(y - endY) < 0.0005) {
         this.onEnd();
-        cancelAnimationFrame(this.loop);
+        this._cancelAnimationFrame();
       }
     }
 
     animateSwipe(dim: string, dimRange: ZoomRange, velocity: number) {
-      const { context, props } = this;
-      const { requestAnimationFrame } = context.canvas;
+      const { props } = this;
       const { swipeDuration = 1000 } = props;
 
       const diff = (dimRange[1] - dimRange[0]) * velocity;
@@ -357,7 +374,7 @@ export default (View) => {
         const easedProgress = easeing(progress);
         updateRange(easedProgress);
 
-        requestAnimationFrame(() => {
+        this._requestAnimationFrame(() => {
           update();
         });
       };

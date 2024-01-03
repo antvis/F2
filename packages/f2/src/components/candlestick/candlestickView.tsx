@@ -17,6 +17,7 @@ export default (props) => {
               return (
                 <group>
                   <line
+                    key={`${key}-line`}
                     style={{
                       x1: x,
                       y1: y[2],
@@ -45,7 +46,7 @@ export default (props) => {
                     }}
                   />
                   <rect
-                    key={key}
+                    key={`${key}-rect`}
                     style={{
                       x: xMin,
                       y: yMin,
