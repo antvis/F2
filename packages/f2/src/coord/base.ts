@@ -19,8 +19,13 @@ function convertRect({ x, y, size, y0 }: RectPoint) {
   let yMin: number;
   let yMax: number;
   if (isArray(y)) {
-    yMin = y[0];
-    yMax = y[1];
+    if (y[0] === y[1]) {
+      yMin = y[0];
+      yMax = y[1];
+    } else {
+      yMin = Math.min(y[0], y[1]);
+      yMax = Math.max(y[0], y[1]);
+    }
   } else {
     yMin = Math.min(y0, y);
     yMax = Math.max(y0, y);
