@@ -4,7 +4,7 @@ import { isArray } from '@antv/util';
 
 export default (props: RectProps<'bottom'>, context) => {
   const { ticks, coord, style, animation } = props;
-  const { px2hd } = context;
+  const { px2hd, measureText } = context;
   const { left, right, bottom } = coord;
   const { grid, tickLine, line, labelOffset, label, symbol } = style;
   const filterTicks = ticks.filter((d) => !isNaN(d.value));
@@ -89,11 +89,11 @@ export default (props: RectProps<'bottom'>, context) => {
       {label
         ? filterTicks.map((tick, index) => {
             const { points, text, tickValue, labelStyle } = tick;
-            const start = points[0];
+            const { x, y } = points[0];
             const { align = 'center' } = labelStyle || label || {};
             const textAttrs: TextStyleProps = {
-              x: start.x,
-              y: start.y + labelOffset,
+              x,
+              y: y + labelOffset,
               textBaseline: 'top',
               text,
               ...label,
@@ -107,6 +107,15 @@ export default (props: RectProps<'bottom'>, context) => {
                 textAttrs.textAlign = 'end';
               } else {
                 textAttrs.textAlign = 'center';
+              }
+            } else if (align === 'auto') {
+              textAttrs.textAlign = 'center';
+              const { width } = measureText(text, textAttrs);
+              const halfWidth = width / 2;
+              if (x - halfWidth < left) {
+                textAttrs.x = left + width / 2;
+              } else if (x + halfWidth > right) {
+                textAttrs.x = right - width / 2;
               }
             } else {
               textAttrs.textAlign = align;

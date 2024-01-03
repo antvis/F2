@@ -262,6 +262,9 @@ describe('candlestick', () => {
             type="timeCat"
             tickCount={3}
             style={{
+              label: {
+                align: 'auto',
+              },
               tickLine: {
                 length: 10,
                 lineWidth: '10px',
@@ -297,6 +300,9 @@ describe('candlestick', () => {
             type="timeCat"
             tickCount={3}
             style={{
+              label: {
+                align: 'auto',
+              },
               tickLine: {
                 length: 10,
                 lineWidth: '10px',

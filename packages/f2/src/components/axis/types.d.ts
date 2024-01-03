@@ -7,7 +7,7 @@ interface TickLine extends LineStyleProps {
 }
 
 interface Text extends TextStyleProps {
-  align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between';
+  align?: 'left' | 'right' | 'start' | 'center' | 'end' | 'between' | 'auto';
   text?: string;
 }
 
