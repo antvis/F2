@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.1](https://github.com/antvis/f2/compare/v5.2.0...v5.2.1) (2024-01-03)
+
+
+### Bug Fixes
+
+* **Axis:** 坐标轴文本超界自动对齐 ([#1918](https://github.com/antvis/f2/issues/1918)) ([7bb11e3](https://github.com/antvis/f2/commit/7bb11e335660072730cf6a2d62b97f74afd98028))
+* **candlestick:** 蜡烛图开盘价收盘价一致时，颜色用上个交易日的比较 ([#1917](https://github.com/antvis/f2/issues/1917)) ([2446f22](https://github.com/antvis/f2/commit/2446f2280181353ed56bd9fc8e79b6a1d1460a8a))
+* 快扫动画进行中时，修改数据，图表显示异常 ([#1916](https://github.com/antvis/f2/issues/1916)) ([095ce5f](https://github.com/antvis/f2/commit/095ce5fff5e16a3bcc9045dee3d4b94b4920e443))
+
+
+
+
+
 # [5.2.0](https://github.com/antvis/f2/compare/v5.1.0...v5.2.0) (2024-01-02)
 
 
