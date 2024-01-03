@@ -49,8 +49,9 @@ export default (props) => {
                     style={{
                       x: xMin,
                       y: yMin,
-                      width: xMax - xMin,
-                      height: yMax - yMin,
+                      // 当 min === max 时，设置 1，否则会出现 0 的情况
+                      width: Math.max(xMax - xMin, 1),
+                      height: Math.max(yMax - yMin, 1),
                       fill: color,
                       radius: '2px',
                       ...shape,

@@ -126,4 +126,44 @@ describe('candlestick', () => {
     await delay(200);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('equal data', async () => {
+    const data = [
+      {
+        time: '2017-10-24',
+        value: [20, 20, 20, 20], // [open, close, lowest, highest]
+      },
+      {
+        time: '2017-10-25',
+        value: [40, 40, 40, 40],
+      },
+      {
+        time: '2017-10-26',
+        value: [30, 30, 30, 30],
+      },
+      {
+        time: '2017-10-27',
+        value: [38, 38, 38, 38],
+      },
+      {
+        time: '2017-10-28',
+        value: [38, 38, 38, 38],
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="time" type="timeCat" tickCount={3} />
+          <Axis field="value" />
+          <Candlestick x="time" y="value" sizeRatio={0.8} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

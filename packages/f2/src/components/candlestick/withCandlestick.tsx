@@ -39,6 +39,38 @@ export default (View: ComponentType) => {
       return (1 / values.length) * sizeRatio;
     }
 
+    _getColor(colors, child, prevChild) {
+      const { normalized } = child;
+      // 处理颜色
+      const { y } = normalized;
+      const [open, close] = y;
+      if (close > open) {
+        return colors[0];
+      }
+
+      if (close < open) {
+        return colors[1];
+      }
+
+      // 相等的情况下，再和昨日的收盘价比较
+      if (!prevChild) {
+        // 第一个固定为涨
+        return colors[0];
+      }
+
+      const { normalized: prevNormalized } = prevChild;
+      // 处理颜色
+      const { y: prevY } = prevNormalized;
+      const [, prevClose] = prevY;
+      if (close > prevClose) {
+        return colors[0];
+      }
+      if (close < prevClose) {
+        return colors[1];
+      }
+      return colors[2];
+    }
+
     mapping() {
       const records = super.mapping();
       const { props } = this;
@@ -67,9 +99,7 @@ export default (View: ComponentType) => {
           }
 
           // 处理颜色
-          const { y } = normalized;
-          const [open, close] = y;
-          child.color = close > open ? colors[0] : close < open ? colors[1] : colors[2];
+          child.color = this._getColor(colors, child, children[j - 1]);
 
           mix(child.shape, this.getSelectionStyle(child));
         }
