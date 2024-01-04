@@ -119,9 +119,6 @@ export default (View) => {
 
     loop: number;
 
-    bindedEvents = {}
-
-
     constructor(props: P) {
       const defaultProps = {
         onPanStart: () => {},
@@ -222,12 +219,8 @@ export default (View) => {
     }
 
     didUnmount(): void {
-      const { chart } = this.props;
       this._cancelAnimationFrame();
-      Object.entries(this.bindedEvents).forEach((item) => {
-        const [key, fn] = item || [];
-        key && chart.off(key, fn as any)
-      })
+      this._unBindEvents();
     }
 
     _requestAnimationFrame(calllback: Function) {
@@ -244,74 +237,19 @@ export default (View) => {
       }
     }
 
-    _bindEvents() {
+    onPanStart = () => {
       const { scale } = this;
       const {
-        chart,
-        onPinchStart,
         onPanStart,
-        onPanEnd,
-        pan,
-        pinch,
-        swipe,
-        onPan,
-        onPinch,
-        onPinchEnd,
       } = this.props;
-
-      // 统一绑定事件
-      if (pan !== false) {
-        this.bindedEvents['panstart'] = () => {
-          this.onStart();
-          onPanStart({ scale });
-        }
-        this.bindedEvents['pan'] = (ev) => {
-          this.onPan(ev);
-          onPan(ev);
-        }
-        this.bindedEvents['panend'] = () => {
-          this.onEnd();
-          onPanEnd({ scale });
-        }
-
-        chart.on('panstart', this.bindedEvents['panstart']);
-        chart.on('pan', this.bindedEvents['pan']);
-        chart.on('panend', this.bindedEvents['panend']);
-      }
-
-      if (pinch !== false) {
-        this.bindedEvents['pinchstart'] = () => {
-          this.onStart();
-          onPinchStart();
-        }
-        this.bindedEvents['pinch'] = (ev) => {
-          this.onPinch(ev);
-          onPinch(ev);
-        }
-        this.bindedEvents['pinchend'] =  () => {
-          this.onEnd();
-          onPinchEnd({ scale });
-        }
-
-        chart.on('pinch', this.bindedEvents['pinch']);
-        chart.on('pinchstart', this.bindedEvents['pinchstart']);
-        chart.on('pinchend',this.bindedEvents['pinchend']);
-      }
-
-      if (swipe !== false) {
-        this.bindedEvents['swipe'] = this.onSwipe
-        chart.on('swipe', this.onSwipe);
-      }
+      this.onStart();
+      onPanStart?.({ scale });
     }
 
-    onStart = () => {
-      const { state } = this;
-      const { range } = state;
-      this.startRange = range;
-      this._cancelAnimationFrame();
-    };
-
     onPan = (ev) => {
+      const {
+        onPan,
+      } = this.props;
       const { dims } = this;
 
       const range = {};
@@ -327,8 +265,116 @@ export default (View) => {
       });
 
       this.renderRange(range);
+      onPan?.(ev);
     };
 
+
+    onPanEnd = () => {
+      const { scale } = this;
+      const {
+        onPanEnd,
+      } = this.props;
+      this.onEnd();
+      onPanEnd?.({ scale });
+    }
+
+    onPinchStart = () => {
+      const {
+        onPinchStart,
+      } = this.props;
+      this.onStart();
+      onPinchStart?.();
+    }
+
+    onPinch = (ev) => {
+      const {
+        onPinch,
+      } = this.props;
+      const { dims } = this;
+      const range = {};
+      each(dims, (dim) => {
+        if (dim === 'x') {
+          range['x'] = this._doXPinch(ev);
+          return;
+        }
+        if (dim === 'y') {
+          range['y'] = this._doYPinch(ev);
+          return;
+        }
+      });
+      this.renderRange(range);
+      onPinch?.(ev);
+    };
+
+    onPinchEnd = () => {
+      const { scale } = this;
+      const {
+        onPinchEnd,
+      } = this.props;
+      this.onEnd();
+      onPinchEnd?.({ scale });
+    }
+
+    _bindEvents() {
+      const {
+        chart,
+        pan,
+        pinch,
+        swipe,
+      } = this.props;
+
+      // 统一绑定事件
+      if (pan !== false) {
+        chart.on('panstart', this.onPanStart);
+        chart.on('pan', this.onPan);
+        chart.on('panend', this.onPanEnd);
+      }
+
+      if (pinch !== false) {
+        chart.on('pinch', this.onPinch);
+        chart.on('pinchstart', this.onPinchStart);
+        chart.on('pinchend', this.onPinchEnd);
+      }
+
+      if (swipe !== false) {
+        chart.on('swipe', this.onSwipe);
+      }
+    }
+
+    _unBindEvents() {
+      const {
+        chart,
+        pan,
+        pinch,
+        swipe,
+      } = this.props;
+
+      // 统一绑定事件
+      if (pan !== false) {
+        chart.off('panstart', this.onPanStart);
+        chart.off('pan', this.onPan);
+        chart.off('panend', this.onPanEnd);
+      }
+
+      if (pinch !== false) {
+        chart.off('pinch', this.onPinch);
+        chart.off('pinchstart', this.onPinchStart);
+        chart.off('pinchend', this.onPinchEnd);
+      }
+
+      if (swipe !== false) {
+        chart.off('swipe', this.onSwipe);
+      }
+    }
+
+    onStart = () => {
+      const { state } = this;
+      const { range } = state;
+      this.startRange = range;
+      this._cancelAnimationFrame();
+    };
+
+  
     update() {
       const { startX, startY, endX, endY } = this.swipeEnd;
       const x = lerp(startX, endX, 0.05);
@@ -437,22 +483,7 @@ export default (View) => {
       this.update();
     };
 
-    onPinch = (ev) => {
-      const { dims } = this;
-      const range = {};
-      each(dims, (dim) => {
-        if (dim === 'x') {
-          range['x'] = this._doXPinch(ev);
-          return;
-        }
-        if (dim === 'y') {
-          range['y'] = this._doYPinch(ev);
-          return;
-        }
-      });
-      this.renderRange(range);
-    };
-
+   
     onEnd = () => {
       this.startRange = null;
     };
