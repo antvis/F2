@@ -119,6 +119,9 @@ export default (View) => {
 
     loop: number;
 
+    bindedEvents = {}
+
+
     constructor(props: P) {
       const defaultProps = {
         onPanStart: () => {},
@@ -219,7 +222,12 @@ export default (View) => {
     }
 
     didUnmount(): void {
+      const { chart } = this.props;
       this._cancelAnimationFrame();
+      Object.entries(this.bindedEvents).forEach((item) => {
+        const [key, fn] = item || [];
+        key && chart.off(key, fn as any)
+      })
     }
 
     _requestAnimationFrame(calllback: Function) {
@@ -253,36 +261,45 @@ export default (View) => {
 
       // 统一绑定事件
       if (pan !== false) {
-        chart.on('panstart', () => {
+        this.bindedEvents['panstart'] = () => {
           this.onStart();
           onPanStart({ scale });
-        });
-        chart.on('pan', (ev) => {
+        }
+        this.bindedEvents['pan'] = (ev) => {
           this.onPan(ev);
           onPan(ev);
-        });
-        chart.on('panend', () => {
+        }
+        this.bindedEvents['panend'] = () => {
           this.onEnd();
           onPanEnd({ scale });
-        });
+        }
+
+        chart.on('panstart', this.bindedEvents['panstart']);
+        chart.on('pan', this.bindedEvents['pan']);
+        chart.on('panend', this.bindedEvents['panend']);
       }
 
       if (pinch !== false) {
-        chart.on('pinchstart', () => {
+        this.bindedEvents['pinchstart'] = () => {
           this.onStart();
           onPinchStart();
-        });
-        chart.on('pinch', (ev) => {
+        }
+        this.bindedEvents['pinch'] = (ev) => {
           this.onPinch(ev);
           onPinch(ev);
-        });
-        chart.on('pinchend', () => {
+        }
+        this.bindedEvents['pinchend'] =  () => {
           this.onEnd();
           onPinchEnd({ scale });
-        });
+        }
+
+        chart.on('pinch', this.bindedEvents['pinch']);
+        chart.on('pinchstart', this.bindedEvents['pinchstart']);
+        chart.on('pinchend',this.bindedEvents['pinchend']);
       }
 
       if (swipe !== false) {
+        this.bindedEvents['swipe'] = this.onSwipe
         chart.on('swipe', this.onSwipe);
       }
     }
