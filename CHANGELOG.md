@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.2](https://github.com/antvis/f2/compare/v5.2.1...v5.2.2) (2024-01-05)
+
+
+### Bug Fixes
+
+* 蜡烛图切换销毁scrollbar时移除对应事件 ([#1920](https://github.com/antvis/f2/issues/1920)) ([0a6e7e1](https://github.com/antvis/f2/commit/0a6e7e1f9ff75e0fbcbf628ae13402ab50730d04))
+
+
+
+
+
 ## [5.2.1](https://github.com/antvis/f2/compare/v5.2.0...v5.2.1) (2024-01-03)
 
 
