@@ -66,11 +66,17 @@ export interface CanvasProps {
   fallback?: React.Component;
   onError?: (error: Error) => void;
   children?: React.ReactElement | React.ReactElement[] | null;
+  autoFit?: boolean;
 }
 
 class ReactCanvas extends React.Component<CanvasProps> {
   canvasRef: RefObject<HTMLCanvasElement>;
   canvas: Canvas;
+  parentNode: {
+    width: number;
+    height: number;
+  };
+  observer: ResizeObserver;
 
   constructor(props: CanvasProps) {
     super(props);
@@ -96,11 +102,44 @@ class ReactCanvas extends React.Component<CanvasProps> {
     };
   };
 
+  observeElement() {
+    if (!this.props?.autoFit) return;
+    const targetNode = this.canvasRef.current?.parentElement;
+    window?.addEventListener('resize', () => {
+      this.resize();
+    });
+
+    if (typeof ResizeObserver !== 'undefined') {
+      this.observer = new ResizeObserver(() => {
+        this.resize();
+      });
+      this.observer.observe(targetNode);
+    }
+  }
+
+  resize() {
+    const targetNode = this.canvasRef.current?.parentElement;
+    const { width: lastWidth, height: lastHeight } = targetNode.getBoundingClientRect();
+    if (
+      (lastWidth === this.parentNode.width && lastHeight === this.parentNode.height) ||
+      !lastWidth ||
+      !lastHeight
+    )
+      return;
+    this.parentNode = {
+      width: lastWidth,
+      height: lastHeight,
+    };
+
+    this.canvas.resize(lastWidth, lastHeight);
+  }
+
   componentDidMount() {
     const pickProps = this.getProps();
     const canvas = new Canvas(pickProps);
     this.canvas = canvas;
     canvas.render();
+    this.observeElement();
   }
 
   componentDidUpdate() {
