@@ -674,6 +674,24 @@ class Geometry<
     });
   }
 
+  _getXSnapRecords(invertPointX, records) {
+    const xScale = this.getXScale();
+    const { field: xField } = xScale;
+    const xValue = xScale.invert(invertPointX);
+    // category
+    if (xScale.isCategory) {
+      return records.filter((record) => record[FIELD_ORIGIN][xField] === xValue);
+    }
+    // linear
+    return records.filter((record) => {
+      const rangeX = record[xField];
+      if (rangeX[0] <= xValue && rangeX[1] >= xValue) {
+        return true;
+      }
+      return false;
+    });
+  }
+
   // 把 records 拍平
   flatRecords() {
     const { records } = this;
@@ -721,11 +739,18 @@ class Geometry<
     };
 
     // 处理饼图
-    if (adjust === 'stack' && coord.isPolar && coord.transposed) {
-      // 弧度在半径范围内
-      if (invertPoint.x >= 0 && invertPoint.x <= 1) {
-        const snapRecords = this._getYSnapRecords(invertPoint.y, records);
-        return snapRecords;
+    if (adjust === 'stack' && coord.isPolar) {
+      if (coord.transposed) {
+        // 弧度在半径范围内
+        if (invertPoint.x >= 0 && invertPoint.x <= 1) {
+          const snapRecords = this._getYSnapRecords(invertPoint.y, records);
+          return snapRecords;
+        }
+      } else {
+        if (invertPoint.y >= 0 && invertPoint.y <= 1) {
+          const snapRecords = this._getXSnapRecords(invertPoint.x, records);
+          return snapRecords;
+        }
       }
     }
 
