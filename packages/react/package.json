@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-react",
-  "version": "4.0.52",
+  "version": "4.0.53",
   "description": "F2 for React",
   "main": "lib/index.js",
   "module": "es/index.js",
