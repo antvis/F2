@@ -63,6 +63,21 @@ describe('Chart', () => {
                         textAlign: 'start',
                         textBaseline: 'middle',
                       }}
+                      animation={{
+                        update: {
+                          easing: 'linear',
+                          duration: 450,
+                          property: ['x', 'y'],
+                          onFrame(t, animationContext) {
+                            const { start, end } = animationContext;
+                            const startText = parseInt(start.text);
+                            const endText = parseInt(end.text);
+                            return {
+                              text: `${(startText + (endText - startText) * t).toFixed(0)}`,
+                            };
+                          },
+                        },
+                      }}
                     />
                   );
                 })}
