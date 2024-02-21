@@ -82,6 +82,10 @@ class ReactCanvas extends React.Component<CanvasProps> {
     super(props);
     const { canvasRef } = props;
     this.canvasRef = canvasRef || React.createRef();
+    this.parentNode = {
+      width: 0,
+      height: 0,
+    };
   }
 
   getProps = () => {
@@ -104,7 +108,17 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   observeElement() {
     if (!this.props?.autoFit) return;
+
     const targetNode = this.canvasRef.current?.parentElement;
+    if (!targetNode) return;
+
+    // 初始化parentNode
+    const { width, height } = targetNode.getBoundingClientRect();
+    this.parentNode = {
+      width,
+      height,
+    };
+
     window?.addEventListener('resize', () => {
       this.resize();
     });
@@ -119,6 +133,8 @@ class ReactCanvas extends React.Component<CanvasProps> {
 
   resize() {
     const targetNode = this.canvasRef.current?.parentElement;
+    if (!targetNode) return;
+
     const { width: lastWidth, height: lastHeight } = targetNode.getBoundingClientRect();
     if (
       (lastWidth === this.parentNode.width && lastHeight === this.parentNode.height) ||
