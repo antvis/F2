@@ -30,7 +30,7 @@ const data = [
 
 ### mode: string
 
-滚动模式，默认为： `'x'`, 可选值： `'x' | 'y' | '['x', 'y']'  `
+滚动模式，默认为： `'x'`, 可选值： `'x' | 'y' | '['x', 'y']'`
 
 ### range: [0, 1]
 
@@ -56,9 +56,26 @@ const data = [
 
 默认为 `'bottom'`, 可选值为：`'top' | 'right' | 'bottom' | 'left'`
 
-### margin: number
+### style: ShapeProps
 
-滚动条和图表内容间距，默认 `16px`
+滚动条和图表内容间距，比如
+
+```css
+marign: ['10px', '20px']
+marignTop: '10px'
+```
+
+### backgroud: ShapeProps
+
+滚动条背景样式
+
+> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
+
+### barStyle: ShapeProps
+
+滑块样式
+
+> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
 
 ## demo 示例
 
