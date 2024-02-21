@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/antvis/f2/compare/v5.2.2...v5.3.0) (2024-02-21)
+
+
+### Bug Fixes
+
+* transposed为false时饼图交互 ([#1923](https://github.com/antvis/f2/issues/1923)) ([dbfb0ed](https://github.com/antvis/f2/commit/dbfb0ed72563d5575046ba878f785b8c14d782b4))
+
+
+### Features
+
+* scroll bar 样式支持可配置 ([#1900](https://github.com/antvis/f2/issues/1900)) ([2e84a26](https://github.com/antvis/f2/commit/2e84a266bbb333fccc44ee1704066a723547c5bd))
+
+
+
+
+
 ## [5.2.2](https://github.com/antvis/f2/compare/v5.2.1...v5.2.2) (2024-01-05)
 
 
