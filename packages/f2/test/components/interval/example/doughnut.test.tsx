@@ -261,7 +261,7 @@ describe('环形图', () => {
     const context = createContext('基础环形图');
     const chartRef = { current: null };
     const { type, props } = (
-      <Canvas context={context} pixelRatio={1}>
+      <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart
           ref={chartRef}
           data={data}
@@ -313,7 +313,7 @@ describe('环形图', () => {
     await delay(20);
 
     await gestureSimulator(context.canvas, 'click', { x: 133, y: 64 });
-    await delay(100);
+    await delay(200);
     expect(context).toMatchImageSnapshot();
   });
 });
