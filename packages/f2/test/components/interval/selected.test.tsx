@@ -372,3 +372,55 @@ describe('改变默认值', () => {
     expect(context).toMatchImageSnapshot();
   });
 });
+
+describe('select onChange', () => {
+  it('select onChange', async () => {
+    const context = createContext();
+    const onChange = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart
+          data={data}
+          coord={{
+            radius: 0.8,
+            type: 'polar',
+            transposed: true,
+          }}
+        >
+          <Interval
+            x="a"
+            y="sold"
+            adjust="stack"
+            color="genre"
+            selection={{
+              defaultSelected: [{ a: '1', genre: 'Strategy', sold: 115 }],
+              selectedStyle: (record) => {
+                const { yMax, yMin } = record;
+                return {
+                  r: (yMax - yMin) * 1.1,
+                };
+              },
+              cancelable: true,
+              onChange: onChange,
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(200);
+
+    // 选中
+    await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
+    await delay(200);
+    expect(onChange.mock.calls.length).toBe(1);
+    expect(onChange.mock.calls[0][0].selected[0]).toEqual({ a: '1', genre: 'Other', sold: 110 });
+
+    // 反选
+    await gestureSimulator(context.canvas, 'click', { x: 213, y: 166 });
+    await delay(200);
+    expect(onChange.mock.calls.length).toBe(2);
+  });
+});
