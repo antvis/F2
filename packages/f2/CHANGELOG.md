@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/antvis/f2/compare/v5.3.0...v5.4.0) (2024-02-26)
+
+
+### Features
+
+* selection 增加 onChange ([#1931](https://github.com/antvis/f2/issues/1931)) ([ca9bd0b](https://github.com/antvis/f2/commit/ca9bd0bc5f42df11c44a39bc472d838fd52d6f93))
+
+
+
+
+
 # [5.3.0](https://github.com/antvis/f2/compare/v5.2.2...v5.3.0) (2024-02-21)
 
 
