@@ -3,9 +3,9 @@ import { deepMix } from '@antv/util';
 import { GuideProps } from '../withGuide';
 
 export interface PointGuideProps extends GuideProps {
-  style?: CircleStyleProps;
-  offsetX?: number;
-  offsetY?: number;
+  style?: Partial<CircleStyleProps> | ((record?) => Partial<CircleStyleProps>);
+  offsetX?: number | string;
+  offsetY?: number | string;
   points?: { x: number; y: number }[] | null;
   theme?: any;
 }

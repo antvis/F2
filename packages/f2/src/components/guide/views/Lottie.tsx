@@ -6,16 +6,16 @@ import { GuideProps } from '../withGuide';
 export interface LottieGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   data?: string;
-  offsetX?: number | number[];
-  offsetY?: number | number[];
-  animation: AnimationProps;
-  options: {
+  offsetX?: number | string | (string | number)[];
+  offsetY?: number | string | (string | number)[];
+  animation: AnimationProps | ((points?, chart?) => AnimationProps);
+  options?: {
     loop: boolean | number;
     autoplay: boolean;
   };
 }
 
-const defaultProps: Omit<LottieGuideProps, "records"> = {
+const defaultProps: Omit<LottieGuideProps, 'records'> = {
   offsetX: 0,
   offsetY: 0,
   points: [],

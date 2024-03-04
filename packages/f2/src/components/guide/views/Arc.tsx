@@ -4,7 +4,7 @@ import { GuideProps } from '../withGuide';
 
 export interface ArcGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
-  style?: ArcStyleProps;
+  style?: Partial<ArcStyleProps> | ((record?) => Partial<ArcStyleProps>);
   theme?: any;
 }
 

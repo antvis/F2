@@ -4,7 +4,7 @@ import { GuideProps } from '../withGuide';
 
 export interface RectGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
-  style?: RectStyleProps;
+  style?: Partial<RectStyleProps> | ((record?) => Partial<RectStyleProps>);
   theme?: any;
 }
 

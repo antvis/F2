@@ -4,9 +4,9 @@ import { isArray, deepMix } from '@antv/util';
 
 export interface LineGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
-  style?: LineStyleProps;
-  offsetX?: number | number[];
-  offsetY?: number | number[];
+  style?: Partial<LineStyleProps> | ((record?) => Partial<LineStyleProps>);
+  offsetX?: number | string | (number | string)[];
+  offsetY?: number | string | (number | string)[];
   theme?: any;
 }
 

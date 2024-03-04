@@ -5,9 +5,9 @@ import { deepMix } from '@antv/util';
 export interface TextGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   content: string | number;
-  style?: TextStyleProps;
-  offsetX?: number;
-  offsetY?: number;
+  style?: Partial<TextStyleProps> | ((record?) => Partial<TextStyleProps>);
+  offsetX?: number | string;
+  offsetY?: number | string;
   theme?: any;
 }
 

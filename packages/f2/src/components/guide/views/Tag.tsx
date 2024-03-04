@@ -5,8 +5,8 @@ export interface TagGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   canvasWidth?: number;
   canvasHeight?: number;
-  offsetX?: number;
-  offsetY?: number;
+  offsetX?: number | string;
+  offsetY?: number | string;
   autoAdjust?: boolean;
   /**
    * 箭头的方向
