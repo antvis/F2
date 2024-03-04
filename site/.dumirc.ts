@@ -368,7 +368,7 @@ export default defineConfig({
   },
   runtimePublicPath: {},
   headScripts: [
-    'https://polyfill.io/v3/polyfill.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en',
+    'https://polyfill.alicdn.com/v3/polyfill.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en',
   ],
   legacy: {},
 });
