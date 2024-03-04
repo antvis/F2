@@ -1,14 +1,15 @@
 import { jsx, TextStyleProps } from '@antv/f-engine';
+import { GuideProps } from '../withGuide';
 import { deepMix } from '@antv/util';
 
-type TextGuideProps = {
+export interface TextGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   content: string | number;
   style?: TextStyleProps;
   offsetX?: number;
   offsetY?: number;
   theme?: any;
-};
+}
 
 export default (props: TextGuideProps, context) => {
   const { theme = {} } = props;

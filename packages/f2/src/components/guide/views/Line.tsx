@@ -1,13 +1,14 @@
 import { jsx, LineStyleProps } from '@antv/f-engine';
+import { GuideProps } from '../withGuide';
 import { isArray, deepMix } from '@antv/util';
 
-type LineGuideProps = {
+export interface LineGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   style?: LineStyleProps;
   offsetX?: number | number[];
   offsetY?: number | number[];
   theme?: any;
-};
+}
 
 export default (props: LineGuideProps, context) => {
   const { theme = {} } = props;

@@ -10,10 +10,10 @@ export interface GuideProps {
   [key: string]: any;
 }
 
-export default (View: ComponentType) => {
-  return class Guide<IProps extends GuideProps = GuideProps> extends Component<
-    IProps & ChartChildProps
-  > {
+export default function<IProps extends GuideProps = GuideProps>(
+  View: ComponentType<IProps & ChartChildProps>
+): ComponentType<IProps & ChartChildProps> {
+  return class Guide extends Component<IProps & ChartChildProps> {
     chart: Chart;
 
     constructor(props: IProps & ChartChildProps) {
@@ -101,4 +101,4 @@ export default (View: ComponentType) => {
       );
     }
   };
-};
+}
