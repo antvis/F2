@@ -13,7 +13,6 @@ export default defineConfig({
     defaultLanguage: 'zh',
     isAntVSite: false,
     githubUrl: repository.url, // GitHub 地址
-    footerTheme: 'light', // 白色 底部主题
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
     showGithubStars: true, // 是否显示 GitHub star 数量
@@ -125,40 +124,30 @@ export default defineConfig({
       },
     ],
     detail: {
-      engine: {
-        zh: 'F2',
-        en: 'F2',
-      },
       title: {
-        zh: 'F2·移动端可视化引擎',
-        en: 'F2·Mobile visualization engine',
+        zh: 'F2 移动端可视化引擎',
+        en: 'F2: Mobile visualization engine',
       },
       description: {
         zh: 'F2 是一个专注于移动端，面向常规统计图表，开箱即用的可视化引擎，完美支持 H5 环境同时兼容多种环境（Node, 小程序），完备的图形语法理论，满足你的各种可视化需求，专业的移动设计指引为你带来最佳的移动端图表体验。',
         en: 'F2 is an out-of-the-box visualization engine focused on the mobile terminal, oriented to conventional statistical charts, perfectly supporting the H5 environment and compatible with multiple environments (Node, applet), complete graphics grammar theory, to meet your various visualization needs , professional mobile design guidelines to bring you the best mobile graphics experience',
       },
       image:
-        'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wi05Q7Za5ZIAAAAAAAAAAAAADmJ7AQ/original',
-      imageStyle: {
-        marginLeft: '80px',
-        marginTop: '30px',
-        transform: 'scale(1.4)',
-      },
+        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/870e2e92-6187-4729-889c-232a7df0998a.png',
       buttons: [
-        {
-          text: {
-            zh: '开始使用',
-            en: 'Getting Started',
-          },
-          link: `/tutorial/getting-started`,
-
-        },
         {
           text: {
             zh: '图表示例',
             en: 'Examples',
           },
           link: `/examples`,
+        },
+        {
+          text: {
+            zh: '开始使用',
+            en: 'Getting Started',
+          },
+          link: `/tutorial/getting-started`,
           type: 'primary',
         },
       ],
