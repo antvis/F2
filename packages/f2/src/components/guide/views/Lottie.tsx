@@ -1,20 +1,21 @@
 import { jsx, AnimationProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
 import Lottie from '@antv/f-lottie';
+import { GuideProps } from '../withGuide';
 
-type LottieGuideProps = {
+export interface LottieGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   data?: string;
-  offsetX?: number | number[];
-  offsetY?: number | number[];
-  animation: AnimationProps;
-  options: {
+  offsetX?: number | string | (string | number)[];
+  offsetY?: number | string | (string | number)[];
+  animation: AnimationProps | ((points?, chart?) => AnimationProps);
+  options?: {
     loop: boolean | number;
     autoplay: boolean;
   };
-};
+}
 
-const defaultProps: LottieGuideProps = {
+const defaultProps: Omit<LottieGuideProps, 'records'> = {
   offsetX: 0,
   offsetY: 0,
   points: [],

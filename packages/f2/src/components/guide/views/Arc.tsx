@@ -1,11 +1,12 @@
 import { jsx, ArcStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
+import { GuideProps } from '../withGuide';
 
-type ArcGuideProps = {
+export interface ArcGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
-  style?: ArcStyleProps;
+  style?: Partial<ArcStyleProps> | ((record?) => Partial<ArcStyleProps>);
   theme?: any;
-};
+}
 
 export default (props: ArcGuideProps) => {
   const { theme = {} } = props;

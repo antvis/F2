@@ -1,16 +1,17 @@
 import { jsx, ImageStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
+import { GuideProps } from '../withGuide';
 
-type ImageGuideProps = {
+export interface ImageGuideProps extends GuideProps {
   src: string;
   points?: { x: number; y: number }[] | null;
   attrs?: ImageStyleProps;
-  style?: ImageStyleProps;
-  offsetX?: number;
-  offsetY?: number;
-};
+  style?: Partial<ImageStyleProps> | ((record?) => Partial<ImageStyleProps>);
+  offsetX?: number | string;
+  offsetY?: number | string;
+}
 
-const defaultProps: ImageGuideProps = {
+const defaultProps: Omit<ImageGuideProps, "records"> = {
   offsetX: 0,
   offsetY: 0,
   points: [],

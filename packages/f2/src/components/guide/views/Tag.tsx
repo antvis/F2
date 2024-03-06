@@ -1,11 +1,12 @@
 import { jsx, Component, computeLayout } from '@antv/f-engine';
+import { GuideProps } from '../withGuide';
 
-interface TagGuideProps {
+export interface TagGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   canvasWidth?: number;
   canvasHeight?: number;
-  offsetX?: number;
-  offsetY?: number;
+  offsetX?: number | string;
+  offsetY?: number | string;
   autoAdjust?: boolean;
   /**
    * 箭头的方向
@@ -29,7 +30,7 @@ interface TagGuideProps {
   textStyle?: any;
 }
 
-const defaultProps: TagGuideProps = {
+const defaultProps: Omit<TagGuideProps, "records"> = {
   offsetX: 0,
   offsetY: 0,
   points: [],
@@ -75,7 +76,7 @@ const Label = ({ content, background, textStyle }) => {
     </rect>
   );
 };
-export default class Tag extends Component {
+export default class Tag extends Component<TagGuideProps> {
   render() {
     const { props, context } = this;
     const { px2hd } = context;

@@ -1,13 +1,14 @@
 import { jsx, CircleStyleProps } from '@antv/f-engine';
 import { deepMix } from '@antv/util';
+import { GuideProps } from '../withGuide';
 
-type PointGuideProps = {
-  style?: CircleStyleProps;
-  offsetX?: number;
-  offsetY?: number;
+export interface PointGuideProps extends GuideProps {
+  style?: Partial<CircleStyleProps> | ((record?) => Partial<CircleStyleProps>);
+  offsetX?: number | string;
+  offsetY?: number | string;
   points?: { x: number; y: number }[] | null;
   theme?: any;
-};
+}
 
 export default (props: PointGuideProps, context) => {
   const { theme } = props;
