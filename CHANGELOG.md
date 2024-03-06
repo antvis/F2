@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/antvis/f2/compare/v5.4.0...v5.4.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* 优化 withGuide ts 定义 ([#1934](https://github.com/antvis/f2/issues/1934)) ([524b506](https://github.com/antvis/f2/commit/524b506a882140ce4221099db625ed5c458e01f9)), closes [#1890](https://github.com/antvis/f2/issues/1890) [#1890](https://github.com/antvis/f2/issues/1890)
+
+
+
+
+
 # [5.4.0](https://github.com/antvis/f2/compare/v5.3.0...v5.4.0) (2024-02-26)
 
 
