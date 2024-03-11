@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.2](https://github.com/antvis/f2/compare/v5.4.1...v5.4.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* player guide visible ([#1936](https://github.com/antvis/f2/issues/1936)) ([a9c767b](https://github.com/antvis/f2/commit/a9c767b0ab8768a2fdf4fa0415a5808b9a60f50e))
+
+
+
+
+
 ## [5.4.1](https://github.com/antvis/f2/compare/v5.4.0...v5.4.1) (2024-03-06)
 
 
