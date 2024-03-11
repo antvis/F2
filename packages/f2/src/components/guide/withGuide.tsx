@@ -76,7 +76,8 @@ export default (View: ComponentType) => {
 
     render() {
       const { props, context } = this;
-      const { coord, records = [], animation, chart, style, onClick } = props;
+      const { coord, records = [], animation, chart, style, onClick, visible = true } = props;
+      if(!visible) return;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
