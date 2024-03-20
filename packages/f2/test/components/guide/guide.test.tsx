@@ -189,6 +189,22 @@ describe('Guide ', () => {
   });
   it('tag', () => {});
 
+  it('guide 超出范围', async() => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" color="type" />
+           <PointGuide records={[{ genre: 'test', sold: 450, type: 'a' }]} offsetX="0px" offsetY="0px" />
+        </Chart>
+      </Canvas>
+    );
+
+    const chart = new Canvas(props);
+    chart.render();
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
+  });
   it('使用min、max、median', async () => {
     const context = createContext();
     const { props } = (
