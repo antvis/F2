@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-algorithm",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "F2 algorithm extension",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@antv/f-test-utils": "^1.0.1",
-    "@antv/f2": "5.4.2",
+    "@antv/f2": "5.4.3",
     "jest-mock-random": "~1.1.1"
   },
   "homepage": "https://f2.antv.vision/zh/",
