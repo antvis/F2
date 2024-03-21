@@ -22,6 +22,8 @@ export default (props: ImageGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
   const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
   const { x, y } = points[0] || {};
+  if(isNaN(x) || isNaN(y)) return null;
+  
   const { height = 0, width = 0 } = { ...attrs, ...style };
   const heightNum = context.px2hd(height + 'px');
   const widthNum = context.px2hd(width + 'px');

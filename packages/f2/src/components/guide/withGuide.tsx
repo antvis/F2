@@ -81,8 +81,6 @@ export default function<IProps extends GuideProps = GuideProps>(
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
-      const checkNaN = points.some((d)=> isNaN(d.x) || isNaN(d.y))
-      if(checkNaN) return;
 
       return (
         <group
