@@ -28,6 +28,8 @@ export default (props: LottieGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
   const { points, style, offsetX, offsetY, lottieJson, animation, options } = cfg;
   const { x, y } = points[0] || {};
+  if(isNaN(x) || isNaN(y)) return null;
+  
   const { height = 0, width = 0 } = style;
 
   const offsetXNum = context.px2hd(offsetX);

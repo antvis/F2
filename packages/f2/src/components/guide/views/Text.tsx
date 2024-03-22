@@ -16,6 +16,7 @@ export default (props: TextGuideProps, context) => {
   const { points, style, offsetX, offsetY, content, animation } = deepMix({ ...theme.text }, props);
   const { x, y } = points[0] || {};
 
+  if(isNaN(x) || isNaN(y)) return null;
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
   const posX = x + (offsetXNum || 0);

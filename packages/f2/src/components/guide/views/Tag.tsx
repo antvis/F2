@@ -95,7 +95,8 @@ export default class Tag extends Component<TagGuideProps> {
       textStyle,
     } = px2hd(cfg);
     const { x, y } = points[0] || {};
-
+    if(isNaN(x) || isNaN(y)) return null;
+    
     const offsetXNum = context.px2hd(offsetX);
     const offsetYNum = context.px2hd(offsetY);
     let posX = x + (offsetXNum || 0);

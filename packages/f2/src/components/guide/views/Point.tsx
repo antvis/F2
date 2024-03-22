@@ -14,7 +14,8 @@ export default (props: PointGuideProps, context) => {
   const { theme } = props;
   const { points, style, offsetX, offsetY, animation } = deepMix({ ...theme.point }, props);
   const { x, y } = points[0] || {};
-
+  if(isNaN(x) || isNaN(y)) return null;
+  
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
   const posX = x + (offsetXNum || 0);
