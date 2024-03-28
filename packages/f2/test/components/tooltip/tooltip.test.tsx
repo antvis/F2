@@ -403,6 +403,8 @@ describe('tooltip', () => {
   });
 
   it('Tooltip-xTip-yTip相关配置', async () => {
+    const xTipFn = jest.fn();
+    const yTipFn = jest.fn();
     const context = createContext('Tooltip xTip yTip相关配置');
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
@@ -448,6 +450,14 @@ describe('tooltip', () => {
               fill: 'red',
               text: '',
             }}
+            xTip={(text, record) => {
+              xTipFn(text, record);
+              return text;
+            }}
+            yTip={(text, record) => {
+              yTipFn(text, record);
+              return text;
+            }}
           />
         </Chart>
       </Canvas>
@@ -460,6 +470,10 @@ describe('tooltip', () => {
 
     await delay(100);
     expect(context).toMatchImageSnapshot();
+    expect(xTipFn.mock.calls.length).toBe(1);
+    expect(yTipFn.mock.calls.length).toBe(1);
+    expect(xTipFn.mock.calls[0][1]).toBeDefined();
+    expect(yTipFn.mock.calls[0][1]).toBeDefined();
   });
 
   it('Tooltip 自动换行', async () => {

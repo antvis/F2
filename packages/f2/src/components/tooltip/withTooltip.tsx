@@ -84,6 +84,7 @@ export interface TooltipProps {
   showTooltipMarker?: boolean;
   customText?: any;
   markerBackgroundStyle?: any;
+  [key: string]: any;
 }
 
 export interface TooltipState {

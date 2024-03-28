@@ -218,7 +218,7 @@ const RenderXTip = (props) => {
             xPositionType === 'coord'
               ? coordData.xText
               : isFunction(xTip)
-              ? xTip(xFirstText)
+              ? xTip(xFirstText, firstRecord)
               : xFirstText,
         }}
       />
@@ -250,7 +250,7 @@ const RenderYTip = (props) => {
             yPositionType === 'coord'
               ? coordData.yText
               : isFunction(yTip)
-              ? yTip(yFirstText)
+              ? yTip(yFirstText, firstRecord)
               : yFirstText,
         }}
       />
