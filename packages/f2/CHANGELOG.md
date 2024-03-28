@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.5](https://github.com/antvis/f2/compare/v5.4.4...v5.4.5) (2024-03-28)
+
+
+### Bug Fixes
+
+* tooltip tips 透出 record 参数 ([#1947](https://github.com/antvis/f2/issues/1947)) ([177fdc6](https://github.com/antvis/f2/commit/177fdc684a1c8f7b731fb1f449b1ee8902861806))
+
+
+
+
+
 ## [5.4.4](https://github.com/antvis/f2/compare/v5.4.3...v5.4.4) (2024-03-22)
 
 
