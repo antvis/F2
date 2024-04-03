@@ -26,9 +26,9 @@ const defaultProps: Omit<LottieGuideProps, 'records'> = {
 
 export default (props: LottieGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
-  const { points, style, offsetX, offsetY, lottieJson, animation, options } = cfg;
+  const { points, style, offsetX, offsetY, lottieJson, animation, options, visible = true  } = cfg;
   const { x, y } = points[0] || {};
-  if(isNaN(x) || isNaN(y)) return null;
+  if(isNaN(x) || isNaN(y) || !visible) return null;
   
   const { height = 0, width = 0 } = style;
 

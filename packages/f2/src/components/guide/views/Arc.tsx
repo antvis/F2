@@ -9,10 +9,10 @@ export interface ArcGuideProps extends GuideProps {
 }
 
 export default (props: ArcGuideProps) => {
-  const { theme = {} } = props;
+  const { theme = {}, visible = true } = props;
   const { coord, points, style, animation } = deepMix({ ...theme.line }, props);
   const checkNaN = points.some((d)=> isNaN(d.x) || isNaN(d.y));
-  if(checkNaN) return null;
+  if(checkNaN || !visible) return null;
 
   const start = points[0] || {};
   const end = points[1] || {};
