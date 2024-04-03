@@ -9,10 +9,10 @@ export interface RectGuideProps extends GuideProps {
 }
 
 export default (props: RectGuideProps) => {
-  const { theme = {} } = props;
+  const { theme = {}, visible = true } = props;
   const { points, style, animation } = deepMix({ ...theme.rect }, props);
   const checkNaN = points.some((d)=> isNaN(d.x) || isNaN(d.y));
-  if(checkNaN) return null;
+  if(checkNaN || !visible) return null;
   
   const start = points[0] || {};
   const end = points[1] || {};

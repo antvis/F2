@@ -93,9 +93,10 @@ export default class Tag extends Component<TagGuideProps> {
       canvasHeight,
       background,
       textStyle,
+      visible = true 
     } = px2hd(cfg);
     const { x, y } = points[0] || {};
-    if(isNaN(x) || isNaN(y)) return null;
+    if(isNaN(x) || isNaN(y) || !visible) return null;
     
     const offsetXNum = context.px2hd(offsetX);
     const offsetYNum = context.px2hd(offsetY);

@@ -20,9 +20,9 @@ const defaultProps: Omit<ImageGuideProps, "records"> = {
 
 export default (props: ImageGuideProps, context) => {
   const cfg = deepMix({}, defaultProps, props);
-  const { points, style, attrs, offsetX, offsetY, src, animation } = cfg;
+  const { points, style, attrs, offsetX, offsetY, src, animation,  visible = true } = cfg;
   const { x, y } = points[0] || {};
-  if(isNaN(x) || isNaN(y)) return null;
+  if(isNaN(x) || isNaN(y) || !visible) return null;
   
   const { height = 0, width = 0 } = { ...attrs, ...style };
   const heightNum = context.px2hd(height + 'px');

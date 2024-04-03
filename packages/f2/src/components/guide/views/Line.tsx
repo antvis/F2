@@ -11,10 +11,10 @@ export interface LineGuideProps extends GuideProps {
 }
 
 export default (props: LineGuideProps, context) => {
-  const { theme = {} } = props;
+  const { theme = {}, visible = true } = props;
   const { points, style, offsetX, offsetY, animation } = deepMix({ ...theme.line }, props);
   const checkNaN = points.some((d)=> isNaN(d.x) || isNaN(d.y));
-  if(checkNaN) return;
+  if(checkNaN || !visible) return;
 
   const { x: x1, y: y1 } = points[0] || {};
   const { x: x2, y: y2 } = points[1] || {};

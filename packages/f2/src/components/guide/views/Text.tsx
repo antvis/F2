@@ -12,11 +12,11 @@ export interface TextGuideProps extends GuideProps {
 }
 
 export default (props: TextGuideProps, context) => {
-  const { theme = {} } = props;
+  const { theme = {}, visible = true  } = props;
   const { points, style, offsetX, offsetY, content, animation } = deepMix({ ...theme.text }, props);
   const { x, y } = points[0] || {};
 
-  if(isNaN(x) || isNaN(y)) return null;
+  if(isNaN(x) || isNaN(y) || !visible) return null;
   const offsetXNum = context.px2hd(offsetX);
   const offsetYNum = context.px2hd(offsetY);
   const posX = x + (offsetXNum || 0);
