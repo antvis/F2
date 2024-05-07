@@ -7,6 +7,7 @@ import RectGuideView from './views/Rect';
 import ImageGuideView from './views/Image';
 import TagGuideView from './views/Tag';
 import LottieGuideView from './views/Lottie';
+import PolylineGuideView from './views/Polyline';
 
 const DefaultGuideView = () => null;
 const TextGuide = withGuide(TextGuideView);
@@ -17,6 +18,7 @@ const RectGuide = withGuide(RectGuideView);
 const ImageGuide = withGuide(ImageGuideView);
 const TagGuide = withGuide(TagGuideView);
 const LottieGuide = withGuide(LottieGuideView);
+const PolylineGuide = withGuide(PolylineGuideView);
 
 export { GuideProps };
 
@@ -32,4 +34,5 @@ export {
   ImageGuide,
   TagGuide,
   LottieGuide,
+  PolylineGuide,
 };

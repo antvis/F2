@@ -82,6 +82,15 @@ const guide = {
       stroke: '#1890ff',
     },
   },
+  polyline: {
+    style: {
+      lineWidth: '4px',
+      lineJoin: 'round',
+      lineCap: 'round',
+    },
+    offsetX: 0,
+    offsetY: 0,
+  },
 };
 
 const chart = {
