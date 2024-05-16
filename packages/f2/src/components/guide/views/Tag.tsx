@@ -30,7 +30,7 @@ export interface TagGuideProps extends GuideProps {
   textStyle?: any;
 }
 
-const defaultProps: Omit<TagGuideProps, "records"> = {
+const defaultProps: Omit<TagGuideProps, 'records'> = {
   offsetX: 0,
   offsetY: 0,
   points: [],
@@ -54,7 +54,7 @@ const defaultStyle = {
   },
 };
 
-const Label = ({ content, background, textStyle }) => {
+const Label = ({ content, background, textStyle, animation = {} }) => {
   return (
     <rect
       style={{
@@ -64,6 +64,7 @@ const Label = ({ content, background, textStyle }) => {
         radius: defaultStyle.container.radius,
         ...background,
       }}
+      animation={animation}
     >
       <text
         style={{
@@ -72,6 +73,7 @@ const Label = ({ content, background, textStyle }) => {
           fill: defaultStyle.text.fill,
           ...textStyle,
         }}
+        animation={animation}
       />
     </rect>
   );
@@ -93,10 +95,11 @@ export default class Tag extends Component<TagGuideProps> {
       canvasHeight,
       background,
       textStyle,
+      animation,
     } = px2hd(cfg);
     const { x, y } = points[0] || {};
-    if(isNaN(x) || isNaN(y)) return null;
-    
+    if (isNaN(x) || isNaN(y)) return null;
+
     const offsetXNum = context.px2hd(offsetX);
     const offsetYNum = context.px2hd(offsetY);
     let posX = x + (offsetXNum || 0);
@@ -220,12 +223,18 @@ export default class Tag extends Component<TagGuideProps> {
           y: posY,
         }}
       >
-        <Label content={content} background={background} textStyle={textStyle} />
+        <Label
+          content={content}
+          background={background}
+          textStyle={textStyle}
+          animation={animation}
+        />
         <polygon
           style={{
             points: arrowPoints.map((d) => [d.x, d.y]),
             fill: background?.fill || defaultStyle.arrow.fill,
           }}
+          animation={animation}
         />
       </group>
     );

@@ -5,6 +5,7 @@ import {
   LineGuide,
   PointGuide,
   TextGuide,
+  RectGuide,
   withGuide,
   LottieGuide,
   withLegend,
@@ -131,6 +132,56 @@ describe('Guide ', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('image guide支持px传入', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" color="type" />
+
+          {data.map((item) => {
+            const { sold } = item;
+            return (
+              <ImageGuide
+                records={[item]}
+                src={imageBianzu}
+                style={() => {
+                  return {
+                    height: 24,
+                    width: 24,
+                  };
+                }}
+              />
+            );
+          })}
+
+          {/* 图片Guide */}
+          {data.map((item, key) => {
+            return (
+              <ImageGuide
+                records={[item]}
+                src={imageBianzu}
+                style={() => {
+                  return {
+                    height: '24px',
+                    width: '24px',
+                  };
+                }}
+                offsetX="0px"
+                offsetY="-24px"
+              />
+            );
+          })}
+        </Chart>
+      </Canvas>
+    );
+    const chart = new Canvas(props);
+    await chart.render();
+
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('point', async () => {
     const context = createContext();
     const { props } = (
@@ -189,13 +240,37 @@ describe('Guide ', () => {
   });
   it('tag', () => {});
 
-  it('guide 超出范围', async() => {
+  it('rect guide', async () => {
     const context = createContext();
     const { props } = (
       <Canvas context={context} pixelRatio={1} animate={false}>
         <Chart data={data}>
           <Line x="genre" y="sold" color="type" />
-           <PointGuide records={[{ genre: 'test', sold: 450, type: 'a' }]} offsetX="0px" offsetY="0px" />
+          <RectGuide
+            records={[data[0], data[1]]}
+            style={{ fill: 'yellow', fillOpacity: 0.5 }}
+            offsetX="-24px"
+            offsetY="24px"
+          />
+        </Chart>
+      </Canvas>
+    );
+    const chart = new Canvas(props);
+    chart.render();
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('guide 超出范围', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" color="type" />
+          <PointGuide
+            records={[{ genre: 'test', sold: 450, type: 'a' }]}
+            offsetX="0px"
+            offsetY="0px"
+          />
         </Chart>
       </Canvas>
     );
