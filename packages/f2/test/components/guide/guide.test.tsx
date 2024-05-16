@@ -5,6 +5,7 @@ import {
   LineGuide,
   PointGuide,
   TextGuide,
+  RectGuide,
   withGuide,
   LottieGuide,
   withLegend,
@@ -239,6 +240,26 @@ describe('Guide ', () => {
   });
   it('tag', () => {});
 
+  it('rect guide', async () => {
+    const context = createContext();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Line x="genre" y="sold" color="type" />
+          <RectGuide
+            records={[data[0], data[1]]}
+            style={{ fill: 'yellow', fillOpacity: 0.5 }}
+            offsetX="-24px"
+            offsetY="24px"
+          />
+        </Chart>
+      </Canvas>
+    );
+    const chart = new Canvas(props);
+    chart.render();
+    await delay(50);
+    expect(context).toMatchImageSnapshot();
+  });
   it('guide 超出范围', async () => {
     const context = createContext();
     const { props } = (
