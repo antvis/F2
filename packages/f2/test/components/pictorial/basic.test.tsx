@@ -78,13 +78,13 @@ describe('pictorial', () => {
           <Pictorial
             x="x"
             y="value"
-            symbol={({ xMin, xMax, yMin, yMax, symbolSize, origin }) => (
+            symbol={({ xMin, xMax, yMin, yMax, width, height, origin }) => (
               <group>
                 <ellipse
                   style={{
-                    cx: xMin + symbolSize[0] / 2,
+                    cx: xMin + width / 2,
                     cy: yMax,
-                    rx: symbolSize[0] / 2,
+                    rx: width / 2,
                     ry: '20px',
                     fill: 'l(90) 0:#1f7eff 1:#64adff',
                   }}
@@ -93,17 +93,17 @@ describe('pictorial', () => {
                   style={{
                     x: xMin,
                     y: yMin,
-                    width: symbolSize[0],
-                    height: symbolSize[1],
+                    width,
+                    height,
                     fill: 'l(90) 0:#9cc1ff 1:#ecf5ff',
                     fillOpacity: 0.9,
                   }}
                 />
                 <ellipse
                   style={{
-                    cx: xMin + symbolSize[0] / 2,
+                    cx: xMin + width / 2,
                     cy: yMin,
-                    rx: symbolSize[0] / 2,
+                    rx: width / 2,
                     ry: '20px',
                     fill: 'l(90) 0:#1f7eff 1:#64adff',
                   }}
