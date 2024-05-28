@@ -24,7 +24,7 @@ export default class Pictorial extends withInterval({}) {
             <group key={key}>
               {children.map((item) => {
                 const { xMax, xMin, yMax, yMin } = item;
-                return <Symbol {...item} symbolSize={[xMax - xMin, yMax - yMin]} px2hd={px2hd} />;
+                return <Symbol {...item} width={xMax - xMin} height={yMax - yMin} px2hd={px2hd} />;
               })}
             </group>
           );
