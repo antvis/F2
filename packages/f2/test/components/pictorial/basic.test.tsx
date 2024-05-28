@@ -3,42 +3,14 @@ import { Canvas, Chart, Pictorial, Axis, Tooltip } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 const context = createContext();
 
-const symbol = (
-  <image
-    style={{
-      src:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/mNyB6MXFwnxLMwzfEWHYt/juxingbeifen_6.png',
-    }}
-  />
-);
-
-const symbolTop = (
-  <image
-    style={{
-      src:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/VV9WVNGexcXLVYpQxjBFH/tuoyuanxingbeifen_13.png',
-    }}
-  />
-);
-
-const symbolBottom = (
-  <image
-    style={{
-      src:
-        'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/76LdyFixxEmUqrGG6rmCG/tuoyuanxingbeifen_32.png',
-    }}
-  />
-);
 const data = [
   {
     x: '产品1',
     value: 4927,
-    bValue: 0,
   },
   {
     x: '产品2',
     value: 11607,
-    bValue: 0,
   },
 ];
 
@@ -51,19 +23,41 @@ describe('pictorial', () => {
 
           <Pictorial
             x="x"
-            y="bValue"
-            symbol={symbolBottom}
-            symbolOffset={[0, '-50%']}
-            symbolSize={['100%', '20px']}
-          />
-
-          <Pictorial x="x" y="value" symbol={symbol} />
-          <Pictorial
-            x="x"
             y="value"
-            symbol={symbolTop}
-            symbolSize={['100%', '20px']}
-            symbolOffset={[0, '-50%']}
+            symbol={({ xMin, xMax, yMin, yMax, px2hd }) => (
+              <group>
+                <image
+                  style={{
+                    x: xMin,
+                    y: yMax - px2hd('20px') / 2,
+                    width: xMax - xMin,
+                    height: '20px',
+                    src:
+                      'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/76LdyFixxEmUqrGG6rmCG/tuoyuanxingbeifen_32.png',
+                  }}
+                />
+                <image
+                  style={{
+                    x: xMin,
+                    y: yMin,
+                    width: xMax - xMin,
+                    height: yMax - yMin,
+                    src:
+                      'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/mNyB6MXFwnxLMwzfEWHYt/juxingbeifen_6.png',
+                  }}
+                />
+                <image
+                  style={{
+                    x: xMin,
+                    y: yMin - px2hd('20px') / 2,
+                    width: xMax - xMin,
+                    height: '20px',
+                    src:
+                      'https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/VV9WVNGexcXLVYpQxjBFH/tuoyuanxingbeifen_13.png',
+                  }}
+                />
+              </group>
+            )}
           />
         </Chart>
       </Canvas>
@@ -81,45 +75,41 @@ describe('pictorial', () => {
       <Canvas context={context} pixelRatio={1}>
         <Chart data={data}>
           <Axis field="value" min={0}></Axis>
-
-          <Pictorial
-            x="x"
-            y="bValue"
-            symbol={
-              <ellipse
-                style={{
-                  fill: 'l(90) 0:#1f7eff 1:#64adff',
-                }}
-              />
-            }
-            symbolOffset={['50%', 0]}
-            symbolSize={['100%', '40px']}
-          />
-
           <Pictorial
             x="x"
             y="value"
-            symbol={
-              <rect
-                style={{
-                  fill: 'l(90) 0:#9cc1ff 1:#ecf5ff',
-                  fillOpacity: 0.9,
-                }}
-              />
-            }
-          />
-          <Pictorial
-            x="x"
-            y="value"
-            symbol={
-              <ellipse
-                style={{
-                  fill: 'l(90) 0:#1f7eff 1:#64adff',
-                }}
-              />
-            }
-            symbolSize={['100%', '40px']}
-            symbolOffset={['50%', 0]}
+            symbol={({ xMin, xMax, yMin, yMax, width, height, origin }) => (
+              <group>
+                <ellipse
+                  style={{
+                    cx: xMin + width / 2,
+                    cy: yMax,
+                    rx: width / 2,
+                    ry: '20px',
+                    fill: 'l(90) 0:#1f7eff 1:#64adff',
+                  }}
+                />
+                <rect
+                  style={{
+                    x: xMin,
+                    y: yMin,
+                    width,
+                    height,
+                    fill: 'l(90) 0:#9cc1ff 1:#ecf5ff',
+                    fillOpacity: 0.9,
+                  }}
+                />
+                <ellipse
+                  style={{
+                    cx: xMin + width / 2,
+                    cy: yMin,
+                    rx: width / 2,
+                    ry: '20px',
+                    fill: 'l(90) 0:#1f7eff 1:#64adff',
+                  }}
+                />
+              </group>
+            )}
           />
         </Chart>
       </Canvas>
