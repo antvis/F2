@@ -13,7 +13,7 @@ import { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
 import { toTimeStamp } from '../../util/index';
-import AttrController from '../../controller/attr';
+import AttrController, { ATTRS } from '../../controller/attr';
 import { Scale } from '../../deps/f2-scale/src';
 import { AnimationProps, isEqual } from '@antv/f-engine';
 import { AdjustType, AdjustProps } from './Adjust';
@@ -116,26 +116,39 @@ class Geometry<
     super(props, context);
     mix(this, this.getDefaultCfg());
 
-    const { chart, coord } = props;
+    const { chart } = props;
 
     const attrsRange = this._getThemeAttrsRange();
     this.attrController = new AttrController(chart.scale, attrsRange);
-    const { attrController, justifyContent } = this;
+    const { attrController } = this;
 
-    const attrOptions = attrController.getAttrOptions(props, !coord.isCyclic() || justifyContent);
+    const attrOptions = this.getAttrOptions(props);
     attrController.create(attrOptions);
   }
 
+  getAttrOptions(props) {
+    const { coord } = props;
+    const { attrController, justifyContent } = this;
+    const justifyContentCenter = !coord.isCyclic() || justifyContent;
+
+    const args = {};
+    ATTRS.forEach((d) => (args[d] = props[d]));
+
+    const attrOptions = attrController.getAttrOptions(
+      this.context.px2hd(args),
+      justifyContentCenter
+    );
+    return attrOptions;
+  }
+
   willReceiveProps(nextProps) {
-    const { props: lastProps, attrController, justifyContent } = this;
-    const { data: nextData, adjust: nextAdjust, coord, selection } = nextProps;
+    const { props: lastProps, attrController } = this;
+    const { data: nextData, adjust: nextAdjust, selection } = nextProps;
     const { data: lastData, adjust: lastAdjust, selection: lastSelection } = lastProps;
 
-    const justifyContentCenter = !coord.isCyclic() || justifyContent;
-    const lastAttrOptions = attrController.getAttrOptions(lastProps, justifyContentCenter);
-
+    const lastAttrOptions = this.getAttrOptions(lastProps);
     attrController.attrsRange = this._getThemeAttrsRange();
-    const nextAttrOptions = attrController.getAttrOptions(nextProps, justifyContentCenter);
+    const nextAttrOptions = this.getAttrOptions(nextProps);
 
     if (!isEqual(nextAttrOptions, lastAttrOptions)) {
       attrController.update(nextAttrOptions);
@@ -516,6 +529,7 @@ class Geometry<
     const defaultAttrValues = attrController.getDefaultAttrValues();
 
     const mappedRecords = [];
+
     for (let i = 0, len = records.length; i < len; i++) {
       const record = records[i];
       const { children } = record;
