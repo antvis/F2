@@ -18,7 +18,7 @@ type AttrsRange = {
 
 const { Identity, Linear, Category } = Attrs;
 // 需要映射的属性名
-const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
+export const ATTRS = ['x', 'y', 'color', 'size', 'shape'];
 // 分组处理的属性
 const GROUP_ATTRS = ['color', 'size', 'shape'];
 
@@ -86,6 +86,7 @@ class AttrController {
     }
     const options = {};
     const ranges = this.attrsRange;
+
     ATTRS.forEach((attrName: Attr) => {
       if (!props[attrName]) return;
       const option = this.parseOption(props[attrName], attrName);
