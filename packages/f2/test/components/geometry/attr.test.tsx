@@ -456,6 +456,27 @@ describe('Geometry - Attr', () => {
     expect(geometryRef.current.records[1].children[0].size).toBe(16);
   });
 
+  it('size 支持 px', async () => {
+    const ref = {};
+    const context = createContext('size 支持px');
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Interval x="year" y="sales" size={'10px'}></Interval>
+          <Line x="year" y="sales" size={'5px'} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('size = {field}  用size大小来做分类', async () => {
     const context = createContext('size = {field}  用size大小来做分类', { width: '380px' });
     const geometryRef = { current: null };
@@ -475,6 +496,33 @@ describe('Geometry - Attr', () => {
 
     expect(geometryRef.current.records[0].children[0].size).toBe(2);
     expect(geometryRef.current.records[1].children[0].size).toBe(3);
+  });
+
+  it('size = {{ field, range }} 支持px', async () => {
+    const ref = {};
+    const context = createContext('size = {{ field, range }} 支持px');
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="sales" />
+          <Point
+            x="year"
+            y="sales"
+            size={{
+              field: 'sales',
+              range: ['5px', '30px'],
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
   });
 
   it('size = {{ field, range }} 用size大小来做分类', async () => {
