@@ -32,3 +32,4 @@ export {
   withCandlestick,
   CandlestickView,
 } from './candlestick';
+export { default as Pictorial, PictorialProps } from './pictorial';
