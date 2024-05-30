@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-algorithm",
-  "version": "5.4.5",
+  "version": "5.5.0",
   "description": "F2 algorithm extension",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -17,8 +17,8 @@
     "sample"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
     "@antv/util": "^3.0.6",
+    "@babel/runtime": "^7.12.5",
     "tslib": "^2.3.1"
   },
   "devDependencies": {

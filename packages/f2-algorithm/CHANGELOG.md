@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/antvis/f2/compare/v5.4.5...v5.5.0) (2024-05-30)
+
+
+### Bug Fixes
+
+* algorithm package.json ([#1963](https://github.com/antvis/f2/issues/1963)) ([d715549](https://github.com/antvis/f2/commit/d7155498e986aaa966629ed9caf566b7f68c16e4))
+
+
+
+
+
 ## [5.4.5](https://github.com/antvis/f2/compare/v5.4.4...v5.4.5) (2024-03-28)
 
 **Note:** Version bump only for package @antv/f2-algorithm

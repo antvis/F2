@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/antvis/f2/compare/v5.4.5...v5.5.0) (2024-05-30)
+
+**Note:** Version bump only for package @antv/f2-react
+
+
+
+
+
 ## [5.4.5](https://github.com/antvis/f2/compare/v5.4.4...v5.4.5) (2024-03-28)
 
 **Note:** Version bump only for package @antv/f2-react

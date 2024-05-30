@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/antvis/f2/compare/v5.4.5...v5.5.0) (2024-05-30)
+
+
+### Bug Fixes
+
+* size支持px ([#1975](https://github.com/antvis/f2/issues/1975)) ([6973421](https://github.com/antvis/f2/commit/697342122bb9dfd301cb45afa21c32a98c9c5817))
+
+
+### Features
+
+*   增加Pictorial组件 ([#1974](https://github.com/antvis/f2/issues/1974)) ([24f5944](https://github.com/antvis/f2/commit/24f59447282d4895a3553a12daca8df879b94e11))
+* **guide:** 增加 PolylineGuide ([#1960](https://github.com/antvis/f2/issues/1960)) ([6680534](https://github.com/antvis/f2/commit/66805340d9bbf36b11f03c31733f5bc5191f3eb4))
+* image、tag、rect guide 补充字段 ([#1962](https://github.com/antvis/f2/issues/1962)) ([ad38d32](https://github.com/antvis/f2/commit/ad38d32042ea8eb06742e32e1a596733e2178239))
+
+
+
+
+
 ## [5.4.5](https://github.com/antvis/f2/compare/v5.4.4...v5.4.5) (2024-03-28)
 
 
