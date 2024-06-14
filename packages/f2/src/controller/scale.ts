@@ -241,6 +241,37 @@ class ScaleController {
     });
   }
 
+  //堆叠下的scale调整
+  _updateStackRange(scale: Scale, flattenArray) {
+    const { options } = this;
+    const { field } = scale;
+    const option = options[field];
+
+    let dataMin = Infinity;
+    let dataMax = -Infinity;
+    for (let i = 0, len = flattenArray.length; i < len; i++) {
+      const obj = flattenArray[i];
+      const tmpMin = Math.min.apply(null, obj[field]);
+      const tmpMax = Math.max.apply(null, obj[field]);
+      if (tmpMin < dataMin) {
+        dataMin = tmpMin;
+      }
+      if (tmpMax > dataMax) {
+        dataMax = tmpMax;
+      }
+    }
+
+    // 如果有定义，则优先级更高
+    const min = option?.min || dataMin;
+    const max = option?.max || dataMax;
+    if (min !== scale.min || max !== scale.max) {
+      scale.change({
+        min,
+        max,
+      });
+    }
+  }
+
   // 获取scale 在 0点对位置的值
   getZeroValue(scale) {
     const { min, max } = scale;
