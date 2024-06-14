@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/antvis/f2/compare/v5.5.0...v5.5.1) (2024-06-14)
+
+
+### Bug Fixes
+
+* stack scale ([#1978](https://github.com/antvis/f2/issues/1978)) ([441795b](https://github.com/antvis/f2/commit/441795bd06ed3a54550d4263d59b884e30596297))
+
+
+
+
+
 # [5.5.0](https://github.com/antvis/f2/compare/v5.4.5...v5.5.0) (2024-05-30)
 
 
