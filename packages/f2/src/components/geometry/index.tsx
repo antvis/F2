@@ -274,10 +274,9 @@ class Geometry<
     const { chart, startOnZero = defaultStartOnZero, coord, adjust } = props;
     const { isPolar, transposed } = coord;
     const { y } = attrs;
-    const yField = y.field;
+
     // 如果从 0 开始，只调整 y 轴 scale
     if (startOnZero) {
-      const { y } = attrs;
       chart.scale.adjustStartZero(y.scale);
     }
     // 饼图的scale调整，关闭nice
@@ -286,12 +285,11 @@ class Geometry<
       transposed &&
       (adjust === 'stack' || (adjust as AdjustProps)?.type === 'stack')
     ) {
-      const { y } = attrs;
       chart.scale.adjustPieScale(y.scale);
     }
 
     if (adjust === 'stack' || (adjust as AdjustProps)?.type === 'stack') {
-      this._updateStackRange(yField, y.scale, this.dataArray);
+      chart.scale._updateStackRange(y.scale, flatten(this.dataArray));
     }
   }
 
@@ -389,29 +387,6 @@ class Geometry<
     });
 
     return adjustData;
-  }
-
-  _updateStackRange(field, scale, dataArray) {
-    const flattenArray = flatten(dataArray);
-    let min = Infinity;
-    let max = -Infinity;
-    for (let i = 0, len = flattenArray.length; i < len; i++) {
-      const obj = flattenArray[i];
-      const tmpMin = Math.min.apply(null, obj[field]);
-      const tmpMax = Math.max.apply(null, obj[field]);
-      if (tmpMin < min) {
-        min = tmpMin;
-      }
-      if (tmpMax > max) {
-        max = tmpMax;
-      }
-    }
-    if (min !== scale.min || max !== scale.max) {
-      scale.change({
-        min,
-        max,
-      });
-    }
   }
 
   _processData() {
