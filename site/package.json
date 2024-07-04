@@ -15,12 +15,12 @@
     "site:build": "dumi build",
     "site:clean": "",
     "site:deploy": "npm run site:build && gh-pages -d dist",
-    "site:develop": "dumi dev",
+    "site:develop": "NODE_OPTIONS=--max_old_space_size=8192 dumi dev",
     "site:preview": "umi preview",
     "site:start": "npm run site:develop"
   },
   "dependencies": {
-    "@antv/dumi-theme-antv": "^0.4.3",
+    "@antv/dumi-theme-antv": "~0.5.0",
     "@antv/f-react": "~0.0.7",
     "@antv/f-test-utils": "1.0.3",
     "@antv/f2": "^5.0.4",
