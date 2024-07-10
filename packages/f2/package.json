@@ -32,7 +32,7 @@
   "types": "es/index.d.ts",
   "dependencies": {
     "@antv/event-emitter": "^0.1.2",
-    "@antv/f-engine": "^1.0.1",
+    "@antv/f-engine": "^1.3.1",
     "@antv/f-lottie": "^1.0.1",
     "@antv/util": "^3.0.6",
     "@babel/runtime": "^7.12.5",
