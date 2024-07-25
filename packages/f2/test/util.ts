@@ -1,3 +1,4 @@
+import createCollectContext from './context-collect';
 const isTouch = (eventType) => {
   if (eventType.indexOf('touch') !== -1) return true;
   if (eventType.indexOf('press') !== -1) return true;
@@ -31,7 +32,8 @@ const createContext = (title = '', { width = '300px', height = '225px' } = {}) =
   canvasEl.style.width = width;
   canvasEl.style.height = height;
   document.body.appendChild(canvasEl);
-  const context = canvasEl.getContext('2d');
+
+  const context = createCollectContext(canvasEl.getContext('2d'));
   return context;
 };
 
