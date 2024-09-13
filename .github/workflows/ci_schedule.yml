@@ -59,7 +59,7 @@ jobs:
 
       # 保存巡检失败的 diff 图片
       - name: save diff snapshot
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: diff snapshot
