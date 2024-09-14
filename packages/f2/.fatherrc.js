@@ -20,6 +20,7 @@ export default process.env.CI && process.env.CI === 'true'
         //   umd: { name: 'F2JSXRuntime', file: 'jsx-runtime' },
         // },
       },
+   
       typescriptOpts: {
         tsconfigOverride: {
           compilerOptions: {
@@ -27,5 +28,14 @@ export default process.env.CI && process.env.CI === 'true'
           },
         },
       },
+      extraBabelPlugins: [['babel-plugin-minify-replace', {
+        "replacements": [{
+          "identifierName": "VERSION",
+          "replacement": {
+            "type": "identifier",
+            "value": JSON.stringify(require('./package').version),
+          }
+        }]
+    }]],
       extraRollupPlugins: [...(isBundleVis ? [visualizer()] : [])],
     };
