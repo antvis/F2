@@ -117,6 +117,15 @@ export default {
       smooth: {
         smooth: true,
       },
+      'step-start': {
+        step: 'start',
+      },
+      'step-middle': {
+        step: 'middle',
+      },
+      'step-end': {
+        step: 'end',
+      },
       dash: {
         lineDash: ['8px', '8px'],
       },
