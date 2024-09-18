@@ -1,4 +1,3 @@
-import { Rect } from '../../../src/coord';
 import { jsx, Component, Canvas, Chart, Line, Point, Axis, Legend } from '../../../src';
 import { createContext, delay } from '../../util';
 const data1 = [
@@ -384,44 +383,6 @@ describe('折线图', () => {
     });
 
     it('曲线', async () => {
-      const data = [
-        {
-          time: '2016-08-08 00:00:00',
-          tem: 10,
-        },
-        {
-          time: '2016-08-08 00:10:00',
-          tem: 22,
-        },
-        {
-          time: '2016-08-08 00:30:00',
-          tem: 20,
-        },
-        {
-          time: '2016-08-09 00:35:00',
-          tem: 26,
-        },
-        {
-          time: '2016-08-09 01:00:00',
-          tem: 20,
-        },
-        {
-          time: '2016-08-09 01:20:00',
-          tem: 26,
-        },
-        {
-          time: '2016-08-10 01:40:00',
-          tem: 28,
-        },
-        {
-          time: '2016-08-10 02:00:00',
-          tem: 20,
-        },
-        {
-          time: '2016-08-10 02:20:00',
-          tem: 18,
-        },
-      ];
       const context = createContext('曲线');
       const chartRef = { current: null };
       const lineRef = { current: null };
@@ -459,6 +420,79 @@ describe('折线图', () => {
       await canvas.render();
 
       await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('阶梯图', async () => {
+      const context = createContext('阶梯图', {
+        width: '380px',
+      });
+      const data = [];
+      [
+        {
+          time: '2016-08-01',
+          tem: 15,
+          type: 'start',
+        },
+        {
+          time: '2016-08-02',
+          tem: 22,
+          type: 'start',
+        },
+        {
+          time: '2016-08-03',
+          tem: 15,
+          type: 'start',
+        },
+        {
+          time: '2016-08-04',
+          tem: 26,
+          type: 'start',
+        },
+        {
+          time: '2016-08-05',
+          tem: 20,
+          type: 'start',
+        },
+        {
+          time: '2016-08-06',
+          tem: 26,
+          type: 'start',
+        },
+      ].map((d) => {
+        data.push(d);
+        data.push({ ...d, tem: d.tem + 15, type: 'middle' });
+        data.push({ ...d, tem: d.tem + 30, type: 'end' });
+      });
+
+      const { type, props } = (
+        <Canvas context={context}>
+          <Chart data={data}>
+            <Axis
+              field="time"
+              tickCount={2}
+              style={{
+                label: {
+                  align: 'between',
+                },
+              }}
+            />
+            <Axis field="tem" tickCount={5} max={60} />
+            <Line
+              x="time"
+              y="tem"
+              color="type"
+              shape={{
+                field: 'type',
+                range: ['step-start', 'step-middle', 'step-end'],
+              }}
+            />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      await canvas.render();
+      await delay(500);
       expect(context).toMatchImageSnapshot();
     });
   });
