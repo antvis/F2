@@ -6,4 +6,4 @@ export { Scale, ScaleConfig } from './deps/f2-scale/src';
 export * from './components';
 
 //@ts-ignore
-export default { version: VERSION };
+export default { version: 'VERSION' };

@@ -28,14 +28,17 @@ export default process.env.CI && process.env.CI === 'true'
           },
         },
       },
-      extraBabelPlugins: [['babel-plugin-minify-replace', {
-        "replacements": [{
-          "identifierName": "VERSION",
-          "replacement": {
-            "type": "identifier",
-            "value": JSON.stringify(require('./package').version),
-          }
-        }]
-    }]],
+      extraBabelPlugins: [[
+        "search-and-replace",
+        {
+          "rules": [
+            {
+              "search": "VERSION",
+              "searchTemplateStrings": true,
+              "replace": JSON.stringify(require('./package').version)
+            }
+          ]
+        }
+      ]],
       extraRollupPlugins: [...(isBundleVis ? [visualizer()] : [])],
     };
