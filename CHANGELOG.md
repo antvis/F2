@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/antvis/f2/compare/v5.5.2...v5.6.0) (2024-09-19)
+
+
+### Bug Fixes
+
+* 修改注入版本插件 ([#1999](https://github.com/antvis/f2/issues/1999)) ([0d9fe7d](https://github.com/antvis/f2/commit/0d9fe7d813c286d6d37fad5407546677cf8fadb6))
+* 升级action-artifact ([#1997](https://github.com/antvis/f2/issues/1997)) ([73c4ff6](https://github.com/antvis/f2/commit/73c4ff6e8812937e9271e34cb3c2f031d955c934))
+
+
+### Features
+
+* export version ([#1996](https://github.com/antvis/f2/issues/1996)) ([787abb2](https://github.com/antvis/f2/commit/787abb2898cd6f19bcbfef089e7fc7497195990f))
+* 增加阶梯图 ([#1998](https://github.com/antvis/f2/issues/1998)) ([e0ccc98](https://github.com/antvis/f2/commit/e0ccc98950985196d406141cc51bfbb5e8168a37))
+
+
+
+
+
 ## [5.5.2](https://github.com/antvis/f2/compare/v5.5.1...v5.5.2) (2024-07-10)
 
 **Note:** Version bump only for package f2
