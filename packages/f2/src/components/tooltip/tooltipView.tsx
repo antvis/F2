@@ -460,8 +460,8 @@ export default class TooltipView extends Component {
       itemWidth,
     } = props;
     const itemMarkerStyle = {
-      ...customItemMarkerStyle,
       ...defaultStyle.itemMarkerStyle,
+      ...customItemMarkerStyle,
     };
 
     const background = {
