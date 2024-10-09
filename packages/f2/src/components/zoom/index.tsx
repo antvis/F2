@@ -69,6 +69,7 @@ export interface ZoomProps {
   onPanEnd?: Function;
   onPinchEnd?: Function;
   onInit?: Function;
+  onChange?: Function;
   /**
    * 自动同步 x/y 的坐标值
    */
@@ -239,17 +240,13 @@ export default (View) => {
 
     onPanStart = () => {
       const { scale } = this;
-      const {
-        onPanStart,
-      } = this.props;
+      const { onPanStart } = this.props;
       this.onStart();
       onPanStart?.({ scale });
-    }
+    };
 
     onPan = (ev) => {
-      const {
-        onPan,
-      } = this.props;
+      const { onPan } = this.props;
       const { dims } = this;
 
       const range = {};
@@ -268,28 +265,21 @@ export default (View) => {
       onPan?.(ev);
     };
 
-
     onPanEnd = () => {
       const { scale } = this;
-      const {
-        onPanEnd,
-      } = this.props;
+      const { onPanEnd } = this.props;
       this.onEnd();
       onPanEnd?.({ scale });
-    }
+    };
 
     onPinchStart = () => {
-      const {
-        onPinchStart,
-      } = this.props;
+      const { onPinchStart } = this.props;
       this.onStart();
       onPinchStart?.();
-    }
+    };
 
     onPinch = (ev) => {
-      const {
-        onPinch,
-      } = this.props;
+      const { onPinch } = this.props;
       const { dims } = this;
       const range = {};
       each(dims, (dim) => {
@@ -308,20 +298,13 @@ export default (View) => {
 
     onPinchEnd = () => {
       const { scale } = this;
-      const {
-        onPinchEnd,
-      } = this.props;
+      const { onPinchEnd } = this.props;
       this.onEnd();
       onPinchEnd?.({ scale });
-    }
+    };
 
     _bindEvents() {
-      const {
-        chart,
-        pan,
-        pinch,
-        swipe,
-      } = this.props;
+      const { chart, pan, pinch, swipe } = this.props;
 
       // 统一绑定事件
       if (pan !== false) {
@@ -342,12 +325,7 @@ export default (View) => {
     }
 
     _unBindEvents() {
-      const {
-        chart,
-        pan,
-        pinch,
-        swipe,
-      } = this.props;
+      const { chart, pan, pinch, swipe } = this.props;
 
       // 统一绑定事件
       if (pan !== false) {
@@ -374,7 +352,6 @@ export default (View) => {
       this._cancelAnimationFrame();
     };
 
-  
     update() {
       const { startX, startY, endX, endY } = this.swipeEnd;
       const x = lerp(startX, endX, 0.05);
@@ -483,7 +460,6 @@ export default (View) => {
       this.update();
     };
 
-   
     onEnd = () => {
       this.startRange = null;
     };
@@ -645,7 +621,8 @@ export default (View) => {
     renderRange(range) {
       const { state, props } = this;
       if (isEqualRange(range, state.range)) return;
-      const { chart } = props;
+      const { chart, onChange } = props;
+      onChange && onChange({ range });
       // 手势变化不执行动画
       const { animate } = chart;
       chart.setAnimate(false);
