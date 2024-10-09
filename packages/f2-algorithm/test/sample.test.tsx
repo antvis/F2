@@ -61,7 +61,7 @@ describe('sample', () => {
     expect(context).toMatchImageSnapshot();
   });
 
-  it('rate 小于 data个数', async () => {
+  it('rate 小于可抽个数', async () => {
     const res = await fetch(url);
     const result = [
       { value: { value: '0.516' }, updateTime: '2023-10-26T16:00:00.000Z', extInfo: null },
@@ -70,6 +70,9 @@ describe('sample', () => {
       { value: { value: '0.516' }, updateTime: '2023-10-29T16:00:00.000Z', extInfo: null },
       { value: { value: '0.472' }, updateTime: '2023-10-30T16:00:00.000Z', extInfo: null },
       { value: { value: '0.448' }, updateTime: '2023-10-31T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.478' }, updateTime: '2023-10-32T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.458' }, updateTime: '2023-10-33T16:00:00.000Z', extInfo: null },
+      { value: { value: '0.455' }, updateTime: '2023-10-34T16:00:00.000Z', extInfo: null },
     ];
     const data = result.map((d) => {
       return {

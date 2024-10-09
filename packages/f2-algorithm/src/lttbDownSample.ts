@@ -19,13 +19,13 @@ export default function lttbDownSample(data, options?: OptionsProps) {
   const len = data.length;
   const targetCount = len / rate;
 
-  if (rate >= len || targetCount === 0) {
+  if (rate >= len || targetCount < 2) {
     return data;
   }
 
   const sampled = [];
   let sampledIndex = 0;
-  // Bucket size
+  // Bucket size targetCount需大于2
   const bucketSize = Math.floor((len - 2) / (targetCount - 2));
 
   // A is the first point in the triangle
