@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/antvis/f2/compare/v5.6.0...v5.7.0) (2024-10-09)
+
+
+### Bug Fixes
+
+* sample func ([#2004](https://github.com/antvis/f2/issues/2004)) ([41045d2](https://github.com/antvis/f2/commit/41045d2412b4639c8ec5186c9ce5361b080ed944))
+
+
+
+
+
 # [5.5.0](https://github.com/antvis/f2/compare/v5.4.5...v5.5.0) (2024-05-30)
 
 

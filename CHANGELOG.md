@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/antvis/f2/compare/v5.6.0...v5.7.0) (2024-10-09)
+
+
+### Bug Fixes
+
+* sample func ([#2004](https://github.com/antvis/f2/issues/2004)) ([41045d2](https://github.com/antvis/f2/commit/41045d2412b4639c8ec5186c9ce5361b080ed944))
+* 修复 Tooltip itemMarkerStyle 样式优先级 ([#2002](https://github.com/antvis/f2/issues/2002)) ([ee4f100](https://github.com/antvis/f2/commit/ee4f1003a9d36ae41eaa147e33db08cde032d888))
+
+
+### Features
+
+* 增加onRangeChange回调函数 ([#2005](https://github.com/antvis/f2/issues/2005)) ([97ba27b](https://github.com/antvis/f2/commit/97ba27b697bd0128ca8bf8e0312ee646352ce178))
+
+
+
+
+
 # [5.6.0](https://github.com/antvis/f2/compare/v5.5.2...v5.6.0) (2024-09-19)
 
 
