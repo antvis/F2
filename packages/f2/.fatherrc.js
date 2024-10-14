@@ -28,17 +28,5 @@ export default process.env.CI && process.env.CI === 'true'
           },
         },
       },
-      extraBabelPlugins: [[
-        "search-and-replace",
-        {
-          "rules": [
-            {
-              "search": "VERSION",
-              "searchTemplateStrings": true,
-              "replace": JSON.stringify(require('./package').version)
-            }
-          ]
-        }
-      ]],
       extraRollupPlugins: [...(isBundleVis ? [visualizer()] : [])],
     };
