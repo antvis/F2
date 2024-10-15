@@ -42,7 +42,7 @@
     "prettier": "prettier --write './packages/**/*.{ts,tsx}'",
     "canary": "npm run build && npm run test && lerna publish --canary --dist-tag next",
     "release": "lerna publish from-git --yes --summary-file",
-    "version": "lerna version",
+    "version": "lerna version --yes",
     "site:build": "cd ./site && npm run site:build",
     "site:clean": "cd ./site && npm run site:clean",
     "site:deploy": "cd ./site && npm run site:deploy",
