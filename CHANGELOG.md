@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.1](https://github.com/antvis/f2/compare/v5.7.0...v5.7.1) (2024-10-15)
+
+
+### Bug Fixes
+
+* 调整获取版本时机 ([#2009](https://github.com/antvis/f2/issues/2009)) ([f74c17b](https://github.com/antvis/f2/commit/f74c17b362a79e4871f2ef6bfd2f586ee8427eae))
+* version --yes ([77c184f](https://github.com/antvis/f2/commit/77c184f7af9706918faadb465284fcb23b104ac3))
+
+
+
+
+
 # [5.7.0](https://github.com/antvis/f2/compare/v5.6.0...v5.7.0) (2024-10-09)
 
 
