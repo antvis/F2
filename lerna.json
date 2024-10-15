@@ -1,18 +1,15 @@
 {
   "npmClient": "yarn",
-  "useWorkspaces": true,
+  "packages": ["packages/*"],
   "version": "5.7.0",
   "command": {
     "bootstrap": {
       "ci": false,
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
+      "npmClientArgs": ["--no-package-lock"]
     },
     "publish": {
       "commitHooks": false,
       "conventionalCommits": true,
-      "createRelease": "github",
       "message": "🤖 publish",
       "exact": true
     }
