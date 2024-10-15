@@ -35,7 +35,7 @@ export default process.env.CI && process.env.CI === 'true'
             {
               "search": "VERSION",
               "searchTemplateStrings": true,
-              "replace": JSON.stringify(require('./package').version)
+              "replace": require('../../lerna.json').version
             }
           ]
         }

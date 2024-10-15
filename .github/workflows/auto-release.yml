@@ -61,6 +61,18 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Get Version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run version
+
+      - name: build
+        run: |
+          npm run build
+        env:
+          CI: false
+
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
