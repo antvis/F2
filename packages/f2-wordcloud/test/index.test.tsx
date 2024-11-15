@@ -426,7 +426,7 @@ describe('WordCloud', () => {
                 style={{
                   x: 0,
                   y: 0,
-                  img,
+                  src: img,
                   width: 300,
                   height: 225,
                 }}

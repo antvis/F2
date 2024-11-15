@@ -76,7 +76,7 @@ function renderChart(F2, canvasEl: HTMLCanvasElement) {
       { x: 260, y: 260 },
     ]);
     loopTouchmove();
-  });
+  }, 1000);
 
   return canvas;
 }

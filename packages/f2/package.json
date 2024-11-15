@@ -43,7 +43,7 @@
     "type-fest": "^3.5.0"
   },
   "devDependencies": {
-    "@antv/g-mobile-svg": "~0.10.0"
+    "@antv/g-mobile-svg": "~1.0.0"
   },
   "miniprogram": "dist"
 }

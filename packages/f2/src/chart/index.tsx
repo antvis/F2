@@ -7,7 +7,6 @@ import {
   Children,
   jsx,
   Ref,
-  createRef,
 } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
@@ -76,7 +75,7 @@ class Chart<
 
     this.scale = new ScaleController(data);
     this.coord = new CoordController();
-    this.coordRef = createRef();
+    this.coordRef = {};
     // state
     this.state = {
       filters: {},

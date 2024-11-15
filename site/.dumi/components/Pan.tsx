@@ -66,7 +66,7 @@ function renderChart(F2, canvasEl: HTMLCanvasElement) {
   setTimeout(async () => {
     gestureSimulator(canvasEl, 'touchstart', { x: 350, y: 35 });
     loopTouchmove();
-  });
+  }, 1000);
 
   return canvas;
 }

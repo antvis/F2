@@ -219,7 +219,9 @@ export default class Tag extends Component<TagGuideProps> {
     return (
       <group
         style={{
+          // @ts-ignore
           x: posX,
+          // @ts-ignore
           y: posY,
         }}
       >

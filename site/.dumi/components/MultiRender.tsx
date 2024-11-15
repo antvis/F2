@@ -1,4 +1,3 @@
-import { Renderer as CanvasRenderer } from '@antv/g-mobile-canvas';
 import { Renderer as SVGRenderer } from '@antv/g-mobile-svg';
 import { Renderer as WebGLRenderer } from '@antv/g-mobile-webgl';
 import React, { useRef, useState } from 'react';
@@ -19,7 +18,6 @@ function renderChart(F2, options) {
   const { Canvas, Chart, Axis, Line } = F2;
   function getProps(data) {
     const { props } = (
-      // @ts-ignore
       <Canvas pixelRatio={window.devicePixelRatio} animate={false} {...options}>
         <Chart data={data}>
           <Axis field="rate" />
@@ -66,9 +64,9 @@ export default ({ F2 }) => {
       canvasEl.style.width = '100%';
       canvasEl.style.height = '100%';
       container.appendChild(canvasEl);
-      const canvasRenderer = new CanvasRenderer();
+      // const canvasRenderer = new CanvasRenderer();
       const canvas = renderChart(F2, {
-        renderer: canvasRenderer,
+        // renderer: canvasRenderer,
         context: canvasEl.getContext('2d'),
       });
       setCanvas(canvas);
