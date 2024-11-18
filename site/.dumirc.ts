@@ -151,7 +151,6 @@ export default defineConfig({
             en: 'Getting Started',
           },
           link: `/tutorial/getting-started`,
-
         },
         {
           text: {
@@ -352,6 +351,7 @@ export default defineConfig({
             <div class="mobile-content">
               <canvas id="container" style="display: block; width: 375px; height: 260px;" />
             </div>
+             <div id="mobile-footer"></div>
           </div>
         `,
       json: {

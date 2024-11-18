@@ -6,6 +6,8 @@ if (window) {
   window.React = require('react');
   window.ReactDOM = require('react-dom');
   window.gPluginRoughCanvasRenderer = require('@antv/g-plugin-rough-canvas-renderer');
+  (window as any).lilGui = require('lil-gui');
+  (window as any).stats = require('stats.js');
   // window.f2 = require('./src/index-all.js');
   // window.DataSet = require('@antv/data-set');
   window.lodash = require('lodash');
