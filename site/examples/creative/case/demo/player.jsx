@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { Axis, Canvas, Chart, jsx, Line, Player, RectGuide, TextGuide } from '@antv/f2';
-import 'lil-gui';
+import * as lil from 'lil-gui';
 const context = document.getElementById('container').getContext('2d');
 const $wrapper = document.getElementById('mobile-footer');
 const data = [
