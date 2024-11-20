@@ -371,4 +371,5 @@ export default defineConfig({
     'https://polyfill.alicdn.com/v3/polyfill.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en',
   ],
   legacy: {},
+  mako: {},
 });
