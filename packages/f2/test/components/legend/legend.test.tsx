@@ -317,6 +317,49 @@ describe('图例', () => {
       await delay(1000);
       expect(context).toMatchImageSnapshot();
     });
+
+
+    it('自定义 items Marker', async () => {
+      const context = createContext('自定义 items Marker', {
+        height: '70px',
+      });
+      const { props } = (
+        <Canvas context={context} pixelRatio={1}>
+          <Chart data={data}>
+            <Legend
+              style={{
+                justifyContent: 'flex-start',
+              }}
+              marker="line"
+              items={[
+                {
+                  color: 'blue',
+                  name: 'Sports',
+                  value: 0.1,
+                  marker: 'square'
+                },
+                {
+                  color: 'red',
+                  name: 'Strategy',
+                  value: 0.2,
+                },
+                {
+                  color: 'red',
+                  name: 'Action',
+                  value: 0.3,
+                },
+              ]}
+            />
+            <Geometry x="genre" y="sold" color="genre" />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      await canvas.render();
+
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
   });
 
   describe('点击交互', () => {
