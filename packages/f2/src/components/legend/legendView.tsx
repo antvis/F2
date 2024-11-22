@@ -88,7 +88,7 @@ export default (props) => {
             data-item={item}
             onClick={onClick}
           >
-            {Marker({ color: filtered ? '#bfbfbf' : color, type: marker })}
+            {Marker({ color: filtered ? '#bfbfbf' : color, type: item?.marker || marker })}
             {/* <Marker color={filtered ? '#bfbfbf' : color} type={marker} /> */}
             <text
               attrs={{
