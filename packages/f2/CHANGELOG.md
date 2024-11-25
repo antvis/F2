@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.4](https://github.com/antvis/f2/compare/v5.7.3...v5.7.4) (2024-11-25)
+
+
+### Bug Fixes
+
+* 自定义marker ([#2021](https://github.com/antvis/f2/issues/2021)) ([a91f1b1](https://github.com/antvis/f2/commit/a91f1b18a29d6154eb0fcae7af0997e12dd7bfea))
+
+
+
+
+
 ## [5.7.3](https://github.com/antvis/f2/compare/v5.7.0...v5.7.3) (2024-10-16)
 
 
