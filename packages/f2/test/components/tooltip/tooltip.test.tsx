@@ -1,4 +1,4 @@
-import { Axis, Canvas, Chart, Interval, jsx, Legend, Line, Tooltip } from '../../../src';
+import { Axis, Canvas, Chart, Interval, jsx, Legend, Line, Tooltip, createRef } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -586,5 +586,36 @@ describe('tooltip', () => {
     await canvas.update(updateProps);
     await delay(500);
     expect(context).toMatchImageSnapshot();
+  });
+
+  it('Tooltip onShow与onHide钩子触发且每次展示消失仅触发一次', async () => {
+    const context = createContext('Tooltip onShow与onHide钩子触发且每次展示消失仅触发一次');
+    const flags = {
+      show: 0,
+      hide: 0,
+    }
+    const ref = createRef();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data} >
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip ref={ref} alwaysShow={true} defaultItem={data[0]} snap showCrosshairs onShow={() => flags.show ++ } onHide={() => flags.hide ++} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(1000);
+    ref.current.show({x: 1, y: 0})
+
+    await delay(1000);
+    ref.current.hide();
+    expect(flags).toEqual({
+      show: 1,
+      hide: 1,
+    });
   });
 });
