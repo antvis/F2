@@ -71,6 +71,14 @@ export interface TooltipProps {
   custom?: boolean;
   tooltipMarkerStyle?: any;
   onChange?: any;
+  /**
+   *  tooltip 展示回调
+   */
+  onShow?: () => void;
+  /**
+   *  tooltip 隐藏回调
+   */
+  onHide?: () => void;
   showXTip?: boolean;
   /**
    * x 的位置点类型，record 表示按照数据取位置点，coord 表示按照坐标取位置点
@@ -175,11 +183,13 @@ export default (View) => {
     }
 
     showSnapRecords(snapRecords) {
-      const { chart, onChange } = this.props;
+      const { chart, onChange, onShow } = this.props;
       const legendItems = chart.getLegendItems();
       const { xField, yField } = snapRecords[0];
       const xScale = chart.getScale(xField);
       const yScale = chart.getScale(yField);
+      // 如果之前没有records，视为首次出现
+      const isInitShow = !this.state.records;
 
       const records = snapRecords.map((record) => {
         const { origin, xField, yField } = record;
@@ -214,15 +224,22 @@ export default (View) => {
       this.setState({
         records,
       });
+      if(isInitShow && isFunction(onShow)) {
+        onShow();
+      }
       if (isFunction(onChange)) {
         onChange(records);
       }
     }
 
     hide() {
+      const { onHide } = this.props;
       this.setState({
         records: null,
       });
+      if(isFunction(onHide)) {
+        onHide();
+      }
     }
 
     render() {

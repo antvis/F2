@@ -1,4 +1,4 @@
-import { Axis, Canvas, Chart, Interval, jsx, Legend, Line, Tooltip } from '../../../src';
+import { Axis, Canvas, Chart, Interval, jsx, Legend, Line, Tooltip, createRef } from '../../../src';
 import { createContext, delay, gestureSimulator } from '../../util';
 
 const data = [
@@ -586,5 +586,33 @@ describe('tooltip', () => {
     await canvas.update(updateProps);
     await delay(500);
     expect(context).toMatchImageSnapshot();
+  });
+
+  it('Tooltip onShow与onHide钩子触发且每次展示消失仅触发一次', async () => {
+    const context = createContext('Tooltip onShow与onHide钩子触发且每次展示消失仅触发一次');
+    const onShowCb = jest.fn();
+    const onHideCb = jest.fn();
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data} >
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+          <Tooltip snap showCrosshairs onShow={onShowCb} onHide={onHideCb} />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(1000);
+    await gestureSimulator(context.canvas, 'touchstart', { x: 30, y: 30 });
+    await delay(1000);
+    await gestureSimulator(context.canvas, 'touchmove', { x: 31, y: 31 });
+    await delay(1000);
+    await gestureSimulator(context.canvas, 'touchend', { x: 32, y: 32 });
+
+    expect(onShowCb.mock.calls.length).toBe(1); 
+    expect(onHideCb.mock.calls.length).toBe(1); 
   });
 });
