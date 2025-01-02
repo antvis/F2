@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.5](https://github.com/antvis/f2/compare/v5.7.4...v5.7.5) (2025-01-02)
+
+
+### Bug Fixes
+
+* EndView动画使用offsetDistance对不齐 ([#2029](https://github.com/antvis/f2/issues/2029)) ([f62abe3](https://github.com/antvis/f2/commit/f62abe3909676248c1928354b0690f90a4f7f97e))
+
+
+
+
+
 ## [5.7.4](https://github.com/antvis/f2/compare/v5.7.3...v5.7.4) (2024-11-25)
 
 
