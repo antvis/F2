@@ -20,7 +20,7 @@
     "site:start": "npm run site:develop"
   },
   "dependencies": {
-    "@antv/dumi-theme-antv": "~0.5.0",
+    "@antv/dumi-theme-antv": "~0.6.0",
     "@antv/f-react": "~0.0.7",
     "@antv/f-test-utils": "1.0.3",
     "@antv/f2": "^5.0.4",
