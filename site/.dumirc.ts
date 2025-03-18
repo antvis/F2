@@ -11,6 +11,13 @@ export default defineConfig({
     description: 'The Grammar of Graphics in JavaScript',
     siteUrl: 'https://f2.antv.vision',
     defaultLanguage: 'zh',
+    feedback: true, // 开启文档用户反馈
+    sitePackagePath: 'packages/site', // 文档项目相对于项目根目录的相对路径
+    links: true, // 是否显示links答疑小蜜
+    petercat: {
+      show: true,
+      token: 'd54d0b62-8070-46a5-a721-38132a34b8a1', // 此处填 Petercat token
+    },
     isAntVSite: false,
     githubUrl: repository.url, // GitHub 地址
     footerTheme: 'light', // 白色 底部主题
