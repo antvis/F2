@@ -5,6 +5,18 @@ import { deepMix } from '@antv/util';
 export interface TextGuideProps extends GuideProps {
   points?: { x: number; y: number }[] | null;
   content: string | number;
+  /**
+   * 文本标注位置, 
+   * 目前该属性仅对 `Interval` 柱状图标注生效(非极坐标), 
+   * 文本位置以柱子顶部中心点为基准, 支持如下配置
+   * - `tc` - topCenter
+   * - `tl` - topLeft
+   * - `tr` - topRight
+   * - `bc` - bottomCenter
+   * - `bl` - bottomLeft
+   * - `br` - bottomRight
+   */
+  placement?: 'tc' | 'tl' | 'tr' | 'bc' | 'bl' | 'br';
   style?: Partial<TextStyleProps> | ((record?) => Partial<TextStyleProps>);
   offsetX?: number | string;
   offsetY?: number | string;

@@ -338,6 +338,26 @@ class Chart<
     return filteredData;
   }
 
+  sortChildren(children) {
+    const childrenArray = Children.toArray(children);
+
+    const coordType = this.coord?.coord?.type
+    const interval = childrenArray.find((item) => item.type?.name === 'Interval');
+    // 仅对柱状图进行排序, 排除极坐标等情况
+    if (!interval || coordType !== 'rect') {
+      return children;
+    }
+
+    const { textGuideEle, otherEle } = childrenArray.reduce((acc, item) => {
+      const displayName = item?.type?.displayName || item?.type?.name;
+      displayName === 'TextGuide' ? acc.textGuideEle.push(item) : acc.otherEle.push(item);
+      return acc;
+    }, { textGuideEle: [], otherEle: [] });
+
+    const sortedChildren = [...otherEle, ...textGuideEle];
+    return sortedChildren;
+  }
+  
   render() {
     const { props, scale, layout: chartLayout } = this;
     const { children, data: originData } = props;
@@ -347,6 +367,7 @@ class Chart<
     const coord = this.getCoord();
     const scaleOptions = scale.getOptions();
     const { width, height } = chartLayout;
+    const sortedChildren = this.sortChildren(children);
 
     return (
       <group
@@ -357,7 +378,7 @@ class Chart<
           fill: 'transparent',
         }}
       >
-        {Children.map(children, (child) => {
+        {Children.map(sortedChildren, (child) => {
           return Children.cloneElement(child, {
             data,
             chart: this,

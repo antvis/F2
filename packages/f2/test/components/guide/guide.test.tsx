@@ -10,6 +10,9 @@ import {
   LottieGuide,
   withLegend,
   Interval,
+  ArcGuide,
+  TagGuide,
+  PolylineGuide,
 } from '../../../src/components';
 import { createContext, delay } from '../../util';
 import imageBianzu from './images/bianzu';
@@ -518,5 +521,17 @@ describe('Guide ', () => {
 
     const chart = new Canvas(props);
     await chart.render();
+  });
+  
+  it('displayName', () => {
+    expect(TextGuide.displayName).toBe('TextGuide');
+    expect(PointGuide.displayName).toBe('PointGuide');
+    expect(LineGuide.displayName).toBe('LineGuide');
+    expect(ArcGuide.displayName).toBe('ArcGuide');
+    expect(RectGuide.displayName).toBe('RectGuide');
+    expect(ImageGuide.displayName).toBe('ImageGuide');
+    expect(TagGuide.displayName).toBe('TagGuide');
+    expect(LottieGuide.displayName).toBe('LottieGuide');
+    expect(PolylineGuide.displayName).toBe('PolylineGuide');
   });
 });

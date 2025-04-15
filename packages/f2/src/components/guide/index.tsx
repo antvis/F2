@@ -10,15 +10,33 @@ import LottieGuideView from './views/Lottie';
 import PolylineGuideView from './views/Polyline';
 
 const DefaultGuideView = () => null;
+
 const TextGuide = withGuide(TextGuideView);
+TextGuide.displayName = 'TextGuide';
+
 const PointGuide = withGuide(PointGuideView);
+PointGuide.displayName = 'PointGuide';
+
 const LineGuide = withGuide(LineGuideView);
+LineGuide.displayName = 'LineGuide';
+
 const ArcGuide = withGuide(ArcGuideView);
+ArcGuide.displayName = 'ArcGuide';
+
 const RectGuide = withGuide(RectGuideView);
+RectGuide.displayName = 'RectGuide';
+
 const ImageGuide = withGuide(ImageGuideView);
+ImageGuide.displayName = 'ImageGuide';
+
 const TagGuide = withGuide(TagGuideView);
+TagGuide.displayName = 'TagGuide';
+
 const LottieGuide = withGuide(LottieGuideView);
+LottieGuide.displayName = 'LottieGuide';
+
 const PolylineGuide = withGuide(PolylineGuideView);
+PolylineGuide.displayName = 'PolylineGuide';
 
 export { GuideProps };
 

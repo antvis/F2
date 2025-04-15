@@ -1,7 +1,9 @@
-import { jsx, Component, ComponentType } from '@antv/f-engine';
+import { jsx, Component, ComponentType, IContext, isEqual } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import Chart, { ChartChildProps, Point } from '../../chart';
+import type { VNode } from '@antv/f-engine/es/canvas/vnode';
 import { computeLayout, AnimationProps } from '@antv/f-engine';
+import { DataRecord } from '../../chart/Data';
 
 export interface GuideProps {
   records: any;
@@ -12,12 +14,27 @@ export interface GuideProps {
 
 export default function<IProps extends GuideProps = GuideProps>(
   View: ComponentType<IProps & ChartChildProps>
-): ComponentType<IProps & ChartChildProps> {
+): ComponentType<IProps & ChartChildProps> & { displayName: string } {
   return class Guide extends Component<IProps & ChartChildProps> {
+    static displayName = 'Guide';
+
     chart: Chart;
 
-    constructor(props: IProps & ChartChildProps) {
+    rect: { width: number, height: number };
+
+    constructor(props: IProps & ChartChildProps, context: IContext) {
       super(props);
+      
+      const { content, style } = props;
+      const { measureText } = context;
+      this.rect = measureText(content, style);
+    }
+
+    willReceiveProps(props: IProps & ChartChildProps<DataRecord>, context?: IContext): void {
+      const { content, style } = props;
+      if (content !== this.props.content || !isEqual(style, this.props.style)) {
+        this.rect = context.measureText(content, style);
+      }
     }
 
     getGuideBBox() {
@@ -65,13 +82,57 @@ export default function<IProps extends GuideProps = GuideProps>(
     }
 
     convertPoints(records) {
-      return records.map((record) => this.parsePoint(record));
+      const { placement } = this.props;
+      const options = ['tc', 'tl', 'tr', 'bc', 'bl', 'br'];
+      // placement 为空, 沿用历史逻辑保持兼容
+      if (!placement || !options.includes(placement)) {
+        return records.map((record) => this.parsePoint(record));
+      }
+
+      const { groupKey, records: intervalRecords, x: xAxis, y: yAxis } = this.getDodgeInterval() || {};
+      if (!xAxis || !yAxis) {
+        return records.map((record) => this.parsePoint(record));
+      }
+
+      // Chart 组件已对子组件进行排序, TextGuide 组件渲染次序排在最后
+      // 因此 Interval 组件在 TextGuide 组件之前已完成挂载和位置信息的计算
+      return records.map((record) => {
+        // 对于未分组的数据，groupKey 为 undefined, intervalRecords 是长度唯一的数组, 默认会取到第一个
+        const { children } = intervalRecords?.find((item) => item.key === record[groupKey]) || {};
+        const child = children?.find((item) => item.origin?.[xAxis] === record[xAxis] && item.origin?.[yAxis] === record[yAxis]) || {};
+        const { x, y } = child;
+        const { width = 0, height = 0 } = this.rect || {};
+        const [yPos, xPos] = placement.split('');
+        const yOffset = yPos === 't' ? -height / 2 : height / 2;
+        const xOffset = xPos === 'l' ? -width : xPos === 'r' ? 0 : -width / 2;
+        return { x: x + xOffset, y: y + yOffset };
+      });
     }
 
     getGuideTheme() {
       const { context } = this;
       const { theme } = context;
       return theme.guide;
+    }
+
+    getDodgeInterval() {
+      const chartChildren = (this.props.chart?.children as VNode)?.children;
+      const childList = Array.isArray(chartChildren) ? chartChildren : [chartChildren];
+      const interval = childList.find((child) => typeof child.type === 'function' && child.type.name === 'Interval');
+      const coordType = this.props.coord?.type;
+      if (!interval || coordType !== 'rect') {
+        return undefined;
+      }
+
+      const { color, x, y } = interval.props || {};
+      const groupKey = typeof color === 'string' ? color : color?.field;
+      // if (!groupKey) {
+      //   return undefined;
+      // }
+
+      /** { key?: string, children: Record<string, any>[] }[] */
+      const records = (interval?.children as VNode)?.props?.records || [];
+      return { groupKey, records, x, y };
     }
 
     render() {
