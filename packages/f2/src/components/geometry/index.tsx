@@ -9,7 +9,7 @@ import {
   isNull,
   find,
 } from '@antv/util';
-import { ChartChildProps } from '../../chart';
+import chart, { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
 import { toTimeStamp } from '../../util/index';
@@ -123,6 +123,7 @@ class Geometry<
     const { attrController } = this;
 
     const attrOptions = this.getAttrOptions(props);
+
     attrController.create(attrOptions);
   }
 
@@ -138,6 +139,7 @@ class Geometry<
       this.context.px2hd(args),
       justifyContentCenter
     );
+
     return attrOptions;
   }
 
@@ -231,7 +233,7 @@ class Geometry<
 
   _createAdjust() {
     const { attrs, props } = this;
-    const { adjust } = props;
+    const { adjust, chart } = props;
 
     if (!adjust) {
       return null;
@@ -266,6 +268,7 @@ class Geometry<
       adjust: adjustInstance,
     };
 
+    chart.updateAdjust(this.adjust);
     return this.adjust;
   }
 
@@ -380,10 +383,10 @@ class Geometry<
     }
 
     const adjustData = adjust.adjust.process(groupedArray);
-
     // process 返回的是新数组，所以要修改 records
     records.forEach((record, index: number) => {
       record.children = adjustData[index];
+      adjust.adjust.setIndexMap({ index, key: record.key });
     });
 
     return adjustData;
@@ -391,13 +394,14 @@ class Geometry<
 
   _processData() {
     const { props } = this;
-    const { data: originData } = props;
+    const { data: originData, chart } = props;
 
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
     const records = this._groupData(data);
 
     this._createAdjust();
+
     // 根据adjust分组
     const dataArray = this._adjustData(records);
 
@@ -609,6 +613,10 @@ class Geometry<
 
   getYScale(): Scale {
     return this.getAttr('y').scale;
+  }
+
+  getColorScale(): Scale {
+    return this.getAttr('color').scale;
   }
 
   _getXSnap(invertPointX) {
