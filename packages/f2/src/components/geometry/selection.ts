@@ -1,6 +1,6 @@
 import { isFunction } from '@antv/util';
-import { Component, isEqual as equal, ShapeStyleProps } from '@antv/f-engine';
-import { ChartChildProps } from '../../chart';
+import { Component, isEqual as equal, JSX, ShapeStyleProps } from '@antv/f-engine';
+import Chart, { ChartChildProps, ChartProps } from '../../chart';
 
 function isEqual(origin1, origin2, fields: string[]) {
   if (origin1 === origin2) {
@@ -26,6 +26,7 @@ export interface SelectionProps {
     unSelectedStyle?: ShapeStyleProps | StyleType;
     cancelable?: boolean;
     onChange?: Function;
+    mode?: 'element-link' | 'element';
   };
 }
 
@@ -36,7 +37,7 @@ export interface SelectionState {
 class Selection<
   P extends SelectionProps = SelectionProps,
   S extends SelectionState = SelectionState
-> extends Component<P & ChartChildProps, S> {
+> extends Component<P & (ChartChildProps | ChartProps), S> {
   constructor(props: P, context) {
     super(props, context);
 
@@ -46,21 +47,47 @@ class Selection<
     this.state.selected = defaultSelected;
   }
 
+  getElementRecord(shape) {
+    const origin = shape.get('data') || {};
+    return [
+      {
+        origin,
+      },
+    ];
+  }
+
+  getLinkRecord(shape, chart) {
+    const origin = shape.get('data') || {};
+
+    const records = chart.getRecords(origin, 'colorField');
+
+    return records;
+  }
+
+  getSelectRecords(ev, triggerOn, mode: string, chart) {
+    const { points, canvasX: x, canvasY: y } = ev;
+    const point = triggerOn === 'click' ? { x, y } : points[0];
+    if (mode === 'element') return this.getElementRecord(ev.target);
+    if (mode === 'element-link') return this.getLinkRecord(ev.target, chart);
+    return this.getSnapRecords(point);
+  }
+
   didMount() {
     const { props, state } = this;
-    const { selection, chart } = props;
+    const { selection } = props;
     if (!selection) return;
     // 默认为 click
-    const { triggerOn = 'click', onChange } = selection;
+    const { triggerOn = 'click', onChange, mode } = selection;
+    // 监听在整个画布上，适用于折线图。
+    const chart = ((props as ChartChildProps).chart || this) as Chart; // 添加类型断言
     chart.on(triggerOn, (ev) => {
-      const { points, canvasX: x, canvasY: y } = ev;
-      const point = triggerOn === 'click' ? { x, y } : points[0];
-      const records = this.getSnapRecords(point);
+      const records = this.getSelectRecords(ev, triggerOn, mode, chart);
+
       const { type = 'single', cancelable = true } = selection;
 
       if (!records || !records.length) {
         if (cancelable) {
-          onChange && onChange({ selected: null })
+          onChange && onChange({ selected: null });
           this.setState({
             selected: null,
           } as S);
@@ -71,7 +98,7 @@ class Selection<
       const { selected } = state;
       const origins = records.map((record) => record.origin);
       if (!selected || !selected.length) {
-        onChange && onChange({ selected: origins })
+        onChange && onChange({ selected: origins });
         this.setState({
           selected: origins,
         } as S);
@@ -79,7 +106,7 @@ class Selection<
 
       if (type === 'single') {
         if (!cancelable) {
-          onChange && onChange({ selected: origins })
+          onChange && onChange({ selected: origins });
           this.setState({
             selected: origins,
           } as S);
@@ -91,7 +118,7 @@ class Selection<
             newSelected.push(record.origin);
           }
         });
-        onChange && onChange({ selected: newSelected })
+        onChange && onChange({ selected: newSelected });
         this.setState({
           selected: newSelected,
         } as S);
@@ -116,7 +143,7 @@ class Selection<
         .map((key) => selectedMap[key])
         .filter(Boolean);
 
-      onChange && onChange({ selected: newSelected })
+      onChange && onChange({ selected: newSelected });
       this.setState({
         selected: newSelected,
       } as S);
@@ -146,7 +173,7 @@ class Selection<
     if (!selected || !selected.length) {
       return false;
     }
-    const { chart } = props;
+    const chart = ((props as ChartChildProps).chart || this) as Chart;
     const scales = chart.getScales();
     const fields = Object.keys(scales);
     for (let i = 0, len = selected.length; i < len; i++) {

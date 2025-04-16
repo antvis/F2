@@ -625,7 +625,7 @@ class Geometry<
   }
 
   getColorScale(): Scale {
-    return this.getAttr('color').scale;
+    return this.getAttr('color')?.scale || {};
   }
 
   _getXSnap(invertPointX) {
@@ -793,9 +793,12 @@ class Geometry<
     const records = this.flatRecords();
     const xScale = this.getXScale();
     const yScale = this.getYScale();
+    const colorScale = this.getColorScale();
     const { field: xField } = xScale;
     const { field: yField } = yScale;
-    const value = data[xField];
+    const { field: colorField } = colorScale;
+    const fieldValue = field === 'xfield' ? xField : field === 'colorField' ? colorField : yField;
+    const value = data[fieldValue];
     const rst = [];
 
     for (let i = 0, len = records.length; i < len; i++) {
@@ -804,7 +807,7 @@ class Geometry<
         xField,
         yField,
       };
-      const originValue = record[FIELD_ORIGIN][field === 'xfield' ? xField : yField];
+      const originValue = record[FIELD_ORIGIN][fieldValue];
       if (originValue === value) {
         rst.push(record);
       }
