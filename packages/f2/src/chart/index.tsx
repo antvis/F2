@@ -9,6 +9,8 @@ import {
   Ref,
   createRef,
 } from '@antv/f-engine';
+import Selection, { SelectionProps, SelectionState } from '../components/geometry/selection';
+import Geometry from '../components/geometry';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
 import CoordController, { Coord } from '../controller/coord';
@@ -19,7 +21,7 @@ import { CoordType, CoordProps } from './Coord';
 
 export { Point } from './types';
 
-export interface ChartProps<TRecord extends DataRecord = DataRecord> {
+export interface ChartProps<TRecord extends DataRecord = DataRecord> extends SelectionProps {
   data: Data<TRecord>;
   scale?: DataRecordScale<TRecord>;
   coord?: CoordType | CoordProps;
@@ -54,7 +56,7 @@ export interface ComponentPosition {
 class Chart<
   TRecord extends DataRecord = DataRecord,
   IProps extends ChartProps<TRecord> = ChartProps<TRecord>
-> extends Component<IProps, ChartState> {
+> extends Selection<IProps, SelectionState & ChartState> {
   // 坐标系
   private componentsPosition: ComponentPosition[] = [];
 
@@ -65,7 +67,7 @@ class Chart<
   public adjust: any;
   public coordRef: Ref;
   constructor(props: IProps, context?: IContext) {
-    super(props);
+    super(props, context);
 
     const { theme, px2hd } = context;
 
@@ -81,6 +83,7 @@ class Chart<
     // state
     this.state = {
       filters: {},
+      selected: [],
     };
   }
 
@@ -112,8 +115,12 @@ class Chart<
     coord.create(coordOption);
   }
 
+  didMount(): void {
+    super.didMount();
+  }
+
   // props 更新
-  willReceiveProps(nextProps: IProps, context) {
+  willReceiveProps(nextProps: IProps, context?: IContext) {
     const { scale, coord, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
@@ -220,7 +227,7 @@ class Chart<
   getGeometrys() {
     // @ts-ignore
     const { children } = this.children;
-    const geometrys: Component[] = [];
+    const geometrys: Geometry[] = [];
     Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
@@ -331,6 +338,7 @@ class Chart<
         ...filters,
         [field]: condition,
       },
+      selected: this.state.selected || [],
     });
   }
 
