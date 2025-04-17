@@ -7,6 +7,7 @@ export default class Dodge extends Adjust {
   private cacheMap: { [key: string]: any } = {};
   private adjustDataArray: Data[][] = [];
   private mergeData: Data[] = [];
+  private rangeMap: { [key: string]: any } = {};
 
   constructor(cfg: DodgeCfg) {
     super(cfg);
@@ -60,6 +61,33 @@ export default class Dodge extends Adjust {
     return groupedDataArray;
   }
 
+  /**
+   * 获取指定数据记录在指定字段上的位置信息
+   * @param record 数据记录，例如 { city: 'Berlin', month: 1, rainfall: 23.2 }
+   * @param field 字段名称，例如 'month'
+   * @param value 字段值，例如 1
+   * @returns 调整后的位置
+   */
+  public getPositionInfo(record: Data, dim: string, frameIndexKey: number) {
+    const { customOffset } = this;
+    const value = record[dim];
+    const map = this.cacheMap[dim];
+    const valueArr = map[value];
+    const frameIndex = this.indexMap[frameIndexKey];
+    const valIndex = valueArr.indexOf(frameIndex);
+    const range = this.rangeMap[value];
+
+    if (!isNil(customOffset)) {
+      const { pre, next } = range;
+      record[dim] = isFunction(customOffset)
+        ? customOffset(record, range)
+        : (pre + next) / 2 + customOffset;
+    } else {
+      record[dim] = this.getDodgeOffset(range, valIndex, valueArr.length);
+    }
+    return record;
+  }
+
   protected adjustDim(dim: string, values: number[], data: Data[], frameIndex: number): any[] {
     const { customOffset } = this;
     const map = this.getDistribution(dim);
@@ -78,8 +106,12 @@ export default class Dodge extends Adjust {
         // 如果有多个，则需要获取调整的范围
         range = this.getAdjustRange(dim, parseFloat(key), values);
       }
+
+      this.rangeMap[key] = range;
+
       each(group, (d) => {
         const value = d[dim];
+
         const valueArr = map[value];
         const valIndex = valueArr.indexOf(frameIndex);
         if (!isNil(customOffset)) {

@@ -23,7 +23,7 @@ const gzipSize = require('gzip-size');
   const artifact =
     artifacts.find((item) => {
       return item.workflow_run.head_sha === danger.github.pr.base.sha;
-    }) || artifact[0]; // 用最新的一个兜底
+    }) || artifacts[0]; // 用最新的一个兜底
 
   if (!artifact) return;
 

@@ -7,6 +7,7 @@ export interface GuideProps {
   records: any;
   onClick?: (ev) => void;
   animation?: ((points: Point[], chart: Chart) => AnimationProps) | AnimationProps;
+  precise?: boolean;
   [key: string]: any;
 }
 
@@ -50,9 +51,32 @@ export default function<IProps extends GuideProps = GuideProps>(
       return scale.scale(value);
     }
 
+    _numberic(data) {
+      const { chart } = this.props;
+      const scales = [chart.getXScales()[0], chart.getYScales()[0]];
+
+      const count = scales.length;
+      for (let i = 0; i < count; i++) {
+        const scale = scales[i];
+        if (scale.isCategory) {
+          const field = scale.field;
+          const value = scale.translate(data[field]);
+          data[field] = value;
+        }
+      }
+    }
+
     parsePoint(record) {
       const { props } = this;
-      const { chart, coord } = props;
+      const { chart, coord, precise } = props;
+      const { adjust } = chart;
+      if (precise && adjust?.type === 'dodge') {
+        const xScale = chart.getXScales()[0];
+        const typeScale = chart.getColorScales()[0];
+        this._numberic(record);
+
+        adjust.adjust.getPositionInfo(record, xScale.field, record[typeScale.field]);
+      }
       const xScale = chart.getXScales()[0];
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
@@ -77,7 +101,7 @@ export default function<IProps extends GuideProps = GuideProps>(
     render() {
       const { props, context } = this;
       const { coord, records = [], animation, chart, style, onClick, visible = true } = props;
-      if(!visible) return;
+      if (!visible) return;
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();

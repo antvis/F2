@@ -138,6 +138,7 @@ class Geometry<
       this.context.px2hd(args),
       justifyContentCenter
     );
+
     return attrOptions;
   }
 
@@ -231,7 +232,7 @@ class Geometry<
 
   _createAdjust() {
     const { attrs, props } = this;
-    const { adjust } = props;
+    const { adjust, chart } = props;
 
     if (!adjust) {
       return null;
@@ -266,6 +267,7 @@ class Geometry<
       adjust: adjustInstance,
     };
 
+    chart.updateAdjust(this.adjust);
     return this.adjust;
   }
 
@@ -380,10 +382,10 @@ class Geometry<
     }
 
     const adjustData = adjust.adjust.process(groupedArray);
-
     // process 返回的是新数组，所以要修改 records
     records.forEach((record, index: number) => {
       record.children = adjustData[index];
+      adjust.adjust.setIndexMap({ index, key: record.key });
     });
 
     return adjustData;
@@ -609,6 +611,10 @@ class Geometry<
 
   getYScale(): Scale {
     return this.getAttr('y').scale;
+  }
+
+  getColorScale(): Scale {
+    return this.getAttr('color').scale;
   }
 
   _getXSnap(invertPointX) {

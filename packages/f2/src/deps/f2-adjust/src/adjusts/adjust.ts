@@ -53,6 +53,9 @@ export default abstract class Adjust {
   /** 用户自定义的dimValuesMap */
   public dimValuesMap: DimValuesMapType;
 
+  /** 分组keyMap */
+  public indexMap: { [key: string]: any } = {};
+
   constructor(cfg: AdjustCfg & { dimValuesMap?: DimValuesMapType }) {
     const { xField, yField, adjustNames = ['x', 'y'], dimValuesMap } = cfg;
 
@@ -71,6 +74,10 @@ export default abstract class Adjust {
    */
   public isAdjust(dim: string): boolean {
     return this.adjustNames.indexOf(dim) >= 0;
+  }
+
+  public setIndexMap({ key, index }) {
+    this.indexMap[key] = index;
   }
 
   protected getAdjustRange(dim: string, dimValue: number, values: number[]): Range {

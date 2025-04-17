@@ -62,6 +62,7 @@ class Chart<
   public coord: CoordController;
   public scale: ScaleController;
 
+  public adjust: any;
   public coordRef: Ref;
   constructor(props: IProps, context?: IContext) {
     super(props);
@@ -160,6 +161,10 @@ class Chart<
     const { coord, props } = this;
     const style = this.getStyle(props);
     coord.updateLayout(style);
+  }
+
+  updateAdjust(adjust: any) {
+    this.adjust = adjust;
   }
 
   updateCoordLayout(layout: PositionLayout | PositionLayout[]) {
@@ -300,6 +305,14 @@ class Chart<
     return geometrys.map((component) => {
       // @ts-ignore
       return component.getYScale();
+    });
+  }
+
+  getColorScales() {
+    const geometrys = this.getGeometrys();
+    return geometrys.map((component) => {
+      // @ts-ignore
+      return component.getColorScale();
     });
   }
 
