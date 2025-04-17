@@ -79,6 +79,14 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run release
 
+      # 提取版本信息
+      - name: Extract version info
+        id: version
+        run: |
+          VERSION=$(node -p "require('./packages/f2/package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "commit_message=${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+
       # 发布失败通知内部开发群
       - name: Release failed notify
         if: ${{ failure() }}
@@ -102,8 +110,9 @@ jobs:
         uses: visiky/dingtalk-release-notify@main
         with:
           DING_TALK_TOKEN: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          notify_title: '🎉 F2 新版本发布啦 🎉'
-          notify_body: '## { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c833f8c9-c629-4943-a09b-ce1bf17ca937.png) <hr /> { body } <hr />'
+          notify_title: '🎉 F2 新版本 ${{ steps.version.outputs.version }} 发布啦 🎉'
+          notify_body: '## F2 ${{ steps.version.outputs.version }} 发布完成 <hr /> ![preview](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c833f8c9-c629-4943-a09b-ce1bf17ca937.png) <hr /> ${{ steps.version.outputs.commit_message }} <hr />'
           notify_footer: '> 前往 [**AntV/F2 Releases**]({ release_url })查看完整更新日志.'
           at_all: false
           enable_prerelease: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
