@@ -9,7 +9,7 @@ import {
   isNull,
   find,
 } from '@antv/util';
-import chart, { ChartChildProps } from '../../chart';
+import { ChartChildProps } from '../../chart';
 import Selection, { SelectionProps, SelectionState } from './selection';
 import { Adjust, Dodge, Jitter, Stack, Symmetric } from '../../deps/f2-adjust/src';
 import { toTimeStamp } from '../../util/index';
@@ -123,7 +123,6 @@ class Geometry<
     const { attrController } = this;
 
     const attrOptions = this.getAttrOptions(props);
-
     attrController.create(attrOptions);
   }
 
@@ -394,14 +393,13 @@ class Geometry<
 
   _processData() {
     const { props } = this;
-    const { data: originData, chart } = props;
+    const { data: originData } = props;
 
     const data = this._saveOrigin(originData);
     // 根据分类度量进行数据分组
     const records = this._groupData(data);
 
     this._createAdjust();
-
     // 根据adjust分组
     const dataArray = this._adjustData(records);
 

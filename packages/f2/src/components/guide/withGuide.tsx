@@ -47,7 +47,7 @@ export default function<IProps extends GuideProps = GuideProps>(
         const percent = rateValue / 100;
         return percent;
       }
-      // console.log('value', value, scale.scale(value));
+
       return scale.scale(value);
     }
 
@@ -70,7 +70,7 @@ export default function<IProps extends GuideProps = GuideProps>(
       const { props } = this;
       const { chart, coord, precise } = props;
       const { adjust } = chart;
-      if (precise && adjust.type === 'dodge') {
+      if (precise && adjust?.type === 'dodge') {
         const xScale = chart.getXScales()[0];
         const typeScale = chart.getColorScales()[0];
         this._numberic(record);

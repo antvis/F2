@@ -15,7 +15,7 @@ describe('precise', () => {
     ];
 
     const { props } = (
-      <Canvas context={context} pixelRatio={window.devicePixelRatio} animate={false}>
+      <Canvas context={context}>
         <Chart data={data}>
           <Axis field="月份" />
           <Axis field="月均降雨量" />
@@ -49,7 +49,7 @@ describe('precise', () => {
     const chart = new Canvas(props);
     await chart.render();
 
-    await delay(50);
+    await delay(100);
     expect(context).toMatchImageSnapshot();
   });
 });
