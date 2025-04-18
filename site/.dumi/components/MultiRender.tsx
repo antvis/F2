@@ -4,16 +4,18 @@ import { Renderer as WebGLRenderer } from '@antv/g-mobile-webgl';
 import React, { useRef, useState } from 'react';
 import Stats from 'stats.js';
 import data from './data.json';
+import { safeDocument } from '../utils';
 
-// @ts-ignore
-const stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-// const $stats = stats.dom;
-// $stats.style.position = 'relative';
-// $stats.style.left = '0px';
-// $stats.style.top = '0px';
+safeDocument((document) => {
+  const stats = new Stats();
+  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+  // const $stats = stats.dom;
+  // $stats.style.position = 'relative';
+  // $stats.style.left = '0px';
+  // $stats.style.top = '0px';
 
-document.body.insertBefore(stats.dom, document.body.firstChild);
+  document.body.insertBefore(stats.dom, document.body.firstChild);
+});
 
 function renderChart(F2, options) {
   const { Canvas, Chart, Axis, Line } = F2;
