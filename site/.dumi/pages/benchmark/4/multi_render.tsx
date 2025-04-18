@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
 import data from '../data.json';
-import { Axis, Canvas, Chart, Line } from './f2';
+import { Axis, Canvas, Chart, Line } from '../../../statics/f2_v4';
 import { safeDocument } from '../../../utils';
 
 safeDocument((document) => {

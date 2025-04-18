@@ -3,7 +3,7 @@ import Stats from 'stats.js';
 import { gestureSimulator, safeDocument } from '../../../utils';
 import data from '../data.json';
 
-import { Axis, Canvas, Chart, Line, ScrollBar } from './f2';
+import { Axis, Canvas, Chart, Line, ScrollBar } from '../../../statics/f2_v4';
 
 safeDocument((document) => {
   const stats = new Stats();

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
 import { delay, gestureSimulator, safeDocument } from '../../../utils';
 import data from '../data.json';
-import { Axis, Canvas, Chart, Line, Tooltip } from './f2';
+import { Axis, Canvas, Chart, Line, Tooltip } from '../../../statics/f2_v4';
 
 // import { Axis, Canvas, Chart, Line, Tooltip } from '@antv/f2';
 
