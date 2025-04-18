@@ -138,3 +138,13 @@ export function delay(time) {
     }, half);
   });
 }
+
+export const isBrowser = typeof window !== 'undefined' && window
+export const safeWindow = <T>(fn: (win: Window) => T): T | undefined => {
+  if (isBrowser) return fn(window)
+  return undefined
+}
+export const safeDocument = <T>(fn: (doc: Document) => T): T | undefined => {
+  if (typeof document !== 'undefined' && document) return fn(document)
+  return undefined
+}

@@ -1,17 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import Stats from 'stats.js';
-import { delay, gestureSimulator, isTouchEvent } from '../utils';
+import { delay, gestureSimulator, isTouchEvent, safeDocument } from '../utils';
 import data from './data.json';
 
-// @ts-ignore
-const stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-// const $stats = stats.dom;
-// $stats.style.position = 'relative';
-// $stats.style.left = '0px';
-// $stats.style.top = '0px';
+safeDocument((document) => {
+  const stats = new Stats();
+  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+  // const $stats = stats.dom;
+  // $stats.style.position = 'relative';
+  // $stats.style.left = '0px';
+  // $stats.style.top = '0px';
 
-document.body.insertBefore(stats.dom, document.body.firstChild);
+  document.body.insertBefore(stats.dom, document.body.firstChild);
+});
 
 function renderChart(F2, canvasEl: HTMLCanvasElement) {
   const { Axis, Canvas, Chart, Line, Tooltip } = F2;
