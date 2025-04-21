@@ -13,17 +13,10 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 
 对于不同的图形，位置的几何意义也不同，例如：
 
-<<<<<<< HEAD
-
-- [Circle](#circle) [Arc](#arc) [Sector](#sector)为圆心位置，使用 [cx/cy](#circle)
-- [Group](#group) [Rect](#rect)，[Image](#image) 为左上角顶点位置，使用 [x/y](#rect)
-- [Text](#text) 为文本锚点位置
-- # [Line](#line)，[Polyline](#polyline)，[Polygon](#polygon)，[Path](#path) 为包围盒左上角顶点位置
 - [Circle](/tutorial/shape#circle) [Arc](/tutorial/shape#arc) [Sector](/tutorial/shape#sector)为圆心位置，使用 [cx/cy](/tutorial/shape#circle)
 - [Group](/tutorial/shape#group) [Rect](/tutorial/shape#rect)，[Image](/tutorial/shape#image) 为左上角顶点位置，使用 [x/y](/tutorial/shape#rect)
 - [Text](/tutorial/shape#text) 为文本锚点位置
 - [Line](/tutorial/shape#line)，[Polyline](/tutorial/shape#polyline)，[Polygon](/tutorial/shape#polygon)，[Path](/tutorial/shape#path) 为包围盒左上角顶点位置
-  > > > > > > > 99c0f14fa (chore: 修复文档死链接)
 
 | 属性名   | 描述                |
 | -------- | ------------------- |
