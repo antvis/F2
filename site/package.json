@@ -28,7 +28,6 @@
     "dumi": "2.4.18",
     "f2-touchemulator": "~0.0.1",
     "gh-pages": "^2.1.1",
-    "lil-gui": "0.19.1",
     "stats.js": "^0.17.0"
   },
   "devDependencies": {
