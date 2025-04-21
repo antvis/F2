@@ -1,6 +1,6 @@
 require('../site/global.less');
 
-if (window) {
+if (typeof window != 'undefined' && window) {
   window.f2 = require('../src/f2').default;
   window.f2React = require('../src/f2-react').default;
   window.React = require('react');

@@ -56,25 +56,25 @@ const data = [
 
 ### crosshairsStyle: LineAttrs
 
-> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性)
+> 类型为绘图属性：[线条属性](/tutorial/shape-attrs#线条属性)
 
 十字线样式
 
 ### nameStyle: TextAttrs
 
-> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+> 类型为绘图属性：[文本属性](/tutorial/shape-attrs#文本属性)
 
 主体名称样式
 
 ### valueStyle: TextAttrs
 
-> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+> 类型为绘图属性：[文本属性](/tutorial/shape-attrs#文本属性)
 
 主体值样式
 
 ### background: RectAttrs
 
-> 类型为绘图属性：[通用属性](/zh/docs/tutorial/shape-attrs#通用属性)
+> 类型为绘图属性：[通用属性](/tutorial/shape-attrs#通用属性)
 
 主体背景样式
 
@@ -84,13 +84,13 @@ xTip 中显示的 text 定义
 
 ### xTipTextStyle：TextAttrs
 
-> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+> 类型为绘图属性：[文本属性](/tutorial/shape-attrs#文本属性)
 
 xTip 中字体样式
 
 ### xTipBackground：RectAttrs
 
-> 类型为绘图属性：[通用属性](/zh/docs/tutorial/shape-attrs#通用属性)
+> 类型为绘图属性：[通用属性](/tutorial/shape-attrs#通用属性)
 
 xTip 中背景样式
 

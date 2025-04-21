@@ -8,6 +8,8 @@ yarn-error.log*
 # lock
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
+*/pnpm-lock.yaml
 
 # Runtime data
 pids
@@ -82,3 +84,5 @@ demos/debug.html
 *.un~
 public
 .cache
+.history
+.lh

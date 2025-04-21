@@ -7,9 +7,11 @@ export default defineConfig({
     { id: 'en', name: 'English' },
   ],
   themeConfig: {
-    title: 'F2',
-    description: 'The Grammar of Graphics in JavaScript',
-    siteUrl: 'https://f2.antv.vision',
+    metas: {
+      title: 'F2',
+      description: 'The Grammar of Graphics in JavaScript',
+    },
+    siteUrl: 'https://f2.antv.antgroup.com',
     defaultLanguage: 'zh',
     feedback: true, // 开启文档用户反馈
     sitePackagePath: 'packages/site', // 文档项目相对于项目根目录的相对路径
@@ -19,6 +21,8 @@ export default defineConfig({
       token: 'd54d0b62-8070-46a5-a721-38132a34b8a1', // 此处填 Petercat token
     },
     isAntVSite: false,
+    sitemap: {}, // 开启并采用默认配置
+    deadLinkChecker: {}, // 开启并采用默认配置
     githubUrl: repository.url, // GitHub 地址
     footerTheme: 'light', // 白色 底部主题
     showSearch: true, // 是否显示搜索框
@@ -378,5 +382,7 @@ export default defineConfig({
     'https://polyfill.alicdn.com/v3/polyfill.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en',
   ],
   legacy: {},
-  mako: {},
+  ...(process.env.NODE_ENV === 'production'
+    ? { ssr: { builder: 'webpack' }, mako: false }
+    : { ssr: false, mako: {} }),
 });

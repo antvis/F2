@@ -26,7 +26,7 @@ F2 动画定义与 [Web Animations API](https://developer.mozilla.org/zh-CN/docs
 | `property` | [] | 声明需要变换的属性 |
 | `start` | Keyframe | 开始帧状态 |
 | `end` | Keyframe | 结束帧状态 |
-| `clip` | Clip | 裁剪区域动画，可参见[clip](/docs/tutorial/shape-attrs##裁剪) |
+| `clip` | Clip | 裁剪区域动画，可参见[clip](/tutorial/shape-attrs##裁剪) |
 
 #### easing
 

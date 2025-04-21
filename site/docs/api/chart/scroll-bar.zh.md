@@ -69,16 +69,16 @@ marignTop: '10px'
 
 滚动条背景样式
 
-> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
+> 类型为绘图属性：[线条属性](/tutorial/shape-attrs#线条属性) 线条样式
 
 ### barStyle: ShapeProps
 
 滑块样式
 
-> 类型为绘图属性：[线条属性](/zh/docs/tutorial/shape-attrs#线条属性) 线条样式
+> 类型为绘图属性：[线条属性](/tutorial/shape-attrs#线条属性) 线条样式
 
 ## demo 示例
 
-- [折线图平移](/zh/examples/line/line#pan)
-- [柱状图平移](/zh/examples/column/column#pan)
-- [散点图缩放平移](/zh/examples)
+- [折线图平移](/examples/line/line#pan)
+- [柱状图平移](/examples/column/column#pan)
+- [散点图缩放平移](/examples/point/scatter/#roam)

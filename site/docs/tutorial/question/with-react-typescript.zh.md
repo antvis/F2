@@ -12,7 +12,7 @@ order: 1
 ## 解决方式
 
 1. 先确定当前项目的 jsx 编译模式，打开 `tsconfig.json`
-2. 找到 `compilerOptions` 下的 `jsx` 配置项，如果没有则默认为 `react`，`react` 为 [classic](/zh/docs/tutorial/jsx-transform#classic-1) 编译模式，`react-jsx` 为 [automatic](/zh/docs/tutorial/jsx-transform#automatic-1) 编译模式
+2. 找到 `compilerOptions` 下的 `jsx` 配置项，如果没有则默认为 `react`，`react` 为 [classic](/tutorial/jsx-transform#classic-1) 编译模式，`react-jsx` 为 [automatic](/tutorial/jsx-transform#automatic-1) 编译模式
 
 ![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/bb848e34-451f-4819-909d-e31d09a122f8.png)
 
