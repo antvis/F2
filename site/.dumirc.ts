@@ -384,6 +384,7 @@ export default defineConfig({
   runtimePublicPath: {},
   headScripts: [
     'https://polyfill.alicdn.com/v3/polyfill.js?features=Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en',
+    'https://cdn.jsdelivr.net/npm/lil-gui@0.19',
   ],
   legacy: {},
   ...(process.env.NODE_ENV === 'production'
