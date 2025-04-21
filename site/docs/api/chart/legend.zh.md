@@ -85,7 +85,7 @@ const data = [
 
 ### nameStyle
 
-> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+> 类型为绘图属性：[文本属性](/tutorial/shape-attrs#文本属性)
 
 图例名称样式
 
@@ -100,7 +100,7 @@ const data = [
 
 ### valueStyle
 
-> 类型为绘图属性：[文本属性](/zh/docs/tutorial/shape-attrs#文本属性)
+> 类型为绘图属性：[文本属性](/tutorial/shape-attrs#文本属性)
 
 图例值样式
 
@@ -135,6 +135,6 @@ item 点击的回调
 
 获取图表中原始分类数据
 
-### getMaxItemBox(legendShape) 
-获取 legendShape 包围盒
+### getMaxItemBox(legendShape)
 
+获取 legendShape 包围盒

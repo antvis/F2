@@ -13,10 +13,10 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 
 对于不同的图形，位置的几何意义也不同，例如：
 
-- [Circle](/zh/tutorial/shape#circle) [Arc](/zh/tutorial/shape#arc) [Sector](/zh/tutorial/shape#sector)为圆心位置，使用 [cx/cy](/zh/tutorial/shape#circle)
-- [Group](/zh/tutorial//group) [Rect](/zh/tutorial/rect)，[Image](/zh/tutorial/image) 为左上角顶点位置，使用 [x/y](/zh/tutorial/rect)
-- [Text](/zh/tutorial/text) 为文本锚点位置
-- [Line](/zh/tutorial/line)，[Polyline](/zh/tutorial/polyline)，[Polygon](/zh/tutorial/polygon)，[Path](/zh/tutorial/path) 为包围盒左上角顶点位置
+- [Circle](#circle) [Arc](#arc) [Sector](#sector)为圆心位置，使用 [cx/cy](#circle)
+- [Group](#group) [Rect](#rect)，[Image](#image) 为左上角顶点位置，使用 [x/y](#rect)
+- [Text](#text) 为文本锚点位置
+- [Line](#line)，[Polyline](#polyline)，[Polygon](#polygon)，[Path](#path) 为包围盒左上角顶点位置
 
 | 属性名   | 描述                |
 | -------- | ------------------- |
@@ -25,7 +25,7 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 ### 通用属性
 
 | 属性名 | 描述 |
-| --- | --- |
+| --- | --- | --- |
 | `zIndex` | 控制图行显示层级。默认 0 |
 | `clip` | Clip | 创建元素的可显示区域，区域内的部分显示，区域外的隐藏。参见(./shape-attrs#裁剪) |
 | `visibility` | 控制图形的可见性。参见 [MDN]（https://developer.mozilla.org/en-US/docs/Web/CSS/visibility） |
@@ -150,4 +150,4 @@ fill: {
 
 ## 历史用法
 
-历史用法见 https://f2-v4.antv.vision/zh/docs/tutorial/shape-attrs#渐变色
+历史用法见 https://f2-v4.antv.visiondocs/tutorial/shape-attrs#渐变色

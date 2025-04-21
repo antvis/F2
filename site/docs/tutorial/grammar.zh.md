@@ -39,7 +39,7 @@ F2 同 G2 一样，基于《The Grammar of Graphics》(Leland Wilkinson 著)一�
 
 - [度量](./scale)
 
-- [几何标记](../api/geometry)
+- [几何标记](../api/chart/geometry)
 
 - [绘图属性](./shape-attrs)
 

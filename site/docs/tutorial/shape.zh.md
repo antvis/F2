@@ -7,7 +7,7 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 
 ## 如何使用
 
-详见：[图形使用](/zh/docs/tutorial/graphic)
+详见：[图形使用](/tutorial/graphic)
 
 ## 图形标签
 
@@ -35,21 +35,21 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 | `animation` | Animation | 图形动画                       |
 | `onPan` 等  | Event     | 图形事件                       |
 
-### Style [绘图属性](/zh/docs/tutorial/shape-attrs)
+### Style [绘图属性](/tutorial/shape-attrs)
 
-更多详情可见：[绘图属性](/zh/docs/tutorial/shape-attrs)
+更多详情可见：[绘图属性](/tutorial/shape-attrs)
 
-### Animation [图形动画属性](/zh/docs/tutorial/animation)
+### Animation [图形动画属性](/tutorial/animation)
 
-更多详情可见：[图形动画属性](/zh/docs/tutorial/animation)
+更多详情可见：[图形动画属性](/tutorial/animation)
 
-### Event [图形事件属性](/zh/docs/tutorial/event)
+### Event [图形事件属性](/tutorial/event)
 
-更多详情可见：[图形事件属性](/zh/docs/tutorial/event)
+更多详情可见：[图形事件属性](/tutorial/event)
 
 ### 演示
 
-- [图形标签](/zh/examples/component/shape#shape)
+- [图形标签](/examples/component/shape#shape)
 
 ## group
 
