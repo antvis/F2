@@ -7,9 +7,13 @@ export default defineConfig({
     { id: 'en', name: 'English' },
   ],
   themeConfig: {
+    title: 'F2', // 网站header标题
     metas: {
-      title: 'F2',
-      description: 'The Grammar of Graphics in JavaScript',
+      title: { zh: 'F2 移动端可视化引擎', en: 'F2 Mobile Visualization Engine' },
+      description: {
+        zh: 'F2 是一个专注于移动端，面向常规统计图表，开箱即用的可视化引擎，完美支持 H5 环境同时兼容多种环境（Node, 小程序），完备的图形语法理论，满足你的各种可视化需求，专业的移动设计指引为你带来最佳的移动端图表体验。',
+        en: 'F2 is a mobile-focused, ready-to-use visualization engine designed for standard statistical charts. It perfectly supports H5 environments while being compatible with various platforms (Node, Mini Programs). With a comprehensive graphical syntax theory, it meets all your visualization needs. Its professional mobile design guidelines provide the best charting experience on mobile devices.',
+      },
     },
     siteUrl: 'https://f2.antv.antgroup.com',
     defaultLanguage: 'zh',
