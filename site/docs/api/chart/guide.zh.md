@@ -27,7 +27,7 @@ const data = [
         <TextGuide
           records={[item]}
           content={`${sold}`}
-          attrs={{
+          style={{
             fill: '#000',
             fontSize: '24px',
           }}
