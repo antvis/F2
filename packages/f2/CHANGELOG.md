@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/antvis/f2/compare/v5.7.5...v5.8.0) (2025-04-23)
+
+
+### Features
+
+* Guide定位支持分组/堆叠等情况 ([#2041](https://github.com/antvis/f2/issues/2041)) ([e974041](https://github.com/antvis/f2/commit/e974041ffc134e0ea0f5f1f1f9834ec4091d4307))
+
+
+
+
+
 ## [5.7.5](https://github.com/antvis/f2/compare/v5.7.4...v5.7.5) (2025-01-02)
 
 
