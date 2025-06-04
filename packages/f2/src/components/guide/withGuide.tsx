@@ -1,4 +1,4 @@
-import { jsx, Component, ComponentType } from '@antv/f-engine';
+import { jsx, Component, ComponentType, ClassComponent } from '@antv/f-engine';
 import { isString, isNil, isFunction } from '@antv/util';
 import Chart, { ChartChildProps, Point } from '../../chart';
 import { computeLayout, AnimationProps } from '@antv/f-engine';
@@ -13,7 +13,7 @@ export interface GuideProps {
 
 export default function<IProps extends GuideProps = GuideProps>(
   View: ComponentType<IProps & ChartChildProps>
-): ComponentType<IProps & ChartChildProps> {
+): ClassComponent<IProps & ChartChildProps> {
   return class Guide extends Component<IProps & ChartChildProps> {
     chart: Chart;
 

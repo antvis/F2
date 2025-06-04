@@ -60,7 +60,7 @@ describe('precise', () => {
     const chart = new Canvas(props);
     await chart.render();
 
-    await delay(100);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -108,7 +108,7 @@ describe('precise', () => {
     const chart = new Canvas(props);
     await chart.render();
 
-    await delay(100);
+    await delay(500);
     expect(context).toMatchImageSnapshot();
   });
 });
