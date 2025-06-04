@@ -18,5 +18,6 @@
     "start": "npm run beforeCompile && node dist/index.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": "git@github.com:antvis/F2.git"
 }
