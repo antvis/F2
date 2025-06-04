@@ -54,32 +54,38 @@ export default function<IProps extends GuideProps = GuideProps>(
     _numberic(data) {
       const { chart } = this.props;
       const scales = [chart.getXScales()[0], chart.getYScales()[0]];
-
       const count = scales.length;
+      const newData = { ...data };
       for (let i = 0; i < count; i++) {
         const scale = scales[i];
         if (scale.isCategory) {
           const field = scale.field;
-          const value = scale.translate(data[field]);
-          data[field] = value;
+          const value = scale.translate(newData[field]);
+          newData[field] = value;
         }
       }
+      return newData;
     }
 
     parsePoint(record) {
       const { props } = this;
       const { chart, coord, precise } = props;
       const { adjust } = chart;
-      if (precise && adjust?.type === 'dodge') {
-        const xScale = chart.getXScales()[0];
-        const typeScale = chart.getColorScales()[0];
-        this._numberic(record);
-
-        adjust.adjust.getPositionInfo(record, xScale.field, record[typeScale.field]);
-      }
       const xScale = chart.getXScales()[0];
       // 只取第一个yScale
       const yScale = chart.getYScales()[0];
+      if (precise && adjust?.type === 'dodge') {
+        const xScale = chart.getXScales()[0];
+        const typeScale = chart.getColorScales()[0];
+        const numericRecord = this._numberic(record);
+
+        adjust.adjust.getPositionInfo(numericRecord, xScale.field, record[typeScale.field]);
+
+        const x = xScale.scale(numericRecord[xScale.field]);
+        const y = yScale.scale(numericRecord[yScale.field]);
+
+        return coord.convertPoint({ x, y });
+      }
 
       // 解析 record 为归一化后的坐标
       const x = this.parseReplaceStr(record[xScale.field], xScale);
