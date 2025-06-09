@@ -1,6 +1,6 @@
 {
   "name": "@antv/f2-wordcloud",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "description": "F2 wordcloud extension",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -17,7 +17,7 @@
     "wordcloud"
   ],
   "dependencies": {
-    "@antv/f2": "5.8.0",
+    "@antv/f2": "5.8.1",
     "@antv/util": "~3.3.0",
     "@babel/runtime": "^7.12.5",
     "tslib": "^2.3.1"
