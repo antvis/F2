@@ -84,8 +84,9 @@ jobs:
         id: version
         run: |
           VERSION=$(node -p "require('./packages/f2/package.json').version")
+          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "commit_message=${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+          echo "commit_message=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
       # 发布失败通知内部开发群
       - name: Release failed notify
