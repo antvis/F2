@@ -25,7 +25,7 @@ $ npm install @antv/f2
 
 - **轻巧流畅**：F2 一直致力于追求极致的性能，针对移动设备做了大量的优化，在支持丰富（50+）图表的基础上同时保持代码量的小巧（不带交互版本 gzip 压缩后 44k，带所有交互版本 56k），同时提供模块化的设计以支持动态加载，提供更优的大小。
 
-- **多端异构**：在完美支持 H5 环境的同时，同时兼容 [Node.js](https://f2.antv.vision/zh/docs/tutorial/manual/node-env)，[支付宝小程序](https://github.com/antvis/my-f2)、[微信小程序](https://github.com/antvis/wx-f2)、[React Native](https://github.com/chenshuai2144/f2-demo)以及 [Weex 端](https://github.com/weex-plugins/weex-chart)的渲染，一份代码，多设备多环境渲染。
+- **多端异构**：在完美支持 H5 环境的同时，同时兼容 [Node.js](https://f2.antv.antgroup.com/tutorial/framework/nodejs)，[支付宝小程序](https://f2.antv.antgroup.com/tutorial/framework/miniprogram)、[微信小程序](https://github.com/antvis/wx-f2)、[React Native](https://github.com/chenshuai2144/f2-demo)以及 [Weex 端](https://github.com/weex-plugins/weex-chart)的渲染，一份代码，多设备多环境渲染。
   <p align="center"><img src="https://gw.alipayobjects.com/zos/rmsportal/cPUduuYgROeJwRJSRuFK.png"></p>
 
 ### 图表丰富，组件完备
