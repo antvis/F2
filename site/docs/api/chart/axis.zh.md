@@ -34,7 +34,7 @@ const data = [
 
 ## Props
 
-部分属性可参考 scale 图表度量，度量详细介绍可见：[度量](../../tutorial/scale.zh.md)
+部分属性可参考 scale 图表度量，度量详细介绍可见：[度量](/tutorial/scale.zh.md)
 
 ### visible: boolean
 
