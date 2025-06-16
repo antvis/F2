@@ -75,6 +75,14 @@ export default defineConfig({
         order: 4,
       },
       {
+        slug: 'api/chart/guide',
+        title: {
+          zh: '标注 - Guide',
+          en: 'Guide',
+        },
+        order: 10,
+      },
+      {
         slug: 'tutorial/framework',
         title: {
           zh: '多端/框架 - Framework',
