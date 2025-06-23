@@ -1,7 +1,7 @@
 import { jsx, Component } from '@antv/f-engine';
 import { deepMix, isFunction } from '@antv/util';
 import { ChartChildProps, Point } from '../../chart';
-
+import { adjustPosition } from './spider';
 const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量
   inflectionOffset: '30px', // 拐点的偏移量
@@ -17,7 +17,8 @@ const DEFAULT_CONFIG = {
   // },
   label1OffsetY: '-4px',
   label2OffsetY: '4px',
-  adjustRatio: 0.5, // 调整高度的阈值比例
+  type: 'default', // 标签布局类型：default 或 spider
+  adjustRatio: 1 / 2, // 调整高度的阈值比例
 };
 
 function getEndPoint(center: Point, angle: number, r: number) {
@@ -49,11 +50,17 @@ function move(from, to, count, center) {
 function isFirstQuadrant(angle: number) {
   return angle >= -Math.PI / 2 && angle < 0;
 }
+// 第二象限
+function isSecondQuadrant(angle: number) {
+  return angle >= 0 && angle < Math.PI / 2;
+}
 
+function isThirdQuadrant(angle: number) {
+  return angle >= Math.PI / 2 && angle < Math.PI;
+}
 function isFourthQuadrant(angle: number) {
   return angle >= Math.PI && angle < (Math.PI * 3) / 2;
 }
-
 export interface PieLabelProps {
   anchorOffset?: string | number;
   inflectionOffset?: string | number;
@@ -89,6 +96,210 @@ export default (View) => {
     didMount() {}
 
     getLabels(props) {
+      const {
+        chart,
+        coord,
+        anchorOffset,
+        inflectionOffset,
+        label1,
+        label2,
+        height: itemHeight,
+        sidePadding,
+      } = props;
+
+      const {
+        center,
+        radius,
+        width: coordWidth,
+        height: coordHeight,
+        left: coordLeft,
+        right: coordRight,
+        top: coordTop,
+      } = coord;
+
+      const maxCountForOneSide = Math.floor(coordHeight / itemHeight);
+      const maxCount = maxCountForOneSide * 2;
+
+      const geometry = chart.getGeometrys()[0];
+      const records = geometry
+        .flatRecords()
+        // 按角度大到小排序
+        .sort((a, b) => {
+          const angle1 = a.xMax - a.xMin;
+          const angle2 = b.xMax - b.xMin;
+          return angle2 - angle1;
+        })
+        // 只取前 maxCount 个显示
+        .slice(0, maxCount);
+
+      // 存储左右 labels
+      let halves = [
+        [], // left
+        [], // right
+      ];
+      records.forEach((record) => {
+        const { xMin, xMax, color, origin } = record;
+
+        // 锚点角度
+        const anchorAngle = getMiddleAngle(xMin, xMax);
+        // 锚点坐标
+        const anchorPoint = getEndPoint(center, anchorAngle, radius + anchorOffset);
+        // 拐点坐标
+        const inflectionPoint = getEndPoint(center, anchorAngle, radius + inflectionOffset);
+        // 锚点方向
+        const side = anchorPoint.x < center.x ? 'left' : 'right';
+
+        const label = {
+          origin,
+          angle: anchorAngle,
+          anchor: anchorPoint,
+          inflection: inflectionPoint,
+          side,
+          x: inflectionPoint.x,
+          y: inflectionPoint.y,
+          r: radius + inflectionOffset,
+          color,
+          label1: isFunction(label1) ? label1(origin, record) : label1,
+          label2: isFunction(label2) ? label2(origin, record) : label2,
+        };
+
+        // 判断文本的方向
+        if (side === 'left') {
+          halves[0].push(label);
+        } else {
+          halves[1].push(label);
+        }
+      });
+
+      // 判断是有一边超过了显示的最大
+      if (halves[0].length > maxCountForOneSide) {
+        halves = move(halves[0], halves[1], halves[0].length - maxCountForOneSide, center);
+      } else if (halves[1].length > maxCountForOneSide) {
+        const [right, left] = move(
+          halves[1],
+          halves[0],
+          halves[1].length - maxCountForOneSide,
+          center
+        );
+        halves = [left, right];
+      }
+
+      // label 的最大宽度
+      const labelWidth =
+        coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
+      const labels = [];
+      halves.forEach((half, index) => {
+        const showSide = index === 0 ? 'left' : 'right';
+
+        // 顺时针方向排序
+        half.sort((a, b) => {
+          let aAngle = a.angle;
+          let bAngle = b.angle;
+          if (showSide === 'left') {
+            // 是否在第一象限
+            aAngle = isFirstQuadrant(aAngle) ? aAngle + Math.PI * 2 : aAngle;
+            bAngle = isFirstQuadrant(bAngle) ? bAngle + Math.PI * 2 : bAngle;
+            return bAngle - aAngle;
+          } else {
+            // 是否在第四象限
+            aAngle = isFourthQuadrant(aAngle) ? aAngle - Math.PI * 2 : aAngle;
+            bAngle = isFourthQuadrant(bAngle) ? bAngle - Math.PI * 2 : bAngle;
+            return aAngle - bAngle;
+          }
+        });
+
+        const pointsY = half.map((label) => label.y);
+        const maxY = Math.max.apply(null, pointsY);
+        const minY = Math.min.apply(null, pointsY);
+
+        // 每个 label 占用的高度
+        const labelCount = half.length;
+        const labelHeight = coordHeight / labelCount;
+        const halfLabelHeight = labelHeight / 2;
+        // 线之间的间隔
+        const lineInterval = 2;
+
+        if (showSide === 'left') {
+          half.forEach((label, index) => {
+            const { anchor, inflection, angle, x, y } = label;
+
+            const points = [anchor, inflection];
+            const endX = coordLeft + sidePadding;
+            const endY = coordTop + halfLabelHeight + labelHeight * index;
+
+            // 文本开始点
+            const labelStart = {
+              x: endX + labelWidth + lineInterval * index,
+              y: endY,
+            };
+            // 文本结束点
+            const labelEnd = { x: endX, y: endY };
+
+            // 第四象限
+            if (isFirstQuadrant(angle)) {
+              const pointY = minY - lineInterval * (labelCount - index);
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            } else if (isThirdQuadrant(angle) || isFourthQuadrant(angle)) {
+              points.push({ x: labelStart.x, y });
+            } else if (isSecondQuadrant(angle)) {
+              const pointY = maxY + lineInterval * index;
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            }
+
+            points.push(labelStart);
+            points.push(labelEnd);
+
+            label.points = points;
+            label.side = showSide;
+
+            labels.push(label);
+          });
+        } else {
+          half.forEach((label, index) => {
+            const { anchor, inflection, angle, x, y } = label;
+
+            // 折线的点
+            const points = [anchor, inflection];
+            const endX = coordRight - sidePadding;
+            const endY = coordTop + halfLabelHeight + labelHeight * index;
+
+            // 文本开始点
+            const labelStart = {
+              x: endX - labelWidth - lineInterval * index,
+              y: endY,
+            };
+            // 文本结束点
+            const labelEnd = { x: endX, y: endY };
+
+            // 第四象限
+            if (isFourthQuadrant(angle)) {
+              const pointY = minY - lineInterval * (labelCount - index);
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            } else if (isFirstQuadrant(angle) || isSecondQuadrant(angle)) {
+              points.push({ x: labelStart.x, y });
+            } else if (isThirdQuadrant(angle)) {
+              const pointY = maxY + lineInterval * index;
+              points.push({ x, y: pointY });
+              points.push({ x: labelStart.x, y: pointY });
+            }
+
+            points.push(labelStart);
+            points.push(labelEnd);
+
+            label.points = points;
+            label.side = showSide;
+            labels.push(label);
+          });
+        }
+      });
+
+      return labels;
+    }
+
+    getSpiderLabels = (props) => {
       const {
         chart,
         coord,
@@ -199,76 +410,22 @@ export default (View) => {
           }
         });
 
-        labels = labels.concat(this.adjustPosition(half, showSide, props, labelWidth));
+        labels = labels.concat(adjustPosition(half, showSide, props, labelWidth));
       });
 
       return labels;
-    }
-
-    adjustPosition(half, showSide, props, labelWidth) {
-      const { coord, sidePadding, adjustOffset } = props;
-      const { left: coordLeft, right: coordRight } = coord;
-      const labels = [];
-      let lastY = 0;
-      let delta;
-
-      half.forEach((label) => {
-        const { anchor, inflection, y, height } = label;
-
-        const points = [anchor, inflection];
-        const endX = showSide === 'left' ? coordLeft + sidePadding : coordRight - sidePadding;
-        let endY = y;
-        delta = y - lastY - height;
-
-        if (delta < 0) {
-          // 文本调整下去了 需要添加折线
-          endY = y - delta;
-          const point2 = {
-            x:
-              showSide === 'left'
-                ? endX + labelWidth + adjustOffset
-                : endX - labelWidth - adjustOffset,
-            y: inflection.y,
-          };
-          const point3 = {
-            x: showSide === 'left' ? endX + labelWidth : endX - labelWidth,
-            y: endY,
-          };
-
-          if (
-            Math.abs(delta) < height * props.adjustRatio ||
-            (showSide === 'right' && point2.x < inflection.x) ||
-            (showSide === 'left' && point2.x > inflection.x)
-          ) {
-            // 根据锚点位置计算拐点
-            const bendPoint = {
-              x: anchor.x + (point3.x - anchor.x) * 0.5,
-              y: endY,
-            };
-            points[1] = bendPoint;
-          } else {
-            points.push(point2);
-            points.push(point3);
-          }
-        }
-        // 文本结束点
-        const labelEnd = { x: endX, y: endY };
-        lastY = y;
-
-        points.push(labelEnd);
-
-        label.points = points;
-        label.side = showSide;
-
-        labels.push(label);
-      });
-      return labels;
-    }
+    };
 
     render() {
       const { context } = this;
       const props = context.px2hd(deepMix({}, DEFAULT_CONFIG, this.props));
-      const labels = this.getLabels(props);
+      const { type } = props;
+      let labels = [];
+      if (type === 'default') {
+        labels = this.getLabels(props);
+      } else if (type === 'spider') {
+        labels = this.getSpiderLabels(props);
+      }
       return <View labels={labels} {...props} />;
     }
   };

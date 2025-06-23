@@ -3,7 +3,7 @@ import { Canvas, Chart } from '../../../src';
 import { Interval, PieLabel } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 
-describe('PieLabel', () => {
+describe('Spider PieLabel', () => {
   it('默认显示', async () => {
     const context = createContext('默认显示', { width: '300px', height: '150px' });
     const data = [
@@ -41,6 +41,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
@@ -102,6 +103,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
@@ -125,7 +127,7 @@ describe('PieLabel', () => {
     await canvas.render();
 
     await delay(300);
-    gestureSimulator(context.canvas, 'click', { x: 266, y: 94 });
+    gestureSimulator(context.canvas, 'click', { x: 266, y: 130 });
 
     expect(onClickCallback.mock.calls[0][0].origin).toStrictEqual({
       amount: 10,
@@ -184,6 +186,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
@@ -257,6 +260,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
@@ -330,6 +334,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
@@ -404,6 +409,7 @@ describe('PieLabel', () => {
         >
           <Interval x="const" y="amount" adjust="stack" color="memo" />
           <PieLabel
+            type="spider"
             label1={(data) => {
               return {
                 text: data.memo,
