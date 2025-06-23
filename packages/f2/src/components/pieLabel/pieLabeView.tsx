@@ -9,6 +9,7 @@ export default (props) => {
     label2OffsetY,
     triggerRef,
     onClick,
+    showAnchor,
   } = props;
 
   return (
@@ -28,15 +29,17 @@ export default (props) => {
             }
           >
             {/* 锚点 */}
-            <circle
-              attrs={{
-                r: '4px',
-                cx: anchor.x,
-                cy: anchor.y,
-                fill: color,
-                ...anchorStyle,
-              }}
-            />
+            {showAnchor && (
+              <circle
+                attrs={{
+                  r: '4px',
+                  cx: anchor.x,
+                  cy: anchor.y,
+                  fill: color,
+                  ...anchorStyle,
+                }}
+              />
+            )}
             {/* 线 */}
             <polyline
               attrs={{
