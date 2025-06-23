@@ -17,6 +17,7 @@ const DEFAULT_CONFIG = {
   // },
   label1OffsetY: '-4px',
   label2OffsetY: '4px',
+  adjustRatio: 0.5, // 调整高度的阈值比例
 };
 
 function getEndPoint(center: Point, angle: number, r: number) {
@@ -64,6 +65,11 @@ export interface PieLabelProps {
    */
   triggerOn?: 'click' | 'press';
   onClick?: (ev) => void;
+  /**
+   * 调整高度的阈值比例，用于判断是否使用两段式连线
+   * @default 0.5
+   */
+  adjustRatio?: number;
 }
 
 export default (View) => {
@@ -230,10 +236,16 @@ export default (View) => {
           };
 
           if (
+            Math.abs(delta) < height * props.adjustRatio ||
             (showSide === 'right' && point2.x < inflection.x) ||
             (showSide === 'left' && point2.x > inflection.x)
           ) {
-            points[1] = point3;
+            // 根据锚点位置计算拐点
+            const bendPoint = {
+              x: anchor.x + (point3.x - anchor.x) * 0.5,
+              y: endY,
+            };
+            points[1] = bendPoint;
           } else {
             points.push(point2);
             points.push(point3);
