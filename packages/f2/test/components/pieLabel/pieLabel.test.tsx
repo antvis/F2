@@ -125,7 +125,8 @@ describe('PieLabel', () => {
     await canvas.render();
 
     await delay(300);
-    gestureSimulator(context.canvas, 'click', { x: 266, y: 94 });
+    gestureSimulator(context.canvas, 'click', { x: 266, y: 130 });
+
     expect(onClickCallback.mock.calls[0][0].origin).toStrictEqual({
       amount: 10,
       memo: 'Eat',

@@ -48,14 +48,7 @@ function move(from, to, count, center) {
 function isFirstQuadrant(angle: number) {
   return angle >= -Math.PI / 2 && angle < 0;
 }
-// 第二象限
-function isSecondQuadrant(angle: number) {
-  return angle >= 0 && angle < Math.PI / 2;
-}
 
-function isThirdQuadrant(angle: number) {
-  return angle >= Math.PI / 2 && angle < Math.PI;
-}
 function isFourthQuadrant(angle: number) {
   return angle >= Math.PI && angle < (Math.PI * 3) / 2;
 }
@@ -100,16 +93,8 @@ export default (View) => {
         height: itemHeight,
         sidePadding,
       } = props;
-
-      const {
-        center,
-        radius,
-        width: coordWidth,
-        height: coordHeight,
-        left: coordLeft,
-        right: coordRight,
-        top: coordTop,
-      } = coord;
+      const { measureText } = this.context;
+      const { center, radius, height: coordHeight, width: coordWidth } = coord;
 
       const maxCountForOneSide = Math.floor(coordHeight / itemHeight);
       const maxCount = maxCountForOneSide * 2;
@@ -131,6 +116,9 @@ export default (View) => {
         [], // left
         [], // right
       ];
+      // label 的最大宽度
+      const labelWidth =
+        coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
       records.forEach((record) => {
         const { xMin, xMax, color, origin } = record;
 
@@ -155,7 +143,13 @@ export default (View) => {
           color,
           label1: isFunction(label1) ? label1(origin, record) : label1,
           label2: isFunction(label2) ? label2(origin, record) : label2,
+          height: 0,
         };
+
+        const height =
+          measureText(label.label1.text, label.label1).height +
+          measureText(label.label2.text, label.label2).height;
+        label.height = height;
 
         // 判断文本的方向
         if (side === 'left') {
@@ -178,10 +172,7 @@ export default (View) => {
         halves = [left, right];
       }
 
-      // label 的最大宽度
-      const labelWidth =
-        coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
-      const labels = [];
+      let labels = [];
       halves.forEach((half, index) => {
         const showSide = index === 0 ? 'left' : 'right';
 
@@ -202,94 +193,63 @@ export default (View) => {
           }
         });
 
-        const pointsY = half.map((label) => label.y);
-        const maxY = Math.max.apply(null, pointsY);
-        const minY = Math.min.apply(null, pointsY);
-
-        // 每个 label 占用的高度
-        const labelCount = half.length;
-        const labelHeight = coordHeight / labelCount;
-        const halfLabelHeight = labelHeight / 2;
-        // 线之间的间隔
-        const lineInterval = 2;
-
-        if (showSide === 'left') {
-          half.forEach((label, index) => {
-            const { anchor, inflection, angle, x, y } = label;
-
-            const points = [anchor, inflection];
-            const endX = coordLeft + sidePadding;
-            const endY = coordTop + halfLabelHeight + labelHeight * index;
-
-            // 文本开始点
-            const labelStart = {
-              x: endX + labelWidth + lineInterval * index,
-              y: endY,
-            };
-            // 文本结束点
-            const labelEnd = { x: endX, y: endY };
-
-            // 第四象限
-            if (isFirstQuadrant(angle)) {
-              const pointY = minY - lineInterval * (labelCount - index);
-              points.push({ x, y: pointY });
-              points.push({ x: labelStart.x, y: pointY });
-            } else if (isThirdQuadrant(angle) || isFourthQuadrant(angle)) {
-              points.push({ x: labelStart.x, y });
-            } else if (isSecondQuadrant(angle)) {
-              const pointY = maxY + lineInterval * index;
-              points.push({ x, y: pointY });
-              points.push({ x: labelStart.x, y: pointY });
-            }
-
-            points.push(labelStart);
-            points.push(labelEnd);
-
-            label.points = points;
-            label.side = showSide;
-
-            labels.push(label);
-          });
-        } else {
-          half.forEach((label, index) => {
-            const { anchor, inflection, angle, x, y } = label;
-
-            // 折线的点
-            const points = [anchor, inflection];
-            const endX = coordRight - sidePadding;
-            const endY = coordTop + halfLabelHeight + labelHeight * index;
-
-            // 文本开始点
-            const labelStart = {
-              x: endX - labelWidth - lineInterval * index,
-              y: endY,
-            };
-            // 文本结束点
-            const labelEnd = { x: endX, y: endY };
-
-            // 第四象限
-            if (isFourthQuadrant(angle)) {
-              const pointY = minY - lineInterval * (labelCount - index);
-              points.push({ x, y: pointY });
-              points.push({ x: labelStart.x, y: pointY });
-            } else if (isFirstQuadrant(angle) || isSecondQuadrant(angle)) {
-              points.push({ x: labelStart.x, y });
-            } else if (isThirdQuadrant(angle)) {
-              const pointY = maxY + lineInterval * index;
-              points.push({ x, y: pointY });
-              points.push({ x: labelStart.x, y: pointY });
-            }
-
-            points.push(labelStart);
-            points.push(labelEnd);
-
-            label.points = points;
-            label.side = showSide;
-            labels.push(label);
-          });
-        }
+        labels = labels.concat(this.adjustPosition(half, showSide, props, labelWidth));
       });
 
+      return labels;
+    }
+
+    adjustPosition(half, showSide, props, labelWidth) {
+      const { coord, sidePadding, adjustOffset } = props;
+      const { left: coordLeft, right: coordRight } = coord;
+      const labels = [];
+      let lastY = 0;
+      let delta;
+
+      half.forEach((label) => {
+        const { anchor, inflection, y, height } = label;
+
+        const points = [anchor, inflection];
+        const endX = showSide === 'left' ? coordLeft + sidePadding : coordRight - sidePadding;
+        let endY = y;
+        delta = y - lastY - height;
+
+        if (delta < 0) {
+          // 文本调整下去了 需要添加折线
+          endY = y - delta;
+          const point2 = {
+            x:
+              showSide === 'left'
+                ? endX + labelWidth + adjustOffset
+                : endX - labelWidth - adjustOffset,
+            y: inflection.y,
+          };
+          const point3 = {
+            x: showSide === 'left' ? endX + labelWidth : endX - labelWidth,
+            y: endY,
+          };
+
+          if (
+            (showSide === 'right' && point2.x < inflection.x) ||
+            (showSide === 'left' && point2.x > inflection.x)
+          ) {
+            points[1] = point3;
+          } else {
+            points.push(point2);
+            points.push(point3);
+          }
+        }
+        // 文本结束点
+        const labelEnd = { x: endX, y: endY };
+        lastY = y;
+
+        points.push(labelEnd);
+
+        label.points = points;
+        label.side = showSide;
+
+        labels.push(label);
+      });
       return labels;
     }
 
