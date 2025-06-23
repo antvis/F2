@@ -77,6 +77,11 @@ export interface PieLabelProps {
    * @default 0.5
    */
   adjustRatio?: number;
+  /**
+   * 布局类型
+   *
+   */
+  type?: 'default' | 'spider';
 }
 
 export default (View) => {
