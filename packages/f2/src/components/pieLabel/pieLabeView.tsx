@@ -58,7 +58,6 @@ export default (props) => {
                 fontSize: '24px',
                 lineHeight: '24px',
                 fill: color,
-                textBaseline: 'bottom',
                 textAlign: side === 'left' ? 'left' : 'right',
                 ...label1,
               }}

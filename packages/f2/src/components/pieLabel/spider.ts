@@ -11,7 +11,8 @@ export const adjustPosition = (half, showSide, props, labelWidth) => {
     const points = [anchor, inflection];
     const endX = showSide === 'left' ? coordLeft + sidePadding : coordRight - sidePadding;
     let endY = y;
-    delta = y - lastY - height;
+
+    delta = y - lastY - (lastY === 0 ? 0.5 * height : height);
 
     if (delta < 0) {
       // 文本调整下去了 需要添加折线
@@ -44,7 +45,7 @@ export const adjustPosition = (half, showSide, props, labelWidth) => {
     }
     // 文本结束点
     const labelEnd = { x: endX, y: endY };
-    lastY = y;
+    lastY = delta < 0 ? y - delta : y;
 
     points.push(labelEnd);
 

@@ -9,12 +9,12 @@ const DEFAULT_CONFIG = {
   height: '64px', // 文本的行高
   adjustOffset: '30', // 发生调整时的偏移量
   triggerOn: 'click', // 点击行为触发的时间类型
-  activeShape: true, // 当有图形被选中的时候，是否激活图形
-  activeStyle: {
-    offset: '1px',
-    appendRadius: '8px',
-    fillOpacity: 0.5,
-  },
+  // activeShape: true, // 当有图形被选中的时候，是否激活图形
+  // activeStyle: {
+  //   offset: '1px',
+  //   appendRadius: '8px',
+  //   fillOpacity: 0.5,
+  // },
   label1OffsetY: '-4px',
   label2OffsetY: '4px',
   type: 'default', // 标签布局类型：default 或 spider
@@ -315,8 +315,10 @@ export default (View) => {
         label2,
         height: itemHeight,
         sidePadding,
+        label1OffsetY,
+        label2OffsetY,
       } = props;
-      const { measureText } = this.context;
+      const { measureText, px2hd } = this.context;
       const { center, radius, height: coordHeight, width: coordWidth } = coord;
 
       const maxCountForOneSide = Math.floor(coordHeight / itemHeight);
@@ -370,8 +372,20 @@ export default (View) => {
         };
 
         const height =
-          measureText(label.label1.text, label.label1).height +
-          measureText(label.label2.text, label.label2).height;
+          measureText(label.label1.text, {
+            fontSize: '24px',
+            lineHeight: '24px',
+            ...label.label1,
+          }).height +
+          measureText(label.label2.text, {
+            fontSize: '24px',
+            lineHeight: '24px',
+            ...label.label2,
+          }).height +
+          px2hd(label1OffsetY) +
+          px2hd(label2OffsetY) +
+          2;
+
         label.height = height;
 
         // 判断文本的方向
@@ -396,6 +410,7 @@ export default (View) => {
       }
 
       let labels = [];
+
       halves.forEach((half, index) => {
         const showSide = index === 0 ? 'left' : 'right';
 
