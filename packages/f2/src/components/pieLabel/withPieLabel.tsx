@@ -6,7 +6,6 @@ const DEFAULT_CONFIG = {
   anchorOffset: '10px', // 锚点的偏移量
   inflectionOffset: '30px', // 拐点的偏移量
   sidePadding: '15px', // 文本距离画布四边的距离
-  height: '64px', // 文本的行高
   adjustOffset: '30', // 发生调整时的偏移量
   triggerOn: 'click', // 点击行为触发的时间类型
   // activeShape: true, // 当有图形被选中的时候，是否激活图形
@@ -18,7 +17,7 @@ const DEFAULT_CONFIG = {
   label1OffsetY: '-4px',
   label2OffsetY: '4px',
   type: 'default', // 标签布局类型：default 或 spider
-  adjustRatio: 1 / 2, // 调整高度的阈值比例
+  adjustRatio: 1, // 调整高度的阈值比例
   showAnchor: true,
 };
 
@@ -75,7 +74,7 @@ export interface PieLabelProps {
   onClick?: (ev) => void;
   /**
    * 调整高度的阈值比例，用于判断是否使用两段式连线
-   * @default 0.5
+   * @default 1
    */
   adjustRatio?: number;
   /**
@@ -102,6 +101,7 @@ export default (View) => {
     didMount() {}
 
     getLabels(props) {
+      const { context } = this;
       const {
         chart,
         coord,
@@ -109,7 +109,7 @@ export default (View) => {
         inflectionOffset,
         label1,
         label2,
-        height: itemHeight,
+        height: itemHeight = context.px2hd('64px'),
         sidePadding,
       } = props;
 
@@ -320,14 +320,33 @@ export default (View) => {
       } = props;
       const { measureText, px2hd } = this.context;
       const { center, radius, height: coordHeight, width: coordWidth } = coord;
+      const geometry = chart.getGeometrys()[0];
+      const records = geometry.flatRecords();
 
-      const maxCountForOneSide = Math.floor(coordHeight / itemHeight);
+      // 高度计算，拿第一项数据作为计算依据
+      const label1Text = isFunction(label1) ? label1(records[0]?.origin, records[0]) : label1;
+      const label2Text = isFunction(label2) ? label2(records[0]?.origin, records[0]) : label2;
+      const height =
+        measureText(label1Text.text, {
+          fontSize: '24px',
+          lineHeight: '24px',
+          ...label1Text,
+        }).height +
+        measureText(label2Text.text, {
+          fontSize: '24px',
+          lineHeight: '24px',
+          ...label2Text,
+        }).height +
+        px2hd(label1OffsetY) +
+        px2hd(label2OffsetY) +
+        2;
+
+      const maxCountForOneSide = Math.floor(coordHeight / (itemHeight || height));
+
       const maxCount = maxCountForOneSide * 2;
 
-      const geometry = chart.getGeometrys()[0];
-      const records = geometry
-        .flatRecords()
-        // 按角度大到小排序
+      // 按角度大到小排序
+      const showrecords = records
         .sort((a, b) => {
           const angle1 = a.xMax - a.xMin;
           const angle2 = b.xMax - b.xMin;
@@ -344,7 +363,7 @@ export default (View) => {
       // label 的最大宽度
       const labelWidth =
         coordWidth / 2 - radius - anchorOffset - inflectionOffset - 2 * sidePadding;
-      records.forEach((record) => {
+      showrecords.forEach((record) => {
         const { xMin, xMax, color, origin } = record;
 
         // 锚点角度
@@ -368,25 +387,8 @@ export default (View) => {
           color,
           label1: isFunction(label1) ? label1(origin, record) : label1,
           label2: isFunction(label2) ? label2(origin, record) : label2,
-          height: 0,
+          height: height,
         };
-
-        const height =
-          measureText(label.label1.text, {
-            fontSize: '24px',
-            lineHeight: '24px',
-            ...label.label1,
-          }).height +
-          measureText(label.label2.text, {
-            fontSize: '24px',
-            lineHeight: '24px',
-            ...label.label2,
-          }).height +
-          px2hd(label1OffsetY) +
-          px2hd(label2OffsetY) +
-          2;
-
-        label.height = height;
 
         // 判断文本的方向
         if (side === 'left') {
@@ -431,7 +433,7 @@ export default (View) => {
           }
         });
 
-        labels = labels.concat(adjustPosition(half, showSide, props, labelWidth));
+        labels = labels.concat(adjustPosition(half, showSide, props, labelWidth, center, radius));
       });
 
       return labels;
