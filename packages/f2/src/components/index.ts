@@ -32,4 +32,6 @@ export {
   withCandlestick,
   CandlestickView,
 } from './candlestick';
+
+export { default as Layout, ChartLayoutProps } from './layout';
 export { default as Pictorial, PictorialProps } from './pictorial';
