@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/antvis/f2/compare/v5.8.1...v5.9.0) (2025-06-30)
+
+
+### Bug Fixes
+
+* height计算 ([#2076](https://github.com/antvis/f2/issues/2076)) ([004d347](https://github.com/antvis/f2/commit/004d347306146fe53a7c77d00216553b65fa57f6))
+* ts error ([#2078](https://github.com/antvis/f2/issues/2078)) ([682b942](https://github.com/antvis/f2/commit/682b94227c16babb9a2d351c36d2eb1a3edb8038))
+* 修复高度计算逻辑 ([#2074](https://github.com/antvis/f2/issues/2074)) ([502a9b8](https://github.com/antvis/f2/commit/502a9b8088199365094083409953ae5d3b5ea169))
+
+
+### Features
+
+* 优化饼图显示 ([#2071](https://github.com/antvis/f2/issues/2071)) ([1fa7bc0](https://github.com/antvis/f2/commit/1fa7bc032f75f82f982b33f01c2aa87f55d2c597))
+* 增加showAnchor字段 ([#2072](https://github.com/antvis/f2/issues/2072)) ([a7714a0](https://github.com/antvis/f2/commit/a7714a0e4c2b9a09d02836959258c0fee8f7795d))
+
+
+
+
+
 ## [5.8.1](https://github.com/antvis/f2/compare/v5.8.0...v5.8.1) (2025-06-09)
 
 
