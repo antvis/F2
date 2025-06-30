@@ -433,7 +433,7 @@ export default (View) => {
           }
         });
 
-        labels = labels.concat(adjustPosition(half, showSide, props, labelWidth, center, radius));
+        labels = labels.concat(adjustPosition(half, showSide, props, labelWidth));
       });
 
       return labels;
