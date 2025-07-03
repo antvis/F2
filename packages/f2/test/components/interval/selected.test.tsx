@@ -274,6 +274,61 @@ describe('数据选中', () => {
     await delay(200);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('饼图props.y特殊字段取值', async () => {
+    const fields = ['color', 'normalized', 'x', 'y', 'shapeName', 'shape', 'selected'];
+    let baselineContext = null;
+    
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
+      const newData = data.map(d => ({ a: d.a, genre: d.genre, [field]: d.sold }));
+      const context = createContext();
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} animate={false}>
+          <Chart
+            data={newData}
+            coord={{
+              radius: 0.8,
+              type: 'polar',
+              transposed: true,
+            }}
+          >
+            <Interval
+              x="a"
+              y={field}
+              adjust="stack"
+              color="genre"
+              selection={{
+                selectedStyle: (record) => {
+                  const { yMax, yMin } = record;
+                  return {
+                    r: (yMax - yMin) * 1.1,
+                  };
+                },
+                unSelectedStyle: {},
+              }}
+            />
+          </Chart>
+        </Canvas>
+      );
+      const canvas = new Canvas(props);
+      await canvas.render();
+      await delay(200);
+  
+      // 选中
+      await gestureSimulator(context.canvas, 'click', { x: 144, y: 68 });
+      await delay(200);
+      
+      if (!baselineContext) {
+        // 快照对比
+        expect(context).toMatchImageSnapshot();
+        baselineContext = context;
+      } else {
+        // DataURL 对比
+        expect(context.canvas.toDataURL()).toBe(baselineContext.canvas.toDataURL());
+      }
+    }
+  });
 });
 
 describe('cancelable = false', () => {

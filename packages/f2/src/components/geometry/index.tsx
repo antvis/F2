@@ -29,6 +29,8 @@ const AdjustMap = {
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
 
+const OVERRIDE_FIELDS = ['color', 'normalized', 'x', 'y', 'shapeName', 'shape', 'selected'];
+
 export type GeometryType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
 
 export interface ColorAttrObject {
@@ -556,6 +558,9 @@ class Geometry<
         const shape = this._getShapeStyle(shapeName, origin);
         const selected = this.isSelected(child);
 
+        // `this.records` 中 color, normalized, x, y, shapeName, shape, selected 等属性会被覆盖, 
+        // 当饼图 Interval 的 y 值设置为上面的属性字段时, `this._getYSnapRecords` 方法中无法从 `this.records` 上获取原始值,
+        // 为保持兼容性, 使用 `OVERRIDE_FIELDS` 来记录会被覆盖的属性, 以便从 `this.dataRecords` 中获取原始值
         mappedChildren.push({
           ...child,
           ...attrValues,
@@ -659,10 +664,14 @@ class Geometry<
     if (yScale.isCategory) {
       return records.filter((record) => record[FIELD_ORIGIN][yField] === yValue);
     }
+
+    // 与 `this._mapping` 返回的中的 item 一一对应
+    const originRecordList = flatten(this.dataRecords.map((r) => r.children));
     // linear
-    return records.filter((record) => {
-      const rangeY = record[yField];
-      if (rangeY[0] <= yValue && rangeY[1] >= yValue) {
+    return records.filter((record, idx) => {
+      const isOverrideField = OVERRIDE_FIELDS.includes(yField);
+      const rangeY = isOverrideField ? originRecordList[idx]?.[yField] : record[yField];
+      if (rangeY?.[0] <= yValue && rangeY?.[1] >= yValue) { 
         return true;
       }
       return false;
