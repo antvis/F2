@@ -11,36 +11,124 @@ order: 0
 
 - [文本标注](./demo/text.jsx)：在图表中添加文本标注信息。
 
-```jsx
-import { jsx, Canvas, Chart, Guide } from '@antv/f2';
+  ```jsx
+  <TextGuide
+    position={['50%', '50%']}
+    content="标注文本"
+    style={{
+      fill: '#999',
+      fontSize: '12px',
+      textAlign: 'center',
+    }}
+  />
+  ```
 
-const { props } = (
-  <Canvas context={context}>
-    <Chart data={data}>
-      <Guide>
-        <Guide.Text
-          position={['50%', '50%']}
-          content="标注文本"
-          style={{
-            fill: '#999',
-            fontSize: '12px',
-            textAlign: 'center',
-          }}
-        />
-      </Guide>
-    </Chart>
-  </Canvas>
-);
-```
+- [点标注](./demo/point.jsx)：添加点标记标注。
+
+  ```jsx
+  <PointGuide
+    position={['2024-01', 200]}
+    style={{
+      r: 4,
+      fill: '#FF5733',
+      stroke: '#fff',
+      lineWidth: 2,
+    }}
+  />
+  ```
+
+- [线标注](./demo/line.jsx)：添加线条标注。
+
+  ```jsx
+  <LineGuide
+    start={['2024-01', 100]}
+    end={['2024-06', 100]}
+    style={{
+      stroke: '#1890FF',
+      lineWidth: 2,
+      lineDash: [4, 4],
+    }}
+  />
+  ```
+
+- [图像标注](./demo/image.jsx)：使用图像作为标注。
+
+  ```jsx
+  <ImageGuide
+    position={['2024-03', 150]}
+    src="https://example.com/icon.png"
+    width={24}
+    height={24}
+  />
+  ```
+
+- [阶梯线标注](./demo/linestep.jsx)：阶梯形线条标注。
+
+  ```jsx
+  <LineGuide
+    start={['2024-01', 100]}
+    end={['2024-06', 200]}
+    style={{
+      stroke: '#52C41A',
+      lineWidth: 2,
+    }}
+    shape="hv"
+  />
+  ```
+
+- [动画标注](./demo/lottie.jsx)：带有动画效果的标注。
+
+  ```jsx
+  <LottieGuide
+    position={['2024-04', 180]}
+    src="https://assets.lottiefiles.com/data.json"
+    width={40}
+    height={40}
+    loop
+  />
+  ```
 
 ### 进阶用法
 
-- [点标注](./demo/point.jsx)：添加点标记标注。
-- [线标注](./demo/line.jsx)：添加线条标注。
 - [自定义标注](./demo/custom.jsx)：自定义样式的标注组件。
-- [图像标注](./demo/image.jsx)：使用图像作为标注。
-- [阶梯线标注](./demo/linestep.jsx)：阶梯形线条标注。
-- [动画标注](./demo/lottie.jsx)：带有动画效果的标注。
+
+  ```jsx
+  import { withGuide } from '@antv/f2';
+
+  const Guide = withGuide((props) => {
+    const { points, style, animation } = props;
+
+    const start = points[0] || {};
+    const end = points[1] || {};
+
+    const x = Math.min(start.x, end.x);
+    const y = Math.min(start.y, end.y);
+
+    return (
+      <group>
+        <text
+          style={{
+            x,
+            y,
+            text: '文本',
+            stroke: 'red',
+            strokeOpacity: 0.4,
+          }}
+        />
+        <rect
+          style={{
+            x,
+            y,
+            width: Math.abs(end.x - start.x),
+            height: Math.abs(start.y - end.y),
+            ...style,
+          }}
+          animation={animation}
+        />
+      </group>
+    );
+  });
+  ```
 
 ## 使用场景
 
