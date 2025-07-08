@@ -33,3 +33,4 @@ export {
   CandlestickView,
 } from './candlestick';
 export { default as Pictorial, PictorialProps } from './pictorial';
+export { default as Magnifier, MagnifierProps } from './magnifier';
