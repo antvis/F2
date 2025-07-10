@@ -2,12 +2,17 @@
 title: 点标注 - PointGuide
 ---
 
-## 用法
+## Usage 用法
 
 ```jsx
 import { PointGuide } from '@antv/f2';
 
-<PointGuide records={[{ genre: 'Sports', sold: 5 }]} offsetX={10} offsetY={-10} style={{ fill: '#f00' }} />
+<PointGuide
+  records={[{ genre: 'Sports', sold: 5 }]}
+  offsetX={10}
+  offsetY={-10}
+  style={{ fill: '#f00' }}
+/>;
 ```
 
 ## Props

@@ -2,7 +2,7 @@
 title: 图片标注 - ImageGuide
 ---
 
-## 用法
+## Usage 用法
 
 ```jsx
 import { ImageGuide } from '@antv/f2';
@@ -13,7 +13,7 @@ import { ImageGuide } from '@antv/f2';
   attrs={{ width: 24, height: 24 }}
   offsetX={0}
   offsetY={0}
-/>
+/>;
 ```
 
 ## Props

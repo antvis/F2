@@ -2,7 +2,7 @@
 title: 标签标注 - TagGuide
 ---
 
-## 用法
+## Usage 用法
 
 ```jsx
 import { TagGuide } from '@antv/f2';
@@ -13,7 +13,7 @@ import { TagGuide } from '@antv/f2';
   direct="tr"
   background={{ fill: '#fff' }}
   textStyle={{ fill: '#000' }}
-/>
+/>;
 ```
 
 ## Props

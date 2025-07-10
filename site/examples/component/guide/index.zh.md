@@ -12,22 +12,36 @@ order: 0
 - [文本标注](./demo/text.jsx)：在图表中添加文本标注信息。
 
   ```jsx
-  <TextGuide
-    position={['50%', '50%']}
-    content="标注文本"
-    style={{
-      fill: '#999',
-      fontSize: '12px',
-      textAlign: 'center',
-    }}
-  />
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart data={data}>
+      <Interval x="genre" y="sold" />
+      {data.map((item) => {
+        const { sold } = item;
+        return (
+          <TextGuide
+            records={[item]}
+            onClick={(ev) => {
+              console.log('ev: ', ev.points);
+            }}
+            content={`${sold}`}
+            style={{
+              fill: '#000',
+              fontSize: '24px',
+            }}
+            offsetY={-20}
+            offsetX={-15}
+          />
+        );
+      })}
+    </Chart>
+  </Canvas>
   ```
 
 - [点标注](./demo/point.jsx)：添加点标记标注。
 
   ```jsx
   <PointGuide
-    position={['2024-01', 200]}
+    records={[{ x: '2024-01', y: 200 }]}
     style={{
       r: 4,
       fill: '#FF5733',
@@ -41,8 +55,10 @@ order: 0
 
   ```jsx
   <LineGuide
-    start={['2024-01', 100]}
-    end={['2024-06', 100]}
+    records={[
+      { genre: 'min', sold: '50%' },
+      { genre: 'max', sold: '50%' },
+    ]}
     style={{
       stroke: '#1890FF',
       lineWidth: 2,
@@ -51,16 +67,41 @@ order: 0
   />
   ```
 
+- [矩形标注](./demo/rect.jsx)：在图表中添加矩形面积。
+
+  ```jsx
+  <RectGuide
+    records={[data[0], data[1]]}
+    style={{ fill: 'yellow', fillOpacity: 0.5 }}
+    offsetX="-24px"
+    offsetY="24px"
+  />
+  ```
+
 - [图像标注](./demo/image.jsx)：使用图像作为标注。
 
   ```jsx
   <ImageGuide
-    position={['2024-03', 150]}
+    records={[{ x: '2024-01', y: 200 }]}
     src="https://example.com/icon.png"
     width={24}
     height={24}
   />
   ```
+
+- [标记标注](./demo/tag.jsx)
+
+```jsx
+import { TagGuide } from '@antv/f2';
+
+<TagGuide
+  records={[{ genre: 'Sports', sold: 5 }]}
+  content="标签内容"
+  direct="tr"
+  background={{ fill: '#fff' }}
+  textStyle={{ fill: '#000' }}
+/>;
+```
 
 - [阶梯线标注](./demo/linestep.jsx)：阶梯形线条标注。
 
@@ -80,7 +121,7 @@ order: 0
 
   ```jsx
   <LottieGuide
-    position={['2024-04', 180]}
+    records={[{ x: '2024-01', y: 200 }]}
     src="https://assets.lottiefiles.com/data.json"
     width={40}
     height={40}
