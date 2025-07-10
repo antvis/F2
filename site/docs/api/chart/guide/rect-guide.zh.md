@@ -1,14 +1,14 @@
 ---
-title: 辅助线标注 - LineGuide
+title: 矩形标注 - RectGuide
 ---
 
 ## Usage 用法
 
 ```jsx
-import { LineGuide } from '@antv/f2';
+import { RectGuide } from '@antv/f2';
 
-<LineGuide
-  records={[{ genre: 'min', sold: 'max' }]}
+<RectGuide
+  records={[{ genre: 'min', sold: 'min' }，{ genre: 'max', sold: 'max' }]}
   style={{ stroke: '#f00', lineWidth: 2 }}
   offsetX={0}
   offsetY={0}
@@ -18,10 +18,10 @@ import { LineGuide } from '@antv/f2';
 ## Props
 
 - **records: Array**  
-  标注的数据项或比例值
+  矩形两个顶点对应的位置
 - **offsetX: number**  
   x 轴偏移量
 - **offsetY: number**  
   y 轴偏移量
 - **style**  
-  线样式
+  rect 样式

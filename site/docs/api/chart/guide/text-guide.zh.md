@@ -2,7 +2,7 @@
 title: 文本标注 - TextGuide
 ---
 
-## 用法
+## Usage 用法
 
 ```jsx
 import { TextGuide } from '@antv/f2';
@@ -13,7 +13,7 @@ import { TextGuide } from '@antv/f2';
   offsetX={-15}
   offsetY={-20}
   style={{ fill: '#000', fontSize: '24px' }}
-/>
+/>;
 ```
 
 ## Props
