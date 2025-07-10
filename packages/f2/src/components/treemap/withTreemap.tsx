@@ -234,6 +234,7 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
       const nodes = this.treemapLayout();
       this.records = nodes;
       const { props, coord } = this;
+      const { selected } = this.state;
       const { width, height } = coord.getCoord();
 
       return (
@@ -246,7 +247,7 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
           onClick={(ev) => this.select(ev, 'click')}
           onPress={(ev) => this.select(ev, 'press')}
         >
-          <View nodes={nodes} {...props} coord={coord.getCoord()} />
+          <View nodes={nodes} selected={selected} {...props} coord={coord.getCoord()} />
         </group>
       );
     }
