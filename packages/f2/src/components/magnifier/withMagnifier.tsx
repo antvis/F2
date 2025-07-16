@@ -6,8 +6,8 @@ import { isNil } from '@antv/util';
 export interface MagnifierProps {
   focusX: number; // 放大镜当前聚焦点索引
   windowSize: number; // 放大镜窗口对应的数据宽度，比如 10
-  radius?: number;
-  position?: [number, number];
+  radius?: number | string; // 放大镜半径，支持 px
+  position?: [number, number] | [string, string]; // 放大镜中心位置
   chart?: any;
   style?: {
     [key: string]: any;
@@ -26,8 +26,8 @@ export interface MagnifierProps {
 export default (View) => {
   return class Magnifier extends Component<MagnifierProps> {
     createFocusAttrController() {
-      const { chart, focusX, windowSize, position, radius } = this.props;
-
+      const { chart, focusX, windowSize } = this.props;
+      const { position, radius } = this.context.px2hd(this.props);
       const geometries = chart?.getGeometrys();
       if (!geometries?.length) return null;
       const geometry = geometries[0];
@@ -60,7 +60,8 @@ export default (View) => {
     }
 
     mapping() {
-      const { position, radius, chart, lines } = this.props;
+      const { chart, lines } = this.props;
+      const { position, radius } = this.context.px2hd(this.props);
       const { attrController, focusData } = this.createFocusAttrController();
 
       const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
@@ -160,7 +161,7 @@ export default (View) => {
     }
 
     render() {
-      const { radius } = this.props;
+      const { radius } = this.context.px2hd(this.props);
       const { pointsData, linesData } = this.mapping();
       return <View {...this.props} pointsData={pointsData} radius={radius} linesData={linesData} />;
     }

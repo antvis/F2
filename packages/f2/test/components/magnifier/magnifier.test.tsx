@@ -1,6 +1,5 @@
 import { Canvas, jsx, Magnifier, Line, Chart, LineGuide } from '../../../src';
 import { createContext, delay } from '../../util';
-
 // 优化后的固定数据，带有波动
 const data = [
   {
@@ -218,8 +217,8 @@ describe('Magnifier', () => {
           <Magnifier
             focusX={data.length - 15}
             windowSize={4}
-            radius={40}
-            position={[450, 50]}
+            radius={'40px'}
+            position={['450px', '50px']}
             style={{
               background: '#fff',
               boxShadow: '0 2px 8px rgba(24,144,255,0.15)',

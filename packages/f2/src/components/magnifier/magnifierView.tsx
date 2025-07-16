@@ -24,7 +24,7 @@ export default (props) => {
           cx,
           cy,
           r: radius,
-          fill: 'white',
+          fill: 'transparent',
           stroke: '#d8d8d8',
           lineWidth: '2px',
           ...style,

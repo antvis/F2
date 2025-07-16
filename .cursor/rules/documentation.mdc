@@ -1,0 +1,68 @@
+# F2 Documentation Guidelines
+
+This document outlines the standards for writing and maintaining documentation in the F2 visualization library.
+
+## General Guidelines
+
+- Write in clear, concise language
+- Use active voice when possible
+- Keep sentences and paragraphs short
+- Use proper spelling, grammar, and punctuation
+- Use consistent terminology throughout the documentation
+- Include code examples for complex concepts
+- Update documentation when changing related code
+
+## Markdown Style
+
+- Use ATX-style headers (`#` for h1, `##` for h2, etc.)
+- Use backticks for inline code references
+- Use fenced code blocks with language specifiers for multi-line code examples
+- Use bullet lists for unordered items
+- Use numbered lists for sequential steps
+- Use tables for structured data
+- Use proper link syntax `[text](url)` for hyperlinks
+- Use images sparingly and provide alt text
+
+## API Documentation
+
+- Document all public APIs
+- Include descriptions for parameters and return values
+- Specify parameter types and whether they are optional
+- Provide usage examples
+- Document default values
+- Mention any side effects or exceptions
+
+## Example Structure
+
+Each example should include:
+
+1. A clear title describing what the example demonstrates
+2. A brief description of the purpose and use case
+3. Complete, runnable code
+4. Expected output or visualization
+5. Explanation of key concepts or techniques used
+
+## Multilingual Documentation
+
+- Maintain both English (`.en.md`) and Chinese (`.zh.md`) versions of documentation
+- Ensure consistent terminology between language versions
+- Update both language versions when making changes
+- Follow the translation guidelines in the translation.mdc file
+
+## Directory Structure
+
+- Place API documentation in `site/docs/api/`
+- Place tutorials in `site/docs/tutorial/`
+- Place examples in `site/examples/`
+- Use consistent file naming across directories
+
+## Best Practices
+
+- Keep documentation up-to-date with code changes
+- Review documentation regularly for accuracy
+- Test code examples to ensure they work as described
+- Seek feedback from users on documentation clarity
+- Use screenshots or diagrams to illustrate complex concepts
+- Link to related documentation when appropriate
+
+Following these guidelines will help maintain high-quality, consistent documentation throughout the F2 project.

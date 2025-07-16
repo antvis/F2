@@ -1,0 +1,91 @@
+# F2 Code Style Guidelines
+
+This document outlines the coding standards and best practices for the F2 visualization library.
+
+## TypeScript/JavaScript Style Guidelines
+
+### General Formatting
+
+- Use 2 spaces for indentation
+- Use single quotes for strings
+- Maximum line length: 100 characters
+- Use trailing commas in multi-line object literals and arrays
+- Use semicolons at the end of statements
+- Use LF line endings
+- Insert final newline at the end of files
+- Trim trailing whitespace
+
+### Naming Conventions
+
+- **Components**: Use PascalCase for component names (e.g., `LineChart`, `AreaSeries`)
+- **Functions**: Use camelCase for function names (e.g., `calculatePosition`, `formatData`)
+- **Variables**: Use camelCase for variable names (e.g., `dataSource`, `chartConfig`)
+- **Constants**: Use UPPER_SNAKE_CASE for constants (e.g., `DEFAULT_THEME`, `MAX_DATA_POINTS`)
+- **Interfaces/Types**: Use PascalCase with a descriptive name (e.g., `ChartProps`, `PointData`)
+- **Files**: Use kebab-case for file names (e.g., `line-chart.tsx`, `data-processor.ts`)
+
+### Component Structure
+
+- Each React component should be in its own file
+- Component props should be defined using TypeScript interfaces
+- Export components as named exports, not default exports
+- Keep components focused on a single responsibility
+- Use functional components with hooks instead of class components when possible
+
+### Code Organization
+
+- Group related functions and constants together
+- Place imports at the top of the file, grouped by:
+  1. External libraries
+  2. Internal modules
+  3. Local imports (from the same directory)
+- Export public API from index files
+
+### Documentation
+
+- Use JSDoc comments for functions, classes, and interfaces
+- Document parameters, return values, and thrown exceptions
+- Include examples for complex functions or components
+- Keep comments up-to-date with code changes
+
+### Best Practices
+
+- Avoid using `any` type in TypeScript
+- Use optional chaining (`?.`) and nullish coalescing (`??`) operators
+- Prefer early returns to reduce nesting
+- Use destructuring for props and state
+- Avoid magic numbers, use named constants
+- Write unit tests for critical functionality
+- Use meaningful variable and function names
+- Avoid unnecessary comments that just repeat what the code does
+
+## Visualization-Specific Guidelines
+
+### Chart Components
+
+- Follow a consistent API pattern across different chart types
+- Separate data processing logic from rendering logic
+- Implement proper accessibility features (ARIA attributes, keyboard navigation)
+- Support responsive layouts by default
+
+### Performance
+
+- Optimize rendering performance for large datasets
+- Use memoization for expensive calculations
+- Implement proper cleanup in component lifecycle methods
+- Avoid unnecessary re-renders
+
+### Theming
+
+- Use the theme system consistently
+- Don't hardcode colors or styles
+- Support dark mode where applicable
+
+## Git Workflow
+
+- Write clear, descriptive commit messages
+- Reference issue numbers in commit messages when applicable
+- Keep pull requests focused on a single feature or bug fix
+- Update documentation when changing public APIs
+
+Following these guidelines will help maintain code quality and consistency throughout the F2 project.
