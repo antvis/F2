@@ -1,0 +1,67 @@
+# F2 Testing Guidelines
+
+This document outlines the standards for writing and maintaining tests in the F2 visualization library.
+
+## General Testing Principles
+
+- Write tests for all new features and bug fixes
+- Follow the AAA pattern: Arrange, Act, Assert
+- Keep tests simple, focused, and fast
+- Tests should be independent of each other
+- Avoid test interdependencies
+- Test both expected and error cases
+- Use descriptive test names that explain what is being tested
+
+## Test Structure
+
+- Group related tests using `describe` blocks
+- Use nested `describe` blocks for logical grouping
+- Use `it` or `test` for individual test cases
+- Name tests descriptively using the pattern: "should [expected behavior] when [condition]"
+- Keep test files alongside the code they test with a `.test.tsx` or `.test.ts` extension
+
+## Visual Testing
+
+- Use snapshot testing for visual components
+- Include image snapshots for critical visual features
+- Update snapshots only when visual changes are intentional
+- Review snapshot diffs carefully before committing
+
+## Test Coverage
+
+- Aim for high test coverage, especially for core functionality
+- Focus on testing behavior, not implementation details
+- Test edge cases and boundary conditions
+- Test error handling and recovery
+
+## Mocking
+
+- Mock external dependencies
+- Use jest mock functions for callbacks and event handlers
+- Keep mocks as simple as possible
+- Reset mocks between tests
+
+## Component Testing
+
+- Test that components render without errors
+- Test component props and their effects
+- Test component interactions and state changes
+- Test accessibility features
+
+## Performance Testing
+
+- Write performance tests for critical paths
+- Establish performance baselines
+- Test with realistic data volumes
+- Monitor for performance regressions
+
+## Best Practices
+
+- Run tests before committing code
+- Fix failing tests immediately
+- Don't disable tests without a good reason and documentation
+- Keep test code clean and maintainable
+- Refactor tests when refactoring code
+- Use setup and teardown functions for common operations
+
+Following these guidelines will help maintain a robust test suite for the F2 project, ensuring code quality and preventing regressions.
