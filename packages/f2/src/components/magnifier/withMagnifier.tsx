@@ -4,12 +4,17 @@ import AttrController from '../../controller/attr';
 import { isNil } from '@antv/util';
 
 export interface MagnifierProps {
-  focusX: number; // 放大镜当前聚焦点索引
-  windowSize: number; // 放大镜窗口对应的数据宽度，比如 10
+  focusRange: [number, number]; // 放大镜聚焦的数据范围索引 [startIndex, endIndex]
   radius?: number | string; // 放大镜半径，支持 px
   position?: [number, number] | [string, string]; // 放大镜中心位置
   chart?: any;
-  style?: {
+  coord?: any; // 坐标系对象
+  offsetX?: number | string; // 放大镜偏移量
+  offsetY?: number | string; // 放大镜偏移量
+  lineStyle?: {
+    [key: string]: any;
+  };
+  frameStyle?: {
     [key: string]: any;
   };
   // 放大镜内的辅助线
@@ -25,9 +30,26 @@ export interface MagnifierProps {
 
 export default (View) => {
   return class Magnifier extends Component<MagnifierProps> {
+    static defaultProps = {
+      radius: '50px',
+    };
+
+    getPositionAndRadius() {
+      const { coord } = this.props;
+      const { right, top } = coord;
+      const { radius, position: propsPosition } = this.context.px2hd(this.props);
+
+      // 计算默认 position
+      const calculatedPosition = [right - radius, top + radius];
+      const position = propsPosition || calculatedPosition;
+
+      return { position, radius };
+    }
+
     createFocusAttrController() {
-      const { chart, focusX, windowSize } = this.props;
-      const { position, radius } = this.context.px2hd(this.props);
+      const { chart, focusRange } = this.props;
+      const { position, radius } = this.getPositionAndRadius();
+
       const geometries = chart?.getGeometrys();
       if (!geometries?.length) return null;
       const geometry = geometries[0];
@@ -35,10 +57,11 @@ export default (View) => {
       const { scaleController } = attrController;
       const { data } = scaleController;
 
-      const half = Math.floor(windowSize / 2);
-      const start = Math.max(0, focusX - half);
-      const end = Math.min(data.length, focusX + half + 1);
-      const focusData = data.slice(start, end);
+      const [start, end] = focusRange;
+      const validStart = Math.max(0, Math.min(start, data.length - 1));
+      const validEnd = Math.min(data.length - 1, Math.max(validStart, end));
+
+      const focusData = data.slice(validStart, validEnd + 1);
 
       const scaleC = new ScaleController(focusData);
       const attrsRange = {
@@ -61,7 +84,7 @@ export default (View) => {
 
     mapping() {
       const { chart, lines } = this.props;
-      const { position, radius } = this.context.px2hd(this.props);
+      const { position, radius } = this.getPositionAndRadius();
       const { attrController, focusData } = this.createFocusAttrController();
 
       const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
@@ -82,7 +105,7 @@ export default (View) => {
       if (!geometries?.length) return null;
 
       const geometry = geometries[0];
-
+      const shape = geometry._getShapeStyle(shapeName, focusData[0]);
       return {
         pointsData: focusData.map((d) => {
           const normalized = { x: 0, y: 0 };
@@ -110,12 +133,10 @@ export default (View) => {
           const px = cx + rx * r;
           const py = cy - ry * r;
 
-          const shape = geometry._getShapeStyle(shapeName, d);
-
           return {
             ...d,
             ...attrValues,
-            shape,
+
             normalized,
             x: px,
             y: py,
@@ -157,13 +178,24 @@ export default (View) => {
             style,
           };
         }),
+        center: position,
+        shape,
       };
     }
 
     render() {
-      const { radius } = this.context.px2hd(this.props);
-      const { pointsData, linesData } = this.mapping();
-      return <View {...this.props} pointsData={pointsData} radius={radius} linesData={linesData} />;
+      const { radius } = this.getPositionAndRadius();
+      const { pointsData, linesData, center, shape } = this.mapping();
+      return (
+        <View
+          {...this.props}
+          pointsData={pointsData}
+          radius={radius}
+          linesData={linesData}
+          center={center}
+          shape={shape}
+        />
+      );
     }
   };
 };

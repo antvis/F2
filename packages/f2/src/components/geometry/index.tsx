@@ -29,7 +29,15 @@ const AdjustMap = {
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
 
-const OVERRIDE_FIELDS_SET = new Set(['color', 'normalized', 'x', 'y', 'shapeName', 'shape', 'selected']);
+const OVERRIDE_FIELDS_SET = new Set([
+  'color',
+  'normalized',
+  'x',
+  'y',
+  'shapeName',
+  'shape',
+  'selected',
+]);
 
 export type GeometryType = 'line' | 'point' | 'area' | 'polygon' | 'schema' | 'interval';
 
@@ -557,7 +565,6 @@ class Geometry<
         const shapeName = attrValues.shape;
         const shape = this._getShapeStyle(shapeName, origin);
         const selected = this.isSelected(child);
-
         // 饼图 Interval 的 y 值设置为 color, normalized, x, y, shapeName, shape, selected 等字段时,
         // 会导致取值异常
         mappedChildren.push({
@@ -670,7 +677,7 @@ class Geometry<
     return records.filter((record, idx) => {
       const isOverrideField = OVERRIDE_FIELDS_SET.has(yField);
       const rangeY = isOverrideField ? originRecordList[idx]?.[yField] : record[yField];
-      if (rangeY?.[0] <= yValue && rangeY?.[1] >= yValue) { 
+      if (rangeY?.[0] <= yValue && rangeY?.[1] >= yValue) {
         return true;
       }
       return false;

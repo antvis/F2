@@ -1,4 +1,4 @@
-import { Canvas, jsx, Magnifier, Line, Chart, LineGuide } from '../../../src';
+import { Canvas, jsx, Magnifier, Line, Chart, Component, Axis } from '../../../src';
 import { createContext, delay } from '../../util';
 // 优化后的固定数据，带有波动
 const data = [
@@ -210,16 +210,20 @@ describe('Magnifier', () => {
       width: '500px',
       height: '200px',
     });
+    const magnifierRef = { current: null };
     const { props } = (
       <Canvas context={context}>
-        <Chart data={data}>
+        <Chart
+          data={data}
+          style={{
+            padding: ['50px', '50px', '50px', '50px'],
+          }}
+        >
           <Line x="date" y="value" color="rgb(208,178,136)" />
           <Magnifier
-            focusX={data.length - 15}
-            windowSize={4}
-            radius={'40px'}
-            position={['450px', '50px']}
-            style={{
+            ref={magnifierRef}
+            focusRange={[data.length - 8, data.length - 1]}
+            frameStyle={{
               background: '#fff',
               boxShadow: '0 2px 8px rgba(24,144,255,0.15)',
             }}
@@ -230,9 +234,34 @@ describe('Magnifier', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(300);
-    // expect(context).toMatchImageSnapshot();
+    await delay(500);
+
+    const magnifierComponent = magnifierRef.current;
+    const { focusRange } = magnifierComponent.props;
+    expect(focusRange).toEqual([42, 49]);
+    const { focusData } = magnifierComponent.createFocusAttrController();
+    expect(focusData.length).toBe(8);
+
+    const expectedDates = [
+      '2017-07-17',
+      '2017-07-18',
+      '2017-07-19',
+      '2017-07-20',
+      '2017-07-21',
+      '2017-07-22',
+      '2017-07-23',
+      '2017-07-24',
+    ];
+    const expectedValues = [69, 88, 77, 83, 111, 57, 55, 60];
+
+    focusData.forEach((item, index) => {
+      expect(item.date).toBe(expectedDates[index]);
+      expect(item.value).toBe(expectedValues[index]);
+    });
+
+    expect(context).toMatchImageSnapshot();
   });
+
   it('smooth', async () => {
     const context = createContext('Magnifier smooth line', {
       width: '500px',
@@ -243,11 +272,9 @@ describe('Magnifier', () => {
         <Chart data={data}>
           <Line x="date" y="value" color="#1890FF" shape="smooth" />
           <Magnifier
-            focusX={data.length - 15}
-            windowSize={4}
-            radius={40}
-            position={[450, 50]}
-            style={{
+            focusRange={[data.length - 18, data.length - 14]}
+            radius={'80px'}
+            frameStyle={{
               background: '#fff',
               boxShadow: '0 2px 8px rgba(24,144,255,0.15)',
             }}
@@ -258,9 +285,10 @@ describe('Magnifier', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(300);
-    // expect(context).toMatchImageSnapshot();
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
   });
+
   it('lines render', async () => {
     const context = createContext('Magnifier lines render', {
       width: '500px',
@@ -271,10 +299,7 @@ describe('Magnifier', () => {
         <Chart data={data}>
           <Line x="date" y="value" color="rgb(208,178,136)" />
           <Magnifier
-            focusX={data.length - 2}
-            windowSize={4}
-            radius={40}
-            position={[450, 50]}
+            focusRange={[data.length - 9, data.length - 1]}
             lines={[
               {
                 records: [
@@ -283,7 +308,7 @@ describe('Magnifier', () => {
                 ],
               },
             ]}
-            style={{
+            frameStyle={{
               background: '#fff',
               boxShadow: '0 2px 8px rgba(24,144,255,0.15)',
             }}
@@ -294,7 +319,86 @@ describe('Magnifier', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(300);
-    // expect(context).toMatchImageSnapshot();
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
+  it('动态折线图', async () => {
+    const context = createContext('动态折线图');
+    const demoData = [];
+
+    // 添加数据，模拟数据，可以指定当前时间的偏移的秒
+    function getRecord(offset?) {
+      offset = offset || 0;
+      return {
+        time: new Date().getTime() + offset * 1000,
+        value: Math.random() + 10,
+      };
+    }
+    demoData.push(getRecord(-3));
+    demoData.push(getRecord(-2));
+    demoData.push(getRecord(-1));
+
+    const lineRef = { current: null };
+
+    class DynamicLine extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          data: demoData,
+        };
+      }
+
+      didMount() {
+        setTimeout(() => {
+          const { data } = this.state;
+          let newData = [].concat(data);
+          for (let i = 0; i <= 10; i++) {
+            newData.push(getRecord(i));
+          }
+          this.setState({ data: newData });
+        }, 20);
+      }
+
+      render() {
+        const { data } = this.state;
+
+        return (
+          <Chart
+            data={data}
+            scale={{
+              time: {
+                type: 'timeCat',
+              },
+              value: {
+                range: [0, 0.7],
+              },
+            }}
+          >
+            <Line x="time" y="value" />
+            <Magnifier focusRange={[data.length - 9, data.length - 1]} ref={lineRef}></Magnifier>
+            <Axis field="value" />
+            <Axis field="time" />
+          </Chart>
+        );
+      }
+    }
+    const { props } = (
+      <Canvas context={context} animate={false}>
+        <DynamicLine />
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    const container = lineRef.current.container;
+    const polyline = container.children[0].children[0].childNodes[1];
+
+    expect(polyline.getAttribute('points').length).toBe(3);
+
+    await delay(200);
+    const newPolyline = container.children[0].children[0].childNodes[1];
+
+    expect(newPolyline.getAttribute('points').length > 3).toBe(true);
   });
 });

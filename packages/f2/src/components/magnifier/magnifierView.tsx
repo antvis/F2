@@ -1,9 +1,9 @@
 import { jsx } from '@antv/f-engine';
 
 export default (props) => {
-  const { pointsData = [], radius, position, style, linesData = [] } = props;
-  const cx = position[0];
-  const cy = position[1];
+  const { pointsData = [], radius, center, frameStyle, lineStyle, shape, linesData = [] } = props;
+  const cx = center[0];
+  const cy = center[1];
 
   return (
     <group
@@ -27,15 +27,31 @@ export default (props) => {
           fill: 'transparent',
           stroke: '#d8d8d8',
           lineWidth: '2px',
-          ...style,
+          ...frameStyle,
         }}
       />
+      {/* 辅助线 */}
+      {linesData.map((line) => (
+        <line
+          style={{
+            x1: line.points[0].x,
+            y1: line.points[0].y,
+            x2: line.points[1].x,
+            y2: line.points[1].y,
+            stroke: '#d8d8d8',
+            lineWidth: '5px',
+            ...line.style,
+          }}
+        />
+      ))}
       {/* 折线 */}
       <polyline
         style={{
           points: pointsData.map((p) => [p.x, p.y]),
           stroke: pointsData[0].color,
           lineWidth: '5px',
+          ...shape,
+          ...lineStyle,
         }}
         animation={{
           appear: {
@@ -59,21 +75,6 @@ export default (props) => {
           },
         }}
       />
-
-      {/* 辅助线 */}
-      {linesData.map((line) => (
-        <line
-          style={{
-            x1: line.points[0].x,
-            y1: line.points[0].y,
-            x2: line.points[1].x,
-            y2: line.points[1].y,
-            stroke: '#d8d8d8',
-            lineWidth: '5px',
-            ...line.style,
-          }}
-        />
-      ))}
     </group>
   );
 };
