@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.10.0](https://github.com/antvis/f2/compare/v5.9.0...v5.10.0) (2025-07-21)
+
+
+### Bug Fixes
+
+* 饼图点击 ([#2079](https://github.com/antvis/f2/issues/2079)) ([d8d9f6a](https://github.com/antvis/f2/commit/d8d9f6a7c5cff36f846363a3620f7d5781a834a3))
+
+
+### Features
+
+* magnifier支持多条折线情况 ([#2087](https://github.com/antvis/f2/issues/2087)) ([e8c2ee7](https://github.com/antvis/f2/commit/e8c2ee7798166bea2a8f7f06e7662c10af4f8553))
+* magnifier组件增加offsetX和offsetY属性 ([#2088](https://github.com/antvis/f2/issues/2088)) ([05b53e2](https://github.com/antvis/f2/commit/05b53e227752401f493eb48dbef562b3c10aaddc))
+* 增加magnifier组件 ([#2075](https://github.com/antvis/f2/issues/2075)) ([d1ca559](https://github.com/antvis/f2/commit/d1ca559284377f8618f77acc9eb8c6b6180f3ec7))
+
+
+
+
+
 # [5.9.0](https://github.com/antvis/f2/compare/v5.8.1...v5.9.0) (2025-06-30)
 
 

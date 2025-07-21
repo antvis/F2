@@ -1,11 +1,15 @@
 {
   "npmClient": "yarn",
-  "packages": ["packages/*"],
-  "version": "5.9.0",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "5.10.0",
   "command": {
     "bootstrap": {
       "ci": false,
-      "npmClientArgs": ["--no-package-lock"]
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     },
     "publish": {
       "commitHooks": false,
