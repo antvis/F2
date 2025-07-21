@@ -1,7 +1,7 @@
 import { jsx } from '@antv/f-engine';
 
 export default (props) => {
-  const { pointsData = [], radius, center, frameStyle, lineStyle, shape, linesData = [] } = props;
+  const { pointsData = [], radius, center, frameStyle, lineStyle, linesData = [] } = props;
   const cx = center[0];
   const cy = center[1];
 
@@ -45,36 +45,38 @@ export default (props) => {
         />
       ))}
       {/* 折线 */}
-      <polyline
-        style={{
-          points: pointsData.map((p) => [p.x, p.y]),
-          stroke: pointsData[0].color,
-          lineWidth: '5px',
-          ...shape,
-          ...lineStyle,
-        }}
-        animation={{
-          appear: {
-            easing: 'quadraticOut',
-            duration: 450,
-            clip: {
-              type: 'rect',
-              property: ['width'],
-              style: {
-                x: cx - radius,
-                y: cy - radius,
-                height: radius * 2,
-              },
-              start: {
-                width: 0,
-              },
-              end: {
-                width: radius * 2,
+      {pointsData.map((d) => (
+        <polyline
+          style={{
+            points: d.children.map((p) => [p.x, p.y]),
+            stroke: d.color,
+            lineWidth: '5px',
+            ...d.shape,
+            ...lineStyle,
+          }}
+          animation={{
+            appear: {
+              easing: 'quadraticOut',
+              duration: 450,
+              clip: {
+                type: 'rect',
+                property: ['width'],
+                style: {
+                  x: cx - radius,
+                  y: cy - radius,
+                  height: radius * 2,
+                },
+                start: {
+                  width: 0,
+                },
+                end: {
+                  width: radius * 2,
+                },
               },
             },
-          },
-        }}
-      />
+          }}
+        />
+      ))}
     </group>
   );
 };

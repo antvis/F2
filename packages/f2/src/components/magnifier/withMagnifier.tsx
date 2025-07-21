@@ -18,7 +18,7 @@ export interface MagnifierProps {
     [key: string]: any;
   };
   // 放大镜内的辅助线
-  lines?: Array<{
+  referenceLines?: Array<{
     records: any;
     style?: {
       stroke?: string;
@@ -53,17 +53,23 @@ export default (View) => {
       const geometries = chart?.getGeometrys();
       if (!geometries?.length) return null;
       const geometry = geometries[0];
-      const { attrController } = geometry;
-      const { scaleController } = attrController;
-      const { data } = scaleController;
+      const { dataRecords } = geometry;
 
       const [start, end] = focusRange;
-      const validStart = Math.max(0, Math.min(start, data.length - 1));
-      const validEnd = Math.min(data.length - 1, Math.max(validStart, end));
+      // 取第一个 group 的 children 长度
+      const childrenLength = dataRecords[0]?.children?.length || 0;
+      const validStart = Math.max(0, Math.min(start, childrenLength - 1));
+      const validEnd = Math.min(childrenLength - 1, Math.max(validStart, end));
 
-      const focusData = data.slice(validStart, validEnd + 1);
+      // 对每个 group 的 children 做 slice
+      const focusDataArray = dataRecords.map((group) => ({
+        ...group,
+        children: group.children.slice(validStart, validEnd + 1),
+      }));
 
-      const scaleC = new ScaleController(focusData);
+      const scaleC = new ScaleController(
+        dataRecords.map((group) => group.children.slice(validStart, validEnd + 1)).flat()
+      );
       const attrsRange = {
         ...geometry._getThemeAttrsRange(),
         x: [position[0] - radius, position[0] + radius],
@@ -78,72 +84,77 @@ export default (View) => {
 
       return {
         attrController: attrControllerNew,
-        focusData,
+        focusDataArray,
       };
     }
 
     mapping() {
-      const { chart, lines } = this.props;
+      const { chart, referenceLines } = this.props;
       const { position, radius } = this.getPositionAndRadius();
-      const { attrController, focusData } = this.createFocusAttrController();
+      const { attrController, focusDataArray } = this.createFocusAttrController();
 
       const { linearAttrs, nonlinearAttrs } = attrController.getAttrsByLinear();
       const attrValues = attrController.getDefaultAttrValues();
       const attrs = attrController.getAttrs();
 
-      // 非线性属性只映射第一个数据
-      const first = focusData[0];
+      const pointsData = focusDataArray.map((focusData) => {
+        const first = focusData.children[0];
 
-      nonlinearAttrs.forEach((attrName) => {
-        const attr = attrs[attrName];
-        if (!attr) return;
-        attrValues[attrName] = attr.mapping(first?.[attr.field], first);
+        nonlinearAttrs.forEach((attrName) => {
+          const attr = attrs[attrName];
+          if (!attr) return;
+          attrValues[attrName] = attr.mapping(first?.[attr.field], first);
+        });
+
+        const shapeName = attrValues.shape;
+        const geometries = chart?.getGeometrys();
+        if (!geometries?.length) return null;
+
+        const geometry = geometries[0];
+        const shape = geometry._getShapeStyle(shapeName, focusData);
+
+        return {
+          ...attrValues,
+          shape,
+          children: focusData.children.map((d) => {
+            const normalized = { x: 0, y: 0 };
+            linearAttrs.forEach((attrName) => {
+              const attr = attrs[attrName];
+              if (!attr) return;
+              const value = d[attr.field];
+              // 分组属性直接映射，否则归一化
+              if (attrController.isGroupAttr && attrController.isGroupAttr(attrName)) {
+                normalized[attrName] = attr.mapping(value, d);
+              } else {
+                normalized[attrName] = attr.normalize(value);
+              }
+            });
+
+            const nx = (normalized.x - 0.5) * 2;
+            const ny = (normalized.y - 0.5) * 2;
+
+            const length = Math.sqrt(nx * nx + ny * ny);
+            const rx = length > 1 ? nx / length : nx;
+            const ry = length > 1 ? ny / length : ny;
+
+            const [cx, cy] = position;
+            const r = radius;
+            const px = cx + rx * r;
+            const py = cy - ry * r;
+
+            return {
+              ...d,
+              normalized,
+              x: px,
+              y: py,
+            };
+          }),
+        };
       });
 
-      const shapeName = attrValues.shape;
-      const geometries = chart?.getGeometrys();
-      if (!geometries?.length) return null;
-
-      const geometry = geometries[0];
-      const shape = geometry._getShapeStyle(shapeName, focusData[0]);
       return {
-        pointsData: focusData.map((d) => {
-          const normalized = { x: 0, y: 0 };
-          linearAttrs.forEach((attrName) => {
-            const attr = attrs[attrName];
-            if (!attr) return;
-            const value = d[attr.field];
-            // 分组属性直接映射，否则归一化
-            if (attrController.isGroupAttr && attrController.isGroupAttr(attrName)) {
-              normalized[attrName] = attr.mapping(value, d);
-            } else {
-              normalized[attrName] = attr.normalize(value);
-            }
-          });
-
-          const nx = (normalized.x - 0.5) * 2;
-          const ny = (normalized.y - 0.5) * 2;
-
-          const length = Math.sqrt(nx * nx + ny * ny);
-          const rx = length > 1 ? nx / length : nx;
-          const ry = length > 1 ? ny / length : ny;
-
-          const [cx, cy] = position;
-          const r = radius;
-          const px = cx + rx * r;
-          const py = cy - ry * r;
-
-          return {
-            ...d,
-            ...attrValues,
-
-            normalized,
-            x: px,
-            y: py,
-          };
-        }),
-
-        linesData: (lines || []).map((line) => {
+        pointsData,
+        linesData: (referenceLines || []).map((line) => {
           const { records, style } = line;
           const points = (records || []).map((record) => {
             const normalized = { x: 0, y: 0 };
@@ -179,13 +190,13 @@ export default (View) => {
           };
         }),
         center: position,
-        shape,
       };
     }
 
     render() {
       const { radius } = this.getPositionAndRadius();
-      const { pointsData, linesData, center, shape } = this.mapping();
+      const { pointsData, linesData, center } = this.mapping();
+
       return (
         <View
           {...this.props}
@@ -193,7 +204,6 @@ export default (View) => {
           radius={radius}
           linesData={linesData}
           center={center}
-          shape={shape}
         />
       );
     }
