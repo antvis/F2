@@ -64,7 +64,6 @@ export default (View) => {
       const childrenLength = dataRecords[0]?.children?.length || 0;
       const validStart = Math.max(0, Math.min(start, childrenLength - 1));
       const validEnd = Math.min(childrenLength - 1, Math.max(validStart, end));
-
       // 对每个 group 的 children 做 slice
       const focusDataArray = dataRecords.map((group) => ({
         ...group,
