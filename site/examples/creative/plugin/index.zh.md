@@ -3,41 +3,51 @@ title: 插件
 order: 1
 ---
 
-插件展示了 F2 的扩展能力，通过自定义插件可以为图表添加额外的功能和交互效果。插件系统提供了灵活的扩展机制，让开发者能够根据具体需求定制图表功能。
+F2 的插件机制主要用于扩展底层渲染能力（如渲染器、风格化等），插件通过渲染器（如 CanvasRenderer）的 `registerPlugin` 方法注册。
+
+## 插件机制说明
+
+- 插件通常用于扩展渲染器的功能，比如支持 rough-canvas 效果、交互增强等。
+- 插件以类的形式实现，通过 `new` 实例化后注册到渲染器。
+- 通过 `renderer.registerPlugin(pluginInstance)` 注册插件。
+- 渲染器作为 Canvas 组件的 renderer 传入。
 
 ## 代码演示
 
-### 基础示例
+### 基础用法
 
-- [自定义插件](./demo/plugin.jsx)：展示如何开发和使用自定义插件。
+以 rough-canvas 插件为例，展示如何注册并使用插件：
 
 ```jsx
-import { jsx, Canvas, Chart } from '@antv/f2';
+import { Canvas, CanvasRenderer, Chart, Axis, Interval, jsx } from '@antv/f2';
+import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
 
-// 自定义插件
-const CustomPlugin = {
-  init(chart) {
-    // 插件初始化逻辑
-  },
-  render(chart) {
-    // 插件渲染逻辑
-  },
-};
+const context = document.getElementById('container').getContext('2d');
+const data = [
+  { version: '5.0.21', rate: 1, type: 'iphone6' },
+  { version: '5.0.21', rate: 13, type: '仿真' },
+  // ... 省略部分数据
+];
+
+// 创建 renderer 并注册插件
+const canvasRenderer = new CanvasRenderer();
+canvasRenderer.registerPlugin(new PluginRoughCanvasRenderer());
 
 const { props } = (
-  <Canvas context={context}>
-    <Chart data={data} plugins={[CustomPlugin]}>
-      {/* 图表配置 */}
+  <Canvas context={context} pixelRatio={window.devicePixelRatio} renderer={canvasRenderer}>
+    <Chart data={data}>
+      <Axis field="version" />
+      <Axis field="rate" />
+      <Interval x="version" y="rate" color="version" />
     </Chart>
   </Canvas>
 );
+const canvas = new Canvas(props);
+canvas.render();
 ```
 
-## 使用场景
+## 适用场景
 
-插件适用于以下场景：
-
-1. 扩展图表的功能和交互
-2. 复用通用的图表组件
-3. 集成第三方库和服务
-4. 定制特殊的业务需求
+- 扩展底层 G 的渲染能力（如 rough-canvas、SVG、WebGL 等）
+- 增强渲染器的交互、动画等功能
+- 集成第三方渲染相关库
