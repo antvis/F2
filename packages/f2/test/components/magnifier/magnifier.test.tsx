@@ -477,4 +477,38 @@ describe('Magnifier', () => {
 
     expect(context).toMatchImageSnapshot();
   });
+
+  it('offsetX and offsetY', async () => {
+    const context = createContext('Magnifier offsetX/offsetY', {
+      width: '500px',
+      height: '200px',
+    });
+    const magnifierRef = { current: null };
+    const { props } = (
+      <Canvas context={context}>
+        <Chart
+          data={data}
+          style={{
+            padding: ['50px', '50px', '50px', '50px'],
+          }}
+        >
+          <Line x="date" y="value" color="rgb(208,178,136)" />
+          <Magnifier
+            ref={magnifierRef}
+            focusRange={[data.length - 8, data.length - 1]}
+            offsetX={'-100px'}
+            offsetY={'20px'}
+            frameStyle={{
+              background: '#fff',
+              boxShadow: '0 2px 8px rgba(24,144,255,0.15)',
+            }}
+          ></Magnifier>
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
 });
