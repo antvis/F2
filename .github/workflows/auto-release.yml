@@ -112,7 +112,7 @@ jobs:
         with:
           DING_TALK_TOKEN: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
           notify_title: '🎉 F2 新版本 ${{ steps.version.outputs.version }} 发布啦 🎉'
-          notify_body: '## F2 ${{ steps.version.outputs.version }} 发布完成 <hr /> ![preview](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c833f8c9-c629-4943-a09b-ce1bf17ca937.png) <hr /> ${{ steps.version.outputs.commit_message }} <hr />'
+          notify_body: '## { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c833f8c9-c629-4943-a09b-ce1bf17ca937.png) <hr /> { body } <hr />'
           notify_footer: '> 前往 [**AntV/F2 Releases**]({ release_url })查看完整更新日志.'
           at_all: false
           enable_prerelease: false
