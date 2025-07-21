@@ -32,16 +32,20 @@ export default (View) => {
   return class Magnifier extends Component<MagnifierProps> {
     static defaultProps = {
       radius: '50px',
+      offsetX: 0,
+      offsetY: 0,
     };
 
     getPositionAndRadius() {
       const { coord } = this.props;
       const { right, top } = coord;
-      const { radius, position: propsPosition } = this.context.px2hd(this.props);
+      const { radius, position: propsPosition, offsetX, offsetY } = this.context.px2hd(this.props);
 
       // 计算默认 position
       const calculatedPosition = [right - radius, top + radius];
-      const position = propsPosition || calculatedPosition;
+      let position = propsPosition || calculatedPosition;
+
+      position = [position[0] + offsetX, position[1] + offsetY];
 
       return { position, radius };
     }
