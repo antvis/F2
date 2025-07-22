@@ -204,4 +204,37 @@ describe('柱图示例', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('堆叠分组柱状图', async () => {
+    const context = createContext('堆叠分组柱状图');
+    const data = [
+      { 分类: 'A', 小类: 'a1', 年份: '2019', 销量: 30 },
+      { 分类: 'A', 小类: 'a2', 年份: '2019', 销量: [20, 30] },
+      { 分类: 'B', 小类: 'b', 年份: '2019', 销量: 18 },
+      { 分类: 'A', 小类: 'a1', 年份: '2020', 销量: 40 },
+      { 分类: 'A', 小类: 'a2', 年份: '2020', 销量: [25, 40] },
+      { 分类: 'B', 小类: 'b', 年份: '2020', 销量: 30 },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} animate={false}>
+        <Chart data={data}>
+          <Axis field="年份" />
+          <Axis field="销量" />
+          <Interval
+            x="年份"
+            y="销量"
+            color="小类"
+            adjust={{
+              type: 'dodge',
+              dodgeBy: '分类',
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    await canvas.render();
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });
