@@ -1,0 +1,13 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "magnifier-dynamic.jsx",
+      "title": "放大镜组件",
+      "screenshot": "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*ir8yTK7fyD8AAAAAaiAAAAgAeq2NAQ/original"
+    }
+  ]
+}
