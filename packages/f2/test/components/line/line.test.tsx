@@ -1104,8 +1104,7 @@ describe('折线图', () => {
               field="year"
               style={{
                 label: {
-                  align: 'center',
-                  textAlign: 'start',
+                  align: 'start',
                   textBaseline: 'middle',
                   transform: 'rotate(90deg)',
                 },

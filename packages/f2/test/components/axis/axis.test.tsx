@@ -180,7 +180,7 @@ describe('Axis 轴', () => {
                 // rotate: -Math.PI / 2,
                 // @ts-ignore
                 transform: 'rotate(-90deg)',
-                // textAlign: 'end',
+                align: 'end',
                 textBaseline: 'middle',
               },
             }}
