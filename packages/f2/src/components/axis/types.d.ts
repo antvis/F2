@@ -54,6 +54,7 @@ export interface Tick {
   labelStyle?: Text;
   gridStyle?: LineStyleProps;
   gridPoints?: Point[];
+  visible?: boolean;
 }
 
 type PolarCord = Pick<Coord, 'center'>;
@@ -130,4 +131,14 @@ export interface AxisProps<
   style?: StyleProps;
   // 网格线类型
   grid?: 'arc' | 'line';
+  /**
+   * 是否自动旋转标签以防止重叠
+   * @default false
+   */
+  labelAutoRotate?: boolean;
+  /**
+   * 是否自动隐藏标签
+   * @default false
+   */
+  labelAutoHide?: boolean;
 }
