@@ -27,6 +27,7 @@ export default (View) => {
     IProps extends AxisProps<TRecord> = AxisProps<TRecord>
   > extends Component<IProps & ChartChildProps, {}> {
     axisStyle: Style = {};
+    ticks: Tick[];
 
     constructor(props: IProps & ChartChildProps) {
       super(props);
@@ -223,22 +224,66 @@ export default (View) => {
       });
     }
 
-    measureLayout(): PositionLayout | PositionLayout[] {
+    calculateLabelOverflow(lastTick, label): number {
+      if (!lastTick || !label) {
+        return 0;
+      }
       const { props, context } = this;
-      const { visible, coord, style } = props;
+      const { measureText } = context;
+      const { coord } = props;
+      const { labelStyle = {}, text } = lastTick;
+
+      const tickBBox = measureText(labelStyle.text || text, { ...label, ...labelStyle });
+
+      const lastTickPoint = coord.convertPoint({
+        x: lastTick.value,
+        y: 0,
+      });
+
+      let labelRightEdge = lastTickPoint.x;
+      const align = label.align || 'center';
+
+      if (align === 'center') {
+        labelRightEdge += tickBBox.width / 2;
+      } else if (align === 'left' || align === 'start') {
+        labelRightEdge += tickBBox.width;
+      }
+
+      return labelRightEdge > coord.right ? labelRightEdge - coord.right : 0;
+    }
+
+    _getXTicksDistance(ticks) {
+      const { props } = this;
+      const { coord } = props;
+
+      const firstPoint = coord.convertPoint({
+        x: ticks[0].value,
+        y: 0,
+      });
+
+      const secondPoint = coord.convertPoint({
+        x: ticks[1].value,
+        y: 0,
+      });
+      return Math.abs(secondPoint.x - firstPoint.x);
+    }
+
+    measureLayout(ticks): PositionLayout | PositionLayout[] {
+      const { props, context } = this;
+      const { visible, coord, style, labelAutoRotate = false, labelAutoHide = false } = props;
       if (visible === false) {
         return null;
       }
       const { width: customWidth, height: customHeight } = style || {};
 
-      const ticks = this.getTicks();
       const bbox = this.getMaxBBox(ticks, this.axisStyle);
 
       const { isPolar } = coord;
       const dimType = this._getDimType();
-      // const { width, height } = bbox;
+
       const width = isNil(customWidth) ? bbox.width : context.px2hd(customWidth);
       const height = isNil(customHeight) ? bbox.height : context.px2hd(customHeight);
+
       if (isPolar) {
         // 机坐标系的 y 不占位置
         if (dimType === 'y') {
@@ -258,6 +303,27 @@ export default (View) => {
 
       // 直角坐标系下
       const position = this._getPosition();
+
+      if ((labelAutoRotate || labelAutoHide) && dimType === 'x') {
+        const { label } = this.axisStyle;
+        const lastTick = ticks[ticks.length - 1];
+
+        const overflowWidth = this.calculateLabelOverflow(lastTick, label);
+
+        return [
+          {
+            position,
+            width,
+            height,
+          },
+          {
+            position: 'right',
+            width: overflowWidth,
+            height: 0,
+          },
+        ];
+      }
+
       return {
         position,
         width,
@@ -265,24 +331,136 @@ export default (View) => {
       };
     }
 
+    findSuitableRotation(ticks) {
+      const { context } = this;
+      const { measureText } = context;
+
+      const averageSpace = this._getXTicksDistance([ticks[0], ticks[1]]);
+      const { label } = this.axisStyle;
+      const { labelStyle = {}, text } = ticks[0];
+      const bbox = measureText(labelStyle.text || text, { ...label, ...labelStyle });
+      const labelHeight = bbox.height;
+
+      // 安全距离
+      const safetyDistance = 2;
+
+      const availableSpace = labelHeight + safetyDistance;
+
+      const cosValue = availableSpace / averageSpace;
+
+      const clampedCosValue = Math.max(-1, Math.min(1, cosValue));
+
+      const theoreticalAngle = (Math.acos(clampedCosValue) * 180) / Math.PI;
+
+      const ceiledAngle = Math.ceil(theoreticalAngle);
+
+      if (ceiledAngle > 0 && ceiledAngle <= 90) {
+        this.axisStyle.label.align = 'start';
+        this.axisStyle.label.transform = `rotate(${ceiledAngle}deg)`;
+        this.axisStyle.label.transformOrigin = `0 50%`;
+      }
+    }
+
+    hasOverlapAtSeq(ticks, step) {
+      const safetyMargin = 2;
+      const XDistance = this._getXTicksDistance([ticks[0], ticks[step]]);
+
+      let prevIdx = 0;
+      for (let currIdx = step; currIdx <= ticks.length - 1; currIdx += step) {
+        const minDistance =
+          (ticks[prevIdx].labelWidth + ticks[currIdx].labelWidth) / 2 + safetyMargin;
+
+        if (XDistance < minDistance) {
+          return true;
+        }
+
+        prevIdx = currIdx;
+      }
+
+      return false;
+    }
+
+    findLabelsToHide(ticks) {
+      const { props, context } = this;
+      const { coord } = props;
+      const { measureText } = context;
+
+      const tickCount = ticks.length;
+
+      const { label } = this.axisStyle;
+
+      let maxLabelWidth = 0;
+      for (let i = 0; i < tickCount; i++) {
+        const tick = ticks[i];
+        const { labelStyle = {}, text } = tick;
+        const bbox = measureText(labelStyle.text || text, { ...label, ...labelStyle });
+        tick.labelWidth = bbox.width;
+        maxLabelWidth = Math.max(maxLabelWidth, bbox.width);
+      }
+
+      const initialSeq = Math.floor(maxLabelWidth / (coord.width / (tickCount - 1)));
+
+      const range = tickCount - 1;
+      const maxSeq = Math.floor(range / 2);
+
+      let finalSeq = initialSeq;
+
+      while (finalSeq <= maxSeq && range % finalSeq !== 0) {
+        finalSeq++;
+      }
+
+      while (finalSeq <= maxSeq && this.hasOverlapAtSeq(ticks, finalSeq)) {
+        finalSeq++;
+        while (finalSeq <= maxSeq && range % finalSeq !== 0) {
+          finalSeq++;
+        }
+      }
+
+      if (finalSeq > maxSeq || finalSeq === 1) {
+        return;
+      }
+
+      ticks.forEach((tick) => {
+        tick.visible = false;
+      });
+
+      for (let i = 0; i <= range; i += finalSeq) {
+        ticks[i].visible = true;
+      }
+    }
+
     // 主要是计算coord的布局
     updateCoord() {
       const { props } = this;
-      const { chart } = props;
-      const layout = this.measureLayout();
+      const { chart, labelAutoRotate = false, labelAutoHide = false } = props;
+      const dimType = this._getDimType();
+      const ticks = this.getTicks();
+
+      if (labelAutoRotate && dimType === 'x') {
+        this.findSuitableRotation(ticks);
+        this.ticks = ticks;
+      }
+      if (labelAutoHide && dimType === 'x') {
+        this.findLabelsToHide(ticks);
+        this.ticks = ticks;
+      }
+
+      const layout = this.measureLayout(ticks);
+
       chart.updateCoordFor(this, layout);
     }
 
     render() {
       const { props, axisStyle } = this;
       const { visible, coord } = props;
+      const dimType = this._getDimType();
+
       if (visible === false) {
         return null;
       }
 
-      const ticks = this.getTicks();
+      const ticks = this.ticks ? this.ticks : this.getTicks();
       const position = this._getPosition();
-      const dimType = this._getDimType();
 
       return (
         <View

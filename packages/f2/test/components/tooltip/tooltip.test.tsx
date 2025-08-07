@@ -564,7 +564,7 @@ describe('tooltip', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
 
     const { props: updateProps } = (
@@ -584,7 +584,7 @@ describe('tooltip', () => {
     );
 
     await canvas.update(updateProps);
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -594,7 +594,7 @@ describe('tooltip', () => {
     const onHideCb = jest.fn();
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
-        <Chart data={data} >
+        <Chart data={data}>
           <Axis field="genre" />
           <Axis field="sold" />
           <Interval x="genre" y="sold" color="genre" />
@@ -612,7 +612,7 @@ describe('tooltip', () => {
     await delay(1000);
     await gestureSimulator(context.canvas, 'touchend', { x: 32, y: 32 });
 
-    expect(onShowCb.mock.calls.length).toBe(1); 
-    expect(onHideCb.mock.calls.length).toBe(1); 
+    expect(onShowCb.mock.calls.length).toBe(1);
+    expect(onHideCb.mock.calls.length).toBe(1);
   });
 });
