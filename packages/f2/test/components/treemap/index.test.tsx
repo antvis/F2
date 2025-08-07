@@ -112,9 +112,11 @@ describe('Treemap', () => {
     canvas.destroy();
   });
   it('select ', async () => {
+    const treemapRef = { current: null };
     const { props } = (
       <Canvas context={context} pixelRatio={1}>
         <Treemap
+          ref={treemapRef}
           data={data}
           color={{
             field: 'name',
@@ -147,10 +149,12 @@ describe('Treemap', () => {
 
     await delay(1000);
     expect(context).toMatchImageSnapshot();
+    expect(treemapRef.current?.records[0]?.selected).toBe(true);
 
     const { props: nextProps } = (
       <Canvas context={context} pixelRatio={1}>
         <Treemap
+          ref={treemapRef}
           data={data}
           color={{
             field: 'name',
@@ -181,6 +185,7 @@ describe('Treemap', () => {
     canvas.update(nextProps);
     await delay(1000);
     expect(context).toMatchImageSnapshot();
+    expect(treemapRef.current?.records[2]?.selected).toBe(true);
     await delay(100);
     canvas.destroy();
   });
