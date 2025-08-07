@@ -27,7 +27,7 @@ export default (View) => {
     IProps extends AxisProps<TRecord> = AxisProps<TRecord>
   > extends Component<IProps & ChartChildProps, {}> {
     axisStyle: Style = {};
-    ticks;
+    ticks: Tick[];
 
     constructor(props: IProps & ChartChildProps) {
       super(props);
@@ -417,7 +417,7 @@ export default (View) => {
       }
 
       if (finalSeq > maxSeq || finalSeq === 1) {
-        return false;
+        return;
       }
 
       ticks.forEach((tick) => {
@@ -427,8 +427,6 @@ export default (View) => {
       for (let i = 0; i <= range; i += finalSeq) {
         ticks[i].visible = true;
       }
-
-      return true;
     }
 
     // 主要是计算coord的布局

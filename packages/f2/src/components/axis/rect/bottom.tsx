@@ -89,7 +89,7 @@ export default (props: RectProps<'bottom'>, context) => {
       {label
         ? filterTicks.map((tick, index) => {
             const { points, text, tickValue, labelStyle, visible = true } = tick;
-            if (!visible) return;
+            if (!visible) return null;
             const { x, y } = points[0];
             const { align = 'center' } = labelStyle || label || {};
             const textAttrs: TextStyleProps = {

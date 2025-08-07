@@ -48,13 +48,14 @@ interface Point {
 
 export interface Tick {
   value: number;
-  points: Point[];
+  points?: Point[];
   text: string;
   tickValue: string | number;
   labelStyle?: Text;
   gridStyle?: LineStyleProps;
   gridPoints?: Point[];
   visible?: boolean;
+  labelWidth?: number;
 }
 
 type PolarCord = Pick<Coord, 'center'>;

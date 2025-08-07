@@ -89,7 +89,7 @@ export default (props: RectProps, context) => {
       {label
         ? ticks.map((tick, _index) => {
             const { tickValue, points, text, labelStyle, visible } = tick;
-            if (!visible) return;
+            if (!visible) return null;
             const end = points[points.length - 1];
             return (
               <text
