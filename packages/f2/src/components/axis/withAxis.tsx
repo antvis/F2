@@ -357,6 +357,7 @@ export default (View) => {
       if (ceiledAngle > 0 && ceiledAngle <= 90) {
         this.axisStyle.label.align = 'start';
         this.axisStyle.label.transform = `rotate(${ceiledAngle}deg)`;
+        this.axisStyle.label.transformOrigin = `0 50%`;
       }
     }
 
