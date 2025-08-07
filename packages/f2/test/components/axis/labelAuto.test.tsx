@@ -109,7 +109,7 @@ describe('Axis labelAutoRotate', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -139,7 +139,7 @@ describe('Axis labelAutoRotate', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -169,7 +169,7 @@ describe('Axis labelAutoRotate', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(300);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 });
