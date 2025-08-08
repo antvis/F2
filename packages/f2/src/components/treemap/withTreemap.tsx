@@ -89,7 +89,7 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
       return false;
     }
 
-    generateSelectionStyle(record: Record<string, unknown>, isSelected: boolean) {
+    getSelectionStyle(record: Record<string, unknown>, isSelected: boolean) {
       if (!this.state.selected?.length) {
         return null;
       }
@@ -156,7 +156,7 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
         };
 
         const selected = this.isSelected(data);
-        const style = this.generateSelectionStyle(data, selected);
+        const style = this.getSelectionStyle(data, selected);
 
         return {
           key: data.key,
