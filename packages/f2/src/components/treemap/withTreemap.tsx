@@ -89,21 +89,14 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
       return false;
     }
 
-    getSelectionStyle(record) {
-      const { state, props } = this;
-      const { selected } = state;
-      if (!selected || !selected.length) {
+    generateSelectionStyle(record: Record<string, unknown>, isSelected: boolean) {
+      if (!this.state.selected?.length) {
         return null;
       }
-      const { selection } = props;
-      const { selectedStyle, unSelectedStyle } = selection;
 
-      const isSelected = this.isSelected(record);
-
-      if (isSelected) {
-        return isFunction(selectedStyle) ? selectedStyle(record) : selectedStyle;
-      }
-      return isFunction(unSelectedStyle) ? unSelectedStyle(record) : unSelectedStyle;
+      const { selectedStyle, unSelectedStyle } = this.props.selection || {};
+      const style = isSelected ? selectedStyle : unSelectedStyle;
+      return isFunction(style) ? style(record) : style;
     }
 
     willMount() {
@@ -162,7 +155,8 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
           yMax: y1,
         };
 
-        const style = this.getSelectionStyle(data);
+        const selected = this.isSelected(data);
+        const style = this.generateSelectionStyle(data, selected);
 
         return {
           key: data.key,
@@ -170,6 +164,7 @@ const withTreemap = <IProps extends TreemapProps = TreemapProps>(View: Component
           color,
           ...rect,
           style,
+          selected,
         };
       });
     }
