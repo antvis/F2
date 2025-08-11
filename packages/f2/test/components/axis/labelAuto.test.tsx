@@ -172,4 +172,41 @@ describe('Axis labelAutoRotate', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('启用标签自动旋转（labelAutoRotate=true）但label为函数', async () => {
+    const context = createContext('启用标签自动旋转但label为函数');
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart
+          data={overlappingData}
+          style={{
+            padding: [0, 0, 0, 0],
+          }}
+        >
+          <Axis
+            field="category"
+            labelAutoRotate={true}
+            style={{
+              label: (text, index, ticks) => {
+                return {
+                  textAlign: 'center',
+                  fill: index % 2 === 0 ? '#1890FF' : '#333333',
+                  fontWeight: 'bold',
+                };
+              },
+            }}
+          />
+          <Axis field="value" />
+          <Interval x="category" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

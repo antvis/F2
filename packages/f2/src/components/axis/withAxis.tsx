@@ -241,7 +241,7 @@ export default (View) => {
       });
 
       let labelRightEdge = lastTickPoint.x;
-      const align = label.align || 'center';
+      const { align = 'center' } = { ...label, ...labelStyle };
 
       if (align === 'center') {
         labelRightEdge += tickBBox.width / 2;
@@ -355,9 +355,12 @@ export default (View) => {
       const ceiledAngle = Math.ceil(theoreticalAngle);
 
       if (ceiledAngle > 0 && ceiledAngle <= 90) {
-        this.axisStyle.label.align = 'start';
-        this.axisStyle.label.transform = `rotate(${ceiledAngle}deg)`;
-        this.axisStyle.label.transformOrigin = `0 50%`;
+        ticks.forEach((tick) => {
+          tick.labelStyle = tick.labelStyle || {};
+          tick.labelStyle.align = 'start';
+          tick.labelStyle.transform = `rotate(${ceiledAngle}deg)`;
+          tick.labelStyle.transformOrigin = '0 50%';
+        });
       }
     }
 
