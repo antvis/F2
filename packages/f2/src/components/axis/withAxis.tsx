@@ -224,12 +224,13 @@ export default (View) => {
       });
     }
 
-    calculateLabelOverflow(lastTick, label): number {
-      if (!lastTick || !label) {
+    calculateLabelOverflow(lastTick): number {
+      if (!lastTick) {
         return 0;
       }
-      const { props, context } = this;
+      const { props, context, axisStyle } = this;
       const { measureText } = context;
+      const { label } = axisStyle;
       const { coord } = props;
       const { labelStyle = {}, text } = lastTick;
 
@@ -305,10 +306,9 @@ export default (View) => {
       const position = this._getPosition();
 
       if ((labelAutoRotate || labelAutoHide) && dimType === 'x') {
-        const { label } = this.axisStyle;
         const lastTick = ticks[ticks.length - 1];
 
-        const overflowWidth = this.calculateLabelOverflow(lastTick, label);
+        const overflowWidth = this.calculateLabelOverflow(lastTick);
 
         return [
           {
@@ -346,11 +346,11 @@ export default (View) => {
 
       const availableSpace = labelHeight + safetyDistance;
 
-      const cosValue = availableSpace / averageSpace;
+      const sinValue = availableSpace / averageSpace;
 
-      const clampedCosValue = Math.max(-1, Math.min(1, cosValue));
+      const clampedSinValue = Math.max(-1, Math.min(1, sinValue));
 
-      const theoreticalAngle = (Math.acos(clampedCosValue) * 180) / Math.PI;
+      const theoreticalAngle = (Math.asin(clampedSinValue) * 180) / Math.PI;
 
       const ceiledAngle = Math.ceil(theoreticalAngle);
 
