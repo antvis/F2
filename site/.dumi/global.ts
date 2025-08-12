@@ -8,6 +8,8 @@ if (typeof window != 'undefined' && window) {
   window.gPluginRoughCanvasRenderer = require('@antv/g-plugin-rough-canvas-renderer');
   (window as any).lilGui = window.lil;
   (window as any).stats = require('stats.js');
+  (window as any).InsertCss = require('insert-css');
+  console.log((window as any).InsertCss);
   // window.f2 = require('./src/index-all.js');
   // window.DataSet = require('@antv/data-set');
   window.lodash = require('lodash');
