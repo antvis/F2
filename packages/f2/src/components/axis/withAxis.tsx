@@ -27,6 +27,7 @@ export default (View) => {
     IProps extends AxisProps<TRecord> = AxisProps<TRecord>
   > extends Component<IProps & ChartChildProps, {}> {
     axisStyle: Style = {};
+    maxLabelWidth: number = 0;
     ticks: Tick[];
 
     constructor(props: IProps & ChartChildProps) {
@@ -383,25 +384,31 @@ export default (View) => {
       return false;
     }
 
-    findLabelsToHide(ticks) {
-      const { props, context } = this;
-      const { coord } = props;
+    hasOverlap(ticks) {
+      const { context } = this;
       const { measureText } = context;
 
       const tickCount = ticks.length;
 
       const { label } = this.axisStyle;
 
-      let maxLabelWidth = 0;
       for (let i = 0; i < tickCount; i++) {
         const tick = ticks[i];
         const { labelStyle = {}, text } = tick;
         const bbox = measureText(labelStyle.text || text, { ...label, ...labelStyle });
         tick.labelWidth = bbox.width;
-        maxLabelWidth = Math.max(maxLabelWidth, bbox.width);
+        this.maxLabelWidth = Math.max(this.maxLabelWidth, bbox.width);
       }
+      return this.hasOverlapAtSeq(ticks, 1);
+    }
 
-      const initialSeq = Math.floor(maxLabelWidth / (coord.width / (tickCount - 1)));
+    findLabelsToHide(ticks) {
+      const { props } = this;
+      const { coord } = props;
+
+      const tickCount = ticks.length;
+
+      const initialSeq = Math.floor(this.maxLabelWidth / (coord.width / (tickCount - 1)));
 
       const range = tickCount - 1;
       const maxSeq = Math.floor(range / 2);
@@ -432,24 +439,29 @@ export default (View) => {
       }
     }
 
-    // 主要是计算coord的布局
+    // 计算坐标轴布局并更新坐标系
     updateCoord() {
       const { props } = this;
       const { chart, labelAutoRotate = false, labelAutoHide = false } = props;
       const dimType = this._getDimType();
       const ticks = this.getTicks();
 
-      if (labelAutoRotate && dimType === 'x') {
-        this.findSuitableRotation(ticks);
-        this.ticks = ticks;
-      }
-      if (labelAutoHide && dimType === 'x') {
-        this.findLabelsToHide(ticks);
+      if ((labelAutoRotate || labelAutoHide) && dimType === 'x' && this.hasOverlap(ticks)) {
+        if (labelAutoRotate) {
+          this.findSuitableRotation(ticks);
+        }
+
+        if (labelAutoHide) {
+          this.findLabelsToHide(ticks);
+        }
+
         this.ticks = ticks;
       }
 
+      // 测量并获取布局信息
       const layout = this.measureLayout(ticks);
 
+      // 更新图表的坐标系
       chart.updateCoordFor(this, layout);
     }
 

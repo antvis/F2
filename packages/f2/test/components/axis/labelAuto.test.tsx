@@ -50,6 +50,39 @@ describe('Axis labelAutoRotate', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('启用标签自动旋转不用旋转', async () => {
+    const context = createContext('启用标签自动旋转不用旋转');
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart
+          data={[
+            { category: '科创AI指数', value: 10 },
+            { category: '科创50指数', value: 15 },
+            { category: '沪深300指数', value: 20 },
+            { category: '芯片指数', value: 25 },
+          ]}
+          style={{
+            padding: [0, 0, 0, 0],
+          }}
+        >
+          <Axis
+            field="category"
+            labelAutoRotate={true} // 启用标签自动旋转
+          />
+          <Axis field="value" />
+          <Interval x="category" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('启用标签自动旋转角度小', async () => {
     const context = createContext('启用标签自动旋转角度小');
 
@@ -60,7 +93,7 @@ describe('Axis labelAutoRotate', () => {
             { category: '科创AI指数', value: 10 },
             { category: '科创50指数', value: 15 },
             { category: '沪深300指数', value: 20 },
-            { category: '中华半导体芯片指数', value: 25 },
+            { category: '测中华半导体芯片指数', value: 25 },
           ]}
         >
           <Axis field="category" labelAutoRotate={true} />
