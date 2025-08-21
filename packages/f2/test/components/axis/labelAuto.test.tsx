@@ -1,6 +1,6 @@
 import { jsx } from '../../../src';
 import { Canvas, Chart } from '../../../src';
-import { Interval, Axis } from '../../../src/components';
+import { Interval, Axis, Line } from '../../../src/components';
 import { createContext, delay } from '../../util';
 
 describe('Axis labelAutoRotate', () => {
@@ -259,6 +259,73 @@ describe('Axis labelAutoRotate', () => {
           />
           <Axis field="value" />
           <Interval x="category" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
+  it('启用标签自动隐藏aligin=between', async () => {
+    const context = createContext('启用标签自动隐藏aligin=between');
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart
+          data={[
+            {
+              time: '2025-01-04',
+              tem: 1000,
+            },
+            {
+              time: '2025-02-04',
+              tem: 2200,
+            },
+            {
+              time: '2025-03-04',
+              tem: 2000,
+            },
+            {
+              time: '2025-04-04',
+              tem: 2600,
+            },
+            {
+              time: '2025-05-04',
+              tem: 2000,
+            },
+            {
+              time: '2025-06-04',
+              tem: 2600,
+            },
+            {
+              time: '2025-07-04',
+              tem: 2400,
+            },
+          ]}
+          scale={{
+            time: {
+              range: [0, 1],
+            },
+          }}
+          style={{
+            padding: [0, 0, 0, 0],
+          }}
+        >
+          <Axis
+            field="time"
+            labelAutoHide={true}
+            style={{
+              label: {
+                align: 'between',
+              },
+            }}
+          />
+          <Axis field="tem" />
+          <Line x="time" y="tem" />
         </Chart>
       </Canvas>
     );
