@@ -268,7 +268,7 @@ describe('Magnifier', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 
@@ -302,7 +302,7 @@ describe('Magnifier', () => {
     const canvas = new Canvas(props);
     await canvas.render();
 
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
   it('动态折线图', async () => {
@@ -508,7 +508,7 @@ describe('Magnifier', () => {
     );
     const canvas = new Canvas(props);
     await canvas.render();
-    await delay(500);
+    await delay(800);
     expect(context).toMatchImageSnapshot();
   });
 });

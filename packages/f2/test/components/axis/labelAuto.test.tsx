@@ -392,7 +392,7 @@ describe('Axis labelAutoRotate', () => {
     );
 
     await canvas.update(nextProps);
-    await delay(500);
+    await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
 });
