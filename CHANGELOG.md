@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.11.0](https://github.com/antvis/f2/compare/v5.10.0...v5.11.0) (2025-08-22)
+
+
+### Bug Fixes
+
+* auto-rotate当label为function失效 ([#2099](https://github.com/antvis/f2/issues/2099)) ([546b359](https://github.com/antvis/f2/commit/546b359f6e57c948c61011e3eeec8ba705f466e7))
+* axis旋转情况布局计算 ([#2098](https://github.com/antvis/f2/issues/2098)) ([a4752a6](https://github.com/antvis/f2/commit/a4752a6b5c5fe3237c0540610e32c9f3029c9daf))
+* 修复autohide检测遮挡不准确 ([#2105](https://github.com/antvis/f2/issues/2105)) ([f42573a](https://github.com/antvis/f2/commit/f42573a3831d220d2439c1cb300645d3b5759f31))
+* 修复角度计算 ([#2100](https://github.com/antvis/f2/issues/2100)) ([4693818](https://github.com/antvis/f2/commit/4693818bb9faad92ab5a4a44c583d2d905f16d97))
+* 增加初次检测是否重叠 ([#2103](https://github.com/antvis/f2/issues/2103)) ([e48e5ae](https://github.com/antvis/f2/commit/e48e5aef5cc257635059d2b3bd7a67666299dde0))
+
+
+### Features
+
+* 增加labelAuto功能 ([#2097](https://github.com/antvis/f2/issues/2097)) ([daddc7f](https://github.com/antvis/f2/commit/daddc7fda88687cab35a6d0c86d0257b854243f8))
+* 增加检测是否重叠安全距离属性 ([#2106](https://github.com/antvis/f2/issues/2106)) ([6b4cd71](https://github.com/antvis/f2/commit/6b4cd717fc43cb8557a341dcf118ce7b6ca0410e))
+
+
+
+
+
 # [5.10.0](https://github.com/antvis/f2/compare/v5.9.0...v5.10.0) (2025-07-21)
 
 
