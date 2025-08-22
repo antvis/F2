@@ -366,7 +366,8 @@ export default (View) => {
     }
 
     hasOverlapAtSeq(ticks, step) {
-      const safetyMargin = 2;
+      const { px2hd } = this.context;
+      const { safetyDistance = 2 } = this.props;
       const XDistance = this._getXTicksDistance([ticks[0], ticks[step]]);
 
       let prevIdx = 0;
@@ -376,7 +377,7 @@ export default (View) => {
         const { align = 'center' } = { ...label, ...labelStyle };
 
         let minDistance =
-          (ticks[prevIdx].labelWidth + ticks[currIdx].labelWidth) / 2 + safetyMargin;
+          (ticks[prevIdx].labelWidth + ticks[currIdx].labelWidth) / 2 + px2hd(safetyDistance);
         if (prevIdx === 0 && align === 'between') {
           minDistance += ticks[prevIdx].labelWidth / 2;
         }
