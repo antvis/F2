@@ -142,4 +142,9 @@ export interface AxisProps<
    * @default false
    */
   labelAutoHide?: boolean;
+  /**
+   * 检测是否重叠安全边距
+   * @default 2
+   */
+  safetyDistance?: number | string;
 }

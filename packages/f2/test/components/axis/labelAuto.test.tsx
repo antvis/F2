@@ -336,4 +336,63 @@ describe('Axis labelAutoRotate', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('safetyDistance属性', async () => {
+    const data = [
+      { category: '2025-01-04', value: 10 },
+      { category: '2025-02-04', value: 15 },
+      { category: '2025-03-04', value: 20 },
+      { category: '2025-04-04', value: 25 },
+      { category: '2025-05-04', value: 25 },
+      { category: '2025-06-04', value: 25 },
+    ];
+    const context = createContext('safetyDistance属性');
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart data={data}>
+          <Axis
+            field="category"
+            style={{
+              label: {
+                fontSize: '19px',
+              },
+            }}
+            labelAutoRotate={true}
+          />
+          <Axis field="value" />
+          <Interval x="category" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+
+    const { props: nextProps } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart data={data}>
+          <Axis
+            field="category"
+            style={{
+              label: {
+                fontSize: '19px',
+              },
+            }}
+            labelAutoRotate={true}
+            safetyDistance={3}
+          />
+          <Axis field="value" />
+          <Interval x="category" y="value" color="#2FC25B" />
+        </Chart>
+      </Canvas>
+    );
+
+    await canvas.update(nextProps);
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });
