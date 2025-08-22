@@ -371,8 +371,15 @@ export default (View) => {
 
       let prevIdx = 0;
       for (let currIdx = step; currIdx <= ticks.length - 1; currIdx += step) {
-        const minDistance =
+        const { label } = this.axisStyle;
+        const { labelStyle = {} } = ticks[prevIdx];
+        const { align = 'center' } = { ...label, ...labelStyle };
+
+        let minDistance =
           (ticks[prevIdx].labelWidth + ticks[currIdx].labelWidth) / 2 + safetyMargin;
+        if (prevIdx === 0 && align === 'between') {
+          minDistance += ticks[prevIdx].labelWidth / 2;
+        }
 
         if (XDistance < minDistance) {
           return true;
