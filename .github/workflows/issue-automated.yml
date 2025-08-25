@@ -28,18 +28,15 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install node-fetch@2
+        run: npm install openai @antv/mcp-server-antv
           
       - name: Process Issue
         uses: actions/github-script@v7
-        env:
-          MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let issue = context.payload.issue;
             
-            // 如果是手动触发，获取issue信息
             if (context.eventName === 'workflow_dispatch') {
               const issueNumber = context.payload.inputs.issue_number;
               const { data: issueData } = await github.rest.issues.get({
@@ -50,10 +47,10 @@ jobs:
               issue = issueData;
             }
             
-            // 运行脚本处理issue
             const script = require('./.github/workflows/scripts/issue-automated.js');
             await script({
               github,
               core,
-              context
+              context,
+              issue
             });
