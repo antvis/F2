@@ -1,0 +1,59 @@
+name: Issue Automated Processing
+
+on:
+  issues:
+    types: [opened, reopened, edited]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  issue-response:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install node-fetch@2
+          
+      - name: Process Issue
+        uses: actions/github-script@v7
+        env:
+          MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let issue = context.payload.issue;
+            
+            // 如果是手动触发，获取issue信息
+            if (context.eventName === 'workflow_dispatch') {
+              const issueNumber = context.payload.inputs.issue_number;
+              const { data: issueData } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber
+              });
+              issue = issueData;
+            }
+            
+            // 运行脚本处理issue
+            const script = require('./.github/workflows/scripts/issue-automated.js');
+            await script({
+              github,
+              core,
+              context
+            });
