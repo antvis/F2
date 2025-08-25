@@ -8,10 +8,9 @@ const { QueryAntVDocumentTool, ExtractAntVTopicTool }=  require('@antv/mcp-serve
  * @param {import('@actions/core')} param.core
  * @param {Object} param.context GitHub Action context
  */
-module.exports = async ({ github, core, context }) => {
+module.exports = async ({ github, core, context, issue }) => {
   try {
     core.info('开始处理 issue...');
-    const issue = context.payload.issue;
     const library = `${context.repo.repo}`
     if (!issue) {
       core.setFailed('找不到 issue 信息');
