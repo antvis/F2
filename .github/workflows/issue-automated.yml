@@ -28,7 +28,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install openai @antv/mcp-server-antv
+        run: yarn add openai @antv/mcp-server-antv
           
       - name: Process Issue
         uses: actions/github-script@v7
