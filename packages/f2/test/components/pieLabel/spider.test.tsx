@@ -432,4 +432,72 @@ describe('Spider PieLabel', () => {
     await delay(300);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('指定数据展示', async () => {
+    const context = createContext('默认显示', { width: '300px', height: '150px' });
+    const data = [
+      {
+        amount: 20,
+        memo: 'Study',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Eat',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: 'Sports',
+        const: 'const',
+      },
+      {
+        amount: 10,
+        memo: 'Other',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} animate={false} pixelRatio={1}>
+        <Chart
+          type="spider"
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            innerRadius: 0.3,
+            radius: 0.5,
+          }}
+        >
+          <Interval x="const" y="amount" adjust="stack" color="memo" />
+          <PieLabel
+            label1={(data) => {
+              return {
+                text: data.memo,
+              };
+            }}
+            records={[
+              {
+                amount: 20,
+                memo: 'Sports',
+                const: 'const',
+              },
+            ]}
+            label2={(data) => {
+              return {
+                fill: '#000000',
+                text: '$' + data.amount.toFixed(2),
+              };
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
 });
