@@ -508,7 +508,7 @@ class Geometry<
    *  如果是Linear，则每个元素 走 mapping
    *  如果是Category/Identity 则第一个元素走 mapping
    */
-  _mapping(records) {
+  _mapping(records?: any) {
     const { attrs, props, attrController } = this;
     const { coord } = props;
 
