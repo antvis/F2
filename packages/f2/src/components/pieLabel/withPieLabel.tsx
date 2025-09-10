@@ -332,11 +332,22 @@ export default (View) => {
         sidePadding,
         label1OffsetY,
         label2OffsetY,
+        records: recordsParam,
       } = props;
       const { measureText, px2hd } = this.context;
       const { center, radius, height: coordHeight, width: coordWidth } = coord;
       const geometry = chart.getGeometrys()[0];
-      const records = geometry.flatRecords();
+
+      let tempRecords = geometry.records;
+      // 判断用户是否指定records进行label的展示，如果指定了的话仅展示传入数据，此时需要对用户传入的数据重新做一下mapping计算
+      if (Array.isArray(recordsParam)) {
+        // 数据重新做一下整理
+        const groupedData = geometry._groupData(geometry._saveOrigin(recordsParam));
+        tempRecords = geometry.mapping(groupedData);
+      }
+      const records = tempRecords.reduce((prevRecords, record) => {
+        return prevRecords.concat(record.children);
+      }, []);
 
       // 高度计算，拿第一项数据作为计算依据
       const label1Text = isFunction(label1) ? label1(records[0]?.origin, records[0]) : label1;
