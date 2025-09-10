@@ -587,7 +587,11 @@ class Geometry<
   }
 
   // 数据映射
-  mapping() {
+  mapping(records) {
+    // 如果传入了record，仅对传入的数据进行mapping操作
+    if(records) {
+      return this._mapping(records);
+    }
     const { dataRecords } = this;
     // 数据映射
     this.records = this._mapping(dataRecords);
