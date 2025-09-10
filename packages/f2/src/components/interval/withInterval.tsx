@@ -73,8 +73,8 @@ export default (Views) => {
       return size;
     }
 
-    mapping() {
-      const records = super.mapping();
+    mapping(recordsData) {
+      const records = super.mapping(recordsData);
       const { props } = this;
       const { coord, sizeZoom } = props;
       const y0 = this.getY0Value();
