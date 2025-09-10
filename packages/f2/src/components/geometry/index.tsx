@@ -508,7 +508,7 @@ class Geometry<
    *  如果是Linear，则每个元素 走 mapping
    *  如果是Category/Identity 则第一个元素走 mapping
    */
-  _mapping(records?: any) {
+  _mapping(records) {
     const { attrs, props, attrController } = this;
     const { coord } = props;
 
@@ -587,7 +587,7 @@ class Geometry<
   }
 
   // 数据映射
-  mapping(records) {
+  mapping(records?: any) {
     // 如果传入了record，仅对传入的数据进行mapping操作
     if(records) {
       return this._mapping(records);
