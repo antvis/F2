@@ -82,6 +82,10 @@ export interface PieLabelProps {
    *
    */
   type?: 'default' | 'spider';
+  /**
+   * 展示label的数据，传入时仅展示传入数据label
+   */
+  records?: any;
 }
 
 export default (View) => {
@@ -111,6 +115,7 @@ export default (View) => {
         label2,
         height: itemHeight = context.px2hd('64px'),
         sidePadding,
+        records: recordsParam,
       } = props;
 
       const {
@@ -127,8 +132,18 @@ export default (View) => {
       const maxCount = maxCountForOneSide * 2;
 
       const geometry = chart.getGeometrys()[0];
-      const records = geometry
-        .flatRecords()
+      let tempRecords = geometry.records;
+      // 判断用户是否指定records进行label的展示，如果指定了的话仅展示传入数据，此时需要对用户传入的数据重新做一下mapping计算
+      if (Array.isArray(recordsParam)) {
+        // 数据重新做一下整理
+        const groupedData = geometry._groupData(geometry._saveOrigin(recordsParam));
+        tempRecords = geometry.mapping(groupedData);
+      }
+
+      const records = tempRecords
+        .reduce((prevRecords, record) => {
+          return prevRecords.concat(record.children);
+        }, [])
         // 按角度大到小排序
         .sort((a, b) => {
           const angle1 = a.xMax - a.xMin;
