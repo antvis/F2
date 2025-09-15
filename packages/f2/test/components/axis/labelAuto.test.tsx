@@ -143,6 +143,89 @@ describe('Axis labelAutoRotate', () => {
     expect(context).toMatchImageSnapshot();
   });
 
+  it('启用标签自动隐藏（labelAutoHide=true）：无法获取最佳步长，设置首尾', async () => {
+    const context = createContext('启用标签自动隐藏');
+    const testChartData = [
+      {
+        "category": "2023-01",
+        "value": 83.22
+      },
+      {
+        "category": "2023-02",
+        "value": 78.28
+      },
+      {
+        "category": "2023-03",
+        "value": 77.5
+      },
+      {
+        "category": "2023-04",
+        "value": 83.38
+      },
+      {
+        "category": "2023-05",
+        "value": 87.87
+      },
+      {
+        "category": "2023-06",
+        "value": 90.78
+      },
+            {
+        "category": "2023-07",
+        "value": 93.05
+      },
+      {
+        "category": "2023-08",
+        "value": 93.22
+      },
+            {
+        "category": "2023-09",
+        "value": 93.4
+      },
+      {
+        "category": "2023-10",
+        "value": 87.94
+      },
+            {
+        "category": "2023-11",
+        "value": 82.36
+      },
+      {
+        "category": "2023-12",
+        "value": 68.32
+      },
+    ]
+ 
+    const { props } = (
+      <Canvas context={context} pixelRatio={1} width={350} height={250}>
+        <Chart
+          data={testChartData}
+          style={{
+            padding: [0, 0, 0, 0],
+          }}
+        >
+          <Axis
+            field="category"
+            labelAutoHide={true}
+            style={{
+              label: {
+                align: 'center',
+              },
+            }}
+          />
+          <Axis field="value" />
+          <Interval x="category" y="value" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
+
   it('labelAutoHide测试', async () => {
     const largeData = Array.from({ length: 100 }, (_, i) => ({
       category: `Cat${i + 1}`,
