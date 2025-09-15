@@ -434,7 +434,7 @@ export default (View) => {
         }
       }
 
-      if (finalSeq > maxSeq || finalSeq === 1) {
+      if (finalSeq === 1) {
         return;
       }
 
@@ -442,6 +442,12 @@ export default (View) => {
         tick.visible = false;
       });
 
+      // 没找到最佳步长，则保留第一个和最后一个数据
+      if (finalSeq > maxSeq) {
+        ticks[0].visible = true;
+        ticks[range].visible = true
+        return;
+      }
       for (let i = 0; i <= range; i += finalSeq) {
         ticks[i].visible = true;
       }
