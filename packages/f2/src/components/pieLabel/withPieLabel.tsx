@@ -68,6 +68,10 @@ export interface PieLabelProps {
   label2?: any;
   sidePadding?: string | number;
   /**
+   * 指定要显示的数据记录
+   */
+  records?: any[];
+  /**
    * 触发的事件类型
    */
   triggerOn?: 'click' | 'press';
@@ -317,11 +321,26 @@ export default (View) => {
         sidePadding,
         label1OffsetY,
         label2OffsetY,
+        records: customRecords,
       } = props;
+      const { adjust } = chart;
       const { measureText, px2hd } = this.context;
       const { center, radius, height: coordHeight, width: coordWidth } = coord;
       const geometry = chart.getGeometrys()[0];
-      const records = geometry.flatRecords();
+      const allRecords = geometry.flatRecords();
+
+      let records = allRecords;
+
+      if (customRecords) {
+        const { xField, yField } = adjust.adjust;
+        records = customRecords
+          .map((record) => {
+            return allRecords.find(
+              (d) => d.origin[xField] === record[xField] && d.origin[yField] === record[yField]
+            );
+          })
+          .filter(Boolean);
+      }
 
       // 高度计算，拿第一项数据作为计算依据
       const label1Text = isFunction(label1) ? label1(records[0]?.origin, records[0]) : label1;
