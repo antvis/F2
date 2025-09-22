@@ -496,6 +496,11 @@ describe('Spider PieLabel', () => {
                 memo: 'Language',
                 const: 'const',
               },
+              {
+                amount: 10,
+                memo: 'Math',
+                const: 'const',
+              },
             ]}
             label1={(data) => {
               return {
