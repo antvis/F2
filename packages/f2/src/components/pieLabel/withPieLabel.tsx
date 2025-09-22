@@ -333,10 +333,11 @@ export default (View) => {
 
       if (customRecords) {
         const { xField, yField } = adjust.adjust;
+        const colorField = geometry.attrs?.color?.field;
         records = customRecords
           .map((record) => {
             return allRecords.find(
-              (d) => d.origin[xField] === record[xField] && d.origin[yField] === record[yField]
+              (d) => d.origin[colorField] === record[colorField] && d.origin[xField] === record[xField] && d.origin[yField] === record[yField]
             );
           })
           .filter(Boolean);
