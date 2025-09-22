@@ -19,6 +19,8 @@ type BBox = {
   width: number;
 };
 
+const SHOW_MIDDLE_LABEL_THRESHOLD = 10;
+
 export { AxisProps };
 
 export default (View) => {
@@ -442,9 +444,12 @@ export default (View) => {
         tick.visible = false;
       });
 
-      // 没找到最佳步长，则保留第一个和最后一个数据
+      // 没找到最佳步长，则保留第一个和最后一个数据，如果总range较大，保留中间的label
       if (finalSeq > maxSeq) {
         ticks[0].visible = true;
+        if(range > SHOW_MIDDLE_LABEL_THRESHOLD && !this.hasOverlapAtSeq(ticks, maxSeq)) {
+          ticks[maxSeq].visible = true;
+        }
         ticks[range].visible = true
         return;
       }
