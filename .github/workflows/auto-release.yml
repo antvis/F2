@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    runs-on: macos-latest
+    runs-on: macos-14
     if: startsWith(github.event.head_commit.message , 'chore(release):')
 
     steps:
