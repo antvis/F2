@@ -11,7 +11,7 @@ jobs:
   # This workflow contains a single job called "ci"
   ci:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: macos-14
 
     strategy:
       matrix:
@@ -31,6 +31,14 @@ jobs:
       - name: install
         run: |
           yarn install
+          
+      - name: check npm dependencies
+        run: |
+          npm ls --all || true
+
+      - name: List fonts in CI
+        run: |
+          fc-list
 
       - name: lint
         run: |
