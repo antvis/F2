@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/antvis/f2/compare/v5.11.0...v5.12.0) (2025-09-24)
+
+
+### Bug Fixes
+
+* 修复pieLabel自定义records匹配逻辑问题 ([#2121](https://github.com/antvis/f2/issues/2121)) ([fff6401](https://github.com/antvis/f2/commit/fff64012bab0b89c64b94694dc2cd0c3a5f034e5))
+* 针对没有找到最佳步长的情况，首尾展示轴文本 ([#2117](https://github.com/antvis/f2/issues/2117)) ([2619cf0](https://github.com/antvis/f2/commit/2619cf054fb5883df37f9e6b79084b1f1ff13cca))
+
+
+### Features
+
+* autoHide策略调整 ([#2119](https://github.com/antvis/f2/issues/2119)) ([d60aa3f](https://github.com/antvis/f2/commit/d60aa3fe3a3401c3e60e03050c72083c2c3ae097))
+* pielabel支持展示指定records ([#2116](https://github.com/antvis/f2/issues/2116)) ([1d380dc](https://github.com/antvis/f2/commit/1d380dc80130c3130a3adc6db44589ea19f92a59))
+
+
+
+
+
 # [5.11.0](https://github.com/antvis/f2/compare/v5.10.0...v5.11.0) (2025-08-22)
 
 
