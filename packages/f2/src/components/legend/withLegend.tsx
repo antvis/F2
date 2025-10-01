@@ -27,7 +27,13 @@ export interface LegendProps {
    */
   position?: 'right' | 'left' | 'top' | 'bottom';
   /**
-   * 图例宽度
+   * 布局模式：'uniform' 统一宽度（默认），'adaptive' 自适应宽度
+   */
+
+  layoutMode?: 'uniform' | 'adaptive';
+
+  /**
+   * 图例宽度 uniform 模式下生效
    */
   width?: number | string;
   /**
@@ -142,12 +148,19 @@ export default (View) => {
         width: customWidth,
         height: customHeight,
         position = 'top',
+        layoutMode = 'uniform',
       } = props;
       const items = this.getItems();
       if (!items || !items.length) return;
       const { left, top, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
       const node = computeLayout(this, this.render());
+
+      if (layoutMode === 'adaptive') {
+        this._adaptiveLayout(node);
+        return;
+      }
+
       const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(node);
       // 每行最多的个数
       const lineMaxCount = Math.max(1, Math.floor(width / itemMaxWidth));
@@ -193,6 +206,66 @@ export default (View) => {
         style.height = customHeight ? customHeight : autoHeight;
       }
       this.itemWidth = itemWidth;
+      this.legendStyle = style;
+    }
+
+    _adaptiveLayout(node) {
+      const { props, context } = this;
+      const {
+        // @ts-ignore
+        layout: parentLayout,
+        width: customWidth,
+        height: customHeight,
+        position = 'top',
+      } = props;
+      const items = this.getItems();
+      if (!items || !items.length) return;
+      const { left, top, width: layoutWidth, height: layoutHeight } = parentLayout;
+      const width = context.px2hd(customWidth) || layoutWidth;
+
+      const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(node);
+
+      const lineCount = 1; // 先不考虑多行的情况
+
+      const autoHeight = itemMaxHeight * lineCount;
+      const style: GroupStyleProps = {
+        left,
+        top,
+        width,
+        // height 默认自适应
+        height: undefined,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+      };
+      // 如果只有一行，2端对齐
+      if (lineCount === 1) {
+        style.justifyContent = 'space-between';
+      }
+      if (position === 'top') {
+        style.height = customHeight ? customHeight : autoHeight;
+      }
+      if (position === 'left') {
+        style.flexDirection = 'column';
+        style.justifyContent = 'center';
+        style.alignItems = 'flex-start';
+        style.width = itemMaxWidth;
+        style.height = customHeight ? customHeight : layoutHeight;
+      }
+      if (position === 'right') {
+        style.flexDirection = 'column';
+        style.alignItems = 'flex-start';
+        style.justifyContent = 'center';
+        style.left = left + (width - itemMaxWidth);
+        style.width = itemMaxWidth;
+        style.height = customHeight ? customHeight : layoutHeight;
+      }
+      if (position === 'bottom') {
+        style.top = top + (layoutHeight - autoHeight);
+        style.height = customHeight ? customHeight : autoHeight;
+      }
+
       this.legendStyle = style;
     }
 

@@ -55,6 +55,7 @@ export default (props) => {
     valueStyle,
     valuePrefix,
     onClick,
+    layoutMode,
   } = props;
 
   const formatValue = (value, valuePrefix = ': ') => {
@@ -76,7 +77,7 @@ export default (props) => {
           <group
             className="legend-item"
             style={{
-              width: itemWidth,
+              ...(layoutMode == 'adaptive' ? {} : { width: itemWidth }),
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
