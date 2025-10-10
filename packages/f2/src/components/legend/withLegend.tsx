@@ -27,7 +27,13 @@ export interface LegendProps {
    */
   position?: 'right' | 'left' | 'top' | 'bottom';
   /**
-   * 图例宽度
+   * 布局模式：'uniform' 统一宽度（默认），'adaptive' 自适应宽度
+   */
+
+  layoutMode?: 'uniform' | 'adaptive';
+
+  /**
+   * 图例宽度 uniform 模式下生效
    */
   width?: number | string;
   /**
@@ -142,19 +148,28 @@ export default (View) => {
         width: customWidth,
         height: customHeight,
         position = 'top',
+        layoutMode = 'uniform',
       } = props;
       const items = this.getItems();
       if (!items || !items.length) return;
       const { left, top, width: layoutWidth, height: layoutHeight } = parentLayout;
       const width = context.px2hd(customWidth) || layoutWidth;
       const node = computeLayout(this, this.render());
+
       const { width: itemMaxWidth, height: itemMaxHeight } = this.getMaxItemBox(node);
-      // 每行最多的个数
-      const lineMaxCount = Math.max(1, Math.floor(width / itemMaxWidth));
-      const itemCount = items.length;
-      // legend item 的行数
-      const lineCount = Math.ceil(itemCount / lineMaxCount);
-      const itemWidth = width / lineMaxCount;
+
+      let lineCount, itemWidth;
+      if (layoutMode === 'adaptive') {
+        lineCount = 1; // adaptive模式先不考虑多行情况
+        itemWidth = undefined;
+      } else {
+        // uniform模式
+        const lineMaxCount = Math.max(1, Math.floor(width / itemMaxWidth));
+        const itemCount = items.length;
+        lineCount = Math.ceil(itemCount / lineMaxCount);
+        itemWidth = width / lineMaxCount;
+      }
+
       const autoHeight = itemMaxHeight * lineCount;
       const style: GroupStyleProps = {
         left,
@@ -167,16 +182,19 @@ export default (View) => {
         alignItems: 'center',
         justifyContent: 'flex-start',
       };
+
       // 如果只有一行，2端对齐
       if (lineCount === 1) {
         style.justifyContent = 'space-between';
       }
+
       if (position === 'top') {
         style.height = customHeight ? customHeight : autoHeight;
       }
       if (position === 'left') {
         style.flexDirection = 'column';
         style.justifyContent = 'center';
+        style.alignItems = layoutMode === 'adaptive' ? 'flex-start' : 'center';
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
       }
@@ -184,14 +202,15 @@ export default (View) => {
         style.flexDirection = 'column';
         style.alignItems = 'flex-start';
         style.justifyContent = 'center';
+        style.left = left + (width - itemMaxWidth);
         style.width = itemMaxWidth;
         style.height = customHeight ? customHeight : layoutHeight;
-        style.left = left + (width - itemMaxWidth);
       }
       if (position === 'bottom') {
         style.top = top + (layoutHeight - autoHeight);
         style.height = customHeight ? customHeight : autoHeight;
       }
+
       this.itemWidth = itemWidth;
       this.legendStyle = style;
     }
