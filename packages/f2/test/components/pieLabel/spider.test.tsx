@@ -519,4 +519,95 @@ describe('Spider PieLabel', () => {
     await delay(300);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('宽高比较大的情况下不截断label', async () => {
+    const context = createContext('宽高比较大的情况下不截断label', { width: '300px', height: '120px' });
+    const data = [
+      {
+        amount: 5,
+        memo: '其他',
+        const: 'const',
+        color: 'red',
+      },
+      {
+        amount: 6,
+        memo: '消费',
+        const: 'const',
+        color: 'red',
+      },
+      {
+        amount: 7,
+        memo: '黄金',
+        const: 'const',
+        color: 'red',
+      },
+      {
+        amount: 8,
+        memo: '海外债',
+        const: 'const',
+        color: 'red',
+      },
+      {
+        amount: 20,
+        memo: '成长',
+        const: 'const',
+        color: 'red',
+      },
+      {
+        amount: 54,
+        memo: '固收',
+        const: 'const',
+        color: 'red',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={2}>
+        <Chart
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            radius: 0.8,
+          }}
+        >
+          <Interval
+            x="const"
+            y="amount"
+            adjust="stack"
+            color={{
+              field: 'color',
+              callback: (value) => {
+                return value;
+              },
+            }}
+            style={{
+              stroke: '#fff', // 描边颜色（border）
+              lineWidth: 0.5,
+            }}
+          />
+          <PieLabel
+            type="spider"
+            label1={(data) => {
+              // console.log('label1',data);
+              return {
+                text: `${data.memo} ${data.amount}%`,
+                fontSize: 10,
+                fill: '#333',
+              };
+            }}
+            label2=""
+            anchorStyle={{
+              fill: '#fff',
+            }}
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(300);
+    expect(context).toMatchImageSnapshot();
+  });
 });
