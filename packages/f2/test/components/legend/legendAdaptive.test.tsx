@@ -263,4 +263,41 @@ describe('adaptive', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('多行自适应布局', async () => {
+    const multiLineData = [
+      { genre: '债券基金', sold: 275, a: '1' },
+      { genre: '申万宏源固守+基金指数', sold: 115, a: '1' },
+      { genre: '基金指数', sold: 120, a: '1' },
+      { genre: '股票基金', sold: 300, a: '1' },
+      { genre: '混合基金', sold: 180, a: '1' },
+      { genre: '货币基金', sold: 90, a: '1' },
+      { genre: 'QDII基金', sold: 60, a: '1' },
+    ];
+
+    const context = createContext('多行自适应布局', {
+      height: '150px',
+      width: '300px',
+    });
+
+    const { props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={multiLineData}>
+          <Legend
+            layoutMode="adaptive"
+            itemStyle={{
+              stroke: 'red',
+            }}
+          />
+          <Interval x="genre" y="sold" adjust="stack" color="genre" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(1000);
+    expect(context).toMatchImageSnapshot();
+  });
 });

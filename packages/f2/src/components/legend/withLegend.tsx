@@ -139,6 +139,14 @@ export default (View) => {
       };
     }
 
+    getItemBoxes(node) {
+      return (node.children || []).map((child) => {
+        const { layout } = child;
+        const { width, height } = layout;
+
+        return { width, height };
+      });
+    }
     // 计算 legend 的位置
     _init() {
       const { props, context } = this;
@@ -160,7 +168,17 @@ export default (View) => {
 
       let lineCount, itemWidth;
       if (layoutMode === 'adaptive') {
-        lineCount = 1; // adaptive模式先不考虑多行情况
+        const labelBBoxes = this.getItemBoxes(node);
+        let pos = 0;
+        lineCount = 1;
+        for (const { width: boxWidth } of labelBBoxes) {
+          if (pos + boxWidth > width) {
+            pos = boxWidth;
+            lineCount++;
+          } else {
+            pos += boxWidth;
+          }
+        }
         itemWidth = undefined;
       } else {
         // uniform模式
@@ -171,6 +189,7 @@ export default (View) => {
       }
 
       const autoHeight = itemMaxHeight * lineCount;
+
       const style: GroupStyleProps = {
         left,
         top,
