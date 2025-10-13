@@ -524,4 +524,82 @@ describe('Spider PieLabel', () => {
     await delay(300);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('label2为空的情况', async () => {
+    const context = createContext('label2为空的情况', {
+      width: '300px',
+      height: '120px',
+    });
+    const data = [
+      {
+        amount: 5,
+        memo: '其他',
+        const: 'const',
+      },
+      {
+        amount: 6,
+        memo: '消费',
+        const: 'const',
+      },
+      {
+        amount: 7,
+        memo: '黄金',
+        const: 'const',
+      },
+      {
+        amount: 8,
+        memo: '海外债',
+        const: 'const',
+      },
+      {
+        amount: 20,
+        memo: '成长',
+        const: 'const',
+      },
+      {
+        amount: 54,
+        memo: '固收',
+        const: 'const',
+      },
+    ];
+    const { props } = (
+      <Canvas context={context} pixelRatio={2}>
+        <Chart
+          data={data}
+          coord={{
+            type: 'polar',
+            transposed: true,
+            radius: 0.8,
+          }}
+        >
+          <Interval
+            x="const"
+            y="amount"
+            adjust="stack"
+            color="memo"
+            style={{
+              stroke: '#fff', // 描边颜色（border）
+              lineWidth: 0.5,
+            }}
+          />
+          <PieLabel
+            type="spider"
+            label1={(data) => {
+              return {
+                text: `${data.memo} ${data.amount}%`,
+                fill: '#333',
+              };
+            }}
+            label2=""
+          />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+  });
 });

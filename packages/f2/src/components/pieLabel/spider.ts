@@ -1,18 +1,18 @@
 export const adjustPosition = (half, showSide, props, labelWidth) => {
-  const { coord, sidePadding, adjustOffset } = props;
+  const { coord, sidePadding, adjustOffset, adjustRatio } = props;
   const { left: coordLeft, right: coordRight } = coord;
   const labels = [];
   let lastY = 0;
   let delta;
 
   half.forEach((label) => {
-    const { anchor, inflection, y, height } = label;
+    const { anchor, inflection, y, height, label2 } = label;
 
     const points = [anchor, inflection];
     const endX = showSide === 'left' ? coordLeft + sidePadding : coordRight - sidePadding;
     let endY = y;
 
-    delta = y - lastY - (lastY === 0 ? 0.5 * height : height);
+    delta = y - lastY - (lastY === 0 && label2 ? 0.5 * height : height);
 
     if (delta < 0) {
       // 文本调整下去了 需要添加折线
@@ -28,7 +28,8 @@ export const adjustPosition = (half, showSide, props, labelWidth) => {
       };
 
       if (
-        Math.abs(delta) < height * props.adjustRatio ||
+        Math.abs(delta) < height * adjustRatio ||
+        point2.y < lastY ||
         (showSide === 'right' && point2.x < inflection.x) ||
         (showSide === 'left' && point2.x > inflection.x)
       ) {

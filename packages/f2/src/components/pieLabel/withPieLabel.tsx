@@ -273,6 +273,7 @@ export default (View) => {
             // 折线的点
             const points = [anchor, inflection];
             const endX = coordRight - sidePadding;
+
             const endY = coordTop + halfLabelHeight + labelHeight * index;
 
             // 文本开始点
@@ -337,7 +338,10 @@ export default (View) => {
         records = customRecords
           .map((record) => {
             return allRecords.find(
-              (d) => d.origin[colorField] === record[colorField] && d.origin[xField] === record[xField] && d.origin[yField] === record[yField]
+              (d) =>
+                d.origin[colorField] === record[colorField] &&
+                d.origin[xField] === record[xField] &&
+                d.origin[yField] === record[yField]
             );
           })
           .filter(Boolean);
