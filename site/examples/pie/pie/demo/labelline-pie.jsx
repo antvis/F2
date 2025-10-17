@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Canvas, Chart, Interval, PieLabel } from '@antv/f2';
+import { Canvas, Chart, Interval, jsx, PieLabel } from '@antv/f2';
 
 const data = [
   {
@@ -37,7 +37,7 @@ const { props } = (
       coord={{
         transposed: true,
         type: 'polar',
-        radius: 0.75,
+        radius: 0.7,
       }}
     >
       <Interval
@@ -50,7 +50,8 @@ const { props } = (
         }}
       />
       <PieLabel
-        sidePadding={40}
+        type="spider"
+        sidePadding={10}
         label1={(data, record) => {
           return {
             text: data.name,
