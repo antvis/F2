@@ -30,6 +30,10 @@ const data = [
 
 ## Props
 
+### layoutMode: 'uniform' | 'adaptive'
+
+可选值为：`'uniform' | 'adaptive'` , 默认为 `'uniform'`
+
 ### position: string
 
 可选值为：`'top' | 'right' | 'bottom' | 'left'`, 默认为 `'top'`
