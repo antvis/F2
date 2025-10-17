@@ -60,6 +60,14 @@ const data = [
 
 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1
 
+### labelAutoHide: boolean
+
+自动隐藏重叠的刻度值，保证均匀步长、且保留第一个和最后一个 tick 的前提下，若遮挡则进行隐藏，兜底展示不均匀步长。默认为 `false`
+
+### labelAutoRotate: boolean
+
+自动旋转刻度值，若坐标轴文本遮挡则进行最小角度旋转。默认为 `false`
+
 ### formatter: Function
 
 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。
