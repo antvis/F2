@@ -9,7 +9,7 @@ order: 1
 
 ### 基础示例
 
-- [基础图例](./demo/legend.jsx)：展示基本的图例组件。
+- 基础图例：展示基本的图例组件。
 
 ```jsx
 import { jsx, Canvas, Chart, Legend } from '@antv/f2';
@@ -29,10 +29,26 @@ const { props } = (
 );
 ```
 
+### 布局方式
+
+- [基础图例](./demo/legend.jsx)：展示基本的图例组件。
+
+```jsx
+import { jsx, Canvas, Chart, Legend } from '@antv/f2';
+
+const { props } = (
+  <Canvas context={context}>
+    <Chart data={data}>
+      <Legend position="bottom" layoutMode="adaptive" />
+    </Chart>
+  </Canvas>
+);
+```
+
 ### 进阶用法
 
 - [自定义图例](./demo/custom.jsx)：自定义样式和布局的图例。
-- [可交互图例](./demo/interactive.jsx)：支持点击交互的图例组件。
+- [可交互图例](./demo/layoutMode.jsx)：两种布局方式。
 
 ## 使用场景
 

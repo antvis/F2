@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Canvas, Chart, Interval, Legend } from '@antv/f2';
+import { Canvas, Chart, Interval, jsx, Legend, PieLabel } from '@antv/f2';
 
 const data = [
   {
@@ -22,16 +22,6 @@ const data = [
     percent: 0.15,
     a: '1',
   },
-  {
-    name: '峰爆',
-    percent: 0.05,
-    a: '1',
-  },
-  {
-    name: '其他',
-    percent: 0.02,
-    a: '1',
-  },
 ];
 
 const context = document.getElementById('container').getContext('2d');
@@ -40,7 +30,7 @@ const { props } = (
     <Chart
       data={data}
       coord={{
-        radius: 0.8,
+        radius: 0.6,
         transposed: true,
         type: 'polar',
       }}
@@ -60,6 +50,17 @@ const { props } = (
           },
         }}
       />
+      <PieLabel
+        type="spider"
+        label1={(data, record) => {
+          return {
+            text: data.name,
+            fill: record.color,
+          };
+        }}
+        label2=""
+      />
+      <Legend position="top" />
     </Chart>
   </Canvas>
 );

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Canvas, Chart, Interval, PieLabel, Legend } from '@antv/f2';
+import { Canvas, Chart, Interval, jsx, Legend, PieLabel } from '@antv/f2';
 
 const data = [
   {
@@ -78,6 +78,7 @@ const { props } = (
       />
       <Legend position="top" />
       <PieLabel
+        type="spider"
         label1={(data) => {
           return {
             text: data.memo,

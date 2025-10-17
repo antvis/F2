@@ -1,5 +1,5 @@
 ---
-title: Shape 组件与图形标签
+title: 图形标签
 order: 2
 ---
 
