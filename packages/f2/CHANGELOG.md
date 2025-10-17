@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/antvis/f2/compare/v5.12.0...v5.13.0) (2025-10-17)
+
+
+### Bug Fixes
+
+* label2为空的情况下Spider布局 ([#2129](https://github.com/antvis/f2/issues/2129)) ([2f75603](https://github.com/antvis/f2/commit/2f7560323de0c66f2a94427db9036a86870a7539))
+
+
+### Features
+
+* adaptive情况下的多行布局 ([#2127](https://github.com/antvis/f2/issues/2127)) ([6f9104f](https://github.com/antvis/f2/commit/6f9104f41f701e0c361267536ba5250c10acc4cc))
+* legend增加adaptive属性 ([#2124](https://github.com/antvis/f2/issues/2124)) ([6023e01](https://github.com/antvis/f2/commit/6023e01b4cc4806c76b19022f37c8f700809e2ab))
+
+
+
+
+
 # [5.12.0](https://github.com/antvis/f2/compare/v5.11.0...v5.12.0) (2025-09-24)
 
 
