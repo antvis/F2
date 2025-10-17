@@ -1,0 +1,18 @@
+{
+  "title": {
+    "zh": "中文分类",
+    "en": "Category"
+  },
+  "demos": [
+    {
+      "filename": "labelAutoHide.jsx",
+      "title": "文本标注",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/c95b75fc-d81e-4ae2-8cbf-29f4ba7bf706.png"
+    },
+    {
+      "filename": "labelAutoRotate.jsx",
+      "title": "点标注",
+      "screenshot": "https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/eecfc128-cb32-4797-b41c-697823ff2336.png"
+    }
+  ]
+}
