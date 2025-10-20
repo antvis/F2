@@ -29,6 +29,7 @@ export default (View) => {
         const highlightsData = data.filter((record) => {
           return condition(record[field], record);
         });
+        if (!highlightsData.length) return;
         elements.push({
           highlightsData,
           field,

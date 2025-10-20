@@ -286,7 +286,7 @@ export default (View) => {
       }
 
       const { field, tickValue } = dataItem;
-      const { filtered: prevFiltered } = this.state;
+      const { filtered: prevFiltered, highlighted: preHighlighted } = this.state;
       const filtered = {
         ...prevFiltered,
         [tickValue]: !prevFiltered[tickValue],
@@ -301,7 +301,7 @@ export default (View) => {
         });
       } else if (clickMode === 'element-link') {
         const highlighted = {
-          [tickValue]: true,
+          [tickValue]: !preHighlighted[tickValue],
         };
         this.setState({
           highlighted,
