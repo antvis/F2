@@ -81,7 +81,7 @@ export interface LegendProps {
    */
   clickable?: boolean;
   onClick?: (item: LegendItem) => void;
-  clickMode?: 'filter' | 'element-link';
+  clickMode?: 'filter' | 'highlight';
 }
 
 export default (View) => {
@@ -299,16 +299,21 @@ export default (View) => {
         chart.filter(field, (value) => {
           return !filtered[value];
         });
-      } else if (clickMode === 'element-link') {
+      } else if (clickMode === 'highlight') {
         const highlighted = {
           [tickValue]: !preHighlighted[tickValue],
         };
         this.setState({
           highlighted,
         });
-        chart.highlight(field, (value) => {
-          return highlighted[value];
-        });
+        chart.highlight(
+          field,
+          preHighlighted[tickValue]
+            ? null
+            : (value) => {
+                return highlighted[value];
+              }
+        );
       }
     };
 

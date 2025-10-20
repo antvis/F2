@@ -18,7 +18,7 @@ describe('element-link', () => {
           <Axis field="value" />
           <Interval x="year" y="value" color="type" adjust="stack" />
           <ElementLink field="type" />
-          <Legend position="top" clickMode="element-link" />
+          <Legend position="top" clickMode="highlight" />
         </Chart>
       </Canvas>
     );
@@ -49,7 +49,7 @@ describe('element-link', () => {
           <Axis field="value" />
           <Interval x="year" y="value" color="type" adjust="stack" />
           <ElementLink field="type" />
-          <Legend position="top" clickMode="element-link" />
+          <Legend position="top" clickMode="highlight" />
         </Chart>
       </Canvas>
     );

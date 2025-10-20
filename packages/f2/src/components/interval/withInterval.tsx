@@ -76,7 +76,7 @@ export default (Views) => {
     mapping() {
       const records = super.mapping();
       const { props } = this;
-      const { coord, sizeZoom } = props;
+      const { coord, sizeZoom, chart } = props;
       const y0 = this.getY0Value();
       const defaultSize = this.getDefaultSize();
 
@@ -98,6 +98,7 @@ export default (Views) => {
             mix(child, coord.transformToRect(rect));
           }
 
+          mix(child.shape, chart.getHighlightStyle(child.origin));
           mix(child.shape, this.getSelectionStyle(child));
         }
       }
