@@ -35,4 +35,36 @@ describe('element-link', () => {
     await delay(100);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('toggle highlight', async () => {
+    const context = createContext('toggle highlight', {
+      height: '300px',
+      width: '400px',
+    });
+
+    const { props } = (
+      <Canvas context={context}>
+        <Chart data={data}>
+          <Axis field="year" />
+          <Axis field="value" />
+          <Interval x="year" y="value" color="type" adjust="stack" />
+          <ElementLink field="type" />
+          <Legend position="top" clickMode="element-link" />
+        </Chart>
+      </Canvas>
+    );
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(500);
+
+    await gestureSimulator(context.canvas, 'click', { x: 150, y: 30 });
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 150, y: 30 });
+    await delay(100);
+
+    expect(context).toMatchImageSnapshot();
+  });
 });
