@@ -43,4 +43,40 @@ describe('Interval', () => {
     await delay(800);
     expect(context).toMatchImageSnapshot();
   });
+
+  it('legend highlight 模式点击', async () => {
+    const context = createContext();
+    const { type, props } = (
+      <Canvas context={context} pixelRatio={1}>
+        <Chart data={data}>
+          <Legend clickMode="highlight" />
+          <Axis field="genre" />
+          <Axis field="sold" />
+          <Interval x="genre" y="sold" color="genre" />
+        </Chart>
+      </Canvas>
+    );
+
+    const canvas = new Canvas(props);
+    await canvas.render();
+
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 109, y: 24 });
+    await delay(500);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+
+    await gestureSimulator(context.canvas, 'click', { x: 165, y: 26 });
+    await delay(800);
+    expect(context).toMatchImageSnapshot();
+  });
 });

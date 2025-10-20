@@ -369,9 +369,9 @@ class Chart<
 
   getHighlightStyle(record) {
     const { highlights } = this.state;
+    let isHighLight = false;
     if (isEmpty(highlights)) return;
 
-    let isHighLight = false;
     each(highlights, (condition, field) => {
       if (condition(record[field], record)) {
         isHighLight = true;
