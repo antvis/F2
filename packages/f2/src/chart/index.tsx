@@ -29,7 +29,8 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> {
 }
 
 export interface ChartState {
-  filters: any;
+  filters?: any;
+  highlights?: any;
 }
 
 export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
@@ -81,6 +82,7 @@ class Chart<
     // state
     this.state = {
       filters: {},
+      highlights: {},
     };
   }
 
@@ -329,6 +331,14 @@ class Chart<
     this.setState({
       filters: {
         ...filters,
+        [field]: condition,
+      },
+    });
+  }
+
+  highlight(field: string, condition) {
+    this.setState({
+      highlights: {
         [field]: condition,
       },
     });

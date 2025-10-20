@@ -52,15 +52,17 @@ class Selection<
     if (!selection) return;
     // 默认为 click
     const { triggerOn = 'click', onChange } = selection;
+
     chart.on(triggerOn, (ev) => {
       const { points, canvasX: x, canvasY: y } = ev;
       const point = triggerOn === 'click' ? { x, y } : points[0];
       const records = this.getSnapRecords(point);
+
       const { type = 'single', cancelable = true } = selection;
 
       if (!records || !records.length) {
         if (cancelable) {
-          onChange && onChange({ selected: null })
+          onChange && onChange({ selected: null });
           this.setState({
             selected: null,
           } as S);
@@ -71,7 +73,7 @@ class Selection<
       const { selected } = state;
       const origins = records.map((record) => record.origin);
       if (!selected || !selected.length) {
-        onChange && onChange({ selected: origins })
+        onChange && onChange({ selected: origins });
         this.setState({
           selected: origins,
         } as S);
@@ -79,7 +81,7 @@ class Selection<
 
       if (type === 'single') {
         if (!cancelable) {
-          onChange && onChange({ selected: origins })
+          onChange && onChange({ selected: origins });
           this.setState({
             selected: origins,
           } as S);
@@ -91,7 +93,7 @@ class Selection<
             newSelected.push(record.origin);
           }
         });
-        onChange && onChange({ selected: newSelected })
+        onChange && onChange({ selected: newSelected });
         this.setState({
           selected: newSelected,
         } as S);
@@ -116,7 +118,7 @@ class Selection<
         .map((key) => selectedMap[key])
         .filter(Boolean);
 
-      onChange && onChange({ selected: newSelected })
+      onChange && onChange({ selected: newSelected });
       this.setState({
         selected: newSelected,
       } as S);

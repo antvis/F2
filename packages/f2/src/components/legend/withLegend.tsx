@@ -81,6 +81,7 @@ export interface LegendProps {
    */
   clickable?: boolean;
   onClick?: (item: LegendItem) => void;
+  clickMode?: 'filter' | 'element-link';
 }
 
 export default (View) => {
@@ -89,10 +90,12 @@ export default (View) => {
   > {
     legendStyle: GroupStyleProps;
     itemWidth: Number;
+
     constructor(props) {
       super(props);
       this.state = {
         filtered: {},
+        highlighted: {},
         items: [],
       };
     }
@@ -104,7 +107,7 @@ export default (View) => {
 
     getItems() {
       const { props, state } = this;
-      const { filtered } = state;
+      const { filtered, highlighted } = state;
       const renderItems = props.items?.length ? props.items : this.getOriginItems();
       if (!renderItems) return null;
       return renderItems.map((item) => {
@@ -112,6 +115,7 @@ export default (View) => {
         return {
           ...item,
           filtered: filtered[tickValue],
+          highlighted: highlighted[tickValue],
         };
       });
     }
@@ -267,38 +271,51 @@ export default (View) => {
 
     _onclick = (item) => {
       const { props } = this;
-      const { chart, clickable = true, onClick } = props;
+      const { chart, clickable = true, onClick, clickMode = 'filter' } = props;
       if (!clickable) return;
+
       const clickItem = item.currentTarget;
-      if (!clickItem) {
-        return;
-      }
+      if (!clickItem) return;
+
       // @ts-ignore
       const dataItem = clickItem.config['data-item'];
-      if (!dataItem) {
-        return;
-      }
+      if (!dataItem) return;
+
       if (isFunction(onClick)) {
         onClick(dataItem);
       }
-      const { field, tickValue } = dataItem;
 
+      const { field, tickValue } = dataItem;
       const { filtered: prevFiltered } = this.state;
       const filtered = {
         ...prevFiltered,
         [tickValue]: !prevFiltered[tickValue],
       };
-      this.setState({
-        filtered,
-      });
-      chart.filter(field, (value) => {
-        return !filtered[value];
-      });
+
+      if (clickMode === 'filter') {
+        this.setState({
+          filtered,
+        });
+        chart.filter(field, (value) => {
+          return !filtered[value];
+        });
+      } else if (clickMode === 'element-link') {
+        const highlighted = {
+          [tickValue]: true,
+        };
+        this.setState({
+          highlighted,
+        });
+        chart.highlight(field, (value) => {
+          return highlighted[value];
+        });
+      }
     };
 
     render() {
       const { props, itemWidth, legendStyle } = this;
       const items = this.getItems();
+
       if (!items || !items.length) {
         return null;
       }
