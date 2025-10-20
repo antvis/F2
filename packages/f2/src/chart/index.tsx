@@ -10,7 +10,7 @@ import {
   createRef,
 } from '@antv/f-engine';
 import { ScaleConfig } from '../deps/f2-scale/src';
-import { each, findIndex, isArray, deepMix } from '@antv/util';
+import { each, findIndex, isArray, deepMix, isEmpty } from '@antv/util';
 import CoordController, { Coord } from '../controller/coord';
 import ScaleController from '../controller/scale';
 import Theme from '../theme';
@@ -337,6 +337,12 @@ class Chart<
   }
 
   highlight(field: string, condition) {
+    if (condition === null) {
+      this.setState({
+        highlights: {},
+      });
+      return;
+    }
     this.setState({
       highlights: {
         [field]: condition,
@@ -359,6 +365,21 @@ class Chart<
       });
     });
     return filteredData;
+  }
+
+  getHighlightStyle(record) {
+    const { highlights } = this.state;
+    if (isEmpty(highlights)) return;
+
+    let isHighLight = false;
+    each(highlights, (condition, field) => {
+      if (condition(record[field], record)) {
+        isHighLight = true;
+        return false;
+      }
+    });
+
+    return isHighLight ? {} : { opacity: 0.5 };
   }
 
   render() {
