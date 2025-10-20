@@ -1,6 +1,6 @@
 import { isFunction } from '@antv/util';
-import { Component, isEqual as equal, JSX, ShapeStyleProps } from '@antv/f-engine';
-import Chart, { ChartChildProps, ChartProps } from '../../chart';
+import { Component, isEqual as equal, ShapeStyleProps } from '@antv/f-engine';
+import { ChartChildProps } from '../../chart';
 
 function isEqual(origin1, origin2, fields: string[]) {
   if (origin1 === origin2) {
@@ -26,7 +26,6 @@ export interface SelectionProps {
     unSelectedStyle?: ShapeStyleProps | StyleType;
     cancelable?: boolean;
     onChange?: Function;
-    mode?: 'element-link' | 'element';
   };
 }
 
@@ -37,7 +36,7 @@ export interface SelectionState {
 class Selection<
   P extends SelectionProps = SelectionProps,
   S extends SelectionState = SelectionState
-> extends Component<P & (ChartChildProps | ChartProps), S> {
+> extends Component<P & ChartChildProps, S> {
   constructor(props: P, context) {
     super(props, context);
 
@@ -47,41 +46,17 @@ class Selection<
     this.state.selected = defaultSelected;
   }
 
-  getElementRecord(shape) {
-    const origin = shape.get('data') || {};
-    return [
-      {
-        origin,
-      },
-    ];
-  }
-
-  getLinkRecord(shape, chart) {
-    const origin = shape.get('data') || {};
-
-    const records = chart.getRecords(origin, 'colorField');
-
-    return records;
-  }
-
-  getSelectRecords(ev, triggerOn, mode: string, chart) {
-    const { points, canvasX: x, canvasY: y } = ev;
-    const point = triggerOn === 'click' ? { x, y } : points[0];
-    if (mode === 'element') return this.getElementRecord(ev.target);
-    if (mode === 'element-link') return this.getLinkRecord(ev.target, chart);
-    return this.getSnapRecords(point);
-  }
-
   didMount() {
     const { props, state } = this;
-    const { selection } = props;
+    const { selection, chart } = props;
     if (!selection) return;
     // 默认为 click
-    const { triggerOn = 'click', onChange, mode } = selection;
-    // 监听在整个画布上，适用于折线图。
-    const chart = ((props as ChartChildProps).chart || this) as Chart; // 添加类型断言
+    const { triggerOn = 'click', onChange } = selection;
+
     chart.on(triggerOn, (ev) => {
-      const records = this.getSelectRecords(ev, triggerOn, mode, chart);
+      const { points, canvasX: x, canvasY: y } = ev;
+      const point = triggerOn === 'click' ? { x, y } : points[0];
+      const records = this.getSnapRecords(point);
 
       const { type = 'single', cancelable = true } = selection;
 
@@ -173,7 +148,7 @@ class Selection<
     if (!selected || !selected.length) {
       return false;
     }
-    const chart = ((props as ChartChildProps).chart || this) as Chart;
+    const { chart } = props;
     const scales = chart.getScales();
     const fields = Object.keys(scales);
     for (let i = 0, len = selected.length; i < len; i++) {

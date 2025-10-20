@@ -98,12 +98,7 @@ export default (Views) => {
             mix(child, coord.transformToRect(rect));
           }
 
-          // 判断监听在本身还是chart上
-          if (props.selection) {
-            mix(child.shape, this.getSelectionStyle(child));
-          } else {
-            mix(child.shape, this.props.chart.getSelectionStyle(child));
-          }
+          mix(child.shape, this.getSelectionStyle(child));
         }
       }
       return records;

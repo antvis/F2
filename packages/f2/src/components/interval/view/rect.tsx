@@ -14,14 +14,13 @@ export default (props) => {
         return (
           <group key={key}>
             {children.map((item) => {
-              const { key, xMin, xMax, yMin, yMax, color, shape, origin } = item;
+              const { key, xMin, xMax, yMin, yMax, color, shape } = item;
               if (isNaN(xMin) || isNaN(xMax) || isNaN(yMin) || isNaN(yMax)) {
                 return null;
               }
               return (
                 <rect
                   key={key}
-                  data={origin}
                   attrs={{
                     x: xMin,
                     y: yMin,

@@ -1,6 +1,6 @@
 import { jsx } from '../../../src';
 import { Canvas, Chart } from '../../../src';
-import { Interval, Axis, ElementLink } from '../../../src/components';
+import { Interval, Axis, ElementLink, Legend } from '../../../src/components';
 import { createContext, delay, gestureSimulator } from '../../util';
 import data from './data.json';
 
@@ -13,24 +13,12 @@ describe('element-link', () => {
 
     const { props } = (
       <Canvas context={context}>
-        <Chart
-          data={data}
-          selection={{
-            mode: 'element-link',
-            triggerOn: 'click',
-            selectedStyle: {
-              fillOpacity: 1,
-            },
-            unSelectedStyle: {
-              fillOpacity: 0.4,
-            },
-          }}
-        >
+        <Chart data={data}>
           <Axis field="year" />
           <Axis field="value" />
-          <Interval x="year" y="value" color="type" adjust="stack">
-            <ElementLink field="type" />
-          </Interval>
+          <Interval x="year" y="value" color="type" adjust="stack" />
+          <ElementLink field="type" />
+          <Legend position="top" clickMode="element-link" />
         </Chart>
       </Canvas>
     );
@@ -39,12 +27,12 @@ describe('element-link', () => {
 
     await delay(500);
 
-    await gestureSimulator(context.canvas, 'click', { x: 100, y: 150 });
+    await gestureSimulator(context.canvas, 'click', { x: 150, y: 30 });
     await delay(100);
-    // expect(context).toMatchImageSnapshot();
+    expect(context).toMatchImageSnapshot();
 
-    // await gestureSimulator(context.canvas, 'click', { x: 200, y: 150 });
-    // await delay(100);
-    // expect(context).toMatchImageSnapshot();
+    await gestureSimulator(context.canvas, 'click', { x: 150, y: 50 });
+    await delay(100);
+    expect(context).toMatchImageSnapshot();
   });
 });

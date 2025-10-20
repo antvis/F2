@@ -38,6 +38,7 @@ const Marker = ({ type, color }) => {
         height: '12px',
         marginRight: '10px',
         fill: color,
+        fillOpacity: 1,
       }}
     />
   );
@@ -70,9 +71,9 @@ export default (props) => {
       }}
     >
       {items.map((item) => {
-        const { color, name, value, filtered, tickValue } = item;
+        const { color, name, value, filtered, tickValue, highlighted } = item;
         const valueText = isFunction(itemFormatter) ? itemFormatter(value, tickValue) : value;
-
+        const highlightStyle = highlighted ? { fill: color, fillOpacity: 0.2, radius: '6px' } : {};
         return (
           <group
             className="legend-item"
@@ -84,6 +85,7 @@ export default (props) => {
               justifyContent: 'flex-start',
               //TODO: padding改为’12px‘ 就和原来一致了
               padding: ['6px', '6px', '6px', 0],
+              ...(highlighted ? highlightStyle : {}),
               ...itemStyle,
             }}
             data-item={item}
@@ -95,6 +97,7 @@ export default (props) => {
               attrs={{
                 fill: filtered ? '#bfbfbf' : '#808080',
                 text: name,
+                fillOpacity: 1,
                 ...nameStyle,
               }}
             />
@@ -103,6 +106,7 @@ export default (props) => {
                 attrs={{
                   fill: '#808080',
                   text: formatValue(valueText, valuePrefix),
+                  fillOpacity: 1,
                   ...valueStyle,
                 }}
               />

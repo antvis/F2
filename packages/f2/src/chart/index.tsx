@@ -9,8 +9,6 @@ import {
   Ref,
   createRef,
 } from '@antv/f-engine';
-import Selection, { SelectionProps, SelectionState } from '../components/geometry/selection';
-import Geometry from '../components/geometry';
 import { ScaleConfig } from '../deps/f2-scale/src';
 import { each, findIndex, isArray, deepMix } from '@antv/util';
 import CoordController, { Coord } from '../controller/coord';
@@ -21,7 +19,7 @@ import { CoordType, CoordProps } from './Coord';
 
 export { Point } from './types';
 
-export interface ChartProps<TRecord extends DataRecord = DataRecord> extends SelectionProps {
+export interface ChartProps<TRecord extends DataRecord = DataRecord> {
   data: Data<TRecord>;
   scale?: DataRecordScale<TRecord>;
   coord?: CoordType | CoordProps;
@@ -31,7 +29,8 @@ export interface ChartProps<TRecord extends DataRecord = DataRecord> extends Sel
 }
 
 export interface ChartState {
-  filters: any;
+  filters?: any;
+  highlights?: any;
 }
 
 export interface ChartChildProps<TRecord extends DataRecord = DataRecord> {
@@ -56,7 +55,7 @@ export interface ComponentPosition {
 class Chart<
   TRecord extends DataRecord = DataRecord,
   IProps extends ChartProps<TRecord> = ChartProps<TRecord>
-> extends Selection<IProps, SelectionState & ChartState> {
+> extends Component<IProps, ChartState> {
   // 坐标系
   private componentsPosition: ComponentPosition[] = [];
 
@@ -67,7 +66,7 @@ class Chart<
   public adjust: any;
   public coordRef: Ref;
   constructor(props: IProps, context?: IContext) {
-    super(props, context);
+    super(props);
 
     const { theme, px2hd } = context;
 
@@ -83,7 +82,7 @@ class Chart<
     // state
     this.state = {
       filters: {},
-      selected: [],
+      highlights: {},
     };
   }
 
@@ -115,12 +114,8 @@ class Chart<
     coord.create(coordOption);
   }
 
-  didMount(): void {
-    super.didMount();
-  }
-
   // props 更新
-  willReceiveProps(nextProps: IProps, context?: IContext) {
+  willReceiveProps(nextProps: IProps, context) {
     const { scale, coord, props: lastProps } = this;
     const { style: nextStyle, data: nextData, scale: nextScale } = nextProps;
     const { style: lastStyle, data: lastData, scale: lastScale } = lastProps;
@@ -227,7 +222,7 @@ class Chart<
   getGeometrys() {
     // @ts-ignore
     const { children } = this.children;
-    const geometrys: Geometry[] = [];
+    const geometrys: Component[] = [];
     Children.toArray(children).forEach((element) => {
       if (!element) return false;
       const { component } = element;
@@ -338,7 +333,14 @@ class Chart<
         ...filters,
         [field]: condition,
       },
-      selected: this.state.selected || [],
+    });
+  }
+
+  highlight(field: string, condition) {
+    this.setState({
+      highlights: {
+        [field]: condition,
+      },
     });
   }
 

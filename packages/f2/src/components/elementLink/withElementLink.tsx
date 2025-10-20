@@ -1,5 +1,5 @@
-import { jsx, Component, Children } from '@antv/f-engine';
-import { ChartChildProps } from '../../chart';
+import { jsx, Component } from '@antv/f-engine';
+import { each } from '@antv/util';
 export interface DataRecord {
   origin: any;
   [k: string]: any;
@@ -8,53 +8,43 @@ export interface DataRecord {
 export interface ElementLinkProps {
   [k: string]: any;
 }
-export interface ElementLinkState {
-  selected: any[];
-}
 
 export default (View) => {
   return class ElementLink<IProps extends ElementLinkProps & ElementLinkProps> extends Component<
-    IProps & ChartChildProps,
-    ElementLinkState
+    IProps
   > {
-    constructor(props: IProps & ChartChildProps) {
+    constructor(props: IProps) {
       super(props);
-      this.state = {
-        selected: [],
-      };
     }
 
-    findAllShapeNode(vNode, value) {
-      if (!value) return [];
-
-      const shapeNodes = [];
-      Children.map(vNode, (node) => {
-        if (!node) return;
-        const { key, children } = node;
-        if (key === value) {
-          shapeNodes.push(...children);
-        }
-        if (children) {
-          shapeNodes.push(...this.findAllShapeNode(children, value));
-        }
+    getHighlightData() {
+      const { props } = this;
+      const { chart } = props;
+      const { highlights } = chart.state;
+      const geometry = chart.getGeometrys()[0];
+      const data = geometry.flatRecords();
+      const elements = [];
+      each(highlights, (condition, field) => {
+        if (!condition) return;
+        const highlightsData = data.filter((record) => {
+          return condition(record[field], record);
+        });
+        elements.push({
+          highlightsData,
+          field,
+          color: highlightsData[0].color || 'transparent',
+        });
       });
-      return shapeNodes;
+
+      return elements;
     }
 
     render() {
       const { props } = this;
-      const { chart, field } = props;
-      const { selected } = chart.state;
-      const geometry = props.chart.getGeometrys()[0];
+      const elements = this.getHighlightData();
+      if (!elements.length) return null;
 
-      if (!selected || !selected.length) return null;
-      const value = selected[0][field];
-
-      const elements = this.findAllShapeNode(geometry, value);
-
-      const colorController = geometry.getAttr('color');
-      const color = colorController.mapping(value);
-      return <View color={color} elements={elements} {...props} />;
+      return <View elements={elements} {...props} />;
     }
   };
 };
