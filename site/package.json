@@ -19,6 +19,9 @@
     "site:preview": "umi preview",
     "site:start": "npm run site:develop"
   },
+  "resolutions": {
+    "@monaco-editor/loader": "1.5.0"
+  },
   "dependencies": {
     "@antv/dumi-theme-antv": "^0.7.4",
     "@antv/f-react": "~0.0.7",
