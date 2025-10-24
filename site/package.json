@@ -23,7 +23,7 @@
     "@monaco-editor/loader": "1.5.0"
   },
   "dependencies": {
-    "@antv/dumi-theme-antv": "^0.7.4",
+    "@antv/dumi-theme-antv": "0.8.0-beta.1",
     "@antv/f-react": "~0.0.7",
     "@antv/f-test-utils": "1.0.3",
     "@antv/f2": "^5.7.5",
