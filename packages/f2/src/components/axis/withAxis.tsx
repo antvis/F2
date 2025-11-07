@@ -447,10 +447,10 @@ export default (View) => {
       // 没找到最佳步长，则保留第一个和最后一个数据，如果总range较大，保留中间的label
       if (finalSeq > maxSeq) {
         ticks[0].visible = true;
-        if(range > SHOW_MIDDLE_LABEL_THRESHOLD && !this.hasOverlapAtSeq(ticks, maxSeq)) {
+        if (range > SHOW_MIDDLE_LABEL_THRESHOLD && !this.hasOverlapAtSeq(ticks, maxSeq)) {
           ticks[maxSeq].visible = true;
         }
-        ticks[range].visible = true
+        ticks[range].visible = true;
         return;
       }
       for (let i = 0; i <= range; i += finalSeq) {
@@ -462,10 +462,9 @@ export default (View) => {
     updateCoord() {
       const { props } = this;
       const { chart, labelAutoRotate = false, labelAutoHide = false } = props;
-      const dimType = this._getDimType();
       const ticks = this.getTicks();
 
-      if ((labelAutoRotate || labelAutoHide) && dimType === 'x' && this.hasOverlap(ticks)) {
+      if ((labelAutoRotate || labelAutoHide) && this.hasOverlap(ticks)) {
         if (labelAutoRotate) {
           this.findSuitableRotation(ticks);
         }
