@@ -39,6 +39,14 @@ package.json
 
 ## 支付宝小程序
 
+f-my / f-my-web（双 Canvas 模式说明）在小程序生态中，F2 提供了两套小程序组件：f-my（默认 NativeCanvas 实现）与 f-my-web（基于 WebCanvas 实现）。不是通过 canvasType 属性切换，而是通过引入不同组件包来选择 Canvas 类型。
+
+要点：
+
+- f-my：使用 NativeCanvas（原生 Canvas 实现），对齐 Web Canvas API，适用于对原生特性有依赖或兼容性要求较高的场景。
+- f-my-web：使用 WebCanvas（在小程序内基于 web 技术栈实现的 Canvas），在包含大量同层组件或频繁跨层通信的复杂页面中，通常能显著降低总耗时，获得更优的交互性能。
+- 兼容性：F2 已屏蔽两者的 API 差异，图表代码无需修改即可在 f-my 与 f-my-web 之间复用。
+
 mini.project.json
 
 ```json
@@ -49,9 +57,9 @@ mini.project.json
 }
 ```
 
-### 页面使用
+使用示例（切换组件包）：
 
-page.json
+使用 NativeCanvas（f-my）： page.json
 
 ```json
 {
@@ -61,7 +69,25 @@ page.json
 }
 ```
 
-page.axml
+使用 WebCanvas（f-my-web）： page.json
+
+```json
+{
+  "usingComponents": {
+    "f2": "@antv/f-my-web"
+  }
+}
+```
+
+使用 NativeCanvas（f-my）：page.axml
+
+```jsx
+<view class="container">
+  <f2 onRender="onRenderChart" onCanvasReady="onCanvasReady"></f2>
+</view>
+```
+
+使用 WebCanvas（f-my-web）： page.json
 
 ```jsx
 <view class="container">
