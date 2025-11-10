@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/antvis/f2/compare/v5.13.0...v5.14.0) (2025-11-10)
+
+**Note:** Version bump only for package @antv/f2-wordcloud
+
+
+
+
+
 # [5.13.0](https://github.com/antvis/f2/compare/v5.12.0...v5.13.0) (2025-10-17)
 
 **Note:** Version bump only for package @antv/f2-wordcloud

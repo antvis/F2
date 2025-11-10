@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/antvis/f2/compare/v5.13.0...v5.14.0) (2025-11-10)
+
+
+### Bug Fixes
+
+* axis去掉x轴限制 ([#2145](https://github.com/antvis/f2/issues/2145)) ([d35d2bd](https://github.com/antvis/f2/commit/d35d2bdc024e1f644576fb4e870c81b2d07f7aad))
+* 锁官网monaco-editor依赖 ([#2141](https://github.com/antvis/f2/issues/2141)) ([04a5e14](https://github.com/antvis/f2/commit/04a5e14c4b099d73eddadca9e4edf7e0da71c075))
+
+
+### Features
+
+* 增加elementLink组件 ([#2137](https://github.com/antvis/f2/issues/2137)) ([0891d4a](https://github.com/antvis/f2/commit/0891d4a7264d9ad055df731d11e5942939c6cf4a))
+* 增加legend高亮模式 ([#2139](https://github.com/antvis/f2/issues/2139)) ([4c0aa0f](https://github.com/antvis/f2/commit/4c0aa0f00b13209ec56ee25a087baab65fa6893c))
+* 增加再次点击取消高亮状态 ([#2138](https://github.com/antvis/f2/issues/2138)) ([b32a920](https://github.com/antvis/f2/commit/b32a9203f65daf36a933e3e8c30698f4df1f30ac))
+
+
+
+
+
 # [5.13.0](https://github.com/antvis/f2/compare/v5.12.0...v5.13.0) (2025-10-17)
 
 
