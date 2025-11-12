@@ -19,11 +19,14 @@ export default defineConfig({
     defaultLanguage: 'zh',
     feedback: true, // 开启文档用户反馈
     sitePackagePath: 'packages/site', // 文档项目相对于项目根目录的相对路径
-    links: true, // 是否显示links答疑小蜜
-    petercat: {
-      show: true,
-      token: 'd54d0b62-8070-46a5-a721-38132a34b8a1', // 此处填 Petercat token
+    ai: {
+      codeRunner: 'codeRunner',
     },
+    // links: true, // 是否显示links答疑小蜜
+    // petercat: {
+    //   show: true,
+    //   token: 'd54d0b62-8070-46a5-a721-38132a34b8a1', // 此处填 Petercat token
+    // },
     isAntVSite: false,
     sitemap: {}, // 开启并采用默认配置
     deadLinkChecker: {}, // 开启并采用默认配置
