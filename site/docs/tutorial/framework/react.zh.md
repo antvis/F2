@@ -16,7 +16,7 @@ npm install @antv/f-react --save
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react';
+import ReactDOM from 'react-dom/client';
 import Canvas from '@antv/f-react';
 import { Chart, Interval } from '@antv/f2';
 
@@ -28,15 +28,15 @@ const data = [
   { genre: 'Other', sold: 150 },
 ];
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(
   <div>
     <Canvas>
       <Chart data={data}>
         <Interval x="genre" y="sold" />
       </Chart>
     </Canvas>
-  </div>,
-  document.getElementById('root')
+  </div>
 );
 ```
 
