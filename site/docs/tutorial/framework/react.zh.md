@@ -16,7 +16,7 @@ npm install @antv/f-react --save
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react';
+import ReactDOM from 'react-dom/client';
 import Canvas from '@antv/f-react';
 import { Chart, Interval } from '@antv/f2';
 
