@@ -397,7 +397,7 @@ export default (View) => {
         // 拐点坐标
         const inflectionPoint = getEndPoint(center, anchorAngle, radius + inflectionOffset);
         // 锚点方向
-        const side = anchorPoint.x < center.x ? 'left' : 'right';
+        const side = anchorPoint.x <= center.x ? 'left' : 'right';
 
         const label = {
           origin,
