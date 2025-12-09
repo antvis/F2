@@ -1,6 +1,6 @@
 ![](https://user-images.githubusercontent.com/6628666/44565744-476f1880-a79c-11e8-802b-2477493162c7.png)
 
-[![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2) ![](https://img.shields.io/badge/language-javascript-red.svg) ![](https://img.shields.io/badge/license-MIT-000000.svg) [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2) [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2) [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 'Percentage of issues still open')
+[![](https://img.shields.io/travis/antvis/f2.svg)](https://travis-ci.org/antvis/f2) ![](https://img.shields.io/badge/language-javascript-red.svg) ![](https://img.shields.io/badge/license-MIT-000000.svg) [![npm package](https://img.shields.io/npm/v/@antv/f2.svg)](https://www.npmjs.com/package/@antv/f2) [![NPM downloads](http://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.org/package/@antv/f2) [![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/f2.svg)](http://isitmaintained.com/project/antvis/f2 'Percentage of issues still open') [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/antvis/F2)
 
 F2，一个专注于移动，开箱即用的可视化解决方案，完美支持 H5 环境同时兼容多种环境（node, 小程序，weex）。完备的图形语法理论，满足你的各种可视化需求。专业的移动设计指引为你带来最佳的移动端图表体验。[英文 README](./README.en-US.md)
 
