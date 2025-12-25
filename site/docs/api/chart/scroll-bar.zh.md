@@ -61,11 +61,11 @@ const data = [
 滚动条和图表内容间距，比如
 
 ```css
-marign: ['10px', '20px']
-marignTop: '10px'
+margin: ['10px', '20px']
+marginTop: '10px'
 ```
 
-### backgroud: ShapeProps
+### background: ShapeProps
 
 滚动条背景样式
 

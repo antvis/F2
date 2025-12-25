@@ -68,7 +68,7 @@ const data = [
     startAngle: number,
     endAngle: number,
     radius: number, // 半径
-    innnerRadius: number, // 内半径
+    innerRadius: number, // 内半径
   }}
 >
   ...
