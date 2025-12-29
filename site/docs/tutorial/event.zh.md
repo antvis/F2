@@ -10,7 +10,7 @@ order: 9
 | 事件名              | 类型    | 描述                       |
 | ------------------- | ------- | -------------------------- |
 | `onClick`           | function | 点击事件                   |
-| `onPanStart`        | function | 手指触摸图形时触发 0       |
+| `onPanStart`        | function | 手指触摸图形时触发         |
 | `onPan`             | function | 手指在图形上移动时触发     |
 | `onPanEnd`          | function | 手指从图形上离开时触发     |
 | `onTouchStart`      | function | 手指触摸图形时触发         |
