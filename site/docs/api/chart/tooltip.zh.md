@@ -155,7 +155,7 @@ interface DataRecord {
 | `itemWidth` | `number` | - | 每个 tooltip 项的宽度，用于控制自动换行 |
 | **标记区域配置** |
 | `showTooltipMarker` | `boolean` | `false` | 是否显示 tooltip 标记背景区域 |
-| `markerBackgroundStyle` | `any` | 见下方 | 标记背景区域的样式 |
+| `markerBackgroundStyle` | `any` | 见下方 | 标记背景区域的样式（主要用于柱状图，尤其是分组柱状图） |
 | **X/Y 轴辅助信息** |
 | `showXTip` | `boolean` | `false` | 是否在 X 轴位置显示辅助信息 |
 | `xTip` | `string \| (text, record) => string` | - | X 轴辅助信息文本，支持函数自定义 |
