@@ -63,7 +63,7 @@ color 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `string[]` | 否 | - | 颜色范围数组 |
-| callback | `(value: any) => string` | 否 | - | 自定义颜色函数 |
+| callback | `(value: any, record?: any) => string` | 否 | - | 自定义颜色函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### color 类型格式
 
@@ -100,7 +100,7 @@ size 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `number[]` | 否 | - | 大小范围数组 |
-| callback | `(value: any) => number` | 否 | - | 自定义大小函数 |
+| callback | `(value: any, record?: any) => number` | 否 | - | 自定义大小函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### size 类型格式
 

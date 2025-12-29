@@ -63,7 +63,7 @@ color 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `string[]` | 否 | - | 颜色范围数组 |
-| callback | `(value: any) => string` | 否 | - | 自定义颜色函数 |
+| callback | `(value: any, record?: any) => string` | 否 | - | 自定义颜色函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### color 类型格式
 
@@ -100,7 +100,7 @@ size 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `number[]` | 否 | - | 大小范围数组 |
-| callback | `(value: any) => number` | 否 | - | 自定义大小函数 |
+| callback | `(value: any, record?: any) => number` | 否 | - | 自定义大小函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### size 类型格式
 
@@ -118,21 +118,9 @@ size 支持多种配置格式：
 
 | 值 | 描述 |
 |-----|------|
-| `'circle'` | 圆形 |
-| `'square'` | 正方形 |
-| `'bowtie'` | 领结形 |
-| `'diamond'` | 菱形 |
-| `'hexagon'` | 六边形 |
-| `'triangle'` | 三角形 |
-| `'triangle-down'` | 倒三角形 |
+| `'circle'` | 圆形（默认） |
 | `'hollowCircle'` | 空心圆形 |
-| `'hollowSquare'` | 空心正方形 |
-| `'hollowTriangle'` | 空心三角形 |
-| `'cross'` | 十字 |
-| `'tick'` | 刻度线 |
-| `'plus'` | 加号 |
-| `'hyphen'` | 连字符 |
-| `'line'` | 线段 |
+| `'rect'` | 矩形 |
 
 ---
 

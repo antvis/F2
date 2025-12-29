@@ -43,6 +43,9 @@ Interval 组件继承自 Geometry，支持以下属性（包含继承的通用�
 | style | `object` | 否 | - | 图形样式，[详见下方](#style-属性) |
 | selection | `object` | 否 | - | 选中交互配置，[详见下方](#selection-属性) |
 | sizeRatio | `number` | 否 | `0.5` | 大小比例，范围 [0, 1] |
+| sizeZoom | `number` \| `(record) => number` | 否 | `1` | 柱子大小缩放比例 |
+| showLabel | `boolean` | 否 | `false` | 是否显示标签（仅适用于 `pyramid` 和 `funnel` 形态） |
+| labelCfg | `object` | 否 | - | 标签配置（仅适用于 `pyramid` 和 `funnel` 形态），[详见下方](#labelCfg-属性) |
 
 ---
 
@@ -64,7 +67,7 @@ color 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `string[]` | 否 | - | 颜色范围数组 |
-| callback | `(value: any) => string` | 否 | - | 自定义颜色函数 |
+| callback | `(value: any, record?: any) => string` | 否 | - | 自定义颜色函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### color 类型格式
 
@@ -101,7 +104,7 @@ size 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `number[]` | 否 | - | 大小范围数组 |
-| callback | `(value: any) => number` | 否 | - | 自定义大小函数 |
+| callback | `(value: any, record?: any) => number` | 否 | - | 自定义大小函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### size 类型格式
 
@@ -391,6 +394,46 @@ Interval 组件支持的常用样式属性：
   x="genre"
   y="sold"
   animation={false}
+/>
+```
+
+---
+
+### labelCfg 属性
+
+标签配置（**仅适用于 `pyramid` 金字塔图和 `funnel` 漏斗图**）：
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+|------|------|------|--------|------|
+| label | `string` | 否 | - | 标签内容字段名 |
+| offsetX | `number` | 否 | `0` | 标签 X 轴偏移量 |
+| offsetY | `number` | 否 | `0` | 标签 Y 轴偏移量 |
+
+```jsx
+// 金字塔图显示标签
+<Interval
+  x="genre"
+  y="sold"
+  shape="pyramid"  // 指定为金字塔图
+  showLabel={true}
+  labelCfg={{
+    label: 'sold',  // 显示 sold 字段的值
+    offsetY: -10    // 向上偏移 10px
+  }}
+/>
+```
+
+```jsx
+// 漏斗图显示标签
+<Interval
+  x="stage"
+  y="value"
+  shape="funnel"  // 指定为漏斗图
+  showLabel={true}
+  labelCfg={{
+    label: 'value',  // 显示 value 字段的值
+    offsetX: 20      // 向右偏移 20px
+  }}
 />
 ```
 

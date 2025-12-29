@@ -55,7 +55,7 @@ Candlestick 组件继承自 Geometry，支持以下属性（包含继承的通�
 |--------|------|------|--------|------|
 | x | `string` | 是 | - | x 轴的数据映射字段名 |
 | y | `string` | 是 | - | y 轴的数据映射字段名 |
-| color | `string` \| `object` \| `array` | 否 | `['#E62C3B', '#0E9976', '#999999']` | 涨跌颜色，[详见下方](#color-属性) |
+| color | `object` | 否 | `{ range: ['#E62C3B', '#0E9976', '#999999'] }` | 涨跌颜色，[详见下方](#color-属性) |
 | sizeRatio | `number` | 否 | `0.5` | 矩形大小比例，范围 [0, 1] |
 | viewClip | `boolean` | 否 | `false` | 是否只显示图表区域内（两轴之间）的部分 |
 | startOnZero | `boolean` | 否 | `false` | y 轴是否需要从 0 开始 |
@@ -66,21 +66,22 @@ Candlestick 组件继承自 Geometry，支持以下属性（包含继承的通�
 
 ### color 属性
 
-Candlestick 的 color 用于设置「涨」、「跌」、「平盘」三种状态的颜色：
+Candlestick 的 color 用于设置「涨」、「跌」、「平盘」三种状态的颜色。
 
-| 格式 | 类型 | 说明 | 示例 |
-|------|------|------|------|
-| 数组形式 | `[string, string, string]` | `[上涨颜色, 下跌颜色, 平盘颜色]` | `<Candlestick color={['#E62C3B', '#0E9976', '#999999']} />` |
-| 对象形式 | `object` | 通过 `range` 指定三种颜色 | `<Candlestick color={{ range: ['#E62C3B', '#0E9976', '#999999'] }} />` |
+**仅支持对象形式**，通过 `range` 属性指定三种颜色：
 
-**默认颜色**: `['#E62C3B', '#0E9976', '#999999']` (红涨、绿跌、灰平)
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+|------|------|------|--------|------|
+| range | `[string, string, string]` | 否 | `['#E62C3B', '#0E9976', '#999999']` | `[上涨颜色, 下跌颜色, 平盘颜色]` |
+
+> **注意**：Candlestick 的 color 仅支持 `range` 属性，不支持 `field`、`callback` 等其他属性。组件会根据价格变动自动选择对应的颜色。
 
 ```jsx
 // 自定义涨跌颜色
 <Candlestick
   x="time"
   y="value"
-  color={['#ff4d4f', '#52c41a', '#d9d9d9']} // 红涨、绿跌、灰平
+  color={{ range: ['#ff4d4f', '#52c41a', '#d9d9d9'] }} // 红涨、绿跌、灰平
 />
 ```
 
@@ -127,7 +128,7 @@ Candlestick 组件支持的常用样式属性：
 <Candlestick
   x="time"
   y="value"
-  color={['#E62C3B', '#0E9976', '#999999']}
+  color={{ range: ['#E62C3B', '#0E9976', '#999999'] }}
 />
 // color 属性已控制涨跌色，style 可用于其他样式
 ```

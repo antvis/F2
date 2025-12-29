@@ -41,7 +41,11 @@ Line 组件继承自 Geometry，支持以下属性（包含继承的通用属性
 | startOnZero | `boolean` | 否 | `false` | y 轴是否需要从 0 开始 |
 | animation | `object` | 否 | - | 动画配置，[详见下方](#animation-属性) |
 | style | `object` | 否 | - | 图形样式，[详见下方](#style-属性) |
+| sizeZoom | `number` \| `(record) => number` | 否 | `1` | 线条大小缩放比例 |
 | connectNulls | `boolean` | 否 | `false` | 是否连接空值 |
+| endView | `function Component(props): Element` | 否 | - | 动画结束后显示的自定义视图（接收 `{ origin }` 作为 props） |
+
+> **注意**：endView 需使用 F2 组件（如 `<group>`, `<text>`, `<circle>` 等），不能用 DOM 元素（如 `<div>`, `<span>`） |
 
 ---
 
@@ -63,7 +67,7 @@ color 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `string[]` | 否 | - | 颜色范围数组 |
-| callback | `(value: any) => string` | 否 | - | 自定义颜色函数 |
+| callback | `(value: any, record?: any) => string` | 否 | - | 自定义颜色函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### color 类型格式
 
@@ -100,7 +104,7 @@ size 支持多种配置格式：
 |------|------|------|--------|------|
 | field | `string` | 是 | - | 映射的数据字段名 |
 | range | `number[]` | 否 | - | 大小范围数组 |
-| callback | `(value: any) => number` | 否 | - | 自定义大小函数 |
+| callback | `(value: any, record?: any) => number` | 否 | - | 自定义大小函数。value 为 **field 指定字段在数据中的值**，record 为完整数据对象 |
 
 #### size 类型格式
 
