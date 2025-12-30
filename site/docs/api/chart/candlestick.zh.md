@@ -210,18 +210,18 @@ Candlestick 组件支持的常用样式属性：
 | | property | `string[]` | 否 | - | 变化的属性数组 |
 | | start | `object` | 否 | - | 起始状态，[结构见下表](#动画状态对象) |
 | | end | `object` | 否 | - | 结束状态，[结构见下表](#动画状态对象) |
-| **update** | easing | `string` \| `function` | 否 | `'linear'` | 缓动函数 |
+| **update** | easing | `string` \| `function` | 否 | `'linear'` | 缓动函数，[可选值见下方](#缓动函数) |
 | (数据更新) | duration | `number` | 否 | `300` | 动画时长 (ms) |
 | | delay | `number` | 否 | `0` | 延迟时间 (ms) |
 | | property | `string[]` | 否 | - | 变化的属性数组 |
-| | start | `object` | 否 | - | 起始状态 |
-| | end | `object` | 否 | - | 结束状态 |
-| **leave** | easing | `string` \| `function` | 否 | `'linear'` | 缓动函数 |
+| | start | `object` | 否 | - | 起始状态，[结构见下表](#动画状态对象) |
+| | end | `object` | 否 | - | 结束状态，[结构见下表](#动画状态对象) |
+| **leave** | easing | `string` \| `function` | 否 | `'linear'` | 缓动函数，[可选值见下方](#缓动函数) |
 | (元素离场) | duration | `number` | 否 | `300` | 动画时长 (ms) |
 | | delay | `number` | 否 | `0` | 延迟时间 (ms) |
 | | property | `string[]` | 否 | - | 变化的属性数组 |
-| | start | `object` | 否 | - | 起始状态 |
-| | end | `object` | 否 | - | 结束状态 |
+| | start | `object` | 否 | - | 起始状态，[结构见下表](#动画状态对象) |
+| | end | `object` | 否 | - | 结束状态，[结构见下表](#动画状态对象) |
 
 > **注意**: 三个阶段的属性结构完全相同，可根据需要单独配置某个阶段。Candlestick 由影线（line）和实体（rect）两部分组成，动画会同时作用于这两部分。
 
