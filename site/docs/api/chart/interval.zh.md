@@ -448,11 +448,96 @@ Interval 组件支持的常用样式属性：
 | type | `'single' \| 'multiple'` | 否 | `'single'` | 单选/多选模式 |
 | triggerOn | `'click' \| 'press'` | 否 | `'click'` | 触发事件类型 |
 | defaultSelected | `Array` | 否 | `[]` | 默认选中的数据项 |
-| selectedStyle | `object \| function` | 否 | - | 选中项样式 |
-| unSelectedStyle | `object \| function` | 否 | - | 未选中项样式 |
+| selectedStyle | `ShapeStyleProps \| (record: any) => ShapeStyleProps` | 否 | - | 选中项样式，[格式见下表](#selectedstyleunselectedstyle-格式) |
+| unSelectedStyle | `ShapeStyleProps \| (record: any) => ShapeStyleProps` | 否 | - | 未选中项样式，[格式见下表](#selectedstyleunselectedstyle-格式) |
 | cancelable | `boolean` | 否 | `true` | 是否可取消选择 |
+| onChange | `(params: { selected: any[] \| null }) => void` | 否 | - | 选中状态变化回调 |
+
+#### selectedStyle/unSelectedStyle 格式
+
+支持两种配置格式：
+
+| 格式 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| 对象形式 | `ShapeStyleProps` | 直接指定样式对象 | `{ fillOpacity: 1 }` |
+| 函数形式 | `(record: any) => ShapeStyleProps` | 根据当前数据记录动态返回样式 | [见下方](#函数形式示例) |
+
+**record 参数结构**:
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| xMin | `number` | x 轴最小值 |
+| xMax | `number` | x 轴最大值 |
+| yMin | `number` | y 轴最小值 |
+| yMax | `number` | y 轴最大值 |
+| origin | `object` | 原始数据对象 |
+
+**常用样式属性**:
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| fillOpacity | `number` | 填充透明度，范围 0-1 |
+| x | `number` | x 轴位置偏移 |
+| y | `number` | y 轴位置偏移 |
+| width | `number` | 宽度（柱状图） |
+| height | `number` | 高度 |
+| r | `number` | 半径（饼图） |
+
+#### 函数形式示例
+
+**柱状图 - 选中放大**:
+
+```jsx
+<Interval
+  x="genre"
+  y="sold"
+  selection={{
+    selectedStyle: (record) => {
+      const { xMin, xMax } = record;
+      const width = xMax - xMin;
+      const offset = width * 0.1;
+      return {
+        x: xMin - offset,
+        width: width + offset * 2,
+      };
+    },
+    unSelectedStyle: () => {
+      return {
+        fillOpacity: 0.4,
+      };
+    },
+  }}
+/>
+```
+
+**饼图 - 选中放大半径**:
+
+```jsx
+<Interval
+  x="a"
+  y="sold"
+  adjust="stack"
+  color="genre"
+  selection={{
+    selectedStyle: (record) => {
+      const { yMax, yMin } = record;
+      return {
+        r: (yMax - yMin) * 1.1,
+      };
+    },
+    unSelectedStyle: {
+      fillOpacity: 0.4,
+    },
+  }}
+/>
+```
 
 > 设置 `triggerOn` 为 `press` 时，需要将 `cancelable` 设置为 `false`，否则会有明显闪动
+
+**示例**:
+
+- [柱状图选中](/zh/examples/column/column#selection)
+- [饼图选中](/zh/examples/pie/pie#selection)
 
 ---
 
