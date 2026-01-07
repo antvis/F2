@@ -168,8 +168,8 @@ interface DataRecord {
 | `yTipBackground` | `RectStyleProps` | 见下方 | Y 轴辅助信息背景样式 |
 | `yPositionType` | `'record' \| 'coord'` | `'record'` | Y 轴位置点类型：record-按数据取点、coord-按坐标取点 |
 | **自定义内容** |
-| `custom` | `boolean` | `false` | 是否使用自定义模式（禁用默认内容渲染） |
-| `customText` | `(record: DataRecord) => JSX.Element` | - | 自定义文本内容的渲染函数 |
+| `custom` | `boolean` | `false` | 禁用 tooltip 信息框渲染（十字线、辅助点、X/Y Tip 仍正常显示，onChange 等回调仍正常触发） |
+| `customText` | `(record: DataRecord) => JSX.Element` | - | 自定义文本内容（在默认容器内，保留背景和标记） |
 | **回调函数** |
 | `onChange` | `(records: DataRecord[]) => void` | - | tooltip 选中数据改变时的回调 |
 | `onShow` | `() => void` | - | tooltip 显示时的回调（仅首次显示触发） |
@@ -308,6 +308,8 @@ xTipBackground / yTipBackground: {
 
 ### 自定义文本内容
 
+仅自定义 tooltip 中的文本内容，保留背景框、标记等默认样式。
+
 ```jsx
 <Tooltip
   alwaysShow={true}
@@ -315,14 +317,38 @@ xTipBackground / yTipBackground: {
   customText={(record) => {
     const { origin } = record;
     return (
-      <text attrs={{
-        fill: '#fff',
-        text: `类型：${origin.genre}\n销量：${origin.sold}`,
-      }} />
+      <text
+        style={{
+          text: `类型：${origin.genre}\n销量：${origin.sold}`,
+          fontSize: 12,
+          fill: '#fff',
+        }}
+      />
     );
   }}
 />
 ```
+
+### 隐藏信息框（custom）
+
+设置 `custom={true}` 可隐藏 tooltip 信息框，但十字线、辅助点、X/Y Tip 和 onChange 回调仍正常工作。
+
+```jsx
+<Tooltip
+  custom={true}
+  showCrosshairs={true}
+  crosshairsType="xy"
+  snap={true}
+  onChange={(records) => {
+    // 回调正常触发，可通过 records 获取数据
+    const active = records?.[0];
+    const { origin, xField, yField, x, y, color, ...otherAttrs } = active || {};
+    console.log('选中数据：', origin);
+  }}
+/>
+```
+
+> **注意**：此属性用于仅需要辅助线/点而不需要信息框的场景。正常情况下请使用 `customText` 自定义文本内容。
 
 ### 监听数据变化
 
@@ -391,7 +417,7 @@ const tooltipRef = createRef();
     <Tooltip ref={tooltipRef} />
     <Line x="genre" y="sold" />
   </Chart>
-</Canvas>;
+</Canvas>
 
 // 手动显示 tooltip
 tooltipRef.current?.show({ x: 100, y: 200 });

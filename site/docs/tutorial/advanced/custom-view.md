@@ -3,7 +3,7 @@ title: 自定义 View
 order: 1
 ---
 
-在 F2 中， 为了让显示更加灵活和自定义，我们把所有的组件都进行了高阶组件（HOC）的封装，形成了 `withXXX` 的逻辑封装，下面以 `Legend` 为例，来演示下如何实现自定义 view
+在 F2 中，为了让显示更加灵活和自定义，我们把所有的组件都进行了高阶组件（HOC）的封装，形成了 `withXXX` 的逻辑封装。下面以 `Legend` 为例，来演示如何实现自定义 View。
 
 ## Legend 的使用
 
@@ -12,16 +12,14 @@ import { Canvas, Chart, Legend } from '@antv/f2';
 
 <Canvas context={context}>
   <Chart data={data}>
-    ...
     <Legend position="top" />
-    ...
   </Chart>
-</Canvas>;
+</Canvas>
 ```
 
-上面这个使用大家应该都不陌生，但是除了 `Legend` 之外，还是有 `withLegend` 和 `LegendView` 这 2 个对象，而 `Legend = withLegend(LegendView)`, 所以我们只要定义自己的 `LegendView` 就能达到自定义 View 的效果
+除了 `Legend` 之外，还有 `withLegend` 和 `LegendView` 这两个对象，而 `Legend = withLegend(LegendView)`。所以我们只要定义自己的 `LegendView` 就能达到自定义 View 的效果。
 
-## 定义 view
+## 定义自定义 View
 
 ```jsx
 const CustomLegendView = (props) => {
@@ -45,10 +43,10 @@ const CustomLegendView = (props) => {
       })}
     </group>
   );
-};
+}
 ```
 
-## 使用自定义 view
+## 使用自定义 View
 
 ```jsx
 import { Canvas, Chart, withLegend } from '@antv/f2';
@@ -75,21 +73,19 @@ const CustomLegendView = (props) => {
       })}
     </group>
   );
-};
+}
 
 // 使用自定义 view 的组件
 const Legend = withLegend(CustomLegendView);
 
 <Canvas context={context}>
   <Chart data={data}>
-    ...
     <Legend position="top" />
-    ...
   </Chart>
-</Canvas>;
+</Canvas>
 ```
 
-在 CustomLegendView 中，用户可以拿到计算逻辑后的结果 props，也可以使用 Legend 组件的 public function
+在 `CustomLegendView` 中，用户可以拿到计算逻辑后的结果 props，也可以使用 Legend 组件的 public function。
 
 ## 完整示例
 

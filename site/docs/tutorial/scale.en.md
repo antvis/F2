@@ -1,21 +1,24 @@
 ---
-title: 度量
+title: Scale
 order: 4
 ---
 
-度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作。针对不同的数据类型对应不同类型的度量。
+Scale is the conversion bridge between data space and graphic space, responsible for converting raw data to values in the [0, 1] range and vice versa. Different data types correspond to different scale types.
 
-根据数据的类型，F2 支持以下几种度量类型：
+## Scale Types
 
-- **identity**，常量类型的数值，也就是说数据的某个字段是不变的常量；
+Based on data types, F2 supports the following scale types:
 
-- **linear**，连续的数字 [1, 2, 3, 4, 5]；
+| Type | Description | Use Cases |
+|------|-------------|-----------|
+| `identity` | Constant type, where a data field remains unchanged | Constant fields |
+| `linear` | Continuous numbers, such as [1, 2, 3, 4, 5] | Continuous numerical data |
+| `cat` | Categorical, such as ['Male', 'Female'] | Categorical data |
+| `timeCat` | Time type | Time and date data |
 
-- **cat**，分类, ['男','女']；
+## How to Set Scale
 
-- **timeCat**，时间类型；
-
-在 F2 的使用中，我们可以通过列定义来直接定义度量
+Define scales through the `scale` property of the `Chart` component:
 
 ```jsx
 const data = [
@@ -23,124 +26,557 @@ const data = [
   { a: 'b', b: 12 },
   { a: 'c', b: 8 },
 ];
-<Canvas>
-  <Chart
-    scale={{
-      a: {
-        type: 'cat', // 声明 a 字段的类型
-      },
-      b: {
-        min: 0, // 手动指定最小值
-        max: 100, // 手动指定最大值
-      },
-    }}
-  ></Chart>
-</Canvas>;
+
+<Chart
+  data={data}
+  scale={{
+    a: {
+      type: 'cat',      // Declare field a as categorical type
+    },
+    b: {
+      min: 0,           // Manually specify minimum value
+      max: 100,         // Manually specify maximum value
+    },
+  }}
+>
+  <Interval x="a" y="b" />
+</Chart>
 ```
 
-## 通用属性
+## Common Properties
 
-下面列出的是通用的属性：
+Common properties supported by all scale types:
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `type` | String | 指定不同的度量类型，支持的 type 为 `identity`、`linear`、`cat`、`timeCat`。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `alias` | String | 该数据字段的显示别名，一般用于将字段的英文名称转换成中文名。 |
-| `tickCount` | Number | 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | `string` | Scale type: `identity`, `linear`, `cat`, `timeCat` |
+| `formatter` | `Function` | Format tick point text, affects axis, legend, and tooltip display |
+| `range` | `Array` | Output range in format `[min, max]`, defaults to `[0, 1]` |
+| `alias` | `string` | Display alias for the field, used for converting English names to Chinese names |
+| `tickCount` | `number` | Number of tick points on the axis |
+| `ticks` | `Array` | Specify the text information for tick points |
 
-## Scale 对应的属性
+## Linear Scale
 
-### linear
+For continuous numerical data.
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `alias` | String | 别名。 |
-| `nice` | Boolean | 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100]。 |
-| `min` | Number | 定义数值范围的最小值。 |
-| `max` | Number | 定义数值范围的最大值。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `tickCount` | Number | 定义坐标轴刻度线的条数，默认为 5。 |
-| `tickInterval` | Number | 用于指定坐标轴各个标度点的间距，是原始数据之间的间距差值，**tickCount 和 tickInterval 不可以同时声明。** |
+### Configuration Properties
 
-### cat
+| Property | Type | Description |
+|----------|------|-------------|
+| `nice` | `boolean` | Optimize numeric range to make tick marks evenly distributed, defaults to `true` |
+| `min` | `number` | Minimum value of numeric range |
+| `max` | `number` | Maximum value of numeric range |
+| `tickInterval` | `number` | Interval between tick points, mutually exclusive with tickCount |
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `alias` | String | 别名。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `tickCount` | Number | 定义坐标轴刻度线的条数，默认为 5。 |
-| `values` | Array | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。 |
-| `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
+### Configuration Examples
 
-`values` 属性常用于 2 个场景：
+```jsx
+// Basic configuration
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      min: 0,
+      max: 100,
+      tickCount: 5,
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 
-1. 需要制定分类的顺序时，例如：c 字段有'最大','最小'和'适中'3 种类型，我们想指定这些数值在坐标轴或者图例上的显示顺序时：
+// Using tickInterval
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      min: 0,
+      max: 100,
+      tickInterval: 20,  // 0, 20, 40, 60, 80, 100
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 
-```javascript
-const scale = {
-  c: {
-    type: 'cat',
-    values: ['最小', '适中', '最大'],
-  },
-};
+// Using nice to optimize range
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      nice: true,  // [3, 97] → [0, 100]
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// Using formatter for formatting
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      formatter: (val) => `${val}%`,
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 ```
 
-2. 数据字段中的数据是数值类型，但是需要转换成分类类型，**这个时候需要注意原始数据必须是索引值**。
+### Type Definition
 
-![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e847832c-3000-4745-b7d5-d3552feee17b.png)
+```typescript
+interface LinearScaleConfig {
+  type?: 'linear';
+  min?: number;
+  max?: number;
+  nice?: boolean;
+  tickCount?: number;
+  tickInterval?: number;
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: number) => string;
+  ticks?: number[];
+}
+```
 
-```javascript
+## Cat Scale
+
+For categorical data.
+
+### Configuration Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `values` | `Array` | Specify the order of categorical values |
+| `isRounding` | `boolean` | Whether to allow rounding to satisfy even tick distribution, defaults to `false` |
+
+### Configuration Examples
+
+```jsx
+// Basic configuration
+<Chart
+  scale={{
+    genre: {
+      type: 'cat',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+</Chart>
+
+// Specify category order
+<Chart
+  scale={{
+    level: {
+      type: 'cat',
+      values: ['Minimum', 'Moderate', 'Maximum'],
+    },
+  }}
+>
+  <Interval x="level" y="value" />
+</Chart>
+```
+
+### values Property Use Cases
+
+**Scenario 1: Specify Category Order**
+
+```jsx
 const data = [
-  { month: 0, tem: 7, city: 'Tokyo' },
-  { month: 1, tem: 6.9, city: 'Tokyo' },
-  { month: 2, tem: 9.5, city: 'Tokyo' },
-  { month: 3, tem: 14.5, city: 'Tokyo' },
-  { month: 4, tem: 18.2, city: 'Tokyo' },
-  { month: 5, tem: 21.5, city: 'Tokyo' },
-  { month: 6, tem: 25.2, city: 'Tokyo' },
+  { level: 'max', value: 100 },
+  { level: 'min', value: 10 },
+  { level: 'mid', value: 50 },
 ];
-const scale = {
-  month: {
-    type: 'cat',
-    values: ['一月', '二月', '三月', '四月', '五月', '六月', '七月'], // 这时候 month 的原始值是索引值
-  },
-};
+
+<Chart
+  data={data}
+  scale={{
+    level: {
+      type: 'cat',
+      values: ['min', 'mid', 'max'],  // Display in specified order
+    },
+  }}
+>
+  <Interval x="level" y="value" />
+</Chart>
 ```
 
-### timeCat
+**Scenario 2: Numeric to Category Mapping (Index Mapping)**
 
-时间分类类型，**默认会对数据做排序**。
+```jsx
+const data = [
+  { month: 0, value: 7 },
+  { month: 1, value: 12 },
+  { month: 2, value: 18 },
+];
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `nice` | Boolean | 是否将 ticks 进行优化，变更数据的最小值、最大值，使得每个 tick 都是用户易于理解的数据。 |
-| `mask` | String | 数据的格式化格式 默认：'YYYY-MM-DD'。 |
-| `tickCount` | Number | 坐标点的个数，默认是 5。但不一定是准确值。 |
-| `values` | Array | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。 |
-| `alias` | String | 别名。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
+<Chart
+  data={data}
+  scale={{
+    month: {
+      type: 'cat',
+      values: ['January', 'February', 'March'],  // month values serve as indices
+    },
+  }}
+>
+  <Line x="month" y="value" />
+</Chart>
+```
 
-**注意：`mask` 和 `formatter` 这两个属性不可共用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**
+## TimeCat Scale
 
-**性能小提示：**
+For time and date data, **sorts data by default**.
 
-当图表的数据源已经过排序，可以通过在列定义中设置 `sortable: false` 来提升性能，默认情况下，会对 timeCat 类型的度量进行数据排序操作。
+### Configuration Properties
 
-```javascript
-const scale = {
-  [fieldName]: {
+| Property | Type | Description |
+|----------|------|-------------|
+| `nice` | `boolean` | Whether to optimize ticks for better readability |
+| `mask` | `string` | Time format, defaults to `'YYYY-MM-DD'` |
+| `sortable` | `boolean` | Whether to sort, defaults to `true`. Can be set to `false` for pre-sorted data to improve performance |
+| `values` | `Array` | Specify the order of specific time values |
+
+### Configuration Examples
+
+```jsx
+// Basic configuration
+<Chart
+  scale={{
+    date: {
+      type: 'timeCat',
+      mask: 'YYYY-MM-DD',
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// Custom time format
+<Chart
+  scale={{
+    date: {
+      type: 'timeCat',
+      mask: 'MM/DD',  // 01/15
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// Performance optimization: data already sorted
+<Chart
+  data={sortedData}
+  scale={{
+    date: {
+      type: 'timeCat',
+      sortable: false,  // Skip sorting, improve performance
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// Specify time order
+<Chart
+  scale={{
+    quarter: {
+      type: 'cat',
+      values: ['Q1', 'Q2', 'Q3', 'Q4'],
+    },
+  }}
+>
+  <Interval x="quarter" y="value" />
+</Chart>
+```
+
+### Type Definition
+
+```typescript
+interface TimeCatScaleConfig {
+  type?: 'timeCat';
+  nice?: boolean;
+  mask?: string;
+  sortable?: boolean;
+  tickCount?: number;
+  values?: string[];
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: string | Date) => string;
+  ticks?: string[];
+}
+```
+
+## Common Configuration Scenarios
+
+### Set Axis Range
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,       // Set minimum value
+      max: 100,     // Set maximum value
+      tickCount: 5, // 5 tick points
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### Format Tick Labels
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      formatter: (val) => `${val}K`,
+    },
+    date: {
+      formatter: (val) => {
+        const date = new Date(val);
+        return `${date.getMonth() + 1}/${date.getDate()}`;
+      },
+    },
+  }}
+>
+  <Line x="date" y="value" />
+  <Axis field="value" />
+  <Axis field="date" />
+</Chart>
+```
+
+### Set Tick Interval
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,
+      max: 100,
+      tickInterval: 25,  // 0, 25, 50, 75, 100
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### Custom Tick Values
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      ticks: [0, 25, 50, 75, 100],  // Custom tick values
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### Multiple Scale Configurations
+
+```jsx
+<Chart
+  scale={{
+    // x-axis: categorical scale
+    genre: {
+      type: 'cat',
+      values: ['Sports', 'Strategy', 'Action', 'Shooter', 'Other'],
+    },
+    // y-axis: linear scale
+    sold: {
+      type: 'linear',
+      min: 0,
+      nice: true,
+    },
+    // color: categorical scale
+    color: {
+      type: 'cat',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" color="genre" />
+</Chart>
+```
+
+## Advanced Configuration
+
+### Range Control
+
+Control the position where data maps to graphics:
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,
+      max: 100,
+      range: [0, 0.8],  // Leave 20% space at the top
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+</Chart>
+```
+
+### Alias Setting
+
+Used to convert English field names to Chinese names:
+
+```jsx
+<Chart
+  scale={{
+    genre: {
+      alias: 'Type',  // Display alias in legend, tooltip, etc.
+    },
+    sold: {
+      alias: 'Sales',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+  <Legend />
+  <Tooltip />
+</Chart>
+```
+
+### Dynamic Scale Configuration
+
+```jsx
+class DynamicChart extends Component {
+  state = {
+    maxValue: 100,
+  };
+
+  updateMaxValue = () => {
+    this.setState({
+      maxValue: 200,
+    });
+  };
+
+  render() {
+    const { maxValue } = this.state;
+    return (
+      <Chart
+        data={data}
+        scale={{
+          value: {
+            type: 'linear',
+            max: maxValue,
+          },
+        }}
+      >
+        <Interval x="genre" y="sold" />
+      </Chart>
+    );
+  }
+}
+```
+
+## Type Definitions
+
+### Complete ScaleConfig Type
+
+```typescript
+interface ScaleConfig {
+  type?: 'linear' | 'cat' | 'timeCat' | 'identity';
+
+  // Common properties
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: any) => string;
+  tickCount?: number;
+  ticks?: any[];
+
+  // linear specific
+  min?: number;
+  max?: number;
+  nice?: boolean;
+  tickInterval?: number;
+
+  // cat specific
+  values?: any[];
+  isRounding?: boolean;
+
+  // timeCat specific
+  mask?: string;
+  sortable?: boolean;
+}
+
+interface ChartScaleConfig {
+  [fieldName: string]: ScaleConfig;
+}
+```
+
+## Common Questions
+
+### How to set axis to start from 0?
+
+```jsx
+scale={{
+  value: {
+    min: 0,  // Set minimum value to 0
+  },
+}}
+```
+
+### How to set tick interval?
+
+Use the `tickInterval` property:
+
+```jsx
+scale={{
+  value: {
+    tickInterval: 20,
+  },
+}}
+```
+
+### How to customize tick labels?
+
+Use `formatter` or `ticks`:
+
+```jsx
+// Method 1: formatter
+scale={{
+  value: {
+    formatter: (val) => `${val}K`,
+  },
+}}
+
+// Method 2: ticks
+scale={{
+  value: {
+    ticks: [0, 25, 50, 75, 100],
+  },
+}}
+```
+
+### How to optimize performance for sorted time data?
+
+Set `sortable: false` to skip sorting:
+
+```jsx
+scale={{
+  date: {
     type: 'timeCat',
     sortable: false,
   },
-};
+}}
 ```
+
+### Can mask and formatter be used together?
+
+**No**. If both are set, `formatter` takes precedence and `mask` will not take effect.
+
+## Related Documentation
+
+- [Coordinate System](/tutorial/coordinate.en.md)
+- [Chart Grammar](/tutorial/grammar.en.md)
+- [Core Concepts](/tutorial/understanding.en.md)

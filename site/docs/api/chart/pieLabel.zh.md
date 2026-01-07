@@ -12,14 +12,63 @@ order: 9
 - 需要自动避免标签重叠并提供清晰的视觉引导
 - 需要响应标签的点击事件
 
-## 使用方式（与测试用例保持一致的示例）
+## TypeScript 类型定义
 
-下面示例使用 Interval 绘制扇区（x 字段为固定常量，y 为数值），并通过 color 映射到分类字段 memo，再配合 PieLabel 显示两行标签。
+```typescript
+interface PieLabelProps {
+  /** 标签布局类型 */
+  type?: 'default' | 'spider';
+  /** 标签线锚点偏移 */
+  anchorOffset?: string | number;
+  /** 标签线拐点偏移 */
+  inflectionOffset?: string | number;
+  /** 文本距离画布边缘的最小距离 */
+  sidePadding?: string | number;
+  /** 第一行标签配置 */
+  label1?: LabelConfig | ((origin: any, record: any) => LabelConfig);
+  /** 第二行标签配置 */
+  label2?: LabelConfig | ((origin: any, record: any) => LabelConfig);
+  /** 指定只显示的记录数组 */
+  records?: any[];
+  /** 触发事件类型 */
+  triggerOn?: 'click' | 'press';
+  /** 标签点击回调 */
+  onClick?: (ev: { origin: any; [key: string]: any }) => void;
+  /** 调整布局高度的阈值比例 */
+  adjustRatio?: number;
+  /** 调整布局时的偏移量 */
+  adjustOffset?: string | number;
+  /** 标签项高度 */
+  height?: number;
+  /** 第一行标签 Y 轴偏移 */
+  label1OffsetY?: string | number;
+  /** 第二行标签 Y 轴偏移 */
+  label2OffsetY?: string | number;
+  /** 是否显示锚点 */
+  showAnchor?: boolean;
+}
+
+interface LabelConfig {
+  /** 标签文本内容 */
+  text: string;
+  /** 文本颜色 */
+  fill?: string;
+  /** 字体大小 */
+  fontSize?: number | string;
+  /** 字体粗细 */
+  fontWeight?: number | string;
+  /** 文本对齐方式 */
+  textAlign?: 'start' | 'center' | 'end';
+  /** 文本基线对齐方式 */
+  textBaseline?: 'top' | 'middle' | 'bottom';
+}
+```
+
+## Usage
 
 ```jsx
-import { jsx, Canvas, Chart, Interval, PieLabel } from '@antv/f2';
+import { Canvas, Chart, Interval, PieLabel } from '@antv/f2';
 
-const context = document.getElementById('container').getContext('2d');
 const data = [
   { amount: 20, memo: 'Study', const: 'const' },
   { amount: 10, memo: 'Eat', const: 'const' },
@@ -27,31 +76,106 @@ const data = [
   { amount: 10, memo: 'Other', const: 'const' },
 ];
 
-const { props } = (
-  <Canvas context={context} animate={false} pixelRatio={1}>
-    <Chart
-      data={data}
-      coord={{
-        type: 'polar',
-        transposed: true,
-        innerRadius: 0.3,
-        radius: 0.5,
-      }}
-    >
-      <Interval x="const" y="amount" adjust="stack" color="memo" />
-      <PieLabel
-        label1={(d) => ({ text: d.memo })}
-        label2={(d) => ({ fill: '#000000', text: '$' + d.amount.toFixed(2) })}
-      />
-    </Chart>
-  </Canvas>
-);
-
-const canvas = new Canvas(props);
-canvas.render();
+<Canvas context={context}>
+  <Chart
+    data={data}
+    coord={{
+      type: 'polar',
+      transposed: true,
+      innerRadius: 0.3,
+      radius: 0.5,
+    }}
+  >
+    <Interval x="const" y="amount" adjust="stack" color="memo" />
+    <PieLabel
+      label1={(d) => ({ text: d.memo })}
+      label2={(d) => ({ fill: '#000000', text: '$' + d.amount.toFixed(2) })}
+    />
+  </Chart>
+</Canvas>
 ```
 
-如果需要响应点击事件：
+## Props
+
+### 布局配置
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `type` | `'default' \| 'spider'` | `'default'` | 标签布局类型 |
+| `anchorOffset` | `string \| number` | `'10px'` | 标签线锚点偏移 |
+| `inflectionOffset` | `string \| number` | `'30px'` | 标签线拐点偏移 |
+| `sidePadding` | `string \| number` | `'15px'` | 文本距离画布边缘的最小距离 |
+| `adjustRatio` | `number` | `1` | 调整布局高度的阈值比例 |
+| `adjustOffset` | `string \| number` | `'30'` | 调整布局时的偏移量 |
+
+### 标签配置
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `label1` | `LabelConfig \| Function` | - | 第一行标签配置 |
+| `label2` | `LabelConfig \| Function` | - | 第二行标签配置 |
+| `height` | `number` | 自动计算 | 标签项高度 |
+| `label1OffsetY` | `string \| number` | `'-4px'` | 第一行标签 Y 轴偏移 |
+| `label2OffsetY` | `string \| number` | `'4px'` | 第二行标签 Y 轴偏移 |
+| `showAnchor` | `boolean` | `true` | 是否显示锚点 |
+
+### 数据配置
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `records` | `any[]` | - | 指定只显示的记录数组 |
+
+### 交互配置
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `triggerOn` | `'click' \| 'press'` | `'click'` | 触发事件类型 |
+| `onClick` | `(ev) => void` | - | 标签点击回调，回调参数包含 `origin` 字段（原始数据项） |
+
+## 标签配置属性
+
+标签配置对象（LabelConfig）支持以下字段：
+
+| 属性名 | 类型 | 描述 |
+|--------|------|------|
+| `text` | `string` | 标签文本内容 |
+| `fill` | `string` | 文本颜色 |
+| `fontSize` | `number \| string` | 字体大小 |
+| `fontWeight` | `number \| string` | 字体粗细 |
+| `textAlign` | `'start' \| 'center' \| 'end'` | 文本对齐方式 |
+| `textBaseline` | `'top' \| 'middle' \| 'bottom'` | 文本基线对齐方式 |
+
+## 默认样式值
+
+> 来源：`packages/f2/src/components/pieLabel/withPieLabel.tsx:5-22`
+
+```javascript
+const DEFAULT_CONFIG = {
+  anchorOffset: '10px',
+  inflectionOffset: '30px',
+  sidePadding: '15px',
+  adjustOffset: '30',
+  triggerOn: 'click',
+  label1OffsetY: '-4px',
+  label2OffsetY: '4px',
+  type: 'default',
+  adjustRatio: 1,
+  showAnchor: true,
+};
+```
+
+## 用法示例
+
+### 基础用法
+
+```jsx
+<PieLabel
+  label1={(d) => ({ text: d.memo })}
+  label2={(d) => ({ fill: '#000000', text: '$' + d.amount.toFixed(2) })}
+/>
+```
+
+### 点击事件
 
 ```jsx
 <PieLabel
@@ -64,91 +188,95 @@ canvas.render();
 />
 ```
 
-## 配色参考（Interval 写法）
-
-可直接在 Interval 上设置 color 映射，也可在使用 Pie 组件时使用相同的 color 配置思路：
+### 蜘蛛网布局
 
 ```jsx
-<Interval
-  x="const"
-  y="amount"
-  adjust="stack"
-  color={{
-    field: 'memo',
-    range: ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0'],
-  }}
+<PieLabel
+  type="spider"
+  label1={(d) => ({ text: d.memo })}
+  label2={(d) => ({ fill: '#000000', text: '$' + d.amount.toFixed(2) })}
 />
 ```
 
-## 属性
+### 筛选显示标签
 
-- type: 'default' | 'spider'  
-  标签布局类型，默认为 'default'。default 使用曲线连接线并在左右分布；spider 为蜘蛛网式放射布局。
+使用 `records` 属性指定只显示部分数据的标签：
 
-- anchorOffset: string | number  
-  标签线锚点偏移，默认 '10px'。
+```jsx
+<PieLabel
+  records={[
+    { amount: 20, memo: 'Eat', const: 'const' },
+    { amount: 10, memo: 'Language', const: 'const' },
+  ]}
+  label1={(d) => ({ text: d.memo })}
+  label2={(d) => ({ fill: '#000000', text: '$' + d.amount.toFixed(2) })}
+/>
+```
 
-- inflectionOffset: string | number  
-  标签线拐点偏移，默认 '30px'。
+### 仅显示单行标签
 
-- sidePadding: string | number  
-  文本距离画布边缘的最小距离，默认 '15px'。
+将 `label2` 设置为空字符串即可：
 
-- label1: function  
-  第一行标签配置，接收数据项，返回文本及样式配置。例如：label1={(d) => ({ text: d.memo })}
+```jsx
+<PieLabel
+  type="spider"
+  label1={(d) => ({
+    text: `${d.memo} ${d.amount}%`,
+    fill: '#333',
+  })}
+  label2=""
+/>
+```
 
-- label2: function  
-  第二行标签配置，接收数据项，返回文本及样式配置。例如：label2={(d) => ({ text: '$' + d.amount.toFixed(2) })}
+### 自定义标签样式
 
-- records: any[]  
-  指定只显示的记录数组，可用于筛选需要显示标签的数据项。
+```jsx
+<PieLabel
+  label1={(d) => ({
+    text: d.memo,
+    fill: '#1890FF',
+    fontSize: '24px',
+    fontWeight: 'bold',
+  })}
+  label2={(d) => ({
+    text: '$' + d.amount.toFixed(2),
+    fill: '#666',
+    fontSize: '20px',
+  })}
+/>
+```
 
-- triggerOn: 'click' | 'press'  
-  触发事件类型，默认 'click'。
+### 自定义布局参数
 
-- onClick: function  
-  标签点击回调，回调参数包含 origin 字段（原始数据项）。
+```jsx
+<PieLabel
+  anchorOffset="15px"
+  inflectionOffset="40px"
+  sidePadding="20px"
+  label1OffsetY="-6px"
+  label2OffsetY="6px"
+  label1={(d) => ({ text: d.memo })}
+  label2={(d) => ({ text: '$' + d.amount.toFixed(2) })}
+/>
+```
 
-- adjustRatio: number  
-  调整布局高度的阈值比例，默认 1。
+## 象限布局说明
 
-## 标签配置属性
+当某一侧（左右）显示标签超过最大数量时，PieLabel 会按优先级将部分象限的标签重新放置到对侧以避免重叠：
 
-标签配置对象支持以下字段：
-
-| 属性名       | 类型                          | 描述             |
-| ------------ | ----------------------------- | ---------------- |
-| text         | string                        | 标签文本内容     |
-| fill         | string                        | 文本颜色         |
-| fontSize     | number                        | 字体大小         |
-| fontWeight   | number \| string              | 字体粗细         |
-| textAlign    | 'start' \| 'center' \| 'end'  | 文本对齐方式     |
-| textBaseline | 'top' \| 'middle' \| 'bottom' | 文本基线对齐方式 |
-
-## 示例场景（对应测试用例）
-
-1. 默认显示（基本用例）
-
-   - 使用极坐标 coord 配置，Interval 绘制扇区，PieLabel 显示两行标签（名称 + 金额格式化）。
-
-2. 事件回调对象（onClick）
-
-   - 在 PieLabel 中绑定 onClick，回调参数包含 origin（原始数据），可用于业务交互。
-
-3. 多条目布局问题（象限重排）
-   - 当某一侧（左右）显示标签超过最大数量时，PieLabel 会按优先级将部分象限的标签重新放置到对侧以避免重叠。以下测试场景在文档中简述：
-     - 左侧超过最大显示个数时，第四象限可能显示在第一象限或第三象限显示在第二象限（基于可用空间与优先级调整）。
-     - 右侧超过最大显示个数时，第一象限可能显示在第四象限或第二象限显示在第三象限。
-
-（上述行为请以截图单元测试或实际渲染效果为准，文档中提供的示例与测试用例保持一致以便复现）
+- 左侧超过最大显示个数时，第四象限可能显示在第一象限，或第三象限显示在第二象限
+- 右侧超过最大显示个数时，第一象限可能显示在第四象限，或第二象限显示在第三象限
 
 ## 常见问题
 
-- 标签显示不全或重叠：  
-  调整 sidePadding、anchorOffset、inflectionOffset，或使用 type="spider"；也可通过 records 筛选显示的标签。
+### 标签显示不全或重叠
 
-- 标签位置不理想：  
-  检查 coord（极坐标）及 radius/innerRadius 是否给足空间，调整偏移量或布局类型。
+调整 `sidePadding`、`anchorOffset`、`inflectionOffset`，或使用 `type="spider"`；也可通过 `records` 筛选显示的标签。
 
-- 点击事件不响应：  
-  检查 triggerOn 是否设置正确，确认没有遮挡元素，并确保回调绑定正确（回调接收事件对象，原始数据在 event.origin 中）。
+### 标签位置不理想
+
+检查 coord（极坐标）及 `radius`/`innerRadius` 是否给足空间，调整偏移量或布局类型。
+
+### 点击事件不响应
+
+检查 `triggerOn` 是否设置正确，确认没有遮挡元素，并确保回调绑定正确（回调接收事件对象，原始数据在 `event.origin` 中）。

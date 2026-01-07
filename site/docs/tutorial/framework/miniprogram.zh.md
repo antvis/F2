@@ -5,29 +5,28 @@ order: 13
 
 ## 前置配置
 
-### 1. 安装 F2 依赖
+### 安装依赖
 
 ```bash
 # 安装 F2 依赖
 npm i @antv/f2 --save
 
-# 安装小程序组件
+# 支付宝小程序
 npm i @antv/f-my --save
 
 # 微信小程序
 npm i @antv/f-wx --save
-
 ```
 
-### 2. 配置 jsx transform
+### 配置 JSX Transform
 
-> 如果项目已有 jsx 编译，可忽略此步骤
+如果项目已有 JSX 编译，可忽略此步骤。
 
-详见：[配置 jsx transform](./jsx-transform)
+详见：[配置 JSX Transform](/tutorial/framework/jsx-transform.zh.md)
 
-### 3. 添加 jsx 编译
+### 添加 JSX 编译脚本
 
-package.json
+package.json:
 
 ```json
 {
@@ -39,15 +38,17 @@ package.json
 
 ## 支付宝小程序
 
-f-my / f-my-web（双 Canvas 模式说明）在小程序生态中，F2 提供了两套小程序组件：f-my（默认 NativeCanvas 实现）与 f-my-web（基于 WebCanvas 实现）。不是通过 canvasType 属性切换，而是通过引入不同组件包来选择 Canvas 类型。
+### 双 Canvas 模式说明
 
-要点：
+在小程序生态中，F2 提供了两套小程序组件：`f-my`（默认 NativeCanvas 实现）与 `f-my-web`（基于 WebCanvas 实现）。通过引入不同组件包来选择 Canvas 类型。
 
-- f-my：使用 NativeCanvas（原生 Canvas 实现），对齐 Web Canvas API，适用于对原生特性有依赖或兼容性要求较高的场景。
-- f-my-web：使用 WebCanvas（在小程序内基于 web 技术栈实现的 Canvas），在包含大量同层组件或频繁跨层通信的复杂页面中，通常能显著降低总耗时，获得更优的交互性能。
-- 兼容性：F2 已屏蔽两者的 API 差异，图表代码无需修改即可在 f-my 与 f-my-web 之间复用。
+- `f-my`：使用 NativeCanvas（原生 Canvas 实现），对齐 Web Canvas API，适用于对原生特性有依赖或兼容性要求较高的场景
+- `f-my-web`：使用 WebCanvas（在小程序内基于 web 技术栈实现的 Canvas），在包含大量同层组件或频繁跨层通信的复杂页面中，通常能显著降低总耗时，获得更优的交互性能
+- 兼容性：F2 已屏蔽两者的 API 差异，图表代码无需修改即可在 `f-my` 与 `f-my-web` 之间复用
 
-mini.project.json
+### 配置编译脚本
+
+mini.project.json:
 
 ```json
 {
@@ -57,9 +58,11 @@ mini.project.json
 }
 ```
 
-使用示例（切换组件包）：
+### 使用示例
 
-使用 NativeCanvas（f-my）： page.json
+#### 使用 NativeCanvas (f-my)
+
+page.json:
 
 ```json
 {
@@ -69,7 +72,17 @@ mini.project.json
 }
 ```
 
-使用 WebCanvas（f-my-web）： page.json
+page.axml:
+
+```jsx
+<view class="container">
+  <f2 onRender="onRenderChart" onCanvasReady="onCanvasReady"></f2>
+</view>
+```
+
+#### 使用 WebCanvas (f-my-web)
+
+page.json:
 
 ```json
 {
@@ -79,15 +92,7 @@ mini.project.json
 }
 ```
 
-使用 NativeCanvas（f-my）：page.axml
-
-```jsx
-<view class="container">
-  <f2 onRender="onRenderChart" onCanvasReady="onCanvasReady"></f2>
-</view>
-```
-
-使用 WebCanvas（f-my-web）： page.json
+page.axml:
 
 ```jsx
 <view class="container">
@@ -95,7 +100,9 @@ mini.project.json
 </view>
 ```
 
-page.acss
+#### 样式定义
+
+page.acss:
 
 ```css
 .container {
@@ -104,7 +111,9 @@ page.acss
 }
 ```
 
-chart.jsx
+#### 图表组件
+
+chart.jsx:
 
 ```jsx
 import { Chart, Interval, Axis } from '@antv/f2';
@@ -118,10 +127,12 @@ export default (props) => {
       <Interval x="genre" y="sold" color="genre" />
     </Chart>
   );
-};
+}
 ```
 
-page.jsx
+#### 页面入口
+
+page.jsx:
 
 ```jsx
 import Chart from './chart';
@@ -139,15 +150,16 @@ Page({
   onRenderChart() {
     return <Chart data={data} />;
   },
-});
+})
 ```
 
-如果不想在入口文件写 jsx 语法，可以使用下面方式
+#### createElement 方式
 
-page.js
+如果不想在入口文件写 JSX 语法，可以使用 createElement 方式：
+
+page.js:
 
 ```jsx
-// 通过 createElement 方式创建
 import { createElement } from '@antv/f2';
 import Chart from './chart';
 
@@ -166,18 +178,20 @@ Page({
       data: data,
     });
   },
-});
+})
 ```
 
-### demo
+### 完整示例
 
-- 参考示例：https://github.com/antvis/FEngine/tree/master/packages/f-my/examples
+[GitHub 示例](https://github.com/antvis/FEngine/tree/master/packages/f-my/examples)
 
 ## 微信小程序
 
-### 页面使用
+### 使用示例
 
-page.json
+#### 页面配置
+
+page.json:
 
 ```json
 {
@@ -187,7 +201,9 @@ page.json
 }
 ```
 
-page.wxml
+#### 页面模板
+
+page.wxml:
 
 ```jsx
 <view class="container">
@@ -195,7 +211,9 @@ page.wxml
 </view>
 ```
 
-page.wxss
+#### 样式定义
+
+page.wxss:
 
 ```css
 .container {
@@ -204,7 +222,9 @@ page.wxss
 }
 ```
 
-chart.jsx
+#### 图表组件
+
+chart.jsx:
 
 ```jsx
 import { Chart, Interval, Axis } from '@antv/f2';
@@ -218,10 +238,12 @@ export default (props) => {
       <Interval x="genre" y="sold" color="genre" />
     </Chart>
   );
-};
+}
 ```
 
-page.jsx
+#### 页面入口
+
+page.jsx:
 
 ```jsx
 import Chart from './chart';
@@ -240,12 +262,12 @@ Page({
       return <Chart data={data} />;
     },
   },
-});
+})
 ```
 
-如果不想在入口文件写 jsx 语法，可以使用下面方式
+#### createElement 方式
 
-page.js
+page.js:
 
 ```jsx
 import { createElement } from '@antv/f2';
@@ -266,9 +288,9 @@ Page({
       });
     },
   },
-});
+})
 ```
 
-### demo
+### 完整示例
 
-- 参考示例：https://github.com/antvis/FEngine/tree/master/packages/f-wx/examples
+[GitHub 示例](https://github.com/antvis/FEngine/tree/master/packages/f-wx/examples)

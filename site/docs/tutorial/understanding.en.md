@@ -1,26 +1,238 @@
 ---
-title: 图表组成
+title: Core Concepts
 order: 1
 ---
 
-为了更好得使用 F2 进行数据可视化，我们需要了解 F2 图表的组成以及相关术语。
+To better use F2 for data visualization, we need to understand the composition of F2 charts and related terminology.
 
-## 图表部件
+## Chart Structure
 
-一般情况下，F2 的图表包含坐标轴（Axis）、几何标记（Geometry）、提示信息（Tooltip）、图例（Legend）等，另外还可以包括辅助标记（Guide）、数据标签（dataLabels）等。
+F2 charts adopt a declarative component-based architecture. A complete chart is composed of multiple components:
 
-F2 基本组成部分如下图所示：
+```
+Canvas (Canvas Container)
+  └── Chart (Chart Core)
+        ├── Axis (Coordinate Axis)
+        ├── Geometry (Geometry Mark)
+        ├── Tooltip (Tooltip)
+        ├── Legend (Legend)
+        └── Guide (Guide Mark)
+```
 
-![](https://gw.alipayobjects.com/zos/rmsportal/tpfdzWDYmxzHkquTihJe.png#width=600) ![](https://gw.alipayobjects.com/zos/rmsportal/lUqXwLjgRWhugemcNsqc.png#width=600)
+### Chart Examples
 
-## 术语
-| **术语** | **英文** | **描述** |
-| --- | --- | --- |
-| 坐标轴 | Axis | 每个图表通常包含两个坐标轴，在直角坐标系（笛卡尔坐标系）下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径 2 个维度构成。每个坐标轴由坐标轴线（line）、刻度线（tickLine）、刻度文本（label）以及网格线（grid）组成。 |
-| 图例 | Legend | 图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表以及帮助用户在图表中进行数据的筛选过滤。 |
-| 几何标记 | Geometry | 即我们所说的点、线、面这些几何图形，在图形语法 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标记都包含对应的图形属性。 |
-| 图形属性 | Attribute | 图形属性对应视觉编码中的视觉通道，是图形语法元素非常重要和灵活的一部分，不同的几何标记拥有自己的图形属性，F2 提供了位置（position）、颜色（color）、大小（size）、形状（shape）这四种图形属性。 |
-| 坐标系 | Coordinate | 坐标系是将两种位置标度结合在一起组成的 2 维定位系统，描述了数据是如何映射到图形所在的平面。 |
-| 提示信息 | Tooltip | 当鼠标悬停在某个点上时，会以提示框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等，帮助用户从图表中获取具体的数据信息。 |
-| 辅助标记 | Guide | 当需要在图表上绘制一些辅助线、辅助框或者文本时，比如增加预警线、最高值线或者标示明显的范围区域时，辅助标记 Guide 是非常有用的工具。 |
+![](https://gw.alipayobjects.com/zos/rmsportal/tpfdzWDYmxzHkquTihJe.png#width=600)
+![](https://gw.alipayobjects.com/zos/rmsportal/lUqXwLjgRWhugemcNsqc.png#width=600)
 
+## Core Terminology
+
+| Term | English | Description |
+|------|---------|-------------|
+| **Coordinate Axis** | Axis | Charts typically contain two axes. In Cartesian coordinates, these are the x-axis and y-axis; in polar coordinates, they are composed of angle and radius. Each axis consists of axis line, tick line, label, and grid. |
+| **Legend** | Legend | An auxiliary element for charts, used to indicate different data types and ranges, assisting in reading charts and helping users filter data. |
+| **Geometry Mark** | Geometry | Geometric shapes such as points, lines, and areas. The type of geometry mark determines the chart type and represents the actual visualization of data. |
+| **Graphic Attribute** | Attribute | Corresponds to visual channels in visual encoding, including position, color, size, and shape. |
+| **Coordinate System** | Coordinate | A 2D positioning system combining two position scales, describing how data is mapped to the graphic plane. |
+| **Tooltip** | Tooltip | Displays data information in a tooltip when hovering over a point, helping users obtain specific data. |
+| **Guide Mark** | Guide | Useful for drawing auxiliary lines, boxes, or text on charts, such as warning lines, maximum value lines, or highlighting specific ranges. |
+
+## Declarative Syntax
+
+F2 uses declarative JSX syntax for more intuitive and concise code:
+
+```jsx
+<Canvas context={context} pixelRatio={window.devicePixelRatio}>
+  <Chart data={data}>
+    {/* Coordinate axes */}
+    <Axis field="genre" />
+    <Axis field="sold" />
+
+    {/* Geometry mark - bar chart */}
+    <Interval x="genre" y="sold" color="genre" />
+
+    {/* Tooltip */}
+    <Tooltip />
+
+    {/* Legend */}
+    <Legend />
+  </Chart>
+</Canvas>
+```
+
+### Advantages of Declarative Syntax
+
+- **Intuitive**: Clear component structure at a glance
+- **Concise**: Avoid complex API call chains
+- **Composable**: Components can be combined and nested flexibly
+- **Framework-friendly**: Seamless integration with React, Vue
+
+## Component Details
+
+### Canvas - Canvas Container
+
+Canvas is the root container of the chart, providing the rendering environment:
+
+```jsx
+<Canvas context={context} pixelRatio={window.devicePixelRatio}>
+  {/* Child components */}
+</Canvas>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `context` | `CanvasRenderingContext2D` | - | **Required**, Canvas 2D context |
+| `pixelRatio` | `number` | `window.devicePixelRatio` | Device pixel ratio |
+| `width` | `number` | - | Canvas width |
+| `height` | `number` | - | Canvas height |
+| `animate` | `boolean` | `true` | Whether to enable animation |
+
+### Chart - Chart Core
+
+Chart is responsible for data processing and coordinate transformation:
+
+```jsx
+<Chart data={data}>
+  {/* Geometry marks and components */}
+</Chart>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Data[]` | - | **Required**, data source |
+| `scale` | `ScaleConfig` | - | Scale configuration |
+| `coord` | `CoordConfig` | - | Coordinate system configuration |
+
+### Geometry - Geometry Mark
+
+Geometry marks determine the chart type. F2 provides various built-in geometry marks:
+
+| Geometry Mark | Component | Chart Type |
+|---------------|-----------|------------|
+| Interval | `<Interval />` | Bar chart, column chart |
+| Line | `<Line />` | Line chart, curve chart |
+| Point | `<Point />` | Scatter plot, dot plot |
+| Area | `<Area />` | Area chart |
+| Candlestick | `<Candlestick />` | Candlestick chart |
+
+```jsx
+// Bar chart
+<Interval x="genre" y="sold" color="genre" />
+
+// Line chart
+<Line x="date" y="value" color="type" />
+
+// Scatter plot
+<Point x="weight" y="height" color="gender" />
+```
+
+### Graphic Attributes
+
+Graphic attributes control the visual appearance of geometry marks:
+
+| Attribute | Description | Example |
+|-----------|-------------|---------|
+| `position` | Position, maps fields to x or y axis | `x="genre", y="sold"` |
+| `color` | Color, supports field or function | `color="genre"` or `color={datum => datum.value > 100 ? 'red' : 'blue'}` |
+| `size` | Size, controls point size, line thickness, etc. | `size={10}` or `size={datum => datum.value}` |
+| `shape` | Shape, controls the shape of geometry marks | `shape="circle"` or `shape="hollowCircle"` |
+
+### Coordinate System
+
+Coordinate system describes how data is mapped to the plane:
+
+| Type | Description | Configuration |
+|------|-------------|---------------|
+| rect | Cartesian coordinate system (default) | `<coord type="rect" />` |
+| polar | Polar coordinate system | `<coord type="polar" />` |
+| helix | Helix coordinate system | `<coord type="helix" />` |
+
+```jsx
+// Use polar coordinate system (pie chart, rose chart, etc.)
+<Chart data={data} coord={{ type: 'polar' }}>
+  <Interval x="genre" y="sold" color="genre" coord="polar" />
+</Chart>
+```
+
+### Scale
+
+Scale is used to convert data into graphic attributes:
+
+```jsx
+<Chart
+  data={data}
+  scale={{
+    sold: {
+      min: 0,
+      max: 500,
+      tickCount: 5,
+    },
+    genre: {
+      type: 'cat',
+    },
+  }}
+>
+  {/* ... */}
+</Chart>
+```
+
+For detailed configuration, see: [Scale](/tutorial/scale.en.md)
+
+## Data Format
+
+F2 requires the data source to be a JSON array, where each element is a standard JSON object:
+
+```jsx
+const data = [
+  { genre: 'Sports', sold: 275, year: 2023 },
+  { genre: 'Strategy', sold: 115, year: 2023 },
+  { genre: 'Action', sold: 120, year: 2023 },
+  { genre: 'Shooter', sold: 350, year: 2023 },
+  { genre: 'Other', sold: 150, year: 2023 },
+];
+```
+
+For data processing, see: [Data Processing](/tutorial/data.en.md)
+
+## Complete Example
+
+```jsx
+const data = [
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: 150 },
+];
+
+const context = document.getElementById('container').getContext('2d');
+
+const { props } = (
+  <Canvas context={context} pixelRatio={window.devicePixelRatio}>
+    <Chart
+      data={data}
+      scale={{
+        sold: {
+          min: 0,
+          tickInterval: 50,
+        },
+      }}
+    >
+      <Axis field="genre" />
+      <Axis field="sold" />
+      <Interval x="genre" y="sold" color="genre" />
+      <Tooltip />
+      <Legend />
+    </Chart>
+  </Canvas>
+);
+
+const canvas = new Canvas(props);
+canvas.render();
+```
+
+## Next Steps
+
+- Learn [Chart Grammar](/tutorial/grammar.en.md)
+- Understand [Data Processing](/tutorial/data.en.md)
+- View [Component API](/api/chart/chart.zh.md)
+- Learn [Graphic Attributes](/tutorial/shape-attrs.zh.md)
