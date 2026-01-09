@@ -281,9 +281,10 @@ Interval 组件支持的常用样式属性：
 **默认动画配置**（组件内置）:
 
 ```jsx
-// Interval 组件默认使用从底部向上生长的效果
+// Interval 组件默认从底部向上展开的效果
 <Interval x="genre" y="sold" />
-// 内置配置: { appear: { easing: 'linear', duration: 450, property: ['y', 'height'], start: { y: y0, height: 0 } } }
+// 内置配置: { appear: { easing: 'linear', duration: 450, property: ['y', 'height'], start: { y: <baseline>, height: 0 } } }
+// 其中 baseline 为 y 轴基线位置，柱子从底部向上展开
 ```
 
 **自定义生长动画**:
