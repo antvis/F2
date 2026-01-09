@@ -94,19 +94,26 @@ const data = [
 
 ### 股票图（K线图）
 
-股票图需要包含开盘价、收盘价、最高价、最低价：
+股票图需要包含开盘价、收盘价、最高价、最低价，使用数组格式：
 
 ```jsx
 const data = [
-  { date: '2023-01', open: 100, close: 110, high: 120, low: 95 },
-  { date: '2023-02', open: 110, close: 105, high: 115, low: 100 },
-  { date: '2023-03', open: 105, close: 120, high: 125, low: 102 },
+  { date: '2023-01', value: [100, 110, 95, 120] },  // [open, close, lowest, highest]
+  { date: '2023-02', value: [110, 105, 100, 115] },
+  { date: '2023-03', value: [105, 120, 102, 125] },
 ];
 
 <Chart data={data}>
-  <Candlestick x="date" open="open" close="close" high="high" low="low" />
+  <Axis field="date" type="timeCat" />
+  <Candlestick x="date" y="value" />
 </Chart>
 ```
+
+**数组格式说明：** `[open, close, lowest, highest]`
+- `open` - 开盘价
+- `close` - 收盘价
+- `lowest` - 最低价
+- `highest` - 最高价
 
 ### 散点图（气泡图）
 
@@ -237,7 +244,15 @@ const data2 = [
   { genre: 'Strategy', sold: 200 },
 ];
 
-chart.changeData(data2); // 自动触发动画
+const { props: newProps } = (
+  <Canvas context={context}>
+    <Chart data={data2}>
+      <Interval x="genre" y="sold" />
+    </Chart>
+  </Canvas>
+);
+
+chart.update(newProps); // 自动触发动画
 ```
 
 ## 常见问题
@@ -392,7 +407,15 @@ fetchData();
 function updateChart(userInput) {
   const data = processData(userInput);
 
-  chart.changeData(data);
+  const { props: newProps } = (
+    <Canvas context={context}>
+      <Chart data={data}>
+        <Interval x="category" y="value" />
+      </Chart>
+    </Canvas>
+  );
+
+  chart.update(newProps);
 }
 ```
 

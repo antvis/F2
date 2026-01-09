@@ -30,7 +30,7 @@ npm install @antv/f2 --save
 ### Install via CDN
 
 ```html
-<script src="https://unpkg.com/@antv/f2/dist/f2.min.js"></script>
+<script src="https://unpkg.com/@antv/f2/dist/index.min.js"></script>
 ```
 
 ## Configure JSX Transform

@@ -30,7 +30,7 @@ npm install @antv/f2 --save
 ### 通过 CDN 引入
 
 ```html
-<script src="https://unpkg.com/@antv/f2/dist/f2.min.js"></script>
+<script src="https://unpkg.com/@antv/f2/dist/index.min.js"></script>
 ```
 
 ## 配置 JSX 转换

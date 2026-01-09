@@ -94,19 +94,26 @@ The array represents the minimum and maximum values of the interval: `[minimum, 
 
 ### Candlestick Chart
 
-Candlestick charts require open, close, high, and low prices:
+Candlestick charts require open, close, highest, and lowest prices, using array format:
 
 ```jsx
 const data = [
-  { date: '2023-01', open: 100, close: 110, high: 120, low: 95 },
-  { date: '2023-02', open: 110, close: 105, high: 115, low: 100 },
-  { date: '2023-03', open: 105, close: 120, high: 125, low: 102 },
+  { date: '2023-01', value: [100, 110, 95, 120] },  // [open, close, lowest, highest]
+  { date: '2023-02', value: [110, 105, 100, 115] },
+  { date: '2023-03', value: [105, 120, 102, 125] },
 ];
 
 <Chart data={data}>
-  <Candlestick x="date" open="open" close="close" high="high" low="low" />
+  <Axis field="date" type="timeCat" />
+  <Candlestick x="date" y="value" />
 </Chart>
 ```
+
+**Array format:** `[open, close, lowest, highest]`
+- `open` - Opening price
+- `close` - Closing price
+- `lowest` - Lowest price
+- `highest` - Highest price
 
 ### Scatter Plot (Bubble Chart)
 
@@ -237,7 +244,15 @@ const data2 = [
   { genre: 'Strategy', sold: 200 },
 ];
 
-chart.changeData(data2); // Automatically triggers animation
+const { props: newProps } = (
+  <Canvas context={context}>
+    <Chart data={data2}>
+      <Interval x="genre" y="sold" />
+    </Chart>
+  </Canvas>
+);
+
+chart.update(newProps); // Automatically triggers animation
 ```
 
 ## Common Issues
@@ -392,7 +407,15 @@ Responsive to user interactions:
 function updateChart(userInput) {
   const data = processData(userInput);
 
-  chart.changeData(data);
+  const { props: newProps } = (
+    <Canvas context={context}>
+      <Chart data={data}>
+        <Interval x="category" y="value" />
+      </Chart>
+    </Canvas>
+  );
+
+  chart.update(newProps);
 }
 ```
 
