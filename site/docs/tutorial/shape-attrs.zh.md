@@ -11,89 +11,91 @@ F2 底层使用了 [G](https://g.antv.antgroup.com/api/basic/concept) 绘图引�
 
 ### 位置属性
 
-对于不同的图形，位置的几何意义也不同，例如：
+对于不同的图形，位置的几何意义也不同：
 
-- [Circle](/tutorial/shape#circle) [Arc](/tutorial/shape#arc) [Sector](/tutorial/shape#sector)为圆心位置，使用 [cx/cy](/tutorial/shape#circle)
-- [Group](/tutorial/shape#group) [Rect](/tutorial/shape#rect)，[Image](/tutorial/shape#image) 为左上角顶点位置，使用 [x/y](/tutorial/shape#rect)
-- [Text](/tutorial/shape#text) 为文本锚点位置
-- [Line](/tutorial/shape#line)，[Polyline](/tutorial/shape#polyline)，[Polygon](/tutorial/shape#polygon)，[Path](/tutorial/shape#path) 为包围盒左上角顶点位置
+| 图形 | 位置说明 | 使用的属性 |
+|------|----------|------------|
+| [Circle](/tutorial/shape.zh.md#circle) | 圆心位置 | `cx/cy` |
+| [Arc](/tutorial/shape.zh.md#arc) | 圆心位置 | `cx/cy` |
+| [Sector](/tutorial/shape.zh.md#sector) | 圆心位置 | `cx/cy` |
+| [Group](/tutorial/shape.zh.md#group) | 左上角顶点位置 | `x/y` |
+| [Rect](/tutorial/shape.zh.md#rect) | 左上角顶点位置 | `x/y` |
+| [Image](/tutorial/shape.zh.md#image) | 左上角顶点位置 | `x/y` |
+| [Text](/tutorial/shape.zh.md#text) | 文本锚点位置 | `x/y` |
+| [Line](/tutorial/shape.zh.md#line) | 包围盒左上角顶点位置 | `x/y` |
+| [Polyline](/tutorial/shape.zh.md#polyline) | 包围盒左上角顶点位置 | `x/y` |
+| [Polygon](/tutorial/shape.zh.md#polygon) | 包围盒左上角顶点位置 | `x/y` |
 
-| 属性名   | 描述                |
-| -------- | ------------------- |
-| `anchor` | 锚点，默认为 [0, 0] |
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `anchor` | `[number, number]` | `[0, 0]` | 锚点位置 |
 
 ### 通用属性
 
-| 属性名 | 描述 |
-| ------ | ---- |
-
-| `zIndex` | 控制图行显示层级。默认 0 |
-
-| `clip` | 创建元素的可显示区域，区域内的部分显示，区域外的隐藏。参见(./shape-attrs#裁剪) |
-
-| `visibility` | 控制图形的可见性。参见 [MDN]（https://developer.mozilla.org/en-US/docs/Web/CSS/visibility） |
-
-| `opacity` | 设置图形和图片透明度的属性，默认值是 1。 数值的范围从 0.0 （完全透明）到 1.0 （完全不透明）。 |
-
-| `fill` | 填充色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空。 |
-
-| `fillOpacity` | 用于设置图形填充颜色的透明度，默认值是 1。 |
-
-| `stroke` | 描边色、[渐变](./shape-attrs#渐变色)或[纹理](./shape-attrs#纹理)，默认值为空； |
-
-| `strokeOpacity` | 用于设置边颜色的透明度，默认值是 1。 |
-
-| `shadowType` | 描述阴影类型，目前支持 'outer' 外阴影和 'inner' 内阴影 |
-
-| `shadowColor` | 描述阴影颜色的属性，支持 String，暂不支持渐变或纹理，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor)。 |
-
-| `shadowBlur` | 描述模糊效果程度的属性； 它既不对应像素值也不受当前转换矩阵的影响。 默认值是 0，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowBlur)。 |
-
-| `shadowOffsetX` | 描述阴影水平偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX)。 |
-
-| `shadowOffsetY` | 描述阴影垂直偏移距离的属性，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY)。 |
-
-| `filter` | 滤镜，目前支持单个或多个滤镜叠加,支持 blur、brightness、drop-shadow、contrast、grayscale、saturate、sepia、hue-rotate、invert 几种滤镜效果。参见 [MDN]（https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/filter） |
-
-| `cursor` | 鼠标样式。参见 [MDN]（https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor） |
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `zIndex` | `number` | `0` | 控制图形显示层级 |
+| `clip` | `Clip` | - | 创建元素的可显示区域，区域内的部分显示，区域外的隐藏。见[裁剪](#裁剪) |
+| `visibility` | `string` | - | 控制图形的可见性，见 [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility) |
+| `opacity` | `number` | `1` | 设置图形和图片透明度，范围从 0.0（完全透明）到 1.0（完全不透明） |
+| `fill` | `string \| Gradient \| Pattern` | - | 填充色、[渐变](#渐变色)或[纹理](#纹理) |
+| `fillOpacity` | `number` | `1` | 设置图形填充颜色的透明度，范围从 0.0 到 1.0 |
+| `stroke` | `string \| Gradient \| Pattern` | - | 描边色、[渐变](#渐变色)或[纹理](#纹理) |
+| `strokeOpacity` | `number` | `1` | 设置边颜色的透明度，范围从 0.0 到 1.0 |
+| `shadowType` | `string` | - | 阴影类型，支持 `'outer'` 外阴影和 `'inner'` 内阴影 |
+| `shadowColor` | `string` | - | 阴影颜色，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowColor) |
+| `shadowBlur` | `number` | `0` | 阴影模糊程度，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowBlur) |
+| `shadowOffsetX` | `number` | `0` | 阴影水平偏移距离，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX) |
+| `shadowOffsetY` | `number` | `0` | 阴影垂直偏移距离，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY) |
+| `filter` | `string` | - | 滤镜，支持 blur、brightness、drop-shadow、contrast、grayscale、saturate、sepia、hue-rotate、invert 等，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/filter) |
+| `cursor` | `string` | - | 鼠标样式，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor) |
 
 ### 线条属性
 
-| 属性名 | 描述 |
-| ------ | ---- |
-
-| `lineCap` | Canvas 2D API 指定如何绘制每一条线段末端的属性。有 3 个可能的值，分别是：`butt`, `round` and `square`。默认值是 butt，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineCap). |
-
-| `lineJoin` | Canvas 2D API 用来设置 2 个长度不为 0 的相连部分（线段，圆弧，曲线）如何连接在一起的属性（长度为 0 的变形部分，其指定的末端和控制点在同一位置，会被忽略），参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineJoin). | | `lineWidth` | Canvas 2D API 设置线段厚度的属性（即线段的宽度）。当获取属性值时，它可以返回当前的值（默认值是 1.0 ）。 当给属性赋值时， 0、 负数、 Infinity 和 NaN 都会被忽略；除此之外，都会被赋予一个新值，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineWidth). | | `miterLimit` | Canvas 2D API 设置斜接面限制比例的属性。 当获取属性值时， 会返回当前的值（默认值是 10.0 ）。当给属性赋值时， 0、负数、 Infinity 和 NaN 都会被忽略；除此之外都会被赋予一个新值。，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/miterLimit). | | `lineDash` | 设置线的虚线样式，可以指定一个数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。 如果数组元素的数量是奇数， 数组的元素会被复制并重复。例如， [5, 15, 25] 会变成 [5, 15, 25, 5, 15, 25]。这个属性取决于浏览器是否支持 `setLineDash()` 函数，详情参考 [setLineDash](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/setLineDash)。 |
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `lineCap` | `string` | `'butt'` | 线段末端样式，可选值：`'butt'`、`'round'`、`'square'`，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineCap) |
+| `lineJoin` | `string` | `'miter'` | 线段连接处样式，可选值：`'bevel'`、`'round'`、`'miter'`，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineJoin) |
+| `lineWidth` | `number` | `1` | 线段宽度，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineWidth) |
+| `miterLimit` | `number` | `10` | 斜接面限制比例，见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/miterLimit) |
+| `lineDash` | `number[]` | `[]` | 虚线样式，如 `[5, 5]` 表示 5px 实线、5px 空白，见 [setLineDash](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/setLineDash) |
 
 ### 文本属性
 
-| 属性名 | 描述 |
-| --- | --- |
-| `textAlign` | 设置文本内容的当前对齐方式, 支持的属性：'start', 'center', 'end', 'left', 'right' |
-| `textBaseline` | 设置在绘制文本时使用的当前文本基线, 支持的属性：'top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom' |
-| `fontStyle` | 规定字体样式。可能的值：'normal', 'italic', 'oblique' |
-| `fontSize` | 规定字号，以像素计 |
-| `fontFamily` | 规定字体系列 |
-| `fontWeight` | 规定字体的粗细。可能的值：'normal', 'bold', 'bolder', 'lighter', '100', '200, '300', '400','500', '600', '700', '800', '900' |
-| `fontVariant` | 规定字体变体。可能的值：'normal', 'small-caps' |
-| `lineHeight` | 规定行高，以像素计 |
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `textAlign` | `string` | `'start'` | 文本水平对齐方式，可选值：`'start'`、`'center'`、`'end'`、`'left'`、`'right'` |
+| `textBaseline` | `string` | `'alphabetic'` | 文本垂直基线，可选值：`'top'`、`'hanging'`、`'middle'`、`'alphabetic'`、`'ideographic'`、`'bottom'` |
+| `fontStyle` | `string` | `'normal'` | 字体样式，可选值：`'normal'`、`'italic'`、`'oblique'` |
+| `fontSize` | `number` | `12` | 字号（像素） |
+| `fontFamily` | `string` | `'sans-serif'` | 字体系列 |
+| `fontWeight` | `string` | `'normal'` | 字体粗细，可选值：`'normal'`、`'bold'`、`'bolder'`、`'lighter'`、`'100'`~`'900'` |
+| `fontVariant` | `string` | `'normal'` | 字体变体，可选值：`'normal'`、`'small-caps'` |
+| `lineHeight` | `number` | - | 行高（像素） |
 
 ## 渐变色
 
-为了方便用户使用，F2 中提供与 css 中用法一致的渐变色使用方法，参见[MDN]（https://developer.mozilla.org/zh-CN/docs/Web/CSS/gradient），定义方式如下：
+F2 提供与 CSS 用法一致的渐变色使用方法，参见 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS/gradient)。
 
-在 css 中，渐变通过函数创建，在下面例子中展示了目前支持的渐变效果，包括线性和径向渐变、多个渐变叠加等：
+渐变效果包括线性和径向渐变、多个渐变叠加等：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*sXoJTKPWg70AAAAAAAAAAAAAARQnAQ" width="400" alt="gradient">
 
 ### 线性渐变
 
-线性渐变指创建一个表示两种或多种颜色延某一方向线性变化。渐变方向在 CSS 中默认为从下到上，而我们为了和 Canvas / SVG 保持一致，使用从左到右，且可以多个渐变叠加。示例：
+线性渐变指创建一个表示两种或多种颜色沿某一方向线性变化。渐变方向默认为从左到右（与 Canvas / SVG 保持一致），且可以多个渐变叠加。
 
-```javascript
-// example
-fill: 'linear-gradient(0deg, blue, green 40%, red)';
+```jsx
+// 基础线性渐变
+<rect
+  style={{
+    x: 10,
+    y: 10,
+    width: 200,
+    height: 100,
+    fill: 'linear-gradient(90deg, blue, green 40%, red)',
+  }}
+/>
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*aU84RIJaH6AAAAAAAAAAAAAAARQnAQ" width="300" alt="linear gradient">
@@ -102,66 +104,319 @@ fill: 'linear-gradient(0deg, blue, green 40%, red)';
 
 径向渐变指从图形中心发出的两种或者多种颜色之间的逐步过渡变化。
 
-```javascript
-// example
-fill: 'radial-gradient(circle at center, red, blue, green 100%)';
+```jsx
+// 径向渐变
+<circle
+  style={{
+    cx: 100,
+    cy: 100,
+    r: 80,
+    fill: 'radial-gradient(circle at center, red, blue, green 100%)',
+  }}
+/>
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*Z4QLTr3lC80AAAAAAAAAAAAAARQnAQ" width="300" alt="radial gradient">
 
+### 渐变类型
+
+| 类型 | 说明 | 示例 |
+|------|------|------|
+| `linear-gradient(angle, ...)` | 线性渐变，angle 为角度 | `linear-gradient(90deg, red, blue)` |
+| `radial-gradient(shape at position, ...)` | 径向渐变 | `radial-gradient(circle at center, red, blue)` |
+
 ## 纹理
 
-使用相同的图案填充图形，目前支持的 Pattern 可以是图片 URL，`HTMLImageElement`，`HTMLCanvasElement`，`HTMLVideoElement` 和 `Rect` 等，还可以指定重复方向：
+使用相同的图案填充图形，支持的 Pattern 可以是图片 URL、`HTMLImageElement`、`HTMLCanvasElement`、`HTMLVideoElement` 和 `Rect` 等，还可以指定重复方向。
 
 <img src="https://gw.alipayobjects.com/mdn/rms_6ae20b/afts/img/A*cRmFTItZOtYAAAAAAAAAAAAAARQnAQ" width="400" alt="pattern">
 
-支持参数如下：
+### Pattern 类型定义
 
-```ts
+```typescript
 interface Pattern {
-  image: string | CanvasImageSource | Rect;
-  repetition?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
-  transform?: string;
+  image: string | CanvasImageSource | Rect
+  repetition?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  transform?: string
 }
 ```
 
-使用方法：
+### 使用示例
 
-```js
-// example
+```jsx
 // 使用纹理填充，在水平和垂直方向重复图片
-fill: {
-    image:'https://gw.alipayobjects.com/zos/rmsportal/ibtwzHXSxomqbZCPMLqS.png',
-    repetition: 'repeat',
-    transform: 'rotate(30deg)',
-}
+<rect
+  style={{
+    x: 10,
+    y: 10,
+    width: 200,
+    height: 200,
+    fill: {
+      image: 'https://gw.alipayobjects.com/zos/rmsportal/ibtwzHXSxomqbZCPMLqS.png',
+      repetition: 'repeat',
+      transform: 'rotate(30deg)',
+    },
+  }}
+/>
 ```
+
+### repetition 参数说明
+
+| 值 | 说明 |
+|------|------|
+| `'repeat'` | 水平和垂直方向重复 |
+| `'repeat-x'` | 仅水平方向重复 |
+| `'repeat-y'` | 仅垂直方向重复 |
+| `'no-repeat'` | 不重复 |
 
 ## 裁剪
 
-参考 [CSS clip-path](https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path)。该属性值可以定义可视区域，可以是任意图形，例如 Circle、Rect 等等。同一个裁剪区域可以被多个图形共享使用，并且裁剪区域也会影响图形的拾取区域。
+参考 [CSS clip-path](https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path)。该属性值可以定义可视区域，可以是任意图形，例如 Circle、Rect 等。同一个裁剪区域可以被多个图形共享使用，并且裁剪区域也会影响图形的拾取区域。
 
-使用方法：
+### 使用示例
 
-```js
+```jsx
+// 圆形裁剪
 <rect
   style={{
     x: 100,
     y: 100,
     width: 100,
     height: 100,
+    fill: 'blue',
     clip: {
       type: 'circle',
       style: {
-        cx: 100,
-        cy: 100,
+        cx: 150,
+        cy: 150,
         r: 50,
+      },
+    },
+  }}
+/>
+
+// 矩形裁剪
+<rect
+  style={{
+    x: 100,
+    y: 100,
+    width: 200,
+    height: 200,
+    fill: 'red',
+    clip: {
+      type: 'rect',
+      style: {
+        x: 150,
+        y: 150,
+        width: 100,
+        height: 100,
       },
     },
   }}
 />
 ```
 
-## 历史用法
+### Clip 类型定义
 
-历史用法见 https://f2-v4.antv.visiondocs/tutorial/shape-attrs#渐变色
+```typescript
+type Clip =
+  | {
+      type: 'circle'
+      style: CircleStyle
+    }
+  | {
+      type: 'rect'
+      style: RectStyle
+    }
+  | {
+      type: 'polygon'
+      style: PolygonStyle
+    }
+```
+
+## TypeScript 类型定义
+
+```typescript
+interface ShapeStyle {
+  // 位置
+  anchor?: [number, number]
+
+  // 通用属性
+  zIndex?: number
+  clip?: Clip
+  visibility?: 'visible' | 'hidden' | 'collapse'
+  opacity?: number
+  fill?: string | Gradient | Pattern
+  fillOpacity?: number
+  stroke?: string | Gradient | Pattern
+  strokeOpacity?: number
+  shadowType?: 'outer' | 'inner'
+  shadowColor?: string
+  shadowBlur?: number
+  shadowOffsetX?: number
+  shadowOffsetY?: number
+  filter?: string
+  cursor?: string
+
+  // 线条属性
+  lineCap?: 'butt' | 'round' | 'square'
+  lineJoin?: 'bevel' | 'round' | 'miter'
+  lineWidth?: number
+  miterLimit?: number
+  lineDash?: number[]
+
+  // 文本属性
+  textAlign?: 'start' | 'center' | 'end' | 'left' | 'right'
+  textBaseline?: 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom'
+  fontStyle?: 'normal' | 'italic' | 'oblique'
+  fontSize?: number
+  fontFamily?: string
+  fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
+  fontVariant?: 'normal' | 'small-caps'
+  lineHeight?: number
+}
+
+type Gradient = string // 'linear-gradient(...)' | 'radial-gradient(...)'
+
+interface Pattern {
+  image: string | CanvasImageSource | Rect
+  repetition?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  transform?: string
+}
+```
+
+## 常见问题
+
+### 如何设置透明度？
+
+使用 `opacity` 设置整体透明度，或使用 `fillOpacity` 和 `strokeOpacity` 分别设置填充和描边透明度：
+
+```jsx
+// 整体透明度
+<circle
+  style={{
+    cx: 100,
+    cy: 100,
+    r: 50,
+    fill: 'red',
+    opacity: 0.5,
+  }}
+/>
+
+// 分别设置填充和描边透明度
+<circle
+  style={{
+    cx: 100,
+    cy: 100,
+    r: 50,
+    fill: 'red',
+    fillOpacity: 0.5,
+    stroke: 'blue',
+    strokeOpacity: 0.8,
+    lineWidth: 2,
+  }}
+/>
+```
+
+### 如何添加阴影？
+
+使用阴影相关属性：
+
+```jsx
+<rect
+  style={{
+    x: 100,
+    y: 100,
+    width: 100,
+    height: 100,
+    fill: 'blue',
+    shadowType: 'outer',
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowBlur: 10,
+    shadowOffsetX: 5,
+    shadowOffsetY: 5,
+  }}
+/>
+```
+
+### 如何设置虚线？
+
+使用 `lineDash` 属性：
+
+```jsx
+<line
+  style={{
+    x1: 10,
+    y1: 10,
+    x2: 200,
+    y2: 10,
+    stroke: '#000',
+    lineWidth: 2,
+    lineDash: [10, 5], // 10px 实线，5px 空白
+  }}
+/>
+```
+
+### 渐变色如何使用？
+
+渐变色可以直接作为 `fill` 或 `stroke` 的值：
+
+```jsx
+// 线性渐变填充
+<rect
+  style={{
+    x: 10,
+    y: 10,
+    width: 200,
+    height: 100,
+    fill: 'linear-gradient(90deg, red 0%, yellow 50%, blue 100%)',
+  }}
+/>
+
+// 径向渐变描边
+<circle
+  style={{
+    cx: 100,
+    cy: 100,
+    r: 50,
+    stroke: 'radial-gradient(circle, white, black)',
+    lineWidth: 5,
+  }}
+/>
+```
+
+### 如何控制图形层级？
+
+使用 `zIndex` 属性，值越大越靠前：
+
+```jsx
+<group>
+  <rect
+    style={{
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 100,
+      fill: 'red',
+      zIndex: 1,
+    }}
+  />
+  <rect
+    style={{
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 100,
+      fill: 'blue',
+      zIndex: 2, // 会显示在红色矩形上方
+    }}
+  />
+</group>
+```
+
+## 相关文档
+
+- [图形标签](/tutorial/shape.zh.md)
+- [图形动画](/tutorial/animation.zh.md)
+- [图形事件](/tutorial/event.zh.md)
+- [图形使用](/tutorial/graphic.zh.md)

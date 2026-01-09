@@ -3,24 +3,26 @@ title: 如何在 Vue 中使用
 order: 12
 ---
 
-为了方便 Vue 项目的使用，Fengine 也封装了一个 vue 的组件
+为了方便 Vue 项目的使用，Fengine 也封装了一个 Vue 组件。
 
-## Usage
-
-### 1. 安装依赖
+## 安装依赖
 
 ```bash
 npm install @antv/f2 --save
 npm install @antv/f-vue --save
 ```
 
-### 2. 配置 F2 的 JSX 编译
+## 配置 JSX 编译
+
+### webpack (vue-cli)
+
+安装 Babel 插件：
 
 ```bash
 npm install @babel/plugin-transform-react-jsx --save-dev
 ```
 
-打开 `vue.config.js` 添加如下代码
+打开 `vue.config.js` 添加如下配置：
 
 ```js
 {
@@ -46,14 +48,16 @@ npm install @babel/plugin-transform-react-jsx --save-dev
 }
 ```
 
-### 3. Vite 中配置
+### Vite
+
+安装依赖：
 
 ```bash
 npm install @rollup/plugin-babel --save-dev
 npm install @babel/plugin-transform-react-jsx --save-dev
 ```
 
-打开 `vite.config.js` 添加如下配置
+打开 `vite.config.js` 添加如下配置：
 
 ```js
 import vue from '@vitejs/plugin-vue';
@@ -79,7 +83,7 @@ export default defineConfig({
 });
 ```
 
-### 4. 使用示例
+## 使用示例
 
 ```vue
 <script>
@@ -140,7 +144,7 @@ export default {
 </style>
 ```
 
-**完整示例可参考**
+## 完整示例参考
 
-- codesandbox: https://codesandbox.io/s/f-vue-wlwtkb?file=/src/App.vue
-- https://github.com/antvis/FEngine/tree/master/packages/f-vue/examples
+- [CodeSandbox 示例](https://codesandbox.io/s/f-vue-wlwtkb?file=/src/App.vue)
+- [GitHub 示例](https://github.com/antvis/FEngine/tree/master/packages/f-vue/examples)

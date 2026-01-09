@@ -3,11 +3,20 @@ title: 如何在 Node.js 中使用
 order: 14
 ---
 
-## 配置 jsx transform
+在 Node.js 环境中使用 F2，可以通过 `canvas` 库提供 Canvas 实现，从而生成图表图片。
 
-详见：[配置 jsx transform](./jsx-transform)
+## 配置 JSX Transform
 
-## Usage
+详见：[配置 JSX Transform](/tutorial/framework/jsx-transform.zh.md)
+
+## 安装依赖
+
+```bash
+npm install @antv/f2 --save
+npm install canvas --save
+```
+
+## 使用示例
 
 ```jsx
 import { Canvas, Chart, Interval, Axis } from '@antv/f2';
@@ -49,3 +58,10 @@ const data = [
   });
 })();
 ```
+
+## 说明
+
+- 使用 `canvas` 库的 `createCanvas` 方法创建 Canvas 实例
+- 将 Canvas 的 2D context 传递给 F2 的 `Canvas` 组件
+- 设置 `animate={false}` 关闭动画，因为图片导出场景不需要动画
+- 使用 `createPNGStream` 将 Canvas 内容输出为 PNG 图片文件

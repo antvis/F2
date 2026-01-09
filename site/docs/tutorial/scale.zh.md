@@ -1,21 +1,24 @@
 ---
-title: 度量 - Scale
+title: 度量
 order: 4
 ---
 
-度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作。针对不同的数据类型对应不同类型的度量。
+度量（Scale）是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作。针对不同的数据类型对应不同类型的度量。
 
-根据数据的类型，F2 支持以下几种度量类型：
+## 度量类型
 
-- **identity**，常量类型的数值，也就是说数据的某个字段是不变的常量；
+根据数据类型，F2 支持以下几种度量类型：
 
-- **linear**，连续的数字 [1, 2, 3, 4, 5]；
+| 类型 | 说明 | 适用场景 |
+|------|------|----------|
+| `identity` | 常量类型数值，数据字段是不变的常量 | 常量字段 |
+| `linear` | 连续数字，如 [1, 2, 3, 4, 5] | 连续数值型数据 |
+| `cat` | 分类，如 ['男', '女'] | 分类数据 |
+| `timeCat` | 时间类型 | 时间日期数据 |
 
-- **cat**，分类, ['男','女']；
+## 如何设置度量
 
-- **timeCat**，时间类型；
-
-在 F2 的使用中，我们可以通过列定义来直接定义度量
+通过 `Chart` 组件的 `scale` 属性定义度量：
 
 ```jsx
 const data = [
@@ -23,124 +26,557 @@ const data = [
   { a: 'b', b: 12 },
   { a: 'c', b: 8 },
 ];
-<Canvas>
-  <Chart
-    scale={{
-      a: {
-        type: 'cat', // 声明 a 字段的类型
-      },
-      b: {
-        min: 0, // 手动指定最小值
-        max: 100, // 手动指定最大值
-      },
-    }}
-  ></Chart>
-</Canvas>;
+
+<Chart
+  data={data}
+  scale={{
+    a: {
+      type: 'cat',      // 声明 a 字段为分类类型
+    },
+    b: {
+      min: 0,           // 手动指定最小值
+      max: 100,         // 手动指定最大值
+    },
+  }}
+>
+  <Interval x="a" y="b" />
+</Chart>
 ```
 
 ## 通用属性
 
-下面列出的是通用的属性：
+所有度量类型都支持的通用属性：
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `type` | String | 指定不同的度量类型，支持的 type 为 `identity`、`linear`、`cat`、`timeCat`。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、提示信息 tooltip 上的显示。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `alias` | String | 该数据字段的显示别名，一般用于将字段的英文名称转换成中文名。 |
-| `tickCount` | Number | 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `type` | `string` | 度量类型：`identity`、`linear`、`cat`、`timeCat` |
+| `formatter` | `Function` | 格式化刻度点文本，影响坐标轴、图例、tooltip 显示 |
+| `range` | `Array` | 输出范围，格式为 `[min, max]`，默认 `[0, 1]` |
+| `alias` | `string` | 字段显示别名，用于英文名称转中文名称 |
+| `tickCount` | `number` | 坐标轴刻度点个数 |
+| `ticks` | `Array` | 指定刻度点的文本信息 |
 
-## Scale 对应的属性
+## Linear 度量
 
-### linear
+用于连续数值型数据。
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `alias` | String | 别名。 |
-| `nice` | Boolean | 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100]。 |
-| `min` | Number | 定义数值范围的最小值。 |
-| `max` | Number | 定义数值范围的最大值。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `tickCount` | Number | 定义坐标轴刻度线的条数，默认为 5。 |
-| `tickInterval` | Number | 用于指定坐标轴各个标度点的间距，是原始数据之间的间距差值，**tickCount 和 tickInterval 不可以同时声明。** |
+### 配置属性
 
-### cat
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `nice` | `boolean` | 优化数值范围，使刻度线均匀分布，默认 `true` |
+| `min` | `number` | 数值范围最小值 |
+| `max` | `number` | 数值范围最大值 |
+| `tickInterval` | `number` | 刻度点间距，与 tickCount 互斥 |
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `alias` | String | 别名。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `tickCount` | Number | 定义坐标轴刻度线的条数，默认为 5。 |
-| `values` | Array | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。 |
-| `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
+### 配置示例
 
-`values` 属性常用于 2 个场景：
+```jsx
+// 基础配置
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      min: 0,
+      max: 100,
+      tickCount: 5,
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 
-1. 需要制定分类的顺序时，例如：c 字段有'最大','最小'和'适中'3 种类型，我们想指定这些数值在坐标轴或者图例上的显示顺序时：
+// 使用 tickInterval
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      min: 0,
+      max: 100,
+      tickInterval: 20,  // 0, 20, 40, 60, 80, 100
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 
-```javascript
-const scale = {
-  c: {
-    type: 'cat',
-    values: ['最小', '适中', '最大'],
-  },
-};
+// 使用 nice 优化范围
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      nice: true,  // [3, 97] → [0, 100]
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// 使用 formatter 格式化
+<Chart
+  scale={{
+    value: {
+      type: 'linear',
+      formatter: (val) => `${val}%`,
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
 ```
 
-2. 数据字段中的数据是数值类型，但是需要转换成分类类型，**这个时候需要注意原始数据必须是索引值**。
+### 类型定义
 
-![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/e847832c-3000-4745-b7d5-d3552feee17b.png)
+```typescript
+interface LinearScaleConfig {
+  type?: 'linear';
+  min?: number;
+  max?: number;
+  nice?: boolean;
+  tickCount?: number;
+  tickInterval?: number;
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: number) => string;
+  ticks?: number[];
+}
+```
 
-```javascript
+## Cat 度量
+
+用于分类数据。
+
+### 配置属性
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `values` | `Array` | 指定分类值顺序 |
+| `isRounding` | `boolean` | 是否允许取整以满足刻度均匀分布，默认 `false` |
+
+### 配置示例
+
+```jsx
+// 基础配置
+<Chart
+  scale={{
+    genre: {
+      type: 'cat',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+</Chart>
+
+// 指定分类顺序
+<Chart
+  scale={{
+    level: {
+      type: 'cat',
+      values: ['最小', '适中', '最大'],
+    },
+  }}
+>
+  <Interval x="level" y="value" />
+</Chart>
+```
+
+### values 属性使用场景
+
+**场景 1：指定分类顺序**
+
+```jsx
 const data = [
-  { month: 0, tem: 7, city: 'Tokyo' },
-  { month: 1, tem: 6.9, city: 'Tokyo' },
-  { month: 2, tem: 9.5, city: 'Tokyo' },
-  { month: 3, tem: 14.5, city: 'Tokyo' },
-  { month: 4, tem: 18.2, city: 'Tokyo' },
-  { month: 5, tem: 21.5, city: 'Tokyo' },
-  { month: 6, tem: 25.2, city: 'Tokyo' },
+  { level: 'max', value: 100 },
+  { level: 'min', value: 10 },
+  { level: 'mid', value: 50 },
 ];
-const scale = {
-  month: {
-    type: 'cat',
-    values: ['一月', '二月', '三月', '四月', '五月', '六月', '七月'], // 这时候 month 的原始值是索引值
-  },
-};
+
+<Chart
+  data={data}
+  scale={{
+    level: {
+      type: 'cat',
+      values: ['min', 'mid', 'max'],  // 按指定顺序显示
+    },
+  }}
+>
+  <Interval x="level" y="value" />
+</Chart>
 ```
 
-### timeCat
+**场景 2：数值转分类（索引映射）**
 
-时间分类类型，**默认会对数据做排序**。
+```jsx
+const data = [
+  { month: 0, value: 7 },
+  { month: 1, value: 12 },
+  { month: 2, value: 18 },
+];
 
-| **属性名** | **类型** | **说明** |
-| --- | --- | --- |
-| `nice` | Boolean | 是否将 ticks 进行优化，变更数据的最小值、最大值，使得每个 tick 都是用户易于理解的数据。 |
-| `mask` | String | 数据的格式化格式 默认：'YYYY-MM-DD'。 |
-| `tickCount` | Number | 坐标点的个数，默认是 5。但不一定是准确值。 |
-| `values` | Array | 具体的分类的值，一般用于指定具体的顺序和枚举的对应关系。 |
-| `alias` | String | 别名。 |
-| `range` | Array | 输出数据的范围，数值类型的默认值为 [0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。 |
-| `formatter` | Function | 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴 axis、图例 legend、tooltip 上的显示。 |
-| `ticks` | Array | 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示。 |
-| `isRounding` | Boolean | 默认值为 `false`, 在计算 ticks 的时候是否允许取整以满足刻度之间的均匀分布，取整后可能会和用户设置的 tickCount 不符合。 |
+<Chart
+  data={data}
+  scale={{
+    month: {
+      type: 'cat',
+      values: ['一月', '二月', '三月'],  // month 值作为索引
+    },
+  }}
+>
+  <Line x="month" y="value" />
+</Chart>
+```
 
-**注意：`mask` 和 `formatter` 这两个属性不可共用，如果同时设置了，会根据 `formatter` 进行格式化，`mask` 属性将不生效。**
+## TimeCat 度量
 
-**性能小提示：**
+用于时间日期数据，**默认会对数据排序**。
 
-当图表的数据源已经过排序，可以通过在列定义中设置 `sortable: false` 来提升性能，默认情况下，会对 timeCat 类型的度量进行数据排序操作。
+### 配置属性
 
-```javascript
-const scale = {
-  [fieldName]: {
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `nice` | `boolean` | 是否优化 ticks，使刻度更易理解 |
+| `mask` | `string` | 时间格式，默认 `'YYYY-MM-DD'` |
+| `sortable` | `boolean` | 是否排序，默认 `true`，已排序数据可设为 `false` 提升性能 |
+| `values` | `Array` | 指定具体的时间值顺序 |
+
+### 配置示例
+
+```jsx
+// 基础配置
+<Chart
+  scale={{
+    date: {
+      type: 'timeCat',
+      mask: 'YYYY-MM-DD',
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// 自定义时间格式
+<Chart
+  scale={{
+    date: {
+      type: 'timeCat',
+      mask: 'MM/DD',  // 01/15
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// 性能优化：数据已排序
+<Chart
+  data={sortedData}
+  scale={{
+    date: {
+      type: 'timeCat',
+      sortable: false,  // 跳过排序，提升性能
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+
+// 指定时间顺序
+<Chart
+  scale={{
+    quarter: {
+      type: 'cat',
+      values: ['Q1', 'Q2', 'Q3', 'Q4'],
+    },
+  }}
+>
+  <Interval x="quarter" y="value" />
+</Chart>
+```
+
+### 类型定义
+
+```typescript
+interface TimeCatScaleConfig {
+  type?: 'timeCat';
+  nice?: boolean;
+  mask?: string;
+  sortable?: boolean;
+  tickCount?: number;
+  values?: string[];
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: string | Date) => string;
+  ticks?: string[];
+}
+```
+
+## 常用配置场景
+
+### 设置坐标轴范围
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,       // 设置最小值
+      max: 100,     // 设置最大值
+      tickCount: 5, // 5 个刻度点
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### 格式化刻度标签
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      formatter: (val) => `${val}万`,
+    },
+    date: {
+      formatter: (val) => {
+        const date = new Date(val);
+        return `${date.getMonth() + 1}月${date.getDate()}日`;
+      },
+    },
+  }}
+>
+  <Line x="date" y="value" />
+  <Axis field="value" />
+  <Axis field="date" />
+</Chart>
+```
+
+### 设置刻度间隔
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,
+      max: 100,
+      tickInterval: 25,  // 0, 25, 50, 75, 100
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### 自定义刻度值
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      ticks: [0, 25, 50, 75, 100],  // 自定义刻度值
+    },
+  }}
+>
+  <Line x="date" y="value" />
+</Chart>
+```
+
+### 多个度量配置
+
+```jsx
+<Chart
+  scale={{
+    // x 轴：分类度量
+    genre: {
+      type: 'cat',
+      values: ['Sports', 'Strategy', 'Action', 'Shooter', 'Other'],
+    },
+    // y 轴：线性度量
+    sold: {
+      type: 'linear',
+      min: 0,
+      nice: true,
+    },
+    // 颜色：分类度量
+    color: {
+      type: 'cat',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" color="genre" />
+</Chart>
+```
+
+## 高级配置
+
+### 范围控制
+
+控制数据映射到图形的位置：
+
+```jsx
+<Chart
+  scale={{
+    value: {
+      min: 0,
+      max: 100,
+      range: [0, 0.8],  // 留出顶部 20% 空间
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+</Chart>
+```
+
+### 别名设置
+
+用于将字段英文名称转换为中文名称：
+
+```jsx
+<Chart
+  scale={{
+    genre: {
+      alias: '类型',  // 图例、tooltip 等显示别名
+    },
+    sold: {
+      alias: '销量',
+    },
+  }}
+>
+  <Interval x="genre" y="sold" />
+  <Legend />
+  <Tooltip />
+</Chart>
+```
+
+### 动态度量配置
+
+```jsx
+class DynamicChart extends Component {
+  state = {
+    maxValue: 100,
+  };
+
+  updateMaxValue = () => {
+    this.setState({
+      maxValue: 200,
+    });
+  };
+
+  render() {
+    const { maxValue } = this.state;
+    return (
+      <Chart
+        data={data}
+        scale={{
+          value: {
+            type: 'linear',
+            max: maxValue,
+          },
+        }}
+      >
+        <Interval x="genre" y="sold" />
+      </Chart>
+    );
+  }
+}
+```
+
+## 类型定义
+
+### ScaleConfig 完整类型
+
+```typescript
+interface ScaleConfig {
+  type?: 'linear' | 'cat' | 'timeCat' | 'identity';
+
+  // 通用属性
+  range?: [number, number];
+  alias?: string;
+  formatter?: (value: any) => string;
+  tickCount?: number;
+  ticks?: any[];
+
+  // linear 特有
+  min?: number;
+  max?: number;
+  nice?: boolean;
+  tickInterval?: number;
+
+  // cat 特有
+  values?: any[];
+  isRounding?: boolean;
+
+  // timeCat 特有
+  mask?: string;
+  sortable?: boolean;
+}
+
+interface ChartScaleConfig {
+  [fieldName: string]: ScaleConfig;
+}
+```
+
+## 常见问题
+
+### 如何设置坐标轴从 0 开始？
+
+```jsx
+scale={{
+  value: {
+    min: 0,  // 设置最小值为 0
+  },
+}}
+```
+
+### 如何设置刻度间隔？
+
+使用 `tickInterval` 属性：
+
+```jsx
+scale={{
+  value: {
+    tickInterval: 20,
+  },
+}}
+```
+
+### 如何自定义刻度标签？
+
+使用 `formatter` 或 `ticks`：
+
+```jsx
+// 方式 1: formatter
+scale={{
+  value: {
+    formatter: (val) => `${val}K`,
+  },
+}}
+
+// 方式 2: ticks
+scale={{
+  value: {
+    ticks: [0, 25, 50, 75, 100],
+  },
+}}
+```
+
+### 如何优化已排序时间数据的性能？
+
+设置 `sortable: false` 跳过排序：
+
+```jsx
+scale={{
+  date: {
     type: 'timeCat',
     sortable: false,
   },
-};
+}}
 ```
+
+### mask 和 formatter 能同时使用吗？
+
+**不能**。如果同时设置，`formatter` 优先生效，`mask` 不生效。
+
+## 相关文档
+
+- [坐标系](/tutorial/coordinate.zh.md)
+- [图形语法](/tutorial/grammar.zh.md)
+- [核心概念](/tutorial/understanding.zh.md)

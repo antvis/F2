@@ -9,18 +9,18 @@ order: 9
 
 | 事件名              | 类型    | 描述                       |
 | ------------------- | ------- | -------------------------- |
-| `onClick`           | funtion | 点击事件                   |
-| `onPanStart`        | funtion | 手指触摸图形时触发 0       |
-| `onPan`             | funtion | 手指在图形上移动时触发     |
-| `onPanEnd`          | funtion | 手指从图形上离开时触发     |
-| `onTouchStart`      | funtion | 手指触摸图形时触发         |
-| `onTouchMove`       | funtion | 手指在图形上移动时触发     |
-| `onTouchEnd`        | funtion | 手指从图形上离开时触发     |
-| `onTouchEndOutside` | funtion | 手指从图形外离开时触发     |
-| `onPressStart`      | funtion | 手指在图形上开始按压时触发 |
-| `onPress`           | funtion | 手指在图形上按压时触发     |
-| `onPressEnd`        | funtion | 手指在图形上结束按压时触发 |
-| `onSwipe`           | funtion | 手指快扫时触发             |
-| `onPinchStart`      | funtion | 手指开始缩放时触发         |
-| `onPinch`           | funtion | 手指缩放时触发             |
-| `onPinchEnd`        | funtion | 手指结束缩放时触发         |
+| `onClick`           | function | 点击事件                   |
+| `onPanStart`        | function | 手指触摸图形时触发 0       |
+| `onPan`             | function | 手指在图形上移动时触发     |
+| `onPanEnd`          | function | 手指从图形上离开时触发     |
+| `onTouchStart`      | function | 手指触摸图形时触发         |
+| `onTouchMove`       | function | 手指在图形上移动时触发     |
+| `onTouchEnd`        | function | 手指从图形上离开时触发     |
+| `onTouchEndOutside` | function | 手指从图形外离开时触发     |
+| `onPressStart`      | function | 手指在图形上开始按压时触发 |
+| `onPress`           | function | 手指在图形上按压时触发     |
+| `onPressEnd`        | function | 手指在图形上结束按压时触发 |
+| `onSwipe`           | function | 手指快扫时触发             |
+| `onPinchStart`      | function | 手指开始缩放时触发         |
+| `onPinch`           | function | 手指缩放时触发             |
+| `onPinchEnd`        | function | 手指结束缩放时触发         |

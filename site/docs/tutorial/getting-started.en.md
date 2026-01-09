@@ -1,72 +1,25 @@
 ---
-title: 快速上手
+title: Quick Start
 order: 0
 ---
 
-## 声明式
+This guide will help you get started with F2, from installation to rendering your first chart.
 
-F2 4.0 开始，我们将以声明式编写图表，声明式可以让你的代码更直观和简洁，避免了复杂的 API 调用，而且我们也采用了 JSX 语法，不仅方便使用，还可以很方便地和 React、Vue 这些框架结合
+## Features
 
-## 组件化
+Starting from F2 4.0, we use declarative programming to build charts, providing a more intuitive development experience:
 
-为了构建复杂的可视化图表，组件是一种不可或缺的能力，在 F2 里，我们也参考 React 的设计模式，内置了一套完善的组件能力，能简单方便地分装自己的组件
+### Declarative
 
-## 快速开始
+Declarative programming makes code more intuitive and concise, avoiding complex API calls. F2 uses JSX syntax, which is not only easy to use but also integrates seamlessly with frameworks like React and Vue.
 
-> 下面示例是以非 React 为演示的，如果项目已经是 React， 可以参考 [如何在 React 中使用](/tutorial/framework/react)
+### Component-Based
 
-### 配置 jsx transform
+Components are essential for building complex visualizations. F2 follows React's design patterns and provides a complete set of component capabilities, making it simple to encapsulate your own components.
 
-因为 F2 也使用了 jsx 语法来构建图表，所以需要使用 [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx) 来编译 jsx
+## Installation
 
-```bash
-npm install --save-dev @babel/plugin-transform-react-jsx
-```
-
-```json
-{
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "runtime": "automatic",
-        "importSource": "@antv/f2"
-      }
-    ]
-  ]
-}
-// 或者
-{
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "pragma": "jsx",
-        "pragmaFrag": "Fragment"
-      }
-    ]
-  ]
-}
-```
-
-更多可参考[@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
-
-### TypeScript
-
-如果你是使用 TypeScript, 那么只需在 `tsconfig.json` 中加入如下配置即可
-
-```json
-{
-  "compilerOptions": {
-    "jsxFactory": "jsx",
-    "jsxFragmentFactory": "Fragment"
-  }
-}
-```
-
-## 安装
-
-### 通过 npm 安装
+### Install via npm
 
 [![](https://img.shields.io/npm/v/@antv/f2.svg)](https://npmjs.com/package/@antv/f2) [![](https://img.shields.io/npm/dm/@antv/f2.svg)](https://npmjs.com/package/@antv/f2)
 
@@ -74,20 +27,34 @@ npm install --save-dev @babel/plugin-transform-react-jsx
 npm install @antv/f2 --save
 ```
 
-## 一分钟上手
+### Install via CDN
 
-### 1. 创建 canvas 标签
+```html
+<script src="https://unpkg.com/@antv/f2/dist/index.min.js"></script>
+```
 
-在页面上创建一个 `<canvas>`
+## Configure JSX Transform
+
+F2 uses JSX syntax to build charts, so you need to configure JSX transformation tools.
+
+> Note: If your project is already using React, refer to [How to use with React](/tutorial/framework/react.en.md)
+
+For detailed configuration instructions, see: [Configure JSX Transform](/tutorial/framework/jsx-transform.zh.md)
+
+## One-Minute Quick Start
+
+### 1. Create a canvas element
+
+Create a `<canvas>` element on your page:
 
 ```html
 <canvas id="myChart" width="400" height="260"></canvas>
 ```
 
-### 2. 编写代码
+### 2. Write the code
 
 ```jsx
-// F2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
+// F2 requires data in JSON array format, where each element is a standard JSON object
 const data = [
   { genre: 'Sports', sold: 275 },
   { genre: 'Strategy', sold: 115 },
@@ -96,7 +63,7 @@ const data = [
   { genre: 'Other', sold: 150 },
 ];
 
-// 获取 canvas context
+// Get canvas context
 const context = document.getElementById('myChart').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -113,8 +80,66 @@ const canvas = new Canvas(props);
 canvas.render();
 ```
 
-完成上述两步之后，保存文件并用浏览器打开，一张柱状图就绘制成功了：<br />![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/54ad3af8-c30d-43ca-b0e8-e21c4ea3d438.png)
+After completing these two steps, save the file and open it in your browser. A bar chart will be successfully rendered:
 
-## 更多示例
+![](https://gw.alipayobjects.com/zos/finxbff/compress-tinypng/54ad3af8-c30d-43ca-b0e8-e21c4ea3d438.png)
 
-更多的示例直接查看 [Demo](/examples)。
+## Code Analysis
+
+### Canvas Component
+
+`Canvas` is the root container of the chart, responsible for providing the rendering environment:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `context` | `CanvasRenderingContext2D` | - | **Required**, Canvas 2D context |
+| `pixelRatio` | `number` | `window.devicePixelRatio` | Device pixel ratio for high-DPI screen adaptation |
+| `width` | `number` | - | Canvas width (prioritizes canvas element's width) |
+| `height` | `number` | - | Canvas height (prioritizes canvas element's height) |
+| `animate` | `boolean` | `true` | Whether to enable animation |
+| `children` | `ReactNode` | - | Child components |
+
+### Chart Component
+
+`Chart` is the core component of the chart, responsible for data processing and coordinate transformation:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Data[]` | - | **Required**, data source |
+| `scale` | `ScaleConfig` | - | Scale configuration |
+| `coord` | `CoordConfig` | - | Coordinate system configuration |
+| `children` | `ReactNode` | - | Child components |
+
+### Interval Component
+
+`Interval` is used to render bar charts:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `x` | `string` | - | **Required**, x-axis field name |
+| `y` | `string` | - | **Required**, y-axis field name |
+| `color` | `string \| Function` | - | Color field or color mapping function |
+
+### Axis Component
+
+`Axis` is used to configure coordinate axes:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `field` | `string` | - | **Required**, field name |
+| `position` | `string` | - | Axis position (`top`, `bottom`, `left`, `right`) |
+
+### Tooltip Component
+
+`Tooltip` is used to display data tooltip information.
+
+## More Examples
+
+For more examples, see [Demos](/examples).
+
+## Next Steps
+
+- Learn about [Core Concepts](/tutorial/understanding.en.md)
+- Study [Chart Grammar](/tutorial/grammar.en.md)
+- View [Component API](/api/chart/chart.zh.md)
+- Learn how to [Use with Frameworks](/tutorial/framework/overview.zh.md)
