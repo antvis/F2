@@ -114,7 +114,7 @@ const data = [
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `items` | `LegendItem[]` | - | 自定义图例项列表 |
-| `itemFormatter` | `(value, tickValue) => string` | - | 格式化图例每项的值显示。第一个参数为图例项的值，第二个参数为原始分类值 |
+| `itemFormatter` | `(value, tickValue) => string` | - | 格式化图例每项的值显示。第一个参数为图例项的值，第二个参数为原始分类值。注意：`name` 会自动显示，itemFormatter 返回值会附加在 name 之后 |
 
 ### 样式配置
 
@@ -125,7 +125,7 @@ const data = [
 | `itemStyle` | `GroupStyleProps` | - | 图例项样式 |
 | `nameStyle` | `TextStyleProps` | - | 图例名称样式 |
 | `valueStyle` | `TextStyleProps` | - | 图例值样式 |
-| `valuePrefix` | `string` | - | value 展示文案的前缀 |
+| `valuePrefix` | `string` | `': '` | value 展示文案的前缀。最终渲染格式为 `${name}: ${value}` |
 
 ### 交互配置
 
@@ -233,12 +233,14 @@ const nameToPercentMap = Object.fromEntries(
     itemFormatter={(value, tickValue) => {
       // value: undefined（自动生成的图例没有值）
       // tickValue: 分类名称，如 '股票类'、'债券类'
-      // 格式化为百分比形式
+      // 返回值会显示在 name 之后，最终格式：股票类: 83.59%
       return nameToPercentMap[tickValue] + '%';
     }}
   />
 </Chart>
 ```
+
+> **注意**：name 会自动显示，itemFormatter 返回值会附加在 name 之后，默认渲染格式为 `${name}: ${value}`。因此 itemFormatter 只需返回值部分，无需包含 name。
 
 ### 自定义图例项
 
