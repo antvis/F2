@@ -37,8 +37,8 @@ interface LegendProps {
   height?: number | string;
   /** legend 和图表内容的间距 */
   margin?: number | string;
-  /** 格式化图例每项的文本显示 */
-  itemFormatter?: (value: any, name: string) => string;
+  /** 格式化图例每项的值显示 */
+  itemFormatter?: (value: any, tickValue: any) => string;
   /** 图例项列表 */
   items?: LegendItem[];
   /** 图例样式 */
@@ -114,7 +114,7 @@ const data = [
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `items` | `LegendItem[]` | - | 自定义图例项列表 |
-| `itemFormatter` | `(value, name) => string` | - | 格式化图例每项的文本显示 |
+| `itemFormatter` | `(value, tickValue) => string` | - | 格式化图例每项的值显示。第一个参数为图例项的值，第二个参数为原始分类值 |
 
 ### 样式配置
 
@@ -201,6 +201,43 @@ const data = [
     fill: '#666',
   }}
 />
+```
+
+### 使用 itemFormatter 格式化自动生成的图例
+
+当不传 `items` 属性时，F2 会自动从图表的图形属性映射生成图例。此时可以使用 `itemFormatter` 对图例值进行格式化：
+
+```jsx
+// 数据（环形图示例）
+const data = [
+  { name: '股票类', percent: 83.59, a: '1' },
+  { name: '债券类', percent: 2.17, a: '1' },
+  { name: '现金类', percent: 14.24, a: '1' },
+];
+
+// 创建分类名到百分比的查找表
+const nameToPercentMap = Object.fromEntries(
+  data.map(({ name, percent }) => [name, percent])
+);
+
+<Chart
+  data={data}
+  coord={{
+    type: 'polar',
+    transposed: true,
+  }}
+>
+  <Interval x="a" y="percent" adjust="stack" color="name" />
+  <Legend
+    position="bottom"
+    itemFormatter={(value, tickValue) => {
+      // value: undefined（自动生成的图例没有值）
+      // tickValue: 分类名称，如 '股票类'、'债券类'
+      // 格式化为百分比形式
+      return nameToPercentMap[tickValue] + '%';
+    }}
+  />
+</Chart>
 ```
 
 ### 自定义图例项
