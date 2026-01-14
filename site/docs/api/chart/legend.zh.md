@@ -125,7 +125,7 @@ const data = [
 | `itemStyle` | `GroupStyleProps` | - | 图例项样式 |
 | `nameStyle` | `TextStyleProps` | - | 图例名称样式 |
 | `valueStyle` | `TextStyleProps` | - | 图例值样式 |
-| `valuePrefix` | `string` | `': '` | value 展示文案的前缀。最终渲染格式为 `${name}: ${value}` |
+| `valuePrefix` | `string` | `': '` | 用于连接图例名和图例值的字符串。最终渲染格式为 `${name}${valuePrefix}${value}`。 |
 
 ### 交互配置
 
