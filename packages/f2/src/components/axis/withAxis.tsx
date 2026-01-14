@@ -260,6 +260,11 @@ export default (View) => {
       const { props } = this;
       const { coord } = props;
 
+      // 边界检查：至少需要 2 个 tick 才能计算距离
+      if (!ticks || ticks.length < 2) {
+        return 0;
+      }
+
       const firstPoint = coord.convertPoint({
         x: ticks[0].value,
         y: 0,
@@ -338,6 +343,11 @@ export default (View) => {
       const { context } = this;
       const { measureText } = context;
 
+      // 边界检查：少于 2 个刻度无法计算旋转角度
+      if (!ticks || ticks.length < 2) {
+        return;
+      }
+
       const averageSpace = this._getXTicksDistance([ticks[0], ticks[1]]);
       const { label } = this.axisStyle;
       const { labelStyle = {}, text } = ticks[0];
@@ -370,6 +380,12 @@ export default (View) => {
     hasOverlapAtSeq(ticks, step) {
       const { px2hd } = this.context;
       const { safetyDistance = 2 } = this.props;
+
+      // 边界检查：step 不能超过或等于 ticks.length
+      if (!ticks || ticks.length < 2 || step >= ticks.length) {
+        return false;
+      }
+
       const XDistance = this._getXTicksDistance([ticks[0], ticks[step]]);
 
       let prevIdx = 0;
@@ -399,6 +415,11 @@ export default (View) => {
       const { measureText } = context;
 
       const tickCount = ticks.length;
+
+      // 边界检查：少于 2 个刻度不存在重叠问题
+      if (tickCount < 2) {
+        return false;
+      }
 
       const { label } = this.axisStyle;
 

@@ -644,4 +644,105 @@ describe('Axis labelAutoRotate', () => {
     await delay(1000);
     expect(context).toMatchImageSnapshot();
   });
+
+  describe('tickCount=1 边界场景', () => {
+    it('tickCount=1 + labelAutoHide 正常渲染', async () => {
+      const context = createContext('tickCount1-labelAutoHide');
+
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} width={350} height={250}>
+          <Chart
+            data={[
+              { time: '2024-01-01', value: 100 },
+              { time: '2024-01-02', value: 150 },
+              { time: '2024-01-03', value: 200 },
+            ]}
+            style={{
+              padding: [0, 0, 0, 0],
+            }}
+          >
+            <Axis
+              field="time"
+              type="timeCat"
+              labelAutoHide={true}
+              tickCount={1}
+            />
+            <Axis field="value" />
+            <Interval x="time" y="value" color="#2FC25B" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      await expect(canvas.render()).resolves.not.toThrow();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('tickCount=1 + labelAutoRotate 正常渲染', async () => {
+      const context = createContext('tickCount1-labelAutoRotate');
+
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} width={350} height={250}>
+          <Chart
+            data={[
+              { time: '2024-01-01', value: 100 },
+              { time: '2024-01-02', value: 150 },
+              { time: '2024-01-03', value: 200 },
+            ]}
+            style={{
+              padding: [0, 0, 0, 0],
+            }}
+          >
+            <Axis
+              field="time"
+              type="timeCat"
+              labelAutoRotate={true}
+              tickCount={1}
+            />
+            <Axis field="value" />
+            <Interval x="time" y="value" color="#2FC25B" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      await expect(canvas.render()).resolves.not.toThrow();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+
+    it('tickCount=1 + labelAutoHide + labelAutoRotate 正常渲染', async () => {
+      const context = createContext('tickCount1-both');
+
+      const { props } = (
+        <Canvas context={context} pixelRatio={1} width={350} height={250}>
+          <Chart
+            data={[
+              { time: '2024-01-01', value: 100 },
+              { time: '2024-01-02', value: 150 },
+            ]}
+            style={{
+              padding: [0, 0, 0, 0],
+            }}
+          >
+            <Axis
+              field="time"
+              type="timeCat"
+              labelAutoHide={true}
+              labelAutoRotate={true}
+              tickCount={1}
+            />
+            <Axis field="value" />
+            <Line x="time" y="value" />
+          </Chart>
+        </Canvas>
+      );
+
+      const canvas = new Canvas(props);
+      await expect(canvas.render()).resolves.not.toThrow();
+      await delay(1000);
+      expect(context).toMatchImageSnapshot();
+    });
+  });
 });
