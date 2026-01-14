@@ -240,7 +240,7 @@ const nameToPercentMap = Object.fromEntries(
 </Chart>
 ```
 
-> **注意**：name 会自动显示，itemFormatter 返回值会附加在 name 之后，默认渲染格式为 `${name}: ${value}`。因此 itemFormatter 只需返回值部分，无需包含 name。
+> **注意**：`name` 会自动显示。`itemFormatter` 的返回值会作为图例项的值，并通过 `valuePrefix` (默认为 `': '`) 连接在 `name` 之后。因此 `itemFormatter` 只需返回格式化后的值部分，无需包含 `name`。
 
 ### 自定义图例项
 
