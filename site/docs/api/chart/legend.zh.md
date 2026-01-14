@@ -114,7 +114,7 @@ const data = [
 | 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `items` | `LegendItem[]` | - | 自定义图例项列表 |
-| `itemFormatter` | `(value, tickValue) => string` | - | 格式化图例每项的值显示。第一个参数为图例项的值，第二个参数为原始分类值。注意：`name` 会自动显示，itemFormatter 返回值会附加在 name 之后 |
+| `itemFormatter` | `(value, tickValue) => string` | - | 格式化图例每项的值显示。第一个参数为图例项的值，第二个参数为原始分类值。注意：`name` 会自动显示，itemFormatter 返回值会作为图例的值(value)进行展示。 |
 
 ### 样式配置
 
